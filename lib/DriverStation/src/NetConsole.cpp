@@ -29,6 +29,8 @@
 #define _UDP_IN_PORT 6666
 #define _UDP_OUT_PORT 6668
 
+/* THIS FILE WAS NOT TESTED, IT WILL MOST PROBABLY NEED TO BE CHANGED! */
+
 NetConsole* NetConsole::m_instance = nullptr;
 
 NetConsole::NetConsole()
