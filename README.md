@@ -35,8 +35,8 @@ Both versions use the same library to communicate with the robot (check the **li
 **Folders:**
 
 - <code>doc</code>: contains Doxygen configuration files
-- <code>etc</code>: contains various files used for deployment of the application and resources (images, mappings, etc) used by the user interface
-- <code>lib</code>: contains various libraries used by the application.
+- <code>etc</code>: contains various files used for deployment of the application and resources
+- <code>lib</code>: contains various libraries used by the application, including the **DriverStation** library.
 - <code>src</code>: contains the C++ source code of the application
 
 ### Contributing
@@ -72,7 +72,7 @@ The project already contains the compiled SDL libraries for Windows and Mac.
 
 #### Compiling the application
 
-Once you have Qt installed, open QDriverStation.pro in Qt Creator and click the "Run" button.
+Once you have Qt installed, open *Desktop.pro* in Qt Creator and click the "Run" button.
 
 Alternatively, you can also use the following commands:
 - qmake
@@ -83,7 +83,7 @@ Alternatively, you can also use the following commands:
 
 Once you finish installing the software, you can launch it and begin driving your robot. Just be sure to input your team number and to verify that the joysticks are working correctly. Note that Mac users will be prompted to download an additional driver for Xbox 360 controllers to work.
 
-If your team uses a custom IP address for your roboRIO or has a different login account for the RIO, navigate to the 'Preferences' tab and click the 'Advanced Settings...' button to configure the driver station.
+If your team uses a custom IP address for your roboRIO (or mDNS is not working, try 10.XX.YY.26), navigate to the 'Preferences' tab and click the 'Advanced Settings...' button to configure the driver station.
 
 ### Credits
 
