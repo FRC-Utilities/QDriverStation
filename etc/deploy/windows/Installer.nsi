@@ -22,7 +22,7 @@
 !include "MUI2.nsh"
 !include "LogicLib.nsh"
 
-!define APPNAME "OpenDS"
+!define APPNAME "QDriverStation"
 !define COMPANYNAME "WinT 3794"
 !define DESCRIPTION "Open source alternative to the FRC DriverStation"
 !define VERSIONMAJOR 1
