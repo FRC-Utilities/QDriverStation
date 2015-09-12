@@ -1,7 +1,7 @@
 # DriverStation Library
 
 
-The DriverStation library allows any Qt-based project to manage an FRC robot easily and without getting involved in the loops and low network operations needed to manage the roboRIO.
+The DriverStation library allows any Qt-based project to manage an FRC robot easily and without getting involved in the application loops and network operations needed to manage the roboRIO.
 
 The library has been written by analyzing the following sites and projects:
 
@@ -9,7 +9,7 @@ The library has been written by analyzing the following sites and projects:
 - [https://github.com/gluxon/node-driverstation15](https://github.com/gluxon/node-driverstation15)
 - [https://github.com/gluxon/node-driverstation15/wiki/2015-Protocol](https://github.com/gluxon/node-driverstation15/wiki/2015-Protocol)
 
-Buy them a beer if you feel that this library or the [QDriverStation](http://github.com/wint-3794/qdriverstation) helped you. Of course, you are welcome to buy us a beer too! :)
+Buy them a beer if you feel that this library or the [QDriverStation](http://github.com/wint-3794/qdriverstation) helped you. Of course, you are welcome to buy us a beer too! (the situation in Mexico for FRC teams is not very good...)
 
 ### Credits
 
