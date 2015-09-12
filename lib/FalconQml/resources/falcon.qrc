@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/falcon">
+        <file>qml/BottomBar.qml</file>
+        <file>qml/Button.qml</file>
+        <file>qml/Dialog.qml</file>
+        <file>qml/FalconApp.qml</file>
+        <file>qml/Icon.qml</file>
+        <file>qml/Label.qml</file>
+        <file>qml/LedButton.qml</file>
+        <file>qml/Page.qml</file>
+        <file>qml/Sidebar.qml</file>
+        <file>qml/Toolbar.qml</file>
+        <file>fonts/FontAwesome.ttf</file>
+        <file>fonts/OpenSans-Bold.ttf</file>
+        <file>fonts/OpenSans-Regular.ttf</file>
+        <file>qml/IconButton.qml</file>
+        <file>qml/LineEdit.qml</file>
+        <file>qml/Notification.qml</file>
+        <file>qml/TextEdit.qml</file>
+        <file>qml/ComboBox.qml</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,28 @@
+1 VERSIONINFO
+FILEVERSION 1,0,0,0
+PRODUCTVERSION 1,0,0,0
+FILEOS 0x4
+FILETYPE 0x0
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "040904B0"
+    BEGIN
+      VALUE "CompanyName", "WinT 3794"
+      VALUE "FileDescription", "NetVoice"
+      VALUE "FileVersion", "1,0,0,0"
+      VALUE "InternalName", "NetVoice"
+      VALUE "LegalCopyright", "Copyright \251 2015 WinT 3794"
+      VALUE "OriginalFilename", "NetVoice.exe"
+      VALUE "ProductName", "NetVoice"
+      VALUE "ProductVersion", "1,0,0,0"
+    END
+  END 
+  
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x0409, 0x04B0
+  END
+END
+
+IDI_ICON1               ICON    DISCARDABLE     "AppIcon.ico"

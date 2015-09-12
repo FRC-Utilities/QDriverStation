@@ -1,0 +1,29 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/Diagnostics.png</file>
+        <file>icons/Messages.png</file>
+        <file>icons/Operation.png</file>
+        <file>icons/Plug.png</file>
+        <file>icons/Power (big).png</file>
+        <file>icons/Power.png</file>
+        <file>icons/Setup.png</file>
+        <file>icons/USB.png</file>
+        <file>icon.ico</file>
+        <file>icons/Info.png</file>
+        <file>icons/Network.png</file>
+        <file>sdl/database.txt</file>
+        <file>icons/ClearLog.png</file>
+        <file>icons/FilterLog.png</file>
+        <file>icons/WindowDocked.png</file>
+        <file>icons/WindowNormal.png</file>
+        <file>sdl/generic/linux.txt</file>
+        <file>sdl/generic/mac-osx.txt</file>
+        <file>sdl/generic/windows.txt</file>
+        <file>icons/Close.png</file>
+        <file>fonts/Quicksand-Bold.otf</file>
+        <file>fonts/Quicksand-Regular.otf</file>
+        <file>icons/NetConsole.png</file>
+        <file>icons/Copy.png</file>
+        <file>fonts/Inconsolata.otf</file>
+    </qresource>
+</RCC>
