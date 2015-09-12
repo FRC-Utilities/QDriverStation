@@ -32,6 +32,8 @@
 #define _NET_ROBORIO_PORT 1110
 #define _NET_DRIVER_STATION_PORT 1150
 
+/* NOT TESTED, IT WILL BE CHANGED FOR SURE */
+
 QByteArray DS_CommonControlPacket (DS_Status status, DS_Alliance alliance,
                                    DS_ControlMode mode)
 {
