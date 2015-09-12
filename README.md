@@ -30,6 +30,10 @@ Both versions use the same library to communicate with the robot (check the **li
 
 ![image](doc/screenshots/Settings.tiff)
 
+### Screenshots (mobile)
+
+![image](doc/screenshots/Mobile.tiff)
+
 ### Folder and File structure
 
 **Folders:**
@@ -57,7 +61,7 @@ Try out the application and let us know what you think and what we can improve.
 
 **Designers:**
 
-You can create an awesome and distinctive icon for our project. If you are familiar with web design, you could also help us out by improving the website of the QDriverStation.
+You can create an awesome and distinctive icon for our project. If you are familiar with web design, you could also help us out by creating the website of the QDriverStation.
 
 ### Installation
 

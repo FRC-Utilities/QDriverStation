@@ -55,7 +55,7 @@ public:
      * This function is useful in the case that you want to warn the user
      * when he/she clicks the 'Enable' button and something is not working
      */
-    bool canBeEnabled();
+    Q_INVOKABLE bool canBeEnabled();
 
     /**
      * Returns a list with the available alliances and positions that the robot
@@ -64,7 +64,7 @@ public:
      * This is used by the robot program to change its behaviour depending on
      * the alliance (Blue or Red) and position (1, 2 & 3) of the robot.
      */
-    QStringList alliances();
+    Q_INVOKABLE QStringList alliances();
 
     /**
      * Returns the current operation mode of the robot.
@@ -75,22 +75,22 @@ public:
      *     - DS_Autonomous
      *     - DS_EmergencyStop
      */
-    DS_ControlMode operationMode();
+    Q_INVOKABLE DS_ControlMode operationMode();
 
     /**
      * Returns the single instance of the NetConsole
      */
-    NetConsole* netConsole();
+    Q_INVOKABLE NetConsole* netConsole();
 
     /**
      * Returns the IP address of the robot radio
      */
-    QString radioAddress();
+    Q_INVOKABLE QString radioAddress();
 
     /**
      * Returns the IP/DNS address of the roboRIO
      */
-    QString roboRioAddress();
+    Q_INVOKABLE QString roboRioAddress();
 
 public slots:
     /**
@@ -100,19 +100,19 @@ public slots:
      * This function is not called in the constructor to give the application
      * time to initialize its user interface.
      */
-    void init();
+    Q_INVOKABLE void init();
 
     /**
      * Reboots the roboRIO and changes the way the client sends packets to
      * the robot until it reloads its operating system
      */
-    void reboot();
+    Q_INVOKABLE void reboot();
 
     /**
      * Sends a special packet to the robot so that it re-starts the process that
      * runs the robot software
      */
-    void restartCode();
+    Q_INVOKABLE void restartCode();
 
     /**
      * Changes the team number. Its a simple way to change the roboRIO address
@@ -120,20 +120,20 @@ public slots:
      *
      * \note Changes may take up to one second to take full effect
      */
-    void setTeamNumber (int team);
+    Q_INVOKABLE void setTeamNumber (int team);
 
     /**
      * Updates the alliance of the robot by changing the way packets are
      * generated and sent to the roboRIO
      */
-    void setAlliance (DS_Alliance alliance);
+    Q_INVOKABLE void setAlliance (DS_Alliance alliance);
 
     /**
      * Updates the address that we use to communicate to the roboRIO.
      * Useful for teams that have changed the default network configurations
      * of their roboRIO component.
      */
-    void setCustomAddress (QString address);
+    Q_INVOKABLE void setCustomAddress (QString address);
 
     /**
      * Changes the operation mode of the robot.
@@ -146,18 +146,18 @@ public slots:
      *
      * @note The elapsed time will be reset when the mode is switched
      */
-    void setControlMode (DS_ControlMode mode);
+    Q_INVOKABLE void setControlMode (DS_ControlMode mode);
 
     /**
      * [TODO]
      */
-    void putJoystickData (DS_JoystickData joystickData);
+    Q_INVOKABLE void putJoystickData (DS_JoystickData joystickData);
 
     /**
      * Simulates a timed match with the input time values (in seconds)
      */
-    void startPractice (int countdown, int autonomous,
-                        int delay, int teleop, int endgame);
+    Q_INVOKABLE void startPractice (int countdown, int autonomous,
+                                    int delay, int teleop, int endgame);
 
 signals:
     /**

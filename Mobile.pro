@@ -55,12 +55,9 @@ OBJECTS_DIR = obj
 
 SOURCES += \
     $$PWD/src/mobile/main.cpp \
-    $$PWD/src/mobile/DS.cpp \
     $$PWD/src/mobile/Settings.cpp
 
-HEADERS += \
-    $$PWD/src/mobile/DS.h \
-    $$PWD/src/mobile/Settings.h
+HEADERS += $$PWD/src/mobile/Settings.h
 
 RESOURCES += $$PWD/etc/resources/mobile/resources.qrc
 OTHER_FILES += $$PWD/etc/resources/mobile/.qml
