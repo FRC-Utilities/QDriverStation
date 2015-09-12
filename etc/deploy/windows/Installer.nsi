@@ -25,8 +25,8 @@
 !define APPNAME "QDriverStation"
 !define COMPANYNAME "WinT 3794"
 !define DESCRIPTION "Open source alternative to the FRC DriverStation"
-!define VERSIONMAJOR 1
-!define VERSIONMINOR 87
+!define VERSIONMAJOR 0
+!define VERSIONMINOR 1
 !define VERSIONBUILD 0
 !define ESTIMATED_SIZE 18100
 !define MUI_ABORTWARNING
