@@ -30,7 +30,7 @@ class QByteArray;
 /**
  * @brief The FRCCommonControlData struct
  * Taken from: https://github.com/TheChillerCraft/Driver-Station
- * 
+ *
  * The structure may or may not be modified in the future
  */
 struct DS_CommonControlPacket {
@@ -116,7 +116,7 @@ struct DS_CommonControlPacket {
 /**
  * @brief The DS_RobotDataPacket struct
  * Taken from: https://github.com/TheChillerCraft/Driver-Station
- * 
+ *
  * The structure may or may not be modified in the future
  */
 struct DS_RobotDataPacket {
