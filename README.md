@@ -13,14 +13,14 @@ Joystick input is achieved with SDL 2.0, which is a cross-platform library for C
 - [X] UI and application logic
 - [X] Deploy configurations
 - [X] Joystick input
-- [ ] Communication protocol (check */lib/DriverStation* for more info)
+- [ ] Communication protocol (check [*/lib/DriverStation*](https://github.com/WinT-3794/QDriverStation/tree/master/lib/DriverStation) for more info)
 
 ### Desktop vs Mobile?
 
 You may have noticed that we have two projects in this repository: a desktop version and a mobile version.
 Consider the desktop version like a clone of the FRC DriverStation, while the mobile version is suited for touch screens.
 
-Both versions use the same library to communicate with the robot (check the **lib** folder) but use a different UI (desktop uses traditional QWidgets, while mobile is based on QML).
+Both versions use the same library to communicate with the robot (check the [lib](https://github.com/WinT-3794/QDriverStation/tree/master/lib/) folder) but use a different UI (desktop uses traditional QWidgets, while mobile is based on QML).
 
 ### Screenshots (desktop)
 
@@ -40,7 +40,7 @@ Both versions use the same library to communicate with the robot (check the **li
 
 - <code>doc</code>: contains Doxygen configuration files
 - <code>etc</code>: contains various files used for deployment of the application and resources
-- <code>lib</code>: contains various libraries used by the application, including the **DriverStation** library.
+- <code>lib</code>: contains various libraries used by the application, including the [**DriverStation**](https://github.com/WinT-3794/QDriverStation/tree/master/lib/DriverStation) library.
 - <code>src</code>: contains the C++ source code of the application
 
 ### Contributing
