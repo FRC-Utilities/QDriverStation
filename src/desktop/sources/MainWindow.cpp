@@ -272,7 +272,7 @@ void MainWindow::onRestartClicked()
 
 void MainWindow::onWebsiteClicked()
 {
-    QDesktopServices::openUrl (QUrl ("http://wint3794.org/open-ds"));
+    QDesktopServices::openUrl (QUrl ("http://github.com/WinT-3794/QDriverStation"));
 }
 
 void MainWindow::onEnabledClicked()
