@@ -85,7 +85,11 @@ Alternatively, you can also use the following commands:
 
 #### Configuration
 
-Once you finish installing the software, you can launch it and begin driving your robot. Just be sure to input your team number and to verify that the joysticks are working correctly. Note that Mac users will be prompted to download an additional driver for Xbox 360 controllers to work.
+Once you finish installing the software, you can launch it and begin driving your robot (NOTE: THIS IS NOT POSSIBLE YET, HOPEFULLY WE WILL MAKE IT WORK SOON). Just be sure to input your team number and to verify that the joysticks are working correctly. 
+
+Notes:
+- Mac users will be prompted to download an additional driver for Xbox 360 controllers to work.
+- Windows users will be prompted to download Bonjour to get mDNS working, this is not necesary if you have the official FRC Driver Station already installed or if you use a static IP.
 
 If your team uses a custom IP address for your roboRIO (or mDNS is not working, try 10.XX.YY.26), navigate to the 'Preferences' tab and click the 'Advanced Settings...' button to configure the driver station.
 
