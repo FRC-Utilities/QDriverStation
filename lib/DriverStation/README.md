@@ -11,6 +11,20 @@ The library has been written by analyzing the following sites and projects:
 
 Buy them a beer if you feel that this library or the [QDriverStation](http://github.com/wint-3794/qdriverstation) helped you. Of course, you are welcome to buy us a beer too! (the situation in Mexico for FRC teams is not very good...)
 
+### Progress
+
+There is still a lot of work to be done in order to get a fully-working DriverStation library. Check the following:
+
+- [x] Discover if robot radio exists (by pinging 10.XX.YY.1)
+- [x] Discover if roboRIO exists (by pinging roboRIO-XXYY.local or using an user-provided address)
+- [x] Get robot information such as its library, PDP and PCM (by downloading and reading some files in the FTP server of the roboRIO)
+- [ ] Know if the robot code is loaded
+- [ ] Generate and send control packets to the robot, which contain its control mode (Disabled, TeleOp, Auto, etc) and probably joystick data
+- [ ] Read and interpret robot packets (e.g. to get battery voltage)
+- [ ] Get CAN information (we need to do some more "Wiresharking" for that)
+
+[Check this wiki](https://github.com/gluxon/node-driverstation15/wiki/2015-Protocol) to see how the definitions and data on each packet type.
+
 ### Credits
 
 This application was created by FRC team 3794 "WinT" from Metepec, Mexico. We sincerely hope that you enjoy our application and we would love some feedback from your team about it.
