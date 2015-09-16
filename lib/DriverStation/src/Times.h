@@ -31,7 +31,7 @@ namespace Times
 {
 const int ElapsedTimeInterval (5);
 const int ControlPacketInterval (20);
-const int TestConnectionInterval (5);
+const int TestConnectionInterval (1000);
 }
 
 #endif /* _DRIVER_STATION_TIMES_H */

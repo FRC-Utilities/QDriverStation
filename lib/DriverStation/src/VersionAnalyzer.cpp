@@ -40,8 +40,6 @@ DS_VersionAnalyzer::DS_VersionAnalyzer()
 void DS_VersionAnalyzer::downloadRobotInformation (QString address)
 {
     QString host = "ftp://" + address;
-
-    m_manager->connectToHost (host);
     m_manager->get (QNetworkRequest (host + _LIB_FILE));
     m_manager->get (QNetworkRequest (host + _PCM_FILE));
     m_manager->get (QNetworkRequest (host + _PDP_FILE));
