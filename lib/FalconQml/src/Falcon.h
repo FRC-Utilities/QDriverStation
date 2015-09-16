@@ -80,6 +80,18 @@ extern double GetDpi()
 }
 
 /**
+ * Returns \c true if the target device is considered a mobile device
+ */
+extern bool Mobile()
+{
+#if defined Q_OS_IOS | defined Q_OS_ANDROID
+    return true;
+#else
+    return false;
+#endif
+}
+
+/**
  * Creates and configures a QML application with the selected QML \a file
  */
 extern int StartApp (int argc, char* argv[], QString file)
@@ -88,6 +100,7 @@ extern int StartApp (int argc, char* argv[], QString file)
 
     QQmlEngine* engine = new QQmlEngine();
     engine->rootContext()->setContextProperty ("c_dpi", GetDpi());
+    engine->rootContext()->setContextProperty ("c_mobile", Mobile());
 
     QQmlComponent* component = new QQmlComponent (engine);
     component->loadUrl (QUrl (file));

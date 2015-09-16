@@ -40,6 +40,13 @@ Window {
         return c_dpi
     }
 
+    property bool isMobile: {
+        if (typeof c_mobile == 'undefined')
+            return false
+
+        return c_mobile
+    }
+
     //--------------------------------------------------------------------------
     // Functions
     //--------------------------------------------------------------------------

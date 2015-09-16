@@ -48,7 +48,7 @@ Item {
     // Properties
     //--------------------------------------------------------------------------
 
-    height: q_app.scale (56)
+    height: q_app.isMobile ? q_app.scale (56) : q_app.scale (48)
 
     anchors {
         top: parent.top
