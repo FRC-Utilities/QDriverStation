@@ -19,7 +19,6 @@ script:
     - cd .. && cd ..
     
     # Build desktop version
-    - qmake -qt=qt5 -v
     - qmake -qt=qt5 Desktop.pro
     - make
     - make clean
