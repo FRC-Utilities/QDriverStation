@@ -18,7 +18,7 @@ There is still a lot of work to be done in order to get a fully-working DriverSt
 - [x] Discover if robot radio exists (by pinging 10.XX.YY.1)
 - [x] Discover if roboRIO exists (by pinging roboRIO-XXYY.local or using an user-provided address)
 - [x] Get robot information such as its library, PDP and PCM (by downloading and reading some files in the FTP server of the roboRIO)
-- [ ] Know if the robot code is loaded
+- [ ] Discover if the robot code is loaded
 - [ ] Generate and send control packets to the robot, which contain its control mode (Disabled, TeleOp, Auto, etc) and probably joystick data
 - [ ] Read and interpret robot packets (e.g. to get battery voltage)
 - [ ] Get CAN information (we need to do some more "Wiresharking" for that)
