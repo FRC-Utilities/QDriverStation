@@ -29,8 +29,8 @@
 
 #include "Packets.h"
 
-#define _NET_ROBORIO_PORT 1110
-#define _NET_DRIVER_STATION_PORT 1150
+const int _NET_ROBORIO_PORT (1110);
+const int _NET_DRIVER_STATION_PORT (1150);
 
 /* NOT TESTED, IT WILL BE CHANGED FOR SURE */
 

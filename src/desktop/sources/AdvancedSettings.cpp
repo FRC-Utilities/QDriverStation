@@ -29,10 +29,11 @@
 
 #include <DriverStation.h>
 
-#define BASE "#2a2a2a"
-#define HIGHLIGHT "#2edc00"
-#define BACKGROUND "#313131"
-#define FOREGROUND "#ffffff"
+const QString BASE
+("#2a2a2a");
+const QString HIGHLIGHT  ("#2edc00");
+const QString BACKGROUND ("#313131");
+const QString FOREGROUND ("#ffffff");
 
 AdvancedSettings::AdvancedSettings()
 {

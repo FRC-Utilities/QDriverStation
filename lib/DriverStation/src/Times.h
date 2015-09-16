@@ -20,48 +20,18 @@
  * THE SOFTWARE.
  */
 
-#include <QTimer>
-#include <QUdpSocket>
+#ifndef _DRIVER_STATION_TIMES_H
+#define _DRIVER_STATION_TIMES_H
 
-#include "NetConsole.h"
-
-/* The ports used for the NetConsole */
-const int _UDP_IN_PORT (6666);
-const int _UDP_OUT_PORT (6668);
-
-/* THIS FILE WAS NOT TESTED, IT WILL MOST PROBABLY NEED TO BE CHANGED! */
-
-NetConsole* NetConsole::m_instance = nullptr;
-
-NetConsole::NetConsole()
+/**
+ * Defines all the time intervals of the library in a single file.
+ * \note Change these values as needed.
+ */
+namespace Times
 {
-    m_inSocket = new QUdpSocket (this);
-    m_outSocket = new QUdpSocket (this);
-    connect (m_inSocket, SIGNAL (readyRead()), this, SLOT (onMessageReceived()));
+const int ElapsedTimeInterval (5);
+const int ControlPacketInterval (20);
+const int TestConnectionInterval (5);
 }
 
-NetConsole* NetConsole::getInstance()
-{
-    if (m_instance == nullptr)
-        m_instance = new NetConsole();
-
-    return m_instance;
-}
-
-void NetConsole::init()
-{
-    m_address.setAddress ("255.255.255.255");
-    m_inSocket->bind (m_address, _UDP_IN_PORT);
-    m_outSocket->bind (m_address, _UDP_OUT_PORT);
-}
-
-void NetConsole::onMessageReceived()
-{
-    while (m_inSocket->hasPendingDatagrams()) {
-        QByteArray datagram;
-        datagram.resize (m_inSocket->pendingDatagramSize());
-        m_inSocket->readDatagram (datagram.data(), datagram.size());
-
-        emit newMessage (QString::fromUtf8 (datagram));
-    }
-}
+#endif

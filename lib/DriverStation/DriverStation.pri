@@ -37,7 +37,8 @@ HEADERS += \
     $$PWD/src/NetConsole.h \
     $$PWD/src/NetworkDiagnostics.h \
     $$PWD/src/Packets.h \
-    $$PWD/src/VersionAnalyzer.h
+    $$PWD/src/VersionAnalyzer.h \
+    $$PWD/src/Times.h
 
 SOURCES += \
     $$PWD/src/Common.cpp \

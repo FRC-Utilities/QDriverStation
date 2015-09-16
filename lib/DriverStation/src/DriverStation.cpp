@@ -23,6 +23,7 @@
 #include <QTimer>
 #include <DriverStation.h>
 
+#include "Times.h"
 #include "Packets.h"
 #include "VersionAnalyzer.h"
 #include "NetworkDiagnostics.h"
@@ -125,7 +126,7 @@ void DriverStation::init()
         /* Initialize the NetConsole */
         netConsole()->init();
 
-        /* This code will only run once */
+        /* Ensure that this code will only run once */
         m_init = true;
     }
 }
@@ -206,6 +207,8 @@ void DriverStation::checkConnection()
     }
 
     else if (m_justConnected) {
+        m_code = !true;
+        emit codeChanged (m_code);
         emit networkChanged (true);
         m_versionAnalyzer->downloadRobotInformation (roboRioAddress());
     }
@@ -218,7 +221,8 @@ void DriverStation::checkConnection()
         emit radioChanged (m_radioStatus);
     }
 
-    QTimer::singleShot (500, this, SLOT (checkConnection()));
+    QTimer::singleShot (Times::TestConnectionInterval,
+                        this, SLOT (checkConnection()));
 }
 
 void DriverStation::sendPacketsToRobot()
@@ -232,15 +236,13 @@ void DriverStation::sendPacketsToRobot()
                                     roboRioAddress());
     }
 
-    QTimer::singleShot (20, this, SLOT (sendPacketsToRobot()));
+    QTimer::singleShot (Times::ControlPacketInterval,
+                        this, SLOT (sendPacketsToRobot()));
 }
 
 void DriverStation::updateElapsedTime()
 {
-    /*
-     * We are a bunch of lazy motherfuckers,
-     * and we only work when required
-     */
+    /* We are a bunch of lazy motherfuckers, and we only work when required */
     if (operationMode() != DS_Disabled) {
 
         /* Get milliseconds, seconds and minutes */
@@ -273,5 +275,6 @@ void DriverStation::updateElapsedTime()
                                            milliseconds.length() - 1)));
     }
 
-    QTimer::singleShot (5, this, SLOT (updateElapsedTime()));
+    QTimer::singleShot (Times::ElapsedTimeInterval,
+                        this, SLOT (updateElapsedTime()));
 }

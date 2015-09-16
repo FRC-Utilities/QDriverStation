@@ -23,7 +23,6 @@
 #include <QPointer>
 #include <QPushButton>
 #include <QProgressBar>
-#include <qdebug.h>
 
 #include "Joysticks.h"
 

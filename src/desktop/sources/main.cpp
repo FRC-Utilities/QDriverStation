@@ -37,10 +37,10 @@
  */
 #if defined __APPLE__
 #define _PT_SIZE 12
-#define _APP_ICON_CODE QIcon("")
+#define _APP_ICON_CODE QIcon ("")
 #else
 #define _PT_SIZE qApp->font().pointSize()
-#define _APP_ICON_CODE QIcon(":/icon.ico")
+#define _APP_ICON_CODE QIcon (":/icon.ico")
 #endif
 
 /*

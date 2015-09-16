@@ -32,9 +32,8 @@ class DriverStation;
 
 class NetConsole : public QObject
 {
-    friend class DriverStation;
-
     Q_OBJECT
+    friend class DriverStation;
 
 public slots:
     /**

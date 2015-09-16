@@ -26,9 +26,9 @@
 
 #include "VersionAnalyzer.h"
 
-#define _PCM_FILE "/tmp/frc_versions/PCM-0-versions.ini"
-#define _PDP_FILE "/tmp/frc_versions/PDP-0-versions.ini"
-#define _LIB_FILE "/tmp/frc_versions/FRC_Lib_Version.ini"
+const QString _PCM_FILE ("/tmp/frc_versions/PCM-0-versions.ini");
+const QString _PDP_FILE ("/tmp/frc_versions/PDP-0-versions.ini");
+const QString _LIB_FILE ("/tmp/frc_versions/FRC_Lib_Version.ini");
 
 DS_VersionAnalyzer::DS_VersionAnalyzer()
 {
