@@ -8,11 +8,23 @@ The application looks and behaves almost identically to the FRC Driver Station, 
 
 Joystick input is achieved with SDL 2.0, which is a cross-platform library for C/C++.
 
+### Supported platforms
+
+#### Destktop version
+- [x] Microsoft Windows (tested 7, 8.1 and 10)
+- [x] Mac OS X (tested Yosemite and El Capitan)
+- [x] Linux (tested Ubuntu 14.04)
+
+#### Mobile version (also works on desktop systems)
+- [x] Android (tested on 4.2.2)
+- [x] iOS (tested on iOS Simulator 8, works on jailbroken devices)
+- [ ] Windows Phone (will be tested soon)
+
 # Progress
 
-- [X] UI and application logic
-- [X] Deploy configurations
-- [X] Joystick input
+- [x] UI and application logic
+- [x] Deploy configurations
+- [x] Joystick input
 - [ ] Communication protocol (check [*/lib/DriverStation*](https://github.com/WinT-3794/QDriverStation/tree/master/lib/DriverStation) for more info)
 
 ### Desktop vs Mobile?
