@@ -1,5 +1,7 @@
 # QDriverStation
 
+[![Build Status](https://travis-ci.org/WinT-3794/QDriverStation.svg?branch=master)](https://travis-ci.org/WinT-3794/QDriverStation)
+
 ### Introduction
 
 QDriverStation is an open-source, cross-platform alternative to the FRC Driver Station.
