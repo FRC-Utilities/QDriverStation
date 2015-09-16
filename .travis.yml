@@ -6,7 +6,6 @@ before_install:
     - sudo apt-get update -qq
     - sudo apt-get install -qq qt5-qmake libpulse-dev qtbase5-dev qtdeclarative5-dev libqt5svg5-dev qtmultimedia5-dev libqt5webkit5-dev libsqlite3-dev libsdl2-dev
 script:
-    - echo "QMake version is: "
     - qmake -qt=qt5 -v
     - echo "Building desktop version..."
     - qmake -qt=qt5 Desktop.pro
