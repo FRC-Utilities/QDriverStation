@@ -34,4 +34,4 @@ const int ControlPacketInterval (20);
 const int TestConnectionInterval (5);
 }
 
-#endif
+#endif /* _DRIVER_STATION_TIMES_H */
