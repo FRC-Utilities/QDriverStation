@@ -6,8 +6,9 @@ before_install:
     - sudo apt-get update -qq
     - sudo apt-get install -qq qt5-qmake libpulse-dev qtbase5-dev qtdeclarative5-dev libqt5svg5-dev qtmultimedia5-dev libqt5webkit5-dev libsqlite3-dev
     - sudo apt-get install build-essential mercurial xorg-dev libudev-dev libts-dev libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libpulse-dev libopenal-dev libogg-dev libvorbis-dev libaudiofile-dev libpng12-dev libfreetype6-dev libusb-dev libdbus-1-dev zlib1g-dev libdirectfb-dev
+
 script:
-    - echo "Download and build SDL2..."
+    # Download and install SDL 2 (seems that libsdl2-dev is not available)
     - mkdir sdl2 && cd sdl2
     - hg clone http://hg.libsdl.org/SDL
     - cd SDL
@@ -15,12 +16,15 @@ script:
     - make
     - sudo make install
     - sudo ldconfig
+    - cd .. && cd ..
+    
+    # Build desktop version
     - qmake -qt=qt5 -v
-    - echo "Building desktop version..."
     - qmake -qt=qt5 Desktop.pro
     - make
     - make clean
-    - echo "Building mobile version..."
+    
+    # Build mobile version
     - qmake -qt=qt5 Mobile.pro
     - make
     - make clean
