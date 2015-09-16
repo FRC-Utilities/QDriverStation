@@ -28,6 +28,7 @@ CODECFORSRC = UTF-8
 QT += core
 QT += network
 CONFIG += c++11
+QMAKE_CXXFLAGS += -std=c++0x
 
 INCLUDEPATH += $$PWD/include
 
