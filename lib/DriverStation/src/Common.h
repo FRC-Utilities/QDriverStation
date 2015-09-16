@@ -75,6 +75,17 @@ struct DS_JoystickData {
 };
 
 /**
+ * Returns a calculated IP address based on the team address.
+ *
+ * For example:
+ *     - \c DS_GetStaticIp(3794, 1) would return \c 10.37.94.1
+ *     - \c DS_GetStaticIp(3794, 2) would return \c 10.37.94.2
+ *     - \c DS_GetStaticIp( 118, 3) would return \c 10.01.18.3
+ *     - And so on...
+ */
+QString DS_GetStaticIp (int team, int host);
+
+/**
  * Returns an user-friendly string given the inputed robot control mode
  */
 QString DS_GetControlModeString (DS_ControlMode mode);

@@ -30,7 +30,6 @@
 #include "Packets.h"
 
 const int _NET_ROBORIO_PORT (1110);
-const int _NET_DRIVER_STATION_PORT (1150);
 
 /* NOT TESTED, IT WILL BE CHANGED FOR SURE */
 
@@ -56,5 +55,5 @@ void DS_SendCommonControlPacket (DS_Status status,  DS_Alliance alliance,
     QByteArray packet = DS_CommonControlPacket (status, alliance, mode);
 
     socket->writeDatagram (packet.data(), packet.size(),
-                           QHostAddress (robotAddress), 1150);
+                           QHostAddress (robotAddress), _NET_ROBORIO_PORT);
 }

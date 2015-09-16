@@ -69,11 +69,9 @@ MainWindow::MainWindow()
     connectSlots();
     configureWidgetAppearance();
 
-    /* Perform first run tasks */
-    setTeamNumber (InitTasks::getTeamNumber());
     InitTasks::executeFirstRunTasks();
+    setTeamNumber (InitTasks::getTeamNumber());
 
-    /* UI has finished loading, turn on the modules */
     DriverStation::getInstance()->init();
     GamepadManager::getInstance()->init();
 }

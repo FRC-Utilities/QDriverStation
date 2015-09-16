@@ -32,6 +32,7 @@ DriverStation* DriverStation::m_instance = nullptr;
 
 DriverStation::DriverStation()
 {
+    m_team = 0;
     m_code = false;
     m_init = false;
     m_oldConnection = false;
@@ -123,9 +124,6 @@ void DriverStation::init()
         updateElapsedTime();
         emit elapsedTimeChanged ("00:00.0");
 
-        /* Initialize the NetConsole */
-        netConsole()->init();
-
         /* Ensure that this code will only run once */
         m_init = true;
     }
@@ -143,7 +141,12 @@ void DriverStation::restartCode()
 
 void DriverStation::setTeamNumber (int team)
 {
-    m_netDiagnostics->setTeamNumber (team);
+    if (m_team != team) {
+        m_team = team;
+
+        netConsole()->setTeamNumber (m_team);
+        m_netDiagnostics->setTeamNumber (m_team);
+    }
 }
 
 void DriverStation::setAlliance (DS_Alliance alliance)

@@ -23,25 +23,27 @@
 #ifndef _DRIVER_STATION_NET_CONSOLE_H
 #define _DRIVER_STATION_NET_CONSOLE_H
 
-#include <QString>
-#include <QObject>
-#include <QHostAddress>
-
-class QUdpSocket;
-class DriverStation;
+#include <QUdpSocket>
 
 class NetConsole : public QObject
 {
     Q_OBJECT
-    friend class DriverStation;
 
 public slots:
+
     /**
      * Returns the only instance of the class
      */
     static NetConsole* getInstance();
 
+    /**
+     * Changes the team number, so that we can receive the broadcast
+     * messages from the correct broadcast address
+     */
+    void setTeamNumber (int team);
+
 signals:
+
     /**
      * Emitted when a new UDP datagram is received on the input port
      */
@@ -51,24 +53,15 @@ protected:
     explicit NetConsole();
 
 private:
+    QUdpSocket m_socket;
     static NetConsole* m_instance;
 
-    QHostAddress m_address;
-    QUdpSocket* m_inSocket;
-    QUdpSocket* m_outSocket;
-
 private slots:
+
     /**
-     * @internal
      * Parses the received data and emits a singal to connected objects
      */
     void onMessageReceived();
-
-    /**
-     * Sends a welcome message to the connected objects and starts
-     * the UDP broadcasting/listening process.
-     */
-    void init();
 };
 
-#endif /* _QDS_NET_CONSOLE_H */
+#endif /* _DRIVER_STATION_NET_CONSOLE_H */

@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+#include "Common.h"
 #include "NetworkDiagnostics.h"
 
 DS_NetworkDiagnostics::DS_NetworkDiagnostics()
@@ -42,29 +43,7 @@ bool DS_NetworkDiagnostics::robotRadioIsAlive()
 
 QString DS_NetworkDiagnostics::radioIpAddress()
 {
-    QString team = QString ("%1").arg (m_teamNumber);
-
-    switch (team.length()) {
-    case 1:
-        team = "00.0" + team;
-        break;
-    case 2:
-        team = "00." + team;
-        break;
-    case 3:
-        team = QString ("0%1.%2%3").arg (team.at (0),
-                                         team.at (1),
-                                         team.at (2));
-        break;
-    case 4:
-        team = QString ("%1%2.%3%4").arg (team.at (0),
-                                          team.at (1),
-                                          team.at (2),
-                                          team.at (3));
-        break;
-    }
-
-    return QString ("10.%1.1").arg (team);
+    return DS_GetStaticIp (m_teamNumber, 1);
 }
 
 QString DS_NetworkDiagnostics::roboRioIpAddress()

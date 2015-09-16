@@ -20,24 +20,15 @@
  * THE SOFTWARE.
  */
 
-#include <QTimer>
-#include <QUdpSocket>
-
+#include "Common.h"
 #include "NetConsole.h"
-
-/* The ports used for the NetConsole */
-const int _UDP_IN_PORT (6666);
-const int _UDP_OUT_PORT (6668);
-
-/* THIS FILE WAS NOT TESTED, IT WILL MOST PROBABLY NEED TO BE CHANGED! */
 
 NetConsole* NetConsole::m_instance = nullptr;
 
 NetConsole::NetConsole()
 {
-    m_inSocket = new QUdpSocket (this);
-    m_outSocket = new QUdpSocket (this);
-    connect (m_inSocket, SIGNAL (readyRead()), this, SLOT (onMessageReceived()));
+    connect (&m_socket, SIGNAL (readyRead()),
+             this,      SLOT   (onMessageReceived()));
 }
 
 NetConsole* NetConsole::getInstance()
@@ -48,19 +39,17 @@ NetConsole* NetConsole::getInstance()
     return m_instance;
 }
 
-void NetConsole::init()
+void NetConsole::setTeamNumber (int team)
 {
-    m_address.setAddress ("255.255.255.255");
-    m_inSocket->bind (m_address, _UDP_IN_PORT);
-    m_outSocket->bind (m_address, _UDP_OUT_PORT);
+    m_socket.bind (QHostAddress (DS_GetStaticIp (team, 255)), 6666);
 }
 
 void NetConsole::onMessageReceived()
 {
-    while (m_inSocket->hasPendingDatagrams()) {
+    while (m_socket.hasPendingDatagrams()) {
         QByteArray datagram;
-        datagram.resize (m_inSocket->pendingDatagramSize());
-        m_inSocket->readDatagram (datagram.data(), datagram.size());
+        datagram.resize (m_socket.pendingDatagramSize());
+        m_socket.readDatagram (datagram.data(), datagram.size());
 
         emit newMessage (QString::fromUtf8 (datagram));
     }

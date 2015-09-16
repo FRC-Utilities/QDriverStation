@@ -25,6 +25,33 @@
 
 #include "Common.h"
 
+QString DS_GetStaticIp (int team, int host)
+{
+    QString string = QString ("%1").arg (team);
+
+    switch (string.length()) {
+    case 1:
+        string = "00.0" + string;
+        break;
+    case 2:
+        string = "00." + string;
+        break;
+    case 3:
+        string = QString ("0%1.%2%3").arg (string.at (0),
+                                           string.at (1),
+                                           string.at (2));
+        break;
+    case 4:
+        string = QString ("%1%2.%3%4").arg (string.at (0),
+                                            string.at (1),
+                                            string.at (2),
+                                            string.at (3));
+        break;
+    }
+
+    return QString ("10.%1.%2").arg (string, QString::number (host));
+}
+
 QString DS_GetControlModeString (DS_ControlMode mode)
 {
     switch (mode) {

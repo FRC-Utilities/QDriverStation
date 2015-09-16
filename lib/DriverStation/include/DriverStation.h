@@ -244,6 +244,7 @@ protected:
 private:
     static DriverStation* m_instance;
 
+    int m_team;
     bool m_code;
     bool m_init;
     bool m_radioStatus;
