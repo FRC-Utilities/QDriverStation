@@ -167,6 +167,6 @@ linux:!android {
     target.path = /usr/bin
     TARGET = qdriverstation
     desktop.path = /usr/share/applications
-    desktop.files += $$PWD/etc/deploy/linux/open-ds.desktop
+    desktop.files += $$PWD/etc/deploy/linux/qdriverstation.desktop
     INSTALLS += target desktop
 }

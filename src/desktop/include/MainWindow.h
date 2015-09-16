@@ -66,7 +66,7 @@ private slots:
     /**
      * @internal
      * Ensures that the widgets are configured correctly and that their
-     *  appearance is updated according to the current state of the application
+     * appearance is updated according to the current state of the application
      */
     void configureWidgetAppearance();
 
@@ -76,6 +76,13 @@ private slots:
      * feature of the DriverStation
      */
     void readPracticeValues();
+
+    /**
+     * @internal
+     * Updates the colors of some labels which use a custom font or are under
+     * the influence of a stylesheet
+     */
+    void updateLabelColors();
 
     /**
      * @internal

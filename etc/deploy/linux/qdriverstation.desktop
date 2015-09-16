@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=QDriverStation
+Comment=Clone of the FRC DriverStation for desktop and mobile devices
+Exec=qdriverstation
+Terminal=false
+Type=Application
+StartupNotify=true
+Categories=Utility;Network;Joystick;Game;Robots;FRC;
+Icon=qdriverstation

@@ -93,6 +93,8 @@ void AdvancedSettings::readSettings()
     ui.CustomAddressEdit->setText (customAddress);
     ui.CustomAddressCheck->setChecked (!customAddress.isEmpty());
     DriverStation::getInstance()->setCustomAddress (customAddress);
+
+    emit updateColors();
 }
 
 void AdvancedSettings::applySettings()
@@ -109,6 +111,9 @@ void AdvancedSettings::applySettings()
     DriverStation::getInstance()->setCustomAddress (address);
 
     loadApplicationColors();
+
+    emit updateColors();
+    emit settingsChanged();
 }
 
 void AdvancedSettings::resetSettings()

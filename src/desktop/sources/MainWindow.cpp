@@ -155,6 +155,8 @@ void MainWindow::connectSlots()
              m_advancedSettings,  SLOT   (show()));
     connect (ui.SettingsButton,   SIGNAL (clicked()),
              m_advancedSettings,  SLOT   (show()));
+    connect (m_advancedSettings,  SIGNAL (updateColors()),
+             this,                SLOT   (updateLabelColors()));
 }
 
 void MainWindow::configureWidgetAppearance()
@@ -174,6 +176,8 @@ void MainWindow::configureWidgetAppearance()
     ui.StatusLabel->setFont (font);
     ui.ElapsedTime->setFont (font);
     ui.VoltageLabel->setFont (font);
+
+    updateLabelColors();
 
     /* Configure the 'About' tab */
     ui.AppName->setText (AssemblyInfo::name());
@@ -215,6 +219,24 @@ void MainWindow::readPracticeValues()
     ui.PracticeEndGame->setValue (e);
     ui.PracticeCountdown->setValue (c);
     ui.PracticeAutonomous->setValue (a);
+}
+
+void MainWindow::updateLabelColors()
+{
+    QPalette p;
+    ui.Test->setPalette (p);
+    ui.TeleOp->setPalette (p);
+    ui.AppName->setPalette (p);
+    ui.Practice->setPalette (p);
+    ui.CodeLabel->setPalette (p);
+    ui.TeamLabel->setPalette (p);
+    ui.Autonomous->setPalette (p);
+    ui.TeamNumber->setPalette (p);
+    ui.StatusLabel->setPalette (p);
+    ui.ElapsedTime->setPalette (p);
+    ui.VoltageLabel->setPalette (p);
+    ui.JoysticksLabel->setPalette (p);
+    ui.CommunicationsLabel->setPalette (p);
 }
 
 //------------------------------------------------------------------------------

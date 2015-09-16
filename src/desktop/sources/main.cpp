@@ -38,6 +38,9 @@
 #if defined __APPLE__
 #define _PT_SIZE 12
 #define _APP_ICON_CODE QIcon ("")
+#elif defined __gnu_linux__
+#define _PT_SIZE 9
+#define _APP_ICON_CODE QIcon (":/icon.ico")
 #else
 #define _PT_SIZE qApp->font().pointSize()
 #define _APP_ICON_CODE QIcon (":/icon.ico")

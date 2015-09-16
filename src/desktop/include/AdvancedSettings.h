@@ -66,6 +66,7 @@ public:
     void setTeamNumber (int team);
 
 signals:
+    void updateColors();
     void settingsChanged();
 
 private:
