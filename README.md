@@ -22,9 +22,10 @@ Joystick input is achieved with SDL 2.0, which is a cross-platform library for C
 
 # Progress
 
-- [x] UI and application logic
-- [x] Deploy configurations
 - [x] Joystick input
+- [x] Deploy configurations
+- [ ] Mobile user interface
+- [x] Desktop user interface
 - [ ] Communication protocol (check [*/lib/DriverStation*](https://github.com/WinT-3794/QDriverStation/tree/master/lib/DriverStation) for more info)
 
 ### Desktop vs Mobile?
