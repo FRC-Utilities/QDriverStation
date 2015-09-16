@@ -4,8 +4,17 @@ before_install:
     - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
     - sudo add-apt-repository --yes ppa:canonical-qt5-edgers/qt5-beta2
     - sudo apt-get update -qq
-    - sudo apt-get install -qq qt5-qmake libpulse-dev qtbase5-dev qtdeclarative5-dev libqt5svg5-dev qtmultimedia5-dev libqt5webkit5-dev libsqlite3-dev libsdl2-dev
+    - sudo apt-get install -qq qt5-qmake libpulse-dev qtbase5-dev qtdeclarative5-dev libqt5svg5-dev qtmultimedia5-dev libqt5webkit5-dev libsqlite3-dev
+    - sudo apt-get install build-essential mercurial xorg-dev libudev-dev libts-dev libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libpulse-dev libopenal-dev libogg-dev libvorbis-dev libaudiofile-dev libpng12-dev libfreetype6-dev libusb-dev libdbus-1-dev zlib1g-dev libdirectfb-dev
 script:
+    - echo "Download and build SDL2..."
+    - mkdir sdl2 && cd sdl2
+    - hg clone http://hg.libsdl.org/SDL
+    - cd SDL
+    - ./configure
+    - make
+    - sudo make install
+    - sudo ldconfig
     - qmake -qt=qt5 -v
     - echo "Building desktop version..."
     - qmake -qt=qt5 Desktop.pro
