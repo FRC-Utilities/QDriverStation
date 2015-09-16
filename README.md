@@ -24,15 +24,11 @@ Both versions use the same library to communicate with the robot (check the [lib
 
 ### Screenshots (desktop)
 
-![image](doc/screenshots/MainWindow.tiff)
+![image](doc/screenshots/Main.png)
 
-![image](doc/screenshots/Joysticks.tiff)
+![image](doc/screenshots/Dashboard.png)
 
-![image](doc/screenshots/Settings.tiff)
-
-### Screenshots (mobile)
-
-![image](doc/screenshots/Mobile.tiff)
+![image](doc/screenshots/Settings.png)
 
 ### Folder and File structure
 
