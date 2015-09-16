@@ -11,14 +11,14 @@ before_install:
     
 script:
     # Download and install SDL 2 (seems that libsdl2-dev is not available)
-    #- mkdir sdl2 && cd sdl2
-    #- hg clone http://hg.libsdl.org/SDL
-    #- cd SDL
-    #- ./configure
-    #- make
-    #- sudo make install
-    #- sudo ldconfig
-    #- cd .. && cd ..
+    - mkdir sdl2 && cd sdl2
+    - hg clone http://hg.libsdl.org/SDL
+    - cd SDL
+    - ./configure
+    - make
+    - sudo make install
+    - sudo ldconfig
+    - cd .. && cd ..
     
     # Build desktop version
     - qmake -qt=qt5 -v
