@@ -1,5 +1,7 @@
 # QDriverStation
 
+> "Open source alternative to the FRC DriverStation"
+
 [![Build Status](https://travis-ci.org/WinT-3794/QDriverStation.svg?branch=master)](https://travis-ci.org/WinT-3794/QDriverStation)
 
 ### Introduction
