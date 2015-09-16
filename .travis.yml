@@ -18,11 +18,11 @@ script:
     - cd .. && cd ..
     
     # Build desktop version
-    - qmake -qt=qt5 Desktop.pro
+    - qmake Desktop.pro
     - make
     - make clean
     
     # Build mobile version
-    - qmake -qt=qt5 Mobile.pro
+    - qmake Mobile.pro
     - make
     - make clean
