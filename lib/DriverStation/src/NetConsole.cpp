@@ -30,7 +30,9 @@ DS_NetConsole::DS_NetConsole()
 
 void DS_NetConsole::setTeamNumber (int team)
 {
-    m_socket.bind (QHostAddress (DS_GetStaticIp (team, 255)), 6666);
+    m_socket.bind (QHostAddress (DS_GetStaticIp (team, 255)),
+                   DS_Ports::NetConsole,
+                   QUdpSocket::ShareAddress);
 }
 
 void DS_NetConsole::onDataReceived()

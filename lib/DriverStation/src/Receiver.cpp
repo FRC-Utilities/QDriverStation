@@ -24,27 +24,30 @@
 
 DS_Receiver::DS_Receiver()
 {
+    m_socket.bind (DS_Ports::Client, QUdpSocket::ShareAddress);
     connect (&m_socket, SIGNAL (readyRead()), this, SLOT (onDataReceived()));
-}
-
-void DS_Receiver::setAddress (QString address)
-{
-    m_socket.bind (QHostAddress (address), DS_Ports::Client);
 }
 
 void DS_Receiver::onDataReceived()
 {
-    QByteArray data;
-
-    /* Read socket data */
     while (m_socket.hasPendingDatagrams()) {
+        QByteArray data;
         data.resize (m_socket.pendingDatagramSize());
         m_socket.readDatagram (data.data(), data.size());
-    }
 
-    /* This is a voltage packet, read it and emit appropiate signals */
-    if (data.length() == 8) {
-        emit confirmationReceived ((DS_ControlMode) data.at (3));
-        emit voltageChanged (QString ("%1.%2").arg (data.at (5), data.at (6)));
+        /* This is a voltage packet, read it and emit appropiate signals */
+        if (data.length() == 8) {
+            QString major = QString::number (data.at (5));
+            QString minor = QString::number (data.at (6));
+
+            major = major.replace ("-", "");
+            minor = minor.replace ("-", "");
+
+            if (minor.length() >= 2)
+                minor = QString ("%1%2").arg (minor.at (0), minor.at (1));
+
+            emit voltageChanged (major + "." + minor);
+            emit confirmationReceived ((DS_ControlMode) data.at (3));
+        }
     }
 }

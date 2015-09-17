@@ -42,12 +42,6 @@ class DS_Receiver : public QObject
 public:
     explicit DS_Receiver();
 
-public slots:
-    /**
-     * Changes the roboRIO address used to receive and process UDP packets
-     */
-    void setAddress (QString address);
-
 signals:
     /**
      * Emitted when the class receives a packet and gets the robot voltage

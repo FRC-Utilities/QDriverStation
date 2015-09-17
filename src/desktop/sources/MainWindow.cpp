@@ -128,6 +128,8 @@ void MainWindow::connectSlots()
              ui.ElapsedTime, SLOT (setText (QString)));
     connect (m_ds, SIGNAL (newMessage (QString)),
              ui.NetConsoleEdit, SLOT (append (QString)));
+    connect (ui.NetConsoleEdit, SIGNAL (textChanged()),
+             this,              SLOT   (scrollNetConsole()));
 
     /* Dashboards */
     QPointer<Dashboard> dash = Dashboard::getInstance();
@@ -472,6 +474,11 @@ void MainWindow::onRamUsageChanged (int total, int used)
 void MainWindow::onDiskUsageChanged (int total, int used)
 {
     updateLabelText (ui.DiskUsage, tr ("%1 MB / %2 MB").arg (used, total));
+}
+
+void MainWindow::scrollNetConsole()
+{
+    ui.NetConsoleEdit->ensureCursorVisible();
 }
 
 //------------------------------------------------------------------------------

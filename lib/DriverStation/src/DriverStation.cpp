@@ -135,7 +135,6 @@ void DriverStation::setTeamNumber (int team)
         m_team = team;
         m_netConsole.setTeamNumber (m_team);
         m_netDiagnostics.setTeamNumber (m_team);
-        m_receiver.setAddress (m_netDiagnostics.roboRioIpAddress());
     }
 }
 
@@ -147,7 +146,6 @@ void DriverStation::setAlliance (DS_Alliance alliance)
 void DriverStation::setCustomAddress (QString address)
 {
     m_netDiagnostics.setCustomAddress (address);
-    m_receiver.setAddress (m_netDiagnostics.roboRioIpAddress());
 }
 
 void DriverStation::setControlMode (DS_ControlMode mode)
@@ -197,6 +195,7 @@ void DriverStation::checkConnection()
         m_code = false;
         emit codeChanged (m_code);
         emit networkChanged (m_netDiagnostics.roboRioIsAlive());
+        emit voltageChanged ("");
     }
 
     else if (m_justConnected) {

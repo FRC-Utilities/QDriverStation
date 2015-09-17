@@ -263,6 +263,8 @@ private slots:
      */
     void onDiskUsageChanged (int total, int used);
 
+    void scrollNetConsole();
+
     /**
      * @internal
      * Toggles the color of the status label between white and red.

@@ -24,12 +24,12 @@
 
 DS_Sender::DS_Sender()
 {
-    m_index = 0;
+    m_index = 1;
 }
 
 void DS_Sender::resetIndex()
 {
-    m_index = 0;
+    m_index = 1;
 }
 
 void DS_Sender::send (DS_ControlPacket packet, QString host)
