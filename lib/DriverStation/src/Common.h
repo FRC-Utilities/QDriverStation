@@ -69,10 +69,17 @@ enum DS_Alliance {
  * will be processed by the library and sent to the robot
  */
 struct DS_JoystickData {
-    int id;              /**< The joysticks that are attached */
-    double axis_value;   /**< The values of each joystick axis */
-    bool button_pressed; /**< The states of each joystick button */
+    int id;         /**< The joysticks that are attached */
 };
+
+/**
+ * Defines the ports used by the client and the roboRIO to communicate
+ */
+namespace DS_Ports
+{
+const int Client (1150);  /**< The packets from the robot arrive here */
+const int RoboRIO (1110); /**< We send packets to this port in the rRIO */
+}
 
 /**
  * Returns a calculated IP address based on the team address.

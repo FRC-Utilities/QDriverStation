@@ -48,22 +48,27 @@ QString DS_NetworkDiagnostics::radioIpAddress()
 
 QString DS_NetworkDiagnostics::roboRioIpAddress()
 {
+    /* Use the custom address provided by the user */
     if (!m_customRioAddress.isEmpty())
         return m_customRioAddress;
 
+    /* Use the default mDNS name of the roboRIO */
     return QString ("roboRIO-%1.local").arg (m_teamNumber);
 }
 
 void DS_NetworkDiagnostics::refresh()
 {
+    /* Use the values obtained since the last time the function was called */
     m_rioIsAlive = (m_rioSocket.state() == QTcpSocket::ConnectedState);
     m_radioIsAlive = (m_radioSocket.state() == QTcpSocket::ConnectedState);
 
+    /* Connect to roboRIO */
     if (m_rioSocket.state() != QTcpSocket::HostLookupState) {
         m_rioSocket.abort();
         m_rioSocket.connectToHost (roboRioIpAddress(), 80);
     }
 
+    /* Connect to robot radio */
     if (m_radioSocket.state() != QTcpSocket::HostLookupState) {
         m_radioSocket.abort();
         m_radioSocket.connectToHost (radioIpAddress(), 80);

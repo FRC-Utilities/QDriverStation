@@ -216,7 +216,7 @@ private slots:
      *
      * @note The text will be set to '--.--' if there are are no communications
      */
-    void onVoltageChanged (float voltage);
+    void onVoltageChanged (QString voltage);
 
     /**
      * @internal

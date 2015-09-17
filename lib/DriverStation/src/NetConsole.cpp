@@ -23,34 +23,26 @@
 #include "Common.h"
 #include "NetConsole.h"
 
-NetConsole* NetConsole::m_instance = nullptr;
-
-NetConsole::NetConsole()
+DS_NetConsole::DS_NetConsole()
 {
-    connect (&m_socket, SIGNAL (readyRead()),
-             this,      SLOT   (onMessageReceived()));
+    connect (&m_socket, SIGNAL (readyRead()), this, SLOT (onDataReceived()));
 }
 
-NetConsole* NetConsole::getInstance()
-{
-    if (m_instance == nullptr)
-        m_instance = new NetConsole();
-
-    return m_instance;
-}
-
-void NetConsole::setTeamNumber (int team)
+void DS_NetConsole::setTeamNumber (int team)
 {
     m_socket.bind (QHostAddress (DS_GetStaticIp (team, 255)), 6666);
 }
 
-void NetConsole::onMessageReceived()
+void DS_NetConsole::onDataReceived()
 {
-    while (m_socket.hasPendingDatagrams()) {
-        QByteArray datagram;
-        datagram.resize (m_socket.pendingDatagramSize());
-        m_socket.readDatagram (datagram.data(), datagram.size());
+    QByteArray data;
 
-        emit newMessage (QString::fromUtf8 (datagram));
+    /* Read socket data */
+    while (m_socket.hasPendingDatagrams()) {
+        data.resize (m_socket.pendingDatagramSize());
+        m_socket.readDatagram (data.data(), data.size());
     }
+
+    /* Notify other objects */
+    emit newMessage (QString::fromUtf8 (data));
 }

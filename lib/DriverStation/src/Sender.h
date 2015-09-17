@@ -20,35 +20,60 @@
  * THE SOFTWARE.
  */
 
-#ifndef _DRIVER_STATION_NET_CONSOLE_H
-#define _DRIVER_STATION_NET_CONSOLE_H
+#ifndef _DRIVER_STATION_SENDER_H
+#define _DRIVER_STATION_SENDER_H
 
+#include "Common.h"
+
+#include <QByteArray>
 #include <QUdpSocket>
+#include <QHostAddress>
 
 /**
- * \class DS_NetConsole
- *
- * The DS_NetConsole class receives and decodes messages broadcasted
- * by the roboRIO over the local area network.
+ * Represents a control packet, which tells the robot:
+ *     - The control mode to use
+ *     - The alliance and position to use
+ *     - The packet count (generated automatically)
+ *     - The status (e.g: reboot or just be stay still)
  */
-class DS_NetConsole : public QObject
-{
-    Q_OBJECT
-
-public:
-    explicit DS_NetConsole();
-
-public slots:
-    void setTeamNumber (int team);
-
-signals:
-    void newMessage (QString message);
-
-private:
-    QUdpSocket m_socket;
-
-private slots:
-    void onDataReceived();
+struct DS_ControlPacket {
+    DS_Status status;
+    DS_ControlMode mode;
+    DS_Alliance alliance;
 };
 
-#endif /* _DRIVER_STATION_NET_CONSOLE_H */
+/**
+ * \class DS_Sender
+ */
+class DS_Sender
+{
+public:
+    /**
+     * @internal
+     * Main entry point of the class
+     */
+    explicit DS_Sender();
+
+    /**
+     * Resets the packet count index, it must be called everytime the
+     * connection with the robot is reset
+     */
+    void resetIndex();
+
+    /**
+     * Sends a generated packet to the robot that contains the desired robot
+     * status, its control mode, alliance and position.
+     */
+    void send (DS_ControlPacket packet, QString host);
+
+    /**
+     * Generates a 6-byte datagram based on the input data in the packet.
+     */
+    QByteArray generateControlPacket (DS_ControlPacket packet);
+
+private:
+    int m_index;
+    QUdpSocket m_socket;
+};
+
+#endif /* _DRIVER_STATION_SENDER_H */

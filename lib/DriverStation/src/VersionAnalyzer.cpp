@@ -22,7 +22,6 @@
 
 #include <QNetworkReply>
 #include <QNetworkRequest>
-#include <QNetworkAccessManager>
 
 #include "VersionAnalyzer.h"
 
@@ -32,17 +31,16 @@ const QString _LIB_FILE ("/tmp/frc_versions/FRC_Lib_Version.ini");
 
 DS_VersionAnalyzer::DS_VersionAnalyzer()
 {
-    m_manager = new QNetworkAccessManager (this);
-    connect (m_manager, SIGNAL (finished (QNetworkReply*)),
+    connect (&m_manager, SIGNAL (finished (QNetworkReply*)),
              this,      SLOT   (downloadFinished (QNetworkReply*)));
 }
 
 void DS_VersionAnalyzer::downloadRobotInformation (QString address)
 {
     QString host = "ftp://" + address;
-    m_manager->get (QNetworkRequest (host + _LIB_FILE));
-    m_manager->get (QNetworkRequest (host + _PCM_FILE));
-    m_manager->get (QNetworkRequest (host + _PDP_FILE));
+    m_manager.get (QNetworkRequest (host + _LIB_FILE));
+    m_manager.get (QNetworkRequest (host + _PCM_FILE));
+    m_manager.get (QNetworkRequest (host + _PDP_FILE));
 }
 
 void DS_VersionAnalyzer::downloadFinished (QNetworkReply* reply)
@@ -50,9 +48,11 @@ void DS_VersionAnalyzer::downloadFinished (QNetworkReply* reply)
     QString url = reply->url().toString();
     QString data = QString::fromUtf8 (reply->readAll());
 
+    /* Data or URL is invalid */
     if (data.isEmpty() || url.isEmpty())
         return;
 
+    /* This is the PCM information file */
     else if (url.contains (_PCM_FILE, Qt::CaseInsensitive)) {
         QString version;
         QString key = "currentVersion";
@@ -65,6 +65,7 @@ void DS_VersionAnalyzer::downloadFinished (QNetworkReply* reply)
         emit pcmVersionChanged (version);
     }
 
+    /* This is the PDP information file */
     else if (url.contains (_PDP_FILE, Qt::CaseInsensitive)) {
         QString version;
         QString key = "currentVersion";
@@ -77,6 +78,7 @@ void DS_VersionAnalyzer::downloadFinished (QNetworkReply* reply)
         emit pdpVersionChanged (version);
     }
 
+    /* This is the library version file */
     else if (url.contains (_LIB_FILE, Qt::CaseInsensitive))
         emit libVersionChanged (data);
 }

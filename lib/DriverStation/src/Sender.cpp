@@ -20,41 +20,55 @@
  * THE SOFTWARE.
  */
 
-#include <QByteArray>
-#include <QUdpSocket>
-#include <QHostAddress>
+#include "Sender.h"
 
-#include "Packets.h"
-
-QUdpSocket _SOCKET;
-unsigned short _INDEX (0);
-const int _TARGET_PORT (1110);
-
-QByteArray DS_GenerateControlPacket (DS_ControlPacket packet)
+DS_Sender::DS_Sender()
 {
-    _INDEX += 1;
+    m_index = 0;
+}
+
+void DS_Sender::resetIndex()
+{
+    m_index = 0;
+}
+
+void DS_Sender::send (DS_ControlPacket packet, QString host)
+{
+    m_socket.writeDatagram (generateControlPacket (packet),
+                            QHostAddress (host),
+                            DS_Ports::RoboRIO);
+}
+
+QByteArray DS_Sender::generateControlPacket (DS_ControlPacket packet)
+{
+    m_index += 1;
 
     int byte1 = 0x00;
     int byte2 = 0x00;
     int byte3 = 0x01;
 
-    if (_INDEX <= 0xff)
-        byte2 = _INDEX;
+    /* Generate ping bytes based on ping index */
+    if (m_index > 0 && m_index <= 0xffff) {
+        if (m_index <= 0xff)
+            byte2 = m_index;
 
-    else if (_INDEX <= 0xffff) {
-        int index = _INDEX;
+        else if (m_index <= 0xffff) {
+            int index = m_index;
 
-        while (index > 0xff) {
-            index -= 0xff;
-            byte1 += 0x01;
+            while (index > 0xff) {
+                index -= 0xff;
+                byte1 += 0x01;
+            }
+
+            byte2 = index;
         }
-
-        byte2 = index;
     }
 
+    /* Ping index is negative or exceeds the size limit */
     else
-        DS_ResetIndex();
+        resetIndex();
 
+    /* Generate packet */
     QByteArray data;
     data.append ((char) byte1);
     data.append ((char) byte2);
@@ -64,19 +78,4 @@ QByteArray DS_GenerateControlPacket (DS_ControlPacket packet)
     data.append ((char) packet.alliance);
 
     return data;
-}
-
-void DS_SendControlPacket (DS_ControlPacket packet, QString host)
-{
-    QByteArray data = DS_GenerateControlPacket (packet);
-
-    _SOCKET.writeDatagram (data.data(),
-                           data.size(),
-                           QHostAddress (host),
-                           _TARGET_PORT);
-}
-
-void DS_ResetIndex()
-{
-    _INDEX = 0;
 }

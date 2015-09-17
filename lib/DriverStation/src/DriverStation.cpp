@@ -20,13 +20,7 @@
  * THE SOFTWARE.
  */
 
-#include <QTimer>
 #include <DriverStation.h>
-
-#include "Times.h"
-#include "Packets.h"
-#include "VersionAnalyzer.h"
-#include "NetworkDiagnostics.h"
 
 DriverStation* DriverStation::m_instance = nullptr;
 
@@ -43,17 +37,18 @@ DriverStation::DriverStation()
     m_alliance = DS_Red1;
     m_mode = DS_Disabled;
 
-    m_versionAnalyzer = new DS_VersionAnalyzer();
-    m_netDiagnostics = new DS_NetworkDiagnostics();
-
-    connect (m_versionAnalyzer, SIGNAL (libVersionChanged (QString)),
-             this,              SIGNAL (libVersionChanged (QString)));
-    connect (m_versionAnalyzer, SIGNAL (pcmVersionChanged (QString)),
-             this,              SIGNAL (pcmVersionChanged (QString)));
-    connect (m_versionAnalyzer, SIGNAL (pdpVersionChanged (QString)),
-             this,              SIGNAL (pdpVersionChanged (QString)));
-    connect (m_versionAnalyzer, SIGNAL (rioVersionChanged (QString)),
-             this,              SIGNAL (rioVersionChanged (QString)));
+    connect (&m_netConsole,      SIGNAL (newMessage (QString)),
+             this,               SIGNAL (newMessage (QString)));
+    connect (&m_receiver,        SIGNAL (voltageChanged (QString)),
+             this,               SIGNAL (voltageChanged (QString)));
+    connect (&m_versionAnalyzer, SIGNAL (libVersionChanged (QString)),
+             this,               SIGNAL (libVersionChanged (QString)));
+    connect (&m_versionAnalyzer, SIGNAL (pcmVersionChanged (QString)),
+             this,               SIGNAL (pcmVersionChanged (QString)));
+    connect (&m_versionAnalyzer, SIGNAL (pdpVersionChanged (QString)),
+             this,               SIGNAL (pdpVersionChanged (QString)));
+    connect (&m_versionAnalyzer, SIGNAL (rioVersionChanged (QString)),
+             this,               SIGNAL (rioVersionChanged (QString)));
 }
 
 DriverStation* DriverStation::getInstance()
@@ -66,7 +61,7 @@ DriverStation* DriverStation::getInstance()
 
 bool DriverStation::canBeEnabled()
 {
-    return m_netDiagnostics->roboRioIsAlive() && m_code;
+    return m_netDiagnostics.roboRioIsAlive() && m_code;
 }
 
 QStringList DriverStation::alliances()
@@ -88,19 +83,14 @@ DS_ControlMode DriverStation::operationMode()
     return m_mode;
 }
 
-NetConsole* DriverStation::netConsole()
-{
-    return NetConsole::getInstance();
-}
-
 QString DriverStation::roboRioAddress()
 {
-    return m_netDiagnostics->roboRioIpAddress();
+    return m_netDiagnostics.roboRioIpAddress();
 }
 
 QString DriverStation::radioAddress()
 {
-    return m_netDiagnostics->radioIpAddress();
+    return m_netDiagnostics.radioIpAddress();
 }
 
 void DriverStation::init()
@@ -109,7 +99,7 @@ void DriverStation::init()
         /* Send signals to force object update */
         emit codeChanged (false);
         emit networkChanged (false);
-        emit voltageChanged (0.000);
+        emit voltageChanged ("");
         emit libVersionChanged ("");
         emit rioVersionChanged ("");
         emit pdpVersionChanged ("");
@@ -143,9 +133,9 @@ void DriverStation::setTeamNumber (int team)
 {
     if (m_team != team) {
         m_team = team;
-
-        netConsole()->setTeamNumber (m_team);
-        m_netDiagnostics->setTeamNumber (m_team);
+        m_netConsole.setTeamNumber (m_team);
+        m_netDiagnostics.setTeamNumber (m_team);
+        m_receiver.setAddress (m_netDiagnostics.roboRioIpAddress());
     }
 }
 
@@ -156,7 +146,8 @@ void DriverStation::setAlliance (DS_Alliance alliance)
 
 void DriverStation::setCustomAddress (QString address)
 {
-    m_netDiagnostics->setCustomAddress (address);
+    m_netDiagnostics.setCustomAddress (address);
+    m_receiver.setAddress (m_netDiagnostics.roboRioIpAddress());
 }
 
 void DriverStation::setControlMode (DS_ControlMode mode)
@@ -187,7 +178,7 @@ void DriverStation::startPractice (int countdown,
 
 QString DriverStation::getStatus()
 {
-    if (!m_netDiagnostics->roboRioIsAlive())
+    if (!m_netDiagnostics.roboRioIsAlive())
         return tr ("No Robot Communication");
 
     else if (!m_code)
@@ -198,31 +189,29 @@ QString DriverStation::getStatus()
 
 void DriverStation::checkConnection()
 {
-    m_netDiagnostics->refresh();
-
-    m_justConnected = m_netDiagnostics->roboRioIsAlive() && !m_oldConnection;
-    m_justDisconnected = !m_netDiagnostics->roboRioIsAlive() && m_oldConnection;
+    m_netDiagnostics.refresh();
+    m_justConnected = m_netDiagnostics.roboRioIsAlive() && !m_oldConnection;
+    m_justDisconnected = !m_netDiagnostics.roboRioIsAlive() && m_oldConnection;
 
     if (m_justDisconnected) {
         m_code = false;
         emit codeChanged (m_code);
-        emit networkChanged (false);
+        emit networkChanged (m_netDiagnostics.roboRioIsAlive());
     }
 
     else if (m_justConnected) {
-        m_code = !true;
+        m_code = false;
         emit codeChanged (m_code);
-        emit networkChanged (true);
-        m_versionAnalyzer->downloadRobotInformation (roboRioAddress());
+        emit networkChanged (m_netDiagnostics.roboRioIsAlive());
+        m_versionAnalyzer.downloadRobotInformation (roboRioAddress());
     }
 
-    m_oldConnection = m_netDiagnostics->roboRioIsAlive();
-
-    if (m_radioStatus != m_netDiagnostics->robotRadioIsAlive()) {
-        m_radioStatus = m_netDiagnostics->robotRadioIsAlive();
-
+    if (m_radioStatus != m_netDiagnostics.robotRadioIsAlive()) {
+        m_radioStatus = m_netDiagnostics.robotRadioIsAlive();
         emit radioChanged (m_radioStatus);
     }
+
+    m_oldConnection = m_netDiagnostics.roboRioIsAlive();
 
     QTimer::singleShot (Times::TestConnectionInterval,
                         this, SLOT (checkConnection()));
@@ -232,15 +221,14 @@ void DriverStation::sendPacketsToRobot()
 {
     emit robotStatusChanged (getStatus());
 
-    //if (m_netDiagnostics->roboRioIsAlive()) {
+    if (m_netDiagnostics.roboRioIsAlive()) {
+        DS_ControlPacket packet;
+        packet.mode = m_mode;
+        packet.status = m_status;
+        packet.alliance = m_alliance;
 
-    DS_ControlPacket packet;
-    packet.mode = m_mode;
-    packet.status = m_status;
-    packet.alliance = m_alliance;
-
-    DS_SendControlPacket (packet, roboRioAddress());
-    //}
+        m_sender.send (packet, roboRioAddress());
+    }
 
     QTimer::singleShot (Times::ControlPacketInterval,
                         this, SLOT (sendPacketsToRobot()));
@@ -248,32 +236,24 @@ void DriverStation::sendPacketsToRobot()
 
 void DriverStation::updateElapsedTime()
 {
-    /* We are a bunch of lazy motherfuckers, and we only work when required */
     if (operationMode() != DS_Disabled) {
-
-        /* Get milliseconds, seconds and minutes */
         int time = m_time.elapsed();
         int nSeconds = time / 1000;
         int nMinutes = nSeconds / 60;
 
-        /* Avoid having "01:72.0" instead of "01:12.0" */
         while (nSeconds >= 60)
             nSeconds -= 60;
 
-        /* Create strings */
         QString seconds = QString ("%1").arg (nSeconds);
         QString minutes = QString ("%1").arg (nMinutes);
         QString milliseconds = QString ("%1").arg (time);
 
-        /* Prepend 0 if seconds are less than 10 */
         if (nSeconds < 10)
             seconds = "0" + seconds;
 
-        /* Prepend 0 if minutes are less than 10 */
         if (nMinutes < 10)
             minutes = "0" + minutes;
 
-        /* Notify other objects that the elapsed time has changed */
         emit elapsedTimeChanged (QString ("%1:%2.%3")
                                  .arg (minutes)
                                  .arg (seconds)

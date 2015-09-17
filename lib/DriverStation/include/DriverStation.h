@@ -23,18 +23,17 @@
 #ifndef _DRIVER_STATION_MAIN_H
 #define _DRIVER_STATION_MAIN_H
 
-#include <QTime>
+#include <QTimer>
 #include <QObject>
-#include <QTcpSocket>
 #include <QStringList>
-#include <QNetworkReply>
 
+#include "../src/Times.h"
 #include "../src/Common.h"
+#include "../src/Sender.h"
+#include "../src/Receiver.h"
 #include "../src/NetConsole.h"
-
-class NetConsole;
-class DS_VersionAnalyzer;
-class DS_NetworkDiagnostics;
+#include "../src/VersionAnalyzer.h"
+#include "../src/NetworkDiagnostics.h"
 
 /**
  * @class DriverStation
@@ -76,11 +75,6 @@ public:
      *     - DS_EmergencyStop
      */
     Q_INVOKABLE DS_ControlMode operationMode();
-
-    /**
-     * Returns the single instance of the NetConsole
-     */
-    Q_INVOKABLE NetConsole* netConsole();
 
     /**
      * Returns the IP address of the robot radio
@@ -182,7 +176,13 @@ signals:
      * Emitted when the client analyzes a packet from the roboRIO and extracts
      * the battery voltage of the robot.
      */
-    void voltageChanged (float voltage);
+    void voltageChanged (QString voltage);
+
+    /**
+     * Emitted when the NetConsole receives and decodes a message from the
+     * roboRIO
+     */
+    void newMessage (QString message);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
@@ -257,11 +257,14 @@ private:
     QString m_newStatus;
 
     DS_Status m_status;
-    DS_Alliance m_alliance;
     DS_ControlMode m_mode;
+    DS_Alliance m_alliance;
 
-    DS_VersionAnalyzer* m_versionAnalyzer;
-    DS_NetworkDiagnostics* m_netDiagnostics;
+    DS_Sender m_sender;
+    DS_Receiver m_receiver;
+    DS_NetConsole m_netConsole;
+    DS_VersionAnalyzer m_versionAnalyzer;
+    DS_NetworkDiagnostics m_netDiagnostics;
 
 private slots:
     /**

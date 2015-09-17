@@ -37,17 +37,19 @@ HEADERS += \
     $$PWD/src/Common.h \
     $$PWD/src/NetConsole.h \
     $$PWD/src/NetworkDiagnostics.h \
-    $$PWD/src/Packets.h \
     $$PWD/src/VersionAnalyzer.h \
-    $$PWD/src/Times.h
+    $$PWD/src/Times.h \
+    $$PWD/src/Receiver.h \
+    $$PWD/src/Sender.h
 
 SOURCES += \
     $$PWD/src/Common.cpp \
     $$PWD/src/DriverStation.cpp \
     $$PWD/src/NetConsole.cpp \
     $$PWD/src/NetworkDiagnostics.cpp \
-    $$PWD/src/Packets.cpp \
-    $$PWD/src/VersionAnalyzer.cpp
+    $$PWD/src/VersionAnalyzer.cpp \
+    $$PWD/src/Receiver.cpp \
+    $$PWD/src/Sender.cpp
 
 
 

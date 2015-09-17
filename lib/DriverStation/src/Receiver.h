@@ -20,43 +20,52 @@
  * THE SOFTWARE.
  */
 
-#ifndef _DRIVER_STATION_PACKETS_H
-#define _DRIVER_STATION_PACKETS_H
+#ifndef _DRIVER_STATION_RECEIVER_H
+#define _DRIVER_STATION_RECEIVER_H
 
 #include "Common.h"
-
-class QByteArray;
+#include <QUdpSocket>
 
 /**
- * Represents a control packet, which tells the robot:
- *     - The control mode to use
- *     - The alliance and position to use
- *     - The packet count (generated automatically)
- *     - The status (e.g: reboot or just be stay still)
+ * \class DS_Receiver
+ *
+ * The DS_Receiver class in charge of receiving and processing the packets sent
+ * by the roboRIO to the DriverStation.
+ *
+ * For example, this class is used to extract the battery voltage of the robot
+ * by analyzing and processing the received packets.
  */
-struct DS_ControlPacket {
-    DS_Status status;
-    DS_ControlMode mode;
-    DS_Alliance alliance;
+class DS_Receiver : public QObject
+{
+    Q_OBJECT
+
+public:
+    explicit DS_Receiver();
+
+public slots:
+    /**
+     * Changes the roboRIO address used to receive and process UDP packets
+     */
+    void setAddress (QString address);
+
+signals:
+    /**
+     * Emitted when the class receives a packet and gets the robot voltage
+     * from the received packet
+     */
+    void voltageChanged (QString voltage);
+
+    /**
+     * Emitted when the class receives a packet and gets the confirmation
+     * control mode of the robot. This is used for diagnostic purposes.
+     */
+    void confirmationReceived (DS_ControlMode mode);
+
+private:
+    QUdpSocket m_socket;
+
+private slots:
+    void onDataReceived();
 };
 
-/**
- * Generates a 6-byte datagram based on the input data in the packet.
- * Check https://github.com/gluxon/node-driverstation15/wiki/2015-Protocol for 
- * information regarding the properties of the generated packet.
- */
-QByteArray DS_GenerateControlPacket (DS_ControlPacket packet);
-
-/**
- * Sends a generated packet to the robot that contains the desired robot status,
- * its control mode, alliance and position.
- */
-void DS_SendControlPacket (DS_ControlPacket packet, QString host);
-
-/**
- * Resets the packet count index, it must be called everytime the connection
- * with the robot is reset
- */
-void DS_ResetIndex();
-
-#endif /* _DRIVER_STATION_PACKETS_H */
+#endif /* _DRIVER_STATION_RECEIVER_H */

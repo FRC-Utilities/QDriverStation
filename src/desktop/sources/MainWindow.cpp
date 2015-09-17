@@ -112,8 +112,8 @@ void MainWindow::connectSlots()
              this, SLOT   (onNetworkChanged (bool)));
     connect (m_ds, SIGNAL (radioChanged (bool)),
              this, SLOT   (onRadioChanged (bool)));
-    connect (m_ds, SIGNAL (voltageChanged (float)),
-             this, SLOT   (onVoltageChanged (float)));
+    connect (m_ds, SIGNAL (voltageChanged (QString)),
+             this, SLOT   (onVoltageChanged (QString)));
     connect (m_ds, SIGNAL (libVersionChanged (QString)),
              this, SLOT   (onLibVersionChanged (QString)));
     connect (m_ds, SIGNAL (rioVersionChanged (QString)),
@@ -126,6 +126,8 @@ void MainWindow::connectSlots()
              this, SLOT   (onDiskUsageChanged (int, int)));
     connect (m_ds, SIGNAL (elapsedTimeChanged (QString)),
              ui.ElapsedTime, SLOT (setText (QString)));
+    connect (m_ds, SIGNAL (newMessage (QString)),
+             ui.NetConsoleEdit, SLOT (append (QString)));
 
     /* Dashboards */
     QPointer<Dashboard> dash = Dashboard::getInstance();
@@ -196,8 +198,6 @@ void MainWindow::configureWidgetAppearance()
 
     /* Configure the NetConsole */
     ui.NetConsoleEdit->setFont (_NETCONSOLE_FONT);
-    connect (m_ds->netConsole(),        SIGNAL (newMessage (QString)),
-             ui.NetConsoleEdit,         SLOT   (append (QString)));
     connect (ui.ClearButton,            SIGNAL (clicked()),
              ui.NetConsoleEdit,         SLOT   (clear()));
     connect (ui.CopyButton,             SIGNAL (clicked()),
@@ -417,7 +417,7 @@ void MainWindow::onRadioChanged (bool available)
     ui.DsRadioCheck->setChecked (available);
 }
 
-void MainWindow::onVoltageChanged (float voltage)
+void MainWindow::onVoltageChanged (QString voltage)
 {
     updateLabelText (ui.VoltageLabel, tr ("%1 V").arg (voltage));
 }

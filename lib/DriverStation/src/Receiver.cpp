@@ -20,35 +20,31 @@
  * THE SOFTWARE.
  */
 
-#ifndef _DRIVER_STATION_NET_CONSOLE_H
-#define _DRIVER_STATION_NET_CONSOLE_H
+#include "Receiver.h"
 
-#include <QUdpSocket>
-
-/**
- * \class DS_NetConsole
- *
- * The DS_NetConsole class receives and decodes messages broadcasted
- * by the roboRIO over the local area network.
- */
-class DS_NetConsole : public QObject
+DS_Receiver::DS_Receiver()
 {
-    Q_OBJECT
+    connect (&m_socket, SIGNAL (readyRead()), this, SLOT (onDataReceived()));
+}
 
-public:
-    explicit DS_NetConsole();
+void DS_Receiver::setAddress (QString address)
+{
+    m_socket.bind (QHostAddress (address), DS_Ports::Client);
+}
 
-public slots:
-    void setTeamNumber (int team);
+void DS_Receiver::onDataReceived()
+{
+    QByteArray data;
 
-signals:
-    void newMessage (QString message);
+    /* Read socket data */
+    while (m_socket.hasPendingDatagrams()) {
+        data.resize (m_socket.pendingDatagramSize());
+        m_socket.readDatagram (data.data(), data.size());
+    }
 
-private:
-    QUdpSocket m_socket;
-
-private slots:
-    void onDataReceived();
-};
-
-#endif /* _DRIVER_STATION_NET_CONSOLE_H */
+    /* This is a voltage packet, read it and emit appropiate signals */
+    if (data.length() == 8) {
+        emit confirmationReceived ((DS_ControlMode) data.at (3));
+        emit voltageChanged (QString ("%1.%2").arg (data.at (5), data.at (6)));
+    }
+}

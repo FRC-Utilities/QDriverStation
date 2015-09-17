@@ -20,7 +20,6 @@
  * THE SOFTWARE.
  */
 
-#include <QObject>
 #include <QNetworkAccessManager>
 
 class DS_VersionAnalyzer : public QObject
@@ -63,7 +62,7 @@ signals:
     void pcmVersionChanged (QString version);
 
 private:
-    QNetworkAccessManager* m_manager;
+    QNetworkAccessManager m_manager;
 
 private slots:
     /**
