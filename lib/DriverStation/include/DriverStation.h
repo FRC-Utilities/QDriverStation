@@ -23,6 +23,7 @@
 #ifndef _DRIVER_STATION_MAIN_H
 #define _DRIVER_STATION_MAIN_H
 
+#include <QTime>
 #include <QTimer>
 #include <QObject>
 #include <QStringList>
