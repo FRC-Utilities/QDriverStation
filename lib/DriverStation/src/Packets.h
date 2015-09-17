@@ -41,7 +41,9 @@ struct DS_ControlPacket {
 };
 
 /**
- * Generates a 6-byte datagram based on the input data in the packet
+ * Generates a 6-byte datagram based on the input data in the packet.
+ * Check https://github.com/gluxon/node-driverstation15/wiki/2015-Protocol for 
+ * information regarding the properties of the generated packet.
  */
 QByteArray DS_GenerateControlPacket (DS_ControlPacket packet);
 
