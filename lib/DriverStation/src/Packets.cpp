@@ -47,10 +47,10 @@ QByteArray DS_GenerateControlPacket (DS_ControlPacket packet)
      * calculate the values of the first and second bytes
      */
     else if (_INDEX <= 0xffff) {
-        int copy = _INDEX;
+        int index = _INDEX;
 
-        while (copy > 0xff) {
-            copy -= 0xff;
+        while (index > 0xff) {
+            index -= 0xff;
             byte1 += 0x01;
         }
 
