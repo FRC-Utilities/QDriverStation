@@ -41,7 +41,7 @@ DriverStation::DriverStation()
 
     m_status = DS_Ok;
     m_alliance = DS_Red1;
-    m_controlMode = DS_Disabled;
+    m_mode = DS_Disabled;
 
     m_versionAnalyzer = new DS_VersionAnalyzer();
     m_netDiagnostics = new DS_NetworkDiagnostics();
@@ -85,7 +85,7 @@ QStringList DriverStation::alliances()
 
 DS_ControlMode DriverStation::operationMode()
 {
-    return m_controlMode;
+    return m_mode;
 }
 
 NetConsole* DriverStation::netConsole()
@@ -161,10 +161,10 @@ void DriverStation::setCustomAddress (QString address)
 
 void DriverStation::setControlMode (DS_ControlMode mode)
 {
-    if (m_controlMode != mode && mode != DS_Disabled)
+    if (m_mode != mode && mode != DS_Disabled)
         m_time.restart();
 
-    m_controlMode = mode;
+    m_mode = mode;
 }
 
 void DriverStation::putJoystickData (DS_JoystickData joystickData)
@@ -193,7 +193,7 @@ QString DriverStation::getStatus()
     else if (!m_code)
         return tr ("No Robot Code");
 
-    return DS_GetControlModeString (m_controlMode);
+    return DS_GetControlModeString (m_mode);
 }
 
 void DriverStation::checkConnection()
@@ -232,12 +232,15 @@ void DriverStation::sendPacketsToRobot()
 {
     emit robotStatusChanged (getStatus());
 
-    if (m_netDiagnostics->roboRioIsAlive()) {
-        DS_SendCommonControlPacket (m_status,
-                                    m_alliance,
-                                    m_controlMode,
-                                    roboRioAddress());
-    }
+    //if (m_netDiagnostics->roboRioIsAlive()) {
+
+    DS_ControlPacket packet;
+    packet.mode = m_mode;
+    packet.status = m_status;
+    packet.alliance = m_alliance;
+
+    DS_SendControlPacket (packet, roboRioAddress());
+    //}
 
     QTimer::singleShot (Times::ControlPacketInterval,
                         this, SLOT (sendPacketsToRobot()));

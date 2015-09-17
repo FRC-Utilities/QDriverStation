@@ -31,11 +31,11 @@ class QString;
  * importance of defining how the robot will behave.
  */
 enum DS_ControlMode {
-    DS_Test = 0x5,          /**< Driver moves each component manually */
-    DS_TeleOp = 0x4,        /**< The robot moves based on driver input */
-    DS_Disabled = 0x0,      /**< The robot is idle */
-    DS_Autonomous = 0x6,    /**< The robot uses pre-programmed instructions */
-    DS_EmergencyStop = 0x80 /**< The robot stops and needs to reboot*/
+    DS_Test = 0x05,          /**< Driver moves each component manually */
+    DS_TeleOp = 0x04,        /**< The robot moves based on driver input */
+    DS_Disabled = 0x00,      /**< The robot is idle */
+    DS_Autonomous = 0x06,    /**< The robot uses pre-programmed instructions */
+    DS_EmergencyStop = 0x80  /**< The robot stops and needs to reboot*/
 };
 
 /**

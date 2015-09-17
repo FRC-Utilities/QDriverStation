@@ -169,7 +169,7 @@ void Joysticks::onAxisEvent (GM_Axis axis)
 
     /*
      * Only proceed if the reported axis exists.
-     * SDL may throw some crazy values when a joystick is attached or removed
+     * SDL may report some crazy values when a joystick is attached or removed
      */
     if (axis.rawId < m_axes.count())
         m_axes.at (axis.rawId)->setValue (axis.value * 100);

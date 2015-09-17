@@ -258,7 +258,7 @@ private:
 
     DS_Status m_status;
     DS_Alliance m_alliance;
-    DS_ControlMode m_controlMode;
+    DS_ControlMode m_mode;
 
     DS_VersionAnalyzer* m_versionAnalyzer;
     DS_NetworkDiagnostics* m_netDiagnostics;

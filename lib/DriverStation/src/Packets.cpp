@@ -20,40 +20,73 @@
  * THE SOFTWARE.
  */
 
-#include <QString>
-#include <QPointer>
-#include <QDateTime>
 #include <QByteArray>
 #include <QUdpSocket>
 #include <QHostAddress>
 
 #include "Packets.h"
 
-const int _NET_ROBORIO_PORT (1110);
+QUdpSocket _SOCKET;
+unsigned short _INDEX (0);
+const int _TARGET_PORT (1110);
 
-/* NOT TESTED, IT WILL BE CHANGED FOR SURE */
-
-QByteArray DS_CommonControlPacket (DS_Status status, DS_Alliance alliance,
-                                   DS_ControlMode mode)
+QByteArray DS_GenerateControlPacket (DS_ControlPacket packet)
 {
-    QByteArray packet;
+    /* Increase the packet index, the first two bytes will represent it */
+    _INDEX += 1;
 
-    packet.append ('0');
-    packet.append ('0');
-    packet.append ('0');
-    packet.append (mode);
-    packet.append (status);
-    packet.append (alliance);
+    int byte1 = 0x00; /* Packet index */
+    int byte2 = 0x00; /* Pakcet index */
+    int byte3 = 0x01; /* We don't really know why this value is used */
 
-    return packet;
+    if (_INDEX <= 0xff)
+        byte2 = _INDEX;
+
+    /*
+     * More than 255 (0xff) packets have been sent,
+     * calculate the values of the first and second bytes
+     */
+    else if (_INDEX <= 0xffff) {
+        int copy = _INDEX;
+
+        while (copy > 0xff) {
+            copy -= 0xff;
+            byte1 += 0x01;
+        }
+
+        byte2 = copy;
+    }
+
+    /*
+     * More than 65,535 (0xffff) packets have been sent
+     * reset the packet index so that we can continue counting.
+     */
+    else
+        DS_ResetIndex();
+
+    /* Construct the packet data */
+    QByteArray data;
+    data.append ((char) byte1);
+    data.append ((char) byte2);
+    data.append ((char) byte3);
+    data.append ((char) packet.mode);
+    data.append ((char) packet.status);
+    data.append ((char) packet.alliance);
+
+    return data;
 }
 
-void DS_SendCommonControlPacket (DS_Status status,  DS_Alliance alliance,
-                                 DS_ControlMode mode, QString robotAddress)
+void DS_SendControlPacket (DS_ControlPacket packet, QString host)
 {
-    QPointer<QUdpSocket> socket = new QUdpSocket;
-    QByteArray packet = DS_CommonControlPacket (status, alliance, mode);
+    QByteArray data = DS_GenerateControlPacket (packet);
 
-    socket->writeDatagram (packet.data(), packet.size(),
-                           QHostAddress (robotAddress), _NET_ROBORIO_PORT);
+    _SOCKET.writeDatagram (data.data(),
+                           data.size(),
+                           QHostAddress (host),
+                           _TARGET_PORT);
+}
+
+void DS_ResetIndex()
+{
+    _INDEX = 0;
 }
