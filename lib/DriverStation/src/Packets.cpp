@@ -32,20 +32,15 @@ const int _TARGET_PORT (1110);
 
 QByteArray DS_GenerateControlPacket (DS_ControlPacket packet)
 {
-    /* Increase the packet index, the first two bytes will represent it */
     _INDEX += 1;
 
-    int byte1 = 0x00; /* Packet index */
-    int byte2 = 0x00; /* Pakcet index */
-    int byte3 = 0x01; /* We don't really know why this value is used */
+    int byte1 = 0x00;
+    int byte2 = 0x00;
+    int byte3 = 0x01;
 
     if (_INDEX <= 0xff)
         byte2 = _INDEX;
 
-    /*
-     * More than 255 (0xff) packets have been sent,
-     * calculate the values of the first and second bytes
-     */
     else if (_INDEX <= 0xffff) {
         int index = _INDEX;
 
@@ -57,14 +52,9 @@ QByteArray DS_GenerateControlPacket (DS_ControlPacket packet)
         byte2 = copy;
     }
 
-    /*
-     * More than 65,535 (0xffff) packets have been sent
-     * reset the packet index so that we can continue counting.
-     */
     else
         DS_ResetIndex();
 
-    /* Construct the packet data */
     QByteArray data;
     data.append ((char) byte1);
     data.append ((char) byte2);
