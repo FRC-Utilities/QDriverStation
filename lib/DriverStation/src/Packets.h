@@ -20,8 +20,8 @@
  * THE SOFTWARE.
  */
 
-#ifndef _DRIVER_STATION_CLIENT_PACKETS_H
-#define _DRIVER_STATION_CLIENT_PACKETS_H
+#ifndef _DRIVER_STATION_PACKETS_H
+#define _DRIVER_STATION_PACKETS_H
 
 #include "Common.h"
 
@@ -59,4 +59,4 @@ void DS_SendControlPacket (DS_ControlPacket packet, QString host);
  */
 void DS_ResetIndex();
 
-#endif /* _DRIVER_STATION_CLIENT_PACKETS_H */
+#endif /* _DRIVER_STATION_PACKETS_H */
