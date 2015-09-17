@@ -49,7 +49,7 @@ QByteArray DS_GenerateControlPacket (DS_ControlPacket packet)
             byte1 += 0x01;
         }
 
-        byte2 = copy;
+        byte2 = index;
     }
 
     else
