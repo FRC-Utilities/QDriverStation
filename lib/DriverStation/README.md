@@ -20,8 +20,8 @@ There is still a lot of work to be done in order to get a fully-working DriverSt
 - [x] Get robot information such as its library, PDP and PCM (by downloading and reading some files in the FTP server of the roboRIO)
 - [ ] Discover if the robot code is loaded
 - [x] Generate and send control packets to the robot, which contain its control mode (Disabled, TeleOp, Auto, etc), alliance and position - **will be tested soon**.
-- [x] Read and interpret robot packets (e.g. to get battery voltage) - **will be tested soon**.
-- [x] Implement a built-in NetConsole - **will be tested soon**.
+- [x] Read robot battery voltage
+- [x] Built-in NetConsole for logging and finding issues in the robot
 - [ ] Get CAN information (we need to do some more "Wiresharking" for that)
 
 [Check this wiki](https://github.com/gluxon/node-driverstation15/wiki/2015-Protocol) to see how the definitions and data on each packet type.
