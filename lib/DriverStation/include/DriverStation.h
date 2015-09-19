@@ -23,10 +23,10 @@
 #ifndef _DRIVER_STATION_MAIN_H
 #define _DRIVER_STATION_MAIN_H
 
-#include <QTime>
 #include <QTimer>
 #include <QObject>
 #include <QStringList>
+#include <QElapsedTimer>
 
 #include "../src/Times.h"
 #include "../src/Common.h"
@@ -253,13 +253,14 @@ private:
     bool m_justConnected;
     bool m_justDisconnected;
 
-    QTime m_time;
     QString m_oldStatus;
     QString m_newStatus;
+    QElapsedTimer m_elapsedTime;
 
     DS_Status m_status;
     DS_ControlMode m_mode;
     DS_Alliance m_alliance;
+    DS_JoystickData m_joystickData;
 
     DS_Sender m_sender;
     DS_Receiver m_receiver;

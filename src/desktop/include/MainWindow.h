@@ -93,6 +93,13 @@ private slots:
 
     /**
      * @internal
+     * Changes the robot alliance and position when the user changes the
+     * allianche from the combobox
+     */
+    void onStationChanged (int station);
+
+    /**
+     * @internal
      * Copies the output of the NetConsole to the system clipboard
      */
     void onCopyClicked();

@@ -79,6 +79,7 @@ MainWindow::MainWindow()
 void MainWindow::connectSlots()
 {
     updatePcStatusWidgets();
+
     connect (ui.Website,           SIGNAL (clicked()),
              this,                 SLOT   (onWebsiteClicked()));
     connect (ui.EnableButton,      SIGNAL (clicked()),
@@ -93,8 +94,10 @@ void MainWindow::connectSlots()
              this,                 SLOT   (onWindowModeChanged()));
     connect (ui.RestartCodeButton, SIGNAL (clicked()),
              this,                 SLOT   (onRestartClicked()));
-    connect (ui.TeamNumberSpin,    SIGNAL (valueChanged (int)),
+    connect (ui.TeamNumberSpin,    SIGNAL (valueChanged  (int)),
              this,                 SLOT   (setTeamNumber (int)));
+    connect (ui.StationCombo,      SIGNAL (currentIndexChanged (int)),
+             this,                 SLOT   (onStationChanged    (int)));
 
     /* Joystick information tab */
     QPointer<Joysticks> j = new Joysticks (ui.JoysticksTab);
@@ -275,6 +278,30 @@ void MainWindow::onCopyClicked()
     ui.NetConsoleEdit->append ("<font color=\"#aaa\"><p>"
                                "INFO: NetConsole ouput copied to clipboard"
                                "</p></font>");
+}
+
+void MainWindow::onStationChanged (int station)
+{
+    switch (station) {
+    case 0:
+        m_ds->setAlliance (DS_Red1);
+        break;
+    case 1:
+        m_ds->setAlliance (DS_Red2);
+        break;
+    case 2:
+        m_ds->setAlliance (DS_Red3);
+        break;
+    case 3:
+        m_ds->setAlliance (DS_Blue1);
+        break;
+    case 4:
+        m_ds->setAlliance (DS_Blue2);
+        break;
+    case 5:
+        m_ds->setAlliance (DS_Blue3);
+        break;
+    }
 }
 
 void MainWindow::onRebootClicked()

@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+#include "Ports.h"
 #include "Common.h"
 #include "NetConsole.h"
 

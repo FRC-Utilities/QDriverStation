@@ -40,7 +40,8 @@ HEADERS += \
     $$PWD/src/VersionAnalyzer.h \
     $$PWD/src/Times.h \
     $$PWD/src/Receiver.h \
-    $$PWD/src/Sender.h
+    $$PWD/src/Sender.h \
+    $$PWD/src/Ports.h
 
 SOURCES += \
     $$PWD/src/Common.cpp \

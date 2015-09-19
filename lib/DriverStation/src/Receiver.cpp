@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+#include "Ports.h"
 #include "Receiver.h"
 
 DS_Receiver::DS_Receiver()

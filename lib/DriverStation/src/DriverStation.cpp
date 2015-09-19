@@ -110,7 +110,7 @@ void DriverStation::init()
         checkConnection();
         sendPacketsToRobot();
 
-        /* Start the elapsed time loop */
+        /* Begin elapsed time loop */
         updateElapsedTime();
         emit elapsedTimeChanged ("00:00.0");
 
@@ -151,14 +151,14 @@ void DriverStation::setCustomAddress (QString address)
 void DriverStation::setControlMode (DS_ControlMode mode)
 {
     if (m_mode != mode && mode != DS_Disabled)
-        m_time.restart();
+        m_elapsedTime.restart();
 
     m_mode = mode;
 }
 
 void DriverStation::putJoystickData (DS_JoystickData joystickData)
 {
-    Q_UNUSED (joystickData);
+    m_joystickData = joystickData;
 }
 
 void DriverStation::startPractice (int countdown,
@@ -212,7 +212,7 @@ void DriverStation::checkConnection()
 
     m_oldConnection = m_netDiagnostics.roboRioIsAlive();
 
-    QTimer::singleShot (Times::TestConnectionInterval,
+    QTimer::singleShot (DS_Times::TestConnectionInterval,
                         this, SLOT (checkConnection()));
 }
 
@@ -226,40 +226,37 @@ void DriverStation::sendPacketsToRobot()
         packet.status = m_status;
         packet.alliance = m_alliance;
 
-        m_sender.send (packet, roboRioAddress());
+        m_sender.send (packet, m_joystickData, roboRioAddress());
     }
 
-    QTimer::singleShot (Times::ControlPacketInterval,
+    QTimer::singleShot (DS_Times::ControlPacketInterval,
                         this, SLOT (sendPacketsToRobot()));
 }
 
 void DriverStation::updateElapsedTime()
 {
     if (operationMode() != DS_Disabled) {
-        int time = m_time.elapsed();
-        int nSeconds = time / 1000;
-        int nMinutes = nSeconds / 60;
+        int time =  m_elapsedTime.elapsed();
 
-        while (nSeconds >= 60)
-            nSeconds -= 60;
+        int minutes = 0;
+        int seconds = time / 1000;
 
-        QString seconds = QString ("%1").arg (nSeconds);
-        QString minutes = QString ("%1").arg (nMinutes);
-        QString milliseconds = QString ("%1").arg (time);
+        while (seconds > 60) {
+            minutes += 1;
+            seconds -= 60;
+        }
 
-        if (nSeconds < 10)
-            seconds = "0" + seconds;
+        QString t = QString::number (time);
+        QString m = QString::number (minutes);
+        QString s = QString::number (seconds);
 
-        if (nMinutes < 10)
-            minutes = "0" + minutes;
+        if (m.length() < 2) m.prepend ("0");
+        if (s.length() < 2) s.prepend ("0");
+        t = t.at (t.length() - 1);
 
-        emit elapsedTimeChanged (QString ("%1:%2.%3")
-                                 .arg (minutes)
-                                 .arg (seconds)
-                                 .arg (milliseconds.at (
-                                           milliseconds.length() - 1)));
+        emit elapsedTimeChanged (QString ("%1:%2.%3").arg (m, s, t));
     }
 
-    QTimer::singleShot (Times::ElapsedTimeInterval,
+    QTimer::singleShot (DS_Times::ElapsedTimeInterval,
                         this, SLOT (updateElapsedTime()));
 }

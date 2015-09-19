@@ -25,7 +25,6 @@
 
 #include "Common.h"
 
-#include <QByteArray>
 #include <QUdpSocket>
 #include <QHostAddress>
 
@@ -43,6 +42,34 @@ struct DS_ControlPacket {
 };
 
 /**
+ * Represents a packet index
+ */
+struct DS_PacketCount {
+    int byte1;
+    int byte2;
+    int count;
+
+    /**
+     * Changes the values of \c byte1 and \c byte2 based on the value
+     * of the packet \c count
+     */
+
+    void generatePingData()
+    {
+        byte1 = 0x00;
+        byte2 = 0x00;
+        int i = count;
+
+        while (i > 0xff) {
+            i -= 0xff;
+            byte1 += 0x01;
+        }
+
+        byte2 = i;
+    }
+};
+
+/**
  * \class DS_Sender
  */
 class DS_Sender
@@ -55,24 +82,37 @@ public:
     explicit DS_Sender();
 
     /**
+     * Returns the current packet count, used by the robot to differentiate
+     * and process packets sent by the robot
+     */
+    DS_PacketCount count();
+
+    /**
      * Resets the packet count index, it must be called everytime the
      * connection with the robot is reset
      */
-    void resetIndex();
+    void resetCount();
+
+    /**
+     * Returns true if the packet count has exceeded the limits of the protocol
+     * In theory, this should never happen because we ensure that the packet
+     * count stays on the defined limits when sending a packet.
+     */
+    bool countOverflowed();
 
     /**
      * Sends a generated packet to the robot that contains the desired robot
      * status, its control mode, alliance and position.
+     *
+     * Additionally, the function will send the joystick input data to the
+     * robot for further processing.
+     *
+     * \note This is an overloaded function
      */
-    void send (DS_ControlPacket packet, QString host);
-
-    /**
-     * Generates a 6-byte datagram based on the input data in the packet.
-     */
-    QByteArray generateControlPacket (DS_ControlPacket packet);
+    void send (DS_ControlPacket packet, DS_JoystickData stick, QString host);
 
 private:
-    int m_index;
+    int m_count;
     QUdpSocket m_socket;
 };
 

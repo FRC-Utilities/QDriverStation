@@ -20,53 +20,18 @@
  * THE SOFTWARE.
  */
 
-#include "Ports.h"
-#include "Sender.h"
+#ifndef _DRIVER_STATION_PORTS_H
+#define _DRIVER_STATION_PORTS_H
 
-DS_Sender::DS_Sender()
+/**
+ * Defines the ports used by the client and the roboRIO to communicate
+ */
+namespace DS_Ports
 {
-    resetCount();
+const int Client (1150);     /**< The packets from the robot arrive here */
+const int RoboRIO (1110);    /**< We send packets to this port in the rRIO */
+const int NetConsole (6666); /**< We receive NetConsole information from here */
 }
 
-DS_PacketCount DS_Sender::count()
-{
-    m_count += 1;
+#endif /* _DRIVER_STATION_PORTS_H */
 
-    if (countOverflowed())
-        resetCount();
-
-    DS_PacketCount count;
-    count.count = m_count;
-    count.generatePingData();
-
-    return count;
-}
-
-void DS_Sender::resetCount()
-{
-    m_count = 0;
-}
-
-bool DS_Sender::countOverflowed()
-{
-    return ! (m_count > 0 && m_count <= 0xffff);
-}
-
-
-void DS_Sender::send (DS_ControlPacket packet, DS_JoystickData stick,
-                      QString host)
-{
-    Q_UNUSED (stick);
-
-    QByteArray data;
-    DS_PacketCount c = count();
-
-    data.append (c.byte1);
-    data.append (c.byte2);
-    data.append (0x01);
-    data.append (packet.mode);
-    data.append (packet.status);
-    data.append (packet.alliance);
-
-    m_socket.writeDatagram (data, QHostAddress (host), DS_Ports::RoboRIO);
-}

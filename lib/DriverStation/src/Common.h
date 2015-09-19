@@ -73,16 +73,6 @@ struct DS_JoystickData {
 };
 
 /**
- * Defines the ports used by the client and the roboRIO to communicate
- */
-namespace DS_Ports
-{
-const int Client (1150);     /**< The packets from the robot arrive here */
-const int RoboRIO (1110);    /**< We send packets to this port in the rRIO */
-const int NetConsole (6666); /**< We receive NetConsole information from here */
-}
-
-/**
  * Returns a calculated IP address based on the team address.
  *
  * For example:
