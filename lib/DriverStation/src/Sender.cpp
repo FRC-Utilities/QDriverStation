@@ -52,7 +52,6 @@ bool DS_Sender::countOverflowed()
     return ! (m_count > 0 && m_count <= 0xffff);
 }
 
-
 void DS_Sender::send (DS_ControlPacket packet, DS_JoystickData stick,
                       QString host)
 {
