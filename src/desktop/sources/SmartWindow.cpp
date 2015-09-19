@@ -41,8 +41,8 @@ SmartWindow::SmartWindow()
     m_promptOnQuit = true;
     m_windowMode = Invalid;
 
-    resizeToFit();
     setWindowMode (Settings::get ("Docked", false).toBool() ? Docked : Normal);
+    resizeToFit();
 }
 
 //------------------------------------------------------------------------------
