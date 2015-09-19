@@ -96,8 +96,6 @@ void MainWindow::connectSlots()
              this,                 SLOT   (onRestartClicked()));
     connect (ui.TeamNumberSpin,    SIGNAL (valueChanged  (int)),
              this,                 SLOT   (setTeamNumber (int)));
-    connect (ui.StationCombo,      SIGNAL (currentIndexChanged (int)),
-             this,                 SLOT   (onStationChanged    (int)));
 
     /* Joystick information tab */
     QPointer<Joysticks> j = new Joysticks (ui.JoysticksTab);
@@ -141,8 +139,8 @@ void MainWindow::connectSlots()
     connect (ui.DbCombo, SIGNAL (currentIndexChanged (int)), this,
              SLOT (setDashboard (int)));
 
-    /* Practice times */
-    readPracticeValues();
+    /* Load and apply saved settings */
+    readSettings();
     connect (ui.PracticeDelay,      SIGNAL (valueChanged (int)),
              this,                  SLOT   (onPracticeValuesChanged()));
     connect (ui.PracticeTeleOp,     SIGNAL (valueChanged (int)),
@@ -153,6 +151,8 @@ void MainWindow::connectSlots()
              this,                  SLOT   (onPracticeValuesChanged()));
     connect (ui.PracticeAutonomous, SIGNAL (valueChanged (int)),
              this,                  SLOT   (onPracticeValuesChanged()));
+    connect (ui.StationCombo,       SIGNAL (currentIndexChanged (int)),
+             this,                  SLOT   (onStationChanged    (int)));
 
     /* Advanced settings window */
     m_advancedSettings = new AdvancedSettings();
@@ -209,19 +209,30 @@ void MainWindow::configureWidgetAppearance()
              this,                      SLOT   (onCopyClicked()));
 }
 
-void MainWindow::readPracticeValues()
+void MainWindow::readSettings()
 {
+    /* Read practice values */
     int d = Settings::get ("Practice Delay", 1).toInt();
     int t = Settings::get ("Practice TeleOp", 100).toInt();
     int e = Settings::get ("Practice End Game", 20).toInt();
     int c = Settings::get ("Practice Countdown", 5).toInt();
     int a = Settings::get ("Practice Autonomous", 15).toInt();
 
+    /* Apply practice values */
     ui.PracticeDelay->setValue (d);
     ui.PracticeTeleOp->setValue (t);
     ui.PracticeEndGame->setValue (e);
     ui.PracticeCountdown->setValue (c);
     ui.PracticeAutonomous->setValue (a);
+
+    /* Read team station values */
+    int station = Settings::get ("Station", 0).toInt();
+
+    /* Apply saved team station without crashing app if something goes wrong */
+    if (ui.StationCombo->count() > (station + 1))
+        ui.StationCombo->setCurrentIndex (station);
+    else
+        ui.StationCombo->setCurrentIndex (0);
 }
 
 void MainWindow::updateLabelColors()
@@ -282,6 +293,8 @@ void MainWindow::onCopyClicked()
 
 void MainWindow::onStationChanged (int station)
 {
+    Settings::set ("Station", station);
+
     switch (station) {
     case 0:
         m_ds->setAlliance (DS_Red1);
@@ -488,7 +501,7 @@ void MainWindow::onRobotStatusChanged (QString status)
             ui.StatusLabel->setText (tr ("%1 Enabled").arg (status));
     }
 
-    /* Robot is in E-Stop or something is fucked up */
+    /* Robot is in E-Stop or something is seriously fucked up (shit happens) */
     else
         ui.StatusLabel->setText (status);
 }

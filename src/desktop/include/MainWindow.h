@@ -75,7 +75,7 @@ private slots:
      * Reads settings to get the time frames to use when using the practice
      * feature of the DriverStation
      */
-    void readPracticeValues();
+    void readSettings();
 
     /**
      * @internal
