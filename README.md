@@ -3,6 +3,8 @@
 > "Open source alternative to the FRC DriverStation"
 
 [![Build Status](https://travis-ci.org/WinT-3794/QDriverStation.svg?branch=master)](https://travis-ci.org/WinT-3794/QDriverStation)
+[![License](https://img.shields.io/github/license/wint-3794/qdriverstation.svg)](https://img.shields.io/github/license/wint-3794/qdriverstation.svg)
+[![BitCoin donate button](https://img.shields.io/badge/bitcoin-donate-yellow.svg)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
 
 ### Introduction
 
