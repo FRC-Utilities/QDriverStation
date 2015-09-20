@@ -28,6 +28,13 @@
 #include <QObject>
 #include <QElapsedTimer>
 
+/**
+ * \class DS_ElapsedTime
+ *
+ * The DS_ElapsedTime class calculates the elapsed time since a specified
+ * time in the execution of the application and presents it in human-readable
+ * format (mm::ss.ms).
+ */
 class DS_ElapsedTime : public QObject
 {
     Q_OBJECT
@@ -36,10 +43,21 @@ public:
     explicit DS_ElapsedTime();
 
 public slots:
+    /**
+     * Pauses the elapsed time refresh process
+     */
     void stop();
+
+    /**
+     * Resets the elapsed timer and starts the refresh process again
+     */
     void reset();
 
 signals:
+    /**
+     * Emitted when the elapsed time is calculated and processed
+     * in a human-readable format
+     */
     void elapsedTimeChanged (QString time);
 
 private:
@@ -47,6 +65,11 @@ private:
     QElapsedTimer m_time;
 
 private slots:
+    /**
+     * @internal
+     * Uses the value given by the internal timer and processes its
+     * information into a human-readable format (mm::ss.ms)
+     */
     void calculateElapsedTime();
 };
 
