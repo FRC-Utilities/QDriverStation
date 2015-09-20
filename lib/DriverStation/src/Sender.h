@@ -47,26 +47,6 @@ struct DS_ControlPacket {
 struct DS_PacketCount {
     int byte1;
     int byte2;
-    int count;
-
-    /**
-     * Changes the values of \c byte1 and \c byte2 based on the value
-     * of the packet \c count
-     */
-
-    void generatePingData()
-    {
-        byte1 = 0x00;
-        byte2 = 0x00;
-        int i = count;
-
-        while (i > 0xff) {
-            i -= 0xff;
-            byte1 += 0x01;
-        }
-
-        byte2 = i;
-    }
 };
 
 /**

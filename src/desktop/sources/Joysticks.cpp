@@ -87,7 +87,7 @@ void Joysticks::onRowChanged (int row)
     ui.Buttons->setVisible (buttonCount > 0);
 
     /* Create a progress bar for each axis */
-    for (int i = 0; i < axisCount; i++) {
+    for (int i = 0; i < axisCount; ++i) {
         QPointer<QProgressBar> bar = new QProgressBar (this);
 
         bar->setMaximumHeight (19);
@@ -103,7 +103,7 @@ void Joysticks::onRowChanged (int row)
     }
 
     /* Create a button for each joystick button */
-    for (int i = 0; i < buttonCount; i++) {
+    for (int i = 0; i < buttonCount; ++i) {
         QPointer<QPushButton> button = new QPushButton (this);
 
         button->setEnabled (false);
@@ -142,7 +142,7 @@ void Joysticks::onCountChanged (QStringList list)
 
     /* Display the attached joysticks in the list widget */
     if (list.count() > 0) {
-        for (int i = 1; i <= list.count(); i++)
+        for (int i = 1; i <= list.count(); ++i)
             ui.JoystickList->addItem (QString ("%1: ").arg (i) + list.at (i - 1));
 
         ui.JoystickList->setCurrentRow (0);

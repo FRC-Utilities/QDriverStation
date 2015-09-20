@@ -90,7 +90,7 @@ GamepadManager::GamepadManager()
 
 GamepadManager::~GamepadManager()
 {
-    for (int i = 0; i < SDL_NumJoysticks(); i++)
+    for (int i = 0; i < SDL_NumJoysticks(); ++i)
         SDL_GameControllerClose (SDL_GameControllerOpen (i));
 
     SDL_Quit();
@@ -142,7 +142,7 @@ QStringList GamepadManager::joystickList()
 {
     QStringList list;
 
-    for (int i = 0; i < SDL_NumJoysticks(); i++)
+    for (int i = 0; i < SDL_NumJoysticks(); ++i)
         list.append (getJoystickName (i));
 
     return list;
@@ -239,7 +239,7 @@ void GamepadManager::readSdlEvents()
     while (SDL_PollEvent (&event)) {
         switch (event.type) {
         case SDL_CONTROLLERDEVICEADDED:
-            m_tracker += 1;
+            ++m_tracker;
             onControllerAdded (&event);
             emit countChanged (joystickList());
             emit countChanged (SDL_NumJoysticks());

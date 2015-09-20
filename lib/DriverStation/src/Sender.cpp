@@ -30,14 +30,14 @@ DS_Sender::DS_Sender()
 
 DS_PacketCount DS_Sender::count()
 {
-    m_count += 1;
+    ++m_count;
 
     if (countOverflowed())
         resetCount();
 
     DS_PacketCount count;
-    count.count = m_count;
-    count.generatePingData();
+    count.byte1 = m_count / 0xff;
+    count.byte2 = m_count % 0xff;
 
     return count;
 }

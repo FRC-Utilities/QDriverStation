@@ -555,7 +555,7 @@ void MainWindow::toggleStatusColor()
 
 void MainWindow::statusLabelAnimation()
 {
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < 8; ++i)
         QTimer::singleShot (100 * i, Qt::PreciseTimer,
                             this, SLOT (toggleStatusColor()));
 }
