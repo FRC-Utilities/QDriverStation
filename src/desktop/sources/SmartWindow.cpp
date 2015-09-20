@@ -28,7 +28,7 @@
 #include "Settings.h"
 #include "SmartWindow.h"
 
-#define _UPDATE_INTERVAL 100
+#define _UPDATE_INTERVAL 500
 
 //------------------------------------------------------------------------------
 // Class initialization functions
@@ -41,8 +41,11 @@ SmartWindow::SmartWindow()
     m_promptOnQuit = true;
     m_windowMode = Invalid;
 
-    setWindowMode (Settings::get ("Docked", false).toBool() ? Docked : Normal);
-    resizeToFit();
+    WindowMode m = Settings::get ("Docked", false).toBool() ? Docked : Normal;
+
+    /* We do this to avoid some nasty bugs in GNU/Linux */
+    setWindowMode (Normal);
+    setWindowMode (m);
 }
 
 //------------------------------------------------------------------------------
@@ -144,6 +147,7 @@ void SmartWindow::setWindowMode (WindowMode mode)
         setWindowFlags (Qt::FramelessWindowHint);
 
     showNormal();
+    resizeToFit();
 }
 
 //------------------------------------------------------------------------------
@@ -152,13 +156,7 @@ void SmartWindow::setWindowMode (WindowMode mode)
 
 void SmartWindow::resizeToFit()
 {
-    if (!isDocked() && m_useFixedSize) {
-        resize (0, 0);
-        setMinimumSize (size());
-        setMaximumSize (size());
-    }
-
-    else if (isDocked()) {
+    if (isDocked()) {
         QDesktopWidget w;
         setMinimumWidth (w.width());
         setMaximumWidth (w.width());
@@ -167,5 +165,6 @@ void SmartWindow::resizeToFit()
         move (0, w.availableGeometry().height() - height());
     }
 
-    QTimer::singleShot (_UPDATE_INTERVAL, this, SLOT (resizeToFit()));
+    QTimer::singleShot (_UPDATE_INTERVAL, Qt::VeryCoarseTimer,
+                        this, SLOT (resizeToFit()));
 }

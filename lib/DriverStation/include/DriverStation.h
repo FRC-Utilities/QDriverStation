@@ -23,16 +23,15 @@
 #ifndef _DRIVER_STATION_MAIN_H
 #define _DRIVER_STATION_MAIN_H
 
-#include <QTimer>
 #include <QObject>
 #include <QStringList>
-#include <QElapsedTimer>
 
 #include "../src/Times.h"
 #include "../src/Common.h"
 #include "../src/Sender.h"
 #include "../src/Receiver.h"
 #include "../src/NetConsole.h"
+#include "../src/ElapsedTime.h"
 #include "../src/VersionAnalyzer.h"
 #include "../src/NetworkDiagnostics.h"
 
@@ -83,9 +82,14 @@ public:
     Q_INVOKABLE QString radioAddress();
 
     /**
-     * Returns the IP/DNS address of the roboRIO
+     * Returns the network address of the roboRIO
      */
     Q_INVOKABLE QString roboRioAddress();
+
+    /**
+     * Returns the current control mode of the robot
+     */
+    Q_INVOKABLE DS_ControlMode controlMode();
 
 public slots:
     /**
@@ -218,6 +222,11 @@ signals:
     void robotStatusChanged (QString status);
 
     /**
+     * Emitted when the control mode is changed
+     */
+    void controlModeChanged (DS_ControlMode mode);
+
+    /**
      * Emitted when the libary detects that the RAM usage of the roboRIO has
      * changed since the last update.
      */
@@ -255,7 +264,6 @@ private:
 
     QString m_oldStatus;
     QString m_newStatus;
-    QElapsedTimer m_elapsedTime;
 
     DS_Status m_status;
     DS_ControlMode m_mode;
@@ -265,6 +273,7 @@ private:
     DS_Sender m_sender;
     DS_Receiver m_receiver;
     DS_NetConsole m_netConsole;
+    DS_ElapsedTime m_elapsedTime;
     DS_VersionAnalyzer m_versionAnalyzer;
     DS_NetworkDiagnostics m_netDiagnostics;
 
@@ -299,6 +308,19 @@ private slots:
     void checkConnection();
 
     /**
+     * Checks if the connection between the roboRIO and the client is working
+     * correctly. If not, the function will disable the robot and notify other
+     * connected objects about the event.
+     *
+     * This function is called by the \c checkConnection() function when it
+     * detects that the roboRIO has been disconnected from the client.
+     *
+     * \note the \c checkConnection() function will give the robot a timeout
+     *       value before calling this function.
+     */
+    void safetyDisableCheck();
+
+    /**
      * Sends a 6-byte packet to the robot that contains:
      *     - Ping diagnostic data
      *     - Robot state command
@@ -312,15 +334,6 @@ private slots:
      * This function is called once every 20 milliseconds.
      */
     void sendPacketsToRobot();
-
-    /**
-     * @internal
-     * Updates the elapsed time with the time that has passed since the user
-     * enabled the robot.
-     *
-     * @note The timer is reset when the control mode is changed
-     */
-    void updateElapsedTime();
 };
 
 #endif /* _DRIVER_STATION_MAIN_H */

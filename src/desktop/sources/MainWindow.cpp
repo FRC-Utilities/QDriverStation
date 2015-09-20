@@ -32,8 +32,6 @@
 #include <QDesktopWidget>
 #include <QDesktopServices>
 
-#include <DriverStation.h>
-
 #include "Battery.h"
 #include "Settings.h"
 #include "CpuUsage.h"
@@ -69,8 +67,8 @@ MainWindow::MainWindow()
     connectSlots();
     configureWidgetAppearance();
 
-    InitTasks::executeFirstRunTasks();
     setTeamNumber (InitTasks::getTeamNumber());
+    InitTasks::executeFirstRunTasks();
 
     DriverStation::getInstance()->init();
     GamepadManager::getInstance()->init();
@@ -94,6 +92,8 @@ void MainWindow::connectSlots()
              this,                 SLOT   (onWindowModeChanged()));
     connect (ui.RestartCodeButton, SIGNAL (clicked()),
              this,                 SLOT   (onRestartClicked()));
+    connect (ui.RobotModeGroup,    SIGNAL (buttonClicked (int)),
+             this,                 SLOT   (onRobotModeChanged (int)));
     connect (ui.TeamNumberSpin,    SIGNAL (valueChanged  (int)),
              this,                 SLOT   (setTeamNumber (int)));
 
@@ -125,6 +125,8 @@ void MainWindow::connectSlots()
              this, SLOT   (onRamUsageChanged (int, int)));
     connect (m_ds, SIGNAL (diskUsageChanged (int, int)),
              this, SLOT   (onDiskUsageChanged (int, int)));
+    connect (m_ds, SIGNAL (controlModeChanged (DS_ControlMode)),
+             this, SLOT   (onControlModeChanged (DS_ControlMode)));
     connect (m_ds, SIGNAL (elapsedTimeChanged (QString)),
              ui.ElapsedTime, SLOT (setText (QString)));
     connect (m_ds, SIGNAL (newMessage (QString)),
@@ -276,7 +278,8 @@ void MainWindow::updatePcStatusWidgets()
         ui.PcBatteryProgress->setToolTip (tr ("Battery level: %1%").arg (level));
     }
 
-    QTimer::singleShot (500, this, SLOT (updatePcStatusWidgets()));
+    //QTimer::singleShot (1000, Qt::VeryCoarseTimer,
+    //                  this, SLOT (updatePcStatusWidgets()));
 }
 
 //------------------------------------------------------------------------------
@@ -354,7 +357,9 @@ void MainWindow::onEnabledClicked()
 
 void MainWindow::onDisabledClicked()
 {
-    setRobotEnabled (false);
+    if (m_ds->controlMode() != DS_Disabled)
+        setRobotEnabled (false);
+
     ui.DisableButton->setChecked (true);
     ui.DisableButton->setStyleSheet (_DISABLED_SELECTED);
     ui.EnableButton->setStyleSheet (_ENABLED_NOT_SELECTED);
@@ -377,6 +382,12 @@ void MainWindow::onWindowModeChanged()
         ui.CloseWidget->setVisible (false);
         setWindowMode (WindowMode::Normal);
     }
+}
+
+void MainWindow::onRobotModeChanged (int mode)
+{
+    Q_UNUSED (mode);
+    m_ds->setControlMode (DS_Disabled);
 }
 
 void MainWindow::onPracticeValuesChanged()
@@ -449,9 +460,14 @@ void MainWindow::onCodeChanged (bool available)
 void MainWindow::onNetworkChanged (bool available)
 {
     m_network = available;
-
     ui.RobotCheck->setChecked (available);
     ui.Communications->setChecked (available);
+}
+
+void MainWindow::onControlModeChanged (DS_ControlMode mode)
+{
+    if (mode == DS_Disabled)
+        ui.DisableButton->click();
 }
 
 void MainWindow::onRadioChanged (bool available)
@@ -539,5 +555,6 @@ void MainWindow::toggleStatusColor()
 void MainWindow::statusLabelAnimation()
 {
     for (int i = 0; i < 8; i++)
-        QTimer::singleShot (100 * i, this, SLOT (toggleStatusColor()));
+        QTimer::singleShot (100 * i, Qt::PreciseTimer,
+                            this, SLOT (toggleStatusColor()));
 }

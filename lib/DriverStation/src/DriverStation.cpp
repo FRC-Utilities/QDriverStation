@@ -49,6 +49,8 @@ DriverStation::DriverStation()
              this,               SIGNAL (pdpVersionChanged (QString)));
     connect (&m_versionAnalyzer, SIGNAL (rioVersionChanged (QString)),
              this,               SIGNAL (rioVersionChanged (QString)));
+    connect (&m_elapsedTime,     SIGNAL (elapsedTimeChanged (QString)),
+             this,               SIGNAL (elapsedTimeChanged (QString)));
 }
 
 DriverStation* DriverStation::getInstance()
@@ -93,6 +95,11 @@ QString DriverStation::radioAddress()
     return m_netDiagnostics.radioIpAddress();
 }
 
+DS_ControlMode DriverStation::controlMode()
+{
+    return m_mode;
+}
+
 void DriverStation::init()
 {
     if (!m_init) {
@@ -111,7 +118,7 @@ void DriverStation::init()
         sendPacketsToRobot();
 
         /* Begin elapsed time loop */
-        updateElapsedTime();
+        m_elapsedTime.stop();
         emit elapsedTimeChanged ("00:00.0");
 
         /* Ensure that this code will only run once */
@@ -150,10 +157,14 @@ void DriverStation::setCustomAddress (QString address)
 
 void DriverStation::setControlMode (DS_ControlMode mode)
 {
-    if (m_mode != mode && mode != DS_Disabled)
-        m_elapsedTime.restart();
+    if (mode == DS_Disabled)
+        m_elapsedTime.stop();
+
+    else if (m_mode != mode)
+        m_elapsedTime.reset();
 
     m_mode = mode;
+    emit controlModeChanged (m_mode);
 }
 
 void DriverStation::putJoystickData (DS_JoystickData joystickData)
@@ -193,13 +204,15 @@ void DriverStation::checkConnection()
 
     if (m_justDisconnected) {
         m_code = false;
-        emit codeChanged (m_code);
-        emit networkChanged (m_netDiagnostics.roboRioIsAlive());
+        emit codeChanged (false);
+        emit networkChanged (false);
         emit voltageChanged ("");
+        QTimer::singleShot (DS_Times::SafetyDisableTimeout, Qt::PreciseTimer,
+                            this, SLOT (safetyDisableCheck()));
     }
 
     else if (m_justConnected) {
-        m_code = false;
+        m_code = !false;
         emit codeChanged (m_code);
         emit networkChanged (m_netDiagnostics.roboRioIsAlive());
         m_versionAnalyzer.downloadRobotInformation (roboRioAddress());
@@ -212,8 +225,14 @@ void DriverStation::checkConnection()
 
     m_oldConnection = m_netDiagnostics.roboRioIsAlive();
 
-    QTimer::singleShot (DS_Times::TestConnectionInterval,
+    QTimer::singleShot (DS_Times::TestConnectionInterval, Qt::PreciseTimer,
                         this, SLOT (checkConnection()));
+}
+
+void DriverStation::safetyDisableCheck()
+{
+    if (!m_netDiagnostics.roboRioIsAlive())
+        setControlMode (DS_Disabled);
 }
 
 void DriverStation::sendPacketsToRobot()
@@ -229,34 +248,6 @@ void DriverStation::sendPacketsToRobot()
         m_sender.send (packet, m_joystickData, roboRioAddress());
     }
 
-    QTimer::singleShot (DS_Times::ControlPacketInterval,
+    QTimer::singleShot (DS_Times::ControlPacketInterval, Qt::PreciseTimer,
                         this, SLOT (sendPacketsToRobot()));
-}
-
-void DriverStation::updateElapsedTime()
-{
-    if (operationMode() != DS_Disabled) {
-        int time =  m_elapsedTime.elapsed();
-
-        int minutes = 0;
-        int seconds = time / 1000;
-
-        while (seconds > 60) {
-            minutes += 1;
-            seconds -= 60;
-        }
-
-        QString t = QString::number (time);
-        QString m = QString::number (minutes);
-        QString s = QString::number (seconds);
-
-        if (m.length() < 2) m.prepend ("0");
-        if (s.length() < 2) s.prepend ("0");
-        t = t.at (t.length() - 1);
-
-        emit elapsedTimeChanged (QString ("%1:%2.%3").arg (m, s, t));
-    }
-
-    QTimer::singleShot (DS_Times::ElapsedTimeInterval,
-                        this, SLOT (updateElapsedTime()));
 }

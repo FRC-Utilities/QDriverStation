@@ -41,7 +41,8 @@ HEADERS += \
     $$PWD/src/Times.h \
     $$PWD/src/Receiver.h \
     $$PWD/src/Sender.h \
-    $$PWD/src/Ports.h
+    $$PWD/src/Ports.h \
+    $$PWD/src/ElapsedTime.h
 
 SOURCES += \
     $$PWD/src/Common.cpp \
@@ -50,7 +51,8 @@ SOURCES += \
     $$PWD/src/NetworkDiagnostics.cpp \
     $$PWD/src/VersionAnalyzer.cpp \
     $$PWD/src/Receiver.cpp \
-    $$PWD/src/Sender.cpp
+    $$PWD/src/Sender.cpp \
+    $$PWD/src/ElapsedTime.cpp
 
 
 

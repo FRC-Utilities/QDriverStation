@@ -20,28 +20,42 @@
  * THE SOFTWARE.
  */
 
-#ifndef _DRIVER_STATION_TIMES_H
-#define _DRIVER_STATION_TIMES_H
+#include "Times.h"
+#include "ElapsedTime.h"
 
-/*
- * QTimer objects always process a little after the timeout has happened,
- * we use this constant in time-critical functions to ensure that everything
- * happens at about the value that we really want to use.
- * In other words, we tell the timer to timeout a little before the value that
- * we really need.
- */
-#define _SAFE_CONSTANT 2
-
-/**
- * Defines all the time intervals of the library in a single file.
- * \note Change these values as needed.
- */
-namespace DS_Times
+DS_ElapsedTime::DS_ElapsedTime()
 {
-const int ElapsedTimeInterval (100);
-const int SafetyDisableTimeout (750);
-const int TestConnectionInterval (500);
-const int ControlPacketInterval (20 - _SAFE_CONSTANT);
+    stop();
+    calculateElapsedTime();
 }
 
-#endif /* _DRIVER_STATION_TIMES_H */
+void DS_ElapsedTime::stop()
+{
+    m_enabled = false;
+}
+
+void DS_ElapsedTime::reset()
+{
+    m_enabled = true;
+    m_time.restart();
+}
+
+void DS_ElapsedTime::calculateElapsedTime()
+{
+    if (m_enabled) {
+        int msec = m_time.elapsed();
+        int secs = (msec / 1000);
+        int mins = (secs / 60) % 60;
+
+        secs = secs % 60;
+        msec = msec % 1000;
+
+        emit elapsedTimeChanged (QString ("%1:%2.%3")
+                                 .arg (mins, 2, 10, QLatin1Char ('0'))
+                                 .arg (secs, 2, 10, QLatin1Char ('0'))
+                                 .arg (QString::number (msec).at (0)));
+    }
+
+    QTimer::singleShot (DS_Times::ElapsedTimeInterval, Qt::PreciseTimer,
+                        this, SLOT (calculateElapsedTime()));
+}

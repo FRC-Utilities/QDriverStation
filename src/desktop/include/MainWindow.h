@@ -26,7 +26,8 @@
 #include <SmartWindow.h>
 #include <ui_MainWindow.h>
 
-class DriverStation;
+#include <DriverStation.h>
+
 class AdvancedSettings;
 
 /**
@@ -51,7 +52,6 @@ public:
 private:
     bool m_network;
     Ui::MainWindow ui;
-
     DriverStation* m_ds;
     AdvancedSettings* m_advancedSettings;
 
@@ -156,6 +156,12 @@ private slots:
 
     /**
      * @internal
+     * Disables the robot when the user changes the robot operation mode
+     */
+    void onRobotModeChanged (int mode);
+
+    /**
+     * @internal
      * Saves the settings when a value of the practice times is changed
      */
     void onPracticeValuesChanged();
@@ -209,6 +215,14 @@ private slots:
      * the \a available parameter
      */
     void onNetworkChanged (bool available);
+
+    /**
+     * @internal
+     * Changes the appearance of the window controls when the DriverStation
+     * detects that the control mode was not changed by the user (e.g. when
+     * the robot is disconnected or powered off)
+     */
+    void onControlModeChanged (DS_ControlMode mode);
 
     /**
      * @internal
@@ -270,6 +284,10 @@ private slots:
      */
     void onDiskUsageChanged (int total, int used);
 
+    /**
+     * @internal
+     * Scrolls the NetConsole widget automatically when a message is added
+     */
     void scrollNetConsole();
 
     /**
