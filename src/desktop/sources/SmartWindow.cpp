@@ -41,11 +41,8 @@ SmartWindow::SmartWindow()
     m_promptOnQuit = true;
     m_windowMode = Invalid;
 
-    WindowMode m = Settings::get ("Docked", false).toBool() ? Docked : Normal;
-
-    /* We do this to avoid some nasty bugs in GNU/Linux */
-    setWindowMode (Normal);
-    setWindowMode (m);
+    resizeToFit();
+    setWindowMode (Settings::get ("Docked", false).toBool() ? Docked : Normal);
 }
 
 //------------------------------------------------------------------------------
@@ -165,6 +162,12 @@ void SmartWindow::resizeToFit()
         move (0, w.availableGeometry().height() - height());
     }
 
-    QTimer::singleShot (_UPDATE_INTERVAL, Qt::VeryCoarseTimer,
+    else {
+        resize (0, 0);
+        setMinimumSize (size());
+        setMaximumSize (size());
+    }
+
+    QTimer::singleShot (_UPDATE_INTERVAL, Qt::CoarseTimer,
                         this, SLOT (resizeToFit()));
 }

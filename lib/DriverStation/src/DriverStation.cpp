@@ -212,10 +212,10 @@ void DriverStation::checkConnection()
     }
 
     else if (m_justConnected) {
-        /* Lets say that this is true until we figure out a way to 
+        /* Lets say that this is true until we figure out a way to
          * detect the robot code in an accurate manner */
         m_code = true;
-        
+
         emit codeChanged (m_code);
         emit networkChanged (m_netDiagnostics.roboRioIsAlive());
         m_versionAnalyzer.downloadRobotInformation (roboRioAddress());
