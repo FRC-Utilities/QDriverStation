@@ -278,8 +278,8 @@ void MainWindow::updatePcStatusWidgets()
         ui.PcBatteryProgress->setToolTip (tr ("Battery level: %1%").arg (level));
     }
 
-    //QTimer::singleShot (1000, Qt::VeryCoarseTimer,
-    //                  this, SLOT (updatePcStatusWidgets()));
+    QTimer::singleShot (1000, Qt::CoarseTimer,
+                        this, SLOT (updatePcStatusWidgets()));
 }
 
 //------------------------------------------------------------------------------
@@ -492,8 +492,9 @@ void MainWindow::onRioVersionChanged (QString version)
 
 void MainWindow::onRobotStatusChanged (QString status)
 {
-    /* Do some wicked shit to get 'TeleOp Disabled' instead of 'Disabled' */
     if (m_ds->canBeEnabled() && m_ds->operationMode() != DS_EmergencyStop) {
+
+        /* Get 'TeleOp Disabled' instead of 'Disabled' */
         if (m_ds->operationMode() == DS_Disabled) {
             QString mode;
 
@@ -512,12 +513,12 @@ void MainWindow::onRobotStatusChanged (QString status)
             ui.StatusLabel->setText (QString ("%1 Disabled").arg (mode));
         }
 
-        /* Easy, just append 'Enabled' to the current operation mode */
+        /* Append 'Enabled' to the current operation mode */
         else
             ui.StatusLabel->setText (tr ("%1 Enabled").arg (status));
     }
 
-    /* Robot is in E-Stop or something is seriously fucked up (shit happens) */
+    /* Robot is in E-Stop or something is not good... */
     else
         ui.StatusLabel->setText (status);
 }

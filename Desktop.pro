@@ -166,7 +166,9 @@ macx* {
 linux:!android {
     target.path = /usr/bin
     TARGET = qdriverstation
+    icon.path = /usr/share/pixmaps
     desktop.path = /usr/share/applications
+    icon.files += $$PWD/etc/deploy/linux/qdriverstation.ico
     desktop.files += $$PWD/etc/deploy/linux/qdriverstation.desktop
-    INSTALLS += target desktop
+    INSTALLS += target desktop icon
 }
