@@ -51,7 +51,7 @@ Both versions use the same library to communicate with the robot (check the [lib
 
 ![image](screenshots/Mac.png)
 
-![image](screenshots/Linux.png)
+![image](screenshots/Ubuntu.png)
 
 ![image](screenshots/Windows.png)
 
