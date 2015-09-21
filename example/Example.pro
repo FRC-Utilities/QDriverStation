@@ -23,3 +23,6 @@
 #
 
 include (../Falcon.pri)
+
+SOURCES += Example.cpp
+RESOURCES += Example.qrc

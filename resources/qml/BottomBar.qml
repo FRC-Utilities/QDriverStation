@@ -29,7 +29,7 @@ Item {
     // Properties
     //--------------------------------------------------------------------------
 
-    height: q_app.scale (42)
+    height: q_app.scale (52)
 
     anchors {
         left: parent.left

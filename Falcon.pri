@@ -24,7 +24,7 @@
 
 # Include this in your project with qmake's include() function
 
-QT += qml quick
+QT += qml quick gui widgets
 
 INCLUDEPATH += $$PWD/src
 HEADERS += $$PWD/src/Falcon.h

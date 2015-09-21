@@ -71,6 +71,8 @@ Window {
             return scale (14)
         case "large":
             return scale (18)
+        case "x-large":
+            return scale (22)
         }
 
         return scale (12)
