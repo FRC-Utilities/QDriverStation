@@ -38,7 +38,7 @@ To visit the wiki, please [click here](https://github.com/WinT-3794/QDriverStati
 - [x] Deploy configurations
 - [ ] Mobile user interface
 - [x] Desktop user interface
-- [ ] Communication protocol (check [this repository](https://github.com/WinT-3794/LibDS#progress) for more info)
+- [ ] Communication protocol (check [this page](https://github.com/WinT-3794/LibDS#progress) for more info)
 
 ### Desktop vs Mobile?
 
