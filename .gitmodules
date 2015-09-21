@@ -1,7 +1,0 @@
-[submodule "lib/LibDS"]
-	path = lib/LibDS
-	url = https://github.com/WinT-3794/LibDS
-
-[submodule "lib/Falcon"]
-	path = lib/Falcon
-	url = https://github.com/alex-spataru/Falcon
