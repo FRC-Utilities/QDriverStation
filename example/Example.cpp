@@ -8,7 +8,7 @@
 /**
  * Main entry-point of the application
  */
-int main (int argc, char *argv[])
+int main (int argc, char* argv[])
 {
     return Falcon::StartApp (argc, argv, "qrc:/Example.qml");
 }
