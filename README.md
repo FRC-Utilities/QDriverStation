@@ -49,11 +49,13 @@ Both versions use the same library to communicate with the robot (check the [lib
 
 ### Screenshots (desktop)
 
-![image](doc/screenshots/Main.png)
+![image](screenshots/Mac.png)
 
-![image](doc/screenshots/Dashboard.png)
+![image](screenshots/Linux.png)
 
-![image](doc/screenshots/Settings.png)
+![image](screenshots/Windows.png)
+
+![image](screenshots/Settings.png)
 
 ### Folder and File structure
 
