@@ -12,7 +12,7 @@ The application looks and behaves almost identically to the FRC Driver Station, 
 
 Joystick input is achieved with SDL 2.0, which is a cross-platform library for C/C++.
 
-The actual code that moves and manages a FRC robot is found in a [separate library](https://github.com/WinT-3794/QDriverStation/tree/master/lib/DriverStation), which you can use in your own Qt projects or change it to support older (and future) communication protocols. Please check the [progress](https://github.com/WinT-3794/QDriverStation#progress) section for more info.
+The actual code that moves and manages a FRC robot is found in a [separate repository](https://github.com/WinT-3794/LibDS), which you can use in your own Qt projects or change it to support older (and future) communication protocols. Please check the [progress](https://github.com/WinT-3794/LibDS#progress) section for more info.
 
 ### Wiki
 
@@ -38,14 +38,14 @@ To visit the wiki, please [click here](https://github.com/WinT-3794/QDriverStati
 - [x] Deploy configurations
 - [ ] Mobile user interface
 - [x] Desktop user interface
-- [ ] Communication protocol (check [*/lib/DriverStation*](https://github.com/WinT-3794/QDriverStation/tree/master/lib/DriverStation) for more info)
+- [ ] Communication protocol (check [this repository](https://github.com/WinT-3794/LibDS#progress) for more info)
 
 ### Desktop vs Mobile?
 
 You may have noticed that we have two projects in this repository: a desktop version and a mobile version.
 Consider the desktop version like a clone of the FRC DriverStation, while the mobile version is suited for touch screens.
 
-Both versions use the same library to communicate with the robot (check the [lib](https://github.com/WinT-3794/QDriverStation/tree/master/lib/) folder) but use a different UI (desktop uses traditional QWidgets, while mobile is based on QML).
+Both versions use the same library to communicate with the robot (check this [repository](https://github.com/WinT-3794/LibDS)) but use a different UI (desktop uses traditional QWidgets, while mobile is based on QML).
 
 ### Screenshots (desktop)
 
@@ -63,7 +63,7 @@ Both versions use the same library to communicate with the robot (check the [lib
 
 - <code>doc</code>: contains Doxygen configuration files
 - <code>etc</code>: contains various files used for deployment of the application and resources
-- <code>lib</code>: contains various libraries used by the application, including the [**DriverStation**](https://github.com/WinT-3794/QDriverStation/tree/master/lib/DriverStation) library.
+- <code>lib</code>: contains various libraries used by the application, including the [**LibDS**](https://github.com/WinT-3794/LibDS) library.
 - <code>src</code>: contains the C++ source code of the application
 
 ### Contributing
