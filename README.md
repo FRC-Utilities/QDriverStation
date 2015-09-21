@@ -1,6 +1,6 @@
 # DriverStation Library
 
-[![License](https://img.shields.io/github/license/wint-3794/libds.svg)](https://github.com/WinT-3794/LibDS/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/WinT-3794/LibDS.svg)](https://github.com/WinT-3794/LibDS/blob/master/LICENSE)
 [![BitCoin donate button](https://img.shields.io/badge/bitcoin-donate-yellow.svg)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
 
 The DriverStation library allows any Qt-based project to manage an FRC robot easily and without getting involved in the application loops and network operations needed to manage the roboRIO.
@@ -44,4 +44,4 @@ To contact us, you can send us an e-mail at [team3794@outlook.com](mailto:team37
 
 ### License
 
-This project is licensed under the MIT license. See the COPYING file for more information.
+This project is licensed under the MIT license. See the LICENSE file for more information.
