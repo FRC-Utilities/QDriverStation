@@ -33,12 +33,12 @@ To visit the wiki, please [click here](https://github.com/WinT-3794/QDriverStati
 
 ### Supported platforms
 
-#### Destktop version
+###### Destktop version
 - [x] Microsoft Windows (tested 7, 8.1 and 10)
 - [x] Mac OS X (tested Yosemite and El Capitan)
 - [x] Linux (tested Ubuntu 14.04)
 
-#### Mobile version (also works on desktop systems)
+###### Mobile version (also works on desktop systems)
 - [x] Android (tested on 4.2.2)
 - [x] iOS (tested on iOS Simulator 8, works on jailbroken devices)
 - [ ] Windows Phone (will be tested soon)
@@ -64,25 +64,25 @@ To visit the wiki, please [click here](https://github.com/WinT-3794/QDriverStati
 
 You can contribute to the project in many ways. For example:
 
-#### Designers
+###### Designers
 
 You can create an awesome and distinctive icon for our project. If you are familiar with web design, you could also help us out by creating the website of the QDriverStation.
 
-#### Developers
+###### Developers
 
 If you know a bit of programming, you can contribute directly to the project. If you are new to Git, [check this](https://help.github.com/) page.
 
-#### Media
+###### Media
 
 Spread the word about our application to other FRC teams around the community.
 
-#### Give feedback
+###### Give feedback
 
 Try out the application and let us know what you think and what we can improve.
 
 ### Compilation
 
-#### Requirements
+###### Requirements
 
 The only requirement to compile the application is to have [Qt](http://www.qt.io/download-open-source/) installed in your system. The desktop application will compile with both Qt4 and Qt5, while the mobile application will require you to have at least Qt 5.4 installed.
 
@@ -91,7 +91,7 @@ The only requirement to compile the application is to have [Qt](http://www.qt.io
     
 The project already contains the compiled SDL libraries for Windows and Mac.
 
-#### Compiling the application
+###### Compiling the application
 
 Once you have Qt installed, open *Desktop.pro* in Qt Creator and click the "Run" button.
 
