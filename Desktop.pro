@@ -26,7 +26,7 @@
 # Includes
 #-------------------------------------------------------------------------------
 
-include ($$PWD/lib/DriverStation/DriverStation.pri)
+include ($$PWD/lib/LibDS/DriverStation.pri)
 
 #-------------------------------------------------------------------------------
 # Qt/C++ configuration

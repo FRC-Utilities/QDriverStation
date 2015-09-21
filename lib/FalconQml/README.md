@@ -1,5 +1,8 @@
 # Falcon QML Widgets
 
+[![License](https://img.shields.io/github/license/alex-spataru/falconqml.svg)](https://github.com/alex-spataru/FalconQML/blob/master/LICENSE)
+[![BitCoin donate button](https://img.shields.io/badge/bitcoin-donate-yellow.svg)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
+
 A simple QML widget framework to make your application look good on both desktop and mobile platforms.
 
 # Using the framework

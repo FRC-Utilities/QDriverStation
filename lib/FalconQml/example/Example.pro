@@ -22,5 +22,4 @@
 # THE SOFTWARE.
 #
 
-QT += qml quick
-RESOURCES += $$PWD/resources/falcon.qrc
+include (../Falcon.pri)

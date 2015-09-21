@@ -1,0 +1,6 @@
+[submodule "lib/FalconQML"]
+	path = lib/FalconQML
+	url = https://github.com/alex-spataru/FalconQML
+[submodule "lib/LibDS"]
+	path = lib/LibDS
+	url = https://github.com/WinT-3794/LibDS
