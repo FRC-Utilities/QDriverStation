@@ -26,7 +26,7 @@
 # Includes
 #-------------------------------------------------------------------------------
 
-include ($$PWD/lib/FalconQml/Falcon.pri)
+include ($$PWD/lib/Falcon/Falcon.pri)
 include ($$PWD/lib/LibDS/DriverStation.pri)
 
 #-------------------------------------------------------------------------------
