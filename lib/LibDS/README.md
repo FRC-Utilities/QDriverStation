@@ -27,10 +27,11 @@ There is still a lot of work to be done in order to get a fully-working DriverSt
 - [x] Discover if robot radio exists (by pinging 10.XX.YY.1)
 - [x] Discover if roboRIO exists (by pinging roboRIO-XXYY.local or using an user-provided address)
 - [x] Get robot information such as its library, PDP and PCM (by downloading and reading some files in the FTP server of the roboRIO)
-- [ ] Discover if the robot code is loaded
-- [x] Generate and send control packets to the robot, which contain its control mode (Disabled, TeleOp, Auto, etc), alliance and position - **will be tested soon**.
+- [ ] Discover if the robot code is loaded (maybe by checking if /home/lvuser/FRCUserProgram exists)
+- [x] Generate and send robot packets (Autonomous was tested and is working, we still need to see how joystick data is sent)
 - [x] Read robot battery voltage
 - [x] Built-in NetConsole for logging and finding issues in the robot
+- [x] Be able to reboot the roboRIO and restart the robot code from DS
 - [ ] Get CAN information (we need to do some more "Wiresharking" for that)
 
 [Check this wiki](https://github.com/gluxon/node-driverstation15/wiki/2015-Protocol) to see how the definitions and data on each packet type.
