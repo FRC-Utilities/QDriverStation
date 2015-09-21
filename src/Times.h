@@ -23,25 +23,16 @@
 #ifndef _DRIVER_STATION_TIMES_H
 #define _DRIVER_STATION_TIMES_H
 
-/*
- * QTimer objects always process a little after the timeout has happened,
- * we use this constant in time-critical functions to ensure that everything
- * happens at about the value that we really want to use.
- * In other words, we tell the timer to timeout a little before the value that
- * we really need.
- */
-#define _SAFE_CONSTANT 2
-
 /**
  * Defines all the time intervals of the library in a single file.
  * \note Change these values as needed.
  */
 namespace DS_Times
 {
+const int RobotPacketInterval (20);
 const int ElapsedTimeInterval (100);
 const int SafetyDisableTimeout (750);
 const int TestConnectionInterval (500);
-const int ControlPacketInterval (20 - _SAFE_CONSTANT);
 }
 
 #endif /* _DRIVER_STATION_TIMES_H */
