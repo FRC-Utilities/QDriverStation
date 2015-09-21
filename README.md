@@ -11,11 +11,3 @@ A simple QML widget framework to make your application look good on both desktop
 2. Import Falcon.pri in your qmake project using the include() function
 3. Add the following line in the *.qml files that use the Falcon framework:
 	- import "qrc:/falcon/qml" as Falcon
-	
-# Example project
-
-If you want to experiment with the framework or learn to use it, check the project in the "examples" folder.
-
-# License
-
-This project is released under the terms and conditions of the MIT license.
