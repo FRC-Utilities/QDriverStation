@@ -5,7 +5,7 @@
 
 A simple QML widget framework to make your application look good on both desktop and mobile platforms.
 
-# Using the framework
+### Using the framework
 
 1. Place this repository in your "lib" or "third-party" folder
 2. Import Falcon.pri in your qmake project using the include() function
