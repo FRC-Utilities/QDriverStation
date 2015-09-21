@@ -56,29 +56,10 @@ class DS_Sender
 {
 public:
     /**
-     * @internal
-     * Main entry point of the class
-     */
-    explicit DS_Sender();
-
-    /**
      * Returns the current packet count, used by the robot to differentiate
      * and process packets sent by the robot
      */
-    DS_PacketCount count();
-
-    /**
-     * Resets the packet count index, it must be called everytime the
-     * connection with the robot is reset
-     */
-    void resetCount();
-
-    /**
-     * Returns true if the packet count has exceeded the limits of the protocol
-     * In theory, this should never happen because we ensure that the packet
-     * count stays on the defined limits when sending a packet.
-     */
-    bool countOverflowed();
+    DS_PacketCount getPingData (int index);
 
     /**
      * Sends a generated packet to the robot that contains the desired robot
@@ -86,13 +67,13 @@ public:
      *
      * Additionally, the function will send the joystick input data to the
      * robot for further processing.
-     *
-     * \note This is an overloaded function
      */
-    void send (DS_ControlPacket packet, DS_JoystickData stick, QString host);
+    void send (int index,
+               QString host,
+               DS_JoystickData stick,
+               DS_ControlPacket packet);
 
 private:
-    int m_count;
     QUdpSocket m_socket;
 };
 

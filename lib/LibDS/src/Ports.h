@@ -28,7 +28,9 @@
  */
 namespace DS_Ports
 {
+const int RioTest (80);    /**< The port that we use to check the radio */
 const int Client (1150);     /**< The packets from the robot arrive here */
+const int RadioTest (80);    /**< The port that we use to check the radio */
 const int RoboRIO (1110);    /**< We send packets to this port in the rRIO */
 const int NetConsole (6666); /**< We receive NetConsole information from here */
 }

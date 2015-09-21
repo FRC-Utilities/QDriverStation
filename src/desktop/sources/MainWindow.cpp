@@ -333,6 +333,9 @@ void MainWindow::onRestartClicked()
 {
     if (!m_ds->canBeEnabled())
         statusLabelAnimation();
+
+    else
+        m_ds->restartCode();
 }
 
 void MainWindow::onWebsiteClicked()

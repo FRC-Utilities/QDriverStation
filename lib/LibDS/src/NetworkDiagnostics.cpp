@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+#include "Ports.h"
 #include "Common.h"
 #include "NetworkDiagnostics.h"
 
@@ -65,13 +66,13 @@ void DS_NetworkDiagnostics::refresh()
     /* Connect to roboRIO */
     if (m_rioSocket.state() != QTcpSocket::HostLookupState) {
         m_rioSocket.abort();
-        m_rioSocket.connectToHost (roboRioIpAddress(), 80);
+        m_rioSocket.connectToHost (roboRioIpAddress(), DS_Ports::RioTest);
     }
 
     /* Connect to robot radio */
     if (m_radioSocket.state() != QTcpSocket::HostLookupState) {
         m_radioSocket.abort();
-        m_radioSocket.connectToHost (radioIpAddress(), 80);
+        m_radioSocket.connectToHost (radioIpAddress(), DS_Ports::RadioTest);
     }
 }
 

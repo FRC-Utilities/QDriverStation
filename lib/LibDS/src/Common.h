@@ -43,9 +43,9 @@ enum DS_ControlMode {
  * to reboot the RoboRIO or to restart the robot code
  */
 enum DS_Status {
-    DS_Ok = 0x10,       /**< Do not reboot or do anything, let it be... */
-    DS_NoCode = 0x14,   /**< Restart the robot code */
-    DS_Rebooting = 0x18 /**< Reboot the RoboRIO */
+    DS_Normal = 0x10,        /**< Do not reboot or do anything, let it be... */
+    DS_RestartCode = 0x14,   /**< Restart the robot code */
+    DS_RebootRobot = 0x18    /**< Reboot the RoboRIO */
 };
 
 /**

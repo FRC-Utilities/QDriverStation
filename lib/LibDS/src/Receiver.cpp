@@ -36,6 +36,10 @@ void DS_Receiver::onDataReceived()
         data.resize (m_socket.pendingDatagramSize());
         m_socket.readDatagram (data.data(), data.size());
 
+        /* Read packet index and tell the Sender to send a new packet */
+        if (data.length() >= 2)
+            emit dataReceived ((data.at (0) * 0xff) + data.at (1));
+
         /* This is a voltage packet, read it and emit appropiate signals */
         if (data.length() == 8) {
             QString major = QString::number (data.at (5));

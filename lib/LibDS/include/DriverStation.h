@@ -255,6 +255,7 @@ private:
     static DriverStation* m_instance;
 
     int m_team;
+    int m_count;
     bool m_code;
     bool m_init;
     bool m_radioStatus;
@@ -308,6 +309,12 @@ private slots:
     void checkConnection();
 
     /**
+     * Resets the internal values of the library when we disconnect from the
+     * robot.
+     */
+    void resetInternalValues();
+
+    /**
      * Checks if the connection between the roboRIO and the client is working
      * correctly. If not, the function will disable the robot and notify other
      * connected objects about the event.
@@ -319,6 +326,11 @@ private slots:
      *       value before calling this function.
      */
     void safetyDisableCheck();
+
+    /**
+     * @brief sendRobotPacketsLoop
+     */
+    void sendRobotPacketsLoop();
 
     /**
      * Sends a 6-byte packet to the robot that contains:
@@ -333,7 +345,7 @@ private slots:
      *
      * This function is called once every 20 milliseconds.
      */
-    void sendPacketsToRobot();
+    void sendPacketsToRobot (int ping);
 };
 
 #endif /* _DRIVER_STATION_MAIN_H */
