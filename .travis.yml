@@ -25,12 +25,12 @@ script:
     - qmake -qt=qt5 -v
     - qmake -qt=qt5 Desktop.pro
     - make
-    - make clean
+    #- make clean
     
     # Build mobile version
-    - qmake -qt=qt5 Mobile.pro
-    - make
-    - make clean
+    #- qmake -qt=qt5 Mobile.pro
+    #- make
+    #- make clean
     
 after_success:
     - codecov
