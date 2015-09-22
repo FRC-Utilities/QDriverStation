@@ -238,6 +238,12 @@ void GamepadManager::readSdlEvents()
     SDL_Event event;
     while (SDL_PollEvent (&event)) {
         switch (event.type) {
+        case SDL_JOYDEVICEADDED:
+            ++m_tracker;
+            onControllerAdded (&event);
+            emit countChanged (joystickList());
+            emit countChanged (SDL_NumJoysticks());
+            break;
         case SDL_CONTROLLERDEVICEADDED:
             ++m_tracker;
             onControllerAdded (&event);
