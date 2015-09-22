@@ -25,6 +25,7 @@ script:
     - qmake -qt=qt5 -v
     - qmake -qt=qt5 Desktop.pro
     - make
+    - cd obj
     #- make clean
     
     # Build mobile version
