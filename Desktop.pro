@@ -48,6 +48,8 @@ MOC_DIR = moc
 RCC_DIR = qrc
 OBJECTS_DIR = obj
 
+QMAKE_CXXFLAGS += -coverage
+
 #-------------------------------------------------------------------------------
 # C++ compiler optimization flags, may make compilation slower
 #-------------------------------------------------------------------------------
