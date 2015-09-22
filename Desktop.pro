@@ -48,8 +48,6 @@ MOC_DIR = moc
 RCC_DIR = qrc
 OBJECTS_DIR = obj
 
-QMAKE_CXXFLAGS += -coverage
-
 #-------------------------------------------------------------------------------
 # C++ compiler optimization flags, may make compilation slower
 #-------------------------------------------------------------------------------
@@ -159,7 +157,6 @@ win32* {
 }
 
 macx* {
-    LIBS += -lssl
     ICON = $$PWD/etc/deploy/mac-osx/AppIcon.icns
     RC_FILE = $$PWD/etc/deploy/mac-osx/AppIcon.icns
     QMAKE_INFO_PLIST = $$PWD/etc/deploy/mac-osx/Info.plist
@@ -173,4 +170,7 @@ linux:!android {
     icon.files += $$PWD/etc/deploy/linux/qdriverstation.ico
     desktop.files += $$PWD/etc/deploy/linux/qdriverstation.desktop
     INSTALLS += target desktop icon
+    
+    QMAKE_CXXFLAGS += -coverage
+    LIBS += -lgcov
 }
