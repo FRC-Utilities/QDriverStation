@@ -83,7 +83,6 @@ void Dashboard::loadDashboard()
         QString pF = is64Bits ? "C:/Program Files (x86)" : "C:/Program Files";
         path = QString ("%1/FRC Dashboard/Dashboard.exe").arg (pF);
         path = "\"" + path + "\"";
-        break;
     }
 #endif
 
