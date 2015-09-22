@@ -31,8 +31,7 @@ namespace DS_Times
 {
 const int RobotPacketInterval (20);
 const int ElapsedTimeInterval (100);
-const int SafetyDisableTimeout (750);
-const int TestConnectionInterval (500);
+const int TestConnectionInterval (1000);
 }
 
 #endif /* _DRIVER_STATION_TIMES_H */

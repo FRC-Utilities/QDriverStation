@@ -33,14 +33,12 @@ DriverStation::DriverStation()
     m_justConnected = false;
     m_justDisconnected = false;
 
-    m_status = DS_Normal;
-    m_alliance = DS_Red1;
-    m_mode = DS_Disabled;
+    m_status = DS_StatusNormal;
+    m_alliance = DS_AllianceRed1;
+    m_mode = DS_ControlDisabled;
 
     connect (&m_netConsole,      SIGNAL (newMessage (QString)),
              this,               SIGNAL (newMessage (QString)));
-    connect (&m_receiver,        SIGNAL (voltageChanged (QString)),
-             this,               SIGNAL (voltageChanged (QString)));
     connect (&m_versionAnalyzer, SIGNAL (libVersionChanged (QString)),
              this,               SIGNAL (libVersionChanged (QString)));
     connect (&m_versionAnalyzer, SIGNAL (pcmVersionChanged (QString)),
@@ -51,8 +49,14 @@ DriverStation::DriverStation()
              this,               SIGNAL (rioVersionChanged (QString)));
     connect (&m_elapsedTime,     SIGNAL (elapsedTimeChanged (QString)),
              this,               SIGNAL (elapsedTimeChanged (QString)));
-    //connect (&m_receiver,        SIGNAL (dataReceived (int)),
-    //       this,               SLOT   (sendPacketsToRobot (int)));
+    connect (&m_receiver,        SIGNAL (voltageChanged (QString)),
+             this,               SIGNAL (voltageChanged (QString)));
+    connect (&m_receiver,        SIGNAL (voltageChanged (double)),
+             this,               SIGNAL (voltageChanged (double)));
+    connect (&m_receiver,        SIGNAL (dataReceived (int)),
+             this,               SLOT   (setCurrentPingIndex (int)));
+    connect (&m_receiver,        SIGNAL (userCodeChanged (bool)),
+             this,               SLOT   (onCodeChanged (bool)));
 }
 
 DriverStation* DriverStation::getInstance()
@@ -117,7 +121,7 @@ void DriverStation::init()
 
         /* Begin internal loops */
         checkConnection();
-        sendRobotPacketsLoop();
+        sendRobotPackets();
 
         /* Configure elapsed time */
         m_elapsedTime.stop();
@@ -130,12 +134,12 @@ void DriverStation::init()
 
 void DriverStation::reboot()
 {
-    m_status = DS_RebootRobot;
+    m_status = DS_StatusRebootRobot;
 }
 
 void DriverStation::restartCode()
 {
-    m_status = DS_RestartCode;
+    m_status = DS_StatusRestartCode;
 }
 
 void DriverStation::setTeamNumber (int team)
@@ -159,7 +163,7 @@ void DriverStation::setCustomAddress (QString address)
 
 void DriverStation::setControlMode (DS_ControlMode mode)
 {
-    if (mode == DS_Disabled)
+    if (mode == DS_ControlDisabled)
         m_elapsedTime.stop();
 
     else if (m_mode != mode)
@@ -204,15 +208,10 @@ void DriverStation::checkConnection()
     m_justConnected = m_netDiagnostics.roboRioIsAlive() && !m_oldConnection;
     m_justDisconnected = !m_netDiagnostics.roboRioIsAlive() && m_oldConnection;
 
-    if (m_justDisconnected) {
+    if (m_justDisconnected)
         resetInternalValues();
-        QTimer::singleShot (DS_Times::SafetyDisableTimeout, Qt::PreciseTimer,
-                            this, SLOT (safetyDisableCheck()));
-    }
 
     else if (m_justConnected) {
-        m_code = true;
-        emit codeChanged (m_code);
         emit networkChanged (m_netDiagnostics.roboRioIsAlive());
         m_versionAnalyzer.downloadRobotInformation (roboRioAddress());
     }
@@ -232,45 +231,55 @@ void DriverStation::resetInternalValues()
 {
     m_count = 0;
     m_code = false;
-    m_status = DS_Normal;
+    m_status = DS_StatusNormal;
 
     emit codeChanged (false);
     emit networkChanged (false);
     emit voltageChanged (QString (""));
 
-    setControlMode (DS_Disabled);
+    setControlMode (DS_ControlDisabled);
 }
 
-void DriverStation::safetyDisableCheck()
-{
-    if (!m_netDiagnostics.roboRioIsAlive())
-        setControlMode (DS_Disabled);
-}
-
-void DriverStation::sendRobotPacketsLoop()
+void DriverStation::refreshPingData()
 {
     if (m_netDiagnostics.roboRioIsAlive()) {
         ++m_count;
-        sendPacketsToRobot (m_count);
+
+        if (m_count > 0xffff)
+            m_count = 0;
+    }
+}
+
+void DriverStation::setCurrentPingIndex (int index)
+{
+    if (m_count != index)
+        m_count = index;
+}
+
+void DriverStation::sendRobotPackets()
+{
+    if (m_netDiagnostics.roboRioIsAlive()) {
+        refreshPingData();
+
+        DS_ClientPacket packet;
+        packet.mode = m_mode;
+        packet.status = m_status;
+        packet.alliance = m_alliance;
+
+        m_sender.send (m_count, roboRioAddress(), m_joystickData, packet);
+
     }
 
     emit robotStatusChanged (getStatus());
 
     QTimer::singleShot (DS_Times::RobotPacketInterval, Qt::PreciseTimer,
-                        this, SLOT (sendRobotPacketsLoop()));
+                        this, SLOT (sendRobotPackets()));
 }
 
-void DriverStation::sendPacketsToRobot (int ping)
+void DriverStation::onCodeChanged (bool available)
 {
-    if (ping != m_count)
-        m_count = ping;
-
-    if (m_netDiagnostics.roboRioIsAlive()) {
-        DS_ControlPacket packet;
-        packet.mode = m_mode;
-        packet.status = m_status;
-        packet.alliance = m_alliance;
-
-        m_sender.send (ping, roboRioAddress(), m_joystickData, packet);
+    if (m_code != available) {
+        m_code = available;
+        emit codeChanged (m_code);
     }
 }

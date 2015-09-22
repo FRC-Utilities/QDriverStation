@@ -20,10 +20,18 @@
  * THE SOFTWARE.
  */
 
-#include <QString>
-#include <QObject>
-
 #include "Common.h"
+
+void DS_PingData::generatePingData (int index)
+{
+    byte1 = index / 0xff;
+    byte2 = index % 0xff;
+}
+
+int DS_PingData::getPingIndex()
+{
+    return byte1 * 0xff + byte2;
+}
 
 QString DS_GetStaticIp (int team, int host)
 {
@@ -55,19 +63,19 @@ QString DS_GetStaticIp (int team, int host)
 QString DS_GetControlModeString (DS_ControlMode mode)
 {
     switch (mode) {
-    case DS_Test:
+    case DS_ControlTest:
         return QObject::tr ("Test");
         break;
-    case DS_TeleOp:
+    case DS_ControlTeleOp:
         return QObject::tr ("TeleOp");
         break;
-    case DS_Disabled:
+    case DS_ControlDisabled:
         return QObject::tr ("Disabled");
         break;
-    case DS_Autonomous:
+    case DS_ControlAutonomous:
         return QObject::tr ("Autonomous");
         break;
-    case DS_EmergencyStop:
+    case DS_ControlEmergencyStop:
         return QObject::tr ("Emergency Stop");
         break;
     }
