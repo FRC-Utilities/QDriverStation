@@ -30,16 +30,23 @@ void DS_Sender::send (int index,
 {
     Q_UNUSED (stick);
 
+    /* Generate the ping data */
     QByteArray data;
     DS_PingData ping;
     ping.generatePingData (index + 1);
 
+    /* Add ping data */
     data.append (ping.byte1);
     data.append (ping.byte2);
+
+    /* Add this misterious number */
     data.append (0x01);
+
+    /* Add the desired control mode, robot status, alliance and position */
     data.append (packet.mode);
     data.append (packet.status);
     data.append (packet.alliance);
 
+    /* Send the data */
     m_socket.writeDatagram (data, QHostAddress (host), DS_Ports::RoboRIO);
 }
