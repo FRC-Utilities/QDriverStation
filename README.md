@@ -26,7 +26,7 @@ There is still a lot of work to be done in order to get a fully-working DriverSt
 - [x] Discover if robot radio exists (by pinging 10.XX.YY.1)
 - [x] Discover if roboRIO exists (by pinging roboRIO-XXYY.local or using an user-provided address)
 - [x] Get robot information such as its library, PDP and PCM (by downloading and reading some files in the FTP server of the roboRIO)
-- [x] Discover if the robot code is loaded (maybe by checking if /home/lvuser/FRCUserProgram exists)
+- [x] Discover if the robot code is loaded
 - [x] Generate and send robot packets (Control modes are fully working)
 - [ ] Encode joystick data to send it to the robot
 - [x] Read robot battery voltage
