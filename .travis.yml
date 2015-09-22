@@ -1,7 +1,6 @@
 language: cpp
 
 before_install:
-    - pip install --user codecov
     - sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
     - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
     - sudo add-apt-repository --yes ppa:canonical-qt5-edgers/qt5-beta2
@@ -25,14 +24,9 @@ script:
     - qmake -qt=qt5 -v
     - qmake -qt=qt5 Desktop.pro
     - make
-    - cd obj
-    #- make clean
+    - make clean
     
     # Build mobile version
-    #- qmake -qt=qt5 Mobile.pro
-    #- make
-    #- make clean
-    
-after_success:
-    - bash <(curl -s https://codecov.io/bash)
-    - codecov
+    - qmake -qt=qt5 Mobile.pro
+    - make
+    - make clean
