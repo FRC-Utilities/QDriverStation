@@ -20,8 +20,8 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_ADVANCED_SETTINGS_H
-#define _QDS_ADVANCED_SETTINGS_H
+#ifndef _QDRIVER_STATION_ADVANCED_SETTINGS_H
+#define _QDRIVER_STATION_ADVANCED_SETTINGS_H
 
 #include <QList>
 #include <QDialog>
@@ -144,4 +144,4 @@ private slots:
     int getEmitter (const QObject* object);
 };
 
-#endif /* _QDS_ADVANCED_SETTINGS_H */
+#endif /* _QDRIVER_STATION_ADVANCED_SETTINGS_H */

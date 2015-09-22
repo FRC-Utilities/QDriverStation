@@ -20,8 +20,8 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_SMART_WINDOW_H
-#define _QDS_SMART_WINDOW_H
+#ifndef _QDRIVER_STATION_SMART_WINDOW_H
+#define _QDRIVER_STATION_SMART_WINDOW_H
 
 #include <QMoveEvent>
 #include <QCloseEvent>
@@ -122,4 +122,4 @@ private:
     WindowMode m_windowMode;
 };
 
-#endif /* _QDS_SMART_WINDOW_H */
+#endif /* _QDRIVER_STATION_SMART_WINDOW_H */

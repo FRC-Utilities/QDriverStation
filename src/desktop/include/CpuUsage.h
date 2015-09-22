@@ -20,8 +20,8 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_CPU_USAGE_H
-#define _QDS_CPU_USAGE_H
+#ifndef _QDRIVER_STATION_CPU_USAGE_H
+#define _QDRIVER_STATION_CPU_USAGE_H
 
 /**
  * @class CpuUsage
@@ -54,4 +54,4 @@ public:
     static int getUsage();
 };
 
-#endif /* _QDS_CPU_USAGE_H */
+#endif /* _QDRIVER_STATION_CPU_USAGE_H */

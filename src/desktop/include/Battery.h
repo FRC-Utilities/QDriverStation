@@ -20,8 +20,8 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_BATTERY_H
-#define _QDS_BATTERY_H
+#ifndef _QDRIVER_STATION_BATTERY_H
+#define _QDRIVER_STATION_BATTERY_H
 
 /**
  * @class Battery
@@ -62,4 +62,4 @@ public:
     static int currentLevel();
 };
 
-#endif /* _QDS_BATTERY_H */
+#endif /* _QDRIVER_STATION_BATTERY_H */

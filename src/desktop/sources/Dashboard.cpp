@@ -39,10 +39,6 @@
 
 Dashboard* Dashboard::m_instance = nullptr;
 
-//------------------------------------------------------------------------------
-// Class initialization functions
-//------------------------------------------------------------------------------
-
 Dashboard::Dashboard()
 {
     m_process = new QProcess (this);
@@ -58,10 +54,6 @@ Dashboard* Dashboard::getInstance()
 
     return m_instance;
 }
-
-//------------------------------------------------------------------------------
-// Functions that manage the Dashboard process
-//------------------------------------------------------------------------------
 
 void Dashboard::loadDashboard()
 {
@@ -108,10 +100,6 @@ void Dashboard::reloadDashboard()
     quitDashboard();
     loadDashboard();
 }
-
-//------------------------------------------------------------------------------
-// Dashboard-information functions (getters)
-//------------------------------------------------------------------------------
 
 int Dashboard::getCurrentDashboard()
 {

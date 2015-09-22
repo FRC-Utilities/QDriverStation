@@ -20,8 +20,8 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_JOYSTICKS_H
-#define _QDS_JOYSTICKS_H
+#ifndef _QDRIVER_STATION_JOYSTICKS_H
+#define _QDRIVER_STATION_JOYSTICKS_H
 
 #include <QList>
 #include <QWidget>
@@ -113,4 +113,4 @@ private slots:
     void onButtonEvent (GM_Button button);
 };
 
-#endif /* _QDS_JOYSTICKS_H */
+#endif /* _QDRIVER_STATION_JOYSTICKS_H */

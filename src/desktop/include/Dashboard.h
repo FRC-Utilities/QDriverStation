@@ -20,8 +20,8 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_DASHBOARD_H
-#define _QDS_DASHBOARD_H
+#ifndef _QDRIVER_STATION_DASHBOARD_H
+#define _QDRIVER_STATION_DASHBOARD_H
 
 #include <QObject>
 #include <QProcess>
@@ -98,4 +98,4 @@ private:
     static Dashboard* m_instance;
 };
 
-#endif /* _QDS_DASHBOARD_H */
+#endif /* _QDRIVER_STATION_DASHBOARD_H */

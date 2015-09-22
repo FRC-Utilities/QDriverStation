@@ -52,10 +52,6 @@
 #define _NETCONSOLE_FONT QFont ("Inconsolata", 13)
 #endif
 
-//------------------------------------------------------------------------------
-// Class initialization functions
-//------------------------------------------------------------------------------
-
 MainWindow::MainWindow()
 {
     ui.setupUi (this);
@@ -255,10 +251,6 @@ void MainWindow::updateLabelColors()
     ui.CommunicationsLabel->setPalette (p);
 }
 
-//------------------------------------------------------------------------------
-// Functions that are called constantly with a timer
-//------------------------------------------------------------------------------
-
 void MainWindow::updatePcStatusWidgets()
 {
     if (ui.LeftTab->currentIndex() == 0) {
@@ -282,10 +274,6 @@ void MainWindow::updatePcStatusWidgets()
                         this, SLOT (updatePcStatusWidgets()));
 }
 
-//------------------------------------------------------------------------------
-// Functions that react to UI events
-//------------------------------------------------------------------------------
-
 void MainWindow::onCopyClicked()
 {
     qApp->clipboard()->setText (ui.NetConsoleEdit->toPlainText());
@@ -297,27 +285,7 @@ void MainWindow::onCopyClicked()
 void MainWindow::onStationChanged (int station)
 {
     Settings::set ("Station", station);
-
-    switch (station) {
-    case 0:
-        m_ds->setAlliance (DS_AllianceRed1);
-        break;
-    case 1:
-        m_ds->setAlliance (DS_AllianceRed2);
-        break;
-    case 2:
-        m_ds->setAlliance (DS_AllianceRed3);
-        break;
-    case 3:
-        m_ds->setAlliance (DS_AllianceBlue1);
-        break;
-    case 4:
-        m_ds->setAlliance (DS_AllianceBlue2);
-        break;
-    case 5:
-        m_ds->setAlliance (DS_AllianceBlue3);
-        break;
-    }
+    m_ds->setAlliance ((DS_Alliance) station);
 }
 
 void MainWindow::onRebootClicked()
@@ -442,10 +410,6 @@ void MainWindow::setRobotEnabled (bool enabled)
         m_ds->setControlMode (DS_ControlDisabled);
 }
 
-//------------------------------------------------------------------------------
-// Functions that react to DriverStation events
-//------------------------------------------------------------------------------
-
 void MainWindow::updateLabelText (QLabel* label, QString text)
 {
     if (m_network)
@@ -540,10 +504,6 @@ void MainWindow::scrollNetConsole()
 {
     ui.NetConsoleEdit->ensureCursorVisible();
 }
-
-//------------------------------------------------------------------------------
-// Functions that create animations (flashing status label stuff)
-//------------------------------------------------------------------------------
 
 void MainWindow::toggleStatusColor()
 {

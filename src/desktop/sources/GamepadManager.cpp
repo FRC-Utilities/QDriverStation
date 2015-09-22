@@ -51,10 +51,6 @@
 
 GamepadManager* GamepadManager::m_instance = nullptr;
 
-//------------------------------------------------------------------------------
-// Class initialization functions
-//------------------------------------------------------------------------------
-
 GamepadManager::GamepadManager()
 {
     SDL_SetHint (SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
@@ -104,10 +100,6 @@ GamepadManager* GamepadManager::getInstance()
     return m_instance;
 }
 
-//------------------------------------------------------------------------------
-// Functions that give information about a selected joystick
-//------------------------------------------------------------------------------
-
 int GamepadManager::getNumAxes (int joystick)
 {
     return SDL_JoystickNumAxes (SDL_JoystickOpen (joystick));
@@ -134,10 +126,6 @@ QString GamepadManager::getJoystickName (int joystick)
     return name.isEmpty() ? SDL_JoystickNameForIndex (joystick) : name;
 }
 
-//------------------------------------------------------------------------------
-// Functions that give information about all joysticks
-//------------------------------------------------------------------------------
-
 QStringList GamepadManager::joystickList()
 {
     QStringList list;
@@ -147,10 +135,6 @@ QStringList GamepadManager::joystickList()
 
     return list;
 }
-
-//------------------------------------------------------------------------------
-// Functions that need to be called after initalization of UI
-//------------------------------------------------------------------------------
 
 void GamepadManager::init()
 {
@@ -165,10 +149,6 @@ void GamepadManager::setUpdateInterval (int time)
         m_time = time;
 }
 
-//------------------------------------------------------------------------------
-// Functions that control behaviour of a specific joystick
-//------------------------------------------------------------------------------
-
 void GamepadManager::rumble (int joystick, int time)
 {
     SDL_InitSubSystem (SDL_INIT_HAPTIC);
@@ -179,10 +159,6 @@ void GamepadManager::rumble (int joystick, int time)
         SDL_HapticRumblePlay (haptic, 1, time);
     }
 }
-
-//------------------------------------------------------------------------------
-// Functions that transform SDL events into GamepadManager structures/data
-//------------------------------------------------------------------------------
 
 GM_Axis GamepadManager::getAxis (const SDL_Event* event)
 {
@@ -219,10 +195,6 @@ GM_Joystick GamepadManager::getJoystick (const SDL_Event* event)
 
     return stick;
 }
-
-//------------------------------------------------------------------------------
-// SDL magic
-//------------------------------------------------------------------------------
 
 int GamepadManager::getDynamicId (int id)
 {
@@ -269,10 +241,6 @@ void GamepadManager::readSdlEvents()
 
     QTimer::singleShot (m_time, this, SLOT (readSdlEvents()));
 }
-
-//------------------------------------------------------------------------------
-// Functions that react to SDL events
-//------------------------------------------------------------------------------
 
 void GamepadManager::onAxisEvent (const SDL_Event* event)
 {

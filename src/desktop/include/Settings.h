@@ -20,8 +20,8 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_SETTINGS_H
-#define _QDS_SETTINGS_H
+#ifndef _QDRIVER_STATION_SETTINGS_H
+#define _QDRIVER_STATION_SETTINGS_H
 
 #include <QString>
 #include <QVariant>
@@ -55,4 +55,4 @@ public:
     static QVariant get (QString key, QVariant defaultValue);
 };
 
-#endif /* _QDS_SETTINGS_H */
+#endif /* _QDRIVER_STATION_SETTINGS_H */

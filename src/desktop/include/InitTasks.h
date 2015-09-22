@@ -20,8 +20,8 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_INIT_TASKS_H
-#define _QDS_INIT_TASKS_H
+#ifndef _QDRIVER_STATION_INIT_TASKS_H
+#define _QDRIVER_STATION_INIT_TASKS_H
 
 /**
  * @class InitTasks
@@ -50,4 +50,4 @@ public:
     static void executeFirstRunTasks();
 };
 
-#endif /* _QDS_INIT_TASKS_H */
+#endif /* _QDRIVER_STATION_INIT_TASKS_H */

@@ -20,8 +20,8 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_MAINWINDOW_H
-#define _QDS_MAINWINDOW_H
+#ifndef _QDRIVER_STATION_MAINWINDOW_H
+#define _QDRIVER_STATION_MAINWINDOW_H
 
 #include <SmartWindow.h>
 #include <ui_MainWindow.h>
@@ -307,4 +307,4 @@ private slots:
     void statusLabelAnimation();
 };
 
-#endif /* _QDS_MAINWINDOW_H */
+#endif /* _QDRIVER_STATION_MAINWINDOW_H */

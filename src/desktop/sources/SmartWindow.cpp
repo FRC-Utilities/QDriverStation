@@ -28,12 +28,6 @@
 #include "Settings.h"
 #include "SmartWindow.h"
 
-#define _UPDATE_INTERVAL 500
-
-//------------------------------------------------------------------------------
-// Class initialization functions
-//------------------------------------------------------------------------------
-
 SmartWindow::SmartWindow()
 {
     m_closingDown = false;
@@ -44,10 +38,6 @@ SmartWindow::SmartWindow()
     resizeToFit();
     setWindowMode (Settings::get ("Docked", false).toBool() ? Docked : Normal);
 }
-
-//------------------------------------------------------------------------------
-// Functions that give information about the window
-//------------------------------------------------------------------------------
 
 bool SmartWindow::isDocked()
 {
@@ -63,10 +53,6 @@ bool SmartWindow::isPromptOnQuit()
 {
     return m_promptOnQuit;
 }
-
-//------------------------------------------------------------------------------
-// Functions that react to user events
-//------------------------------------------------------------------------------
 
 void SmartWindow::moveEvent (QMoveEvent* e)
 {
@@ -100,10 +86,6 @@ void SmartWindow::closeEvent (QCloseEvent* e)
 
     e->accept();
 }
-
-//------------------------------------------------------------------------------
-// Functions that change the appearance and behaviour of the window
-//------------------------------------------------------------------------------
 
 void SmartWindow::setUseFixedSize (bool fixed)
 {
@@ -147,10 +129,6 @@ void SmartWindow::setWindowMode (WindowMode mode)
     resizeToFit();
 }
 
-//------------------------------------------------------------------------------
-// Functions that are called constantly with a timer
-//------------------------------------------------------------------------------
-
 void SmartWindow::resizeToFit()
 {
     if (isDocked()) {
@@ -168,6 +146,5 @@ void SmartWindow::resizeToFit()
         setMaximumSize (size());
     }
 
-    QTimer::singleShot (_UPDATE_INTERVAL, Qt::CoarseTimer,
-                        this, SLOT (resizeToFit()));
+    QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (resizeToFit()));
 }

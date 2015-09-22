@@ -20,8 +20,8 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_GAMEPAD_MANAGER_H
-#define _QDS_GAMEPAD_MANAGER_H
+#ifndef _QDRIVER_STATION_GAMEPAD_MANAGER_H
+#define _QDRIVER_STATION_GAMEPAD_MANAGER_H
 
 #include <SDL.h>
 #include <QObject>
@@ -248,4 +248,4 @@ private slots:
     void onControllerRemoved (const SDL_Event* event);
 };
 
-#endif /* _QDS_GAMEPAD_MANAGER_H */
+#endif /* _QDRIVER_STATION_GAMEPAD_MANAGER_H */

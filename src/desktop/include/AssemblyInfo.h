@@ -20,8 +20,8 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_ASSEMBLY_INFO_H
-#define _QDS_ASSEMBLY_INFO_H
+#ifndef _QDRIVER_STATION_ASSEMBLY_INFO_H
+#define _QDRIVER_STATION_ASSEMBLY_INFO_H
 
 #include <QString>
 #include <QObject>
@@ -61,4 +61,4 @@ public:
     static QString buildDateTime();
 };
 
-#endif /* _QDS_ASSEMBLY_INFO_H */
+#endif /* _QDRIVER_STATION_ASSEMBLY_INFO_H */

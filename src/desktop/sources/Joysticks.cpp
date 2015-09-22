@@ -26,10 +26,6 @@
 
 #include "Joysticks.h"
 
-//------------------------------------------------------------------------------
-// Class initalization functions
-//------------------------------------------------------------------------------
-
 Joysticks::Joysticks (QWidget* parent) : QWidget (parent)
 {
     ui.setupUi (this);
@@ -51,10 +47,6 @@ Joysticks::Joysticks (QWidget* parent) : QWidget (parent)
     connect (ui.JoystickList, SIGNAL (currentRowChanged (int)),
              this,            SLOT   (onRowChanged (int)));
 }
-
-//------------------------------------------------------------------------------
-// Functions that react to UI events
-//------------------------------------------------------------------------------
 
 void Joysticks::onRumbleClicked()
 {
@@ -128,19 +120,13 @@ void Joysticks::onRowChanged (int row)
     }
 }
 
-//------------------------------------------------------------------------------
-// Functions that react to the GamepadManager
-//------------------------------------------------------------------------------
-
 void Joysticks::onCountChanged (QStringList list)
 {
-    /* A joystick was removed, notify MainWindow */
     if (list.count() < ui.JoystickList->count())
         emit joystickRemoved();
 
     ui.JoystickList->clear();
 
-    /* Display the attached joysticks in the list widget */
     if (list.count() > 0) {
         for (int i = 1; i <= list.count(); ++i)
             ui.JoystickList->addItem (QString ("%1: ").arg (i) + list.at (i - 1));
@@ -148,46 +134,24 @@ void Joysticks::onCountChanged (QStringList list)
         ui.JoystickList->setCurrentRow (0);
     }
 
-    /* Show the rumble button if there is at least one joystick */
-    ui.Rumble->setVisible (list.count() > 0);
-
-    /*
-     * Notify the window if there are joystick available.
-     * Used to toggle the 'Joysticks' LED
-     */
     emit statusChanged (list.count() > 0);
+    ui.Rumble->setVisible (list.count() > 0);
 }
 
 void Joysticks::onAxisEvent (GM_Axis axis)
 {
-    /*
-     * Only proceed if the joystick that emitted the signal is currently
-     * selected by the user
-     */
     if (ui.JoystickList->currentRow() != axis.joystick.id)
         return;
 
-    /*
-     * Only proceed if the reported axis exists.
-     * SDL may report some crazy values when a joystick is attached or removed
-     */
     if (axis.rawId < m_axes.count())
         m_axes.at (axis.rawId)->setValue (axis.value * 100);
 }
 
 void Joysticks::onButtonEvent (GM_Button button)
 {
-    /*
-     * Only proceed if the joystick that emitted the signal is currently
-     * selected by the user
-     */
     if (ui.JoystickList->currentRow() != button.joystick.id)
         return;
 
-    /*
-     * Only proceed if the reported button exists.
-     * SDL may throw some crazy values when a joystick is attached or removed
-     */
     if (button.rawId < m_buttons.count())
         m_buttons.at (button.rawId)->setChecked (button.pressed);
 }

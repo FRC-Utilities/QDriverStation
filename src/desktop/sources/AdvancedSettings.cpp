@@ -46,21 +46,22 @@ AdvancedSettings::AdvancedSettings()
     connect (ui.CancelButton, SIGNAL (clicked()), this, SLOT (onCancelClicked()));
 
     /* Appearance tab */
-    connect (ui.BaseButton, SIGNAL (clicked()), this, SLOT (onSelectorClicked()));
-    connect (ui.HighlightButton, SIGNAL (clicked()), this,
-             SLOT (onSelectorClicked()));
-    connect (ui.BackgroundButton, SIGNAL (clicked()), this,
-             SLOT (onSelectorClicked()));
-    connect (ui.ForegroundButton, SIGNAL (clicked()), this,
-             SLOT (onSelectorClicked()));
-    connect (ui.BaseEdit, SIGNAL (textChanged (QString)), this,
-             SLOT (onColorChanged (QString)));
-    connect (ui.HighlightEdit, SIGNAL (textChanged (QString)), this,
-             SLOT (onColorChanged (QString)));
-    connect (ui.BackgroundEdit, SIGNAL (textChanged (QString)), this,
-             SLOT (onColorChanged (QString)));
-    connect (ui.ForegroundEdit, SIGNAL (textChanged (QString)), this,
-             SLOT (onColorChanged (QString)));
+    connect (ui.BaseButton,       SIGNAL (clicked()),
+             this,                SLOT   (onSelectorClicked()));
+    connect (ui.HighlightButton,  SIGNAL (clicked()),
+             this,                SLOT   (onSelectorClicked()));
+    connect (ui.BackgroundButton, SIGNAL (clicked()),
+             this,                SLOT   (onSelectorClicked()));
+    connect (ui.ForegroundButton, SIGNAL (clicked()),
+             this,                SLOT   (onSelectorClicked()));
+    connect (ui.BaseEdit,         SIGNAL (textChanged (QString)),
+             this,                SLOT   (onColorChanged (QString)));
+    connect (ui.HighlightEdit,    SIGNAL (textChanged (QString)),
+             this,                SLOT   (onColorChanged (QString)));
+    connect (ui.BackgroundEdit,   SIGNAL (textChanged (QString)),
+             this,                SLOT   (onColorChanged (QString)));
+    connect (ui.ForegroundEdit,   SIGNAL (textChanged (QString)),
+             this,                SLOT   (onColorChanged (QString)));
 
     readSettings();
 }
@@ -70,10 +71,6 @@ void AdvancedSettings::setTeamNumber (int team)
     ui.CustomAddressEdit->setPlaceholderText (
         QString ("roboRIO-%1.local").arg (team));
 }
-
-//------------------------------------------------------------------------------
-// QSettings-related stuff
-//------------------------------------------------------------------------------
 
 void AdvancedSettings::readSettings()
 {
@@ -126,10 +123,6 @@ void AdvancedSettings::resetSettings()
     readSettings();
 }
 
-//------------------------------------------------------------------------------
-// Global qApp-related stuff
-//------------------------------------------------------------------------------
-
 void AdvancedSettings::loadApplicationColors()
 {
     QColor base = QColor (Settings::get ("Base", BASE).toString());
@@ -158,10 +151,6 @@ void AdvancedSettings::loadApplicationColors()
     qApp->setPalette (palette);
 }
 
-//------------------------------------------------------------------------------
-// Functions that react to UI events
-//------------------------------------------------------------------------------
-
 void AdvancedSettings::onResetClicked()
 {
     int ret = QMessageBox::question (this, tr ("Clear Settings"),
@@ -183,10 +172,6 @@ void AdvancedSettings::onCancelClicked()
     hide();
     readSettings();
 }
-
-//------------------------------------------------------------------------------
-// Functions that determine which preview boxes and line-edits to update
-//------------------------------------------------------------------------------
 
 void AdvancedSettings::onSelectorClicked()
 {
