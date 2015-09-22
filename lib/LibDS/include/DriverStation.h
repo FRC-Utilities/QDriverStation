@@ -184,6 +184,12 @@ signals:
     void voltageChanged (QString voltage);
 
     /**
+     * Emitted when the client analyzes a packet from the roboRIO and extracts
+     * the battery voltage of the robot.
+     */
+    void voltageChanged (double voltage);
+
+    /**
      * Emitted when the NetConsole receives and decodes a message from the
      * roboRIO
      */
@@ -280,6 +286,7 @@ private:
 
 private slots:
     /**
+     * @internal
      * Returns a string with the current status of the robot.
      * Possible return values can be:
      *     - No Robot Code
@@ -293,6 +300,7 @@ private slots:
     QString getStatus();
 
     /**
+     * @internal
      * Checks if the connection between the roboRIO and the client is
      * working correctly by "pinging" the roboRIO with a TCP/IP connection.
      *
@@ -303,36 +311,31 @@ private slots:
      * If the function detects that the client just disconnected from the
      * roboRIO, it updates all the internal values to prevent sending data
      * and packets to the void and notifies the connected objects.
-     *
-     * This function is called once every second.
      */
     void checkConnection();
 
     /**
+     * @internal
      * Resets the internal values of the library when we disconnect from the
      * robot.
      */
     void resetInternalValues();
 
     /**
-     * Checks if the connection between the roboRIO and the client is working
-     * correctly. If not, the function will disable the robot and notify other
-     * connected objects about the event.
-     *
-     * This function is called by the \c checkConnection() function when it
-     * detects that the roboRIO has been disconnected from the client.
-     *
-     * \note the \c checkConnection() function will give the robot a timeout
-     *       value before calling this function.
+     * @internal
+     * Increments the ping counter and resets it if it reachers a value
+     * greater than the one supported by the protocol, which is 0xffff
      */
-    void safetyDisableCheck();
+    void refreshPingData();
 
     /**
-     * @brief sendRobotPacketsLoop
+     * @internal
+     * Changes the current ping index to the provided value
      */
-    void sendRobotPacketsLoop();
+    void setCurrentPingIndex (int index);
 
     /**
+     * @internal
      * Sends a 6-byte packet to the robot that contains:
      *     - Ping diagnostic data
      *     - Robot state command
@@ -345,7 +348,17 @@ private slots:
      *
      * This function is called once every 20 milliseconds.
      */
-    void sendPacketsToRobot (int ping);
+    void sendRobotPackets();
+
+    /**
+     * @internal
+     * Called when we recieve a packet from the roboRIO that indicates us
+     * if the user code is loaded or not.
+     *
+     * \note This function will only be called when necessary, in other words
+     * when the program detects that the status of the code changed
+     */
+    void onCodeChanged (bool available);
 };
 
 #endif /* _DRIVER_STATION_MAIN_H */

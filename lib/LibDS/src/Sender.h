@@ -29,38 +29,11 @@
 #include <QHostAddress>
 
 /**
- * Represents a control packet, which tells the robot:
- *     - The control mode to use
- *     - The alliance and position to use
- *     - The packet count (generated automatically)
- *     - The status (e.g: reboot or just be stay still)
- */
-struct DS_ControlPacket {
-    DS_Status status;
-    DS_ControlMode mode;
-    DS_Alliance alliance;
-};
-
-/**
- * Represents a packet index
- */
-struct DS_PacketCount {
-    int byte1;
-    int byte2;
-};
-
-/**
  * \class DS_Sender
  */
 class DS_Sender
 {
 public:
-    /**
-     * Returns the current packet count, used by the robot to differentiate
-     * and process packets sent by the robot
-     */
-    DS_PacketCount getPingData (int index);
-
     /**
      * Sends a generated packet to the robot that contains the desired robot
      * status, its control mode, alliance and position.
@@ -71,7 +44,7 @@ public:
     void send (int index,
                QString host,
                DS_JoystickData stick,
-               DS_ControlPacket packet);
+               DS_ClientPacket packet);
 
 private:
     QUdpSocket m_socket;

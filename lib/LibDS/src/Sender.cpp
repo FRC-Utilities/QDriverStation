@@ -23,32 +23,19 @@
 #include "Ports.h"
 #include "Sender.h"
 
-DS_PacketCount DS_Sender::getPingData (int index)
-{
-    int ping = index + 1;
-
-    if (ping > 0xffff)
-        ping = 0;
-
-    DS_PacketCount count;
-    count.byte1 = ping / 0xff;
-    count.byte2 = ping % 0xff;
-
-    return count;
-}
-
 void DS_Sender::send (int index,
                       QString host,
                       DS_JoystickData stick,
-                      DS_ControlPacket packet)
+                      DS_ClientPacket packet)
 {
     Q_UNUSED (stick);
 
     QByteArray data;
-    DS_PacketCount c = getPingData (index);
+    DS_PingData ping;
+    ping.generatePingData (index + 1);
 
-    data.append (c.byte1);
-    data.append (c.byte2);
+    data.append (ping.byte1);
+    data.append (ping.byte2);
     data.append (0x01);
     data.append (packet.mode);
     data.append (packet.status);

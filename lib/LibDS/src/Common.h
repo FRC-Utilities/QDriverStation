@@ -23,7 +23,8 @@
 #ifndef _DRIVER_STATION_COMMON_H
 #define _DRIVER_STATION_COMMON_H
 
-class QString;
+#include <QString>
+#include <QObject>
 
 /**
  * Represents the available operation modes of the robot.
@@ -31,11 +32,24 @@ class QString;
  * importance of defining how the robot will behave.
  */
 enum DS_ControlMode {
-    DS_Test = 0x05,          /**< Driver moves each component manually */
-    DS_TeleOp = 0x04,        /**< The robot moves based on driver input */
-    DS_Disabled = 0x00,      /**< The robot is idle */
-    DS_Autonomous = 0x06,    /**< The robot uses pre-programmed instructions */
-    DS_EmergencyStop = 0x80  /**< The robot stops and needs to reboot*/
+    DS_ControlTest          = 0x05, /**< Driver moves each component manually */
+    DS_ControlTeleOp        = 0x04, /**< The robot moves based on user input */
+    DS_ControlDisabled      = 0x00, /**< The robot is idle and does nothing */
+    DS_ControlAutonomous    = 0x06, /**< The robot does pre-programmed tasks */
+    DS_ControlEmergencyStop = 0x80  /**< The robot stops and needs to reboot*/
+};
+
+/**
+ * Represents the current operation mode or status of the roboRIO.
+ * This is used to know what the roboRIO is currently doing when it sends us
+ * a robot packet
+ */
+enum DS_ProgramMode {
+    DS_ProgramNoCode     = 0x00, /**< It seems that there is no user code */
+    DS_ProgramDisabled   = 0x01, /**< The robot is disabled */
+    DS_ProgramTeleOp     = 0x02, /**< The robot is in tele-operated mode */
+    DS_ProgramAutonomous = 0x04, /**< The robot is in autonomous mode */
+    DS_ProgramTest       = 0x08  /**< The robot is in test mode */
 };
 
 /**
@@ -43,9 +57,9 @@ enum DS_ControlMode {
  * to reboot the RoboRIO or to restart the robot code
  */
 enum DS_Status {
-    DS_Normal = 0x10,        /**< Do not reboot or do anything, let it be... */
-    DS_RestartCode = 0x14,   /**< Restart the robot code */
-    DS_RebootRobot = 0x18    /**< Reboot the RoboRIO */
+    DS_StatusNormal = 0x10,      /**< Do not reboot or do anything */
+    DS_StatusRestartCode = 0x14, /**< Restart the robot code */
+    DS_StatusRebootRobot = 0x18  /**< Reboot the RoboRIO */
 };
 
 /**
@@ -54,12 +68,59 @@ enum DS_Status {
  * the robot program 'where it is' and communicate with the FMS correctly
  */
 enum DS_Alliance {
-    DS_Red1 = 0,  /**< Red 1, use control bit 0x0 */
-    DS_Red2 = 1,  /**< Red 2, use control bit 0x1 */
-    DS_Red3 = 2,  /**< Red 3, use control bit 0x2 */
-    DS_Blue1 = 3, /**< Blue 1, use control bit 0x3 */
-    DS_Blue2 = 4, /**< Blue 2, use control bit 0x4 */
-    DS_Blue3 = 5  /**< Blue 3, use control bit 0x5 */
+    DS_AllianceRed1  = 0x00, /**< Red 1, use control bit 0x00 */
+    DS_AllianceRed2  = 0x01, /**< Red 2, use control bit 0x01 */
+    DS_AllianceRed3  = 0x02, /**< Red 3, use control bit 0x02 */
+    DS_AllianceBlue1 = 0x03, /**< Blue 1, use control bit 0x03 */
+    DS_AllianceBlue2 = 0x04, /**< Blue 2, use control bit 0x04 */
+    DS_AllianceBlue3 = 0x05  /**< Blue 3, use control bit 0x05 */
+};
+
+/**
+ * Represents the ping data of a packet
+ */
+struct DS_PingData {
+    int byte1; /**< The first byte of the packet */
+    int byte2; /**< The second byte of the packet */
+
+    /**
+     * Generates the correct values for \c byte1 and \c byte2 based on the
+     * value of the given \a index
+     */
+    void generatePingData (int index);
+
+    /**
+     * Returns the index of the packet as a normal \c int
+     */
+    int getPingIndex();
+};
+
+/**
+ * Represents a packet sent by the roboRIO to the client
+ */
+struct DS_RobotPacket {
+    bool hasCode;
+    double voltage;
+    int commVersion;
+    bool requestDataTime;
+    QString voltageString;
+
+    DS_PingData pongData;
+    DS_ControlMode controlMode;
+    DS_ProgramMode programMode;
+};
+
+/**
+ * Represents a control packet, which tells the robot:
+ *     - The control mode to use
+ *     - The alliance and position to use
+ *     - The packet count (generated automatically)
+ *     - The status (e.g: reboot or just be stay still)
+ */
+struct DS_ClientPacket {
+    DS_Status status;     /**< The status that we want the robot to have */
+    DS_ControlMode mode;  /**< The mode that we want the robot to have */
+    DS_Alliance alliance; /**< The alliance that we want the robot to have */
 };
 
 /**
@@ -69,7 +130,7 @@ enum DS_Alliance {
  * will be processed by the library and sent to the robot
  */
 struct DS_JoystickData {
-    int id;         /**< The joysticks that are attached */
+    /* We must figure this one out */
 };
 
 /**

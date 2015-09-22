@@ -32,27 +32,41 @@ DS_Receiver::DS_Receiver()
 void DS_Receiver::onDataReceived()
 {
     while (m_socket.hasPendingDatagrams()) {
+        /* Read 'raw' data */
         QByteArray data;
         data.resize (m_socket.pendingDatagramSize());
         m_socket.readDatagram (data.data(), data.size());
 
-        /* Read packet index and tell the Sender to send a new packet */
-        if (data.length() >= 2)
-            emit dataReceived ((data.at (0) * 0xff) + data.at (1));
+        /* Process downloaded data into a DS_RobotPacket */
+        DS_RobotPacket packet = getRobotPacket (data);
 
-        /* This is a voltage packet, read it and emit appropiate signals */
-        if (data.length() == 8) {
-            QString major = QString::number (data.at (5));
-            QString minor = QString::number (data.at (6));
+        /* Read the values of the packet and notify other objects */
+        emit voltageChanged (packet.voltage);
+        emit voltageChanged (packet.voltageString);
+        emit dataReceived (packet.pongData.getPingIndex());
 
-            major = major.replace ("-", "");
-            minor = minor.replace ("-", "");
-
-            if (minor.length() >= 2)
-                minor = QString ("%1%2").arg (minor.at (0), minor.at (1));
-
-            emit voltageChanged (major + "." + minor);
-            emit confirmationReceived ((DS_ControlMode) data.at (3));
+        /* Only notify about code change if necessary */
+        if (m_code != packet.hasCode) {
+            m_code = packet.hasCode;
+            emit userCodeChanged (m_code);
         }
     }
+}
+
+DS_RobotPacket DS_Receiver::getRobotPacket (QByteArray data)
+{
+    DS_RobotPacket receiver;
+
+    receiver.commVersion = data.at (2);
+    receiver.pongData.byte1 = data.at (0);
+    receiver.pongData.byte2 = data.at (1);
+    receiver.requestDataTime = (data.at (7) == 0x01);
+    receiver.controlMode = (DS_ControlMode) data.at (3);
+    receiver.programMode = (DS_ProgramMode) data.at (4);
+    receiver.hasCode = receiver.programMode != DS_ProgramNoCode;
+    receiver.voltageString = QString::number (data.at (5)) + "." +
+                             QString::number (data.at (6));
+    receiver.voltage = receiver.voltageString.toDouble();
+
+    return receiver;
 }

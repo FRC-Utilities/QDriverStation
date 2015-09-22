@@ -69,6 +69,8 @@ int main (int argc, char* argv[]);
  * @internal
  * Configures and runs the application
  */
+#include <QString>
+#include <qdebug.h>
 int main (int argc, char* argv[])
 {
     QApplication app (argc, argv);

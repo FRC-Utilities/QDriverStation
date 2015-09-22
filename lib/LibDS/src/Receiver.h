@@ -24,7 +24,9 @@
 #define _DRIVER_STATION_RECEIVER_H
 
 #include "Common.h"
+
 #include <QUdpSocket>
+#include <QByteArray>
 
 /**
  * \class DS_Receiver
@@ -56,16 +58,31 @@ signals:
     void voltageChanged (QString voltage);
 
     /**
-     * Emitted when the class receives a packet and gets the confirmation
-     * control mode of the robot. This is used for diagnostic purposes.
+     * Emitted when the class receives a packet and gets the robot voltage
+     * from the received packet
      */
-    void confirmationReceived (DS_ControlMode mode);
+    void voltageChanged (double voltage);
+
+    /**
+     * Emitted when the class recieves a packet and determines that the user
+     * code presented by the packet is different from the local value
+     */
+    void userCodeChanged (bool available);
 
 private:
+    bool m_code;
     QUdpSocket m_socket;
 
 private slots:
+    /**
+     * Called when a packet is received from the roboRIO
+     */
     void onDataReceived();
+
+    /**
+     * Processes "raw" data into a nicer and more readable \c DS_RobotPacket
+     */
+    DS_RobotPacket getRobotPacket (QByteArray data);
 };
 
 #endif /* _DRIVER_STATION_RECEIVER_H */

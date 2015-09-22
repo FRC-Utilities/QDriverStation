@@ -300,22 +300,22 @@ void MainWindow::onStationChanged (int station)
 
     switch (station) {
     case 0:
-        m_ds->setAlliance (DS_Red1);
+        m_ds->setAlliance (DS_AllianceRed1);
         break;
     case 1:
-        m_ds->setAlliance (DS_Red2);
+        m_ds->setAlliance (DS_AllianceRed2);
         break;
     case 2:
-        m_ds->setAlliance (DS_Red3);
+        m_ds->setAlliance (DS_AllianceRed3);
         break;
     case 3:
-        m_ds->setAlliance (DS_Blue1);
+        m_ds->setAlliance (DS_AllianceBlue1);
         break;
     case 4:
-        m_ds->setAlliance (DS_Blue2);
+        m_ds->setAlliance (DS_AllianceBlue2);
         break;
     case 5:
-        m_ds->setAlliance (DS_Blue3);
+        m_ds->setAlliance (DS_AllianceBlue3);
         break;
     }
 }
@@ -360,7 +360,7 @@ void MainWindow::onEnabledClicked()
 
 void MainWindow::onDisabledClicked()
 {
-    if (m_ds->controlMode() != DS_Disabled)
+    if (m_ds->controlMode() != DS_ControlDisabled)
         setRobotEnabled (false);
 
     ui.DisableButton->setChecked (true);
@@ -370,7 +370,7 @@ void MainWindow::onDisabledClicked()
 
 void MainWindow::onJoystickRemoved()
 {
-    if (m_ds->operationMode() == DS_TeleOp)
+    if (m_ds->operationMode() == DS_ControlTeleOp)
         onDisabledClicked();
 }
 
@@ -390,7 +390,7 @@ void MainWindow::onWindowModeChanged()
 void MainWindow::onRobotModeChanged (int mode)
 {
     Q_UNUSED (mode);
-    m_ds->setControlMode (DS_Disabled);
+    m_ds->setControlMode (DS_ControlDisabled);
 }
 
 void MainWindow::onPracticeValuesChanged()
@@ -422,13 +422,13 @@ void MainWindow::setRobotEnabled (bool enabled)
 {
     if (enabled) {
         if (ui.Test->isChecked())
-            m_ds->setControlMode (DS_Test);
+            m_ds->setControlMode (DS_ControlTest);
 
         else if (ui.TeleOp->isChecked())
-            m_ds->setControlMode (DS_TeleOp);
+            m_ds->setControlMode (DS_ControlTeleOp);
 
         else if (ui.Autonomous->isChecked())
-            m_ds->setControlMode (DS_Autonomous);
+            m_ds->setControlMode (DS_ControlAutonomous);
 
         else if (ui.Practice->isChecked())
             m_ds->startPractice (ui.PracticeCountdown->value(),
@@ -439,7 +439,7 @@ void MainWindow::setRobotEnabled (bool enabled)
     }
 
     else
-        m_ds->setControlMode (DS_Disabled);
+        m_ds->setControlMode (DS_ControlDisabled);
 }
 
 //------------------------------------------------------------------------------
@@ -469,7 +469,7 @@ void MainWindow::onNetworkChanged (bool available)
 
 void MainWindow::onControlModeChanged (DS_ControlMode mode)
 {
-    if (mode == DS_Disabled)
+    if (mode == DS_ControlDisabled)
         ui.DisableButton->click();
 }
 
@@ -495,10 +495,10 @@ void MainWindow::onRioVersionChanged (QString version)
 
 void MainWindow::onRobotStatusChanged (QString status)
 {
-    if (m_ds->canBeEnabled() && m_ds->operationMode() != DS_EmergencyStop) {
+    if (m_ds->canBeEnabled() && m_ds->operationMode() != DS_ControlEmergencyStop) {
 
         /* Get 'TeleOp Disabled' instead of 'Disabled' */
-        if (m_ds->operationMode() == DS_Disabled) {
+        if (m_ds->operationMode() == DS_ControlDisabled) {
             QString mode;
 
             if (ui.Test->isChecked())
