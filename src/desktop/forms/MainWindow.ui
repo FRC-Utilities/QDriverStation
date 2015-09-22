@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1127</width>
-    <height>297</height>
+    <height>284</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -988,19 +988,6 @@ QPushButton:checked {
             </widget>
            </item>
            <item>
-            <spacer name="verticalSpacer_12">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
             <widget class="QPushButton" name="AdvancedSettings">
              <property name="text">
               <string>Advanced settings..</string>
@@ -1034,11 +1021,17 @@ QPushButton:checked {
             <widget class="QComboBox" name="DbCombo"/>
            </item>
            <item>
-            <widget class="QPushButton" name="CustomDashboard">
-             <property name="text">
-              <string>Custom Dashboard...</string>
+            <spacer name="verticalSpacer_12">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
              </property>
-            </widget>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
            </item>
            <item>
             <spacer name="verticalSpacer_6">

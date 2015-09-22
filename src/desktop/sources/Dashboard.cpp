@@ -33,7 +33,7 @@
 #if _WIN32
 #undef is64Bits
 #define is64Bits \
-  GetProcAddress(GetModuleHandle(TEXT("kernel32")),("IsWow64Process"))
+    GetProcAddress(GetModuleHandle(TEXT("kernel32")),("IsWow64Process"))
 #endif
 #endif
 
@@ -68,25 +68,32 @@ void Dashboard::loadDashboard()
     QString path;
     m_current = Settings::get ("Dashboard", None).toInt();
 
-    switch (m_current) {
-    case SfxDashboard:
-        path = QString ("java -jar \"%1/wpilib/tools/%2/sfx.jar\"")
-               .arg (QDir::homePath());
-        break;
+    if (m_current == SfxDashboard) {
+        QDir dir;
+        QStringList files;
 
-    case SmartDashboard:
+        dir.cd (QString ("%1/wpilib/tools/").arg (QDir::homePath()));
+        files = dir.entryList (QDir::Dirs);
+
+        if (files.count() >= 3)
+            path = QString ("java -jar \"%1/%2/sfx.jar\"")
+                   .arg (dir.absolutePath())
+                   .arg (files.at (2));
+    }
+
+    else if (m_current == SmartDashboard) {
         path = QString ("java -jar \"%1/wpilib/tools/SmartDashboard.jar\"")
                .arg (QDir::homePath());
-        break;
+    }
 
 #if defined _WIN32 || defined _WIN64
-    case LabVIEW:
+    else if (m_current == LabVIEW) {
         QString pF = is64Bits ? "C:/Program Files (x86)" : "C:/Program Files";
         path = QString ("%1/FRC Dashboard/Dashboard.exe").arg (pF);
         path = "\"" + path + "\"";
         break;
-#endif
     }
+#endif
 
     m_process->start (path);
 }
