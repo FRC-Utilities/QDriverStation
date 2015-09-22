@@ -122,8 +122,7 @@ QString GamepadManager::getButtonName (int button)
 
 QString GamepadManager::getJoystickName (int joystick)
 {
-    QString name = (QString) SDL_GameControllerNameForIndex (joystick);
-    return name.isEmpty() ? SDL_JoystickNameForIndex (joystick) : name;
+    return SDL_JoystickNameForIndex (joystick);
 }
 
 QStringList GamepadManager::joystickList()
@@ -211,12 +210,6 @@ void GamepadManager::readSdlEvents()
     while (SDL_PollEvent (&event)) {
         switch (event.type) {
         case SDL_JOYDEVICEADDED:
-            ++m_tracker;
-            onControllerAdded (&event);
-            emit countChanged (joystickList());
-            emit countChanged (SDL_NumJoysticks());
-            break;
-        case SDL_CONTROLLERDEVICEADDED:
             ++m_tracker;
             onControllerAdded (&event);
             emit countChanged (joystickList());
