@@ -81,8 +81,9 @@ DS_RobotPacket DS_Receiver::getRobotPacket (QByteArray data)
     receiver.hasCode = receiver.programMode != DS_ProgramNoCode;
 
     /* Calculate the voltage */
-    receiver.voltageString = QString::number (data.at (5)) + "." +
-                             QString::number (data.at (6));
+    receiver.voltageString = QString ("%1.%2")
+                             .arg (data.at (5), 2, 10, QLatin1Char ('0'))
+                             .arg (data.at (6), 2, 10, QLatin1Char ('0'));
     receiver.voltageString = receiver.voltageString.replace ("-", "");
     receiver.voltage = receiver.voltageString.toDouble();
 

@@ -1200,6 +1200,18 @@ QPushButton:checked {
     </item>
     <item>
      <widget class="QFrame" name="InfoFrame">
+      <property name="minimumSize">
+       <size>
+        <width>200</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>200</width>
+        <height>16777215</height>
+       </size>
+      </property>
       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0,1">
        <item>
         <widget class="QWidget" name="StatusWidget" native="true">
@@ -1903,7 +1915,7 @@ QPushButton:pressed {
  </connections>
  <buttongroups>
   <buttongroup name="RobotModeGroup"/>
-  <buttongroup name="WindowModeGroup"/>
   <buttongroup name="RobotStatusGroup"/>
+  <buttongroup name="WindowModeGroup"/>
  </buttongroups>
 </ui>
