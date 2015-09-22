@@ -26,8 +26,9 @@ There is still a lot of work to be done in order to get a fully-working DriverSt
 - [x] Discover if robot radio exists (by pinging 10.XX.YY.1)
 - [x] Discover if roboRIO exists (by pinging roboRIO-XXYY.local or using an user-provided address)
 - [x] Get robot information such as its library, PDP and PCM (by downloading and reading some files in the FTP server of the roboRIO)
-- [ ] Discover if the robot code is loaded (maybe by checking if /home/lvuser/FRCUserProgram exists)
-- [x] Generate and send robot packets (Autonomous was tested and is working, we still need to see how joystick data is sent)
+- [x] Discover if the robot code is loaded (maybe by checking if /home/lvuser/FRCUserProgram exists)
+- [x] Generate and send robot packets (Control modes are fully working)
+- [ ] Encode joystick data to send it to the robot
 - [x] Read robot battery voltage
 - [x] Built-in NetConsole for logging and finding issues in the robot
 - [x] Be able to reboot the roboRIO and restart the robot code from DS
