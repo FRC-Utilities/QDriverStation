@@ -170,7 +170,4 @@ linux:!android {
     icon.files += $$PWD/etc/deploy/linux/qdriverstation.ico
     desktop.files += $$PWD/etc/deploy/linux/qdriverstation.desktop
     INSTALLS += target desktop icon
-    
-    QMAKE_CXXFLAGS += -coverage
-    LIBS += -lgcov
 }
