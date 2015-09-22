@@ -1,7 +1,7 @@
 language: cpp
 
 before_install:
-    - pip install codecov
+    - pip install --user codecov
     - sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
     - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
     - sudo add-apt-repository --yes ppa:canonical-qt5-edgers/qt5-beta2
