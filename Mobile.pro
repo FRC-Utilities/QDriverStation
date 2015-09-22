@@ -49,8 +49,6 @@ MOC_DIR = moc
 RCC_DIR = qrc
 OBJECTS_DIR = obj
 
-QMAKE_CXXFLAGS += -coverage
-
 #-------------------------------------------------------------------------------
 # Import source code and resources of the application
 #-------------------------------------------------------------------------------
