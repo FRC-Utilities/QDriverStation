@@ -63,7 +63,7 @@ DS_RobotPacket DS_Receiver::getRobotPacket (QByteArray data)
 {
     DS_RobotPacket receiver;
 
-    /* Get comm version, god knows what this is */
+    /* Get communication version, god knows if we will use it... */
     receiver.commVersion = data.at (2);
 
     /* Get the pong data */
