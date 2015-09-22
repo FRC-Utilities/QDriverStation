@@ -330,7 +330,9 @@ private slots:
 
     /**
      * @internal
-     * Changes the current ping index to the provided value
+     * Changes the current ping index to the provided value.
+     * This function is called to ensure that the packets that we send to the
+     * robot are event with the responses sent by the robot
      */
     void setCurrentPingIndex (int index);
 

@@ -271,7 +271,6 @@ void DriverStation::sendRobotPackets()
     }
 
     emit robotStatusChanged (getStatus());
-
     QTimer::singleShot (DS_Times::RobotPacketInterval, Qt::PreciseTimer,
                         this, SLOT (sendRobotPackets()));
 }

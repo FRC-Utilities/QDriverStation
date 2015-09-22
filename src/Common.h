@@ -102,7 +102,7 @@ struct DS_RobotPacket {
     bool hasCode;
     double voltage;
     int commVersion;
-    bool requestDataTime;
+    bool requestDateTime;
     QString voltageString;
 
     DS_PingData pongData;

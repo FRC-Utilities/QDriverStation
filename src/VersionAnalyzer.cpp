@@ -45,6 +45,7 @@ void DS_VersionAnalyzer::downloadRobotInformation (QString address)
 
 void DS_VersionAnalyzer::downloadFinished (QNetworkReply* reply)
 {
+    /* Get URL and downloaded data */
     QString url = reply->url().toString();
     QString data = QString::fromUtf8 (reply->readAll());
 
