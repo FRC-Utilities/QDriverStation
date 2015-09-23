@@ -78,7 +78,7 @@ DS_RobotPacket DS_Receiver::getRobotPacket (QByteArray data)
 
     /* Get current mode and determine if user code is present */
     receiver.programMode = (DS_ProgramMode) data.at (4);
-    receiver.hasCode = receiver.programMode != DS_ProgramNoCode;
+    receiver.hasCode = (receiver.programMode != DS_ProgramNoCode);
 
     /* Calculate the voltage */
     receiver.voltageString = QString ("%1.%2")
