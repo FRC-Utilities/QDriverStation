@@ -29,7 +29,7 @@
  */
 namespace DS_Times
 {
-const int RobotPacketInterval (20);
+const int RobotPacketInterval (18);
 const int ElapsedTimeInterval (100);
 const int TestConnectionInterval (1000);
 }
