@@ -29,9 +29,6 @@ QByteArray DS_JoystickManager::getData()
 
     /* Generate a data packet for each joystick */
     for (int js = 0; js < m_joysticks.count(); ++js) {
-
-        QList<bool> buttons;
-        int buttonCount = 0;
         int axesSize = m_joysticks.at (js)->axes.size();
         int buttonsSize = m_joysticks.at (js)->buttons.size();
 
@@ -46,11 +43,6 @@ QByteArray DS_JoystickManager::getData()
 
         /* Add button data */
         data.append (buttonsSize);
-        buttonCount = (buttonsSize / 8) + ((buttonsSize % 8 == 0) ? 0 : 1);
-
-        for (int button = 0; button < m_joysticks.at (js)->buttons.count(); ++button)
-            buttons.append (m_joysticks.at (js)->buttons.at (button)->pressed);
-
         for (int button = 0; button < m_joysticks.at (js)->buttons.count(); ++button)
             data.append ((char) m_joysticks.at (js)->buttons.at (button)->pressed);
 
