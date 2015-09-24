@@ -23,7 +23,6 @@
 #include "Ports.h"
 #include "Sender.h"
 
-//#include <QDebug>
 void DS_Sender::send (int index,
                       QString host,
                       DS_Status status,
