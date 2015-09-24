@@ -32,6 +32,7 @@
 #include "../src/Receiver.h"
 #include "../src/NetConsole.h"
 #include "../src/ElapsedTime.h"
+#include "../src/JoystickManager.h"
 #include "../src/VersionAnalyzer.h"
 #include "../src/NetworkDiagnostics.h"
 
@@ -150,7 +151,27 @@ public slots:
     /**
      * [TODO]
      */
-    Q_INVOKABLE void putJoystickData (DS_JoystickData joystickData);
+    Q_INVOKABLE void removeAllJoysticks();
+
+    /**
+     * [TODO]
+     */
+    Q_INVOKABLE void addJoystick (int axes, int buttons);
+
+    /**
+     * [TODO]
+     */
+    Q_INVOKABLE void removeJoystick (int joystick);
+
+    /**
+     * [TODO]
+     */
+    Q_INVOKABLE void updateJoystickAxis (int joystick, int axis, double value);
+
+    /**
+     * [TODO]
+     */
+    Q_INVOKABLE void updateJoystickButton (int joystick, int button, bool pressed);
 
     /**
      * Simulates a timed match with the input time values (in seconds)
@@ -275,12 +296,12 @@ private:
     DS_Status m_status;
     DS_ControlMode m_mode;
     DS_Alliance m_alliance;
-    DS_JoystickData m_joystickData;
 
     DS_Sender m_sender;
     DS_Receiver m_receiver;
     DS_NetConsole m_netConsole;
     DS_ElapsedTime m_elapsedTime;
+    DS_JoystickManager m_joystickManager;
     DS_VersionAnalyzer m_versionAnalyzer;
     DS_NetworkDiagnostics m_netDiagnostics;
 
@@ -327,14 +348,6 @@ private slots:
      * greater than the one supported by the protocol, which is 0xffff
      */
     void refreshPingData();
-
-    /**
-     * @internal
-     * Changes the current ping index to the provided value.
-     * This function is called to ensure that the packets that we send to the
-     * robot are event with the responses sent by the robot
-     */
-    void setCurrentPingIndex (int index);
 
     /**
      * @internal

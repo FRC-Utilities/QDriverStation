@@ -27,6 +27,7 @@ DriverStation* DriverStation::m_instance = nullptr;
 DriverStation::DriverStation()
 {
     m_team = 0;
+    m_count = 0;
     m_code = false;
     m_init = false;
     m_oldConnection = false;
@@ -53,8 +54,6 @@ DriverStation::DriverStation()
              this,               SIGNAL (voltageChanged (QString)));
     connect (&m_receiver,        SIGNAL (voltageChanged (double)),
              this,               SIGNAL (voltageChanged (double)));
-    connect (&m_receiver,        SIGNAL (dataReceived (int)),
-             this,               SLOT   (setCurrentPingIndex (int)));
     connect (&m_receiver,        SIGNAL (userCodeChanged (bool)),
              this,               SLOT   (onCodeChanged (bool)));
 }
@@ -173,9 +172,30 @@ void DriverStation::setControlMode (DS_ControlMode mode)
     emit controlModeChanged (m_mode);
 }
 
-void DriverStation::putJoystickData (DS_JoystickData joystickData)
+void DriverStation::removeAllJoysticks()
 {
-    m_joystickData = joystickData;
+    m_joystickManager.removeAllJoysticks();
+}
+
+void DriverStation::addJoystick (int axes, int buttons)
+{
+    m_joystickManager.addJoystick (axes, buttons);
+}
+
+void DriverStation::removeJoystick (int joystick)
+{
+    m_joystickManager.removeJoystick (joystick);
+}
+
+void DriverStation::updateJoystickAxis (int joystick, int axis, double value)
+{
+    m_joystickManager.updateAxis (joystick, axis, value);
+}
+
+void DriverStation::updateJoystickButton (int joystick, int button,
+        bool pressed)
+{
+    m_joystickManager.updateButton (joystick, button, pressed);
 }
 
 void DriverStation::startPractice (int countdown,
@@ -250,23 +270,17 @@ void DriverStation::refreshPingData()
     }
 }
 
-void DriverStation::setCurrentPingIndex (int index)
-{
-    if (m_count != index)
-        m_count = index;
-}
-
 void DriverStation::sendRobotPackets()
 {
     if (m_netDiagnostics.roboRioIsAlive()) {
         refreshPingData();
 
-        DS_ClientPacket packet;
-        packet.mode = m_mode;
-        packet.status = m_status;
-        packet.alliance = m_alliance;
-
-        m_sender.send (m_count, roboRioAddress(), m_joystickData, packet);
+        m_sender.send (m_count,
+                       roboRioAddress(),
+                       m_status,
+                       m_mode,
+                       m_alliance,
+                       m_joystickManager.getData());
 
     }
 

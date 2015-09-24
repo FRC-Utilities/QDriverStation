@@ -57,6 +57,8 @@ struct GM_Button {
     GM_Joystick joystick; /**< The joystick that the button belongs to */
 };
 
+class DriverStation;
+
 /**
  * @class GamepadManager
  * @brief Implements an abstraction layer between SDL and Qt
@@ -174,6 +176,7 @@ private:
     int m_time;
     int m_tracker;
 
+    DriverStation* m_ds;
     QString m_genericMapping;
     static GamepadManager* m_instance;
 
@@ -246,6 +249,12 @@ private slots:
      * Closes the game controller that was removed
      */
     void onControllerRemoved (const SDL_Event* event);
+
+    /**
+     * @internal
+     *
+     */
+    void registerJoysticksToDriverStation (int joystickCount);
 };
 
 #endif /* _QDRIVER_STATION_GAMEPAD_MANAGER_H */

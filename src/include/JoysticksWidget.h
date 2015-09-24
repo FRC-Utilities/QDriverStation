@@ -26,7 +26,7 @@
 #include <QList>
 #include <QWidget>
 #include <QStringList>
-#include <ui_Joysticks.h>
+#include <ui_JoysticksWidget.h>
 
 #include "GamepadManager.h"
 
@@ -43,7 +43,7 @@ class QProgressBar;
  *
  * This widget is used in the "Gamepad" tab of the MainWindow.
  */
-class Joysticks : public QWidget
+class JoysticksWidget : public QWidget
 {
     Q_OBJECT
 
@@ -53,7 +53,7 @@ public:
      * Creates the UI and configures the SIGNALS/SLOTS between the widget and
      * the QJoystickManager class
      */
-    explicit Joysticks (QWidget* parent = 0);
+    explicit JoysticksWidget (QWidget* parent = 0);
 
 signals:
     /**

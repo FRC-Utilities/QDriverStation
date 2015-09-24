@@ -27,6 +27,7 @@
 #include <QApplication>
 
 #include <math.h>
+#include <DriverStation.h>
 
 #include "Settings.h"
 #include "GamepadManager.h"
@@ -82,6 +83,11 @@ GamepadManager::GamepadManager()
         m_genericMapping = (QString)generic.readAll();
         generic.close();
     }
+
+    /* Register joysticks automatically on DS */
+    m_ds = DriverStation::getInstance();
+    connect (this, SIGNAL (countChanged (int)),
+             this, SLOT   (registerJoysticksToDriverStation (int)));
 }
 
 GamepadManager::~GamepadManager()
@@ -237,12 +243,22 @@ void GamepadManager::readSdlEvents()
 
 void GamepadManager::onAxisEvent (const SDL_Event* event)
 {
-    emit axisEvent (getAxis (event));
+    GM_Axis axis = getAxis (event);
+    m_ds->updateJoystickAxis (axis.joystick.id,
+                              axis.rawId,
+                              axis.value);
+
+    emit axisEvent (axis);
 }
 
 void GamepadManager::onButtonEvent (const SDL_Event* event)
 {
-    emit buttonEvent (getButton (event));
+    GM_Button button = getButton (event);
+    m_ds->updateJoystickButton (button.joystick.id,
+                                button.rawId,
+                                button.pressed);
+
+    emit buttonEvent (button);
 }
 
 void GamepadManager::onControllerAdded (const SDL_Event* event)
@@ -272,4 +288,12 @@ void GamepadManager::onControllerAdded (const SDL_Event* event)
 void GamepadManager::onControllerRemoved (const SDL_Event* event)
 {
     SDL_GameControllerClose (SDL_GameControllerOpen (event->cdevice.which));
+}
+
+void GamepadManager::registerJoysticksToDriverStation (int joystickCount)
+{
+    m_ds->removeAllJoysticks();
+
+    for (int i = 0; i <= joystickCount - 1; ++i)
+        m_ds->addJoystick (getNumAxes (i), getNumButtons (i));
 }

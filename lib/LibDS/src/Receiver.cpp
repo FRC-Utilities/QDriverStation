@@ -44,7 +44,6 @@ void DS_Receiver::onDataReceived()
         /* Read the values of the packet and notify other objects */
         emit voltageChanged (packet.voltage);
         emit voltageChanged (packet.voltageString);
-        emit dataReceived (packet.pongData.getPingIndex());
 
         /* Only notify about code change if necessary */
         if (m_code != packet.hasCode) {

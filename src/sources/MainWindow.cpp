@@ -36,9 +36,9 @@
 #include "Settings.h"
 #include "CpuUsage.h"
 #include "Dashboard.h"
-#include "Joysticks.h"
 #include "InitTasks.h"
 #include "AssemblyInfo.h"
+#include "JoysticksWidget.h"
 #include "AdvancedSettings.h"
 
 #define _ENABLED_SELECTED "color: rgb(33, 255, 43);"
@@ -94,7 +94,7 @@ void MainWindow::connectSlots()
              this,                 SLOT   (setTeamNumber (int)));
 
     /* Joystick information tab */
-    QPointer<Joysticks> j = new Joysticks (ui.JoysticksTab);
+    QPointer<JoysticksWidget> j = new JoysticksWidget (ui.JoysticksTab);
     ui.JoysticksTab->layout()->addWidget (j);
     connect (j, SIGNAL (joystickRemoved()), this, SLOT (onJoystickRemoved()));
     connect (j, SIGNAL (statusChanged (bool)),

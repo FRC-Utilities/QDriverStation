@@ -20,13 +20,6 @@ script:
     - sudo ldconfig
     - cd .. && cd ..
     
-    # Build desktop version
-    - qmake -qt=qt5 -v
-    - qmake -qt=qt5 Desktop.pro
-    - make
-    - make clean
-    
-    # Build mobile version
-    - qmake -qt=qt5 Mobile.pro
-    - make
-    - make clean
+    # Build QDriverStation
+    - qmake -qt=qt5 QDriverStation.pro
+    - make -j4

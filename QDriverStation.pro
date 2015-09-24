@@ -60,40 +60,40 @@ QMAKE_CXXFLAGS_RELEASE += -O3
 # Import source code and resources of the application
 #-------------------------------------------------------------------------------
 
-INCLUDEPATH += $$PWD/src/desktop/include/
-RESOURCES += $$PWD/etc/resources/desktop/resources.qrc
+INCLUDEPATH += $$PWD/src/include/
+RESOURCES += $$PWD/etc/resources/resources.qrc
 
 HEADERS += \
-    $$PWD/src/desktop/include/AdvancedSettings.h \
-    $$PWD/src/desktop/include/AssemblyInfo.h \
-    $$PWD/src/desktop/include/Battery.h \
-    $$PWD/src/desktop/include/CpuUsage.h \
-    $$PWD/src/desktop/include/Dashboard.h \
-    $$PWD/src/desktop/include/GamepadManager.h \
-    $$PWD/src/desktop/include/InitTasks.h \
-    $$PWD/src/desktop/include/Joysticks.h \
-    $$PWD/src/desktop/include/MainWindow.h \
-    $$PWD/src/desktop/include/Settings.h \
-    $$PWD/src/desktop/include/SmartWindow.h
+    $$PWD/src/include/AdvancedSettings.h \
+    $$PWD/src/include/AssemblyInfo.h \
+    $$PWD/src/include/Battery.h \
+    $$PWD/src/include/CpuUsage.h \
+    $$PWD/src/include/Dashboard.h \
+    $$PWD/src/include/GamepadManager.h \
+    $$PWD/src/include/InitTasks.h \
+    $$PWD/src/include/MainWindow.h \
+    $$PWD/src/include/Settings.h \
+    $$PWD/src/include/SmartWindow.h \
+    $$PWD/src/include/JoysticksWidget.h
 
 SOURCES += \
-    $$PWD/src/desktop/sources/AdvancedSettings.cpp \
-    $$PWD/src/desktop/sources/AssemblyInfo.cpp \
-    $$PWD/src/desktop/sources/Battery.cpp \
-    $$PWD/src/desktop/sources/CpuUsage.cpp \
-    $$PWD/src/desktop/sources/Dashboard.cpp \
-    $$PWD/src/desktop/sources/GamepadManager.cpp \
-    $$PWD/src/desktop/sources/InitTasks.cpp \
-    $$PWD/src/desktop/sources/Joysticks.cpp \
-    $$PWD/src/desktop/sources/main.cpp \
-    $$PWD/src/desktop/sources/MainWindow.cpp \
-    $$PWD/src/desktop/sources/Settings.cpp \
-    $$PWD/src/desktop/sources/SmartWindow.cpp
+    $$PWD/src/sources/AdvancedSettings.cpp \
+    $$PWD/src/sources/AssemblyInfo.cpp \
+    $$PWD/src/sources/Battery.cpp \
+    $$PWD/src/sources/CpuUsage.cpp \
+    $$PWD/src/sources/Dashboard.cpp \
+    $$PWD/src/sources/GamepadManager.cpp \
+    $$PWD/src/sources/InitTasks.cpp \
+    $$PWD/src/sources/main.cpp \
+    $$PWD/src/sources/MainWindow.cpp \
+    $$PWD/src/sources/Settings.cpp \
+    $$PWD/src/sources/SmartWindow.cpp \
+    $$PWD/src/sources/JoysticksWidget.cpp
 
 FORMS += \
-    $$PWD/src/desktop/forms/Joysticks.ui \
-    $$PWD/src/desktop/forms/MainWindow.ui \
-    $$PWD/src/desktop/forms/AdvancedSettings.ui
+    $$PWD/src/forms/MainWindow.ui \
+    $$PWD/src/forms/JoysticksWidget.ui \
+    $$PWD/src/forms/AdvancedSettings.ui
 
 #-------------------------------------------------------------------------------
 # SDL boiler-plate

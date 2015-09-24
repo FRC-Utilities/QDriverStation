@@ -46,12 +46,6 @@ public:
 
 signals:
     /**
-     * Emitted when we recieve a packet from the robot, used to tell the Sender
-     * to send a new packet using the index of the robot packet
-     */
-    void dataReceived (int index);
-
-    /**
      * Emitted when the class receives a packet and gets the robot voltage
      * from the received packet
      */
