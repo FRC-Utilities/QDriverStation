@@ -22,11 +22,47 @@
 
 #include "JoystickManager.h"
 
+#include <qdebug.h>
 QByteArray DS_JoystickManager::getData()
 {
     QByteArray data;
 
-    /* TODO */
+    /* Generate a data packet for each joystick */
+    for (int js = 0; js < m_joysticks.count(); ++js) {
+
+        QList<bool> buttons;
+        int buttonCount = 0;
+        int axesSize = m_joysticks.at (js)->axes.size();
+        int buttonsSize = m_joysticks.at (js)->buttons.size();
+
+        /* Put joystick information and section header */
+        data.append (getJoystickSize (m_joysticks.at (js)) + 1);
+        data.append (0x0c);
+
+        /* Add axis data */
+        data.append (axesSize);
+        for (int axis = 0; axis < m_joysticks.at (js)->axes.count(); ++axis)
+            data.append (m_joysticks.at (js)->axes.at (axis)->value * 127.5);
+
+        /* Add button data */
+        data.append (buttonsSize);
+        buttonCount = (buttonsSize / 8) + ((buttonsSize % 8 == 0) ? 0 : 1);
+
+        for (int button = 0; button < m_joysticks.at (js)->buttons.count(); ++button)
+            buttons.append (m_joysticks.at (js)->buttons.at (button)->pressed);
+
+        for (int button = 0; button < m_joysticks.at (js)->buttons.count(); ++button)
+            data.append ((char) m_joysticks.at (js)->buttons.at (button)->pressed);
+
+        /* POVs */
+        data.append (m_joysticks.at (js)->povs.size());
+        for (int pov = 0; pov < m_joysticks.at (js)->povs.count(); ++pov)
+            data.append (m_joysticks.at (js)->povs.at (pov)->angle);
+
+        /* Finish packet data */
+        data.append ((char) 0xff);
+        data.append ((char) 0xff);
+    }
 
     return data;
 }
@@ -53,7 +89,6 @@ void DS_JoystickManager::addJoystick (int axes, int buttons)
     /* Generate a list with all the axes */
     for (int i = 0; i < axes; ++i) {
         Axis* axis = new Axis;
-        axis->id = i;
         axis->value = 0;
         joystick->axes.append (axis);
     }
@@ -61,7 +96,6 @@ void DS_JoystickManager::addJoystick (int axes, int buttons)
     /* Generate a list with all the buttons */
     for (int i = 0; i < buttons; ++i) {
         Button* button = new Button;
-        button->id = i;
         button->pressed = false;
         joystick->buttons.append (button);
     }
@@ -96,4 +130,27 @@ void DS_JoystickManager::updateButton (int joystick, int button, bool pressed)
 
     /* Conditions met, we can safely write data on the list */
     m_joysticks.at (joystick)->buttons.at (button)->pressed = pressed;
+}
+
+void DS_JoystickManager::updatePov (int joystick, int pov, short angle)
+{
+    /* The joystick is not registered, thus is invalid */
+    if (m_joysticks.count() <= joystick)
+        return;
+
+    /* The button is not registered, thus is invalid */
+    if (m_joysticks.at (joystick)->povs.count() <= pov)
+        return;
+
+    /* Conditions met, we can safely write data on the list */
+    m_joysticks.at (joystick)->povs.at (pov)->angle = angle;
+}
+
+int DS_JoystickManager::getJoystickSize (const Joystick* joystick)
+{
+    return  5
+            + (joystick->axes.size())
+            + (joystick->buttons.size() / 8)
+            + ((joystick->buttons.size() % 8 == 0) ? 0 : 1)
+            + (joystick->povs.size() * 2);
 }
