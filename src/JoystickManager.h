@@ -40,6 +40,45 @@ class DS_JoystickManager : public QObject
 {
     Q_OBJECT
 
+private:
+    /**
+     * @internal
+     * Represents a joystick axis
+     */
+    struct Axis {
+        double value;
+    };
+
+    /**
+     * @internal
+     * Represents a joystick button
+     */
+    struct Button {
+        bool pressed;
+    };
+
+    /**
+     * @internal
+     * Represents a joystick POV
+     */
+    struct Pov {
+        short angle;
+    };
+
+    /**
+     * @internal
+     * Represents a joystick, its used to access the values of the registered
+     * joystick axes and buttons.
+     */
+    struct Joystick {
+        int id;
+        QList <Pov*> povs;
+        QList <Axis*> axes;
+        QList <Button*> buttons;
+    };
+
+    QList <Joystick*> m_joysticks;
+
 public slots:
     /**
      * Returns a generated data packet that contains input information.
@@ -73,37 +112,15 @@ public slots:
      */
     void updateButton (int joystick, int button, bool pressed);
 
-private:
     /**
-     * @internal
-     * Represents a joystick axis
+     * Updates the \a angle of the seleccted \a pov in the \a joystick
      */
-    struct Axis {
-        int id;
-        double value;
-    };
+    void updatePov (int joystick, int pov, short angle);
 
     /**
-     * @internal
-     * Represents a joystick button
+     * Returns the size of a joystick structure
      */
-    struct Button {
-        int id;
-        bool pressed;
-    };
-
-    /**
-     * @internal
-     * Represents a joystick, its used to access the values of the registered
-     * joystick axes and buttons.
-     */
-    struct Joystick {
-        int id;
-        QList <Axis*> axes;
-        QList <Button*> buttons;
-    };
-
-    QList <Joystick*> m_joysticks;
+    int getJoystickSize (const Joystick* joystick);
 };
 
 #endif /* _DRIVER_STATION_JOYSTICK_MANAGER_H */
