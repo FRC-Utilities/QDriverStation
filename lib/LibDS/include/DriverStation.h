@@ -55,7 +55,7 @@ public:
      * This function is useful in the case that you want to warn the user
      * when he/she clicks the 'Enable' button and something is not working
      */
-    Q_INVOKABLE bool canBeEnabled();
+    bool canBeEnabled();
 
     /**
      * Returns a list with the available alliances and positions that the robot
@@ -64,7 +64,7 @@ public:
      * This is used by the robot program to change its behaviour depending on
      * the alliance (Blue or Red) and position (1, 2 & 3) of the robot.
      */
-    Q_INVOKABLE QStringList alliances();
+    QStringList alliances();
 
     /**
      * Returns the current operation mode of the robot.
@@ -75,22 +75,32 @@ public:
      *     - DS_Autonomous
      *     - DS_EmergencyStop
      */
-    Q_INVOKABLE DS_ControlMode operationMode();
+    DS_ControlMode operationMode();
 
     /**
      * Returns the IP address of the robot radio
      */
-    Q_INVOKABLE QString radioAddress();
+    QString radioAddress();
 
     /**
      * Returns the network address of the roboRIO
      */
-    Q_INVOKABLE QString roboRioAddress();
+    QString roboRioAddress();
 
     /**
      * Returns the current control mode of the robot
      */
-    Q_INVOKABLE DS_ControlMode controlMode();
+    DS_ControlMode controlMode();
+
+    /**
+     * Returns \c true if the robot reports that the user code is loaded
+     */
+    bool robotCodeLoaded();
+
+    /**
+     * Returns \c true if the DS is connected to the roboRIO
+     */
+    bool networkAvailable();
 
 public slots:
     /**
@@ -100,19 +110,19 @@ public slots:
      * This function is not called in the constructor to give the application
      * time to initialize its user interface.
      */
-    Q_INVOKABLE void init();
+    void init();
 
     /**
      * Reboots the roboRIO and changes the way the client sends packets to
      * the robot until it reloads its operating system
      */
-    Q_INVOKABLE void reboot();
+    void reboot();
 
     /**
      * Sends a special packet to the robot so that it re-starts the process that
      * runs the robot software
      */
-    Q_INVOKABLE void restartCode();
+    void restartCode();
 
     /**
      * Changes the team number. Its a simple way to change the roboRIO address
@@ -120,20 +130,20 @@ public slots:
      *
      * \note Changes may take up to one second to take full effect
      */
-    Q_INVOKABLE void setTeamNumber (int team);
+    void setTeamNumber (int team);
 
     /**
      * Updates the alliance of the robot by changing the way packets are
      * generated and sent to the roboRIO
      */
-    Q_INVOKABLE void setAlliance (DS_Alliance alliance);
+    void setAlliance (DS_Alliance alliance);
 
     /**
      * Updates the address that we use to communicate to the roboRIO.
      * Useful for teams that have changed the default network configurations
      * of their roboRIO component.
      */
-    Q_INVOKABLE void setCustomAddress (QString address);
+    void setCustomAddress (QString address);
 
     /**
      * Changes the operation mode of the robot.
@@ -146,38 +156,38 @@ public slots:
      *
      * @note The elapsed time will be reset when the mode is switched
      */
-    Q_INVOKABLE void setControlMode (DS_ControlMode mode);
+    void setControlMode (DS_ControlMode mode);
 
     /**
      * [TODO]
      */
-    Q_INVOKABLE void removeAllJoysticks();
+    void removeAllJoysticks();
 
     /**
      * [TODO]
      */
-    Q_INVOKABLE void addJoystick (int axes, int buttons);
+    void addJoystick (int axes, int buttons);
 
     /**
      * [TODO]
      */
-    Q_INVOKABLE void removeJoystick (int joystick);
+    void removeJoystick (int joystick);
 
     /**
      * [TODO]
      */
-    Q_INVOKABLE void updateJoystickAxis (int joystick, int axis, double value);
+    void updateJoystickAxis (int joystick, int axis, double value);
 
     /**
      * [TODO]
      */
-    Q_INVOKABLE void updateJoystickButton (int joystick, int button, bool pressed);
+    void updateJoystickButton (int joystick, int button, bool pressed);
 
     /**
      * Simulates a timed match with the input time values (in seconds)
      */
-    Q_INVOKABLE void startPractice (int countdown, int autonomous,
-                                    int delay, int teleop, int endgame);
+    void startPractice (int countdown, int autonomous,
+                        int delay, int teleop, int endgame);
 
 signals:
     /**
