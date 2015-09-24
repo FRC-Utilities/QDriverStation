@@ -105,6 +105,16 @@ DS_ControlMode DriverStation::controlMode()
     return m_mode;
 }
 
+bool DriverStation::robotCodeLoaded()
+{
+    return m_code;
+}
+
+bool DriverStation::networkAvailable()
+{
+    return m_netDiagnostics.roboRioIsAlive();
+}
+
 void DriverStation::init()
 {
     if (!m_init) {
