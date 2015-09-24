@@ -42,7 +42,8 @@ HEADERS += \
     $$PWD/src/Receiver.h \
     $$PWD/src/Sender.h \
     $$PWD/src/Ports.h \
-    $$PWD/src/ElapsedTime.h
+    $$PWD/src/ElapsedTime.h \
+    $$PWD/src/JoystickManager.h
 
 SOURCES += \
     $$PWD/src/Common.cpp \
@@ -52,7 +53,8 @@ SOURCES += \
     $$PWD/src/VersionAnalyzer.cpp \
     $$PWD/src/Receiver.cpp \
     $$PWD/src/Sender.cpp \
-    $$PWD/src/ElapsedTime.cpp
+    $$PWD/src/ElapsedTime.cpp \
+    $$PWD/src/JoystickManager.cpp
 
 
 

@@ -43,8 +43,10 @@ public:
      */
     void send (int index,
                QString host,
-               DS_JoystickData stick,
-               DS_ClientPacket packet);
+               DS_Status status,
+               DS_ControlMode mode,
+               DS_Alliance alliance,
+               QByteArray joystickData);
 
 private:
     QUdpSocket m_socket;

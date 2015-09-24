@@ -111,29 +111,6 @@ struct DS_RobotPacket {
 };
 
 /**
- * Represents a control packet, which tells the robot:
- *     - The control mode to use
- *     - The alliance and position to use
- *     - The packet count (generated automatically)
- *     - The status (e.g: reboot or just be stay still)
- */
-struct DS_ClientPacket {
-    DS_Status status;     /**< The status that we want the robot to have */
-    DS_ControlMode mode;  /**< The mode that we want the robot to have */
-    DS_Alliance alliance; /**< The alliance that we want the robot to have */
-};
-
-/**
- * Represents a joystick and its current state.
- * The idea behind this is that the program will record the current state
- * of a joystick and fill this structure with its data, which then
- * will be processed by the library and sent to the robot
- */
-struct DS_JoystickData {
-    /* We must figure this one out */
-};
-
-/**
  * Returns a calculated IP address based on the team address.
  *
  * For example:

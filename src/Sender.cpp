@@ -25,11 +25,11 @@
 
 void DS_Sender::send (int index,
                       QString host,
-                      DS_JoystickData stick,
-                      DS_ClientPacket packet)
+                      DS_Status status,
+                      DS_ControlMode mode,
+                      DS_Alliance alliance,
+                      QByteArray joystickData)
 {
-    Q_UNUSED (stick);
-
     /* Generate the ping data */
     QByteArray data;
     DS_PingData ping;
@@ -42,10 +42,14 @@ void DS_Sender::send (int index,
     /* Add this misterious number */
     data.append (0x01);
 
-    /* Add the desired control mode, robot status, alliance and position */
-    data.append (packet.mode);
-    data.append (packet.status);
-    data.append (packet.alliance);
+    /* Add the desired control mode, robot status and alliance data */
+    data.append (mode);
+    data.append (status);
+    data.append (alliance);
+
+    /* Add joystick input information if the robot is in TeleOp */
+    if (mode == DS_ControlTeleOp)
+        data.append (joystickData);
 
     /* Send the data */
     m_socket.writeDatagram (data, QHostAddress (host), DS_Ports::RoboRIO);
