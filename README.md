@@ -2,7 +2,6 @@
 
 [![Build Status](https://travis-ci.org/WinT-3794/QDriverStation.svg?branch=master)](https://travis-ci.org/WinT-3794/QDriverStation)
 [![BitCoin donate button](https://img.shields.io/badge/bitcoin-donate-yellow.svg)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
-[![OpenHub](https://www.openhub.net/p/qdriverstation/widgets/project_thin_badge.gif)](http://openhub.net/p/qdriverstation)
 
 ### Introduction
 
