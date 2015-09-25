@@ -22,37 +22,53 @@
 
 #include "JoystickManager.h"
 
+DS_JoystickManager::DS_JoystickManager()
+{
+    m_currentJoystick = 0;
+    m_tempJoystick = new Joystick;
+}
+
+DS_JoystickManager::~DS_JoystickManager()
+{
+    for (int i = 0; i < m_joysticks.count(); ++i) {
+        delete m_joysticks.at (i)->axes;
+        delete m_joysticks.at (i)->hats;
+        delete m_joysticks.at (i)->buttons;
+    }
+
+    delete m_tempJoystick;
+}
+
 QByteArray DS_JoystickManager::getData()
 {
     QByteArray data;
 
-    /* Generate a data packet for each joystick */
-    for (int js = 0; js < m_joysticks.count(); ++js) {
-        int axesSize = m_joysticks.at (js)->axes.size();
-        int buttonsSize = m_joysticks.at (js)->buttons.size();
+    /* Send the data of a different joystick each time the function is run */
+    if (m_joysticks.count() > 0) {
+        /* Update the joystick count to generate the index */
+        m_currentJoystick += 1;
+        if (m_currentJoystick > m_joysticks.count() - 1)
+            m_currentJoystick = 0;
 
-        /* Put joystick information and section header */
-        data.append (getJoystickSize (m_joysticks.at (js)) + 1);
-        data.append (0x0c);
+        /* Get the joystick data */
+        m_tempJoystick = m_joysticks.at (m_currentJoystick);
+        data.append (getJoystickSize (m_tempJoystick) - 1);
+        data.append (0xc + m_currentJoystick);
 
         /* Add axis data */
-        data.append (axesSize);
-        for (int axis = 0; axis < m_joysticks.at (js)->axes.count(); ++axis)
-            data.append (m_joysticks.at (js)->axes.at (axis)->value * 127.5);
+        data.append (sizeof (m_tempJoystick->axes));
+        for (int i = 0; i < m_tempJoystick->numAxes; ++i)
+            data.append (m_tempJoystick->axes [i]);
 
         /* Add button data */
-        data.append (buttonsSize);
-        for (int button = 0; button < m_joysticks.at (js)->buttons.count(); ++button)
-            data.append ((char) m_joysticks.at (js)->buttons.at (button)->pressed);
+        data.append (sizeof (m_tempJoystick->buttons));
+        for (int i = 0; i < m_tempJoystick->numButtons; ++i)
+            data.append (m_tempJoystick->buttons [i]);
 
-        /* POVs */
-        data.append (m_joysticks.at (js)->povs.size());
-        for (int pov = 0; pov < m_joysticks.at (js)->povs.count(); ++pov)
-            data.append (m_joysticks.at (js)->povs.at (pov)->angle);
-
-        /* Finish packet data */
-        data.append ((char) 0xff);
-        data.append ((char) 0xff);
+        /* Add hat/pov data */
+        data.append (sizeof (m_tempJoystick->hats));
+        for (int i = 0; i < m_tempJoystick->numHats; ++i)
+            data.append (m_tempJoystick->hats [i]);
     }
 
     return data;
@@ -65,83 +81,48 @@ void DS_JoystickManager::removeAllJoysticks()
 
 void DS_JoystickManager::removeJoystick (int joystick)
 {
-    /* The joystick is not registered, thus is invalid */
-    if (m_joysticks.count() <= joystick)
-        return;
-
-    /* We can safely remove the selected joystick from the list */
-    m_joysticks.removeAt (joystick);
+    if (m_joysticks.count() > joystick)
+        m_joysticks.removeAt (joystick);
 }
 
-void DS_JoystickManager::addJoystick (int axes, int buttons)
+void DS_JoystickManager::addJoystick (int axes, int buttons, int hats)
 {
-    Joystick* joystick = new Joystick;
+    Joystick* m_tempJoystick = new Joystick;
 
-    /* Generate a list with all the axes */
-    for (int i = 0; i < axes; ++i) {
-        Axis* axis = new Axis;
-        axis->value = 0;
-        joystick->axes.append (axis);
-    }
+    m_tempJoystick->numAxes = axes;
+    m_tempJoystick->numHats = hats;
+    m_tempJoystick->numButtons = buttons;
 
-    /* Generate a list with all the buttons */
-    for (int i = 0; i < buttons; ++i) {
-        Button* button = new Button;
-        button->pressed = false;
-        joystick->buttons.append (button);
-    }
+    m_tempJoystick->axes = new char [m_tempJoystick->numAxes];
+    m_tempJoystick->hats = new char [m_tempJoystick->numHats];
+    m_tempJoystick->buttons = new char [m_tempJoystick->numButtons];
 
-    /* Register the generated joystick */
-    m_joysticks.append (joystick);
+    m_joysticks.append (m_tempJoystick);
 }
 
 void DS_JoystickManager::updateAxis (int joystick, int axis, double value)
 {
-    /* The joystick is not registered, thus is invalid */
-    if (m_joysticks.count() <= joystick)
-        return;
-
-    /* The axis in not registered, thus is invalid */
-    if (m_joysticks.at (joystick)->axes.count() <= axis)
-        return;
-
-    /* Conditions met, we can safely write data on the list */
-    m_joysticks.at (joystick)->axes.at (axis)->value = value;
+    if (m_joysticks.count() > joystick)
+        m_joysticks.at (joystick)->axes [axis] = value * 127.5;
 }
 
 void DS_JoystickManager::updateButton (int joystick, int button, bool pressed)
 {
-    /* The joystick is not registered, thus is invalid */
-    if (m_joysticks.count() <= joystick)
-        return;
-
-    /* The button is not registered, thus is invalid */
-    if (m_joysticks.at (joystick)->buttons.count() <= button)
-        return;
-
-    /* Conditions met, we can safely write data on the list */
-    m_joysticks.at (joystick)->buttons.at (button)->pressed = pressed;
+    if (m_joysticks.count() > joystick)
+        m_joysticks.at (joystick)->buttons [button] = pressed;
 }
 
-void DS_JoystickManager::updatePov (int joystick, int pov, short angle)
+void DS_JoystickManager::updateHat (int joystick, int hat, short angle)
 {
-    /* The joystick is not registered, thus is invalid */
-    if (m_joysticks.count() <= joystick)
-        return;
-
-    /* The button is not registered, thus is invalid */
-    if (m_joysticks.at (joystick)->povs.count() <= pov)
-        return;
-
-    /* Conditions met, we can safely write data on the list */
-    m_joysticks.at (joystick)->povs.at (pov)->angle = angle;
+    if (m_joysticks.count() > joystick)
+        m_joysticks.at (joystick)->hats [hat] = angle;
 }
 
 int DS_JoystickManager::getJoystickSize (const Joystick* joystick)
 {
     return  5
-            + (joystick->axes.size())
-            + (joystick->buttons.size() / 8)
-            + ((joystick->buttons.size() % 8 == 0) ? 0 : 1)
-            + (joystick->povs.size() * 2);
+            + (sizeof (joystick->axes))
+            + (sizeof (joystick->buttons) / 8)
+            + (sizeof (joystick->buttons) % 8 == 0 ? 0 : 1)
+            + (sizeof (joystick->hats) * 2);
 }

@@ -86,7 +86,7 @@ DS_RobotPacket DS_Receiver::getRobotPacket (QByteArray data)
     if (minor.length() > 2)
         minor = QString ("%1%2").arg (minor.at (0), minor.at (1));
 
-    else if (minor.length() == 1)
+    if (minor.length() == 1)
         minor = QString ("0%1").arg (minor);
 
     receiver.voltageString = QString ("%1.%2").arg (major, minor);

@@ -58,6 +58,11 @@ DriverStation::DriverStation()
              this,               SLOT   (onCodeChanged (bool)));
 }
 
+DriverStation::~DriverStation()
+{
+    delete m_instance;
+}
+
 DriverStation* DriverStation::getInstance()
 {
     if (m_instance == nullptr)
@@ -187,9 +192,9 @@ void DriverStation::removeAllJoysticks()
     m_joystickManager.removeAllJoysticks();
 }
 
-void DriverStation::addJoystick (int axes, int buttons)
+void DriverStation::addJoystick (int axes, int buttons, int hats)
 {
-    m_joystickManager.addJoystick (axes, buttons);
+    m_joystickManager.addJoystick (axes, buttons, hats);
 }
 
 void DriverStation::removeJoystick (int joystick)
@@ -208,9 +213,9 @@ void DriverStation::updateJoystickButton (int joystick, int button,
     m_joystickManager.updateButton (joystick, button, pressed);
 }
 
-void DriverStation::updateJoystickPov (int joystick, int pov, short angle)
+void DriverStation::updateJoystickHat (int joystick, int hat, short angle)
 {
-    m_joystickManager.updatePov (joystick, pov, angle);
+    m_joystickManager.updateHat (joystick, hat, angle);
 }
 
 void DriverStation::startPractice (int countdown,

@@ -40,43 +40,28 @@ class DS_JoystickManager : public QObject
 {
     Q_OBJECT
 
+public:
+    DS_JoystickManager();
+    ~DS_JoystickManager();
+
 private:
-    /**
-     * @internal
-     * Represents a joystick axis
-     */
-    struct Axis {
-        double value;
-    };
-
-    /**
-     * @internal
-     * Represents a joystick button
-     */
-    struct Button {
-        bool pressed;
-    };
-
-    /**
-     * @internal
-     * Represents a joystick POV
-     */
-    struct Pov {
-        short angle;
-    };
-
     /**
      * @internal
      * Represents a joystick, its used to access the values of the registered
      * joystick axes and buttons.
      */
     struct Joystick {
-        int id;
-        QList <Pov*> povs;
-        QList <Axis*> axes;
-        QList <Button*> buttons;
+        int numHats;
+        int numAxes;
+        int numButtons;
+        char* axes;
+        char* hats;
+        char* buttons;
     };
 
+    int m_currentJoystick;
+
+    Joystick* m_tempJoystick;
     QList <Joystick*> m_joysticks;
 
 public slots:
@@ -100,7 +85,7 @@ public slots:
      * Registers a new joystick  to the Driver Station with the selected number
      * of \a axes and \a buttons
      */
-    void addJoystick (int axes, int buttons);
+    void addJoystick (int axes, int buttons, int hats);
 
     /**
      * Updates the \a value of the \a axis in the selected \a joystick
@@ -113,9 +98,9 @@ public slots:
     void updateButton (int joystick, int button, bool pressed);
 
     /**
-     * Updates the \a angle of the seleccted \a pov in the \a joystick
+     * Updates the \a angle of the seleccted \a hat in the \a joystick
      */
-    void updatePov (int joystick, int pov, short angle);
+    void updateHat (int joystick, int hat, short angle);
 
     /**
      * Returns the size of a joystick structure
