@@ -1,10 +1,8 @@
 # QDriverStation
 
 [![Build Status](https://travis-ci.org/WinT-3794/QDriverStation.svg?branch=master)](https://travis-ci.org/WinT-3794/QDriverStation)
-[![License](https://img.shields.io/github/license/wint-3794/qdriverstation.svg)](https://github.com/WinT-3794/QDriverStation/blob/master/LICENSE)
 [![BitCoin donate button](https://img.shields.io/badge/bitcoin-donate-yellow.svg)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
-
-<script type='text/javascript' src='https://www.openhub.net/p/qdriverstation/widgets/project_basic_stats?format=js'></script>
+[![OpenHub](https://www.openhub.net/p/qdriverstation/widgets/project_thin_badge.gif)](http://openhub.net/p/qdriverstation)
 
 ### Introduction
 
