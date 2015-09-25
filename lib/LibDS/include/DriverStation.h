@@ -172,7 +172,7 @@ public slots:
      * Registers a new joystick  to the Driver Station with the selected number
      * of \a axes and \a buttons
      */
-    void addJoystick (int axes, int buttons, int hats);
+    void addJoystick (int axes, int buttons);
 
     /**
      * Updates the \a value of the \a axis in the selected \a joystick
@@ -183,11 +183,6 @@ public slots:
      * Updates the \a pressed state of the \a button in the selected \a joystick
      */
     void updateJoystickButton (int joystick, int button, bool pressed);
-
-    /**
-     * Updates the \a angle of the seleccted \a hat in the \a joystick
-     */
-    void updateJoystickHat (int joystick, int hat, short angle);
 
     /**
      * Simulates a timed match with the input time values (in seconds)

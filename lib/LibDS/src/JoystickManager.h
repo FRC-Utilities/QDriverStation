@@ -56,7 +56,7 @@ private:
         int numButtons;
         char* axes;
         char* hats;
-        char* buttons;
+        bool* buttons;
     };
 
     int m_currentJoystick;
@@ -85,7 +85,7 @@ public slots:
      * Registers a new joystick  to the Driver Station with the selected number
      * of \a axes and \a buttons
      */
-    void addJoystick (int axes, int buttons, int hats);
+    void addJoystick (int axes, int buttons);
 
     /**
      * Updates the \a value of the \a axis in the selected \a joystick
@@ -96,11 +96,6 @@ public slots:
      * Updates the \a pressed state of the \a button in the selected \a joystick
      */
     void updateButton (int joystick, int button, bool pressed);
-
-    /**
-     * Updates the \a angle of the seleccted \a hat in the \a joystick
-     */
-    void updateHat (int joystick, int hat, short angle);
 
     /**
      * Returns the size of a joystick structure

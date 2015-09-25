@@ -302,5 +302,5 @@ void GamepadManager::registerJoysticksToDriverStation (int joystickCount)
     m_ds->removeAllJoysticks();
 
     for (int i = 0; i <= joystickCount - 1; ++i)
-        m_ds->addJoystick (getNumAxes (i), getNumButtons (i), getNumHats (i));
+        m_ds->addJoystick (getNumAxes (i), getNumButtons (i));
 }
