@@ -25,11 +25,11 @@
 
 /**
  * Defines all the time intervals of the library in a single file.
- * \note Change these values as needed.
+ * \note Change these values as needed
  */
 namespace DS_Times
 {
-const int RobotPacketInterval (18);
+const int RobotPacketInterval (20);
 const int ElapsedTimeInterval (100);
 const int TestConnectionInterval (1000);
 }
