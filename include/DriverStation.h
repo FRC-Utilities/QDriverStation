@@ -159,29 +159,30 @@ public slots:
     void setControlMode (DS_ControlMode mode);
 
     /**
-     * [TODO]
-     */
-    void removeAllJoysticks();
-
-    /**
-     * [TODO]
-     */
-    void addJoystick (int axes, int buttons);
-
-    /**
-     * [TODO]
+     * Unregisters the selected \a joystick from the Driver Station
      */
     void removeJoystick (int joystick);
 
     /**
-     * [TODO]
+     * Registers a new joystick  to the Driver Station with the selected number
+     * of \a axes and \a buttons
+     */
+    void addJoystick (int axes, int buttons);
+
+    /**
+     * Updates the \a value of the \a axis in the selected \a joystick
      */
     void updateJoystickAxis (int joystick, int axis, double value);
 
     /**
-     * [TODO]
+     * Updates the \a pressed state of the \a button in the selected \a joystick
      */
     void updateJoystickButton (int joystick, int button, bool pressed);
+
+    /**
+     * Updates the \a angle of the seleccted \a pov in the \a joystick
+     */
+    void updateJoystickPov (int joystick, int pov, short angle);
 
     /**
      * Simulates a timed match with the input time values (in seconds)
