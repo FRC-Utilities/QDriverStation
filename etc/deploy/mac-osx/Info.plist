@@ -5,17 +5,17 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-        <string>QDriverStation</string>
+	<string>QDriverStation</string>
 	<key>CFBundleGetInfoString</key>
 	<string>0.1, Copyright © 2015 WinT 3794</string>
 	<key>CFBundleIconFile</key>
 	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
-        <string>org.Team3794.QDriverStation</string>
+	<string>org.wint.qdriverstation</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-        <string>QDriverStation</string>
+	<string>QDriverStation</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
