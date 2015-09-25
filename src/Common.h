@@ -104,10 +104,8 @@ struct DS_RobotPacket {
     int commVersion;
     bool requestDateTime;
     QString voltageString;
-
     DS_PingData pongData;
     DS_ControlMode controlMode;
-    DS_ProgramMode programMode;
 };
 
 /**

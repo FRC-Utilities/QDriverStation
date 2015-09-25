@@ -47,5 +47,6 @@ void DS_NetConsole::onDataReceived()
     }
 
     /* Notify other objects */
-    emit newMessage (QString::fromUtf8 (data));
+    if (!data.isEmpty())
+        emit newMessage (QString::fromUtf8 (data));
 }

@@ -48,7 +48,7 @@ void DS_Receiver::onDataReceived()
         /* Only notify about code change if necessary */
         if (m_code != packet.hasCode) {
             m_code = packet.hasCode;
-            emit userCodeChanged (m_code);
+            emit userCodeChanged (packet.hasCode);
         }
 
         /* Send current date/time to robot */
@@ -75,9 +75,8 @@ DS_RobotPacket DS_Receiver::getRobotPacket (QByteArray data)
     /* Get the confirmation code of control mode */
     receiver.controlMode = (DS_ControlMode) data.at (3);
 
-    /* Get current mode and determine if user code is present */
-    receiver.programMode = (DS_ProgramMode) data.at (4);
-    receiver.hasCode = (receiver.programMode != DS_ProgramNoCode);
+    /* Determine if user code is present */
+    receiver.hasCode = (data.at (4) != DS_ProgramNoCode);
 
     /* Calculate the voltage */
     QString major = QString::number (data.at (5));

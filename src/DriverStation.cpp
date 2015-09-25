@@ -192,9 +192,9 @@ void DriverStation::removeAllJoysticks()
     m_joystickManager.removeAllJoysticks();
 }
 
-void DriverStation::addJoystick (int axes, int buttons, int hats)
+void DriverStation::addJoystick (int axes, int buttons)
 {
-    m_joystickManager.addJoystick (axes, buttons, hats);
+    m_joystickManager.addJoystick (axes, buttons);
 }
 
 void DriverStation::removeJoystick (int joystick)
@@ -211,11 +211,6 @@ void DriverStation::updateJoystickButton (int joystick, int button,
         bool pressed)
 {
     m_joystickManager.updateButton (joystick, button, pressed);
-}
-
-void DriverStation::updateJoystickHat (int joystick, int hat, short angle)
-{
-    m_joystickManager.updateHat (joystick, hat, angle);
 }
 
 void DriverStation::startPractice (int countdown,
