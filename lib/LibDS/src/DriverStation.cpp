@@ -208,6 +208,11 @@ void DriverStation::updateJoystickButton (int joystick, int button,
     m_joystickManager.updateButton (joystick, button, pressed);
 }
 
+void DriverStation::updateJoystickPov (int joystick, int pov, short angle)
+{
+    m_joystickManager.updatePov (joystick, pov, angle);
+}
+
 void DriverStation::startPractice (int countdown,
                                    int autonomous,
                                    int delay,
