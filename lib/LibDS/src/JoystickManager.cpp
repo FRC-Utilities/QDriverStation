@@ -22,7 +22,6 @@
 
 #include "JoystickManager.h"
 
-#include <qdebug.h>
 QByteArray DS_JoystickManager::getData()
 {
     QByteArray data;
