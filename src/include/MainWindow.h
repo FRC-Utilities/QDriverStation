@@ -43,11 +43,8 @@ class MainWindow : public SmartWindow
     Q_OBJECT
 
 public:
-    /**
-     * Initializes the window and configures its widgets to react to the events
-     * emitted by the different classes in the application.
-     */
     explicit MainWindow();
+    ~MainWindow();
 
 private:
     bool m_network;

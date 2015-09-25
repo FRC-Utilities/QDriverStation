@@ -96,6 +96,11 @@ public slots:
     int getNumButtons (int joystick);
 
     /**
+     * Returns the number of hats that the selected \a joystick has
+     */
+    int getNumHats (int joystick);
+
+    /**
      * Returns the display name of the axis in the joystick
      */
     QString getAxisName (int axis);

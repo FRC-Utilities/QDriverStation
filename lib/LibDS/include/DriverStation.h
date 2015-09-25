@@ -172,7 +172,7 @@ public slots:
      * Registers a new joystick  to the Driver Station with the selected number
      * of \a axes and \a buttons
      */
-    void addJoystick (int axes, int buttons);
+    void addJoystick (int axes, int buttons, int hats);
 
     /**
      * Updates the \a value of the \a axis in the selected \a joystick
@@ -185,9 +185,9 @@ public slots:
     void updateJoystickButton (int joystick, int button, bool pressed);
 
     /**
-     * Updates the \a angle of the seleccted \a pov in the \a joystick
+     * Updates the \a angle of the seleccted \a hat in the \a joystick
      */
-    void updateJoystickPov (int joystick, int pov, short angle);
+    void updateJoystickHat (int joystick, int hat, short angle);
 
     /**
      * Simulates a timed match with the input time values (in seconds)
@@ -288,11 +288,8 @@ signals:
     void elapsedTimeChanged (QString elapsedTime);
 
 protected:
-    /**
-     * Initializes the private variables of the class.
-     * Call \c DriverStation::init() to finish initialization process
-     */
     explicit DriverStation();
+    ~DriverStation();
 
 private:
     static DriverStation* m_instance;

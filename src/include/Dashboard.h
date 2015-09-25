@@ -86,15 +86,12 @@ public slots:
     QStringList getAvailableDashboards();
 
 protected:
-    /**
-     * Initializes the private members of the class and instructs the
-     * child process to quit when the application quits
-     */
     explicit Dashboard();
+    ~Dashboard();
 
 private:
     int m_current;
-    QProcess* m_process;
+    QProcess m_process;
     static Dashboard* m_instance;
 };
 

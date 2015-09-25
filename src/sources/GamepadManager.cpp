@@ -96,6 +96,8 @@ GamepadManager::~GamepadManager()
         SDL_GameControllerClose (SDL_GameControllerOpen (i));
 
     SDL_Quit();
+
+    delete m_instance;
 }
 
 GamepadManager* GamepadManager::getInstance()
@@ -114,6 +116,11 @@ int GamepadManager::getNumAxes (int joystick)
 int GamepadManager::getNumButtons (int joystick)
 {
     return SDL_JoystickNumButtons (SDL_JoystickOpen (joystick));
+}
+
+int GamepadManager::getNumHats (int joystick)
+{
+    return SDL_JoystickNumHats (SDL_JoystickOpen (joystick));
 }
 
 QString GamepadManager::getAxisName (int axis)
@@ -295,5 +302,5 @@ void GamepadManager::registerJoysticksToDriverStation (int joystickCount)
     m_ds->removeAllJoysticks();
 
     for (int i = 0; i <= joystickCount - 1; ++i)
-        m_ds->addJoystick (getNumAxes (i), getNumButtons (i));
+        m_ds->addJoystick (getNumAxes (i), getNumButtons (i), getNumHats (i));
 }

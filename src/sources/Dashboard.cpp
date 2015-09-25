@@ -41,10 +41,13 @@ Dashboard* Dashboard::m_instance = nullptr;
 
 Dashboard::Dashboard()
 {
-    m_process = new QProcess (this);
     connect (qApp, SIGNAL (aboutToQuit()), this, SLOT (quitDashboard()));
-
     loadDashboard();
+}
+
+Dashboard::~Dashboard()
+{
+    delete m_instance;
 }
 
 Dashboard* Dashboard::getInstance()
@@ -86,12 +89,12 @@ void Dashboard::loadDashboard()
     }
 #endif
 
-    m_process->start (path);
+    m_process.start (path);
 }
 
 void Dashboard::quitDashboard()
 {
-    m_process->close();
+    m_process.close();
 }
 
 void Dashboard::reloadDashboard()

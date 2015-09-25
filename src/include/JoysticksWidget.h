@@ -48,11 +48,6 @@ class JoysticksWidget : public QWidget
     Q_OBJECT
 
 public:
-    /**
-     * @internal
-     * Creates the UI and configures the SIGNALS/SLOTS between the widget and
-     * the QJoystickManager class
-     */
     explicit JoysticksWidget (QWidget* parent = 0);
 
 signals:

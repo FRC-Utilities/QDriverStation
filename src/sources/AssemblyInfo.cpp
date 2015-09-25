@@ -29,7 +29,7 @@ QString AssemblyInfo::name()
 
 QString AssemblyInfo::version()
 {
-    return "0.1 Alpha";
+    return "0.1 Beta";
 }
 
 QString AssemblyInfo::organization()

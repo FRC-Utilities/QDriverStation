@@ -70,6 +70,11 @@ MainWindow::MainWindow()
     GamepadManager::getInstance()->init();
 }
 
+MainWindow::~MainWindow()
+{
+    delete m_advancedSettings;
+}
+
 void MainWindow::connectSlots()
 {
     updatePcStatusWidgets();
