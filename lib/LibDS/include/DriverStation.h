@@ -159,6 +159,11 @@ public slots:
     void setControlMode (DS_ControlMode mode);
 
     /**
+     * Unregisters all the joysticks from the Driver Station
+     */
+    void removeAllJoysticks();
+
+    /**
      * Unregisters the selected \a joystick from the Driver Station
      */
     void removeJoystick (int joystick);
