@@ -44,6 +44,15 @@ class DS_Receiver : public QObject
 public:
     explicit DS_Receiver();
 
+
+public slots:
+    /**
+     * Changes the control mode that we use to check if the confirmation code
+     * that the robot sends is equal to the control mode set in the
+     * Driver Station library
+     */
+    void setControlMode (const DS_ControlMode& mode);
+
 signals:
     /**
      * Emitted when the class receives a packet and gets the robot voltage
@@ -63,9 +72,16 @@ signals:
      */
     void userCodeChanged (bool available);
 
+    /**
+     * Emitted when the control mode of the robot is different than the one
+     * in the Driver Station
+     */
+    void controlModeChanged (DS_ControlMode mode);
+
 private:
     bool m_code;
     QUdpSocket m_socket;
+    DS_ControlMode m_controlMode;
 
 private slots:
     /**
@@ -76,7 +92,7 @@ private slots:
     /**
      * Processes "raw" data into a nicer and more readable \c DS_RobotPacket
      */
-    DS_RobotPacket getRobotPacket (QByteArray data);
+    DS_RobotPacket getRobotPacket (const QByteArray& data);
 };
 
 #endif /* _DRIVER_STATION_RECEIVER_H */

@@ -130,20 +130,20 @@ public slots:
      *
      * \note Changes may take up to one second to take full effect
      */
-    void setTeamNumber (int team);
+    void setTeamNumber (const int& team);
 
     /**
      * Updates the alliance of the robot by changing the way packets are
      * generated and sent to the roboRIO
      */
-    void setAlliance (DS_Alliance alliance);
+    void setAlliance (const DS_Alliance& alliance);
 
     /**
      * Updates the address that we use to communicate to the roboRIO.
      * Useful for teams that have changed the default network configurations
      * of their roboRIO component.
      */
-    void setCustomAddress (QString address);
+    void setCustomAddress (const QString& address);
 
     /**
      * Changes the operation mode of the robot.
@@ -156,7 +156,7 @@ public slots:
      *
      * @note The elapsed time will be reset when the mode is switched
      */
-    void setControlMode (DS_ControlMode mode);
+    void setControlMode (const DS_ControlMode& mode);
 
     /**
      * Unregisters all the joysticks from the Driver Station
@@ -166,29 +166,45 @@ public slots:
     /**
      * Unregisters the selected \a joystick from the Driver Station
      */
-    void removeJoystick (int joystick);
+    void removeJoystick (const short& joystick);
 
     /**
      * Registers a new joystick  to the Driver Station with the selected number
      * of \a axes and \a buttons
      */
-    void addJoystick (int axes, int buttons);
+    void addJoystick (const short& axes,
+                      const short& buttons,
+                      const short& hats);
+
+    /**
+     * Updates the \a angle of the \a hat in the selected \a joystick
+     */
+    void updateJoystickHat (const short& js,
+                            const short& hat,
+                            const int& angle);
 
     /**
      * Updates the \a value of the \a axis in the selected \a joystick
      */
-    void updateJoystickAxis (int joystick, int axis, double value);
+    void updateJoystickAxis (const short& js,
+                             const short& axis,
+                             const double& value);
 
     /**
      * Updates the \a pressed state of the \a button in the selected \a joystick
      */
-    void updateJoystickButton (int joystick, int button, bool pressed);
+    void updateJoystickButton (const short& js,
+                               const short& button,
+                               const bool& pressed);
 
     /**
      * Simulates a timed match with the input time values (in seconds)
      */
-    void startPractice (int countdown, int autonomous,
-                        int delay, int teleop, int endgame);
+    void startPractice (const int& countdown,
+                        const int& autonomous,
+                        const int& delay,
+                        const int& teleop,
+                        const int& endgame);
 
 signals:
     /**
@@ -352,13 +368,6 @@ private slots:
 
     /**
      * @internal
-     * Increments the ping counter and resets it if it reachers a value
-     * greater than the one supported by the protocol, which is 0xffff
-     */
-    void refreshPingData();
-
-    /**
-     * @internal
      * Sends a 6-byte packet to the robot that contains:
      *     - Ping diagnostic data
      *     - Robot state command
@@ -381,7 +390,29 @@ private slots:
      * \note This function will only be called when necessary, in other words
      * when the program detects that the status of the code changed
      */
-    void onCodeChanged (bool available);
+    void onCodeChanged (const bool& available);
+
+    /**
+     * @internal
+     * Called when we recieve a packet from the roboRIO that tells us that
+     * its confirmation code is not equal to the control mode set by the user
+     */
+    void onControlModeChanged (const DS_ControlMode& mode);
+
+    /**
+     * @internal
+     * Notifies the other objects about the new status of the robot when:
+     *     - The user code status is changed
+     *     - The communication status is changed
+     */
+    void updateStatus (const bool& boolean);
+
+    /**
+     * @internal
+     * Notifies the other objects about the new status of the robot when the
+     * control mode of the robot is chagned
+     */
+    void updateStatus (const DS_ControlMode& mode);
 };
 
 #endif /* _DRIVER_STATION_MAIN_H */

@@ -88,32 +88,32 @@ public slots:
     /**
      * Returns the number of axes that the selected \a joystick has
      */
-    int getNumAxes (int joystick);
+    int getNumAxes (const int& js);
 
     /**
      * Returns the number of buttons that the selected \a joystick has
      */
-    int getNumButtons (int joystick);
+    int getNumButtons (const int& js);
 
     /**
      * Returns the number of hats that the selected \a joystick has
      */
-    int getNumHats (int joystick);
+    int getNumHats (const int& js);
 
     /**
      * Returns the display name of the axis in the joystick
      */
-    QString getAxisName (int axis);
+    QString getAxisName (const int& axis);
 
     /**
      * Returns the display name of the button in the joystick
      */
-    QString getButtonName (int button);
+    QString getButtonName (const int& button);
 
     /**
      * Returns the display name of the joystick
      */
-    QString getJoystickName (int joystick);
+    QString getJoystickName (const int& js);
 
     /**
      * Returns an ordered \c QStringList with the names and IDs of the
@@ -132,7 +132,7 @@ public slots:
     /**
      * Changes the time interval between the SDL Event reader calls
      */
-    void setUpdateInterval (int time);
+    void setUpdateInterval (const int& time);
 
     /**
      * Instructs the haptic device in \a joystick to rumble for the specified
@@ -141,7 +141,7 @@ public slots:
      * @param joystick The joystick to rumble
      * @param time The time in milliseconds to enable the haptic device
      */
-    void rumble (int joystick, int time);
+    void rumble (const int& js, const int& time);
 
 signals:
     /**
@@ -215,7 +215,7 @@ private:
      * struct with normal \c QList objects and to send a FRC-like joystick ID
      * to the robot
      */
-    int getDynamicId (int id);
+    int getDynamicId (int js);
 
 private slots:
     /**
@@ -257,9 +257,9 @@ private slots:
 
     /**
      * @internal
-     *
+     * Registers and configures all the attached joysticks to the Driver Staiton
      */
-    void registerJoysticksToDriverStation (int joystickCount);
+    void registerJoysticksToDriverStation (const int& joystickCount);
 };
 
 #endif /* _QDRIVER_STATION_GAMEPAD_MANAGER_H */

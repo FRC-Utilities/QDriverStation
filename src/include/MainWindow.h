@@ -93,7 +93,7 @@ private slots:
      * Changes the robot alliance and position when the user changes the
      * allianche from the combobox
      */
-    void onStationChanged (int station);
+    void onStationChanged (const int& station);
 
     /**
      * @internal
@@ -155,7 +155,7 @@ private slots:
      * @internal
      * Disables the robot when the user changes the robot operation mode
      */
-    void onRobotModeChanged (int mode);
+    void onRobotModeChanged (const int& mode);
 
     /**
      * @internal
@@ -171,13 +171,13 @@ private slots:
      *
      * @param db
      */
-    void setDashboard (int db);
+    void setDashboard (const int& dashboard);
 
     /**
      * @internal
      * Changes the team number used by the DriverStation and updates the UI
      */
-    void setTeamNumber (int team);
+    void setTeamNumber (const int& team);
 
     /**
      * @internal
@@ -187,7 +187,7 @@ private slots:
      *
      * @param enabled
      */
-    void setRobotEnabled (bool enabled);
+    void setRobotEnabled (const bool& enabled);
 
     /**
      * @internal
@@ -204,14 +204,14 @@ private slots:
      * Changes the appearance of the 'Robot Code' LED based on the value of the
      * \a available parameter
      */
-    void onCodeChanged (bool available);
+    void onCodeChanged (const bool& available);
 
     /**
      * @internal
      * Changes the appearance of the 'Communications' LED based on the value of
      * the \a available parameter
      */
-    void onNetworkChanged (bool available);
+    void onNetworkChanged (const bool& available);
 
     /**
      * @internal
@@ -226,7 +226,7 @@ private slots:
      * Changes the checked state of the radio checkbox in the diagnostics tab
      * based on the value of the \a available parameter
      */
-    void onRadioChanged (bool available);
+    void onRadioChanged (const bool& available);
 
     /**
      * @internal
@@ -234,7 +234,7 @@ private slots:
      *
      * @note The text will be set to '--.--' if there are are no communications
      */
-    void onVoltageChanged (QString voltage);
+    void onVoltageChanged (const QString& voltage);
 
     /**
      * @internal
@@ -243,7 +243,7 @@ private slots:
      *
      * @note The text will be set to '--.--' if there are are no communications
      */
-    void onLibVersionChanged (QString version);
+    void onLibVersionChanged (const QString& version);
 
     /**
      * @internal
@@ -252,7 +252,7 @@ private slots:
      *
      * @note The text will be set to '--.--' if there are are no communications
      */
-    void onRioVersionChanged (QString version);
+    void onRioVersionChanged (const QString& version);
 
     /**
      * @internal
@@ -261,7 +261,7 @@ private slots:
      * append 'Enabled' or 'Disabled' depending on the operation mode and status
      * of the robot.
      */
-    void onRobotStatusChanged (QString status);
+    void onRobotStatusChanged (const QString& status);
 
     /**
      * @internal
@@ -270,7 +270,7 @@ private slots:
      *
      * @note The text will be set to '--.--' if there are are no communications
      */
-    void onRamUsageChanged (int total, int used);
+    void onRamUsageChanged (const int& total, const int& used);
 
     /**
      * @internal
@@ -279,7 +279,7 @@ private slots:
      *
      * @note The text will be set to '--.--' if there are are no communications
      */
-    void onDiskUsageChanged (int total, int used);
+    void onDiskUsageChanged (const int& total, const int& used);
 
     /**
      * @internal

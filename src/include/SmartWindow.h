@@ -84,13 +84,13 @@ public slots:
      * If \a fixed is set to \c true, the window will resize itself to the
      * smallest size possible and will inhibit the system from resizing it
      */
-    void setUseFixedSize (bool fixed);
+    void setUseFixedSize (const bool& fixed);
 
     /**
      * If \a prompt is set to \c true, the window will ask the user for
      * confirmation when a close event is detected
      */
-    void setPromptOnQuit (bool prompt);
+    void setPromptOnQuit (const bool& prompt);
 
 
     /**
@@ -100,7 +100,7 @@ public slots:
      *     - \c Docked, the window will be frameless and will be docked to
      *          to the bottom of the screen to emulate the FRC DriverStation
      */
-    void setWindowMode (WindowMode mode);
+    void setWindowMode (const WindowMode& mode);
 
 private slots:
     /**

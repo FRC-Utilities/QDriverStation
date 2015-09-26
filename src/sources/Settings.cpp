@@ -33,12 +33,12 @@ void Settings::clear()
     settings->clear();
 }
 
-void Settings::set (QString key, QVariant value)
+void Settings::set (const QString& key, const QVariant& value)
 {
     settings->setValue (key, value);
 }
 
-QVariant Settings::get (QString key, QVariant defaultValue)
+QVariant Settings::get (const QString& key, const QVariant& defaultValue)
 {
     return settings->value (key, defaultValue);
 }

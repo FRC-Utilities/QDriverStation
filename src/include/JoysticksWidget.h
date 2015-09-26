@@ -84,28 +84,28 @@ private slots:
      * @internal
      * Re-creates the indicator widgets for the currently selected joystick
      */
-    void onRowChanged (int row);
+    void onRowChanged (const int& row);
 
     /**
      * @internal
      * Re-populates the joystick list when the QJoystickManager detects that
      * the user attached or removed a joystick
      */
-    void onCountChanged (QStringList list);
+    void onCountChanged (const QStringList& list);
 
     /**
      * @internal
      * Sends the axis event information to the DriverStation and updates the
      * state of one of the axis indicators.
      */
-    void onAxisEvent (GM_Axis axis);
+    void onAxisEvent (const GM_Axis& axis);
 
     /**
      * @internal
      * Sends the button event information to the DriverStation and updates the
      * state of one of the button indicators.
      */
-    void onButtonEvent (GM_Button button);
+    void onButtonEvent (const GM_Button& button);
 };
 
 #endif /* _QDRIVER_STATION_JOYSTICKS_H */

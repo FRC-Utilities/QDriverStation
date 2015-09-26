@@ -37,7 +37,7 @@
 #endif
 #endif
 
-Dashboard* Dashboard::m_instance = nullptr;
+Dashboard* Dashboard::m_instance = Q_NULLPTR;
 
 Dashboard::Dashboard()
 {
@@ -52,7 +52,7 @@ Dashboard::~Dashboard()
 
 Dashboard* Dashboard::getInstance()
 {
-    if (m_instance == nullptr)
+    if (m_instance == Q_NULLPTR)
         m_instance = new Dashboard();
 
     return m_instance;

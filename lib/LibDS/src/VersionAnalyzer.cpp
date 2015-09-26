@@ -35,7 +35,7 @@ DS_VersionAnalyzer::DS_VersionAnalyzer()
              this,      SLOT   (downloadFinished (QNetworkReply*)));
 }
 
-void DS_VersionAnalyzer::downloadRobotInformation (QString address)
+void DS_VersionAnalyzer::downloadRobotInformation (const QString& address)
 {
     QString host = "ftp://" + address;
     m_manager.get (QNetworkRequest (host + _LIB_FILE));

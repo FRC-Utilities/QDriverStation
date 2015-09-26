@@ -39,7 +39,7 @@ public:
     explicit DS_NetConsole();
 
 public slots:
-    void setTeamNumber (int team);
+    void setTeamNumber (const int& team);
 
 signals:
     void newMessage (QString message);

@@ -41,12 +41,12 @@ public:
      * Additionally, the function will send the joystick input data to the
      * robot for further processing.
      */
-    void send (int index,
-               QString host,
-               DS_Status status,
-               DS_ControlMode mode,
-               DS_Alliance alliance,
-               QByteArray joystickData);
+    void send (const int& index,
+               const QString& host,
+               const DS_Status& status,
+               const DS_ControlMode& mode,
+               const DS_Alliance& alliance,
+               const QByteArray& joystickData);
 
 private:
     QUdpSocket m_socket;

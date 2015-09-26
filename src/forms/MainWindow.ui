@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>0</width>
-    <height>0</height>
+    <width>870</width>
+    <height>223</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,7 +43,7 @@
       </property>
       <widget class="QWidget" name="OperationTab">
        <attribute name="icon">
-        <iconset resource="../../../etc/resources/desktop/resources.qrc">
+        <iconset resource="../../etc/resources/resources.qrc">
          <normaloff>:/icons/Operation.png</normaloff>:/icons/Operation.png</iconset>
        </attribute>
        <attribute name="title">
@@ -451,7 +451,7 @@ QPushButton:checked {
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap resource="../../../etc/resources/desktop/resources.qrc">:/icons/Plug.png</pixmap>
+              <pixmap resource="../../etc/resources/resources.qrc">:/icons/Plug.png</pixmap>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -523,7 +523,7 @@ QPushButton:checked {
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../etc/resources/desktop/resources.qrc">
+                 <iconset resource="../../etc/resources/resources.qrc">
                   <normaloff>:/icons/WindowNormal.png</normaloff>:/icons/WindowNormal.png</iconset>
                 </property>
                 <property name="checkable">
@@ -546,7 +546,7 @@ QPushButton:checked {
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../etc/resources/desktop/resources.qrc">
+                 <iconset resource="../../etc/resources/resources.qrc">
                   <normaloff>:/icons/WindowDocked.png</normaloff>:/icons/WindowDocked.png</iconset>
                 </property>
                 <property name="checkable">
@@ -641,7 +641,7 @@ QPushButton:checked {
       </widget>
       <widget class="QWidget" name="DiagnosticsTab">
        <attribute name="icon">
-        <iconset resource="../../../etc/resources/desktop/resources.qrc">
+        <iconset resource="../../etc/resources/resources.qrc">
          <normaloff>:/icons/Diagnostics.png</normaloff>:/icons/Diagnostics.png</iconset>
        </attribute>
        <attribute name="title">
@@ -957,7 +957,7 @@ QPushButton:checked {
       </widget>
       <widget class="QWidget" name="SetupTab">
        <attribute name="icon">
-        <iconset resource="../../../etc/resources/desktop/resources.qrc">
+        <iconset resource="../../etc/resources/resources.qrc">
          <normaloff>:/icons/Setup.png</normaloff>:/icons/Setup.png</iconset>
        </attribute>
        <attribute name="title">
@@ -1181,7 +1181,7 @@ QPushButton:checked {
       </widget>
       <widget class="QWidget" name="JoysticksTab">
        <attribute name="icon">
-        <iconset resource="../../../etc/resources/desktop/resources.qrc">
+        <iconset resource="../../etc/resources/resources.qrc">
          <normaloff>:/icons/USB.png</normaloff>:/icons/USB.png</iconset>
        </attribute>
        <attribute name="title">
@@ -1200,18 +1200,6 @@ QPushButton:checked {
     </item>
     <item>
      <widget class="QFrame" name="InfoFrame">
-      <property name="minimumSize">
-       <size>
-        <width>200</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>200</width>
-        <height>16777215</height>
-       </size>
-      </property>
       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0,1">
        <item>
         <widget class="QWidget" name="StatusWidget" native="true">
@@ -1468,7 +1456,7 @@ QPushButton:checked {
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="../../../etc/resources/desktop/resources.qrc">:/icons/Power (big).png</pixmap>
+             <pixmap resource="../../etc/resources/resources.qrc">:/icons/Power (big).png</pixmap>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -1572,7 +1560,7 @@ QPushButton:checked {
       </property>
       <widget class="QWidget" name="NetConsole">
        <attribute name="icon">
-        <iconset resource="../../../etc/resources/desktop/resources.qrc">
+        <iconset resource="../../etc/resources/resources.qrc">
          <normaloff>:/icons/Messages.png</normaloff>:/icons/Messages.png</iconset>
        </attribute>
        <attribute name="title">
@@ -1603,7 +1591,7 @@ QPushButton:checked {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="../../../etc/resources/desktop/resources.qrc">
+              <iconset resource="../../etc/resources/resources.qrc">
                <normaloff>:/icons/Copy.png</normaloff>:/icons/Copy.png</iconset>
              </property>
             </widget>
@@ -1614,7 +1602,7 @@ QPushButton:checked {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="../../../etc/resources/desktop/resources.qrc">
+              <iconset resource="../../etc/resources/resources.qrc">
                <normaloff>:/icons/ClearLog.png</normaloff>:/icons/ClearLog.png</iconset>
              </property>
             </widget>
@@ -1646,7 +1634,7 @@ QPushButton:checked {
       </widget>
       <widget class="QWidget" name="PowerTab">
        <attribute name="icon">
-        <iconset resource="../../../etc/resources/desktop/resources.qrc">
+        <iconset resource="../../etc/resources/resources.qrc">
          <normaloff>:/icons/Power.png</normaloff>:/icons/Power.png</iconset>
        </attribute>
        <attribute name="title">
@@ -1658,7 +1646,7 @@ QPushButton:checked {
       </widget>
       <widget class="QWidget" name="AboutTab">
        <attribute name="icon">
-        <iconset resource="../../../etc/resources/desktop/resources.qrc">
+        <iconset resource="../../etc/resources/resources.qrc">
          <normaloff>:/icons/Info.png</normaloff>:/icons/Info.png</iconset>
        </attribute>
        <attribute name="title">
@@ -1680,7 +1668,7 @@ QPushButton:checked {
            <string/>
           </property>
           <property name="pixmap">
-           <pixmap resource="../../../etc/resources/desktop/resources.qrc">:/icon.ico</pixmap>
+           <pixmap resource="../../etc/resources/resources.qrc">:/icon.ico</pixmap>
           </property>
           <property name="scaledContents">
            <bool>true</bool>
@@ -1820,7 +1808,7 @@ QPushButton:pressed {
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="../../../etc/resources/desktop/resources.qrc">
+          <iconset resource="../../etc/resources/resources.qrc">
            <normaloff>:/icons/Close.png</normaloff>:/icons/Close.png</iconset>
          </property>
         </widget>
@@ -1870,7 +1858,7 @@ QPushButton:pressed {
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="../../../etc/resources/desktop/resources.qrc">
+          <iconset resource="../../etc/resources/resources.qrc">
            <normaloff>:/icons/Setup.png</normaloff>:/icons/Setup.png</iconset>
          </property>
         </widget>
@@ -1896,7 +1884,7 @@ QPushButton:pressed {
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="../../../etc/resources/desktop/resources.qrc"/>
+  <include location="../../etc/resources/resources.qrc"/>
  </resources>
  <connections>
   <connection>

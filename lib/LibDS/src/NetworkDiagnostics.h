@@ -67,12 +67,12 @@ public:
      * Changes the team number, which is used to find the roboRIO and the
      * wireless radio
      */
-    void setTeamNumber (int team);
+    void setTeamNumber (const int& team);
 
     /**
      * Changes the address to use for the roboRIO
      */
-    void setCustomAddress (QString address);
+    void setCustomAddress (const QString& address);
 
 private:
     int m_teamNumber;

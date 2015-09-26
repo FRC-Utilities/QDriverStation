@@ -55,10 +55,8 @@
 MainWindow::MainWindow()
 {
     ui.setupUi (this);
-    setVisible (false);
     setUseFixedSize (true);
     setPromptOnQuit (true);
-    setVisible (true);
 
     connectSlots();
     configureWidgetAppearance();
@@ -210,6 +208,10 @@ void MainWindow::configureWidgetAppearance()
              ui.NetConsoleEdit,         SLOT   (clear()));
     connect (ui.CopyButton,             SIGNAL (clicked()),
              this,                      SLOT   (onCopyClicked()));
+
+    /* Configure the info frame */
+    ui.InfoFrame->setMinimumWidth (ui.StatusLabel->width() * 1.8);
+    ui.InfoFrame->setMaximumWidth (ui.StatusLabel->width() * 1.8);
 }
 
 void MainWindow::readSettings()
@@ -287,7 +289,7 @@ void MainWindow::onCopyClicked()
                                "</p></font>");
 }
 
-void MainWindow::onStationChanged (int station)
+void MainWindow::onStationChanged (const int& station)
 {
     Settings::set ("Station", station);
     m_ds->setAlliance ((DS_Alliance) station);
@@ -360,7 +362,7 @@ void MainWindow::onWindowModeChanged()
     }
 }
 
-void MainWindow::onRobotModeChanged (int mode)
+void MainWindow::onRobotModeChanged (const int& mode)
 {
     Q_UNUSED (mode);
     m_ds->setControlMode (DS_ControlDisabled);
@@ -375,13 +377,13 @@ void MainWindow::onPracticeValuesChanged()
     Settings::set ("Practice Autonomous", ui.PracticeAutonomous->value());
 }
 
-void MainWindow::setDashboard (int db)
+void MainWindow::setDashboard (const int& dashboard)
 {
-    Settings::set ("Dashboard", db);
+    Settings::set ("Dashboard", dashboard);
     Dashboard::getInstance()->reloadDashboard();
 }
 
-void MainWindow::setTeamNumber (int team)
+void MainWindow::setTeamNumber (const int& team)
 {
     Settings::set ("Team ID", team);
     ui.TeamNumberSpin->setValue (team);
@@ -391,7 +393,7 @@ void MainWindow::setTeamNumber (int team)
     m_advancedSettings->setTeamNumber (team);
 }
 
-void MainWindow::setRobotEnabled (bool enabled)
+void MainWindow::setRobotEnabled (const bool& enabled)
 {
     if (enabled) {
         if (ui.Test->isChecked())
@@ -424,12 +426,12 @@ void MainWindow::updateLabelText (QLabel* label, QString text)
         label->setText ("--.--");
 }
 
-void MainWindow::onCodeChanged (bool available)
+void MainWindow::onCodeChanged (const bool& available)
 {
     ui.RobotCode->setChecked (available);
 }
 
-void MainWindow::onNetworkChanged (bool available)
+void MainWindow::onNetworkChanged (const bool& available)
 {
     m_network = available;
     ui.RobotCheck->setChecked (available);
@@ -442,27 +444,27 @@ void MainWindow::onControlModeChanged (DS_ControlMode mode)
         ui.DisableButton->click();
 }
 
-void MainWindow::onRadioChanged (bool available)
+void MainWindow::onRadioChanged (const bool& available)
 {
     ui.DsRadioCheck->setChecked (available);
 }
 
-void MainWindow::onVoltageChanged (QString voltage)
+void MainWindow::onVoltageChanged (const QString& voltage)
 {
     updateLabelText (ui.VoltageLabel, tr ("%1 V").arg (voltage));
 }
 
-void MainWindow::onLibVersionChanged (QString version)
+void MainWindow::onLibVersionChanged (const QString& version)
 {
     updateLabelText (ui.LibVersion, version);
 }
 
-void MainWindow::onRioVersionChanged (QString version)
+void MainWindow::onRioVersionChanged (const QString& version)
 {
     updateLabelText (ui.RioVersion, version);
 }
 
-void MainWindow::onRobotStatusChanged (QString status)
+void MainWindow::onRobotStatusChanged (const QString& status)
 {
     if (m_ds->canBeEnabled() && m_ds->operationMode() != DS_ControlEmergencyStop) {
 
@@ -482,12 +484,12 @@ void MainWindow::onRobotStatusChanged (QString status)
             else if (ui.Practice->isChecked())
                 mode = ui.Practice->text();
 
-            ui.StatusLabel->setText (QString ("%1 Disabled").arg (mode));
+            ui.StatusLabel->setText (QString ("%1\nDisabled").arg (mode));
         }
 
         /* Append 'Enabled' to the current operation mode */
         else
-            ui.StatusLabel->setText (tr ("%1 Enabled").arg (status));
+            ui.StatusLabel->setText (tr ("%1\nEnabled").arg (status));
     }
 
     /* Robot is in E-Stop or something is not good... */
@@ -495,12 +497,12 @@ void MainWindow::onRobotStatusChanged (QString status)
         ui.StatusLabel->setText (status);
 }
 
-void MainWindow::onRamUsageChanged (int total, int used)
+void MainWindow::onRamUsageChanged (const int& total, const int& used)
 {
     updateLabelText (ui.RamUsage, tr ("%1 MB / %2 MB").arg (used, total));
 }
 
-void MainWindow::onDiskUsageChanged (int total, int used)
+void MainWindow::onDiskUsageChanged (const int& total, const int& used)
 {
     updateLabelText (ui.DiskUsage, tr ("%1 MB / %2 MB").arg (used, total));
 }

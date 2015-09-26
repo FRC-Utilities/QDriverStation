@@ -87,17 +87,17 @@ void SmartWindow::closeEvent (QCloseEvent* e)
     e->accept();
 }
 
-void SmartWindow::setUseFixedSize (bool fixed)
+void SmartWindow::setUseFixedSize (const bool& fixed)
 {
     m_useFixedSize = fixed;
 }
 
-void SmartWindow::setPromptOnQuit (bool prompt)
+void SmartWindow::setPromptOnQuit (const bool& prompt)
 {
     m_promptOnQuit = prompt;
 }
 
-void SmartWindow::setWindowMode (WindowMode mode)
+void SmartWindow::setWindowMode (const WindowMode& mode)
 {
     if (m_windowMode == mode)
         return;
