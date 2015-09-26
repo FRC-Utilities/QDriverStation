@@ -76,12 +76,12 @@ void DS_NetworkDiagnostics::refresh()
     }
 }
 
-void DS_NetworkDiagnostics::setTeamNumber (int team)
+void DS_NetworkDiagnostics::setTeamNumber (const int& team)
 {
     m_teamNumber = team;
 }
 
-void DS_NetworkDiagnostics::setCustomAddress (QString address)
+void DS_NetworkDiagnostics::setCustomAddress (const QString& address)
 {
     m_customRioAddress = address;
 }

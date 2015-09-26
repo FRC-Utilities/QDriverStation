@@ -23,12 +23,12 @@
 #include "Ports.h"
 #include "Sender.h"
 
-void DS_Sender::send (int index,
-                      QString host,
-                      DS_Status status,
-                      DS_ControlMode mode,
-                      DS_Alliance alliance,
-                      QByteArray joystickData)
+void DS_Sender::send (const int& index,
+                      const QString& host,
+                      const DS_Status& status,
+                      const DS_ControlMode& mode,
+                      const DS_Alliance& alliance,
+                      const QByteArray& joystickData)
 {
     /* Generate the ping data */
     QByteArray data;
@@ -39,7 +39,7 @@ void DS_Sender::send (int index,
     data.append (ping.byte1);
     data.append (ping.byte2);
 
-    /* Add this misterious number */
+    /* Add the section header */
     data.append (0x01);
 
     /* Add the desired control mode, robot status and alliance data */

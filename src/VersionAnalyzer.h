@@ -34,7 +34,7 @@ public slots:
      * Downloads a list of FTP files to get information regarding the
      * robot and its components (such as the PDP and the PCM)
      */
-    void downloadRobotInformation (QString address);
+    void downloadRobotInformation (const QString& address);
 
 signals:
     /**

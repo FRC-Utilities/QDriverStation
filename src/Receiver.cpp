@@ -29,10 +29,14 @@ DS_Receiver::DS_Receiver()
     connect (&m_socket, SIGNAL (readyRead()), this, SLOT (onDataReceived()));
 }
 
+void DS_Receiver::setControlMode (const DS_ControlMode& mode)
+{
+    m_controlMode = mode;
+}
+
 void DS_Receiver::onDataReceived()
 {
     while (m_socket.hasPendingDatagrams()) {
-
         /* Read the socket data */
         QByteArray data;
         data.resize (m_socket.pendingDatagramSize());
@@ -51,6 +55,13 @@ void DS_Receiver::onDataReceived()
             emit userCodeChanged (packet.hasCode);
         }
 
+        /* Notify the Driver Station if the confirmation code of the robot
+         * is different than the control mode set by the DS */
+        if (m_controlMode != packet.controlMode) {
+            m_controlMode = packet.controlMode;
+            emit controlModeChanged (m_controlMode);
+        }
+
         /* Send current date/time to robot */
         if (packet.requestDateTime) {
             /* TODO */
@@ -58,7 +69,7 @@ void DS_Receiver::onDataReceived()
     }
 }
 
-DS_RobotPacket DS_Receiver::getRobotPacket (QByteArray data)
+DS_RobotPacket DS_Receiver::getRobotPacket (const QByteArray& data)
 {
     DS_RobotPacket receiver;
 

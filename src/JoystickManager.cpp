@@ -42,10 +42,11 @@ DS_JoystickManager::~DS_JoystickManager()
 QByteArray DS_JoystickManager::getData()
 {
     QByteArray data;
+    QBitArray buttonData;
 
     for (int i = 0; i < m_joysticks.count(); ++i) {
         m_tempJoystick = m_joysticks.at (i);
-        data.append ((uint8_t) getJoystickSize (m_tempJoystick));
+        data.append ((uint8_t) getJoystickSize (m_tempJoystick) - 1);
         data.append ((uint8_t) 0x0c);
 
         /* Add axis data */
@@ -53,10 +54,26 @@ QByteArray DS_JoystickManager::getData()
         for (int i = 0; i < m_tempJoystick->numAxes; ++i)
             data.append ((uint8_t) m_tempJoystick->axes [i]);
 
-        /* Add button data */
+        /* Add button data as bits*/
         data.append ((uint8_t) m_tempJoystick->numButtons);
         for (int i = 0; i < m_tempJoystick->numButtons; ++i)
-            data.append ((uint8_t) m_tempJoystick->buttons [i]);
+            buttonData.setBit (i, m_tempJoystick->buttons [i]);
+
+        /* Append button bits to the main data file */
+        buttonData.setBit (m_tempJoystick->numButtons,
+                           getButtonBytes (m_tempJoystick) * 8);
+        data.append (bitsToBytes (buttonData));
+
+        /* Add hat/pov data */
+        data.append ((uint8_t) m_tempJoystick->numHats);
+        for (int i = 0; i < m_tempJoystick->numHats; ++i) {
+            QByteArray ba;
+            ba.resize (1);
+            ba.fill   (0);
+            ba.append (m_tempJoystick->hats [i]);
+            data.append (ba.at (0));
+            data.append (ba.at (1));
+        }
     }
 
     return data;
@@ -67,42 +84,85 @@ void DS_JoystickManager::removeAllJoysticks()
     m_joysticks.clear();
 }
 
-void DS_JoystickManager::removeJoystick (int joystick)
+void DS_JoystickManager::removeJoystick (const short& js)
 {
-    if (m_joysticks.count() > joystick)
-        m_joysticks.removeAt (joystick);
+    if (m_joysticks.count() > js)
+        m_joysticks.removeAt (js);
 }
 
-void DS_JoystickManager::addJoystick (int axes, int buttons)
+void DS_JoystickManager::addJoystick (const short& axes,
+                                      const short& buttons,
+                                      const short& hats)
 {
     Joystick* js = new Joystick;
 
     js->numAxes = axes;
+    js->numHats = hats;
     js->numButtons = buttons;
 
-    js->axes = new char [m_tempJoystick->numAxes];
-    js->buttons = new bool [m_tempJoystick->numButtons];
+    js->axes = new char [js->numAxes];
+    js->hats = new char [js->numHats];
+    js->buttons = new bool [js->numButtons];
+
+    for (int i = 0; i < js->numAxes; ++i)
+        js->axes [i] = 0;
+
+    for (int i = 0; i < js->numHats; ++i)
+        js->hats [i] = -1;
+
+    for (int i = 0; i < js->numButtons; ++i)
+        js->buttons [i] = false;
 
     m_joysticks.append (js);
 }
 
-void DS_JoystickManager::updateAxis (int joystick, int axis, double value)
+void DS_JoystickManager::updateHat (const short& js,
+                                    const short& hat,
+                                    const int& angle)
 {
-    if (m_joysticks.count() > joystick)
-        m_joysticks.at (joystick)->axes [axis] = value * (0xff / 2);
+    if (m_joysticks.count() > js && angle >= 0 && angle <= 360)
+        m_joysticks.at (js)->hats [hat] = angle;
 }
 
-void DS_JoystickManager::updateButton (int joystick, int button, bool pressed)
+void DS_JoystickManager::updateAxis (const short& js,
+                                     const short& axis,
+                                     const double& value)
 {
-    if (m_joysticks.count() > joystick)
-        m_joysticks.at (joystick)->buttons [button] = pressed;
+    if (m_joysticks.count() > js)
+        m_joysticks.at (js)->axes [axis] = value * (0xff / 2);
 }
 
+void DS_JoystickManager::updateButton (const short& js,
+                                       const short& button,
+                                       const bool& pressed)
+{
+    if (m_joysticks.count() > js)
+        m_joysticks.at (js)->buttons [button] = pressed;
+}
 
 int DS_JoystickManager::getJoystickSize (const Joystick* joystick)
 {
     return  5
-            + (sizeof (joystick->axes))
-            + (sizeof (joystick->buttons) / joystick->numButtons)
-            + (sizeof (joystick->buttons) % joystick->numButtons == 0 ? 0 : 1);
+            + (joystick->numAxes > 0 ? joystick->numAxes : 0)
+            + (joystick->numButtons > 0 ? getButtonBytes (joystick) : 0)
+            + (joystick->numHats > 0 ? joystick->numHats * 2 : 0);
+}
+
+int DS_JoystickManager::getButtonBytes (const Joystick* joystick)
+{
+    return  0
+            + (joystick->numButtons / 8)
+            + (joystick->numButtons % 8 == 0 ? 0 : 1);
+}
+
+QByteArray DS_JoystickManager::bitsToBytes (QBitArray bits)
+{
+    QByteArray bytes;
+    bytes.resize (bits.count() / (8 + 1));
+    bytes.fill (0);
+
+    for (int i = 0; i < bits.count(); ++i)
+        bytes [i / 8] = (bytes.at (i / 8) | ((bits [i] ? 1 : 0) << (i % 8)));
+
+    return bytes;
 }

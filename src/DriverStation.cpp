@@ -22,7 +22,7 @@
 
 #include <DriverStation.h>
 
-DriverStation* DriverStation::m_instance = nullptr;
+DriverStation* DriverStation::m_instance = Q_NULLPTR;
 
 DriverStation::DriverStation()
 {
@@ -35,27 +35,36 @@ DriverStation::DriverStation()
     m_justDisconnected = false;
 
     m_status = DS_StatusNormal;
-    m_alliance = DS_AllianceRed1;
     m_mode = DS_ControlDisabled;
+    m_alliance = DS_AllianceRed1;
 
-    connect (&m_netConsole,      SIGNAL (newMessage (QString)),
-             this,               SIGNAL (newMessage (QString)));
-    connect (&m_versionAnalyzer, SIGNAL (libVersionChanged (QString)),
-             this,               SIGNAL (libVersionChanged (QString)));
-    connect (&m_versionAnalyzer, SIGNAL (pcmVersionChanged (QString)),
-             this,               SIGNAL (pcmVersionChanged (QString)));
-    connect (&m_versionAnalyzer, SIGNAL (pdpVersionChanged (QString)),
-             this,               SIGNAL (pdpVersionChanged (QString)));
-    connect (&m_versionAnalyzer, SIGNAL (rioVersionChanged (QString)),
-             this,               SIGNAL (rioVersionChanged (QString)));
-    connect (&m_elapsedTime,     SIGNAL (elapsedTimeChanged (QString)),
-             this,               SIGNAL (elapsedTimeChanged (QString)));
-    connect (&m_receiver,        SIGNAL (voltageChanged (QString)),
-             this,               SIGNAL (voltageChanged (QString)));
-    connect (&m_receiver,        SIGNAL (voltageChanged (double)),
-             this,               SIGNAL (voltageChanged (double)));
-    connect (&m_receiver,        SIGNAL (userCodeChanged (bool)),
-             this,               SLOT   (onCodeChanged (bool)));
+    connect (&m_netConsole,      SIGNAL (newMessage           (QString)),
+             this,               SIGNAL (newMessage           (QString)));
+    connect (&m_versionAnalyzer, SIGNAL (libVersionChanged    (QString)),
+             this,               SIGNAL (libVersionChanged    (QString)));
+    connect (&m_versionAnalyzer, SIGNAL (pcmVersionChanged    (QString)),
+             this,               SIGNAL (pcmVersionChanged    (QString)));
+    connect (&m_versionAnalyzer, SIGNAL (pdpVersionChanged    (QString)),
+             this,               SIGNAL (pdpVersionChanged    (QString)));
+    connect (&m_versionAnalyzer, SIGNAL (rioVersionChanged    (QString)),
+             this,               SIGNAL (rioVersionChanged    (QString)));
+    connect (&m_elapsedTime,     SIGNAL (elapsedTimeChanged   (QString)),
+             this,               SIGNAL (elapsedTimeChanged   (QString)));
+    connect (&m_receiver,        SIGNAL (voltageChanged       (QString)),
+             this,               SIGNAL (voltageChanged       (QString)));
+    connect (&m_receiver,        SIGNAL (voltageChanged       (double)),
+             this,               SIGNAL (voltageChanged       (double)));
+    connect (&m_receiver,        SIGNAL (userCodeChanged      (bool)),
+             this,               SLOT   (onCodeChanged        (bool)));
+    connect (&m_receiver,        SIGNAL (controlModeChanged   (DS_ControlMode)),
+             this,               SLOT   (onControlModeChanged (DS_ControlMode)));
+
+    connect (this, SIGNAL (codeChanged    (bool)),
+             this, SLOT   (updateStatus   (bool)));
+    connect (this, SIGNAL (networkChanged (bool)),
+             this, SLOT   (updateStatus   (bool)));
+    connect (this, SIGNAL (controlModeChanged (DS_ControlMode)),
+             this, SLOT   (updateStatus       (DS_ControlMode)));
 }
 
 DriverStation::~DriverStation()
@@ -65,7 +74,7 @@ DriverStation::~DriverStation()
 
 DriverStation* DriverStation::getInstance()
 {
-    if (m_instance == nullptr)
+    if (m_instance == Q_NULLPTR)
         m_instance = new DriverStation();
 
     return m_instance;
@@ -156,7 +165,7 @@ void DriverStation::restartCode()
     m_status = DS_StatusRestartCode;
 }
 
-void DriverStation::setTeamNumber (int team)
+void DriverStation::setTeamNumber (const int& team)
 {
     if (m_team != team) {
         m_team = team;
@@ -165,17 +174,17 @@ void DriverStation::setTeamNumber (int team)
     }
 }
 
-void DriverStation::setAlliance (DS_Alliance alliance)
+void DriverStation::setAlliance (const DS_Alliance& alliance)
 {
     m_alliance = alliance;
 }
 
-void DriverStation::setCustomAddress (QString address)
+void DriverStation::setCustomAddress (const QString& address)
 {
     m_netDiagnostics.setCustomAddress (address);
 }
 
-void DriverStation::setControlMode (DS_ControlMode mode)
+void DriverStation::setControlMode (const DS_ControlMode& mode)
 {
     if (mode == DS_ControlDisabled)
         m_elapsedTime.stop();
@@ -184,6 +193,7 @@ void DriverStation::setControlMode (DS_ControlMode mode)
         m_elapsedTime.reset();
 
     m_mode = mode;
+
     emit controlModeChanged (m_mode);
 }
 
@@ -192,32 +202,44 @@ void DriverStation::removeAllJoysticks()
     m_joystickManager.removeAllJoysticks();
 }
 
-void DriverStation::addJoystick (int axes, int buttons)
-{
-    m_joystickManager.addJoystick (axes, buttons);
-}
-
-void DriverStation::removeJoystick (int joystick)
+void DriverStation::removeJoystick (const short& joystick)
 {
     m_joystickManager.removeJoystick (joystick);
 }
 
-void DriverStation::updateJoystickAxis (int joystick, int axis, double value)
+void DriverStation::addJoystick (const short& axes,
+                                 const short& buttons,
+                                 const short& hats)
 {
-    m_joystickManager.updateAxis (joystick, axis, value);
+    m_joystickManager.addJoystick (axes, buttons, hats);
 }
 
-void DriverStation::updateJoystickButton (int joystick, int button,
-        bool pressed)
+void DriverStation::updateJoystickHat (const short& js,
+                                       const short& hat,
+                                       const int& angle)
 {
-    m_joystickManager.updateButton (joystick, button, pressed);
+    m_joystickManager.updateHat (js, hat, angle);
 }
 
-void DriverStation::startPractice (int countdown,
-                                   int autonomous,
-                                   int delay,
-                                   int teleop,
-                                   int endgame)
+void DriverStation::updateJoystickAxis (const short& js,
+                                        const short& axis,
+                                        const double& value)
+{
+    m_joystickManager.updateAxis (js, axis, value);
+}
+
+void DriverStation::updateJoystickButton (const short& js,
+        const short& button,
+        const bool& pressed)
+{
+    m_joystickManager.updateButton (js, button, pressed);
+}
+
+void DriverStation::startPractice (const int& countdown,
+                                   const int& autonomous,
+                                   const int& delay,
+                                   const int& teleop,
+                                   const int& endgame)
 {
     Q_UNUSED (countdown);
     Q_UNUSED (autonomous);
@@ -275,21 +297,15 @@ void DriverStation::resetInternalValues()
     setControlMode (DS_ControlDisabled);
 }
 
-void DriverStation::refreshPingData()
-{
-    if (m_netDiagnostics.roboRioIsAlive()) {
-        ++m_count;
-
-        if (m_count > 0xffff)
-            m_count = 0;
-    }
-}
-
 void DriverStation::sendRobotPackets()
 {
     if (m_netDiagnostics.roboRioIsAlive()) {
-        refreshPingData();
+        /* Increment the ping data */
+        ++m_count;
+        if (m_count > 0xffff)
+            m_count = 0;
 
+        /* Send the packet */
         m_sender.send (m_count,
                        roboRioAddress(),
                        m_status,
@@ -299,15 +315,33 @@ void DriverStation::sendRobotPackets()
 
     }
 
-    emit robotStatusChanged (getStatus());
     QTimer::singleShot (DS_Times::RobotPacketInterval, Qt::PreciseTimer,
                         this, SLOT (sendRobotPackets()));
 }
 
-void DriverStation::onCodeChanged (bool available)
+void DriverStation::onCodeChanged (const bool& available)
 {
     if (m_code != available) {
         m_code = available;
         emit codeChanged (m_code);
     }
 }
+
+void DriverStation::onControlModeChanged (const DS_ControlMode& mode)
+{
+    m_mode = mode;
+    emit controlModeChanged (m_mode);
+}
+
+void DriverStation::updateStatus (const bool& boolean)
+{
+    Q_UNUSED (boolean);
+    emit robotStatusChanged (getStatus());
+}
+
+void DriverStation::updateStatus (const DS_ControlMode& mode)
+{
+    Q_UNUSED (mode);
+    emit robotStatusChanged (getStatus());
+}
+

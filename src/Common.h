@@ -80,19 +80,19 @@ enum DS_Alliance {
  * Represents the ping data of a packet
  */
 struct DS_PingData {
-    int byte1; /**< The first byte of the packet */
-    int byte2; /**< The second byte of the packet */
+    short byte1; /**< The first byte of the packet */
+    short byte2; /**< The second byte of the packet */
 
     /**
      * Generates the correct values for \c byte1 and \c byte2 based on the
      * value of the given \a index
      */
-    void generatePingData (int index);
+    void generatePingData (const short& index);
 
     /**
      * Returns the index of the packet as a normal \c int
      */
-    int getPingIndex();
+    short getPingIndex();
 };
 
 /**
@@ -117,11 +117,11 @@ struct DS_RobotPacket {
  *     - \c DS_GetStaticIp( 118, 3) would return \c 10.01.18.3
  *     - And so on...
  */
-QString DS_GetStaticIp (int team, int host);
+QString DS_GetStaticIp (const int& team, const int& host);
 
 /**
  * Returns an user-friendly string given the inputed robot control mode
  */
-QString DS_GetControlModeString (DS_ControlMode mode);
+QString DS_GetControlModeString (const DS_ControlMode& mode);
 
 #endif /* _DRIVER_STATION_COMMON_H */
