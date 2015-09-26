@@ -27,7 +27,7 @@ There is still a lot of work to be done in order to get a fully-working DriverSt
 - [x] Get robot information such as its library, PDP and PCM (by downloading and reading some files in the FTP server of the roboRIO)
 - [x] Discover if the robot code is loaded
 - [x] Generate and send robot packets (control modes are fully working)
-- [x] Encode joystick data to send it to the robot. Axes are working, we need to work on the buttons.
+- [x] Encode joystick data to send it to the robot.
 - [x] Read robot battery voltage
 - [x] Built-in NetConsole for logging and finding issues in the robot
 - [x] Be able to reboot the roboRIO and restart the robot code from DS
