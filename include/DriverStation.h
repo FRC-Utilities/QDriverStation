@@ -30,6 +30,7 @@
 #include "../src/Common.h"
 #include "../src/Sender.h"
 #include "../src/Receiver.h"
+#include "../src/LogWindow.h"
 #include "../src/NetConsole.h"
 #include "../src/ElapsedTime.h"
 #include "../src/JoystickManager.h"
@@ -123,6 +124,16 @@ public slots:
      * runs the robot software
      */
     void restartCode();
+
+    /**
+     * Shows the DS log window and allows it to generate graphs
+     */
+    void showLogWindow();
+
+    /**
+     * Hides the DS log window and inhibits it to generate graphs
+     */
+    void hideLogWindow();
 
     /**
      * Changes the team number. Its a simple way to change the roboRIO address
@@ -323,6 +334,7 @@ private:
 
     DS_Sender m_sender;
     DS_Receiver m_receiver;
+    DS_LogWindow m_logWindow;
     DS_NetConsole m_netConsole;
     DS_ElapsedTime m_elapsedTime;
     DS_JoystickManager m_joystickManager;
