@@ -37,11 +37,22 @@ struct GM_Joystick {
     QString displayName; /**< The user-friendly name of the joystick*/
 };
 
+
+/**
+ * Represents the state of a joystick hat and provides some data about it
+ */
+struct GM_Hat {
+    int rawId;            /**< The raw ID of the hat */
+    short angle;          /**< The pressed angle of the hat */
+    GM_Joystick joystick; /**< The joystick that the hat belongs to */
+};
+
 /**
  * Represents the state of a joystick axis and provides some data about it
  */
 struct GM_Axis {
     int rawId;            /**< The raw ID of the axis */
+    int processedId;      /**< The calculated ID based on the axis type */
     double value;         /**< The value (between -1 and 1) of the axis */
     QString identifier;   /**< The user-friendly name of the axis */
     GM_Joystick joystick; /**< The joystick that the axis belongs to */
@@ -53,6 +64,7 @@ struct GM_Axis {
 struct GM_Button {
     int rawId;            /**< The raw ID of the button */
     bool pressed;         /**< The current state of the button */
+    int processedId;      /**< The calculated ID based on the button type */
     QString identifier;   /**< The user-friendly name of the button */
     GM_Joystick joystick; /**< The joystick that the button belongs to */
 };
@@ -86,6 +98,11 @@ public:
 
 public slots:
     /**
+     * Returns the number of hats that the selected \a joystick has
+     */
+    int getNumHats (const int& js);
+
+    /**
      * Returns the number of axes that the selected \a joystick has
      */
     int getNumAxes (const int& js);
@@ -94,11 +111,6 @@ public slots:
      * Returns the number of buttons that the selected \a joystick has
      */
     int getNumButtons (const int& js);
-
-    /**
-     * Returns the number of hats that the selected \a joystick has
-     */
-    int getNumHats (const int& js);
 
     /**
      * Returns the display name of the axis in the joystick
@@ -155,6 +167,12 @@ signals:
     void countChanged (QStringList joysticks);
 
     /**
+     * Emitted when the system detects a change in the state of the hats of
+     * one of the connected joysticks
+     */
+    void hatEvent (GM_Hat hat);
+
+    /**
      * Emitted when the system detects a change in the state of the axes of
      * one of the connected joysticks
      */
@@ -186,6 +204,12 @@ private:
     static GamepadManager* m_instance;
 
     QList<int> idList;
+
+    /**
+     * Returns a \c GM_Hat structure filled with the information
+     * provided by the \a event
+     */
+    GM_Hat getHat (const SDL_Event* event);
 
     /**
      * @internal
@@ -225,6 +249,12 @@ private slots:
      * calls itself again to continue the game loop.
      */
     void readSdlEvents();
+
+    /**
+     * @internal
+     * Gets joystick and hat information and emits the appropiate signal
+     */
+    void onHatEvent (const SDL_Event* event);
 
     /**
      * @internal

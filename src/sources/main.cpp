@@ -108,6 +108,7 @@ void loadTranslator()
  */
 void loadApplicationFont()
 {
+    QFontDatabase::addApplicationFont (":/fonts/FontAwesome.otf");
     QFontDatabase::addApplicationFont (":/fonts/Inconsolata.otf");
     QFontDatabase::addApplicationFont (":/fonts/Quicksand-Bold.ttf");
     QFontDatabase::addApplicationFont (":/fonts/Quicksand-Regular.ttf");

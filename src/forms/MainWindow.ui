@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>870</width>
-    <height>223</height>
+    <width>1184</width>
+    <height>284</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,6 +35,12 @@
         <height>0</height>
        </size>
       </property>
+      <property name="font">
+       <font>
+        <family>FontAwesome</family>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
       <property name="tabPosition">
        <enum>QTabWidget::West</enum>
       </property>
@@ -42,12 +48,8 @@
        <number>0</number>
       </property>
       <widget class="QWidget" name="OperationTab">
-       <attribute name="icon">
-        <iconset resource="../../etc/resources/resources.qrc">
-         <normaloff>:/icons/Operation.png</normaloff>:/icons/Operation.png</iconset>
-       </attribute>
        <attribute name="title">
-        <string/>
+        <string></string>
        </attribute>
        <attribute name="toolTip">
         <string>Operation</string>
@@ -291,6 +293,99 @@ QPushButton:checked {
            <property name="bottomMargin">
             <number>0</number>
            </property>
+           <item row="7" column="1">
+            <spacer name="verticalSpacer_13">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="5" column="1">
+            <spacer name="_s8">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="3">
+            <widget class="QProgressBar" name="PcBatteryProgress">
+             <property name="minimumSize">
+              <size>
+               <width>95</width>
+               <height>16</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16</height>
+              </size>
+             </property>
+             <property name="value">
+              <number>0</number>
+             </property>
+             <property name="textVisible">
+              <bool>false</bool>
+             </property>
+             <property name="invertedAppearance">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QLabel" name="ElapsedTime">
+             <property name="text">
+              <string>00:00:00</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="1">
+            <widget class="QLabel" name="TeamStationLabel">
+             <property name="text">
+              <string>Team Station</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLabel" name="PcBatteryLabel">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>16</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>PC Battery</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
            <item row="3" column="3">
             <widget class="QProgressBar" name="PcCpuProgress">
              <property name="minimumSize">
@@ -353,82 +448,8 @@ QPushButton:checked {
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <spacer name="_s9">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="2" column="1">
-            <widget class="QLabel" name="PcBatteryLabel">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>16</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>16</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>PC Battery</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="9" column="1">
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLabel" name="ElapsedTimeLabel">
-             <property name="text">
-              <string>Elapsed Time</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="2">
-            <widget class="QLabel" name="Dummy">
-             <property name="minimumSize">
-              <size>
-               <width>16</width>
-               <height>16</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16</width>
-               <height>16</height>
-              </size>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
+           <item row="8" column="3">
+            <widget class="QComboBox" name="StationCombo"/>
            </item>
            <item row="2" column="2">
             <widget class="QLabel" name="PlugIcon">
@@ -444,36 +465,30 @@ QPushButton:checked {
                <height>16</height>
               </size>
              </property>
+             <property name="font">
+              <font>
+               <family>FontAwesome</family>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
              <property name="toolTip">
               <string>Plugged to AC power...</string>
              </property>
              <property name="text">
-              <string/>
+              <string></string>
              </property>
-             <property name="pixmap">
-              <pixmap resource="../../etc/resources/resources.qrc">:/icons/Plug.png</pixmap>
+             <property name="textFormat">
+              <enum>Qt::AutoText</enum>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
              </property>
             </widget>
            </item>
-           <item row="3" column="1">
-            <widget class="QLabel" name="PcCpuLabel">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>16</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>16</height>
-              </size>
-             </property>
+           <item row="0" column="1">
+            <widget class="QLabel" name="ElapsedTimeLabel">
              <property name="text">
-              <string>PC CPU</string>
+              <string>Elapsed Time</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -519,12 +534,14 @@ QPushButton:checked {
               </property>
               <item>
                <widget class="QPushButton" name="WindowNormal">
-                <property name="text">
-                 <string/>
+                <property name="font">
+                 <font>
+                  <family>FontAwesome</family>
+                  <pointsize>13</pointsize>
+                 </font>
                 </property>
-                <property name="icon">
-                 <iconset resource="../../etc/resources/resources.qrc">
-                  <normaloff>:/icons/WindowNormal.png</normaloff>:/icons/WindowNormal.png</iconset>
+                <property name="text">
+                 <string></string>
                 </property>
                 <property name="checkable">
                  <bool>true</bool>
@@ -539,15 +556,17 @@ QPushButton:checked {
               </item>
               <item>
                <widget class="QPushButton" name="WindowDocked">
+                <property name="font">
+                 <font>
+                  <family>FontAwesome</family>
+                  <pointsize>13</pointsize>
+                 </font>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">border-left: 0px;</string>
                 </property>
                 <property name="text">
-                 <string/>
-                </property>
-                <property name="icon">
-                 <iconset resource="../../etc/resources/resources.qrc">
-                  <normaloff>:/icons/WindowDocked.png</normaloff>:/icons/WindowDocked.png</iconset>
+                 <string></string>
                 </property>
                 <property name="checkable">
                  <bool>true</bool>
@@ -560,11 +579,37 @@ QPushButton:checked {
              </layout>
             </widget>
            </item>
-           <item row="2" column="3">
-            <widget class="QProgressBar" name="PcBatteryProgress">
+           <item row="9" column="1">
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="1" column="1">
+            <spacer name="_s9">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLabel" name="PcCpuLabel">
              <property name="minimumSize">
               <size>
-               <width>95</width>
+               <width>0</width>
                <height>16</height>
               </size>
              </property>
@@ -574,65 +619,32 @@ QPushButton:checked {
                <height>16</height>
               </size>
              </property>
-             <property name="value">
-              <number>0</number>
-             </property>
-             <property name="textVisible">
-              <bool>false</bool>
-             </property>
-             <property name="invertedAppearance">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="8" column="1">
-            <widget class="QLabel" name="TeamStationLabel">
              <property name="text">
-              <string>Team Station</string>
+              <string>PC CPU</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
             </widget>
            </item>
-           <item row="8" column="3">
-            <widget class="QComboBox" name="StationCombo"/>
-           </item>
-           <item row="0" column="3">
-            <widget class="QLabel" name="ElapsedTime">
-             <property name="text">
-              <string>00:00:00</string>
+           <item row="3" column="2">
+            <widget class="QLabel" name="Dummy">
+             <property name="minimumSize">
+              <size>
+               <width>16</width>
+               <height>16</height>
+              </size>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+             <property name="maximumSize">
+              <size>
+               <width>16</width>
+               <height>16</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
              </property>
             </widget>
-           </item>
-           <item row="5" column="1">
-            <spacer name="_s8">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="7" column="1">
-            <spacer name="verticalSpacer_13">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
            </item>
           </layout>
          </widget>
@@ -640,12 +652,8 @@ QPushButton:checked {
        </layout>
       </widget>
       <widget class="QWidget" name="DiagnosticsTab">
-       <attribute name="icon">
-        <iconset resource="../../etc/resources/resources.qrc">
-         <normaloff>:/icons/Diagnostics.png</normaloff>:/icons/Diagnostics.png</iconset>
-       </attribute>
        <attribute name="title">
-        <string/>
+        <string></string>
        </attribute>
        <attribute name="toolTip">
         <string>Diagnostics</string>
@@ -956,12 +964,8 @@ QPushButton:checked {
        </layout>
       </widget>
       <widget class="QWidget" name="SetupTab">
-       <attribute name="icon">
-        <iconset resource="../../etc/resources/resources.qrc">
-         <normaloff>:/icons/Setup.png</normaloff>:/icons/Setup.png</iconset>
-       </attribute>
        <attribute name="title">
-        <string/>
+        <string></string>
        </attribute>
        <attribute name="toolTip">
         <string>Setup</string>
@@ -1180,12 +1184,8 @@ QPushButton:checked {
        </layout>
       </widget>
       <widget class="QWidget" name="JoysticksTab">
-       <attribute name="icon">
-        <iconset resource="../../etc/resources/resources.qrc">
-         <normaloff>:/icons/USB.png</normaloff>:/icons/USB.png</iconset>
-       </attribute>
        <attribute name="title">
-        <string/>
+        <string></string>
        </attribute>
        <attribute name="toolTip">
         <string>USB Devices</string>
@@ -1452,11 +1452,14 @@ QPushButton:checked {
               <height>48</height>
              </size>
             </property>
-            <property name="text">
-             <string/>
+            <property name="font">
+             <font>
+              <family>FontAwesome</family>
+              <pointsize>36</pointsize>
+             </font>
             </property>
-            <property name="pixmap">
-             <pixmap resource="../../etc/resources/resources.qrc">:/icons/Power (big).png</pixmap>
+            <property name="text">
+             <string></string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -1552,19 +1555,21 @@ QPushButton:checked {
     </item>
     <item>
      <widget class="QTabWidget" name="RightTab">
+      <property name="font">
+       <font>
+        <family>FontAwesome</family>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
       <property name="tabPosition">
        <enum>QTabWidget::East</enum>
       </property>
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="NetConsole">
-       <attribute name="icon">
-        <iconset resource="../../etc/resources/resources.qrc">
-         <normaloff>:/icons/Messages.png</normaloff>:/icons/Messages.png</iconset>
-       </attribute>
+      <widget class="QWidget" name="MessagesTab">
        <attribute name="title">
-        <string/>
+        <string></string>
        </attribute>
        <attribute name="toolTip">
         <string>Messages</string>
@@ -1587,23 +1592,51 @@ QPushButton:checked {
            </property>
            <item>
             <widget class="QPushButton" name="CopyButton">
-             <property name="text">
-              <string/>
+             <property name="minimumSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
              </property>
-             <property name="icon">
-              <iconset resource="../../etc/resources/resources.qrc">
-               <normaloff>:/icons/Copy.png</normaloff>:/icons/Copy.png</iconset>
+             <property name="maximumSize">
+              <size>
+               <width>48</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>FontAwesome</family>
+               <pointsize>14</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string></string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="ClearButton">
-             <property name="text">
-              <string/>
+             <property name="minimumSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
              </property>
-             <property name="icon">
-              <iconset resource="../../etc/resources/resources.qrc">
-               <normaloff>:/icons/ClearLog.png</normaloff>:/icons/ClearLog.png</iconset>
+             <property name="maximumSize">
+              <size>
+               <width>48</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>FontAwesome</family>
+               <pointsize>14</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string></string>
              </property>
             </widget>
            </item>
@@ -1633,24 +1666,17 @@ QPushButton:checked {
        </layout>
       </widget>
       <widget class="QWidget" name="PowerTab">
-       <attribute name="icon">
-        <iconset resource="../../etc/resources/resources.qrc">
-         <normaloff>:/icons/Power.png</normaloff>:/icons/Power.png</iconset>
-       </attribute>
        <attribute name="title">
-        <string/>
+        <string></string>
        </attribute>
        <attribute name="toolTip">
         <string>Power Information</string>
        </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_11"/>
       </widget>
       <widget class="QWidget" name="AboutTab">
-       <attribute name="icon">
-        <iconset resource="../../etc/resources/resources.qrc">
-         <normaloff>:/icons/Info.png</normaloff>:/icons/Info.png</iconset>
-       </attribute>
        <attribute name="title">
-        <string/>
+        <string></string>
        </attribute>
        <attribute name="toolTip">
         <string>Application Information</string>
@@ -1777,6 +1803,12 @@ QPushButton:checked {
            <height>36</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <family>FontAwesome</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
          <property name="toolTip">
           <string>Closes the Open DriverStation</string>
          </property>
@@ -1787,29 +1819,10 @@ QPushButton:checked {
           <string>Closes the window</string>
          </property>
          <property name="styleSheet">
-          <string notr="true">
-QPushButton {
-    color: #dedede;
-    padding: 12px;
-    border: 2px solid #666;
-    border-radius: 12px;
-    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(85, 0, 0, 255), stop:1 rgba(170, 0, 0, 255));
-}
-
-QPushButton:hover {
-    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(105, 0, 0, 255), stop:1 rgba(195, 0, 0, 255));
-}
-
-QPushButton:pressed {
-    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(195, 0, 0, 255), stop:1 rgba(130, 0, 0, 255));
-}</string>
+          <string notr="true"/>
          </property>
          <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="../../etc/resources/resources.qrc">
-           <normaloff>:/icons/Close.png</normaloff>:/icons/Close.png</iconset>
+          <string></string>
          </property>
         </widget>
        </item>
@@ -1827,6 +1840,11 @@ QPushButton:pressed {
            <height>36</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <family>FontAwesome</family>
+          </font>
+         </property>
          <property name="toolTip">
           <string>Open the Advanced Settings dialog</string>
          </property>
@@ -1836,30 +1854,8 @@ QPushButton:pressed {
          <property name="accessibleDescription">
           <string>Opens the Advanced Settings dialog</string>
          </property>
-         <property name="styleSheet">
-          <string notr="true">
-QPushButton {
-    color: #dedede;
-    padding: 12px;
-    border: 2px solid #666;
-    border-radius: 12px;
-    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(25, 25, 25, 255), stop:1 rgba(70, 70, 70, 255));
-}
-
-QPushButton:hover {
-    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(40, 40, 40, 255), stop:1 rgba(85, 85, 85, 255));
-}
-
-QPushButton:pressed {
-    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(60, 60, 60, 255), stop:1 rgba(15, 15, 15, 255));
-}</string>
-         </property>
          <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="../../etc/resources/resources.qrc">
-           <normaloff>:/icons/Setup.png</normaloff>:/icons/Setup.png</iconset>
+          <string></string>
          </property>
         </widget>
        </item>
@@ -1905,8 +1901,8 @@ QPushButton:pressed {
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="RobotModeGroup"/>
-  <buttongroup name="RobotStatusGroup"/>
   <buttongroup name="WindowModeGroup"/>
+  <buttongroup name="RobotStatusGroup"/>
+  <buttongroup name="RobotModeGroup"/>
  </buttongroups>
 </ui>

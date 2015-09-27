@@ -172,6 +172,23 @@ void MainWindow::configureWidgetAppearance()
     ui.CloseWidget->setVisible (isDocked());
     ui.WindowDocked->setChecked (isDocked());
 
+    /* Get the default font */
+    QFont defaultFont;
+    defaultFont.setFamily (centralWidget()->font().family());
+    defaultFont.setPointSize (centralWidget()->font().pointSize());
+
+    /* Restore the default application font to the widgets inside tabs,
+     * which use FontAwesome for the icons */
+    ui.AboutTab->setFont (defaultFont);
+    ui.PowerTab->setFont (defaultFont);
+    ui.SetupTab->setFont (defaultFont);
+    ui.MessagesTab->setFont (defaultFont);
+    ui.JoysticksTab->setFont (defaultFont);
+    ui.OperationTab->setFont (defaultFont);
+    ui.DiagnosticsTab->setFont (defaultFont);
+
+    /* TODO: Rotate the text (or icons) in the tabs */
+
     /* Make some labels have a bold and bigger font */
     QFont font;
     font.setBold (true);
@@ -183,6 +200,7 @@ void MainWindow::configureWidgetAppearance()
     ui.ElapsedTime->setFont (font);
     ui.VoltageLabel->setFont (font);
 
+    /* Change the palette of the items with a custom font to match app colors */
     updateLabelColors();
 
     /* Configure the 'About' tab */
@@ -210,6 +228,9 @@ void MainWindow::configureWidgetAppearance()
              this,                      SLOT   (onCopyClicked()));
 
     /* Configure the info frame */
+    int height = ui.StatusLabel->height() * 1.2;
+    ui.StatusLabel->setMinimumHeight (height);
+    ui.StatusLabel->setMaximumHeight (height);
     ui.InfoFrame->setMinimumWidth (ui.StatusLabel->width() * 1.8);
     ui.InfoFrame->setMaximumWidth (ui.StatusLabel->width() * 1.8);
 }
@@ -247,12 +268,16 @@ void MainWindow::updateLabelColors()
     ui.TeleOp->setPalette (p);
     ui.AppName->setPalette (p);
     ui.Practice->setPalette (p);
+    ui.PlugIcon->setPalette (p);
     ui.CodeLabel->setPalette (p);
     ui.TeamLabel->setPalette (p);
     ui.Autonomous->setPalette (p);
     ui.TeamNumber->setPalette (p);
     ui.StatusLabel->setPalette (p);
     ui.ElapsedTime->setPalette (p);
+    ui.VoltageIcon->setPalette (p);
+    ui.WindowNormal->setPalette (p);
+    ui.WindowDocked->setPalette (p);
     ui.VoltageLabel->setPalette (p);
     ui.JoysticksLabel->setPalette (p);
     ui.CommunicationsLabel->setPalette (p);
@@ -492,7 +517,6 @@ void MainWindow::onRobotStatusChanged (const QString& status)
             ui.StatusLabel->setText (tr ("%1\nEnabled").arg (status));
     }
 
-    /* Robot is in E-Stop or something is not good... */
     else
         ui.StatusLabel->setText (status);
 }

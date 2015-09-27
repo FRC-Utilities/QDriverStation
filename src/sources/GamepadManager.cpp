@@ -108,6 +108,11 @@ GamepadManager* GamepadManager::getInstance()
     return m_instance;
 }
 
+int GamepadManager::getNumHats (const int& js)
+{
+    return SDL_JoystickNumHats (SDL_JoystickOpen (js));
+}
+
 int GamepadManager::getNumAxes (const int& js)
 {
     return SDL_JoystickNumAxes (SDL_JoystickOpen (js));
@@ -116,11 +121,6 @@ int GamepadManager::getNumAxes (const int& js)
 int GamepadManager::getNumButtons (const int& js)
 {
     return SDL_JoystickNumButtons (SDL_JoystickOpen (js));
-}
-
-int GamepadManager::getNumHats (const int& js)
-{
-    return SDL_JoystickNumHats (SDL_JoystickOpen (js));
 }
 
 QString GamepadManager::getAxisName (const int& axis)
@@ -170,6 +170,17 @@ void GamepadManager::rumble (const int& js, const int& time)
         SDL_HapticRumbleInit (haptic);
         SDL_HapticRumblePlay (haptic, 1, time);
     }
+}
+
+GM_Hat GamepadManager::getHat (const SDL_Event* event)
+{
+    GM_Hat hat;
+
+    hat.rawId = event->jhat.hat;
+    hat.angle = event->jhat.value;
+    hat.joystick = getJoystick (event);
+
+    return hat;
 }
 
 GM_Axis GamepadManager::getAxis (const SDL_Event* event)
@@ -242,18 +253,27 @@ void GamepadManager::readSdlEvents()
         case SDL_CONTROLLERBUTTONUP:
             onButtonEvent (&event);
             break;
+        case SDL_JOYHATMOTION:
+            onHatEvent (&event);
+            break;
         }
     }
 
     QTimer::singleShot (m_time, this, SLOT (readSdlEvents()));
 }
 
+void GamepadManager::onHatEvent (const SDL_Event* event)
+{
+    GM_Hat hat = getHat (event);
+    m_ds->updateJoystickHat (hat.joystick.id, hat.rawId, hat.angle);
+
+    emit hatEvent (hat);
+}
+
 void GamepadManager::onAxisEvent (const SDL_Event* event)
 {
     GM_Axis axis = getAxis (event);
-    m_ds->updateJoystickAxis (axis.joystick.id,
-                              axis.rawId,
-                              axis.value);
+    m_ds->updateJoystickAxis (axis.joystick.id, axis.rawId, axis.value);
 
     emit axisEvent (axis);
 }
@@ -261,9 +281,7 @@ void GamepadManager::onAxisEvent (const SDL_Event* event)
 void GamepadManager::onButtonEvent (const SDL_Event* event)
 {
     GM_Button button = getButton (event);
-    m_ds->updateJoystickButton (button.joystick.id,
-                                button.rawId,
-                                button.pressed);
+    m_ds->updateJoystickButton (button.joystick.id, button.rawId, button.pressed);
 
     emit buttonEvent (button);
 }
@@ -275,9 +293,7 @@ void GamepadManager::onControllerAdded (const SDL_Event* event)
 
         if (js) {
             char guid[1024];
-            SDL_JoystickGetGUIDString (SDL_JoystickGetGUID (js),
-                                       guid,
-                                       sizeof (guid));
+            SDL_JoystickGetGUIDString (SDL_JoystickGetGUID (js), guid, sizeof (guid));
 
             QString mapping = QString ("%1,%2,%3")
                               .arg (guid)
