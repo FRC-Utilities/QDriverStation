@@ -343,7 +343,7 @@ void MainWindow::onCopyClicked()
 {
     qApp->clipboard()->setText (ui.NetConsoleEdit->toPlainText());
     ui.NetConsoleEdit->append ("<font color=\"#aaa\"><p>"
-                               "INFO: NetConsole ouput copied to clipboard"
+                               "INFO: NetConsole output copied to clipboard"
                                "</p></font>");
 }
 

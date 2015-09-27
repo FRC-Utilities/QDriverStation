@@ -317,7 +317,7 @@ private slots:
 
 /**
  * Quick and dirty hack for having horizontal text on a vertical tab bar
- * Stolen from: http://www.qtcentre.org/threads/13293-QTabWidget-customization?highlight=QTabWidget
+ * Stolen from: http://www.qtcentre.org/threads/13293-QTabWidget-customization
  */
 class CustomTabStyle : public QProxyStyle
 {
