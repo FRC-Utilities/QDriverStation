@@ -545,6 +545,12 @@ void MainWindow::toggleStatusColor()
         palette.setColor (QPalette::WindowText, redColor);
 
     ui.StatusLabel->setPalette (palette);
+
+    if (!ui.Communications->isChecked())
+        ui.CommunicationsLabel->setPalette (palette);
+
+    if (!ui.RobotCode->isChecked())
+        ui.CodeLabel->setPalette (palette);
 }
 
 void MainWindow::statusLabelAnimation()
