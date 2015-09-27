@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Driver Station Logs</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
    <item>
     <widget class="QTabWidget" name="LogSelectorTab">
      <property name="currentIndex">

@@ -33,9 +33,6 @@
 class DS_NetworkDiagnostics
 {
 public:
-    /**
-     * Entry point of the class
-     */
     DS_NetworkDiagnostics();
 
     /**
@@ -64,6 +61,11 @@ public:
     void refresh();
 
     /**
+     * Enables or disables the diagnostics system
+     */
+    void setEnabled (bool enabled);
+
+    /**
      * Changes the team number, which is used to find the roboRIO and the
      * wireless radio
      */
@@ -76,6 +78,8 @@ public:
 
 private:
     int m_teamNumber;
+
+    bool m_enabled;
     bool m_rioIsAlive;
     bool m_radioIsAlive;
 

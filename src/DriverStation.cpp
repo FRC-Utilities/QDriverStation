@@ -29,7 +29,7 @@ DriverStation::DriverStation()
     m_team = 0;
     m_count = 0;
     m_code = false;
-    m_init = false;
+    m_enabled = false;
     m_oldConnection = false;
     m_justConnected = false;
     m_justDisconnected = false;
@@ -67,6 +67,8 @@ DriverStation::DriverStation()
              this, SLOT   (updateStatus   (bool)));
     connect (this, SIGNAL (controlModeChanged (DS_ControlMode)),
              this, SLOT   (updateStatus       (DS_ControlMode)));
+
+    connect (qApp, SIGNAL (aboutToQuit()), this, SLOT (stopDriverStation()));
 }
 
 DriverStation::~DriverStation()
@@ -133,7 +135,10 @@ bool DriverStation::networkAvailable()
 
 void DriverStation::init()
 {
-    if (!m_init) {
+    if (!m_enabled) {
+        m_enabled = true;
+        m_netDiagnostics.setEnabled (true);
+
         /* Send signals to force object update */
         emit codeChanged (false);
         emit networkChanged (false);
@@ -151,9 +156,6 @@ void DriverStation::init()
         /* Configure elapsed time */
         m_elapsedTime.stop();
         emit elapsedTimeChanged ("00:00.0");
-
-        /* Ensure that this code will only run once */
-        m_init = true;
     }
 }
 
@@ -260,6 +262,14 @@ void DriverStation::startPractice (const int& countdown,
     Q_UNUSED (endgame);
 }
 
+void DriverStation::stopDriverStation()
+{
+    m_enabled = false;
+    m_netDiagnostics.setEnabled (false);
+
+    resetInternalValues();
+}
+
 QString DriverStation::getStatus()
 {
     if (!m_netDiagnostics.roboRioIsAlive())
@@ -273,6 +283,9 @@ QString DriverStation::getStatus()
 
 void DriverStation::checkConnection()
 {
+    if (!m_enabled)
+        return;
+
     m_netDiagnostics.refresh();
     m_justConnected = m_netDiagnostics.roboRioIsAlive() && !m_oldConnection;
     m_justDisconnected = !m_netDiagnostics.roboRioIsAlive() && m_oldConnection;
@@ -356,4 +369,3 @@ void DriverStation::updateStatus (const DS_ControlMode& mode)
     Q_UNUSED (mode);
     emit robotStatusChanged (getStatus());
 }
-
