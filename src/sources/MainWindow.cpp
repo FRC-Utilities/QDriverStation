@@ -182,6 +182,31 @@ void MainWindow::configureWidgetAppearance()
     ui.LeftTab->tabBar()->setStyle (style);
     ui.RightTab->tabBar()->setStyle (style);
 
+    /* Set the icon size of the tabs and buttons */
+    QFont tabFont;
+    tabFont.setFamily ("FontAwesome");
+    tabFont.setPointSize (centralWidget()->font().pointSize() * 1.4);
+    ui.LeftTab->setFont (tabFont);
+    ui.RightTab->setFont (tabFont);
+    ui.CopyButton->setFont (tabFont);
+    ui.CloseButton->setFont (tabFont);
+    ui.ClearButton->setFont (tabFont);
+    ui.WindowNormal->setFont (tabFont);
+    ui.WindowDocked->setFont (tabFont);
+    ui.SettingsButton->setFont (tabFont);
+
+    /* Set the voltage icon and plug icon fonts */
+    QFont plugFont;
+    QFont voltageFont;
+    plugFont.setFamily ("FontAwesome");
+    voltageFont.setFamily ("FontAwesome");
+    plugFont.setPointSize (centralWidget()->font().pointSize() * 1.2);
+    voltageFont.setPointSize (centralWidget()->font().pointSize() * 4);
+    ui.PlugIcon->setFont (plugFont);
+    ui.CanIcon->setFont (voltageFont);
+    ui.VoltageIcon->setFont (voltageFont);
+    ui.NoJoystickIcon->setFont (voltageFont);
+
     /* Get the default font */
     QFont defaultFont;
     defaultFont.setFamily (centralWidget()->font().family());
