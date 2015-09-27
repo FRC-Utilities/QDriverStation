@@ -47,18 +47,6 @@
 #endif
 
 /*
- * Fustion style is not supported in Qt4, so we use the 'Plastique' style
- * it fits relatively well with dark themes.
- */
-#if QT_VERSION >= 0x050000
-#include <QStyleFactory>
-#define _APP_STLYE_CODE QStyleFactory::create("Fusion")
-#else
-#include <QPlastiqueStyle>
-#define _APP_STLYE_CODE new QPlastiqueStyle()
-#endif
-
-/*
  * Define the entry point functions
  */
 void loadTranslator();
@@ -72,9 +60,9 @@ int main (int argc, char* argv[]);
 int main (int argc, char* argv[])
 {
     QApplication app (argc, argv);
-    app.setStyle (_APP_STLYE_CODE);
     app.setWindowIcon (_APP_ICON_CODE);
     app.setApplicationName (AssemblyInfo::name());
+    app.setStyle (QStyleFactory::create ("Fusion"));
     app.setApplicationVersion (AssemblyInfo::version());
     app.setOrganizationName (AssemblyInfo::organization());
 

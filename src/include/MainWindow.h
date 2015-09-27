@@ -23,11 +23,14 @@
 #ifndef _QDRIVER_STATION_MAINWINDOW_H
 #define _QDRIVER_STATION_MAINWINDOW_H
 
+#include <QProxyStyle>
+#include <QStyleFactory>
+
 #include <SmartWindow.h>
 #include <ui_MainWindow.h>
-
 #include <DriverStation.h>
 
+class JoysticksWidget;
 class AdvancedSettings;
 
 /**
@@ -50,6 +53,7 @@ private:
     bool m_network;
     Ui::MainWindow ui;
     DriverStation* m_ds;
+    JoysticksWidget* m_joysticksWidget;
     AdvancedSettings* m_advancedSettings;
 
 private slots:
@@ -144,6 +148,13 @@ private slots:
      * the robot for safety reasons.
      */
     void onJoystickRemoved();
+
+    /**
+     * @internal
+     * Shows or hides the "No Joysticks Found" widget when the joystick status
+     * changes
+     */
+    void updateJoysticksTab (bool available);
 
     /**
      * @internal
@@ -302,6 +313,50 @@ private slots:
      * there is a problem with the robot and it cannot be enabled.
      */
     void statusLabelAnimation();
+};
+
+/**
+ * Quick and dirty hack for having horizontal text on a vertical tab bar
+ * Stolen from: http://www.qtcentre.org/threads/13293-QTabWidget-customization?highlight=QTabWidget
+ */
+class CustomTabStyle : public QProxyStyle
+{
+public:
+    explicit CustomTabStyle()
+    {
+        setBaseStyle (QStyleFactory::create ("Fusion"));
+    }
+
+    QSize sizeFromContents (ContentsType type, const QStyleOption* option,
+                            const QSize& size, const QWidget* widget) const
+    {
+        QSize s = QProxyStyle::sizeFromContents (type, option, size, widget);
+
+        if (type == QStyle::CT_TabBarTab) {
+            s.transpose();
+            s.setHeight (s.width());
+        }
+
+        return s;
+    }
+
+    void drawControl (ControlElement element,
+                      const QStyleOption* option,
+                      QPainter* painter,
+                      const QWidget* widget) const
+    {
+        if (element == CE_TabBarTabLabel) {
+            if (const QStyleOptionTab* tab =
+                        qstyleoption_cast <const QStyleOptionTab*> (option)) {
+                QStyleOptionTab opt (*tab);
+                opt.shape = QTabBar::RoundedNorth;
+                QProxyStyle::drawControl (element, &opt, painter, widget);
+                return;
+            }
+        }
+
+        QProxyStyle::drawControl (element, option, painter, widget);
+    }
 };
 
 #endif /* _QDRIVER_STATION_MAINWINDOW_H */

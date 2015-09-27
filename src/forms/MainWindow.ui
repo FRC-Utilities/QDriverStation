@@ -39,6 +39,7 @@
        <font>
         <family>FontAwesome</family>
         <pointsize>16</pointsize>
+        <stylestrategy>PreferAntialias</stylestrategy>
        </font>
       </property>
       <property name="tabPosition">
@@ -1190,9 +1191,80 @@ QPushButton:checked {
        <attribute name="toolTip">
         <string>USB Devices</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_5">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
-         <widget class="QWidget" name="JoystickWidget" native="true"/>
+         <widget class="QWidget" name="NoJoystickWidget" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <spacer name="verticalSpacer_15">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="NoJoystickIcon">
+             <property name="minimumSize">
+              <size>
+               <width>48</width>
+               <height>48</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>FontAwesome</family>
+               <pointsize>48</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string></string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="NoJoystickTitle">
+             <property name="text">
+              <string>&lt;h2&gt;Its lonely here...&lt;/h2&gt;</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="NoJoystickDetails">
+             <property name="text">
+              <string>Connect a joystick to get started</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_14">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -1669,10 +1741,76 @@ QPushButton:checked {
        <attribute name="title">
         <string></string>
        </attribute>
-       <attribute name="toolTip">
-        <string>Power Information</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_11"/>
+       <layout class="QVBoxLayout" name="verticalLayout_10">
+        <item>
+         <spacer name="verticalSpacer_11">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="VoltageIcon_2">
+          <property name="minimumSize">
+           <size>
+            <width>48</width>
+            <height>48</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>FontAwesome</family>
+            <pointsize>48</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string></string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>&lt;h2&gt;CAN Diagnostics&lt;/h2&gt;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Will be implemented soon</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_10">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="AboutTab">
        <attribute name="title">
@@ -1709,6 +1847,12 @@ QPushButton:checked {
           <layout class="QVBoxLayout" name="verticalLayout_7">
            <item>
             <widget class="QLabel" name="AppName">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
              <property name="text">
               <string>AppName</string>
              </property>
@@ -1716,6 +1860,11 @@ QPushButton:checked {
            </item>
            <item>
             <widget class="QLabel" name="AppVersion">
+             <property name="font">
+              <font>
+               <italic>true</italic>
+              </font>
+             </property>
              <property name="text">
               <string>Version</string>
              </property>
@@ -1965,8 +2114,8 @@ QPushButton:checked {
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="RobotStatusGroup"/>
   <buttongroup name="WindowModeGroup"/>
   <buttongroup name="RobotModeGroup"/>
+  <buttongroup name="RobotStatusGroup"/>
  </buttongroups>
 </ui>

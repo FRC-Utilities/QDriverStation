@@ -70,6 +70,7 @@ MainWindow::MainWindow()
 
 MainWindow::~MainWindow()
 {
+    delete m_joysticksWidget;
     delete m_advancedSettings;
 }
 
@@ -97,11 +98,15 @@ void MainWindow::connectSlots()
              this,                 SLOT   (setTeamNumber (int)));
 
     /* Joystick information tab */
-    QPointer<JoysticksWidget> j = new JoysticksWidget (ui.JoysticksTab);
-    ui.JoysticksTab->layout()->addWidget (j);
-    connect (j, SIGNAL (joystickRemoved()), this, SLOT (onJoystickRemoved()));
-    connect (j, SIGNAL (statusChanged (bool)),
-             ui.Joysticks, SLOT (setChecked (bool)));
+    m_joysticksWidget = new JoysticksWidget (ui.JoysticksTab);
+    ui.JoysticksTab->layout()->addWidget (m_joysticksWidget);
+    updateJoysticksTab (false);
+    connect (m_joysticksWidget, SIGNAL (joystickRemoved()),
+             this,              SLOT   (onJoystickRemoved()));
+    connect (m_joysticksWidget, SIGNAL (statusChanged (bool)),
+             this,              SLOT   (updateJoysticksTab (bool)));
+    connect (m_joysticksWidget, SIGNAL (statusChanged (bool)),
+             ui.Joysticks,      SLOT   (setChecked (bool)));
 
     /* DriverStation */
     m_ds = DriverStation::getInstance();
@@ -172,6 +177,11 @@ void MainWindow::configureWidgetAppearance()
     ui.CloseWidget->setVisible (isDocked());
     ui.WindowDocked->setChecked (isDocked());
 
+    /* Rotate the text (or icons) in the tabs */
+    CustomTabStyle* style = new CustomTabStyle;
+    ui.LeftTab->tabBar()->setStyle (style);
+    ui.RightTab->tabBar()->setStyle (style);
+
     /* Get the default font */
     QFont defaultFont;
     defaultFont.setFamily (centralWidget()->font().family());
@@ -186,8 +196,6 @@ void MainWindow::configureWidgetAppearance()
     ui.JoysticksTab->setFont (defaultFont);
     ui.OperationTab->setFont (defaultFont);
     ui.DiagnosticsTab->setFont (defaultFont);
-
-    /* TODO: Rotate the text (or icons) in the tabs */
 
     /* Make some labels have a bold and bigger font */
     QFont font;
@@ -372,6 +380,12 @@ void MainWindow::onJoystickRemoved()
 {
     if (m_ds->operationMode() == DS_ControlTeleOp)
         onDisabledClicked();
+}
+
+void MainWindow::updateJoysticksTab (bool available)
+{
+    m_joysticksWidget->setVisible (available);
+    ui.NoJoystickWidget->setVisible (!available);
 }
 
 void MainWindow::onWindowModeChanged()
