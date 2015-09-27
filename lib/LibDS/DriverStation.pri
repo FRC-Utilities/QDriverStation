@@ -32,6 +32,8 @@ QMAKE_CXXFLAGS += -std=c++0x
 
 INCLUDEPATH += $$PWD/include
 
+include ($$PWD/lib/QCustomPlot/QCustomPlot.pri)
+
 HEADERS += \
     $$PWD/include/DriverStation.h \
     $$PWD/src/Common.h \
@@ -43,7 +45,8 @@ HEADERS += \
     $$PWD/src/Sender.h \
     $$PWD/src/Ports.h \
     $$PWD/src/ElapsedTime.h \
-    $$PWD/src/JoystickManager.h
+    $$PWD/src/JoystickManager.h \
+    $$PWD/src/LogWindow.h \
 
 SOURCES += \
     $$PWD/src/Common.cpp \
@@ -54,7 +57,11 @@ SOURCES += \
     $$PWD/src/Receiver.cpp \
     $$PWD/src/Sender.cpp \
     $$PWD/src/ElapsedTime.cpp \
-    $$PWD/src/JoystickManager.cpp
+    $$PWD/src/JoystickManager.cpp \
+    $$PWD/src/LogWindow.cpp
+
+FORMS += \
+    $$PWD/src/LogWindow.ui
 
 
 

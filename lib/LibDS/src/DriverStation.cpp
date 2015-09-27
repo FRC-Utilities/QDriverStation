@@ -38,6 +38,8 @@ DriverStation::DriverStation()
     m_mode = DS_ControlDisabled;
     m_alliance = DS_AllianceRed1;
 
+    m_logWindow.hide();
+
     connect (&m_netConsole,      SIGNAL (newMessage           (QString)),
              this,               SIGNAL (newMessage           (QString)));
     connect (&m_versionAnalyzer, SIGNAL (libVersionChanged    (QString)),
@@ -163,6 +165,16 @@ void DriverStation::reboot()
 void DriverStation::restartCode()
 {
     m_status = DS_StatusRestartCode;
+}
+
+void DriverStation::showLogWindow()
+{
+    m_logWindow.show();
+}
+
+void DriverStation::hideLogWindow()
+{
+    m_logWindow.hide();
 }
 
 void DriverStation::setTeamNumber (const int& team)

@@ -66,7 +66,10 @@ void SmartWindow::moveEvent (QMoveEvent* e)
 
 void SmartWindow::closeEvent (QCloseEvent* e)
 {
-    if (m_promptOnQuit && !m_closingDown) {
+    if (m_closingDown)
+        return;
+
+    if (m_promptOnQuit) {
         QString name = qApp->applicationName();
 
         QMessageBox box;
@@ -85,6 +88,7 @@ void SmartWindow::closeEvent (QCloseEvent* e)
     }
 
     e->accept();
+    qApp->exit (EXIT_SUCCESS);
 }
 
 void SmartWindow::setUseFixedSize (const bool& fixed)

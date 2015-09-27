@@ -1863,7 +1863,7 @@ QPushButton:checked {
      </widget>
     </item>
     <item>
-     <widget class="QWidget" name="CloseWidget" native="true">
+     <widget class="QWidget" name="UtilsWidget" native="true">
       <layout class="QVBoxLayout" name="verticalLayout_9">
        <property name="leftMargin">
         <number>0</number>
@@ -2001,6 +2001,25 @@ QPushButton:checked {
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="ChartButton">
+         <property name="minimumSize">
+          <size>
+           <width>36</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>36</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="text">
+          <string></string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="CloseSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -2042,8 +2061,8 @@ QPushButton:checked {
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="RobotModeGroup"/>
-  <buttongroup name="RobotStatusGroup"/>
   <buttongroup name="WindowModeGroup"/>
+  <buttongroup name="RobotStatusGroup"/>
+  <buttongroup name="RobotModeGroup"/>
  </buttongroups>
 </ui>

@@ -51,8 +51,8 @@ public:
 
 private:
     bool m_network;
-    Ui::MainWindow ui;
     DriverStation* m_ds;
+    Ui::MainWindow* m_ui;
     JoysticksWidget* m_joysticksWidget;
     AdvancedSettings* m_advancedSettings;
 
