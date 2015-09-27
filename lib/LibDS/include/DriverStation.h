@@ -25,6 +25,7 @@
 
 #include <QObject>
 #include <QStringList>
+#include <QApplication>
 
 #include "../src/Times.h"
 #include "../src/Common.h"
@@ -217,6 +218,11 @@ public slots:
                         const int& teleop,
                         const int& endgame);
 
+    /**
+     * Stops the Driver Station functions before the application quits
+     */
+    void stopDriverStation();
+
 signals:
     /**
      * Emitted when the client detects that the availability of the robot
@@ -319,7 +325,7 @@ private:
     int m_team;
     int m_count;
     bool m_code;
-    bool m_init;
+    bool m_enabled;
     bool m_radioStatus;
     bool m_oldConnection;
     bool m_justConnected;

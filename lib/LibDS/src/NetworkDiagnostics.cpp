@@ -27,6 +27,7 @@
 DS_NetworkDiagnostics::DS_NetworkDiagnostics()
 {
     m_teamNumber = 0;
+    m_enabled = false;
     m_rioIsAlive = false;
     m_radioIsAlive = false;
     m_customRioAddress = "";
@@ -59,6 +60,9 @@ QString DS_NetworkDiagnostics::roboRioIpAddress()
 
 void DS_NetworkDiagnostics::refresh()
 {
+    if (!m_enabled)
+        return;
+
     /* Use the values obtained since the last time the function was called */
     m_rioIsAlive = (m_rioSocket.state() == QTcpSocket::ConnectedState);
     m_radioIsAlive = (m_radioSocket.state() == QTcpSocket::ConnectedState);
@@ -73,6 +77,18 @@ void DS_NetworkDiagnostics::refresh()
     if (m_radioSocket.state() != QTcpSocket::HostLookupState) {
         m_radioSocket.abort();
         m_radioSocket.connectToHost (radioIpAddress(), DS_Ports::RadioTest);
+    }
+}
+
+void DS_NetworkDiagnostics::setEnabled (bool enabled)
+{
+    m_enabled = enabled;
+
+    if (!m_enabled) {
+        m_rioSocket.abort();
+        m_radioSocket.abort();
+        m_rioSocket.disconnectFromHost();
+        m_radioSocket.disconnectFromHost();
     }
 }
 
