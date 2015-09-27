@@ -67,7 +67,7 @@ QString DS_GetControlModeString (const DS_ControlMode& mode)
         return QObject::tr ("Test");
         break;
     case DS_ControlTeleOp:
-        return QObject::tr ("TeleOperated");
+        return QObject::tr ("Teleoperated");
         break;
     case DS_ControlDisabled:
         return QObject::tr ("Disabled");
