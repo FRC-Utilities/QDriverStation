@@ -30,7 +30,6 @@ DS_NetworkDiagnostics::DS_NetworkDiagnostics()
     m_radioIsAlive = false;
 }
 
-#include "../headers/DS_Debug.h"
 void DS_NetworkDiagnostics::refresh()
 {
     m_robotIsAlive = (m_robotSocket.state() == QTcpSocket::ConnectedState);
