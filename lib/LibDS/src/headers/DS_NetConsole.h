@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,25 +20,35 @@
  * THE SOFTWARE.
  */
 
-#include "Settings.h"
-#include "AssemblyInfo.h"
+#ifndef _LIB_DS_NET_CONSOLE_H
+#define _LIB_DS_NET_CONSOLE_H
 
-#include <QSettings>
+#include <QUdpSocket>
 
-static QSettings* settings =
-    new QSettings (AssemblyInfo::organization(), AssemblyInfo::name());
-
-void Settings::clear()
+/**
+ * \class DS_NetConsole
+ *
+ * The DS_NetConsole class receives and decodes messages broadcasted
+ * by the robot over the local area network.
+ */
+class DS_NetConsole : public QObject
 {
-    settings->clear();
-}
+    Q_OBJECT
 
-void Settings::set (QString key, const QVariant& value)
-{
-    settings->setValue (key, value);
-}
+public:
+    explicit DS_NetConsole();
 
-QVariant Settings::get (QString key, const QVariant& defaultValue)
-{
-    return settings->value (key, defaultValue);
-}
+public slots:
+    void setTeamNumber (int team);
+
+signals:
+    void newMessage (QString message);
+
+private:
+    QUdpSocket m_socket;
+
+private slots:
+    void onDataReceived();
+};
+
+#endif

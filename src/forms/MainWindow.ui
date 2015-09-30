@@ -2061,8 +2061,8 @@ QPushButton:checked {
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="WindowModeGroup"/>
   <buttongroup name="RobotStatusGroup"/>
   <buttongroup name="RobotModeGroup"/>
+  <buttongroup name="WindowModeGroup"/>
  </buttongroups>
 </ui>

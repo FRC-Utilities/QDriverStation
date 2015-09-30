@@ -190,7 +190,8 @@ inline bool isInvalidData (double value1, double value2)
 
   \see getMarginValue
 */
-inline void setMarginValue (QMargins& margins, QCP::MarginSide side, int value)
+inline void setMarginValue (QMargins& margins, QCP::MarginSide side,
+                            int value)
 {
     switch (side) {
     case QCP::msLeft:

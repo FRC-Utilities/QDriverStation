@@ -1,4 +1,4 @@
-#!/bin/bash
+s2#!/bin/bash
 
 # Description: This script changes the style format of
 #              all the source code of the project.

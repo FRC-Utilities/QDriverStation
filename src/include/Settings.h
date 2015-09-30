@@ -46,13 +46,13 @@ public:
     /**
      * Saves the specified \a value to the specified \a key
      */
-    static void set (const QString& key, const QVariant& value);
+    static void set (QString key, const QVariant& value);
 
     /**
      * Reads the stored value of the \a key.
      * If the key is not found, returns the \a defaultValue
      */
-    static QVariant get (const QString& key, const QVariant& defaultValue);
+    static QVariant get (QString key, const QVariant& defaultValue);
 };
 
 #endif /* _QDRIVER_STATION_SETTINGS_H */

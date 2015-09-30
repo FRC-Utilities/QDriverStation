@@ -91,12 +91,12 @@ void SmartWindow::closeEvent (QCloseEvent* e)
     qApp->exit (EXIT_SUCCESS);
 }
 
-void SmartWindow::setUseFixedSize (const bool& fixed)
+void SmartWindow::setUseFixedSize (bool fixed)
 {
     m_useFixedSize = fixed;
 }
 
-void SmartWindow::setPromptOnQuit (const bool& prompt)
+void SmartWindow::setPromptOnQuit (bool prompt)
 {
     m_promptOnQuit = prompt;
 }

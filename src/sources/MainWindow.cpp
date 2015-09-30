@@ -82,23 +82,23 @@ void MainWindow::connectSlots()
     updatePcStatusWidgets();
 
     connect (m_ui->Website,           SIGNAL (clicked()),
-             this,                 SLOT   (onWebsiteClicked()));
+             this,                    SLOT   (onWebsiteClicked()));
     connect (m_ui->EnableButton,      SIGNAL (clicked()),
-             this,                 SLOT   (onEnabledClicked()));
+             this,                    SLOT   (onEnabledClicked()));
     connect (m_ui->DisableButton,     SIGNAL (clicked()),
-             this,                 SLOT   (onDisabledClicked()));
+             this,                    SLOT   (onDisabledClicked()));
     connect (m_ui->RebootRioButton,   SIGNAL (clicked()),
-             this,                 SLOT   (onRebootClicked()));
+             this,                    SLOT   (onRebootClicked()));
     connect (m_ui->WindowDocked,      SIGNAL (clicked()),
-             this,                 SLOT   (onWindowModeChanged()));
+             this,                    SLOT   (onWindowModeChanged()));
     connect (m_ui->WindowNormal,      SIGNAL (clicked()),
-             this,                 SLOT   (onWindowModeChanged()));
+             this,                    SLOT   (onWindowModeChanged()));
     connect (m_ui->RestartCodeButton, SIGNAL (clicked()),
-             this,                 SLOT   (onRestartClicked()));
+             this,                    SLOT   (onRestartClicked()));
     connect (m_ui->RobotModeGroup,    SIGNAL (buttonClicked (int)),
-             this,                 SLOT   (onRobotModeChanged (int)));
+             this,                    SLOT   (onRobotModeChanged (int)));
     connect (m_ui->TeamNumberSpin,    SIGNAL (valueChanged  (int)),
-             this,                 SLOT   (setTeamNumber (int)));
+             this,                    SLOT   (setTeamNumber (int)));
 
     /* Joystick information tab */
     m_joysticksWidget = new JoysticksWidget (m_ui->JoysticksTab);
@@ -109,9 +109,9 @@ void MainWindow::connectSlots()
     connect (m_joysticksWidget, SIGNAL (statusChanged (bool)),
              this,              SLOT   (updateJoysticksTab (bool)));
     connect (m_joysticksWidget, SIGNAL (statusChanged (bool)),
-             m_ui->Joysticks,      SLOT   (setChecked (bool)));
+             m_ui->Joysticks,   SLOT   (setChecked (bool)));
 
-    /* DriverStation */
+    /* DriverStation to MainWindow */
     m_ds = DriverStation::getInstance();
     m_ui->StationCombo->addItems (m_ds->alliances());
     connect (m_ds, SIGNAL (codeChanged (bool)),
@@ -135,14 +135,17 @@ void MainWindow::connectSlots()
     connect (m_ds, SIGNAL (controlModeChanged (DS_ControlMode)),
              this, SLOT   (onControlModeChanged (DS_ControlMode)));
 
+    /* DriverStation to MainWindow UI */
+    connect (m_ds,                 SIGNAL (newNetConsoleMessage (QString)),
+             m_ui->NetConsoleEdit, SLOT   (append               (QString)));
+    connect (m_ds,                 SIGNAL (elapsedTimeChanged   (QString)),
+             m_ui->ElapsedTime,    SLOT   (setText              (QString)));
+
+    /* MainWindow UI to Driver Station */
     connect (m_ui->ChartButton,    SIGNAL (clicked()),
-             m_ds,              SLOT   (showLogWindow()));
-    connect (m_ds,              SIGNAL (elapsedTimeChanged (QString)),
-             m_ui->ElapsedTime,    SLOT   (setText            (QString)));
-    connect (m_ds,              SIGNAL (newMessage         (QString)),
-             m_ui->NetConsoleEdit, SLOT   (append             (QString)));
+             m_ds,                 SLOT   (showLogWindow()));
     connect (m_ui->NetConsoleEdit, SIGNAL (textChanged()),
-             this,              SLOT   (scrollNetConsole()));
+             this,                 SLOT   (scrollNetConsole()));
 
     /* Dashboards */
     QPointer<Dashboard> dash = Dashboard::getInstance();
@@ -154,26 +157,26 @@ void MainWindow::connectSlots()
     /* Load and apply saved settings */
     readSettings();
     connect (m_ui->PracticeDelay,      SIGNAL (valueChanged (int)),
-             this,                  SLOT   (onPracticeValuesChanged()));
+             this,                     SLOT   (onPracticeValuesChanged()));
     connect (m_ui->PracticeTeleOp,     SIGNAL (valueChanged (int)),
-             this,                  SLOT   (onPracticeValuesChanged()));
+             this,                     SLOT   (onPracticeValuesChanged()));
     connect (m_ui->PracticeEndGame,    SIGNAL (valueChanged (int)),
-             this,                  SLOT   (onPracticeValuesChanged()));
+             this,                     SLOT   (onPracticeValuesChanged()));
     connect (m_ui->PracticeCountdown,  SIGNAL (valueChanged (int)),
-             this,                  SLOT   (onPracticeValuesChanged()));
+             this,                     SLOT   (onPracticeValuesChanged()));
     connect (m_ui->PracticeAutonomous, SIGNAL (valueChanged (int)),
-             this,                  SLOT   (onPracticeValuesChanged()));
+             this,                     SLOT   (onPracticeValuesChanged()));
     connect (m_ui->StationCombo,       SIGNAL (currentIndexChanged (int)),
-             this,                  SLOT   (onStationChanged    (int)));
+             this,                     SLOT   (onStationChanged    (int)));
 
     /* Advanced settings window */
     m_advancedSettings = new AdvancedSettings();
     connect (m_ui->AdvancedSettings, SIGNAL (clicked()),
-             m_advancedSettings,  SLOT   (show()));
+             m_advancedSettings,     SLOT   (show()));
     connect (m_ui->SettingsButton,   SIGNAL (clicked()),
-             m_advancedSettings,  SLOT   (show()));
-    connect (m_advancedSettings,  SIGNAL (updateColors()),
-             this,                SLOT   (updateLabelColors()));
+             m_advancedSettings,     SLOT   (show()));
+    connect (m_advancedSettings,     SIGNAL (updateColors()),
+             this,                   SLOT   (updateLabelColors()));
 }
 
 void MainWindow::configureWidgetAppearance()
@@ -348,7 +351,7 @@ void MainWindow::onCopyClicked()
                                   "</p></font>");
 }
 
-void MainWindow::onStationChanged (const int& station)
+void MainWindow::onStationChanged (int station)
 {
     Settings::set ("Station", station);
     m_ds->setAlliance ((DS_Alliance) station);
@@ -404,7 +407,7 @@ void MainWindow::onDisabledClicked()
 
 void MainWindow::onJoystickRemoved()
 {
-    if (m_ds->operationMode() == DS_ControlTeleOp)
+    if (m_ds->controlMode() == DS_ControlTeleOp)
         onDisabledClicked();
 }
 
@@ -423,7 +426,7 @@ void MainWindow::onWindowModeChanged()
         setWindowMode (WindowMode::Normal);
 }
 
-void MainWindow::onRobotModeChanged (const int& mode)
+void MainWindow::onRobotModeChanged (int mode)
 {
     Q_UNUSED (mode);
     m_ds->setControlMode (DS_ControlDisabled);
@@ -438,13 +441,13 @@ void MainWindow::onPracticeValuesChanged()
     Settings::set ("Practice Autonomous", m_ui->PracticeAutonomous->value());
 }
 
-void MainWindow::setDashboard (const int& dashboard)
+void MainWindow::setDashboard (int dashboard)
 {
     Settings::set ("Dashboard", dashboard);
     Dashboard::getInstance()->reloadDashboard();
 }
 
-void MainWindow::setTeamNumber (const int& team)
+void MainWindow::setTeamNumber (int team)
 {
     Settings::set ("Team ID", team);
     m_ui->TeamNumberSpin->setValue (team);
@@ -454,7 +457,7 @@ void MainWindow::setTeamNumber (const int& team)
     m_advancedSettings->setTeamNumber (team);
 }
 
-void MainWindow::setRobotEnabled (const bool& enabled)
+void MainWindow::setRobotEnabled (bool enabled)
 {
     if (enabled) {
         if (m_ui->Test->isChecked())
@@ -480,19 +483,19 @@ void MainWindow::setRobotEnabled (const bool& enabled)
 
 void MainWindow::updateLabelText (QLabel* label, QString text)
 {
-    if (m_network)
+    if (m_network && !text.isEmpty())
         label->setText (text);
 
     else
         label->setText ("--.--");
 }
 
-void MainWindow::onCodeChanged (const bool& available)
+void MainWindow::onCodeChanged (bool available)
 {
     m_ui->RobotCode->setChecked (available);
 }
 
-void MainWindow::onNetworkChanged (const bool& available)
+void MainWindow::onNetworkChanged (bool available)
 {
     m_network = available;
     m_ui->RobotCheck->setChecked (available);
@@ -505,32 +508,32 @@ void MainWindow::onControlModeChanged (DS_ControlMode mode)
         m_ui->DisableButton->click();
 }
 
-void MainWindow::onRadioChanged (const bool& available)
+void MainWindow::onRadioChanged (bool available)
 {
     m_ui->DsRadioCheck->setChecked (available);
 }
 
-void MainWindow::onVoltageChanged (const QString& voltage)
+void MainWindow::onVoltageChanged (QString voltage)
 {
     updateLabelText (m_ui->VoltageLabel, tr ("%1 V").arg (voltage));
 }
 
-void MainWindow::onLibVersionChanged (const QString& version)
+void MainWindow::onLibVersionChanged (QString version)
 {
     updateLabelText (m_ui->LibVersion, version);
 }
 
-void MainWindow::onRioVersionChanged (const QString& version)
+void MainWindow::onRioVersionChanged (QString version)
 {
     updateLabelText (m_ui->RioVersion, version);
 }
 
-void MainWindow::onRobotStatusChanged (const QString& status)
+void MainWindow::onRobotStatusChanged (QString status)
 {
-    if (m_ds->canBeEnabled() && m_ds->operationMode() != DS_ControlEmergencyStop) {
+    if (m_ds->canBeEnabled() && m_ds->controlMode() != DS_ControlEmergencyStop) {
 
         /* Get 'TeleOp Disabled' instead of 'Disabled' */
-        if (m_ds->operationMode() == DS_ControlDisabled) {
+        if (m_ds->controlMode() == DS_ControlDisabled) {
             QString mode;
 
             if (m_ui->Test->isChecked())
@@ -557,12 +560,12 @@ void MainWindow::onRobotStatusChanged (const QString& status)
         m_ui->StatusLabel->setText (status);
 }
 
-void MainWindow::onRamUsageChanged (const int& total, const int& used)
+void MainWindow::onRamUsageChanged (int total, int used)
 {
     updateLabelText (m_ui->RamUsage, tr ("%1 MB / %2 MB").arg (used, total));
 }
 
-void MainWindow::onDiskUsageChanged (const int& total, const int& used)
+void MainWindow::onDiskUsageChanged (int total, int used)
 {
     updateLabelText (m_ui->DiskUsage, tr ("%1 MB / %2 MB").arg (used, total));
 }

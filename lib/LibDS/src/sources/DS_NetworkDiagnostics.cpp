@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,33 +20,49 @@
  * THE SOFTWARE.
  */
 
-#include "Ports.h"
-#include "Common.h"
-#include "NetConsole.h"
+#include "../headers/DS_NetworkDiagnostics.h"
 
-DS_NetConsole::DS_NetConsole()
+DS_NetworkDiagnostics::DS_NetworkDiagnostics()
 {
-    connect (&m_socket, SIGNAL (readyRead()), this, SLOT (onDataReceived()));
+    m_robotAddress = "";
+    m_radioAddress = "";
+    m_robotIsAlive = false;
+    m_radioIsAlive = false;
 }
 
-void DS_NetConsole::setTeamNumber (const int& team)
+#include "../headers/DS_Debug.h"
+void DS_NetworkDiagnostics::refresh()
 {
-    m_socket.bind (QHostAddress (DS_GetStaticIp (team, 255)),
-                   DS_Ports::NetConsole,
-                   QUdpSocket::ShareAddress);
-}
+    m_robotIsAlive = (m_robotSocket.state() == QTcpSocket::ConnectedState);
+    m_radioIsAlive = (m_radioSocket.state() == QTcpSocket::ConnectedState);
 
-void DS_NetConsole::onDataReceived()
-{
-    QByteArray data;
-
-    /* Read socket data */
-    while (m_socket.hasPendingDatagrams()) {
-        data.resize (m_socket.pendingDatagramSize());
-        m_socket.readDatagram (data.data(), data.size());
+    if (m_robotSocket.state() != QTcpSocket::HostLookupState) {
+        m_robotSocket.abort();
+        m_robotSocket.connectToHost (m_robotAddress, 80);
     }
 
-    /* Notify other objects */
-    if (!data.isEmpty())
-        emit newMessage (QString::fromUtf8 (data));
+    if (m_radioSocket.state() != QTcpSocket::HostLookupState) {
+        m_radioSocket.abort();
+        m_radioSocket.connectToHost (m_radioAddress, 80);
+    }
+}
+
+bool DS_NetworkDiagnostics::robotIsAlive()
+{
+    return m_robotIsAlive;
+}
+
+bool DS_NetworkDiagnostics::radioIsAlive()
+{
+    return m_radioIsAlive;
+}
+
+void DS_NetworkDiagnostics::setRadioAddress (QString address)
+{
+    m_radioAddress = address;
+}
+
+void DS_NetworkDiagnostics::setRobotAddress (QString address)
+{
+    m_robotAddress = address;
 }

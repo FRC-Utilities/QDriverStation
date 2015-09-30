@@ -244,7 +244,7 @@ void AdvancedSettings::onColorChanged (QString color)
     }
 }
 
-QColor AdvancedSettings::getColor (const int& type)
+QColor AdvancedSettings::getColor (int type)
 {
     QColor color;
     switch (type) {

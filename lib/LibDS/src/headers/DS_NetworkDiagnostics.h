@@ -15,7 +15,7 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION O F CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
@@ -30,60 +30,44 @@
  * network components of the robot and checking which components are accesible
  * to the DriverStation.
  */
-class DS_NetworkDiagnostics
+class DS_NetworkDiagnostics : public QObject
 {
+    Q_OBJECT
+
 public:
-    DS_NetworkDiagnostics();
+    explicit DS_NetworkDiagnostics();
 
+public slots:
     /**
-     * Returns \c true if the class was able to ping the roboRIO
-     */
-    bool roboRioIsAlive();
-
-    /**
-     * Returns \c true if the class was able to ping the wireless radio
-     */
-    bool robotRadioIsAlive();
-
-    /**
-     * Returns the address of the wireless radio
-     */
-    QString radioIpAddress();
-
-    /**
-     * Returns the address of the roboRIO
-     */
-    QString roboRioIpAddress();
-
-    /**
-     * Pings the roboRIO and the wireless radio
+     * Pings the robot and the robot radio and updates the internal values
      */
     void refresh();
 
     /**
-     * Enables or disables the diagnostics system
+     * Returns \c true if the class was able to ping the robot
      */
-    void setEnabled (bool enabled);
+    bool robotIsAlive();
 
     /**
-     * Changes the team number, which is used to find the roboRIO and the
-     * wireless radio
+     * Returns \c true if the class was able to ping the wireless radio
      */
-    void setTeamNumber (const int& team);
+    bool radioIsAlive();
 
     /**
-     * Changes the address to use for the roboRIO
+     * Changes the address that we use to communicate with the radio
      */
-    void setCustomAddress (const QString& address);
+    void setRadioAddress (QString address);
+
+    /**
+     * Changes the address that we use to communicate with the robot
+     */
+    void setRobotAddress (QString address);
 
 private:
-    int m_teamNumber;
-
-    bool m_enabled;
-    bool m_rioIsAlive;
+    bool m_robotIsAlive;
     bool m_radioIsAlive;
-
-    QTcpSocket m_rioSocket;
+    QString m_robotAddress;
+    QString m_radioAddress;
+    QTcpSocket m_robotSocket;
     QTcpSocket m_radioSocket;
-    QString m_customRioAddress;
 };

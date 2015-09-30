@@ -100,32 +100,32 @@ public slots:
     /**
      * Returns the number of hats that the selected \a joystick has
      */
-    int getNumHats (const int& js);
+    int getNumHats (int js);
 
     /**
      * Returns the number of axes that the selected \a joystick has
      */
-    int getNumAxes (const int& js);
+    int getNumAxes (int js);
 
     /**
      * Returns the number of buttons that the selected \a joystick has
      */
-    int getNumButtons (const int& js);
+    int getNumButtons (int js);
 
     /**
      * Returns the display name of the axis in the joystick
      */
-    QString getAxisName (const int& axis);
+    QString getAxisName (int axis);
 
     /**
      * Returns the display name of the button in the joystick
      */
-    QString getButtonName (const int& button);
+    QString getButtonName (int button);
 
     /**
      * Returns the display name of the joystick
      */
-    QString getJoystickName (const int& js);
+    QString getJoystickName (int js);
 
     /**
      * Returns an ordered \c QStringList with the names and IDs of the
@@ -144,7 +144,7 @@ public slots:
     /**
      * Changes the time interval between the SDL Event reader calls
      */
-    void setUpdateInterval (const int& time);
+    void setUpdateInterval (int time);
 
     /**
      * Instructs the haptic device in \a joystick to rumble for the specified
@@ -153,7 +153,7 @@ public slots:
      * @param joystick The joystick to rumble
      * @param time The time in milliseconds to enable the haptic device
      */
-    void rumble (const int& js, const int& time);
+    void rumble (int js, int time);
 
 signals:
     /**
@@ -289,7 +289,7 @@ private slots:
      * @internal
      * Registers and configures all the attached joysticks to the Driver Staiton
      */
-    void registerJoysticksToDriverStation (const int& joystickCount);
+    void registerJoysticksToDriverStation (int joystickCount);
 };
 
 #endif /* _QDRIVER_STATION_GAMEPAD_MANAGER_H */

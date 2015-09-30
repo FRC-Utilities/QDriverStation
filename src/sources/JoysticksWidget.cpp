@@ -53,7 +53,7 @@ void JoysticksWidget::onRumbleClicked()
     m_manager->rumble (ui.JoystickList->currentRow(), 1000);
 }
 
-void JoysticksWidget::onRowChanged (const int& row)
+void JoysticksWidget::onRowChanged (int row)
 {
     /* Remove all buttons and progress bars in the widget */
     foreach (QPushButton* c, findChildren<QPushButton*>())

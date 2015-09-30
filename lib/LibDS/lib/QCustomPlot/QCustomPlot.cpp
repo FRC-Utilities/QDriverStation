@@ -542,7 +542,8 @@ void QCPScatterStyle::drawShape (QCPPainter* painter, QPointF pos) const
 /*! \overload
   Draws the scatter shape with \a painter at position \a x and \a y.
 */
-void QCPScatterStyle::drawShape (QCPPainter* painter, double x, double y) const
+void QCPScatterStyle::drawShape (QCPPainter* painter, double x,
+                                 double y) const
 {
     double w = mSize / 2.0;
     switch (mShape) {
@@ -1609,7 +1610,8 @@ int QCPMarginGroup::commonMargin (QCP::MarginSide side) const
 
   This function does not modify the margin group property of \a element.
 */
-void QCPMarginGroup::addChild (QCP::MarginSide side, QCPLayoutElement* element)
+void QCPMarginGroup::addChild (QCP::MarginSide side,
+                               QCPLayoutElement* element)
 {
     if (!mChildren[side].contains (element))
         mChildren[side].append (element);
@@ -2543,7 +2545,8 @@ int QCPLayoutGrid::columnCount() const
 
   \see element, hasElement, take, remove
 */
-bool QCPLayoutGrid::addElement (int row, int column, QCPLayoutElement* element)
+bool QCPLayoutGrid::addElement (int row, int column,
+                                QCPLayoutElement* element)
 {
     if (element) {
         if (!hasElement (row, column)) {
@@ -3064,7 +3067,8 @@ QCPLayoutInset::~QCPLayoutInset()
 /*!
   Returns the placement type of the element with the specified \a index.
 */
-QCPLayoutInset::InsetPlacement QCPLayoutInset::insetPlacement (int index) const
+QCPLayoutInset::InsetPlacement QCPLayoutInset::insetPlacement (
+    int index) const
 {
     if (elementAt (index))
         return mInsetPlacement.at (index);
@@ -3309,7 +3313,8 @@ void QCPLayoutInset::addElement (QCPLayoutElement* element,
 
   \see addElement(QCPLayoutElement *element, Qt::Alignment alignment)
 */
-void QCPLayoutInset::addElement (QCPLayoutElement* element, const QRectF& rect)
+void QCPLayoutInset::addElement (QCPLayoutElement* element,
+                                 const QRectF& rect)
 {
     if (element) {
         if (element->layout()) // remove from old layout first
@@ -6050,7 +6055,7 @@ QCPAxisPainterPrivate::QCPAxisPainterPrivate (QCustomPlot* parentPlot) :
     abbreviateDecimalPowers (false),
     reversedEndings (false),
     mParentPlot (parentPlot),
-    mLabelCache (16) // cache at most 16 (tick) labels
+    mLabelCache (16)   // cache at most 16 (tick) labels
 {
 }
 
@@ -6387,7 +6392,8 @@ QByteArray QCPAxisPainterPrivate::generateLabelParameterHash() const
   getTickLabelData).
 */
 void QCPAxisPainterPrivate::placeTickLabel (QCPPainter* painter,
-        double position, int distanceToAxis, const QString& text, QSize* tickLabelsSize)
+        double position, int distanceToAxis, const QString& text,
+        QSize* tickLabelsSize)
 {
     // warning: if you change anything here, also adapt getMaxTickLabelSize() accordingly!
     if (text.isEmpty()) return;
@@ -7365,7 +7371,8 @@ void QCPAbstractPlottable::applyDefaultAntialiasingHint (
 
   \see setAntialiased, applyDefaultAntialiasingHint, applyScattersAntialiasingHint, applyErrorBarsAntialiasingHint
 */
-void QCPAbstractPlottable::applyFillAntialiasingHint (QCPPainter* painter) const
+void QCPAbstractPlottable::applyFillAntialiasingHint (QCPPainter* painter)
+const
 {
     applyAntialiasingHint (painter, mAntialiasedFill, QCP::aeFills);
 }
@@ -8703,7 +8710,8 @@ QCPItemPosition* QCPAbstractItem::createPosition (const QString& name)
 
   \see createPosition
 */
-QCPItemAnchor* QCPAbstractItem::createAnchor (const QString& name, int anchorId)
+QCPItemAnchor* QCPAbstractItem::createAnchor (const QString& name,
+        int anchorId)
 {
     if (hasAnchor (name))
         qDebug() << Q_FUNC_INFO << "anchor/position with name exists already:" << name;
@@ -15059,7 +15067,8 @@ void QCPGraph::rescaleKeyAxis (bool onlyEnlarge, bool includeErrorBars) const
 
   \see rescaleAxes, QCPAbstractPlottable::rescaleValueAxis
 */
-void QCPGraph::rescaleValueAxis (bool onlyEnlarge, bool includeErrorBars) const
+void QCPGraph::rescaleValueAxis (bool onlyEnlarge,
+                                 bool includeErrorBars) const
 {
     // this code is a copy of QCPAbstractPlottable::rescaleValueAxis with the only change
     // is that getValueRange is passed the includeErrorBars value.
@@ -15531,7 +15540,8 @@ void QCPGraph::getImpulsePlotData (QVector<QPointF>* linePixelData,
 
   \see drawLinePlot
 */
-void QCPGraph::drawFill (QCPPainter* painter, QVector<QPointF>* lineData) const
+void QCPGraph::drawFill (QCPPainter* painter,
+                         QVector<QPointF>* lineData) const
 {
     if (mLineStyle == lsImpulse) return; // fill doesn't make sense for impulse plot
     if (mainBrush().style() == Qt::NoBrush
@@ -16586,7 +16596,8 @@ int QCPGraph::findIndexBelowY (const QVector<QPointF>* data, double y) const
 }
 
 /* inherits documentation from base class */
-QCPRange QCPGraph::getKeyRange (bool& foundRange, SignDomain inSignDomain) const
+QCPRange QCPGraph::getKeyRange (bool& foundRange,
+                                SignDomain inSignDomain) const
 {
     // just call the specialized version which takes an additional argument whether error bars
     // should also be taken into consideration for range calculation. We set this to true here.
@@ -18308,7 +18319,8 @@ double QCPCurve::pointDistance (const QPointF& pixelPoint) const
 }
 
 /* inherits documentation from base class */
-QCPRange QCPCurve::getKeyRange (bool& foundRange, SignDomain inSignDomain) const
+QCPRange QCPCurve::getKeyRange (bool& foundRange,
+                                SignDomain inSignDomain) const
 {
     QCPRange range;
     bool haveLower = false;
@@ -18922,7 +18934,8 @@ void QCPBars::setData (QCPBarDataMap* data, bool copy)
   provided vectors should have equal length. Else, the number of added points will be the size of
   the smallest vector.
 */
-void QCPBars::setData (const QVector<double>& key, const QVector<double>& value)
+void QCPBars::setData (const QVector<double>& key,
+                       const QVector<double>& value)
 {
     mData->clear();
     int n = key.size();
@@ -19414,7 +19427,8 @@ void QCPBars::connectBars (QCPBars* lower, QCPBars* upper)
 }
 
 /* inherits documentation from base class */
-QCPRange QCPBars::getKeyRange (bool& foundRange, SignDomain inSignDomain) const
+QCPRange QCPBars::getKeyRange (bool& foundRange,
+                               SignDomain inSignDomain) const
 {
     QCPRange range;
     bool haveLower = false;
@@ -20898,7 +20912,8 @@ void QCPColorMap::draw (QCPPainter* painter)
 }
 
 /* inherits documentation from base class */
-void QCPColorMap::drawLegendIcon (QCPPainter* painter, const QRectF& rect) const
+void QCPColorMap::drawLegendIcon (QCPPainter* painter,
+                                  const QRectF& rect) const
 {
     applyDefaultAntialiasingHint (painter);
     // draw map thumbnail:

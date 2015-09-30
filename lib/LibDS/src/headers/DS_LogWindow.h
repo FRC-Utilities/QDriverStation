@@ -20,20 +20,31 @@
  * THE SOFTWARE.
  */
 
-#ifndef _DRIVER_STATION_PORTS_H
-#define _DRIVER_STATION_PORTS_H
+#ifndef _LIB_DS_LOG_WINDOW_H
+#define _LIB_DS_LOG_WINDOW_H
+
+#include <QWidget>
+#include <ui_DS_LogWindow.h>
 
 /**
- * Defines the ports used by the client and the roboRIO to communicate
+ * \class DS_LogWindow
+ *
+ * Implements a simple window that displays the Driver Station log data
+ * in a graph.
+ *
+ * The class is able to save the logs in the local storage and organize time
+ * by date and time automatically.
  */
-namespace DS_Ports
+class DS_LogWindow : public QWidget
 {
-const int RioTest (80);      /**< The port that we use to check the radio */
-const int Client (1150);     /**< The packets from the robot arrive here */
-const int RadioTest (80);    /**< The port that we use to check the radio */
-const int RoboRIO (1110);    /**< We send packets to this port in the rRIO */
-const int NetConsole (6666); /**< We receive NetConsole information from here */
-}
+    Q_OBJECT
 
-#endif /* _DRIVER_STATION_PORTS_H */
+public:
+    explicit DS_LogWindow ();
+    ~DS_LogWindow();
 
+private:
+    Ui::DS_LogWindow* m_ui;
+};
+
+#endif

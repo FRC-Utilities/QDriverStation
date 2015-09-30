@@ -84,7 +84,7 @@ private slots:
      * @internal
      * Re-creates the indicator widgets for the currently selected joystick
      */
-    void onRowChanged (const int& row);
+    void onRowChanged (int row);
 
     /**
      * @internal

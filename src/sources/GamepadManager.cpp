@@ -108,32 +108,32 @@ GamepadManager* GamepadManager::getInstance()
     return m_instance;
 }
 
-int GamepadManager::getNumHats (const int& js)
+int GamepadManager::getNumHats (int js)
 {
     return SDL_JoystickNumHats (SDL_JoystickOpen (js));
 }
 
-int GamepadManager::getNumAxes (const int& js)
+int GamepadManager::getNumAxes (int js)
 {
     return SDL_JoystickNumAxes (SDL_JoystickOpen (js));
 }
 
-int GamepadManager::getNumButtons (const int& js)
+int GamepadManager::getNumButtons (int js)
 {
     return SDL_JoystickNumButtons (SDL_JoystickOpen (js));
 }
 
-QString GamepadManager::getAxisName (const int& axis)
+QString GamepadManager::getAxisName (int axis)
 {
     return QString ("Axis %1").arg (axis);
 }
 
-QString GamepadManager::getButtonName (const int& button)
+QString GamepadManager::getButtonName (int button)
 {
     return QString ("Button %1").arg (button);
 }
 
-QString GamepadManager::getJoystickName (const int& js)
+QString GamepadManager::getJoystickName (int js)
 {
     return SDL_JoystickNameForIndex (js);
 }
@@ -155,13 +155,13 @@ void GamepadManager::init()
     QTimer::singleShot (500, this, SLOT (readSdlEvents()));
 }
 
-void GamepadManager::setUpdateInterval (const int& time)
+void GamepadManager::setUpdateInterval (int time)
 {
     if (time >= 0)
         m_time = time;
 }
 
-void GamepadManager::rumble (const int& js, const int& time)
+void GamepadManager::rumble (int js, int time)
 {
     SDL_InitSubSystem (SDL_INIT_HAPTIC);
     SDL_Haptic* haptic = SDL_HapticOpen (js);
@@ -195,6 +195,7 @@ GM_Axis GamepadManager::getAxis (const SDL_Event* event)
     return axis;
 }
 
+#include <qdebug.h>
 GM_Button GamepadManager::getButton (const SDL_Event* event)
 {
     GM_Button button;
@@ -265,7 +266,7 @@ void GamepadManager::readSdlEvents()
 void GamepadManager::onHatEvent (const SDL_Event* event)
 {
     GM_Hat hat = getHat (event);
-    m_ds->updateJoystickHat (hat.joystick.id, hat.rawId, hat.angle);
+    m_ds->updateJoystickPovHat (hat.joystick.id, hat.rawId, hat.angle);
 
     emit hatEvent (hat);
 }
@@ -313,9 +314,10 @@ void GamepadManager::onControllerRemoved (const SDL_Event* event)
     SDL_GameControllerClose (SDL_GameControllerOpen (event->cdevice.which));
 }
 
-void GamepadManager::registerJoysticksToDriverStation (const int& joystickCount)
+
+void GamepadManager::registerJoysticksToDriverStation (int joystickCount)
 {
-    m_ds->removeAllJoysticks();
+    m_ds->clearJoysticks();
 
     for (int i = 0; i <= joystickCount - 1; ++i)
         m_ds->addJoystick (getNumAxes (i), getNumButtons (i), getNumHats (i));

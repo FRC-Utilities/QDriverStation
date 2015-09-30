@@ -20,37 +20,40 @@
  * THE SOFTWARE.
  */
 
-#include "Ports.h"
-#include "Sender.h"
+#include "../headers/DS_ElapsedTime.h"
 
-void DS_Sender::send (const int& index,
-                      const QString& host,
-                      const DS_Status& status,
-                      const DS_ControlMode& mode,
-                      const DS_Alliance& alliance,
-                      const QByteArray& joystickData)
+DS_ElapsedTime::DS_ElapsedTime()
 {
-    /* Generate the ping data */
-    QByteArray data;
-    DS_PingData ping;
-    ping.generatePingData (index + 1);
+    stop();
+    calculateElapsedTime();
+}
 
-    /* Add ping data */
-    data.append (ping.byte1);
-    data.append (ping.byte2);
+void DS_ElapsedTime::stop()
+{
+    m_enabled = false;
+}
 
-    /* Add the section header */
-    data.append (0x01);
+void DS_ElapsedTime::reset()
+{
+    m_enabled = true;
+    m_time.restart();
+}
 
-    /* Add the desired control mode, robot status and alliance data */
-    data.append (mode);
-    data.append (status);
-    data.append (alliance);
+void DS_ElapsedTime::calculateElapsedTime()
+{
+    if (m_enabled) {
+        int msec = m_time.elapsed();
+        int secs = (msec / 1000);
+        int mins = (secs / 60) % 60;
 
-    /* Add joystick input information if the robot is in TeleOp */
-    if (mode == DS_ControlTeleOp)
-        data.append (joystickData);
+        secs = secs % 60;
+        msec = msec % 1000;
 
-    /* Send the data */
-    m_socket.writeDatagram (data, QHostAddress (host), DS_Ports::RoboRIO);
+        emit elapsedTimeChanged (QString ("%1:%2.%3")
+                                 .arg (mins, 2, 10, QLatin1Char ('0'))
+                                 .arg (secs, 2, 10, QLatin1Char ('0'))
+                                 .arg (QString::number (msec).at (0)));
+    }
+
+    QTimer::singleShot (100, Qt::PreciseTimer, this, SLOT (calculateElapsedTime()));
 }

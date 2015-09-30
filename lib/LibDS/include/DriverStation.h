@@ -20,36 +20,30 @@
  * THE SOFTWARE.
  */
 
-#ifndef _DRIVER_STATION_MAIN_H
-#define _DRIVER_STATION_MAIN_H
+#ifndef _LIB_DS_DRIVER_STATION_H
+#define _LIB_DS_DRIVER_STATION_H
 
+#include <QTimer>
 #include <QObject>
-#include <QStringList>
-#include <QApplication>
 
-#include "../src/Times.h"
-#include "../src/Common.h"
-#include "../src/Sender.h"
-#include "../src/Receiver.h"
-#include "../src/LogWindow.h"
-#include "../src/NetConsole.h"
-#include "../src/ElapsedTime.h"
-#include "../src/JoystickManager.h"
-#include "../src/VersionAnalyzer.h"
-#include "../src/NetworkDiagnostics.h"
+#include "../src/headers/DS_Debug.h"
+#include "../src/headers/DS_Client.h"
+#include "../src/headers/DS_LogWindow.h"
+#include "../src/headers/DS_NetConsole.h"
+#include "../src/headers/DS_ElapsedTime.h"
+#include "../src/headers/DS_RobotManager.h"
+#include "../src/headers/DS_NetworkDiagnostics.h"
 
-/**
- * @class DriverStation
- * @brief Connects, manages and controls a FRC robot
- */
+#include "../src/headers/DS_Protocol2015.h"
+
 class DriverStation : public QObject
 {
     Q_OBJECT
 
 public:
-    /**
-     * Returns the only instance of the class
-     */
+    explicit DriverStation();
+    ~DriverStation();
+
     static DriverStation* getInstance();
 
     /**
@@ -69,25 +63,14 @@ public:
     QStringList alliances();
 
     /**
-     * Returns the current operation mode of the robot.
-     * Possible return values are:
-     *     - DS_Test
-     *     - DS_TeleOp
-     *     - DS_Disabled
-     *     - DS_Autonomous
-     *     - DS_EmergencyStop
-     */
-    DS_ControlMode operationMode();
-
-    /**
      * Returns the IP address of the robot radio
      */
     QString radioAddress();
 
     /**
-     * Returns the network address of the roboRIO
+     * Returns the network address of the robot
      */
-    QString roboRioAddress();
+    QString robotAddress();
 
     /**
      * Returns the current control mode of the robot
@@ -97,131 +80,99 @@ public:
     /**
      * Returns \c true if the robot reports that the user code is loaded
      */
-    bool robotCodeLoaded();
+    bool robotHasCode();
 
     /**
-     * Returns \c true if the DS is connected to the roboRIO
+     * Returns \c true if the DS is connected to the robot
      */
     bool networkAvailable();
 
 public slots:
     /**
-     * Initializes the loops that send and recieve network packets between
-     * the client and the robot.
-     *
-     * This function is not called in the constructor to give the application
-     * time to initialize its user interface.
+     * Initializes the class and the interlal loop/refresh system
      */
     void init();
 
     /**
-     * Reboots the roboRIO and changes the way the client sends packets to
-     * the robot until it reloads its operating system
+     * Reboots the robot using the specified protocol
      */
     void reboot();
 
     /**
-     * Sends a special packet to the robot so that it re-starts the process that
-     * runs the robot software
+     * Restarts the robot code using the specified protocol
      */
     void restartCode();
 
     /**
-     * Shows the DS log window and allows it to generate graphs
+     * What can I say, this function just shows the DS Log Window
      */
     void showLogWindow();
 
-    /**
-     * Hides the DS log window and inhibits it to generate graphs
-     */
-    void hideLogWindow();
-
-    /**
-     * Changes the team number. Its a simple way to change the roboRIO address
-     * without asking the final user to specify the 'full' address of the robot
-     *
-     * \note Changes may take up to one second to take full effect
-     */
-    void setTeamNumber (const int& team);
-
-    /**
-     * Updates the alliance of the robot by changing the way packets are
-     * generated and sent to the roboRIO
-     */
-    void setAlliance (const DS_Alliance& alliance);
-
-    /**
-     * Updates the address that we use to communicate to the roboRIO.
-     * Useful for teams that have changed the default network configurations
-     * of their roboRIO component.
-     */
-    void setCustomAddress (const QString& address);
-
-    /**
-     * Changes the operation mode of the robot.
-     * Available options are:
-     *     - DS_Test
-     *     - DS_TeleOp
-     *     - DS_Disabled
-     *     - DS_Autonomous
-     *     - DS_EmergencyStop
-     *
-     * @note The elapsed time will be reset when the mode is switched
-     */
-    void setControlMode (const DS_ControlMode& mode);
-
-    /**
-     * Unregisters all the joysticks from the Driver Station
-     */
-    void removeAllJoysticks();
-
-    /**
-     * Unregisters the selected \a joystick from the Driver Station
-     */
-    void removeJoystick (const short& joystick);
-
-    /**
-     * Registers a new joystick  to the Driver Station with the selected number
-     * of \a axes and \a buttons
-     */
-    void addJoystick (const short& axes,
-                      const short& buttons,
-                      const short& hats);
-
-    /**
-     * Updates the \a angle of the \a hat in the selected \a joystick
-     */
-    void updateJoystickHat (const short& js,
-                            const short& hat,
-                            const int& angle);
-
-    /**
-     * Updates the \a value of the \a axis in the selected \a joystick
-     */
-    void updateJoystickAxis (const short& js,
-                             const short& axis,
-                             const double& value);
-
-    /**
-     * Updates the \a pressed state of the \a button in the selected \a joystick
-     */
-    void updateJoystickButton (const short& js,
-                               const short& button,
-                               const bool& pressed);
 
     /**
      * Simulates a timed match with the input time values (in seconds)
      */
-    void startPractice (const int& countdown,
-                        const int& autonomous,
-                        const int& delay,
-                        const int& teleop,
-                        const int& endgame);
+    void startPractice (int countdown,
+                        int autonomous,
+                        int delay,
+                        int teleop,
+                        int endgame);
 
     /**
-     * Stops the Driver Station functions before the application quits
+     * Changes the protocol that we use to control the robot
      */
-    void stopDriverStation();
+    void setProtocol (DS_Protocol* protocol);
+
+    /**
+     * Changes the team number used by the protocol and network diagnostics
+     */
+    void setTeamNumber (int team);
+
+    /**
+     * Changes the alliance of the robot using the specified protocol
+     */
+    void setAlliance (DS_Alliance alliance);
+
+    /**
+     * Changes the control mode of the robot, available options are:
+     *     - \c DS_Disabled
+     *     - \c DS_Teleoperated
+     *     - \c DS_Autonomous
+     *     - \c DS_Test
+     *     - \c DS_EmergencyStop
+     */
+    void setControlMode (DS_ControlMode mode);
+
+    /**
+     * Changes the network address of the robot
+     */
+    void setCustomAddress (QString address);
+
+    /**
+     * Un-registers all the joysticks from the Driver Station
+     */
+    void clearJoysticks();
+
+    /**
+     * Updates the \a angle of the selected \a hat in the specified \a josytick
+     */
+    void updateJoystickPovHat (int js, int hat, int angle);
+
+    /**
+     * Registers a new joystick to the Driver Station with the specified number
+     * of \a axes, \a buttons and \a povHats
+     */
+    void addJoystick (int axes, int buttons, int povHats);
+
+    /**
+     * Updates the \a value of the selected \a axis in the specified \a josytick
+     */
+    void updateJoystickAxis (int js, int axis, double value);
+
+    /**
+     * Updates the \a state of the selected \a button in the specified \a josytick
+     */
+    void updateJoystickButton (int js, int button, bool state);
 
 signals:
     /**
@@ -231,7 +182,13 @@ signals:
     void codeChanged (bool available);
 
     /**
-     * Emitted when the client detects that the availability of the roboRIO
+     * Emitted when the library detects that the CPU usage of the robot has
+     * changed
+     */
+    void cpuUsageChanged (int percent);
+
+    /**
+     * Emitted when the client detects that the availability of the robot
      * has changed (eg. when the robot is powered off with the breaker)
      */
     void networkChanged (bool available);
@@ -243,22 +200,22 @@ signals:
     void radioChanged (bool available);
 
     /**
-     * Emitted when the client analyzes a packet from the roboRIO and extracts
+     * Emitted when the client analyzes a packet from the robot and extracts
      * the battery voltage of the robot.
      */
     void voltageChanged (QString voltage);
 
     /**
-     * Emitted when the client analyzes a packet from the roboRIO and extracts
+     * Emitted when the client analyzes a packet from the robot and extracts
      * the battery voltage of the robot.
      */
     void voltageChanged (double voltage);
 
     /**
      * Emitted when the NetConsole receives and decodes a message from the
-     * roboRIO
+     * robot
      */
-    void newMessage (QString message);
+    void newNetConsoleMessage (QString message);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
@@ -298,13 +255,13 @@ signals:
     void controlModeChanged (DS_ControlMode mode);
 
     /**
-     * Emitted when the libary detects that the RAM usage of the roboRIO has
+     * Emitted when the libary detects that the RAM usage of the robot has
      * changed since the last update.
      */
     void ramUsageChanged (int total, int used);
 
     /**
-     * Emitted when the libary detects that the disk usage of the roboRIO has
+     * Emitted when the libary detects that the disk usage of the robot has
      * changed since the last update.
      */
     void diskUsageChanged (int total, int used);
@@ -316,73 +273,40 @@ signals:
     void elapsedTimeChanged (QString elapsedTime);
 
 protected:
-    explicit DriverStation();
-    ~DriverStation();
-
-private:
     static DriverStation* m_instance;
 
-    int m_team;
-    int m_count;
-    bool m_code;
-    bool m_enabled;
-    bool m_radioStatus;
-    bool m_oldConnection;
-    bool m_justConnected;
-    bool m_justDisconnected;
+private:
+    bool m_init;
 
-    QString m_oldStatus;
-    QString m_newStatus;
-
-    DS_Status m_status;
-    DS_ControlMode m_mode;
-    DS_Alliance m_alliance;
-
-    DS_Sender m_sender;
-    DS_Receiver m_receiver;
+    DS_Client m_client;
     DS_LogWindow m_logWindow;
+    DS_RobotManager m_manager;
     DS_NetConsole m_netConsole;
     DS_ElapsedTime m_elapsedTime;
-    DS_JoystickManager m_joystickManager;
-    DS_VersionAnalyzer m_versionAnalyzer;
-    DS_NetworkDiagnostics m_netDiagnostics;
+    DS_NetworkDiagnostics m_networkDiagnostics;
 
 private slots:
-    /**
-     * @internal
-     * Returns a string with the current status of the robot.
-     * Possible return values can be:
-     *     - No Robot Code
-     *     - No Robot Communication
-     *     - TeleOp
-     *     - Test
-     *     - Autonomous
-     *     - Emergency Stop
-     *     - Disabled
-     */
-    QString getStatus();
-
-    /**
-     * @internal
-     * Checks if the connection between the roboRIO and the client is
-     * working correctly by "pinging" the roboRIO with a TCP/IP connection.
-     *
-     * If the function detects that the client just connected to the roboRIO,
-     * it downloads robot information using FTP and analyzes the downloaded
-     * information to emit singals to connected objects.
-     *
-     * If the function detects that the client just disconnected from the
-     * roboRIO, it updates all the internal values to prevent sending data
-     * and packets to the void and notifies the connected objects.
-     */
-    void checkConnection();
-
     /**
      * @internal
      * Resets the internal values of the library when we disconnect from the
      * robot.
      */
     void resetInternalValues();
+
+    /**
+     * @internal
+     * Checks if the connection between the robot and the client is
+     * working correctly by "pinging" the robot with a TCP/IP connection.
+     *
+     * If the function detects that the client just connected to the robot,
+     * it downloads robot information using FTP and analyzes the downloaded
+     * information to emit singals to connected objects.
+     *
+     * If the function detects that the client just disconnected from the
+     * robot, it updates all the internal values to prevent sending data
+     * and packets to the void and notifies the connected objects.
+     */
+    void checkConnection();
 
     /**
      * @internal
@@ -402,35 +326,17 @@ private slots:
 
     /**
      * @internal
-     * Called when we recieve a packet from the roboRIO that indicates us
-     * if the user code is loaded or not.
-     *
-     * \note This function will only be called when necessary, in other words
-     * when the program detects that the status of the code changed
+     * Changes the status string when:
+     *     - The communications status has changed
+     *     - The robot code status has changed
+     *     - The control mode of the robot has changed
      */
-    void onCodeChanged (const bool& available);
+    QString getStatus();
 
     /**
-     * @internal
-     * Called when we recieve a packet from the roboRIO that tells us that
-     * its confirmation code is not equal to the control mode set by the user
+     * Updates the elapsed time when the control mode is changed
      */
-    void onControlModeChanged (const DS_ControlMode& mode);
-
-    /**
-     * @internal
-     * Notifies the other objects about the new status of the robot when:
-     *     - The user code status is changed
-     *     - The communication status is changed
-     */
-    void updateStatus (const bool& boolean);
-
-    /**
-     * @internal
-     * Notifies the other objects about the new status of the robot when the
-     * control mode of the robot is chagned
-     */
-    void updateStatus (const DS_ControlMode& mode);
+    void onControlModeChanged (DS_ControlMode mode);
 };
 
-#endif /* _DRIVER_STATION_MAIN_H */
+#endif

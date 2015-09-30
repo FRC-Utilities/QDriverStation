@@ -20,36 +20,16 @@
  * THE SOFTWARE.
  */
 
-#ifndef _DRIVER_STATION_SENDER_H
-#define _DRIVER_STATION_SENDER_H
+#ifndef _LIB_DS_DEBUG_H
+#define _LIB_DS_DEBUG_H
 
-#include "Common.h"
+#include <QDebug>
+#include <QElapsedTimer>
 
-#include <QUdpSocket>
-#include <QHostAddress>
+#define _F_DATA __FILE__ << __LINE__
 
-/**
- * \class DS_Sender
- */
-class DS_Sender
-{
-public:
-    /**
-     * Sends a generated packet to the robot that contains the desired robot
-     * status, its control mode, alliance and position.
-     *
-     * Additionally, the function will send the joystick input data to the
-     * robot for further processing.
-     */
-    void send (const int& index,
-               const QString& host,
-               const DS_Status& status,
-               const DS_ControlMode& mode,
-               const DS_Alliance& alliance,
-               const QByteArray& joystickData);
+#define DS_DEBUG(data) qInfo() << "INFORMATION:" << _F_DATA << data
+#define DS_ERROR(data) qCritical() << "CRITICAL:" << _F_DATA << data
+#define DS_WARNING(data) qWarning() << "WARNING:" << _F_DATA << data
 
-private:
-    QUdpSocket m_socket;
-};
-
-#endif /* _DRIVER_STATION_SENDER_H */
+#endif

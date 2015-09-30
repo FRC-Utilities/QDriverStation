@@ -135,7 +135,7 @@ private slots:
      * @internal
      * Returns the current color on the line edit that matches the \a type
      */
-    QColor getColor (const int& type);
+    QColor getColor (int type);
 
     /**
      * @internal

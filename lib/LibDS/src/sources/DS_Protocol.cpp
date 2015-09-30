@@ -20,42 +20,65 @@
  * THE SOFTWARE.
  */
 
-#include "Times.h"
-#include "ElapsedTime.h"
+#include "../headers/DS_Protocol.h"
 
-DS_ElapsedTime::DS_ElapsedTime()
+DS_Protocol::DS_Protocol()
 {
-    stop();
-    calculateElapsedTime();
+    p_team = 0;
+    p_robotCode = false;
+    p_alliance = DS_AllianceRed1;
+    p_controlMode = DS_ControlDisabled;
+    p_joysticks = new QList<DS_Joystick*>;
+}
+bool DS_Protocol::robotCode()
+{
+    return p_robotCode;
 }
 
-void DS_ElapsedTime::stop()
+DS_Alliance DS_Protocol::alliance()
 {
-    m_enabled = false;
+    return p_alliance;
 }
 
-void DS_ElapsedTime::reset()
+DS_ControlMode DS_Protocol::controlMode()
 {
-    m_enabled = true;
-    m_time.restart();
+    return p_controlMode;
 }
 
-void DS_ElapsedTime::calculateElapsedTime()
+void DS_Protocol::setTeamNumber (int team)
 {
-    if (m_enabled) {
-        int msec = m_time.elapsed();
-        int secs = (msec / 1000);
-        int mins = (secs / 60) % 60;
+    p_team = team;
+}
 
-        secs = secs % 60;
-        msec = msec % 1000;
+void DS_Protocol::setRobotAddress (QString address)
+{
+    p_robotAddress = address;
+}
 
-        emit elapsedTimeChanged (QString ("%1:%2.%3")
-                                 .arg (mins, 2, 10, QLatin1Char ('0'))
-                                 .arg (secs, 2, 10, QLatin1Char ('0'))
-                                 .arg (QString::number (msec).at (0)));
-    }
+void DS_Protocol::setAlliance (DS_Alliance alliance)
+{
+    p_alliance = alliance;
+}
 
-    QTimer::singleShot (DS_Times::ElapsedTimeInterval, Qt::PreciseTimer,
-                        this, SLOT (calculateElapsedTime()));
+void DS_Protocol::setControlMode (DS_ControlMode mode)
+{
+    p_controlMode = mode;
+    emit controlModeChanged (mode);
+}
+
+void DS_Protocol::setJoysticks (QList<DS_Joystick*>* joysticks)
+{
+    p_joysticks = joysticks;
+}
+
+QByteArray DS_Protocol::bitsToBytes (QBitArray bits)
+{
+    QByteArray bytes;
+    bytes.resize (bits.count() / (8 + 1));
+    bytes.fill (0);
+
+    for (int i = 0; i < bits.count(); ++i)
+        bytes [i / 8] = (bytes.at (i / 8) | ((bits [i] ? 1 : 0) << (i % 8)));
+
+    return bytes;
 }
