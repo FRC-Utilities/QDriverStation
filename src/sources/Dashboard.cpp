@@ -39,27 +39,32 @@
 
 Dashboard* Dashboard::m_instance = Q_NULLPTR;
 
-Dashboard::Dashboard() {
+Dashboard::Dashboard()
+{
     connect (qApp, SIGNAL (aboutToQuit()), this, SLOT (quitDashboard()));
     loadDashboard();
 }
 
-Dashboard::~Dashboard() {
+Dashboard::~Dashboard()
+{
     delete m_instance;
 }
 
-Dashboard* Dashboard::getInstance() {
+Dashboard* Dashboard::getInstance()
+{
     if (m_instance == Q_NULLPTR)
         m_instance = new Dashboard();
 
     return m_instance;
 }
 
-void Dashboard::loadDashboard() {
+void Dashboard::loadDashboard()
+{
     QString path;
     m_current = Settings::get ("Dashboard", None).toInt();
 
-    if (m_current == SfxDashboard) {
+    if (m_current == SfxDashboard)
+    {
         QDir dir;
         QStringList files;
 
@@ -72,13 +77,15 @@ void Dashboard::loadDashboard() {
                    .arg (files.at (2));
     }
 
-    else if (m_current == SmartDashboard) {
+    else if (m_current == SmartDashboard)
+    {
         path = QString ("java -jar \"%1/wpilib/tools/SmartDashboard.jar\"")
                .arg (QDir::homePath());
     }
 
 #if defined _WIN32 || defined _WIN64
-    else if (m_current == LabVIEW) {
+    else if (m_current == LabVIEW)
+    {
         QString pF = is64Bits ? "C:/Program Files (x86)" : "C:/Program Files";
         path = QString ("%1/FRC Dashboard/Dashboard.exe").arg (pF);
         path = "\"" + path + "\"";
@@ -88,20 +95,24 @@ void Dashboard::loadDashboard() {
     m_process.start (path);
 }
 
-void Dashboard::quitDashboard() {
+void Dashboard::quitDashboard()
+{
     m_process.close();
 }
 
-void Dashboard::reloadDashboard() {
+void Dashboard::reloadDashboard()
+{
     quitDashboard();
     loadDashboard();
 }
 
-int Dashboard::getCurrentDashboard() {
+int Dashboard::getCurrentDashboard()
+{
     return m_current;
 }
 
-QStringList Dashboard::getAvailableDashboards() {
+QStringList Dashboard::getAvailableDashboards()
+{
     QStringList list;
     list.append ("None");
     list.append ("SFX Dashboard");

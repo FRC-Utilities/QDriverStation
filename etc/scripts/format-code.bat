@@ -9,7 +9,7 @@ title Code Formatter
 cd /d %~dp0
 
 :: Style and format the source code recursively
-astyle --pad-oper --pad-first-paren-out --align-pointer=type --remove-brackets --convert-tabs --max-code-length=80 --style=java --lineend=windows --suffix=none --recursive ../../*.h ../../*.cpp
+astyle --pad-oper --pad-first-paren-out --align-pointer=type --remove-brackets --convert-tabs --max-code-length=80 --style=allman --lineend=windows --suffix=none --recursive ../../*.h ../../*.cpp
 
 :: Notify the user that we have finished
 echo.

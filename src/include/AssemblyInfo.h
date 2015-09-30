@@ -37,7 +37,8 @@
  * the application, such as its name ('Open DriverStation' is not so brilliant)
  * and its version information.
  */
-class AssemblyInfo {
+class AssemblyInfo
+{
 public:
     /**
      * Returns the name of the application

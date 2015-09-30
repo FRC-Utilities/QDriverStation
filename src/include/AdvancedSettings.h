@@ -35,7 +35,8 @@
  * of the DriverStation and to change the palette of the application
  * (ex: to match the colors of the user's team)
  */
-class AdvancedSettings : public QDialog {
+class AdvancedSettings : public QDialog
+{
     Q_OBJECT
 
 public:
@@ -51,7 +52,8 @@ public:
      * of the application. The colors in this structure will be adapted
      * automatically by the application to change the look of the widgets
      */
-    enum Colors {
+    enum Colors
+    {
         Base,       /**< Used for the base color of the window */
         Highlight,  /**< Used for highlighted elements */
         Background, /**< Used to fill the background of most widgets */

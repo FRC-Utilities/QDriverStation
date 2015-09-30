@@ -26,57 +26,69 @@ const QString _PCM_FILE ("/tmp/frc_versions/PCM-0-versions.ini");
 const QString _PDP_FILE ("/tmp/frc_versions/PDP-0-versions.ini");
 const QString _LIB_FILE ("/tmp/frc_versions/FRC_Lib_Version.ini");
 
-DS_Protocol2015::DS_Protocol2015() {
+DS_Protocol2015::DS_Protocol2015()
+{
     reset();
     connect (&m_manager, SIGNAL (finished (QNetworkReply*)),
              this,       SLOT   (onDownloadFinished (QNetworkReply*)));
 }
 
-void DS_Protocol2015::reset() {
+void DS_Protocol2015::reset()
+{
     m_index = 0;
+    p_robotCode = false;
     m_justConnected = false;
     m_status = RobotStatus::Normal;
+    emit codeChanged (p_robotCode);
     setControlMode (DS_ControlDisabled);
 }
 
-void DS_Protocol2015::reboot() {
+void DS_Protocol2015::reboot()
+{
     m_status = RobotStatus::RebootRobot;
 }
 
-int DS_Protocol2015::robotPort() {
+int DS_Protocol2015::robotPort()
+{
     return Ports::RobotPort;
 }
 
-int DS_Protocol2015::clientPort() {
+int DS_Protocol2015::clientPort()
+{
     return Ports::ClientPort;
 }
 
-void DS_Protocol2015::restartCode() {
+void DS_Protocol2015::restartCode()
+{
     m_status = RobotStatus::RestartCode;
 }
 
-QString DS_Protocol2015::robotAddress() {
+QString DS_Protocol2015::robotAddress()
+{
     if (p_robotAddress.isEmpty())
         return QString ("roboRIO-%1.local").arg (p_team);
 
     return p_robotAddress;
 }
 
-QString DS_Protocol2015::radioAddress() {
+QString DS_Protocol2015::radioAddress()
+{
     if (p_radioAddress.isEmpty())
         return DS_GetStaticIp (p_team, 1);
 
     return p_radioAddress;
 }
 
-void DS_Protocol2015::downloadRobotInformation() {
+void DS_Protocol2015::downloadRobotInformation()
+{
     QString host = "ftp://" + robotAddress();
     m_manager.get (QNetworkRequest (host + _LIB_FILE));
     m_manager.get (QNetworkRequest (host + _PCM_FILE));
     m_manager.get (QNetworkRequest (host + _PDP_FILE));
 }
 
-QByteArray DS_Protocol2015::generateClientPacket() {
+QByteArray DS_Protocol2015::generateClientPacket()
+{
     /* Generate ping index */
     m_index += 1;
     if (m_index >= 0xffff)
@@ -106,17 +118,19 @@ QByteArray DS_Protocol2015::generateClientPacket() {
     return data;
 }
 
-QByteArray DS_Protocol2015::generateJoystickData() {
+QByteArray DS_Protocol2015::generateJoystickData()
+{
     QByteArray data;
 
-    for (int i = 0; i < p_joysticks->count(); ++i) {
-        data.append (getJoystickSize (p_joysticks->at (i)));
-        data.append (SectionHeaders::JoystickHeader);
+    for (int i = 0; i < p_joysticks->count(); ++i)
+    {
+        data.append ((uint8_t) getJoystickSize (p_joysticks->at (i)) + 1);
+        data.append ((uint8_t) SectionHeaders::JoystickHeader);
 
         /* Add axis data */
-        data.append (p_joysticks->at (i)->numAxes);
+        data.append ((uint8_t) p_joysticks->at (i)->numAxes);
         for (int axis = 0; axis < p_joysticks->at (i)->numAxes; ++axis)
-            data.append (p_joysticks->at (i)->axes [axis] * (0xff / 2));
+            data.append ((uint8_t)p_joysticks->at (i)->axes [axis] * (0xff / 2));
 
         /* Add button data as bits*/
         QBitArray buttons (p_joysticks->at (i)->numButtons);
@@ -124,52 +138,63 @@ QByteArray DS_Protocol2015::generateJoystickData() {
             buttons [button] = p_joysticks->at (i)->buttons [button];
 
         /* Append button bits to the main data file */
-        data.append (p_joysticks->at (i)->numButtons);
+        data.append ((uint8_t) p_joysticks->at (i)->numButtons);
         data.append (bitsToBytes (buttons));
 
         /* Add hat/pov data */
-        data.append (p_joysticks->at (i)->numPovHats);
-        for (int hat = 0; hat < p_joysticks->at (i)->numPovHats; ++hat) {
+        data.append ((uint8_t) p_joysticks->at (i)->numPovHats);
+        for (int hat = 0; hat < p_joysticks->at (i)->numPovHats; ++hat)
+        {
             QByteArray array;
             array.resize (1);
-            array.append (p_joysticks->at (i)->povHats [hat]);
-            data.append (array.at (0));
-            data.append (array.at (1));
+            array.append ((uint8_t)p_joysticks->at (i)->povHats [hat]);
+            data.append ((uint8_t) array.at (0));
+            data.append ((uint8_t)array.at (1));
+        }
+
+        /* Add -1 if there are no POV hats */
+        if (p_joysticks->at (i)->numPovHats <= 0)
+        {
+            data.append ((uint8_t) - 1);
+            data.append ((uint8_t) - 1);
         }
     }
 
     return data;
 }
 
-void DS_Protocol2015::readRobotData (QByteArray data) {
-    if (!data.isEmpty() && data.length() >= 8) {
-        /* Get robot voltage */
-        double major = data.at (RobotData::VoltageMajor);
-        double minor = data.at (RobotData::VoltageMinor) / 100;
-        emit voltageChanged (major + minor);
+void DS_Protocol2015::readRobotData (QByteArray data)
+{
+    /* Get robot voltage */
+    QString major = QString::number (data.at (5));
+    QString minor = QString::number (data.at (6));
+    minor = minor.replace ("-", "");
 
-        /* Get robot code */
-        bool code = data.at (RobotData::RobotStatus) != ProgramStatus::NoProgram;
-        if (p_robotCode != code) {
-            p_robotCode = code;
-            emit codeChanged (code);
-        }
+    if (minor.length() > 2)
+        minor = QString ("%1%2").arg (minor.at (0), minor.at (1));
 
-        /* Get control mode */
-        DS_ControlMode mode = (DS_ControlMode) data.at (RobotData::ControlEcho);
-        if (p_controlMode != mode)
-            emit controlModeChanged (mode);
+    emit voltageChanged (QString ("%1.%2").arg (major, minor));
 
-        /* We are sure that we are talking with a robot, download its info */
-        if (!m_justConnected) {
-            m_justConnected = true;
-            downloadRobotInformation();
-        }
+    /* Get robot code */
+    bool code = data.at (4) != 0x00;
+    if (p_robotCode != code)
+    {
+        p_robotCode = code;
+        emit codeChanged (code);
+    }
+
+    /* We are sure that we are talking with a robot, download its info */
+    if (!m_justConnected)
+    {
+        m_justConnected = true;
+        downloadRobotInformation();
     }
 }
 
-char DS_Protocol2015::getControlCode (DS_ControlMode mode) {
-    switch (mode) {
+char DS_Protocol2015::getControlCode (DS_ControlMode mode)
+{
+    switch (mode)
+    {
     case DS_ControlTest:
         return OperationModes::Test;
         break;
@@ -193,8 +218,34 @@ char DS_Protocol2015::getControlCode (DS_ControlMode mode) {
     return OperationModes::Disabled;
 }
 
-char DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
-    switch (alliance) {
+DS_ControlMode DS_Protocol2015::getControlMode (char mode)
+{
+    switch (mode)
+    {
+    case OperationModes::Test:
+        return DS_ControlTest;
+        break;
+    case OperationModes::Disabled:
+        return DS_ControlDisabled;
+        break;
+    case OperationModes::Autonomous:
+        return DS_ControlAutonomous;
+        break;
+    case OperationModes::TeleOperated:
+        return DS_ControlTeleOp;
+        break;
+    case OperationModes::EmergencyStop:
+        return DS_ControlEmergencyStop;
+        break;
+    }
+
+    return DS_ControlDisabled;
+}
+
+char DS_Protocol2015::getAllianceCode (DS_Alliance alliance)
+{
+    switch (alliance)
+    {
     case DS_AllianceRed1:
         return Alliances::Red1;
         break;
@@ -221,7 +272,8 @@ char DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
     return Alliances::Red1;
 }
 
-int DS_Protocol2015::getJoystickSize (DS_Joystick* joystick) {
+int DS_Protocol2015::getJoystickSize (DS_Joystick* joystick)
+{
     return  5
             + (joystick->numAxes > 0 ? joystick->numAxes : 0)
             + (joystick->numButtons / 8)
@@ -229,7 +281,10 @@ int DS_Protocol2015::getJoystickSize (DS_Joystick* joystick) {
             + (joystick->numPovHats > 0 ? joystick->numPovHats * 2 : 0);
 }
 
-void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply) {
+void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply)
+{
+    DS_DEBUG (reply->url());
+
     /* Get URL and downloaded data */
     QString url = reply->url().toString();
     QString data = QString::fromUtf8 (reply->readAll());
@@ -239,7 +294,8 @@ void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply) {
         return;
 
     /* This is the PCM information file */
-    else if (url.contains (_PCM_FILE, Qt::CaseInsensitive)) {
+    else if (url.contains (_PCM_FILE, Qt::CaseInsensitive))
+    {
         QString version;
         QString key = "currentVersion";
 
@@ -252,7 +308,8 @@ void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply) {
     }
 
     /* This is the PDP information file */
-    else if (url.contains (_PDP_FILE, Qt::CaseInsensitive)) {
+    else if (url.contains (_PDP_FILE, Qt::CaseInsensitive))
+    {
         QString version;
         QString key = "currentVersion";
 

@@ -31,7 +31,8 @@
  * The DS_NetConsole class receives and decodes messages broadcasted
  * by the robot over the local area network.
  */
-class DS_NetConsole : public QObject {
+class DS_NetConsole : public QObject
+{
     Q_OBJECT
 
 public:

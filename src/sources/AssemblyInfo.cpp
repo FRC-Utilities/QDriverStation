@@ -22,18 +22,22 @@
 
 #include "AssemblyInfo.h"
 
-QString AssemblyInfo::name() {
+QString AssemblyInfo::name()
+{
     return "QDriverStation";
 }
 
-QString AssemblyInfo::version() {
+QString AssemblyInfo::version()
+{
     return "0.1 Beta";
 }
 
-QString AssemblyInfo::organization() {
+QString AssemblyInfo::organization()
+{
     return "WinT 3794";
 }
 
-QString AssemblyInfo::buildDateTime() {
+QString AssemblyInfo::buildDateTime()
+{
     return QObject::tr ("Built on %1 at %2").arg (__DATE__, __TIME__);
 }

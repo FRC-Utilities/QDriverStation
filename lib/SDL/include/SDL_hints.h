@@ -396,7 +396,8 @@ with SDL_CreateWindowFrom() should
 /**
  *  \brief  An enumeration of hint priorities
  */
-typedef enum {
+typedef enum
+{
     SDL_HINT_DEFAULT,
     SDL_HINT_NORMAL,
     SDL_HINT_OVERRIDE

@@ -41,7 +41,8 @@ class AdvancedSettings;
  * application and the robot without needing to worry about all the tiny,
  * pesky details that go under the hood of any modern application.
  */
-class MainWindow : public SmartWindow {
+class MainWindow : public SmartWindow
+{
     Q_OBJECT
 
 public:
@@ -318,17 +319,21 @@ private slots:
  * Quick and dirty hack for having horizontal text on a vertical tab bar
  * Stolen from: http://www.qtcentre.org/threads/13293-QTabWidget-customization
  */
-class CustomTabStyle : public QProxyStyle {
+class CustomTabStyle : public QProxyStyle
+{
 public:
-    explicit CustomTabStyle() {
+    explicit CustomTabStyle()
+    {
         setBaseStyle (QStyleFactory::create ("Fusion"));
     }
 
     QSize sizeFromContents (ContentsType type, const QStyleOption* option,
-                            const QSize& size, const QWidget* widget) const {
+                            const QSize& size, const QWidget* widget) const
+    {
         QSize s = QProxyStyle::sizeFromContents (type, option, size, widget);
 
-        if (type == QStyle::CT_TabBarTab) {
+        if (type == QStyle::CT_TabBarTab)
+        {
             s.transpose();
             s.setHeight (s.width());
         }
@@ -339,10 +344,13 @@ public:
     void drawControl (ControlElement element,
                       const QStyleOption* option,
                       QPainter* painter,
-                      const QWidget* widget) const {
-        if (element == CE_TabBarTabLabel) {
+                      const QWidget* widget) const
+    {
+        if (element == CE_TabBarTabLabel)
+        {
             if (const QStyleOptionTab* tab =
-                        qstyleoption_cast <const QStyleOptionTab*> (option)) {
+                        qstyleoption_cast <const QStyleOptionTab*> (option))
+            {
                 QStyleOptionTab opt (*tab);
                 opt.shape = QTabBar::RoundedNorth;
                 QProxyStyle::drawControl (element, &opt, painter, widget);

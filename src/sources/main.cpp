@@ -57,7 +57,8 @@ int main (int argc, char* argv[]);
  * @internal
  * Configures and runs the application
  */
-int main (int argc, char* argv[]) {
+int main (int argc, char* argv[])
+{
     QApplication app (argc, argv);
     app.setWindowIcon (_APP_ICON_CODE);
     app.setApplicationName (AssemblyInfo::name());
@@ -79,7 +80,8 @@ int main (int argc, char* argv[]) {
  * @internal
  * Loads the translation file based on the user settings
  */
-void loadTranslator() {
+void loadTranslator()
+{
     QTranslator translator;
     translator.load (
         QString (":/translations/open-ds_%1")
@@ -92,7 +94,8 @@ void loadTranslator() {
  * @internal
  * Loads and configures an appropiate font for the UI
  */
-void loadApplicationFont() {
+void loadApplicationFont()
+{
     QFontDatabase::addApplicationFont (":/fonts/FontAwesome.otf");
     QFontDatabase::addApplicationFont (":/fonts/Inconsolata.otf");
     QFontDatabase::addApplicationFont (":/fonts/Quicksand-Bold.ttf");

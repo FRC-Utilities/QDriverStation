@@ -100,7 +100,8 @@ typedef struct _UIWindow UIWindow;
 /**
  *  These are the various supported windowing subsystems
  */
-typedef enum {
+typedef enum
+{
     SDL_SYSWM_UNKNOWN,
     SDL_SYSWM_WINDOWS,
     SDL_SYSWM_X11,
@@ -114,12 +115,15 @@ typedef enum {
 /**
  *  The custom event structure.
  */
-struct SDL_SysWMmsg {
+struct SDL_SysWMmsg
+{
     SDL_version version;
     SDL_SYSWM_TYPE subsystem;
-    union {
+    union
+    {
 #if defined(SDL_VIDEO_DRIVER_WINDOWS)
-        struct {
+        struct
+        {
             HWND hwnd;     /**< The window for the message */
             UINT msg;      /**< The type of message */
             WPARAM wParam; /**< WORD message parameter */
@@ -127,22 +131,26 @@ struct SDL_SysWMmsg {
         } win;
 #endif
 #if defined(SDL_VIDEO_DRIVER_X11)
-        struct {
+        struct
+        {
             XEvent event;
         } x11;
 #endif
 #if defined(SDL_VIDEO_DRIVER_DIRECTFB)
-        struct {
+        struct
+        {
             DFBEvent event;
         } dfb;
 #endif
 #if defined(SDL_VIDEO_DRIVER_COCOA)
-        struct {
+        struct
+        {
             /* No Cocoa window events yet */
         } cocoa;
 #endif
 #if defined(SDL_VIDEO_DRIVER_UIKIT)
-        struct {
+        struct
+        {
             /* No UIKit window events yet */
         } uikit;
 #endif
@@ -157,40 +165,48 @@ struct SDL_SysWMmsg {
  *  When this structure is returned, it holds information about which
  *  low level system it is using, and will be one of SDL_SYSWM_TYPE.
  */
-struct SDL_SysWMinfo {
+struct SDL_SysWMinfo
+{
     SDL_version version;
     SDL_SYSWM_TYPE subsystem;
-    union {
+    union
+    {
 #if defined(SDL_VIDEO_DRIVER_WINDOWS)
-        struct {
+        struct
+        {
             HWND window; /**< The window handle */
         } win;
 #endif
 #if defined(SDL_VIDEO_DRIVER_X11)
-        struct {
+        struct
+        {
             Display* display; /**< The X11 display */
             Window window;    /**< The X11 window */
         } x11;
 #endif
 #if defined(SDL_VIDEO_DRIVER_DIRECTFB)
-        struct {
+        struct
+        {
             IDirectFB* dfb;            /**< The directfb main interface */
             IDirectFBWindow* window;   /**< The directfb window handle */
             IDirectFBSurface* surface; /**< The directfb client surface */
         } dfb;
 #endif
 #if defined(SDL_VIDEO_DRIVER_COCOA)
-        struct {
+        struct
+        {
             NSWindow* window; /* The Cocoa window */
         } cocoa;
 #endif
 #if defined(SDL_VIDEO_DRIVER_UIKIT)
-        struct {
+        struct
+        {
             UIWindow* window; /* The UIKit window */
         } uikit;
 #endif
 #if defined(SDL_VIDEO_DRIVER_WAYLAND)
-        struct {
+        struct
+        {
             struct wl_display* display; /**< Wayland display */
             struct wl_surface* surface; /**< Wayland surface */
             struct wl_shell_surface*
@@ -198,7 +214,8 @@ struct SDL_SysWMinfo {
         } wl;
 #endif
 #if defined(SDL_VIDEO_DRIVER_MIR)
-        struct {
+        struct
+        {
             MirConnection* connection; /**< Mir display server connection */
             MirSurface* surface;       /**< Mir surface */
         } mir;

@@ -32,15 +32,19 @@
  * Implements a simple window that displays the Driver Station log data
  * in a graph.
  *
- * The class is able to save the logs in the local storage and organize time
+ * The class is able to save the logs in the local storage and organize them
  * by date and time automatically.
  */
-class DS_LogWindow : public QWidget {
+class DS_LogWindow : public QWidget
+{
     Q_OBJECT
 
 public:
     explicit DS_LogWindow ();
     ~DS_LogWindow();
+
+public slots:
+    void setGraphPalette (QPalette palette);
 
 private:
     Ui::DS_LogWindow* m_ui;

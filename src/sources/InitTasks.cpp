@@ -38,7 +38,8 @@
 #include "CpuUsage.h"
 #include "InitTasks.h"
 
-int InitTasks::getTeamNumber() {
+int InitTasks::getTeamNumber()
+{
     /* First launch, ask for team number */
     if (Settings::get ("First Launch", true).toBool())
         return QInputDialog::getInt (0, 0,
@@ -50,7 +51,8 @@ int InitTasks::getTeamNumber() {
         return Settings::get ("Team ID", 0).toInt();
 }
 
-void InitTasks::executeFirstRunTasks() {
+void InitTasks::executeFirstRunTasks()
+{
     CpuUsage::init();
 
     /* Not first run, nothing to do here *flies away* */

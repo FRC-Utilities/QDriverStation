@@ -32,7 +32,8 @@
  * such as asking the user for his/her team number of downloading additional
  * drivers required by the Open DriverStation.
  */
-class InitTasks {
+class InitTasks
+{
 public:
     /**
      * Returns the team number to be used to control the robot.

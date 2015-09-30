@@ -31,8 +31,10 @@
  * Encapsulates the section headers that allow the robot to indetify the
  * data that we send to it
  */
-namespace SectionHeaders {
-enum SectionHeaders {
+namespace SectionHeaders
+{
+enum SectionHeaders
+{
     GeneralHeader = 0x01,
     JoystickHeader = 0x0c
 };
@@ -41,8 +43,10 @@ enum SectionHeaders {
 /**
  * Encapsulates the constants of the operatio modes of the robot
  */
-namespace OperationModes {
-enum Modes {
+namespace OperationModes
+{
+enum Modes
+{
     Test = 0x05,
     Disabled = 0x00,
     Autonomous = 0x06,
@@ -55,8 +59,10 @@ enum Modes {
  * Encapsulates the constants that are used to represent the alliance and
  * position that the robot shall use
  */
-namespace Alliances {
-enum Alliances {
+namespace Alliances
+{
+enum Alliances
+{
     Red1 = 0x00,
     Red2 = 0x01,
     Red3 = 0x02,
@@ -69,8 +75,10 @@ enum Alliances {
 /**
  * Encapsulates the constants of the robot status mode
  */
-namespace RobotStatus {
-enum Status {
+namespace RobotStatus
+{
+enum Status
+{
     Normal = 0x10,      /**< The robot will behave normally */
     RebootRobot = 0x18, /**< The roboRIO will reboot itself */
     RestartCode = 0x14  /**< The robot will restart the user code */
@@ -81,8 +89,10 @@ enum Status {
  * Represents the ports used to communicate between the robot
  * and the Driver Station
  */
-namespace Ports {
-enum Ports {
+namespace Ports
+{
+enum Ports
+{
     RobotPort = 1110, /**< The port in which we send instructions to the robot */
     ClientPort = 1150 /**< The port in which we receive robot data */
 };
@@ -92,8 +102,10 @@ enum Ports {
  * Encapsulates the possible codes that the roboRIO can emit regarding the
  * status of the robot program
  */
-namespace ProgramStatus {
-enum ProgramStatus {
+namespace ProgramStatus
+{
+enum ProgramStatus
+{
     Test = 0x08,
     TeleOp = 0x02,
     RoboRio = 0x10,
@@ -105,24 +117,11 @@ enum ProgramStatus {
 }
 
 /**
- * Represents the location of the available data in a robot packet
- */
-namespace RobotData {
-enum PacketOrder {
-    Pong1 = 0x00,
-    Pong2 = 0x01,
-    ControlEcho = 0x03,
-    RobotStatus = 0x04,
-    VoltageMajor = 0x05,
-    VoltageMinor = 0x06
-};
-}
-
-/**
  * \class DS_Protocol2015
  * Implements the 2015 communication protocol
  */
-class DS_Protocol2015 : public DS_Protocol {
+class DS_Protocol2015 : public DS_Protocol
+{
     Q_OBJECT
 
 public:
@@ -141,6 +140,7 @@ public slots:
     QByteArray generateJoystickData();
     void readRobotData (QByteArray data);
     char getControlCode (DS_ControlMode mode);
+    DS_ControlMode getControlMode (char mode);
     char getAllianceCode (DS_Alliance alliance);
 
 private:

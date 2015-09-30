@@ -33,7 +33,8 @@
  * The class was implemented for the sole use of the battery progress bar in
  * the \c MainWindow, but we isolated its functions for readability reasons.
  */
-class Battery {
+class Battery
+{
 public:
     /**
      * Uses native API calls for the target operating system to obtain the
