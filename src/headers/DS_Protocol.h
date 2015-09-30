@@ -38,7 +38,8 @@
  * Implements an abstract class to be used as a base for any protocol that
  * will be used to drive an FRC robot.
  */
-class DS_Protocol : public QObject {
+class DS_Protocol : public QObject
+{
     Q_OBJECT
 
 public:
@@ -99,6 +100,7 @@ public slots:
     virtual QByteArray generateJoystickData() = 0;
     virtual void readRobotData (QByteArray data) = 0;
     virtual char getControlCode (DS_ControlMode mode) = 0;
+    virtual DS_ControlMode getControlMode (char mode) = 0;
     virtual char getAllianceCode (DS_Alliance alliance) = 0;
 
 signals:
@@ -111,7 +113,7 @@ signals:
     /**
      * Emitted when the protocol detects that the robot voltage has changed
      */
-    void voltageChanged (double voltage);
+    void voltageChanged (QString voltage);
 
     /**
      * Emitted when the protocol detects that the RAM usage of the robot

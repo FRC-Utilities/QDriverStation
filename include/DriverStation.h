@@ -36,7 +36,8 @@
 
 #include "../src/headers/DS_Protocol2015.h"
 
-class DriverStation : public QObject {
+class DriverStation : public QObject
+{
     Q_OBJECT
 
 public:
@@ -107,6 +108,10 @@ public slots:
      */
     void showLogWindow();
 
+    /**
+     * Updates the palette of the graph widget in the log window
+     */
+    void setGraphPalette (QPalette palette);
 
     /**
      * Simulates a timed match with the input time values (in seconds)
@@ -203,12 +208,6 @@ signals:
      * the battery voltage of the robot.
      */
     void voltageChanged (QString voltage);
-
-    /**
-     * Emitted when the client analyzes a packet from the robot and extracts
-     * the battery voltage of the robot.
-     */
-    void voltageChanged (double voltage);
 
     /**
      * Emitted when the NetConsole receives and decodes a message from the

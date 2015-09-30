@@ -32,7 +32,7 @@ QMAKE_CXXFLAGS += -std=c++0x
 
 INCLUDEPATH += $$PWD/include
 
-#include ($$PWD/lib/QCustomPlot/QCustomPlot.pri)
+include ($$PWD/lib/QCustomPlot/QCustomPlot.pri)
 
 FORMS += \
     $$PWD/src/forms/DS_LogWindow.ui

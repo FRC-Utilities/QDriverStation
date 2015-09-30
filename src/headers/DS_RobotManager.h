@@ -36,7 +36,8 @@
  * Manages the avaiable protocols and configures them correctly, so that
  * the Driver Station can safely send commands and joystick input to the robot.
  */
-class  DS_RobotManager : public QObject {
+class  DS_RobotManager : public QObject
+{
     Q_OBJECT
 
 public:
@@ -89,6 +90,12 @@ public slots:
      */
     void updateJoystickButton (int js, int button, bool status);
 
+    /**
+     * @brief readRobotData
+     * @param data
+     */
+    void readRobotData (QByteArray data);
+
 signals:
     /**
      * Emitted when the protocol detects that the status of the
@@ -99,7 +106,7 @@ signals:
     /**
      * Emitted when the protocol detects that the robot voltage has changed
      */
-    void voltageChanged (double voltage);
+    void voltageChanged (QString voltage);
 
     /**
      * Emitted when the protocol detects that the RAM usage of the robot

@@ -23,19 +23,23 @@
 #include "../headers/DS_Debug.h"
 #include "../headers/DS_Common.h"
 
-void DS_PingData::generatePingData (int index) {
+void DS_PingData::generatePingData (int index)
+{
     byte1 = index / 0xff;
     byte2 = index % 0xff;
 }
 
-short DS_PingData::getPingIndex() {
+short DS_PingData::getPingIndex()
+{
     return byte1 * 0xff + byte2;
 }
 
-QString DS_GetStaticIp (int team, int host) {
+QString DS_GetStaticIp (int team, int host)
+{
     QString string = QString ("%1").arg (team);
 
-    switch (string.length()) {
+    switch (string.length())
+    {
     case 1:
         string = "00.0" + string;
         break;
@@ -58,8 +62,10 @@ QString DS_GetStaticIp (int team, int host) {
     return QString ("10.%1.%2").arg (string, QString::number (host));
 }
 
-QString DS_GetControlModeString (DS_ControlMode mode) {
-    switch (mode) {
+QString DS_GetControlModeString (DS_ControlMode mode)
+{
+    switch (mode)
+    {
     case DS_ControlTest:
         return QObject::tr ("Test");
         break;

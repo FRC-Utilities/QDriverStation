@@ -33,7 +33,8 @@
  * The class "redirects" the received data from the robot to the current
  * protocol that is in use by the Driver Station and vice-versa.
  */
-class DS_Client : public QObject {
+class DS_Client : public QObject
+{
     Q_OBJECT
 
 public:

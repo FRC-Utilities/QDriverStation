@@ -35,7 +35,8 @@
  * time in the execution of the application and presents it in human-readable
  * format (mm::ss.ms).
  */
-class DS_ElapsedTime : public QObject {
+class DS_ElapsedTime : public QObject
+{
     Q_OBJECT
 
 public:
