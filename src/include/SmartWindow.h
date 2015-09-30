@@ -35,8 +35,7 @@
  * at the bottom of the screen (as the FRC DriverStation does) and resizing
  * itself to fit the contents of the widgets that contains
  */
-class SmartWindow : public QMainWindow
-{
+class SmartWindow : public QMainWindow {
     Q_OBJECT
 
 public:

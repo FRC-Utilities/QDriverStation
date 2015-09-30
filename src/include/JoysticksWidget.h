@@ -43,8 +43,7 @@ class QProgressBar;
  *
  * This widget is used in the "Gamepad" tab of the MainWindow.
  */
-class JoysticksWidget : public QWidget
-{
+class JoysticksWidget : public QWidget {
     Q_OBJECT
 
 public:

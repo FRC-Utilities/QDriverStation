@@ -38,8 +38,7 @@
  * us to quit the Dashboard when the Open DriverStation is closed or when the
  * user selects another Dashboard type.
  */
-class Dashboard : public QObject
-{
+class Dashboard : public QObject {
     Q_OBJECT
 
 public:

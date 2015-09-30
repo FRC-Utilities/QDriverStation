@@ -36,8 +36,7 @@
 
 #include "../src/headers/DS_Protocol2015.h"
 
-class DriverStation : public QObject
-{
+class DriverStation : public QObject {
     Q_OBJECT
 
 public:

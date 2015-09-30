@@ -35,8 +35,7 @@
  * of the DriverStation and to change the palette of the application
  * (ex: to match the colors of the user's team)
  */
-class AdvancedSettings : public QDialog
-{
+class AdvancedSettings : public QDialog {
     Q_OBJECT
 
 public:

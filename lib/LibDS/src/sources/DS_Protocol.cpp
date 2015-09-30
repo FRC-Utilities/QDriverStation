@@ -22,57 +22,47 @@
 
 #include "../headers/DS_Protocol.h"
 
-DS_Protocol::DS_Protocol()
-{
+DS_Protocol::DS_Protocol() {
     p_team = 0;
     p_robotCode = false;
     p_alliance = DS_AllianceRed1;
     p_controlMode = DS_ControlDisabled;
     p_joysticks = new QList<DS_Joystick*>;
 }
-bool DS_Protocol::robotCode()
-{
+bool DS_Protocol::robotCode() {
     return p_robotCode;
 }
 
-DS_Alliance DS_Protocol::alliance()
-{
+DS_Alliance DS_Protocol::alliance() {
     return p_alliance;
 }
 
-DS_ControlMode DS_Protocol::controlMode()
-{
+DS_ControlMode DS_Protocol::controlMode() {
     return p_controlMode;
 }
 
-void DS_Protocol::setTeamNumber (int team)
-{
+void DS_Protocol::setTeamNumber (int team) {
     p_team = team;
 }
 
-void DS_Protocol::setRobotAddress (QString address)
-{
+void DS_Protocol::setRobotAddress (QString address) {
     p_robotAddress = address;
 }
 
-void DS_Protocol::setAlliance (DS_Alliance alliance)
-{
+void DS_Protocol::setAlliance (DS_Alliance alliance) {
     p_alliance = alliance;
 }
 
-void DS_Protocol::setControlMode (DS_ControlMode mode)
-{
+void DS_Protocol::setControlMode (DS_ControlMode mode) {
     p_controlMode = mode;
     emit controlModeChanged (mode);
 }
 
-void DS_Protocol::setJoysticks (QList<DS_Joystick*>* joysticks)
-{
+void DS_Protocol::setJoysticks (QList<DS_Joystick*>* joysticks) {
     p_joysticks = joysticks;
 }
 
-QByteArray DS_Protocol::bitsToBytes (QBitArray bits)
-{
+QByteArray DS_Protocol::bitsToBytes (QBitArray bits) {
     QByteArray bytes;
     bytes.resize (bits.count() / (8 + 1));
     bytes.fill (0);

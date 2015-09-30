@@ -26,8 +26,7 @@
 
 #include "JoysticksWidget.h"
 
-JoysticksWidget::JoysticksWidget (QWidget* parent) : QWidget (parent)
-{
+JoysticksWidget::JoysticksWidget (QWidget* parent) : QWidget (parent) {
     ui.setupUi (this);
     ui.Axes->setVisible (false);
     ui.Rumble->setVisible (false);
@@ -48,13 +47,11 @@ JoysticksWidget::JoysticksWidget (QWidget* parent) : QWidget (parent)
              this,            SLOT   (onRowChanged (int)));
 }
 
-void JoysticksWidget::onRumbleClicked()
-{
+void JoysticksWidget::onRumbleClicked() {
     m_manager->rumble (ui.JoystickList->currentRow(), 1000);
 }
 
-void JoysticksWidget::onRowChanged (int row)
-{
+void JoysticksWidget::onRowChanged (int row) {
     /* Remove all buttons and progress bars in the widget */
     foreach (QPushButton* c, findChildren<QPushButton*>())
         delete c;
@@ -120,8 +117,7 @@ void JoysticksWidget::onRowChanged (int row)
     }
 }
 
-void JoysticksWidget::onCountChanged (const QStringList& list)
-{
+void JoysticksWidget::onCountChanged (const QStringList& list) {
     if (list.count() < ui.JoystickList->count())
         emit joystickRemoved();
 
@@ -138,8 +134,7 @@ void JoysticksWidget::onCountChanged (const QStringList& list)
     ui.Rumble->setVisible (list.count() > 0);
 }
 
-void JoysticksWidget::onAxisEvent (const GM_Axis& axis)
-{
+void JoysticksWidget::onAxisEvent (const GM_Axis& axis) {
     if (ui.JoystickList->currentRow() != axis.joystick.id)
         return;
 
@@ -147,8 +142,7 @@ void JoysticksWidget::onAxisEvent (const GM_Axis& axis)
         m_axes.at (axis.rawId)->setValue (axis.value * 100);
 }
 
-void JoysticksWidget::onButtonEvent (const GM_Button& button)
-{
+void JoysticksWidget::onButtonEvent (const GM_Button& button) {
     if (ui.JoystickList->currentRow() != button.joystick.id)
         return;
 

@@ -35,8 +35,7 @@
  * The class is able to save the logs in the local storage and organize time
  * by date and time automatically.
  */
-class DS_LogWindow : public QWidget
-{
+class DS_LogWindow : public QWidget {
     Q_OBJECT
 
 public:

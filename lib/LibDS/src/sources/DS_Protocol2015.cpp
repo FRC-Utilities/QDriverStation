@@ -26,67 +26,57 @@ const QString _PCM_FILE ("/tmp/frc_versions/PCM-0-versions.ini");
 const QString _PDP_FILE ("/tmp/frc_versions/PDP-0-versions.ini");
 const QString _LIB_FILE ("/tmp/frc_versions/FRC_Lib_Version.ini");
 
-DS_Protocol2015::DS_Protocol2015()
-{
+DS_Protocol2015::DS_Protocol2015() {
     reset();
     connect (&m_manager, SIGNAL (finished (QNetworkReply*)),
              this,       SLOT   (onDownloadFinished (QNetworkReply*)));
 }
 
-void DS_Protocol2015::reset()
-{
+void DS_Protocol2015::reset() {
     m_index = 0;
     m_justConnected = false;
     m_status = RobotStatus::Normal;
     setControlMode (DS_ControlDisabled);
 }
 
-void DS_Protocol2015::reboot()
-{
+void DS_Protocol2015::reboot() {
     m_status = RobotStatus::RebootRobot;
 }
 
-int DS_Protocol2015::robotPort()
-{
+int DS_Protocol2015::robotPort() {
     return Ports::RobotPort;
 }
 
-int DS_Protocol2015::clientPort()
-{
+int DS_Protocol2015::clientPort() {
     return Ports::ClientPort;
 }
 
-void DS_Protocol2015::restartCode()
-{
+void DS_Protocol2015::restartCode() {
     m_status = RobotStatus::RestartCode;
 }
 
-QString DS_Protocol2015::robotAddress()
-{
+QString DS_Protocol2015::robotAddress() {
     if (p_robotAddress.isEmpty())
         return QString ("roboRIO-%1.local").arg (p_team);
 
     return p_robotAddress;
 }
 
-QString DS_Protocol2015::radioAddress()
-{
+QString DS_Protocol2015::radioAddress() {
     if (p_radioAddress.isEmpty())
         return DS_GetStaticIp (p_team, 1);
 
     return p_radioAddress;
 }
 
-void DS_Protocol2015::downloadRobotInformation()
-{
+void DS_Protocol2015::downloadRobotInformation() {
     QString host = "ftp://" + robotAddress();
     m_manager.get (QNetworkRequest (host + _LIB_FILE));
     m_manager.get (QNetworkRequest (host + _PCM_FILE));
     m_manager.get (QNetworkRequest (host + _PDP_FILE));
 }
 
-QByteArray DS_Protocol2015::generateClientPacket()
-{
+QByteArray DS_Protocol2015::generateClientPacket() {
     /* Generate ping index */
     m_index += 1;
     if (m_index >= 0xffff)
@@ -116,8 +106,7 @@ QByteArray DS_Protocol2015::generateClientPacket()
     return data;
 }
 
-QByteArray DS_Protocol2015::generateJoystickData()
-{
+QByteArray DS_Protocol2015::generateJoystickData() {
     QByteArray data;
 
     for (int i = 0; i < p_joysticks->count(); ++i) {
@@ -152,8 +141,7 @@ QByteArray DS_Protocol2015::generateJoystickData()
     return data;
 }
 
-void DS_Protocol2015::readRobotData (QByteArray data)
-{
+void DS_Protocol2015::readRobotData (QByteArray data) {
     if (!data.isEmpty() && data.length() >= 8) {
         /* Get robot voltage */
         double major = data.at (RobotData::VoltageMajor);
@@ -180,8 +168,7 @@ void DS_Protocol2015::readRobotData (QByteArray data)
     }
 }
 
-char DS_Protocol2015::getControlCode (DS_ControlMode mode)
-{
+char DS_Protocol2015::getControlCode (DS_ControlMode mode) {
     switch (mode) {
     case DS_ControlTest:
         return OperationModes::Test;
@@ -206,8 +193,7 @@ char DS_Protocol2015::getControlCode (DS_ControlMode mode)
     return OperationModes::Disabled;
 }
 
-char DS_Protocol2015::getAllianceCode (DS_Alliance alliance)
-{
+char DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
     switch (alliance) {
     case DS_AllianceRed1:
         return Alliances::Red1;
@@ -235,8 +221,7 @@ char DS_Protocol2015::getAllianceCode (DS_Alliance alliance)
     return Alliances::Red1;
 }
 
-int DS_Protocol2015::getJoystickSize (DS_Joystick* joystick)
-{
+int DS_Protocol2015::getJoystickSize (DS_Joystick* joystick) {
     return  5
             + (joystick->numAxes > 0 ? joystick->numAxes : 0)
             + (joystick->numButtons / 8)
@@ -244,8 +229,7 @@ int DS_Protocol2015::getJoystickSize (DS_Joystick* joystick)
             + (joystick->numPovHats > 0 ? joystick->numPovHats * 2 : 0);
 }
 
-void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply)
-{
+void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply) {
     /* Get URL and downloaded data */
     QString url = reply->url().toString();
     QString data = QString::fromUtf8 (reply->readAll());

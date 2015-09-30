@@ -86,8 +86,7 @@ class DriverStation;
  * in question and is saved in a configuration folder in the home path
  * of the user.
  */
-class GamepadManager : public QObject
-{
+class GamepadManager : public QObject {
     Q_OBJECT
 
 public:

@@ -36,8 +36,7 @@
  * Manages the avaiable protocols and configures them correctly, so that
  * the Driver Station can safely send commands and joystick input to the robot.
  */
-class  DS_RobotManager : public QObject
-{
+class  DS_RobotManager : public QObject {
     Q_OBJECT
 
 public:
