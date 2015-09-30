@@ -20,9 +20,10 @@
  * THE SOFTWARE.
  */
 
-#include "Common.h"
+#include "../headers/DS_Debug.h"
+#include "../headers/DS_Common.h"
 
-void DS_PingData::generatePingData (const short& index)
+void DS_PingData::generatePingData (int index)
 {
     byte1 = index / 0xff;
     byte2 = index % 0xff;
@@ -33,7 +34,7 @@ short DS_PingData::getPingIndex()
     return byte1 * 0xff + byte2;
 }
 
-QString DS_GetStaticIp (const int& team, const int& host)
+QString DS_GetStaticIp (int team, int host)
 {
     QString string = QString ("%1").arg (team);
 
@@ -60,7 +61,7 @@ QString DS_GetStaticIp (const int& team, const int& host)
     return QString ("10.%1.%2").arg (string, QString::number (host));
 }
 
-QString DS_GetControlModeString (const DS_ControlMode& mode)
+QString DS_GetControlModeString (DS_ControlMode mode)
 {
     switch (mode) {
     case DS_ControlTest:
@@ -78,7 +79,9 @@ QString DS_GetControlModeString (const DS_ControlMode& mode)
     case DS_ControlEmergencyStop:
         return QObject::tr ("Emergency Stop");
         break;
+        break;
     }
 
+    DS_ERROR ("Invalid control mode" << mode);
     return "ERR_INVALID_CONTROL_MODE";
 }

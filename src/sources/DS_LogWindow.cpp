@@ -20,35 +20,15 @@
  * THE SOFTWARE.
  */
 
-#ifndef _DRIVER_STATION_NET_CONSOLE_H
-#define _DRIVER_STATION_NET_CONSOLE_H
+#include "../headers/DS_LogWindow.h"
 
-#include <QUdpSocket>
-
-/**
- * \class DS_NetConsole
- *
- * The DS_NetConsole class receives and decodes messages broadcasted
- * by the roboRIO over the local area network.
- */
-class DS_NetConsole : public QObject
+DS_LogWindow::DS_LogWindow()
 {
-    Q_OBJECT
+    m_ui = new Ui::DS_LogWindow;
+    m_ui->setupUi (this);
+}
 
-public:
-    explicit DS_NetConsole();
-
-public slots:
-    void setTeamNumber (const int& team);
-
-signals:
-    void newMessage (QString message);
-
-private:
-    QUdpSocket m_socket;
-
-private slots:
-    void onDataReceived();
-};
-
-#endif /* _DRIVER_STATION_NET_CONSOLE_H */
+DS_LogWindow::~DS_LogWindow()
+{
+    delete m_ui;
+}

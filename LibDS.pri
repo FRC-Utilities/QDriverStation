@@ -32,36 +32,37 @@ QMAKE_CXXFLAGS += -std=c++0x
 
 INCLUDEPATH += $$PWD/include
 
-include ($$PWD/lib/QCustomPlot/QCustomPlot.pri)
+#include ($$PWD/lib/QCustomPlot/QCustomPlot.pri)
+
+FORMS += \
+    $$PWD/src/forms/DS_LogWindow.ui
 
 HEADERS += \
     $$PWD/include/DriverStation.h \
-    $$PWD/src/Common.h \
-    $$PWD/src/NetConsole.h \
-    $$PWD/src/NetworkDiagnostics.h \
-    $$PWD/src/VersionAnalyzer.h \
-    $$PWD/src/Times.h \
-    $$PWD/src/Receiver.h \
-    $$PWD/src/Sender.h \
-    $$PWD/src/Ports.h \
-    $$PWD/src/ElapsedTime.h \
-    $$PWD/src/JoystickManager.h \
-    $$PWD/src/LogWindow.h \
+    $$PWD/src/headers/DS_Client.h \
+    $$PWD/src/headers/DS_Common.h \
+    $$PWD/src/headers/DS_LogWindow.h \
+    $$PWD/src/headers/DS_NetConsole.h \
+    $$PWD/src/headers/DS_RobotManager.h \
+    $$PWD/src/headers/DS_NetworkDiagnostics.h \
+    $$PWD/src/headers/DS_Protocol.h \
+    $$PWD/src/headers/DS_Protocol2015.h \
+    $$PWD/src/headers/DS_ElapsedTime.h \
+    $$PWD/src/headers/DS_Debug.h
 
 SOURCES += \
-    $$PWD/src/Common.cpp \
-    $$PWD/src/DriverStation.cpp \
-    $$PWD/src/NetConsole.cpp \
-    $$PWD/src/NetworkDiagnostics.cpp \
-    $$PWD/src/VersionAnalyzer.cpp \
-    $$PWD/src/Receiver.cpp \
-    $$PWD/src/Sender.cpp \
-    $$PWD/src/ElapsedTime.cpp \
-    $$PWD/src/JoystickManager.cpp \
-    $$PWD/src/LogWindow.cpp
+    $$PWD/src/sources/DriverStation.cpp \
+    $$PWD/src/sources/DS_Client.cpp \
+    $$PWD/src/sources/DS_Common.cpp \
+    $$PWD/src/sources/DS_LogWindow.cpp \
+    $$PWD/src/sources/DS_NetConsole.cpp \
+    $$PWD/src/sources/DS_RobotManager.cpp \
+    $$PWD/src/sources/DS_NetworkDiagnostics.cpp \
+    $$PWD/src/sources/DS_Protocol.cpp \
+    $$PWD/src/sources/DS_Protocol2015.cpp \
+    $$PWD/src/sources/DS_ElapsedTime.cpp
 
-FORMS += \
-    $$PWD/src/LogWindow.ui
+
 
 
 

@@ -20,18 +20,58 @@
  * THE SOFTWARE.
  */
 
-#ifndef _DRIVER_STATION_TIMES_H
-#define _DRIVER_STATION_TIMES_H
+#ifndef _LIB_DS_ELAPSED_TIME_H
+#define _LIB_DS_ELAPSED_TIME_H
+
+#include <QTimer>
+#include <QString>
+#include <QObject>
+#include <QElapsedTimer>
 
 /**
- * Defines all the time intervals of the library in a single file.
- * \note Change these values as needed
+ * \class DS_ElapsedTime
+ *
+ * The DS_ElapsedTime class calculates the elapsed time since a specified
+ * time in the execution of the application and presents it in human-readable
+ * format (mm::ss.ms).
  */
-namespace DS_Times
+class DS_ElapsedTime : public QObject
 {
-const int RobotPacketInterval (20);
-const int ElapsedTimeInterval (100);
-const int TestConnectionInterval (1000);
-}
+    Q_OBJECT
 
-#endif /* _DRIVER_STATION_TIMES_H */
+public:
+    explicit DS_ElapsedTime();
+
+public slots:
+    /**
+     * Pauses the elapsed time refresh process
+     */
+    void stop();
+
+    /**
+     * Resets the elapsed timer and starts the refresh process again
+     */
+    void reset();
+
+signals:
+    /**
+     * Emitted when the elapsed time is calculated and processed
+     * in a human-readable format
+     */
+    void elapsedTimeChanged (QString time);
+
+private:
+    bool m_enabled;
+    QElapsedTimer m_time;
+
+private slots:
+    /**
+     * @internal
+     * Uses the value given by the internal timer and processes its
+     * information into a human-readable format (mm::ss.ms)
+     */
+    void calculateElapsedTime();
+};
+
+#endif /* _DRIVER_STATION_PORTS_H */
+

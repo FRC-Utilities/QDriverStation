@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,58 +20,65 @@
  * THE SOFTWARE.
  */
 
-#ifndef _DRIVER_STATION_ELAPSED_TIME_H
-#define _DRIVER_STATION_ELAPSED_TIME_H
+#ifndef _LIB_DS_CLIENT_H
+#define _LIB_DS_CLIENT_H
 
-#include <QTimer>
-#include <QString>
-#include <QObject>
-#include <QElapsedTimer>
+#include <QUdpSocket>
+#include <QHostAddress>
 
 /**
- * \class DS_ElapsedTime
+ * \class DS_Client
  *
- * The DS_ElapsedTime class calculates the elapsed time since a specified
- * time in the execution of the application and presents it in human-readable
- * format (mm::ss.ms).
+ * Sends and receives data between the robot and the Driver Station.
+ * The class "redirects" the received data from the robot to the current
+ * protocol that is in use by the Driver Station and vice-versa.
  */
-class DS_ElapsedTime : public QObject
+class DS_Client : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit DS_ElapsedTime();
+    explicit DS_Client();
 
 public slots:
     /**
-     * Pauses the elapsed time refresh process
+     * Sends a the input \a data to the robot
      */
-    void stop();
+    void sendToRobot (QByteArray data);
 
     /**
-     * Resets the elapsed timer and starts the refresh process again
+     * Changes the port in which we send the packets to
      */
-    void reset();
+    void setRobotPort (int port);
+
+    /**
+     * Changes the port in where we receive robot packets
+     */
+    void setClientPort (int port);
+
+    /**
+     * Changes the address where we send the packets to
+     */
+    void setRobotAddress (QString address);
 
 signals:
     /**
-     * Emitted when the elapsed time is calculated and processed
-     * in a human-readable format
+     * Emitted when the client receives a packet from the robot
      */
-    void elapsedTimeChanged (QString time);
+    void dataReceived (QByteArray data);
 
 private:
-    bool m_enabled;
-    QElapsedTimer m_time;
+    int m_robotPort;
+    QString m_address;
+    QUdpSocket m_robotSocket;
+    QUdpSocket m_clientSocket;
 
 private slots:
     /**
      * @internal
-     * Uses the value given by the internal timer and processes its
-     * information into a human-readable format (mm::ss.ms)
+     * Reads the packet data that the client received from the robot
      */
-    void calculateElapsedTime();
+    void onDataReceived();
 };
 
-#endif /* _DRIVER_STATION_PORTS_H */
-
+#endif

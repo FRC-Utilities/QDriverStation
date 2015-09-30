@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,23 +20,42 @@
  * THE SOFTWARE.
  */
 
+#include "../headers/DS_Client.h"
 
-#ifndef _DRIVER_STATION_CHARTS_WINDOW_H
-#define _DRIVER_STATION_CHARTS_WINDOW_H
-
-#include <QWidget>
-#include <ui_LogWindow.h>
-
-class DS_LogWindow : public QWidget
+DS_Client::DS_Client()
 {
-    Q_OBJECT
+    connect (&m_clientSocket, SIGNAL (readyRead()),
+             this,            SLOT   (onDataReceived()));
+}
 
-public:
-    explicit DS_LogWindow ();
-    ~DS_LogWindow();
+void DS_Client::sendToRobot (QByteArray data)
+{
+    m_robotSocket.writeDatagram (data, QHostAddress (m_address), m_robotPort);
+}
 
-private:
-    Ui::DS_LogWindow* m_ui;
-};
+void DS_Client::setRobotPort (int port)
+{
+    m_robotPort = port;
+}
 
-#endif /* _DRIVER_STATION_CHARTSWINDOW_H */
+void DS_Client::setClientPort (int port)
+{
+    m_clientSocket.bind (port, QUdpSocket::ShareAddress);
+}
+
+void DS_Client::setRobotAddress (QString address)
+{
+    m_address = address;
+}
+
+void DS_Client::onDataReceived()
+{
+    QByteArray data;
+
+    while (m_clientSocket.hasPendingDatagrams()) {
+        data.resize (m_clientSocket.pendingDatagramSize());
+        m_clientSocket.readDatagram (data.data(), data.size());
+    }
+
+    emit dataReceived (data);
+}

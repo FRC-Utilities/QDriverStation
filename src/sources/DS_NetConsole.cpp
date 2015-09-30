@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,15 +20,28 @@
  * THE SOFTWARE.
  */
 
-#include "LogWindow.h"
+#include "../headers/DS_Common.h"
+#include "../headers/DS_NetConsole.h"
 
-DS_LogWindow::DS_LogWindow()
+DS_NetConsole::DS_NetConsole()
 {
-    m_ui = new Ui::DS_LogWindow;
-    m_ui->setupUi (this);
+    connect (&m_socket, SIGNAL (readyRead()), this, SLOT (onDataReceived()));
 }
 
-DS_LogWindow::~DS_LogWindow()
+void DS_NetConsole::setTeamNumber (int team)
 {
-    delete m_ui;
+    m_socket.bind (QHostAddress (DS_GetStaticIp (team, 255)), 6666,
+                   QUdpSocket::ShareAddress);
+}
+
+void DS_NetConsole::onDataReceived()
+{
+    QByteArray data;
+
+    while (m_socket.hasPendingDatagrams()) {
+        data.resize (m_socket.pendingDatagramSize());
+        m_socket.readDatagram (data.data(), data.size());
+    }
+
+    emit newMessage (QString::fromUtf8 (data));
 }
