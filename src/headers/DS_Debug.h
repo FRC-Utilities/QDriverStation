@@ -28,8 +28,8 @@
 
 #define _F_DATA __FILE__ << __LINE__
 
-#define DS_DEBUG(data) qInfo() << "INFORMATION:" << _F_DATA << data
-#define DS_ERROR(data) qCritical() << "CRITICAL:" << _F_DATA << data
-#define DS_WARNING(data) qWarning() << "WARNING:" << _F_DATA << data
+#define DS_DEBUG(data) qDebug() << "INFORMATION:" << _F_DATA << data
+#define DS_ERROR(data) qDebug() << "CRITICAL:" << _F_DATA << data
+#define DS_WARNING(data) qDebug() << "WARNING:" << _F_DATA << data
 
 #endif
