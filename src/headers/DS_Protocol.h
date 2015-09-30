@@ -38,8 +38,7 @@
  * Implements an abstract class to be used as a base for any protocol that
  * will be used to drive an FRC robot.
  */
-class DS_Protocol : public QObject
-{
+class DS_Protocol : public QObject {
     Q_OBJECT
 
 public:

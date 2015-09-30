@@ -90,8 +90,7 @@ class QCPBars;
 /*!
   The QCP Namespace contains general enums and QFlags used throughout the QCustomPlot library
 */
-namespace QCP
-{
+namespace QCP {
 /*!
   Defines the sides of a rectangular entity to which margins can be applied.
 
@@ -169,8 +168,7 @@ Q_DECLARE_FLAGS (Interactions, Interaction)
   is \e nan or \e +/-inf). This function is used to check data validity upon replots, when the
   compiler flag \c QCUSTOMPLOT_CHECK_DATA is set.
 */
-inline bool isInvalidData (double value)
-{
+inline bool isInvalidData (double value) {
     return qIsNaN (value) || qIsInf (value);
 }
 
@@ -179,8 +177,7 @@ inline bool isInvalidData (double value)
 
   Checks two arguments instead of one.
 */
-inline bool isInvalidData (double value1, double value2)
-{
+inline bool isInvalidData (double value1, double value2) {
     return isInvalidData (value1) || isInvalidData (value2);
 }
 
@@ -191,8 +188,7 @@ inline bool isInvalidData (double value1, double value2)
   \see getMarginValue
 */
 inline void setMarginValue (QMargins& margins, QCP::MarginSide side,
-                            int value)
-{
+                            int value) {
     switch (side) {
     case QCP::msLeft:
         margins.setLeft (value);
@@ -221,8 +217,7 @@ inline void setMarginValue (QMargins& margins, QCP::MarginSide side,
 
   \see setMarginValue
 */
-inline int getMarginValue (const QMargins& margins, QCP::MarginSide side)
-{
+inline int getMarginValue (const QMargins& margins, QCP::MarginSide side) {
     switch (side) {
     case QCP::msLeft:
         return margins.left();
@@ -246,8 +241,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS (QCP::MarginSides)
 Q_DECLARE_OPERATORS_FOR_FLAGS (QCP::Interactions)
 
 
-class QCP_LIB_DECL QCPScatterStyle
-{
+class QCP_LIB_DECL QCPScatterStyle {
     Q_GADGET
 public:
     /*!
@@ -290,28 +284,22 @@ public:
                      const QBrush& brush = Qt::NoBrush, double size = 6);
 
     // getters:
-    double size() const
-    {
+    double size() const {
         return mSize;
     }
-    ScatterShape shape() const
-    {
+    ScatterShape shape() const {
         return mShape;
     }
-    QPen pen() const
-    {
+    QPen pen() const {
         return mPen;
     }
-    QBrush brush() const
-    {
+    QBrush brush() const {
         return mBrush;
     }
-    QPixmap pixmap() const
-    {
+    QPixmap pixmap() const {
         return mPixmap;
     }
-    QPainterPath customPath() const
-    {
+    QPainterPath customPath() const {
         return mCustomPath;
     }
 
@@ -324,12 +312,10 @@ public:
     void setCustomPath (const QPainterPath& customPath);
 
     // non-property methods:
-    bool isNone() const
-    {
+    bool isNone() const {
         return mShape == ssNone;
     }
-    bool isPenDefined() const
-    {
+    bool isPenDefined() const {
         return mPenDefined;
     }
     void applyTo (QCPPainter* painter, const QPen& defaultPen) const;
@@ -351,8 +337,7 @@ protected:
 Q_DECLARE_TYPEINFO (QCPScatterStyle, Q_MOVABLE_TYPE);
 
 
-class QCP_LIB_DECL QCPPainter : public QPainter
-{
+class QCP_LIB_DECL QCPPainter : public QPainter {
     Q_GADGET
 public:
     /*!
@@ -372,12 +357,10 @@ public:
     ~QCPPainter();
 
     // getters:
-    bool antialiasing() const
-    {
+    bool antialiasing() const {
         return testRenderHint (QPainter::Antialiasing);
     }
-    PainterModes modes() const
-    {
+    PainterModes modes() const {
         return mModes;
     }
 
@@ -392,8 +375,7 @@ public:
     void setPen (const QColor& color);
     void setPen (Qt::PenStyle penStyle);
     void drawLine (const QLineF& line);
-    void drawLine (const QPointF& p1, const QPointF& p2)
-    {
+    void drawLine (const QPointF& p1, const QPointF& p2) {
         drawLine (QLineF (p1, p2));
     }
     void save();
@@ -413,8 +395,7 @@ protected:
 Q_DECLARE_OPERATORS_FOR_FLAGS (QCPPainter::PainterModes)
 
 
-class QCP_LIB_DECL QCPLayer : public QObject
-{
+class QCP_LIB_DECL QCPLayer : public QObject {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (QCustomPlot* parentPlot READ parentPlot)
@@ -428,24 +409,19 @@ public:
     ~QCPLayer();
 
     // getters:
-    QCustomPlot* parentPlot() const
-    {
+    QCustomPlot* parentPlot() const {
         return mParentPlot;
     }
-    QString name() const
-    {
+    QString name() const {
         return mName;
     }
-    int index() const
-    {
+    int index() const {
         return mIndex;
     }
-    QList<QCPLayerable*> children() const
-    {
+    QList<QCPLayerable*> children() const {
         return mChildren;
     }
-    bool visible() const
-    {
+    bool visible() const {
         return mVisible;
     }
 
@@ -471,8 +447,7 @@ private:
     friend class QCPLayerable;
 };
 
-class QCP_LIB_DECL QCPLayerable : public QObject
-{
+class QCP_LIB_DECL QCPLayerable : public QObject {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (bool visible READ visible WRITE setVisible)
@@ -487,24 +462,19 @@ public:
     ~QCPLayerable();
 
     // getters:
-    bool visible() const
-    {
+    bool visible() const {
         return mVisible;
     }
-    QCustomPlot* parentPlot() const
-    {
+    QCustomPlot* parentPlot() const {
         return mParentPlot;
     }
-    QCPLayerable* parentLayerable() const
-    {
+    QCPLayerable* parentLayerable() const {
         return mParentLayerable.data();
     }
-    QCPLayer* layer() const
-    {
+    QCPLayer* layer() const {
         return mLayer;
     }
-    bool antialiased() const
-    {
+    bool antialiased() const {
         return mAntialiased;
     }
 
@@ -558,43 +528,36 @@ private:
 };
 
 
-class QCP_LIB_DECL QCPRange
-{
+class QCP_LIB_DECL QCPRange {
 public:
     double lower, upper;
 
     QCPRange();
     QCPRange (double lower, double upper);
 
-    bool operator== (const QCPRange& other) const
-    {
+    bool operator== (const QCPRange& other) const {
         return lower == other.lower && upper == other.upper;
     }
-    bool operator!= (const QCPRange& other) const
-    {
+    bool operator!= (const QCPRange& other) const {
         return ! (*this == other);
     }
 
-    QCPRange& operator+= (const double& value)
-    {
+    QCPRange& operator+= (const double& value) {
         lower += value;
         upper += value;
         return *this;
     }
-    QCPRange& operator-= (const double& value)
-    {
+    QCPRange& operator-= (const double& value) {
         lower -= value;
         upper -= value;
         return *this;
     }
-    QCPRange& operator*= (const double& value)
-    {
+    QCPRange& operator*= (const double& value) {
         lower *= value;
         upper *= value;
         return *this;
     }
-    QCPRange& operator/= (const double& value)
-    {
+    QCPRange& operator/= (const double& value) {
         lower /= value;
         upper /= value;
         return *this;
@@ -650,8 +613,7 @@ Q_DECLARE_TYPEINFO (QCPRange, Q_MOVABLE_TYPE);
 /*!
   Adds \a value to both boundaries of the range.
 */
-inline const QCPRange operator+ (const QCPRange& range, double value)
-{
+inline const QCPRange operator+ (const QCPRange& range, double value) {
     QCPRange result (range);
     result += value;
     return result;
@@ -660,8 +622,7 @@ inline const QCPRange operator+ (const QCPRange& range, double value)
 /*!
   Adds \a value to both boundaries of the range.
 */
-inline const QCPRange operator+ (double value, const QCPRange& range)
-{
+inline const QCPRange operator+ (double value, const QCPRange& range) {
     QCPRange result (range);
     result += value;
     return result;
@@ -670,8 +631,7 @@ inline const QCPRange operator+ (double value, const QCPRange& range)
 /*!
   Subtracts \a value from both boundaries of the range.
 */
-inline const QCPRange operator- (const QCPRange& range, double value)
-{
+inline const QCPRange operator- (const QCPRange& range, double value) {
     QCPRange result (range);
     result -= value;
     return result;
@@ -680,8 +640,7 @@ inline const QCPRange operator- (const QCPRange& range, double value)
 /*!
   Multiplies both boundaries of the range by \a value.
 */
-inline const QCPRange operator* (const QCPRange& range, double value)
-{
+inline const QCPRange operator* (const QCPRange& range, double value) {
     QCPRange result (range);
     result *= value;
     return result;
@@ -690,8 +649,7 @@ inline const QCPRange operator* (const QCPRange& range, double value)
 /*!
   Multiplies both boundaries of the range by \a value.
 */
-inline const QCPRange operator* (double value, const QCPRange& range)
-{
+inline const QCPRange operator* (double value, const QCPRange& range) {
     QCPRange result (range);
     result *= value;
     return result;
@@ -700,24 +658,21 @@ inline const QCPRange operator* (double value, const QCPRange& range)
 /*!
   Divides both boundaries of the range by \a value.
 */
-inline const QCPRange operator/ (const QCPRange& range, double value)
-{
+inline const QCPRange operator/ (const QCPRange& range, double value) {
     QCPRange result (range);
     result /= value;
     return result;
 }
 
 
-class QCP_LIB_DECL QCPMarginGroup : public QObject
-{
+class QCP_LIB_DECL QCPMarginGroup : public QObject {
     Q_OBJECT
 public:
     QCPMarginGroup (QCustomPlot* parentPlot);
     ~QCPMarginGroup();
 
     // non-virtual methods:
-    QList<QCPLayoutElement*> elements (QCP::MarginSide side) const
-    {
+    QList<QCPLayoutElement*> elements (QCP::MarginSide side) const {
         return mChildren.value (side);
     }
     bool isEmpty() const;
@@ -740,8 +695,7 @@ private:
 };
 
 
-class QCP_LIB_DECL QCPLayoutElement : public QCPLayerable
-{
+class QCP_LIB_DECL QCPLayoutElement : public QCPLayerable {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (QCPLayout* layout READ layout)
@@ -767,44 +721,34 @@ public:
     virtual ~QCPLayoutElement();
 
     // getters:
-    QCPLayout* layout() const
-    {
+    QCPLayout* layout() const {
         return mParentLayout;
     }
-    QRect rect() const
-    {
+    QRect rect() const {
         return mRect;
     }
-    QRect outerRect() const
-    {
+    QRect outerRect() const {
         return mOuterRect;
     }
-    QMargins margins() const
-    {
+    QMargins margins() const {
         return mMargins;
     }
-    QMargins minimumMargins() const
-    {
+    QMargins minimumMargins() const {
         return mMinimumMargins;
     }
-    QCP::MarginSides autoMargins() const
-    {
+    QCP::MarginSides autoMargins() const {
         return mAutoMargins;
     }
-    QSize minimumSize() const
-    {
+    QSize minimumSize() const {
         return mMinimumSize;
     }
-    QSize maximumSize() const
-    {
+    QSize maximumSize() const {
         return mMaximumSize;
     }
-    QCPMarginGroup* marginGroup (QCP::MarginSide side) const
-    {
+    QCPMarginGroup* marginGroup (QCP::MarginSide side) const {
         return mMarginGroups.value (side, (QCPMarginGroup*)0);
     }
-    QHash<QCP::MarginSide, QCPMarginGroup*> marginGroups() const
-    {
+    QHash<QCP::MarginSide, QCPMarginGroup*> marginGroups() const {
         return mMarginGroups;
     }
 
@@ -841,34 +785,27 @@ protected:
     // introduced virtual methods:
     virtual int calculateAutoMargin (QCP::MarginSide side);
     // events:
-    virtual void mousePressEvent (QMouseEvent* event)
-    {
+    virtual void mousePressEvent (QMouseEvent* event) {
         Q_UNUSED (event)
     }
-    virtual void mouseMoveEvent (QMouseEvent* event)
-    {
+    virtual void mouseMoveEvent (QMouseEvent* event) {
         Q_UNUSED (event)
     }
-    virtual void mouseReleaseEvent (QMouseEvent* event)
-    {
+    virtual void mouseReleaseEvent (QMouseEvent* event) {
         Q_UNUSED (event)
     }
-    virtual void mouseDoubleClickEvent (QMouseEvent* event)
-    {
+    virtual void mouseDoubleClickEvent (QMouseEvent* event) {
         Q_UNUSED (event)
     }
-    virtual void wheelEvent (QWheelEvent* event)
-    {
+    virtual void wheelEvent (QWheelEvent* event) {
         Q_UNUSED (event)
     }
 
     // reimplemented virtual methods:
-    virtual void applyDefaultAntialiasingHint (QCPPainter* painter) const
-    {
+    virtual void applyDefaultAntialiasingHint (QCPPainter* painter) const {
         Q_UNUSED (painter)
     }
-    virtual void draw (QCPPainter* painter)
-    {
+    virtual void draw (QCPPainter* painter) {
         Q_UNUSED (painter)
     }
     virtual void parentPlotInitialized (QCustomPlot* parentPlot);
@@ -882,8 +819,7 @@ private:
 };
 
 
-class QCP_LIB_DECL QCPLayout : public QCPLayoutElement
-{
+class QCP_LIB_DECL QCPLayout : public QCPLayoutElement {
     Q_OBJECT
 public:
     explicit QCPLayout();
@@ -921,8 +857,7 @@ private:
 };
 
 
-class QCP_LIB_DECL QCPLayoutGrid : public QCPLayout
-{
+class QCP_LIB_DECL QCPLayoutGrid : public QCPLayout {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (int rowCount READ rowCount)
@@ -941,20 +876,16 @@ public:
     // getters:
     int rowCount() const;
     int columnCount() const;
-    QList<double> columnStretchFactors() const
-    {
+    QList<double> columnStretchFactors() const {
         return mColumnStretchFactors;
     }
-    QList<double> rowStretchFactors() const
-    {
+    QList<double> rowStretchFactors() const {
         return mRowStretchFactors;
     }
-    int columnSpacing() const
-    {
+    int columnSpacing() const {
         return mColumnSpacing;
     }
-    int rowSpacing() const
-    {
+    int rowSpacing() const {
         return mRowSpacing;
     }
 
@@ -1003,8 +934,7 @@ private:
 };
 
 
-class QCP_LIB_DECL QCPLayoutInset : public QCPLayout
-{
+class QCP_LIB_DECL QCPLayoutInset : public QCPLayout {
     Q_OBJECT
 public:
     /*!
@@ -1053,8 +983,7 @@ private:
 };
 
 
-class QCP_LIB_DECL QCPLineEnding
-{
+class QCP_LIB_DECL QCPLineEnding {
     Q_GADGET
 public:
     /*!
@@ -1086,20 +1015,16 @@ public:
                    bool inverted = false);
 
     // getters:
-    EndingStyle style() const
-    {
+    EndingStyle style() const {
         return mStyle;
     }
-    double width() const
-    {
+    double width() const {
         return mWidth;
     }
-    double length() const
-    {
+    double length() const {
         return mLength;
     }
-    bool inverted() const
-    {
+    bool inverted() const {
         return mInverted;
     }
 
@@ -1125,8 +1050,7 @@ protected:
 Q_DECLARE_TYPEINFO (QCPLineEnding, Q_MOVABLE_TYPE);
 
 
-class QCP_LIB_DECL QCPGrid : public QCPLayerable
-{
+class QCP_LIB_DECL QCPGrid : public QCPLayerable {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (bool subGridVisible READ subGridVisible WRITE setSubGridVisible)
@@ -1142,28 +1066,22 @@ public:
     QCPGrid (QCPAxis* parentAxis);
 
     // getters:
-    bool subGridVisible() const
-    {
+    bool subGridVisible() const {
         return mSubGridVisible;
     }
-    bool antialiasedSubGrid() const
-    {
+    bool antialiasedSubGrid() const {
         return mAntialiasedSubGrid;
     }
-    bool antialiasedZeroLine() const
-    {
+    bool antialiasedZeroLine() const {
         return mAntialiasedZeroLine;
     }
-    QPen pen() const
-    {
+    QPen pen() const {
         return mPen;
     }
-    QPen subGridPen() const
-    {
+    QPen subGridPen() const {
         return mSubGridPen;
     }
-    QPen zeroLinePen() const
-    {
+    QPen zeroLinePen() const {
         return mZeroLinePen;
     }
 
@@ -1195,8 +1113,7 @@ protected:
 };
 
 
-class QCP_LIB_DECL QCPAxis : public QCPLayerable
-{
+class QCP_LIB_DECL QCPAxis : public QCPLayerable {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (AxisType axisType READ axisType)
@@ -1319,176 +1236,136 @@ public:
     virtual ~QCPAxis();
 
     // getters:
-    AxisType axisType() const
-    {
+    AxisType axisType() const {
         return mAxisType;
     }
-    QCPAxisRect* axisRect() const
-    {
+    QCPAxisRect* axisRect() const {
         return mAxisRect;
     }
-    ScaleType scaleType() const
-    {
+    ScaleType scaleType() const {
         return mScaleType;
     }
-    double scaleLogBase() const
-    {
+    double scaleLogBase() const {
         return mScaleLogBase;
     }
-    const QCPRange range() const
-    {
+    const QCPRange range() const {
         return mRange;
     }
-    bool rangeReversed() const
-    {
+    bool rangeReversed() const {
         return mRangeReversed;
     }
-    bool autoTicks() const
-    {
+    bool autoTicks() const {
         return mAutoTicks;
     }
-    int autoTickCount() const
-    {
+    int autoTickCount() const {
         return mAutoTickCount;
     }
-    bool autoTickLabels() const
-    {
+    bool autoTickLabels() const {
         return mAutoTickLabels;
     }
-    bool autoTickStep() const
-    {
+    bool autoTickStep() const {
         return mAutoTickStep;
     }
-    bool autoSubTicks() const
-    {
+    bool autoSubTicks() const {
         return mAutoSubTicks;
     }
-    bool ticks() const
-    {
+    bool ticks() const {
         return mTicks;
     }
-    bool tickLabels() const
-    {
+    bool tickLabels() const {
         return mTickLabels;
     }
     int tickLabelPadding() const;
-    LabelType tickLabelType() const
-    {
+    LabelType tickLabelType() const {
         return mTickLabelType;
     }
-    QFont tickLabelFont() const
-    {
+    QFont tickLabelFont() const {
         return mTickLabelFont;
     }
-    QColor tickLabelColor() const
-    {
+    QColor tickLabelColor() const {
         return mTickLabelColor;
     }
     double tickLabelRotation() const;
     LabelSide tickLabelSide() const;
-    QString dateTimeFormat() const
-    {
+    QString dateTimeFormat() const {
         return mDateTimeFormat;
     }
-    Qt::TimeSpec dateTimeSpec() const
-    {
+    Qt::TimeSpec dateTimeSpec() const {
         return mDateTimeSpec;
     }
     QString numberFormat() const;
-    int numberPrecision() const
-    {
+    int numberPrecision() const {
         return mNumberPrecision;
     }
-    double tickStep() const
-    {
+    double tickStep() const {
         return mTickStep;
     }
-    QVector<double> tickVector() const
-    {
+    QVector<double> tickVector() const {
         return mTickVector;
     }
-    QVector<QString> tickVectorLabels() const
-    {
+    QVector<QString> tickVectorLabels() const {
         return mTickVectorLabels;
     }
     int tickLengthIn() const;
     int tickLengthOut() const;
-    int subTickCount() const
-    {
+    int subTickCount() const {
         return mSubTickCount;
     }
     int subTickLengthIn() const;
     int subTickLengthOut() const;
-    QPen basePen() const
-    {
+    QPen basePen() const {
         return mBasePen;
     }
-    QPen tickPen() const
-    {
+    QPen tickPen() const {
         return mTickPen;
     }
-    QPen subTickPen() const
-    {
+    QPen subTickPen() const {
         return mSubTickPen;
     }
-    QFont labelFont() const
-    {
+    QFont labelFont() const {
         return mLabelFont;
     }
-    QColor labelColor() const
-    {
+    QColor labelColor() const {
         return mLabelColor;
     }
-    QString label() const
-    {
+    QString label() const {
         return mLabel;
     }
     int labelPadding() const;
-    int padding() const
-    {
+    int padding() const {
         return mPadding;
     }
     int offset() const;
-    SelectableParts selectedParts() const
-    {
+    SelectableParts selectedParts() const {
         return mSelectedParts;
     }
-    SelectableParts selectableParts() const
-    {
+    SelectableParts selectableParts() const {
         return mSelectableParts;
     }
-    QFont selectedTickLabelFont() const
-    {
+    QFont selectedTickLabelFont() const {
         return mSelectedTickLabelFont;
     }
-    QFont selectedLabelFont() const
-    {
+    QFont selectedLabelFont() const {
         return mSelectedLabelFont;
     }
-    QColor selectedTickLabelColor() const
-    {
+    QColor selectedTickLabelColor() const {
         return mSelectedTickLabelColor;
     }
-    QColor selectedLabelColor() const
-    {
+    QColor selectedLabelColor() const {
         return mSelectedLabelColor;
     }
-    QPen selectedBasePen() const
-    {
+    QPen selectedBasePen() const {
         return mSelectedBasePen;
     }
-    QPen selectedTickPen() const
-    {
+    QPen selectedTickPen() const {
         return mSelectedTickPen;
     }
-    QPen selectedSubTickPen() const
-    {
+    QPen selectedSubTickPen() const {
         return mSelectedSubTickPen;
     }
     QCPLineEnding lowerEnding() const;
     QCPLineEnding upperEnding() const;
-    QCPGrid* grid() const
-    {
+    QCPGrid* grid() const {
         return mGrid;
     }
 
@@ -1555,8 +1432,7 @@ public:
                                QVariant* details = 0) const;
 
     // non-property methods:
-    Qt::Orientation orientation() const
-    {
+    Qt::Orientation orientation() const {
         return mOrientation;
     }
     void moveRange (double diff);
@@ -1571,8 +1447,7 @@ public:
     QList<QCPAbstractItem*> items() const;
 
     static AxisType marginSideToAxisType (QCP::MarginSide side);
-    static Qt::Orientation orientation (AxisType type)
-    {
+    static Qt::Orientation orientation (AxisType type) {
         return type == atBottom || type == atTop ? Qt::Horizontal : Qt::Vertical;
     }
     static AxisType opposite (AxisType type);
@@ -1677,8 +1552,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS (QCPAxis::AxisTypes)
 Q_DECLARE_METATYPE (QCPAxis::SelectablePart)
 
 
-class QCPAxisPainterPrivate
-{
+class QCPAxisPainterPrivate {
 public:
     explicit QCPAxisPainterPrivate (QCustomPlot* parentPlot);
     virtual ~QCPAxisPainterPrivate();
@@ -1687,16 +1561,13 @@ public:
     virtual int size() const;
     void clearCache();
 
-    QRect axisSelectionBox() const
-    {
+    QRect axisSelectionBox() const {
         return mAxisSelectionBox;
     }
-    QRect tickLabelsSelectionBox() const
-    {
+    QRect tickLabelsSelectionBox() const {
         return mTickLabelsSelectionBox;
     }
-    QRect labelSelectionBox() const
-    {
+    QRect labelSelectionBox() const {
         return mLabelSelectionBox;
     }
 
@@ -1759,8 +1630,7 @@ protected:
 };
 
 
-class QCP_LIB_DECL QCPAbstractPlottable : public QCPLayerable
-{
+class QCP_LIB_DECL QCPAbstractPlottable : public QCPLayerable {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (QString name READ name WRITE setName)
@@ -1784,52 +1654,40 @@ public:
     QCPAbstractPlottable (QCPAxis* keyAxis, QCPAxis* valueAxis);
 
     // getters:
-    QString name() const
-    {
+    QString name() const {
         return mName;
     }
-    bool antialiasedFill() const
-    {
+    bool antialiasedFill() const {
         return mAntialiasedFill;
     }
-    bool antialiasedScatters() const
-    {
+    bool antialiasedScatters() const {
         return mAntialiasedScatters;
     }
-    bool antialiasedErrorBars() const
-    {
+    bool antialiasedErrorBars() const {
         return mAntialiasedErrorBars;
     }
-    QPen pen() const
-    {
+    QPen pen() const {
         return mPen;
     }
-    QPen selectedPen() const
-    {
+    QPen selectedPen() const {
         return mSelectedPen;
     }
-    QBrush brush() const
-    {
+    QBrush brush() const {
         return mBrush;
     }
-    QBrush selectedBrush() const
-    {
+    QBrush selectedBrush() const {
         return mSelectedBrush;
     }
-    QCPAxis* keyAxis() const
-    {
+    QCPAxis* keyAxis() const {
         return mKeyAxis.data();
     }
-    QCPAxis* valueAxis() const
-    {
+    QCPAxis* valueAxis() const {
         return mValueAxis.data();
     }
-    bool selectable() const
-    {
+    bool selectable() const {
         return mSelectable;
     }
-    bool selected() const
-    {
+    bool selected() const {
         return mSelected;
     }
 
@@ -1919,16 +1777,14 @@ private:
 };
 
 
-class QCP_LIB_DECL QCPItemAnchor
-{
+class QCP_LIB_DECL QCPItemAnchor {
 public:
     QCPItemAnchor (QCustomPlot* parentPlot, QCPAbstractItem* parentItem,
                    const QString name, int anchorId = -1);
     virtual ~QCPItemAnchor();
 
     // getters:
-    QString name() const
-    {
+    QString name() const {
         return mName;
     }
     virtual QPointF pixelPoint() const;
@@ -1944,8 +1800,7 @@ protected:
     QSet<QCPItemPosition*> mChildrenX, mChildrenY;
 
     // introduced virtual methods:
-    virtual QCPItemPosition* toQCPItemPosition()
-    {
+    virtual QCPItemPosition* toQCPItemPosition() {
         return 0;
     }
 
@@ -1967,8 +1822,7 @@ private:
 
 
 
-class QCP_LIB_DECL QCPItemPosition : public QCPItemAnchor
-{
+class QCP_LIB_DECL QCPItemPosition : public QCPItemAnchor {
 public:
     /*!
       Defines the ways an item position can be specified. Thus it defines what the numbers passed to
@@ -1991,48 +1845,37 @@ public:
     virtual ~QCPItemPosition();
 
     // getters:
-    PositionType type() const
-    {
+    PositionType type() const {
         return typeX();
     }
-    PositionType typeX() const
-    {
+    PositionType typeX() const {
         return mPositionTypeX;
     }
-    PositionType typeY() const
-    {
+    PositionType typeY() const {
         return mPositionTypeY;
     }
-    QCPItemAnchor* parentAnchor() const
-    {
+    QCPItemAnchor* parentAnchor() const {
         return parentAnchorX();
     }
-    QCPItemAnchor* parentAnchorX() const
-    {
+    QCPItemAnchor* parentAnchorX() const {
         return mParentAnchorX;
     }
-    QCPItemAnchor* parentAnchorY() const
-    {
+    QCPItemAnchor* parentAnchorY() const {
         return mParentAnchorY;
     }
-    double key() const
-    {
+    double key() const {
         return mKey;
     }
-    double value() const
-    {
+    double value() const {
         return mValue;
     }
-    QPointF coords() const
-    {
+    QPointF coords() const {
         return QPointF (mKey, mValue);
     }
-    QCPAxis* keyAxis() const
-    {
+    QCPAxis* keyAxis() const {
         return mKeyAxis.data();
     }
-    QCPAxis* valueAxis() const
-    {
+    QCPAxis* valueAxis() const {
         return mValueAxis.data();
     }
     QCPAxisRect* axisRect() const;
@@ -2063,8 +1906,7 @@ protected:
     QCPItemAnchor* mParentAnchorX, *mParentAnchorY;
 
     // reimplemented virtual methods:
-    virtual QCPItemPosition* toQCPItemPosition()
-    {
+    virtual QCPItemPosition* toQCPItemPosition() {
         return this;
     }
 
@@ -2074,8 +1916,7 @@ private:
 };
 
 
-class QCP_LIB_DECL QCPAbstractItem : public QCPLayerable
-{
+class QCP_LIB_DECL QCPAbstractItem : public QCPLayerable {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (bool clipToAxisRect READ clipToAxisRect WRITE setClipToAxisRect)
@@ -2090,17 +1931,14 @@ public:
     virtual ~QCPAbstractItem();
 
     // getters:
-    bool clipToAxisRect() const
-    {
+    bool clipToAxisRect() const {
         return mClipToAxisRect;
     }
     QCPAxisRect* clipAxisRect() const;
-    bool selectable() const
-    {
+    bool selectable() const {
         return mSelectable;
     }
-    bool selected() const
-    {
+    bool selected() const {
         return mSelected;
     }
 
@@ -2115,12 +1953,10 @@ public:
                                QVariant* details = 0) const = 0;
 
     // non-virtual methods:
-    QList<QCPItemPosition*> positions() const
-    {
+    QList<QCPItemPosition*> positions() const {
         return mPositions;
     }
-    QList<QCPItemAnchor*> anchors() const
-    {
+    QList<QCPItemAnchor*> anchors() const {
         return mAnchors;
     }
     QCPItemPosition* position (const QString& name) const;
@@ -2168,8 +2004,7 @@ private:
 };
 
 
-class QCP_LIB_DECL QCustomPlot : public QWidget
-{
+class QCP_LIB_DECL QCustomPlot : public QWidget {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (QRect viewport READ viewport WRITE setViewport)
@@ -2213,56 +2048,43 @@ public:
     virtual ~QCustomPlot();
 
     // getters:
-    QRect viewport() const
-    {
+    QRect viewport() const {
         return mViewport;
     }
-    QPixmap background() const
-    {
+    QPixmap background() const {
         return mBackgroundPixmap;
     }
-    bool backgroundScaled() const
-    {
+    bool backgroundScaled() const {
         return mBackgroundScaled;
     }
-    Qt::AspectRatioMode backgroundScaledMode() const
-    {
+    Qt::AspectRatioMode backgroundScaledMode() const {
         return mBackgroundScaledMode;
     }
-    QCPLayoutGrid* plotLayout() const
-    {
+    QCPLayoutGrid* plotLayout() const {
         return mPlotLayout;
     }
-    QCP::AntialiasedElements antialiasedElements() const
-    {
+    QCP::AntialiasedElements antialiasedElements() const {
         return mAntialiasedElements;
     }
-    QCP::AntialiasedElements notAntialiasedElements() const
-    {
+    QCP::AntialiasedElements notAntialiasedElements() const {
         return mNotAntialiasedElements;
     }
-    bool autoAddPlottableToLegend() const
-    {
+    bool autoAddPlottableToLegend() const {
         return mAutoAddPlottableToLegend;
     }
-    const QCP::Interactions interactions() const
-    {
+    const QCP::Interactions interactions() const {
         return mInteractions;
     }
-    int selectionTolerance() const
-    {
+    int selectionTolerance() const {
         return mSelectionTolerance;
     }
-    bool noAntialiasingOnDrag() const
-    {
+    bool noAntialiasingOnDrag() const {
         return mNoAntialiasingOnDrag;
     }
-    QCP::PlottingHints plottingHints() const
-    {
+    QCP::PlottingHints plottingHints() const {
         return mPlottingHints;
     }
-    Qt::KeyboardModifier multiSelectModifier() const
-    {
+    Qt::KeyboardModifier multiSelectModifier() const {
         return mMultiSelectModifier;
     }
 
@@ -2454,8 +2276,7 @@ protected:
 };
 
 
-class QCP_LIB_DECL QCPColorGradient
-{
+class QCP_LIB_DECL QCPColorGradient {
     Q_GADGET
 public:
     /*!
@@ -2489,26 +2310,21 @@ public:
 
     QCPColorGradient (GradientPreset preset = gpCold);
     bool operator== (const QCPColorGradient& other) const;
-    bool operator!= (const QCPColorGradient& other) const
-    {
+    bool operator!= (const QCPColorGradient& other) const {
         return ! (*this == other);
     }
 
     // getters:
-    int levelCount() const
-    {
+    int levelCount() const {
         return mLevelCount;
     }
-    QMap<double, QColor> colorStops() const
-    {
+    QMap<double, QColor> colorStops() const {
         return mColorStops;
     }
-    ColorInterpolation colorInterpolation() const
-    {
+    ColorInterpolation colorInterpolation() const {
         return mColorInterpolation;
     }
-    bool periodic() const
-    {
+    bool periodic() const {
         return mPeriodic;
     }
 
@@ -2542,8 +2358,7 @@ protected:
 };
 
 
-class QCP_LIB_DECL QCPAxisRect : public QCPLayoutElement
-{
+class QCP_LIB_DECL QCPAxisRect : public QCPLayoutElement {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (QPixmap background READ background WRITE setBackground)
@@ -2559,24 +2374,19 @@ public:
     virtual ~QCPAxisRect();
 
     // getters:
-    QPixmap background() const
-    {
+    QPixmap background() const {
         return mBackgroundPixmap;
     }
-    bool backgroundScaled() const
-    {
+    bool backgroundScaled() const {
         return mBackgroundScaled;
     }
-    Qt::AspectRatioMode backgroundScaledMode() const
-    {
+    Qt::AspectRatioMode backgroundScaledMode() const {
         return mBackgroundScaledMode;
     }
-    Qt::Orientations rangeDrag() const
-    {
+    Qt::Orientations rangeDrag() const {
         return mRangeDrag;
     }
-    Qt::Orientations rangeZoom() const
-    {
+    Qt::Orientations rangeZoom() const {
         return mRangeZoom;
     }
     QCPAxis* rangeDragAxis (Qt::Orientation orientation);
@@ -2605,8 +2415,7 @@ public:
     QCPAxis* addAxis (QCPAxis::AxisType type, QCPAxis* axis = 0);
     QList<QCPAxis*> addAxes (QCPAxis::AxisTypes types);
     bool removeAxis (QCPAxis* axis);
-    QCPLayoutInset* insetLayout() const
-    {
+    QCPLayoutInset* insetLayout() const {
         return mInsetLayout;
     }
 
@@ -2616,52 +2425,40 @@ public:
     QList<QCPAbstractItem*> items() const;
 
     // read-only interface imitating a QRect:
-    int left() const
-    {
+    int left() const {
         return mRect.left();
     }
-    int right() const
-    {
+    int right() const {
         return mRect.right();
     }
-    int top() const
-    {
+    int top() const {
         return mRect.top();
     }
-    int bottom() const
-    {
+    int bottom() const {
         return mRect.bottom();
     }
-    int width() const
-    {
+    int width() const {
         return mRect.width();
     }
-    int height() const
-    {
+    int height() const {
         return mRect.height();
     }
-    QSize size() const
-    {
+    QSize size() const {
         return mRect.size();
     }
-    QPoint topLeft() const
-    {
+    QPoint topLeft() const {
         return mRect.topLeft();
     }
-    QPoint topRight() const
-    {
+    QPoint topRight() const {
         return mRect.topRight();
     }
-    QPoint bottomLeft() const
-    {
+    QPoint bottomLeft() const {
         return mRect.bottomLeft();
     }
-    QPoint bottomRight() const
-    {
+    QPoint bottomRight() const {
         return mRect.bottomRight();
     }
-    QPoint center() const
-    {
+    QPoint center() const {
         return mRect.center();
     }
 
@@ -2709,8 +2506,7 @@ private:
 };
 
 
-class QCP_LIB_DECL QCPAbstractLegendItem : public QCPLayoutElement
-{
+class QCP_LIB_DECL QCPAbstractLegendItem : public QCPLayoutElement {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (QCPLegend* parentLegend READ parentLegend)
@@ -2728,32 +2524,25 @@ public:
     explicit QCPAbstractLegendItem (QCPLegend* parent);
 
     // getters:
-    QCPLegend* parentLegend() const
-    {
+    QCPLegend* parentLegend() const {
         return mParentLegend;
     }
-    QFont font() const
-    {
+    QFont font() const {
         return mFont;
     }
-    QColor textColor() const
-    {
+    QColor textColor() const {
         return mTextColor;
     }
-    QFont selectedFont() const
-    {
+    QFont selectedFont() const {
         return mSelectedFont;
     }
-    QColor selectedTextColor() const
-    {
+    QColor selectedTextColor() const {
         return mSelectedTextColor;
     }
-    bool selectable() const
-    {
+    bool selectable() const {
         return mSelectable;
     }
-    bool selected() const
-    {
+    bool selected() const {
         return mSelected;
     }
 
@@ -2799,15 +2588,13 @@ private:
 };
 
 
-class QCP_LIB_DECL QCPPlottableLegendItem : public QCPAbstractLegendItem
-{
+class QCP_LIB_DECL QCPPlottableLegendItem : public QCPAbstractLegendItem {
     Q_OBJECT
 public:
     QCPPlottableLegendItem (QCPLegend* parent, QCPAbstractPlottable* plottable);
 
     // getters:
-    QCPAbstractPlottable* plottable()
-    {
+    QCPAbstractPlottable* plottable() {
         return mPlottable;
     }
 
@@ -2826,8 +2613,7 @@ protected:
 };
 
 
-class QCP_LIB_DECL QCPLegend : public QCPLayoutGrid
-{
+class QCP_LIB_DECL QCPLegend : public QCPLayoutGrid {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (QPen borderPen READ borderPen WRITE setBorderPen)
@@ -2867,57 +2653,44 @@ public:
     virtual ~QCPLegend();
 
     // getters:
-    QPen borderPen() const
-    {
+    QPen borderPen() const {
         return mBorderPen;
     }
-    QBrush brush() const
-    {
+    QBrush brush() const {
         return mBrush;
     }
-    QFont font() const
-    {
+    QFont font() const {
         return mFont;
     }
-    QColor textColor() const
-    {
+    QColor textColor() const {
         return mTextColor;
     }
-    QSize iconSize() const
-    {
+    QSize iconSize() const {
         return mIconSize;
     }
-    int iconTextPadding() const
-    {
+    int iconTextPadding() const {
         return mIconTextPadding;
     }
-    QPen iconBorderPen() const
-    {
+    QPen iconBorderPen() const {
         return mIconBorderPen;
     }
-    SelectableParts selectableParts() const
-    {
+    SelectableParts selectableParts() const {
         return mSelectableParts;
     }
     SelectableParts selectedParts() const;
-    QPen selectedBorderPen() const
-    {
+    QPen selectedBorderPen() const {
         return mSelectedBorderPen;
     }
-    QPen selectedIconBorderPen() const
-    {
+    QPen selectedIconBorderPen() const {
         return mSelectedIconBorderPen;
     }
-    QBrush selectedBrush() const
-    {
+    QBrush selectedBrush() const {
         return mSelectedBrush;
     }
-    QFont selectedFont() const
-    {
+    QFont selectedFont() const {
         return mSelectedFont;
     }
-    QColor selectedTextColor() const
-    {
+    QColor selectedTextColor() const {
         return mSelectedTextColor;
     }
 
@@ -2997,8 +2770,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS (QCPLegend::SelectableParts)
 Q_DECLARE_METATYPE (QCPLegend::SelectablePart)
 
 
-class QCP_LIB_DECL QCPPlotTitle : public QCPLayoutElement
-{
+class QCP_LIB_DECL QCPPlotTitle : public QCPLayoutElement {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (QString text READ text WRITE setText)
@@ -3017,32 +2789,25 @@ public:
     explicit QCPPlotTitle (QCustomPlot* parentPlot, const QString& text);
 
     // getters:
-    QString text() const
-    {
+    QString text() const {
         return mText;
     }
-    QFont font() const
-    {
+    QFont font() const {
         return mFont;
     }
-    QColor textColor() const
-    {
+    QColor textColor() const {
         return mTextColor;
     }
-    QFont selectedFont() const
-    {
+    QFont selectedFont() const {
         return mSelectedFont;
     }
-    QColor selectedTextColor() const
-    {
+    QColor selectedTextColor() const {
         return mSelectedTextColor;
     }
-    bool selectable() const
-    {
+    bool selectable() const {
         return mSelectable;
     }
-    bool selected() const
-    {
+    bool selected() const {
         return mSelected;
     }
 
@@ -3092,8 +2857,7 @@ private:
 };
 
 
-class QCPColorScaleAxisRectPrivate : public QCPAxisRect
-{
+class QCPColorScaleAxisRectPrivate : public QCPAxisRect {
     Q_OBJECT
 public:
     explicit QCPColorScaleAxisRectPrivate (QCPColorScale* parentColorScale);
@@ -3116,8 +2880,7 @@ protected:
 };
 
 
-class QCP_LIB_DECL QCPColorScale : public QCPLayoutElement
-{
+class QCP_LIB_DECL QCPColorScale : public QCPLayoutElement {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (QCPAxis::AxisType type READ type WRITE setType)
@@ -3137,29 +2900,23 @@ public:
     virtual ~QCPColorScale();
 
     // getters:
-    QCPAxis* axis() const
-    {
+    QCPAxis* axis() const {
         return mColorAxis.data();
     }
-    QCPAxis::AxisType type() const
-    {
+    QCPAxis::AxisType type() const {
         return mType;
     }
-    QCPRange dataRange() const
-    {
+    QCPRange dataRange() const {
         return mDataRange;
     }
-    QCPAxis::ScaleType dataScaleType() const
-    {
+    QCPAxis::ScaleType dataScaleType() const {
         return mDataScaleType;
     }
-    QCPColorGradient gradient() const
-    {
+    QCPColorGradient gradient() const {
         return mGradient;
     }
     QString label() const;
-    int barWidth () const
-    {
+    int barWidth () const {
         return mBarWidth;
     }
     bool rangeDrag() const;
@@ -3218,8 +2975,7 @@ private:
 
 
 
-class QCP_LIB_DECL QCPData
-{
+class QCP_LIB_DECL QCPData {
 public:
     QCPData();
     QCPData (double key, double value);
@@ -3241,8 +2997,7 @@ typedef QMapIterator<double, QCPData> QCPDataMapIterator;
 typedef QMutableMapIterator<double, QCPData> QCPDataMutableMapIterator;
 
 
-class QCP_LIB_DECL QCPGraph : public QCPAbstractPlottable
-{
+class QCP_LIB_DECL QCPGraph : public QCPAbstractPlottable {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (LineStyle lineStyle READ lineStyle WRITE setLineStyle)
@@ -3287,40 +3042,31 @@ public:
     virtual ~QCPGraph();
 
     // getters:
-    QCPDataMap* data() const
-    {
+    QCPDataMap* data() const {
         return mData;
     }
-    LineStyle lineStyle() const
-    {
+    LineStyle lineStyle() const {
         return mLineStyle;
     }
-    QCPScatterStyle scatterStyle() const
-    {
+    QCPScatterStyle scatterStyle() const {
         return mScatterStyle;
     }
-    ErrorType errorType() const
-    {
+    ErrorType errorType() const {
         return mErrorType;
     }
-    QPen errorPen() const
-    {
+    QPen errorPen() const {
         return mErrorPen;
     }
-    double errorBarSize() const
-    {
+    double errorBarSize() const {
         return mErrorBarSize;
     }
-    bool errorBarSkipSymbol() const
-    {
+    bool errorBarSkipSymbol() const {
         return mErrorBarSkipSymbol;
     }
-    QCPGraph* channelFillGraph() const
-    {
+    QCPGraph* channelFillGraph() const {
         return mChannelFillGraph.data();
     }
-    bool adaptiveSampling() const
-    {
+    bool adaptiveSampling() const {
         return mAdaptiveSampling;
     }
 
@@ -3449,8 +3195,7 @@ protected:
 
 
 
-class QCP_LIB_DECL QCPCurveData
-{
+class QCP_LIB_DECL QCPCurveData {
 public:
     QCPCurveData();
     QCPCurveData (double t, double key, double value);
@@ -3472,8 +3217,7 @@ typedef QMutableMapIterator<double, QCPCurveData>
 QCPCurveDataMutableMapIterator;
 
 
-class QCP_LIB_DECL QCPCurve : public QCPAbstractPlottable
-{
+class QCP_LIB_DECL QCPCurve : public QCPAbstractPlottable {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (QCPScatterStyle scatterStyle READ scatterStyle WRITE
@@ -3493,16 +3237,13 @@ public:
     virtual ~QCPCurve();
 
     // getters:
-    QCPCurveDataMap* data() const
-    {
+    QCPCurveDataMap* data() const {
         return mData;
     }
-    QCPScatterStyle scatterStyle() const
-    {
+    QCPScatterStyle scatterStyle() const {
         return mScatterStyle;
     }
-    LineStyle lineStyle() const
-    {
+    LineStyle lineStyle() const {
         return mLineStyle;
     }
 
@@ -3577,8 +3318,7 @@ protected:
 
 
 
-class QCP_LIB_DECL QCPBarsGroup : public QObject
-{
+class QCP_LIB_DECL QCPBarsGroup : public QObject {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (SpacingType spacingType READ spacingType WRITE setSpacingType)
@@ -3599,12 +3339,10 @@ public:
     ~QCPBarsGroup();
 
     // getters:
-    SpacingType spacingType() const
-    {
+    SpacingType spacingType() const {
         return mSpacingType;
     }
-    double spacing() const
-    {
+    double spacing() const {
         return mSpacing;
     }
 
@@ -3613,22 +3351,18 @@ public:
     void setSpacing (double spacing);
 
     // non-virtual methods:
-    QList<QCPBars*> bars() const
-    {
+    QList<QCPBars*> bars() const {
         return mBars;
     }
     QCPBars* bars (int index) const;
-    int size() const
-    {
+    int size() const {
         return mBars.size();
     }
-    bool isEmpty() const
-    {
+    bool isEmpty() const {
         return mBars.isEmpty();
     }
     void clear();
-    bool contains (QCPBars* bars) const
-    {
+    bool contains (QCPBars* bars) const {
         return mBars.contains (bars);
     }
     void append (QCPBars* bars);
@@ -3657,8 +3391,7 @@ private:
 };
 
 
-class QCP_LIB_DECL QCPBarData
-{
+class QCP_LIB_DECL QCPBarData {
 public:
     QCPBarData();
     QCPBarData (double key, double value);
@@ -3678,8 +3411,7 @@ typedef QMapIterator<double, QCPBarData> QCPBarDataMapIterator;
 typedef QMutableMapIterator<double, QCPBarData> QCPBarDataMutableMapIterator;
 
 
-class QCP_LIB_DECL QCPBars : public QCPAbstractPlottable
-{
+class QCP_LIB_DECL QCPBars : public QCPAbstractPlottable {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (double width READ width WRITE setWidth)
@@ -3706,32 +3438,25 @@ public:
     virtual ~QCPBars();
 
     // getters:
-    double width() const
-    {
+    double width() const {
         return mWidth;
     }
-    WidthType widthType() const
-    {
+    WidthType widthType() const {
         return mWidthType;
     }
-    QCPBarsGroup* barsGroup() const
-    {
+    QCPBarsGroup* barsGroup() const {
         return mBarsGroup;
     }
-    double baseValue() const
-    {
+    double baseValue() const {
         return mBaseValue;
     }
-    QCPBars* barBelow() const
-    {
+    QCPBars* barBelow() const {
         return mBarBelow.data();
     }
-    QCPBars* barAbove() const
-    {
+    QCPBars* barAbove() const {
         return mBarAbove.data();
     }
-    QCPBarDataMap* data() const
-    {
+    QCPBarDataMap* data() const {
         return mData;
     }
 
@@ -3795,8 +3520,7 @@ protected:
 
 
 
-class QCP_LIB_DECL QCPStatisticalBox : public QCPAbstractPlottable
-{
+class QCP_LIB_DECL QCPStatisticalBox : public QCPAbstractPlottable {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (double key READ key WRITE setKey)
@@ -3818,56 +3542,43 @@ public:
     explicit QCPStatisticalBox (QCPAxis* keyAxis, QCPAxis* valueAxis);
 
     // getters:
-    double key() const
-    {
+    double key() const {
         return mKey;
     }
-    double minimum() const
-    {
+    double minimum() const {
         return mMinimum;
     }
-    double lowerQuartile() const
-    {
+    double lowerQuartile() const {
         return mLowerQuartile;
     }
-    double median() const
-    {
+    double median() const {
         return mMedian;
     }
-    double upperQuartile() const
-    {
+    double upperQuartile() const {
         return mUpperQuartile;
     }
-    double maximum() const
-    {
+    double maximum() const {
         return mMaximum;
     }
-    QVector<double> outliers() const
-    {
+    QVector<double> outliers() const {
         return mOutliers;
     }
-    double width() const
-    {
+    double width() const {
         return mWidth;
     }
-    double whiskerWidth() const
-    {
+    double whiskerWidth() const {
         return mWhiskerWidth;
     }
-    QPen whiskerPen() const
-    {
+    QPen whiskerPen() const {
         return mWhiskerPen;
     }
-    QPen whiskerBarPen() const
-    {
+    QPen whiskerBarPen() const {
         return mWhiskerBarPen;
     }
-    QPen medianPen() const
-    {
+    QPen medianPen() const {
         return mMedianPen;
     }
-    QCPScatterStyle outlierStyle() const
-    {
+    QCPScatterStyle outlierStyle() const {
         return mOutlierStyle;
     }
 
@@ -3922,8 +3633,7 @@ protected:
 };
 
 
-class QCP_LIB_DECL QCPColorMapData
-{
+class QCP_LIB_DECL QCPColorMapData {
 public:
     QCPColorMapData (int keySize, int valueSize, const QCPRange& keyRange,
                      const QCPRange& valueRange);
@@ -3932,24 +3642,19 @@ public:
     QCPColorMapData& operator= (const QCPColorMapData& other);
 
     // getters:
-    int keySize() const
-    {
+    int keySize() const {
         return mKeySize;
     }
-    int valueSize() const
-    {
+    int valueSize() const {
         return mValueSize;
     }
-    QCPRange keyRange() const
-    {
+    QCPRange keyRange() const {
         return mKeyRange;
     }
-    QCPRange valueRange() const
-    {
+    QCPRange valueRange() const {
         return mValueRange;
     }
-    QCPRange dataBounds() const
-    {
+    QCPRange dataBounds() const {
         return mDataBounds;
     }
     double data (double key, double value);
@@ -3969,8 +3674,7 @@ public:
     void recalculateDataBounds();
     void clear();
     void fill (double z);
-    bool isEmpty() const
-    {
+    bool isEmpty() const {
         return mIsEmpty;
     }
     void coordToCell (double key, double value, int* keyIndex,
@@ -3992,8 +3696,7 @@ protected:
 };
 
 
-class QCP_LIB_DECL QCPColorMap : public QCPAbstractPlottable
-{
+class QCP_LIB_DECL QCPColorMap : public QCPAbstractPlottable {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (QCPRange dataRange READ dataRange WRITE setDataRange NOTIFY
@@ -4011,32 +3714,25 @@ public:
     virtual ~QCPColorMap();
 
     // getters:
-    QCPColorMapData* data() const
-    {
+    QCPColorMapData* data() const {
         return mMapData;
     }
-    QCPRange dataRange() const
-    {
+    QCPRange dataRange() const {
         return mDataRange;
     }
-    QCPAxis::ScaleType dataScaleType() const
-    {
+    QCPAxis::ScaleType dataScaleType() const {
         return mDataScaleType;
     }
-    bool interpolate() const
-    {
+    bool interpolate() const {
         return mInterpolate;
     }
-    bool tightBoundary() const
-    {
+    bool tightBoundary() const {
         return mTightBoundary;
     }
-    QCPColorGradient gradient() const
-    {
+    QCPColorGradient gradient() const {
         return mGradient;
     }
-    QCPColorScale* colorScale() const
-    {
+    QCPColorScale* colorScale() const {
         return mColorScale.data();
     }
 
@@ -4098,8 +3794,7 @@ protected:
 
 
 
-class QCP_LIB_DECL QCPFinancialData
-{
+class QCP_LIB_DECL QCPFinancialData {
 public:
     QCPFinancialData();
     QCPFinancialData (double key, double open, double high, double low,
@@ -4121,8 +3816,7 @@ typedef QMutableMapIterator<double, QCPFinancialData>
 QCPFinancialDataMutableMapIterator;
 
 
-class QCP_LIB_DECL QCPFinancial : public QCPAbstractPlottable
-{
+class QCP_LIB_DECL QCPFinancial : public QCPAbstractPlottable {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (ChartStyle chartStyle READ chartStyle WRITE setChartStyle)
@@ -4148,36 +3842,28 @@ public:
     virtual ~QCPFinancial();
 
     // getters:
-    QCPFinancialDataMap* data() const
-    {
+    QCPFinancialDataMap* data() const {
         return mData;
     }
-    ChartStyle chartStyle() const
-    {
+    ChartStyle chartStyle() const {
         return mChartStyle;
     }
-    double width() const
-    {
+    double width() const {
         return mWidth;
     }
-    bool twoColored() const
-    {
+    bool twoColored() const {
         return mTwoColored;
     }
-    QBrush brushPositive() const
-    {
+    QBrush brushPositive() const {
         return mBrushPositive;
     }
-    QBrush brushNegative() const
-    {
+    QBrush brushNegative() const {
         return mBrushNegative;
     }
-    QPen penPositive() const
-    {
+    QPen penPositive() const {
         return mPenPositive;
     }
-    QPen penNegative() const
-    {
+    QPen penNegative() const {
         return mPenNegative;
     }
 
@@ -4254,8 +3940,7 @@ protected:
 };
 
 
-class QCP_LIB_DECL QCPItemStraightLine : public QCPAbstractItem
-{
+class QCP_LIB_DECL QCPItemStraightLine : public QCPAbstractItem {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (QPen pen READ pen WRITE setPen)
@@ -4266,12 +3951,10 @@ public:
     virtual ~QCPItemStraightLine();
 
     // getters:
-    QPen pen() const
-    {
+    QPen pen() const {
         return mPen;
     }
-    QPen selectedPen() const
-    {
+    QPen selectedPen() const {
         return mSelectedPen;
     }
 
@@ -4302,8 +3985,7 @@ protected:
 };
 
 
-class QCP_LIB_DECL QCPItemLine : public QCPAbstractItem
-{
+class QCP_LIB_DECL QCPItemLine : public QCPAbstractItem {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (QPen pen READ pen WRITE setPen)
@@ -4316,20 +3998,16 @@ public:
     virtual ~QCPItemLine();
 
     // getters:
-    QPen pen() const
-    {
+    QPen pen() const {
         return mPen;
     }
-    QPen selectedPen() const
-    {
+    QPen selectedPen() const {
         return mSelectedPen;
     }
-    QCPLineEnding head() const
-    {
+    QCPLineEnding head() const {
         return mHead;
     }
-    QCPLineEnding tail() const
-    {
+    QCPLineEnding tail() const {
         return mTail;
     }
 
@@ -4361,8 +4039,7 @@ protected:
 };
 
 
-class QCP_LIB_DECL QCPItemCurve : public QCPAbstractItem
-{
+class QCP_LIB_DECL QCPItemCurve : public QCPAbstractItem {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (QPen pen READ pen WRITE setPen)
@@ -4375,20 +4052,16 @@ public:
     virtual ~QCPItemCurve();
 
     // getters:
-    QPen pen() const
-    {
+    QPen pen() const {
         return mPen;
     }
-    QPen selectedPen() const
-    {
+    QPen selectedPen() const {
         return mSelectedPen;
     }
-    QCPLineEnding head() const
-    {
+    QCPLineEnding head() const {
         return mHead;
     }
-    QCPLineEnding tail() const
-    {
+    QCPLineEnding tail() const {
         return mTail;
     }
 
@@ -4420,8 +4093,7 @@ protected:
 };
 
 
-class QCP_LIB_DECL QCPItemRect : public QCPAbstractItem
-{
+class QCP_LIB_DECL QCPItemRect : public QCPAbstractItem {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (QPen pen READ pen WRITE setPen)
@@ -4434,20 +4106,16 @@ public:
     virtual ~QCPItemRect();
 
     // getters:
-    QPen pen() const
-    {
+    QPen pen() const {
         return mPen;
     }
-    QPen selectedPen() const
-    {
+    QPen selectedPen() const {
         return mSelectedPen;
     }
-    QBrush brush() const
-    {
+    QBrush brush() const {
         return mBrush;
     }
-    QBrush selectedBrush() const
-    {
+    QBrush selectedBrush() const {
         return mSelectedBrush;
     }
 
@@ -4487,8 +4155,7 @@ protected:
 };
 
 
-class QCP_LIB_DECL QCPItemText : public QCPAbstractItem
-{
+class QCP_LIB_DECL QCPItemText : public QCPAbstractItem {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (QColor color READ color WRITE setColor)
@@ -4512,56 +4179,43 @@ public:
     virtual ~QCPItemText();
 
     // getters:
-    QColor color() const
-    {
+    QColor color() const {
         return mColor;
     }
-    QColor selectedColor() const
-    {
+    QColor selectedColor() const {
         return mSelectedColor;
     }
-    QPen pen() const
-    {
+    QPen pen() const {
         return mPen;
     }
-    QPen selectedPen() const
-    {
+    QPen selectedPen() const {
         return mSelectedPen;
     }
-    QBrush brush() const
-    {
+    QBrush brush() const {
         return mBrush;
     }
-    QBrush selectedBrush() const
-    {
+    QBrush selectedBrush() const {
         return mSelectedBrush;
     }
-    QFont font() const
-    {
+    QFont font() const {
         return mFont;
     }
-    QFont selectedFont() const
-    {
+    QFont selectedFont() const {
         return mSelectedFont;
     }
-    QString text() const
-    {
+    QString text() const {
         return mText;
     }
-    Qt::Alignment positionAlignment() const
-    {
+    Qt::Alignment positionAlignment() const {
         return mPositionAlignment;
     }
-    Qt::Alignment textAlignment() const
-    {
+    Qt::Alignment textAlignment() const {
         return mTextAlignment;
     }
-    double rotation() const
-    {
+    double rotation() const {
         return mRotation;
     }
-    QMargins padding() const
-    {
+    QMargins padding() const {
         return mPadding;
     }
 
@@ -4622,8 +4276,7 @@ protected:
 };
 
 
-class QCP_LIB_DECL QCPItemEllipse : public QCPAbstractItem
-{
+class QCP_LIB_DECL QCPItemEllipse : public QCPAbstractItem {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (QPen pen READ pen WRITE setPen)
@@ -4636,20 +4289,16 @@ public:
     virtual ~QCPItemEllipse();
 
     // getters:
-    QPen pen() const
-    {
+    QPen pen() const {
         return mPen;
     }
-    QPen selectedPen() const
-    {
+    QPen selectedPen() const {
         return mSelectedPen;
     }
-    QBrush brush() const
-    {
+    QBrush brush() const {
         return mBrush;
     }
-    QBrush selectedBrush() const
-    {
+    QBrush selectedBrush() const {
         return mSelectedBrush;
     }
 
@@ -4692,8 +4341,7 @@ protected:
 };
 
 
-class QCP_LIB_DECL QCPItemPixmap : public QCPAbstractItem
-{
+class QCP_LIB_DECL QCPItemPixmap : public QCPAbstractItem {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (QPixmap pixmap READ pixmap WRITE setPixmap)
@@ -4708,28 +4356,22 @@ public:
     virtual ~QCPItemPixmap();
 
     // getters:
-    QPixmap pixmap() const
-    {
+    QPixmap pixmap() const {
         return mPixmap;
     }
-    bool scaled() const
-    {
+    bool scaled() const {
         return mScaled;
     }
-    Qt::AspectRatioMode aspectRatioMode() const
-    {
+    Qt::AspectRatioMode aspectRatioMode() const {
         return mAspectRatioMode;
     }
-    Qt::TransformationMode transformationMode() const
-    {
+    Qt::TransformationMode transformationMode() const {
         return mTransformationMode;
     }
-    QPen pen() const
-    {
+    QPen pen() const {
         return mPen;
     }
-    QPen selectedPen() const
-    {
+    QPen selectedPen() const {
         return mSelectedPen;
     }
 
@@ -4777,8 +4419,7 @@ protected:
 };
 
 
-class QCP_LIB_DECL QCPItemTracer : public QCPAbstractItem
-{
+class QCP_LIB_DECL QCPItemTracer : public QCPAbstractItem {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (QPen pen READ pen WRITE setPen)
@@ -4809,40 +4450,31 @@ public:
     virtual ~QCPItemTracer();
 
     // getters:
-    QPen pen() const
-    {
+    QPen pen() const {
         return mPen;
     }
-    QPen selectedPen() const
-    {
+    QPen selectedPen() const {
         return mSelectedPen;
     }
-    QBrush brush() const
-    {
+    QBrush brush() const {
         return mBrush;
     }
-    QBrush selectedBrush() const
-    {
+    QBrush selectedBrush() const {
         return mSelectedBrush;
     }
-    double size() const
-    {
+    double size() const {
         return mSize;
     }
-    TracerStyle style() const
-    {
+    TracerStyle style() const {
         return mStyle;
     }
-    QCPGraph* graph() const
-    {
+    QCPGraph* graph() const {
         return mGraph;
     }
-    double graphKey() const
-    {
+    double graphKey() const {
         return mGraphKey;
     }
-    bool interpolating() const
-    {
+    bool interpolating() const {
         return mInterpolating;
     }
 
@@ -4885,8 +4517,7 @@ protected:
 };
 
 
-class QCP_LIB_DECL QCPItemBracket : public QCPAbstractItem
-{
+class QCP_LIB_DECL QCPItemBracket : public QCPAbstractItem {
     Q_OBJECT
     /// \cond INCLUDE_QPROPERTIES
     Q_PROPERTY (QPen pen READ pen WRITE setPen)
@@ -4905,20 +4536,16 @@ public:
     virtual ~QCPItemBracket();
 
     // getters:
-    QPen pen() const
-    {
+    QPen pen() const {
         return mPen;
     }
-    QPen selectedPen() const
-    {
+    QPen selectedPen() const {
         return mSelectedPen;
     }
-    double length() const
-    {
+    double length() const {
         return mLength;
     }
-    BracketStyle style() const
-    {
+    BracketStyle style() const {
         return mStyle;
     }
 

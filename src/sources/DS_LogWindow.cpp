@@ -22,13 +22,11 @@
 
 #include "../headers/DS_LogWindow.h"
 
-DS_LogWindow::DS_LogWindow()
-{
+DS_LogWindow::DS_LogWindow() {
     m_ui = new Ui::DS_LogWindow;
     m_ui->setupUi (this);
 }
 
-DS_LogWindow::~DS_LogWindow()
-{
+DS_LogWindow::~DS_LogWindow() {
     delete m_ui;
 }

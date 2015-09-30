@@ -31,8 +31,7 @@
  * Encapsulates the section headers that allow the robot to indetify the
  * data that we send to it
  */
-namespace SectionHeaders
-{
+namespace SectionHeaders {
 enum SectionHeaders {
     GeneralHeader = 0x01,
     JoystickHeader = 0x0c
@@ -42,8 +41,7 @@ enum SectionHeaders {
 /**
  * Encapsulates the constants of the operatio modes of the robot
  */
-namespace OperationModes
-{
+namespace OperationModes {
 enum Modes {
     Test = 0x05,
     Disabled = 0x00,
@@ -57,8 +55,7 @@ enum Modes {
  * Encapsulates the constants that are used to represent the alliance and
  * position that the robot shall use
  */
-namespace Alliances
-{
+namespace Alliances {
 enum Alliances {
     Red1 = 0x00,
     Red2 = 0x01,
@@ -72,8 +69,7 @@ enum Alliances {
 /**
  * Encapsulates the constants of the robot status mode
  */
-namespace RobotStatus
-{
+namespace RobotStatus {
 enum Status {
     Normal = 0x10,      /**< The robot will behave normally */
     RebootRobot = 0x18, /**< The roboRIO will reboot itself */
@@ -85,8 +81,7 @@ enum Status {
  * Represents the ports used to communicate between the robot
  * and the Driver Station
  */
-namespace Ports
-{
+namespace Ports {
 enum Ports {
     RobotPort = 1110, /**< The port in which we send instructions to the robot */
     ClientPort = 1150 /**< The port in which we receive robot data */
@@ -97,8 +92,7 @@ enum Ports {
  * Encapsulates the possible codes that the roboRIO can emit regarding the
  * status of the robot program
  */
-namespace ProgramStatus
-{
+namespace ProgramStatus {
 enum ProgramStatus {
     Test = 0x08,
     TeleOp = 0x02,
@@ -113,8 +107,7 @@ enum ProgramStatus {
 /**
  * Represents the location of the available data in a robot packet
  */
-namespace RobotData
-{
+namespace RobotData {
 enum PacketOrder {
     Pong1 = 0x00,
     Pong2 = 0x01,
@@ -129,8 +122,7 @@ enum PacketOrder {
  * \class DS_Protocol2015
  * Implements the 2015 communication protocol
  */
-class DS_Protocol2015 : public DS_Protocol
-{
+class DS_Protocol2015 : public DS_Protocol {
     Q_OBJECT
 
 public:

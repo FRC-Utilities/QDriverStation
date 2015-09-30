@@ -22,16 +22,14 @@
 
 #include "../headers/DS_NetworkDiagnostics.h"
 
-DS_NetworkDiagnostics::DS_NetworkDiagnostics()
-{
+DS_NetworkDiagnostics::DS_NetworkDiagnostics() {
     m_robotAddress = "";
     m_radioAddress = "";
     m_robotIsAlive = false;
     m_radioIsAlive = false;
 }
 
-void DS_NetworkDiagnostics::refresh()
-{
+void DS_NetworkDiagnostics::refresh() {
     m_robotIsAlive = (m_robotSocket.state() == QTcpSocket::ConnectedState);
     m_radioIsAlive = (m_radioSocket.state() == QTcpSocket::ConnectedState);
 
@@ -46,22 +44,18 @@ void DS_NetworkDiagnostics::refresh()
     }
 }
 
-bool DS_NetworkDiagnostics::robotIsAlive()
-{
+bool DS_NetworkDiagnostics::robotIsAlive() {
     return m_robotIsAlive;
 }
 
-bool DS_NetworkDiagnostics::radioIsAlive()
-{
+bool DS_NetworkDiagnostics::radioIsAlive() {
     return m_radioIsAlive;
 }
 
-void DS_NetworkDiagnostics::setRadioAddress (QString address)
-{
+void DS_NetworkDiagnostics::setRadioAddress (QString address) {
     m_radioAddress = address;
 }
 
-void DS_NetworkDiagnostics::setRobotAddress (QString address)
-{
+void DS_NetworkDiagnostics::setRobotAddress (QString address) {
     m_robotAddress = address;
 }

@@ -30,8 +30,7 @@
  * network components of the robot and checking which components are accesible
  * to the DriverStation.
  */
-class DS_NetworkDiagnostics : public QObject
-{
+class DS_NetworkDiagnostics : public QObject {
     Q_OBJECT
 
 public:
