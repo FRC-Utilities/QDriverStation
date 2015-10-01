@@ -25,15 +25,14 @@
 QT += testlib
 include ($$PWD/../LibDS.pri)
 
-HEADERS += $$PWD/Tests.h
-SOURCES += $$PWD/Tests.cpp \
-    TST_Client.cpp \
-    TST_Common.cpp \
-    TST_DriverStation.cpp \
-    TST_ElapsedTime.cpp \
-    TST_LogWindow.cpp \
-    TST_NetConsole.cpp \
-    TST_NetworkDiagnostics.cpp \
-    TST_Protocol.cpp \
-    TST_Protocol2015.cpp \
-    TST_RobotManager.cpp
+SOURCES += \
+        $$PWD/TST_Client.cpp \
+        $$PWD/TST_Common.cpp \
+        $$PWD/TST_DriverStation.cpp \
+        $$PWD/TST_ElapsedTime.cpp \
+        $$PWD/TST_LogWindow.cpp \
+        $$PWD/TST_NetConsole.cpp \
+        $$PWD/TST_NetworkDiagnostics.cpp \
+        $$PWD/TST_Protocol.cpp \
+        $$PWD/TST_Protocol2015.cpp \
+        $$PWD/TST_RobotManager.cpp
