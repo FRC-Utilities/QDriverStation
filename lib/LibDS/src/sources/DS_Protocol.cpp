@@ -67,7 +67,7 @@ void DS_Protocol::setAlliance (DS_Alliance alliance) {
 }
 
 void DS_Protocol::setControlMode (DS_ControlMode mode) {
-    p_controlMode = mode;
+    p_controlMode = p_robotCommunication ? mode : DS_ControlDisabled;
     emit controlModeChanged (mode);
 }
 
