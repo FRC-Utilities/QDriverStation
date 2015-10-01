@@ -24,6 +24,7 @@
 #define _LIB_DS_PROTOCOL_H
 
 #include <QList>
+#include <QTimer>
 #include <QString>
 #include <QObject>
 #include <QBitArray>
@@ -47,17 +48,22 @@ class DS_Protocol : public QObject {
     /**
      * Returns \c true if the user code is loaded on the robot
      */
-    bool robotCode();
+    bool robotCode() const;
+
+    /**
+     * Returns \c true if the robot communications are working
+     */
+    bool robotCommunication() const;
 
     /**
      * Returns the current alliance of the robot
      */
-    DS_Alliance alliance();
+    DS_Alliance alliance() const;
 
     /**
      * Returns the current control mode of the robot
      */
-    DS_ControlMode controlMode();
+    DS_ControlMode controlMode() const;
 
   public slots:
     /**
@@ -108,6 +114,12 @@ class DS_Protocol : public QObject {
      * user code has changed
      */
     void codeChanged (bool available);
+
+    /**
+     * Emitted when the state of the network communications with the robot
+     * has been changed
+     */
+    void communicationsChanged (bool available);
 
     /**
      * Emitted when the protocol detects that the robot voltage has changed
@@ -163,9 +175,17 @@ class DS_Protocol : public QObject {
      */
     QByteArray bitsToBytes (QBitArray bits);
 
+    /**
+     * Restarts the watch dog timer
+     */
+    void restartWatchdog();
+
   protected:
     int p_team;
     bool p_robotCode;
+    bool p_robotCommunication;
+
+    QTimer p_watchDog;
     QString p_robotAddress;
     QString p_radioAddress;
     DS_Alliance p_alliance;

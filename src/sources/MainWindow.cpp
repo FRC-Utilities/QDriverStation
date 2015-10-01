@@ -114,8 +114,8 @@ void MainWindow::connectSlots() {
     m_ui->StationCombo->addItems (m_ds->alliances());
     connect (m_ds, SIGNAL (codeChanged (bool)),
              this, SLOT   (onCodeChanged (bool)));
-    connect (m_ds, SIGNAL (networkChanged (bool)),
-             this, SLOT   (onNetworkChanged (bool)));
+    connect (m_ds, SIGNAL (communicationsChanged (bool)),
+             this, SLOT   (onCommunicationsChanged (bool)));
     connect (m_ds, SIGNAL (radioChanged (bool)),
              this, SLOT   (onRadioChanged (bool)));
     connect (m_ds, SIGNAL (voltageChanged (QString)),
@@ -472,7 +472,7 @@ void MainWindow::onCodeChanged (bool available) {
     m_ui->RobotCode->setChecked (available);
 }
 
-void MainWindow::onNetworkChanged (bool available) {
+void MainWindow::onCommunicationsChanged (bool available) {
     m_network = available;
     m_ui->RobotCheck->setChecked (available);
     m_ui->Communications->setChecked (available);

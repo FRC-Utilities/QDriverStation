@@ -25,24 +25,32 @@
 DS_Protocol::DS_Protocol() {
     p_team = 0;
     p_robotCode = false;
+    p_robotCommunication = false;
     p_alliance = DS_AllianceRed1;
     p_controlMode = DS_ControlDisabled;
     p_joysticks = new QList<DS_Joystick*>;
+
+    restartWatchdog();
+    connect (&p_watchDog, SIGNAL (timeout()), this, SLOT (reset()));
 }
 
 DS_Protocol::~DS_Protocol() {
     delete p_joysticks;
 }
 
-bool DS_Protocol::robotCode() {
+bool DS_Protocol::robotCode() const {
     return p_robotCode;
 }
 
-DS_Alliance DS_Protocol::alliance() {
+bool DS_Protocol::robotCommunication() const {
+    return p_robotCommunication;
+}
+
+DS_Alliance DS_Protocol::alliance() const {
     return p_alliance;
 }
 
-DS_ControlMode DS_Protocol::controlMode() {
+DS_ControlMode DS_Protocol::controlMode() const {
     return p_controlMode;
 }
 
@@ -74,4 +82,9 @@ QByteArray DS_Protocol::bitsToBytes (QBitArray bits) {
         bytes [i / 8] = (bytes.at (i / 8) | ((bits [i] ? 1 : 0) << (i % 8)));
 
     return bytes;
+}
+
+void DS_Protocol::restartWatchdog() {
+    p_watchDog.stop();
+    p_watchDog.start (1000);
 }

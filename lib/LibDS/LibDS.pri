@@ -43,11 +43,10 @@ HEADERS += \
     $$PWD/src/headers/DS_Common.h \
     $$PWD/src/headers/DS_LogWindow.h \
     $$PWD/src/headers/DS_NetConsole.h \
-    $$PWD/src/headers/DS_RobotManager.h \
-    $$PWD/src/headers/DS_NetworkDiagnostics.h \
     $$PWD/src/headers/DS_Protocol.h \
     $$PWD/src/headers/DS_Protocol2015.h \
-    $$PWD/src/headers/DS_ElapsedTime.h
+    $$PWD/src/headers/DS_ElapsedTime.h \
+    $$PWD/src/headers/DS_ProtocolManager.h
 
 SOURCES += \
     $$PWD/src/sources/DriverStation.cpp \
@@ -55,11 +54,10 @@ SOURCES += \
     $$PWD/src/sources/DS_Common.cpp \
     $$PWD/src/sources/DS_LogWindow.cpp \
     $$PWD/src/sources/DS_NetConsole.cpp \
-    $$PWD/src/sources/DS_RobotManager.cpp \
-    $$PWD/src/sources/DS_NetworkDiagnostics.cpp \
     $$PWD/src/sources/DS_Protocol.cpp \
     $$PWD/src/sources/DS_Protocol2015.cpp \
-    $$PWD/src/sources/DS_ElapsedTime.cpp
+    $$PWD/src/sources/DS_ElapsedTime.cpp \
+    $$PWD/src/sources/DS_ProtocolManager.cpp
 
 
 
