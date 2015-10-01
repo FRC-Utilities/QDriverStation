@@ -73,8 +73,7 @@ void DS_Protocol::setJoysticks (QList<DS_Joystick*>* joysticks)
 
 QByteArray DS_Protocol::bitsToBytes (QBitArray bits)
 {
-    QByteArray bytes;
-    bytes.resize (bits.count() / 8);
+    QByteArray bytes (bits.count() / 8, 0);
 
     for (int i = 0; i < bits.count(); ++i)
         bytes [i / 8] = (bytes.at (i / 8) | ((bits [i] ? 1 : 0) << (i % 8)));
