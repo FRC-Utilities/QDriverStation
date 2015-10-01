@@ -67,10 +67,13 @@ DS_Protocol2015::DS_Protocol2015() {
 
 void DS_Protocol2015::reset() {
     m_index = 0;
-    p_robotCode = 0;
-    m_justConnected = 0;
+    p_robotCode = false;
     m_status = STATUS_OK;
+    p_robotCommunication = false;
+
     emit codeChanged (p_robotCode);
+    emit communicationsChanged (p_robotCommunication);
+
     setControlMode (DS_ControlDisabled);
 }
 
@@ -191,6 +194,20 @@ QByteArray DS_Protocol2015::generateJoystickData() {
 }
 
 void DS_Protocol2015::readRobotData (QByteArray data) {
+    /* Restart the watch dog and udpate internal values */
+    restartWatchdog();
+
+    /* Do not try to read an invalid robot packet */
+    if (data.isEmpty() || data.length() < 8)
+        return;
+
+    /* Update the status of the communications and download robot information */
+    if (!p_robotCommunication) {
+        p_robotCommunication = 1;
+        downloadRobotInformation();
+        emit communicationsChanged (true);
+    }
+
     /* Get robot voltage */
     QString major = QString::number (data.at (5));
     QString minor = QString::number (data.at (6));
@@ -206,12 +223,6 @@ void DS_Protocol2015::readRobotData (QByteArray data) {
     if (p_robotCode != code) {
         p_robotCode = code;
         emit codeChanged (code);
-    }
-
-    /* We are sure that we are talking with a robot, download its info */
-    if (!m_justConnected) {
-        m_justConnected = true;
-        downloadRobotInformation();
     }
 }
 

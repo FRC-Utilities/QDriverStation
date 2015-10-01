@@ -27,13 +27,13 @@ DriverStation* DriverStation::m_instance = Q_NULLPTR;
 DriverStation::DriverStation() {
     m_init = false;
 
-    checkConnection();
     sendRobotPackets();
-
     setProtocol (&m_protocol);
 
     connect (&m_manager,     SIGNAL (codeChanged (bool)),
              this,           SIGNAL (codeChanged (bool)));
+    connect (&m_manager,     SIGNAL (communicationsChanged (bool)),
+             this,           SIGNAL (communicationsChanged (bool)));
     connect (&m_manager,     SIGNAL (controlModeChanged (DS_ControlMode)),
              this,           SIGNAL (controlModeChanged (DS_ControlMode)));
     connect (&m_manager,     SIGNAL (diskUsageChanged (int, int)),
@@ -74,7 +74,7 @@ DriverStation* DriverStation::getInstance() {
 
 bool DriverStation::canBeEnabled() {
     return m_manager.protocol()->robotCode() &&
-           m_networkDiagnostics.robotIsAlive();
+           m_manager.protocol()->robotCommunication();
 }
 
 QStringList DriverStation::alliances() {
@@ -107,7 +107,7 @@ bool DriverStation::robotHasCode() {
 }
 
 bool DriverStation::networkAvailable() {
-    return m_networkDiagnostics.robotIsAlive();
+    return m_manager.protocol()->robotCommunication();
 }
 
 void DriverStation::init() {
@@ -157,8 +157,6 @@ void DriverStation::setTeamNumber (int team) {
     m_netConsole.setTeamNumber (team);
     m_manager.protocol()->setTeamNumber (team);
     m_client.setRobotAddress (m_manager.protocol()->robotAddress());
-    m_networkDiagnostics.setRobotAddress (m_manager.protocol()->robotAddress());
-    m_networkDiagnostics.setRadioAddress (m_manager.protocol()->radioAddress());
 }
 
 void DriverStation::setAlliance (DS_Alliance alliance) {
@@ -170,7 +168,6 @@ void DriverStation::setControlMode (DS_ControlMode mode) {
 }
 
 void DriverStation::setCustomAddress (QString address) {
-    m_networkDiagnostics.setRobotAddress (address);
     m_manager.protocol()->setRobotAddress (address);
 }
 
@@ -199,33 +196,22 @@ void DriverStation::resetInternalValues() {
     m_elapsedTime.stop();
 
     emit codeChanged (false);
-    emit networkChanged (false);
+    emit communicationsChanged (false);
     emit voltageChanged (QString());
     emit elapsedTimeChanged ("00:00.0");
 }
 
-void DriverStation::checkConnection() {
+void DriverStation::sendRobotPackets() {
     if (m_init) {
-        m_networkDiagnostics.refresh();
-        m_manager.updateNetworkStatus (networkAvailable());
-
-        emit networkChanged (networkAvailable());
-        emit radioChanged (m_networkDiagnostics.radioIsAlive());
+        emit robotStatusChanged (getStatus());
+        m_client.sendToRobot (m_manager.protocol()->generateClientPacket());
     }
 
-    QTimer::singleShot (1000, Qt::PreciseTimer, this, SLOT (checkConnection()));
-}
-
-void DriverStation::sendRobotPackets() {
-    if (m_networkDiagnostics.robotIsAlive() && m_init)
-        m_client.sendToRobot (m_manager.protocol()->generateClientPacket());
-
     QTimer::singleShot (20, Qt::PreciseTimer, this, SLOT (sendRobotPackets()));
-    emit robotStatusChanged (getStatus());
 }
 
 QString DriverStation::getStatus() {
-    if (!m_networkDiagnostics.robotIsAlive())
+    if (!m_manager.protocol()->robotCommunication())
         return "No Robot Communication";
 
     else if (!m_manager.protocol()->robotCode())

@@ -35,12 +35,12 @@
  * Manages the avaiable protocols and configures them correctly, so that
  * the Driver Station can safely send commands and joystick input to the robot.
  */
-class  DS_RobotManager : public QObject {
+class  DS_ProtocolManager : public QObject {
     Q_OBJECT
 
   public:
-    explicit DS_RobotManager();
-    ~DS_RobotManager();
+    explicit DS_ProtocolManager();
+    ~DS_ProtocolManager();
 
     /**
      * Returns the current protocol in use
@@ -62,11 +62,6 @@ class  DS_RobotManager : public QObject {
      * Un-registeres all the joysticks from the Driver Station
      */
     void clearJoysticks();
-
-    /**
-     * Disables and resets the robot if \a robotIsAlive is \c false
-     */
-    void updateNetworkStatus (bool robotIsAlive);
 
     /**
      * Registers a new joystick and its characteristics to the Driver Station
@@ -100,6 +95,12 @@ class  DS_RobotManager : public QObject {
      * user code has changed
      */
     void codeChanged (bool available);
+
+    /**
+     * Emitted when the state of the network communications with the robot
+     * has been changed
+     */
+    void communicationsChanged (bool available);
 
     /**
      * Emitted when the protocol detects that the robot voltage has changed

@@ -30,8 +30,7 @@
 #include "../src/headers/DS_LogWindow.h"
 #include "../src/headers/DS_NetConsole.h"
 #include "../src/headers/DS_ElapsedTime.h"
-#include "../src/headers/DS_RobotManager.h"
-#include "../src/headers/DS_NetworkDiagnostics.h"
+#include "../src/headers/DS_ProtocolManager.h"
 
 #include "../src/headers/DS_Protocol2015.h"
 
@@ -193,7 +192,7 @@ class DriverStation : public QObject {
      * Emitted when the client detects that the availability of the robot
      * has changed (eg. when the robot is powered off with the breaker)
      */
-    void networkChanged (bool available);
+    void communicationsChanged (bool available);
 
     /**
      * Emitted when the client detects that the availability of the robot radio
@@ -276,11 +275,10 @@ class DriverStation : public QObject {
 
     DS_Client m_client;
     DS_LogWindow m_logWindow;
-    DS_RobotManager m_manager;
     DS_NetConsole m_netConsole;
     DS_Protocol2015 m_protocol;
+    DS_ProtocolManager m_manager;
     DS_ElapsedTime m_elapsedTime;
-    DS_NetworkDiagnostics m_networkDiagnostics;
 
   private slots:
     /**
@@ -289,21 +287,6 @@ class DriverStation : public QObject {
      * robot.
      */
     void resetInternalValues();
-
-    /**
-     * @internal
-     * Checks if the connection between the robot and the client is
-     * working correctly by "pinging" the robot with a TCP/IP connection.
-     *
-     * If the function detects that the client just connected to the robot,
-     * it downloads robot information using FTP and analyzes the downloaded
-     * information to emit singals to connected objects.
-     *
-     * If the function detects that the client just disconnected from the
-     * robot, it updates all the internal values to prevent sending data
-     * and packets to the void and notifies the connected objects.
-     */
-    void checkConnection();
 
     /**
      * @internal
