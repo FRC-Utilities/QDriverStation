@@ -31,8 +31,7 @@
  * If you have ever participated in a FRC team, you will understand the
  * importance of defining how the robot will behave.
  */
-enum DS_ControlMode
-{
+enum DS_ControlMode {
     DS_ControlTest,
     DS_ControlTeleOp,
     DS_ControlDisabled,
@@ -45,8 +44,7 @@ enum DS_ControlMode
  * Its important to specify which alliance we use in order to tell
  * the robot program 'where it is' and communicate with the FMS correctly
  */
-enum DS_Alliance
-{
+enum DS_Alliance {
     DS_AllianceRed1,
     DS_AllianceRed2,
     DS_AllianceRed3,
@@ -58,8 +56,7 @@ enum DS_Alliance
 /**
  * @brief The DS_Joystick struct
  */
-struct DS_Joystick
-{
+struct DS_Joystick {
     int numAxes;
     int numButtons;
     int numPovHats;
@@ -72,8 +69,7 @@ struct DS_Joystick
 /**
  * Represents the ping data of a packet
  */
-struct DS_PingData
-{
+struct DS_PingData {
     short byte1; /**< The first byte of the packet */
     short byte2; /**< The second byte of the packet */
 

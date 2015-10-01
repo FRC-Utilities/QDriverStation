@@ -29,7 +29,6 @@
 #include <QBitArray>
 #include <QByteArray>
 
-#include "DS_Debug.h"
 #include "DS_Common.h"
 
 /**
@@ -38,12 +37,12 @@
  * Implements an abstract class to be used as a base for any protocol that
  * will be used to drive an FRC robot.
  */
-class DS_Protocol : public QObject
-{
+class DS_Protocol : public QObject {
     Q_OBJECT
 
-public:
+  public:
     explicit DS_Protocol();
+    ~DS_Protocol();
 
     /**
      * Returns \c true if the user code is loaded on the robot
@@ -60,7 +59,7 @@ public:
      */
     DS_ControlMode controlMode();
 
-public slots:
+  public slots:
     /**
      * Changes the team number of the robot, this can be used to generate
      * the robot and radio address.
@@ -103,7 +102,7 @@ public slots:
     virtual DS_ControlMode getControlMode (char mode) = 0;
     virtual char getAllianceCode (DS_Alliance alliance) = 0;
 
-signals:
+  signals:
     /**
      * Emitted when the protocol detects that the status of the
      * user code has changed
@@ -158,13 +157,13 @@ signals:
      */
     void pcmVersionChanged (QString version);
 
-protected slots:
+  protected slots:
     /**
      * Converts the input \a bits to bytes
      */
     QByteArray bitsToBytes (QBitArray bits);
 
-protected:
+  protected:
     int p_team;
     bool p_robotCode;
     QString p_robotAddress;

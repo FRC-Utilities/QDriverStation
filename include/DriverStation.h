@@ -26,7 +26,6 @@
 #include <QTimer>
 #include <QObject>
 
-#include "../src/headers/DS_Debug.h"
 #include "../src/headers/DS_Client.h"
 #include "../src/headers/DS_LogWindow.h"
 #include "../src/headers/DS_NetConsole.h"
@@ -36,11 +35,10 @@
 
 #include "../src/headers/DS_Protocol2015.h"
 
-class DriverStation : public QObject
-{
+class DriverStation : public QObject {
     Q_OBJECT
 
-public:
+  public:
     explicit DriverStation();
     ~DriverStation();
 
@@ -87,7 +85,7 @@ public:
      */
     bool networkAvailable();
 
-public slots:
+  public slots:
     /**
      * Initializes the class and the interlal loop/refresh system
      */
@@ -178,7 +176,7 @@ public slots:
      */
     void updateJoystickButton (int js, int button, bool state);
 
-signals:
+  signals:
     /**
      * Emitted when the client detects that the availability of the robot
      * software/code has changed
@@ -270,20 +268,21 @@ signals:
      */
     void elapsedTimeChanged (QString elapsedTime);
 
-protected:
+  protected:
     static DriverStation* m_instance;
 
-private:
+  private:
     bool m_init;
 
     DS_Client m_client;
     DS_LogWindow m_logWindow;
     DS_RobotManager m_manager;
     DS_NetConsole m_netConsole;
+    DS_Protocol2015 m_protocol;
     DS_ElapsedTime m_elapsedTime;
     DS_NetworkDiagnostics m_networkDiagnostics;
 
-private slots:
+  private slots:
     /**
      * @internal
      * Resets the internal values of the library when we disconnect from the

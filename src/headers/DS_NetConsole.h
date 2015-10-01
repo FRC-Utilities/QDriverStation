@@ -31,23 +31,22 @@
  * The DS_NetConsole class receives and decodes messages broadcasted
  * by the robot over the local area network.
  */
-class DS_NetConsole : public QObject
-{
+class DS_NetConsole : public QObject {
     Q_OBJECT
 
-public:
+  public:
     explicit DS_NetConsole();
 
-public slots:
+  public slots:
     void setTeamNumber (int team);
 
-signals:
+  signals:
     void newMessage (QString message);
 
-private:
+  private:
     QUdpSocket m_socket;
 
-private slots:
+  private slots:
     void onDataReceived();
 };
 

@@ -20,7 +20,6 @@
  * THE SOFTWARE.
  */
 
-#include "DS_Debug.h"
 #include "DS_Protocol.h"
 
 #include <QNetworkReply>
@@ -28,128 +27,110 @@
 #include <QNetworkAccessManager>
 
 /**
- * Encapsulates the section headers that allow the robot to indetify the
- * data that we send to it
- */
-namespace SectionHeaders
-{
-enum SectionHeaders
-{
-    GeneralHeader = 0x01,
-    JoystickHeader = 0x0c
-};
-}
-
-/**
- * Encapsulates the constants of the operatio modes of the robot
- */
-namespace OperationModes
-{
-enum Modes
-{
-    Test = 0x05,
-    Disabled = 0x00,
-    Autonomous = 0x06,
-    TeleOperated = 0x04,
-    EmergencyStop = 0x80
-};
-}
-
-/**
- * Encapsulates the constants that are used to represent the alliance and
- * position that the robot shall use
- */
-namespace Alliances
-{
-enum Alliances
-{
-    Red1 = 0x00,
-    Red2 = 0x01,
-    Red3 = 0x02,
-    Blue1 = 0x03,
-    Blue2 = 0x04,
-    Blue3 = 0x05
-};
-}
-
-/**
- * Encapsulates the constants of the robot status mode
- */
-namespace RobotStatus
-{
-enum Status
-{
-    Normal      = 0x10, /**< The robot will behave normally */
-    RebootRobot = 0x18, /**< The roboRIO will reboot itself */
-    RestartCode = 0x14  /**< The robot will restart the user code */
-};
-}
-
-/**
- * Represents the ports used to communicate between the robot
- * and the Driver Station
- */
-namespace Ports
-{
-enum Ports
-{
-    RobotPort  = 1110,/**< The port in which we send instructions to the robot */
-    ClientPort = 1150 /**< The port in which we receive robot data */
-};
-}
-
-/**
- * Encapsulates the possible codes that the roboRIO can emit regarding the
- * status of the robot program
- */
-namespace ProgramStatus
-{
-enum ProgramStatus
-{
-    Test = 0x08,
-    TeleOp = 0x02,
-    RoboRio = 0x10,
-    Disabled = 0x01,
-    UserCode = 0x20,
-    NoProgram = 0x00,
-    Autonomous = 0x04,
-};
-}
-
-/**
  * \class DS_Protocol2015
  * Implements the 2015 communication protocol
  */
-class DS_Protocol2015 : public DS_Protocol
-{
+class DS_Protocol2015 : public DS_Protocol {
     Q_OBJECT
 
-public:
+  public:
     explicit DS_Protocol2015();
 
-public slots:
+  public slots:
+    /**
+     * Resets the internal values and disables the robot
+     */
     void reset();
+
+    /**
+     * Changes the status byte to instruct the roboRIO to reboot
+     */
     void reboot();
+
+    /**
+     * Returns the port in the roboRIO in which we send DS packets
+     */
     int robotPort();
+
+    /**
+     * Returns the port in which we receive data from the roboRIO
+     */
     int clientPort();
+
+    /**
+     * Changes the status byte to instruct the roboRIO to kill the user code
+     * and start it again
+     */
     void restartCode();
+
+    /**
+     * Returns the address of the roboRIO (e.g roboRIO-xxyy.local) or,
+     * if applicable, the custom address
+     */
     QString robotAddress();
+
+    /**
+     * Returns the address of the robot radio (e.g 10.xx.yy.1)
+     */
     QString radioAddress();
+
+    /**
+     * Downloads information about the roboRIO, the PCM and PDP firmware
+     * information using a FTP connection.
+     *
+     * This function is called the first time we receive a packet from the
+     * roboRIO
+     */
     void downloadRobotInformation();
+
+    /**
+     * Generates a client packet, which is later sent to the robot.
+     * If the control mode is in TeleOp, we also send joystick input data
+     */
     QByteArray generateClientPacket();
+
+    /**
+     * Reads joystick input and generates a packet that will be sent to
+     * the robot
+     */
     QByteArray generateJoystickData();
+
+    /**
+     * Reads and interprets packets received from the robot.
+     */
     void readRobotData (QByteArray data);
+
+    /**
+     * Returns the value used to represent the input the control \a mode
+     */
     char getControlCode (DS_ControlMode mode);
-    DS_ControlMode getControlMode (char mode);
+
+    /**
+     * Returns the control mode represented by the input \a byte
+     */
+    DS_ControlMode getControlMode (char byte);
+
+    /**
+     * Returns the value used to represent the input \a alliance
+     */
     char getAllianceCode (DS_Alliance alliance);
 
-private:
+  private:
     int m_index;
     int m_status;
     bool m_justConnected;
     QNetworkAccessManager m_manager;
 
-private slots:
+  private slots:
+    /**
+     * Returns the size of the input \a joystick structure
+     * Used for encoding the joystick input and sending it to the robot
+     */
     int getJoystickSize (DS_Joystick* joystick);
+
+    /**
+     * Reads and interprets the files that contain information about the
+     * roboRIO, the PCM and PDP firmware versions
+     */
     void onDownloadFinished (QNetworkReply* reply);
 };
