@@ -81,7 +81,7 @@ void InitTasks::executeFirstRunTasks() {
                                          "step is not required."));
 
     if (box.exec() == QMessageBox::Yes)
-        QDesktopServices::openUrl (QUrl (_BONJOUR_URL));
+        QDesktopServices::openUrl (QUrl (URL_BONJOUR_MDNS));
 #endif
 
     /* Ensure that this code does not run again */
