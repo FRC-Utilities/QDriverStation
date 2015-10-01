@@ -61,8 +61,7 @@ extern "C" {
 /**
  *  \brief Flags used when creating a rendering context
  */
-typedef enum
-{
+typedef enum {
     SDL_RENDERER_SOFTWARE =
         0x00000001, /**< The renderer is a software fallback */
     SDL_RENDERER_ACCELERATED = 0x00000002,  /**< The renderer uses hardware
@@ -77,8 +76,7 @@ SDL_RendererFlags;
 /**
  *  \brief Information on the capabilities of a render driver or context.
  */
-typedef struct SDL_RendererInfo
-{
+typedef struct SDL_RendererInfo {
     const char* name;           /**< The name of the renderer */
     Uint32 flags;               /**< Supported ::SDL_RendererFlags */
     Uint32 num_texture_formats; /**< The number of available texture formats */
@@ -90,8 +88,7 @@ typedef struct SDL_RendererInfo
 /**
  *  \brief The access pattern allowed for a texture.
  */
-typedef enum
-{
+typedef enum {
     SDL_TEXTUREACCESS_STATIC,    /**< Changes rarely, not lockable */
     SDL_TEXTUREACCESS_STREAMING, /**< Changes frequently, lockable */
     SDL_TEXTUREACCESS_TARGET     /**< Texture can be used as a render target */
@@ -100,8 +97,7 @@ typedef enum
 /**
  *  \brief The texture channel modulation used in SDL_RenderCopy().
  */
-typedef enum
-{
+typedef enum {
     SDL_TEXTUREMODULATE_NONE = 0x00000000,  /**< No modulation */
     SDL_TEXTUREMODULATE_COLOR = 0x00000001, /**< srcC = srcC * color */
     SDL_TEXTUREMODULATE_ALPHA = 0x00000002  /**< srcA = srcA * alpha */
@@ -110,8 +106,7 @@ typedef enum
 /**
  *  \brief Flip constants for SDL_RenderCopyEx
  */
-typedef enum
-{
+typedef enum {
     SDL_FLIP_NONE = 0x00000000,       /**< Do not flip */
     SDL_FLIP_HORIZONTAL = 0x00000001, /**< flip horizontally */
     SDL_FLIP_VERTICAL = 0x00000002    /**< flip vertically */

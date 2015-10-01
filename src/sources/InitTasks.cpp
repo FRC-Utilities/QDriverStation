@@ -26,20 +26,14 @@
 #include <QInputDialog>
 #include <QDesktopServices>
 
-#if defined __APPLE__
-#define _XBOX_DRIVER_URL "https://github.com/d235j/360Controller/releases"
-#endif
-
-#if defined __WIN32 || defined __WIN64
-#define _BONJOUR_URL "https://support.apple.com/kb/dl999?locale=en_US"
-#endif
-
 #include "Settings.h"
 #include "CpuUsage.h"
 #include "InitTasks.h"
 
-int InitTasks::getTeamNumber()
-{
+#define URL_XBOX_DRIVER  "https://github.com/d235j/360Controller/releases"
+#define URL_BONJOUR_MDNS "https://support.apple.com/kb/dl999?locale=en_US"
+
+int InitTasks::getTeamNumber() {
     /* First launch, ask for team number */
     if (Settings::get ("First Launch", true).toBool())
         return QInputDialog::getInt (0, 0,
@@ -51,8 +45,7 @@ int InitTasks::getTeamNumber()
         return Settings::get ("Team ID", 0).toInt();
 }
 
-void InitTasks::executeFirstRunTasks()
-{
+void InitTasks::executeFirstRunTasks() {
     CpuUsage::init();
 
     /* Not first run, nothing to do here *flies away* */
@@ -70,7 +63,7 @@ void InitTasks::executeFirstRunTasks()
                                          "for Xbox 360 joysticks?"));
 
     if (box.exec() == QMessageBox::Yes)
-        QDesktopServices::openUrl (QUrl (_XBOX_DRIVER_URL));
+        QDesktopServices::openUrl (QUrl (URL_XBOX_DRIVER));
 #endif
 
     /* Download Bonjour for Windows to get mDNS working */

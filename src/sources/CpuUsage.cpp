@@ -35,8 +35,7 @@ static PDH_HCOUNTER cpuTotal;
 #include <QProcess>
 #endif
 
-void CpuUsage::init()
-{
+void CpuUsage::init() {
 #if defined _WIN32 || defined _WIN64
     PdhOpenQuery (0, 0, &cpuQuery);
     PdhAddCounter (cpuQuery, COUNTER_PATH, 0, &cpuTotal);
@@ -44,8 +43,7 @@ void CpuUsage::init()
 #endif
 }
 
-int CpuUsage::getUsage()
-{
+int CpuUsage::getUsage() {
 #if defined _WIN32 || defined _WIN64
     PDH_FMT_COUNTERVALUE counterVal;
     PdhCollectQueryData (cpuQuery);

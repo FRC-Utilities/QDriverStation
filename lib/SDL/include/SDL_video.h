@@ -50,8 +50,7 @@ extern "C" {
  *  \sa SDL_SetWindowDisplayMode()
  *  \sa SDL_GetWindowDisplayMode()
  */
-typedef struct
-{
+typedef struct {
     Uint32 format;    /**< pixel format */
     int w;            /**< width */
     int h;            /**< height */
@@ -93,8 +92,7 @@ typedef struct SDL_Window SDL_Window;
  *
  *  \sa SDL_GetWindowFlags()
  */
-typedef enum
-{
+typedef enum {
     SDL_WINDOW_FULLSCREEN = 0x00000001, /**< fullscreen window */
     SDL_WINDOW_OPENGL = 0x00000002,     /**< window usable with OpenGL context */
     SDL_WINDOW_SHOWN = 0x00000004,      /**< window is visible */
@@ -133,8 +131,7 @@ typedef enum
 /**
  *  \brief Event subtype for window events
  */
-typedef enum
-{
+typedef enum {
     SDL_WINDOWEVENT_NONE,         /**< Never used */
     SDL_WINDOWEVENT_SHOWN,        /**< Window has been shown */
     SDL_WINDOWEVENT_HIDDEN,       /**< Window has been hidden */
@@ -166,8 +163,7 @@ typedef void* SDL_GLContext;
 /**
  *  \brief OpenGL configuration attributes
  */
-typedef enum
-{
+typedef enum {
     SDL_GL_RED_SIZE,
     SDL_GL_GREEN_SIZE,
     SDL_GL_BLUE_SIZE,
@@ -194,15 +190,13 @@ typedef enum
     SDL_GL_FRAMEBUFFER_SRGB_CAPABLE
 } SDL_GLattr;
 
-typedef enum
-{
+typedef enum {
     SDL_GL_CONTEXT_PROFILE_CORE = 0x0001,
     SDL_GL_CONTEXT_PROFILE_COMPATIBILITY = 0x0002,
     SDL_GL_CONTEXT_PROFILE_ES = 0x0004 /* GLX_CONTEXT_ES2_PROFILE_BIT_EXT */
 } SDL_GLprofile;
 
-typedef enum
-{
+typedef enum {
     SDL_GL_CONTEXT_DEBUG_FLAG = 0x0001,
     SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG = 0x0002,
     SDL_GL_CONTEXT_ROBUST_ACCESS_FLAG = 0x0004,

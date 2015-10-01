@@ -30,14 +30,13 @@
  * network components of the robot and checking which components are accesible
  * to the DriverStation.
  */
-class DS_NetworkDiagnostics : public QObject
-{
+class DS_NetworkDiagnostics : public QObject {
     Q_OBJECT
 
-public:
+  public:
     explicit DS_NetworkDiagnostics();
 
-public slots:
+  public slots:
     /**
      * Pings the robot and the robot radio and updates the internal values
      */
@@ -63,7 +62,7 @@ public slots:
      */
     void setRobotAddress (QString address);
 
-private:
+  private:
     bool m_robotIsAlive;
     bool m_radioIsAlive;
     QString m_robotAddress;

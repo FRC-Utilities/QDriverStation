@@ -35,9 +35,8 @@
  * was to avoid the initialization of multiple QSettings objects, when in
  * fact we only need one.
  */
-class Settings
-{
-public:
+class Settings {
+  public:
     /**
      * Resets the user settings of the application
      */

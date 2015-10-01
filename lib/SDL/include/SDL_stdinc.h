@@ -252,8 +252,7 @@ extern DECLSPEC void* SDLCALL SDL_memset (void* dst, int c, size_t len);
 
 /* Note that memset() is a byte assignment and this is a 32-bit assignment, so
  * they're not directly equivalent. */
-SDL_FORCE_INLINE void SDL_memset4 (void* dst, Uint32 val, size_t dwords)
-{
+SDL_FORCE_INLINE void SDL_memset4 (void* dst, Uint32 val, size_t dwords) {
 #if defined(__GNUC__) && defined(i386)
     int u0, u1, u2;
     __asm__ __volatile__ ("cld \n\t"
@@ -270,11 +269,9 @@ SDL_FORCE_INLINE void SDL_memset4 (void* dst, Uint32 val, size_t dwords)
     if (dwords == 0)
         return;
 
-    switch (dwords % 4)
-    {
+    switch (dwords % 4) {
     case 0:
-        do
-        {
+        do {
             *_p++ = _val;
 
         case 3:
@@ -285,8 +282,7 @@ SDL_FORCE_INLINE void SDL_memset4 (void* dst, Uint32 val, size_t dwords)
 
         case 1:
             *_p++ = _val;
-        }
-        while (--_n);
+        } while (--_n);
     }
 
 #endif
@@ -295,8 +291,7 @@ SDL_FORCE_INLINE void SDL_memset4 (void* dst, Uint32 val, size_t dwords)
 extern DECLSPEC void* SDLCALL
 SDL_memcpy (void* dst, const void* src, size_t len);
 
-SDL_FORCE_INLINE void* SDL_memcpy4 (void* dst, const void* src, size_t dwords)
-{
+SDL_FORCE_INLINE void* SDL_memcpy4 (void* dst, const void* src, size_t dwords) {
     return SDL_memcpy (dst, src, dwords * 4);
 }
 

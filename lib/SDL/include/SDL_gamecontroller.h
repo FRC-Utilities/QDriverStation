@@ -55,8 +55,7 @@ extern "C" {
 struct _SDL_GameController;
 typedef struct _SDL_GameController SDL_GameController;
 
-typedef enum
-{
+typedef enum {
     SDL_CONTROLLER_BINDTYPE_NONE = 0,
     SDL_CONTROLLER_BINDTYPE_BUTTON,
     SDL_CONTROLLER_BINDTYPE_AXIS,
@@ -66,15 +65,12 @@ typedef enum
 /**
  *  Get the SDL joystick layer binding for this controller button/axis mapping
  */
-typedef struct SDL_GameControllerButtonBind
-{
+typedef struct SDL_GameControllerButtonBind {
     SDL_GameControllerBindType bindType;
-    union
-    {
+    union {
         int button;
         int axis;
-        struct
-        {
+        struct {
             int hat;
             int hat_mask;
         } hat;
@@ -230,8 +226,7 @@ extern DECLSPEC void SDLCALL SDL_GameControllerUpdate (void);
 /**
  *  The list of axes available from a controller
  */
-typedef enum
-{
+typedef enum {
     SDL_CONTROLLER_AXIS_INVALID = -1,
     SDL_CONTROLLER_AXIS_LEFTX,
     SDL_CONTROLLER_AXIS_LEFTY,
@@ -275,8 +270,7 @@ SDL_GameControllerGetAxis (SDL_GameController* gamecontroller,
 /**
  *  The list of buttons available from a controller
  */
-typedef enum
-{
+typedef enum {
     SDL_CONTROLLER_BUTTON_INVALID = -1,
     SDL_CONTROLLER_BUTTON_A,
     SDL_CONTROLLER_BUTTON_B,

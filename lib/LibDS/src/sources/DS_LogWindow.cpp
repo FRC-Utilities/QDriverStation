@@ -22,8 +22,7 @@
 
 #include "../headers/DS_LogWindow.h"
 
-DS_LogWindow::DS_LogWindow()
-{
+DS_LogWindow::DS_LogWindow() {
     m_ui = new Ui::DS_LogWindow;
     m_ui->setupUi (this);
 
@@ -31,12 +30,10 @@ DS_LogWindow::DS_LogWindow()
     setGraphPalette (palette);
 }
 
-DS_LogWindow::~DS_LogWindow()
-{
+DS_LogWindow::~DS_LogWindow() {
     delete m_ui;
 }
 
-void DS_LogWindow::setGraphPalette (QPalette palette)
-{
+void DS_LogWindow::setGraphPalette (QPalette palette) {
     m_ui->CustomPlot->setBackground (palette.background());
 }

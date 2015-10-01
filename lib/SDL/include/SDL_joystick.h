@@ -70,8 +70,7 @@ struct _SDL_Joystick;
 typedef struct _SDL_Joystick SDL_Joystick;
 
 /* A structure that encodes the stable unique id for a joystick device */
-typedef struct
-{
+typedef struct {
     Uint8 data[16];
 } SDL_JoystickGUID;
 

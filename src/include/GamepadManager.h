@@ -30,8 +30,7 @@
 /**
  * Represents a joystick and provides some information about it
  */
-struct GM_Joystick
-{
+struct GM_Joystick {
     int id;              /**< The raw ID of the joystick */
     int numAxes;         /**< The number of axes that the joystick has */
     int numButtons;      /**< The number of buttons that the joystick has */
@@ -42,8 +41,7 @@ struct GM_Joystick
 /**
  * Represents the state of a joystick hat and provides some data about it
  */
-struct GM_Hat
-{
+struct GM_Hat {
     int rawId;            /**< The raw ID of the hat */
     short angle;          /**< The pressed angle of the hat */
     GM_Joystick joystick; /**< The joystick that the hat belongs to */
@@ -52,8 +50,7 @@ struct GM_Hat
 /**
  * Represents the state of a joystick axis and provides some data about it
  */
-struct GM_Axis
-{
+struct GM_Axis {
     int rawId;            /**< The raw ID of the axis */
     int processedId;      /**< The calculated ID based on the axis type */
     double value;         /**< The value (between -1 and 1) of the axis */
@@ -64,8 +61,7 @@ struct GM_Axis
 /**
  * Represents the state of a joystick button and provides some data about it
  */
-struct GM_Button
-{
+struct GM_Button {
     int rawId;            /**< The raw ID of the button */
     bool pressed;         /**< The current state of the button */
     int processedId;      /**< The calculated ID based on the button type */
@@ -90,17 +86,16 @@ class DriverStation;
  * in question and is saved in a configuration folder in the home path
  * of the user.
  */
-class GamepadManager : public QObject
-{
+class GamepadManager : public QObject {
     Q_OBJECT
 
-public:
+  public:
     /**
      * Returns the only instance of the class
      */
     static GamepadManager* getInstance();
 
-public slots:
+  public slots:
     /**
      * Returns the number of hats that the selected \a joystick has
      */
@@ -159,7 +154,7 @@ public slots:
      */
     void rumble (int js, int time);
 
-signals:
+  signals:
     /**
      * Emitted when a joystick is attached or removed
      */
@@ -188,7 +183,7 @@ signals:
      */
     void buttonEvent (GM_Button button);
 
-protected:
+  protected:
     /**
      * Initializes SDL, loads controller mappings and starts the event loop
      */
@@ -199,7 +194,7 @@ protected:
      */
     ~GamepadManager();
 
-private:
+  private:
     int m_time;
     int m_tracker;
 
@@ -245,7 +240,7 @@ private:
      */
     int getDynamicId (int js);
 
-private slots:
+  private slots:
     /**
      * @internal
      * Polls the SDL events and calls the appropriate handler functions.

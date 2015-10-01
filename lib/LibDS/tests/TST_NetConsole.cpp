@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,23 +19,3 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-#include "Settings.h"
-#include "AssemblyInfo.h"
-
-#include <QSettings>
-
-static QSettings* settings =
-    new QSettings (AssemblyInfo::organization(), AssemblyInfo::name());
-
-void Settings::clear() {
-    settings->clear();
-}
-
-void Settings::set (QString key, const QVariant& value) {
-    settings->setValue (key, value);
-}
-
-QVariant Settings::get (QString key, const QVariant& defaultValue) {
-    return settings->value (key, defaultValue);
-}

@@ -47,8 +47,7 @@ extern "C" {
 /* @} */
 
 /** Pixel type. */
-enum
-{
+enum {
     SDL_PIXELTYPE_UNKNOWN,
     SDL_PIXELTYPE_INDEX1,
     SDL_PIXELTYPE_INDEX4,
@@ -67,8 +66,7 @@ enum
 enum { SDL_BITMAPORDER_NONE, SDL_BITMAPORDER_4321, SDL_BITMAPORDER_1234 };
 
 /** Packed component order, high bit -> low bit. */
-enum
-{
+enum {
     SDL_PACKEDORDER_NONE,
     SDL_PACKEDORDER_XRGB,
     SDL_PACKEDORDER_RGBX,
@@ -81,8 +79,7 @@ enum
 };
 
 /** Array component order, low byte -> high byte. */
-enum
-{
+enum {
     SDL_ARRAYORDER_NONE,
     SDL_ARRAYORDER_RGB,
     SDL_ARRAYORDER_RGBA,
@@ -93,8 +90,7 @@ enum
 };
 
 /** Packed component layout. */
-enum
-{
+enum {
     SDL_PACKEDLAYOUT_NONE,
     SDL_PACKEDLAYOUT_332,
     SDL_PACKEDLAYOUT_4444,
@@ -143,8 +139,7 @@ enum
   ((format) && (SDL_PIXELFLAG(format) != 1))
 
 /* Note: If you modify this list, update SDL_GetPixelFormatName() */
-enum
-{
+enum {
     SDL_PIXELFORMAT_UNKNOWN,
     SDL_PIXELFORMAT_INDEX1LSB = SDL_DEFINE_PIXELFORMAT (
                                     SDL_PIXELTYPE_INDEX1, SDL_BITMAPORDER_4321, 0, 1, 0),
@@ -241,8 +236,7 @@ enum
         SDL_DEFINE_PIXELFOURCC ('Y', 'V', 'Y', 'U')
 };
 
-typedef struct SDL_Color
-{
+typedef struct SDL_Color {
     Uint8 r;
     Uint8 g;
     Uint8 b;
@@ -250,8 +244,7 @@ typedef struct SDL_Color
 } SDL_Color;
 #define SDL_Colour SDL_Color
 
-typedef struct SDL_Palette
-{
+typedef struct SDL_Palette {
     int ncolors;
     SDL_Color* colors;
     Uint32 version;
@@ -261,8 +254,7 @@ typedef struct SDL_Palette
 /**
  *  \note Everything in the pixel format structure is read-only.
  */
-typedef struct SDL_PixelFormat
-{
+typedef struct SDL_PixelFormat {
     Uint32 format;
     SDL_Palette* palette;
     Uint8 BitsPerPixel;

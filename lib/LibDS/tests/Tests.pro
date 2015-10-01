@@ -22,48 +22,18 @@
 # THE SOFTWARE.
 #
 
-CODECFORTR = UTF-8
-CODECFORSRC = UTF-8
+QT += testlib
+include ($$PWD/../LibDS.pri)
 
-QT += core
-QT += network
-CONFIG += c++11
-QMAKE_CXXFLAGS += -std=c++0x
-
-INCLUDEPATH += $$PWD/include
-
-include ($$PWD/lib/QCustomPlot/QCustomPlot.pri)
-
-FORMS += \
-    $$PWD/src/forms/DS_LogWindow.ui
-
-HEADERS += \
-    $$PWD/include/DriverStation.h \
-    $$PWD/src/headers/DS_Client.h \
-    $$PWD/src/headers/DS_Common.h \
-    $$PWD/src/headers/DS_LogWindow.h \
-    $$PWD/src/headers/DS_NetConsole.h \
-    $$PWD/src/headers/DS_RobotManager.h \
-    $$PWD/src/headers/DS_NetworkDiagnostics.h \
-    $$PWD/src/headers/DS_Protocol.h \
-    $$PWD/src/headers/DS_Protocol2015.h \
-    $$PWD/src/headers/DS_ElapsedTime.h
-
-SOURCES += \
-    $$PWD/src/sources/DriverStation.cpp \
-    $$PWD/src/sources/DS_Client.cpp \
-    $$PWD/src/sources/DS_Common.cpp \
-    $$PWD/src/sources/DS_LogWindow.cpp \
-    $$PWD/src/sources/DS_NetConsole.cpp \
-    $$PWD/src/sources/DS_RobotManager.cpp \
-    $$PWD/src/sources/DS_NetworkDiagnostics.cpp \
-    $$PWD/src/sources/DS_Protocol.cpp \
-    $$PWD/src/sources/DS_Protocol2015.cpp \
-    $$PWD/src/sources/DS_ElapsedTime.cpp
-
-
-
-
-
-
-
+HEADERS += $$PWD/Tests.h
+SOURCES += $$PWD/Tests.cpp \
+    TST_Client.cpp \
+    TST_Common.cpp \
+    TST_DriverStation.cpp \
+    TST_ElapsedTime.cpp \
+    TST_LogWindow.cpp \
+    TST_NetConsole.cpp \
+    TST_NetworkDiagnostics.cpp \
+    TST_Protocol.cpp \
+    TST_Protocol2015.cpp \
+    TST_RobotManager.cpp

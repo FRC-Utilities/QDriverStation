@@ -23,23 +23,19 @@
 #include "../headers/DS_Common.h"
 #include "../headers/DS_NetConsole.h"
 
-DS_NetConsole::DS_NetConsole()
-{
+DS_NetConsole::DS_NetConsole() {
     connect (&m_socket, SIGNAL (readyRead()), this, SLOT (onDataReceived()));
 }
 
-void DS_NetConsole::setTeamNumber (int team)
-{
-    m_socket.bind (QHostAddress (DS_GetStaticIp (team, 255)), 6666,
-                   QUdpSocket::ShareAddress);
+void DS_NetConsole::setTeamNumber (int team) {
+    m_socket.bind (QHostAddress (DS_GetStaticIp (team, 255)),
+                   6666, QUdpSocket::ShareAddress);
 }
 
-void DS_NetConsole::onDataReceived()
-{
+void DS_NetConsole::onDataReceived() {
     QByteArray data;
 
-    while (m_socket.hasPendingDatagrams())
-    {
+    while (m_socket.hasPendingDatagrams()) {
         data.resize (m_socket.pendingDatagramSize());
         m_socket.readDatagram (data.data(), data.size());
     }

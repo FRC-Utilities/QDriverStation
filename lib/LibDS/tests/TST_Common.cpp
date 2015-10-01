@@ -19,17 +19,3 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-#ifndef _LIB_DS_DEBUG_H
-#define _LIB_DS_DEBUG_H
-
-#include <QDebug>
-#include <QElapsedTimer>
-
-#define _F_DATA __FILE__ << __LINE__
-
-#define DS_DEBUG(data) qDebug() << "INFORMATION:" << _F_DATA << data
-#define DS_ERROR(data) qDebug() << "CRITICAL:" << _F_DATA << data
-#define DS_WARNING(data) qDebug() << "WARNING:" << _F_DATA << data
-
-#endif

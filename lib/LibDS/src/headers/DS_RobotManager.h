@@ -26,7 +26,6 @@
 #include <QList>
 #include <QObject>
 
-#include "DS_Debug.h"
 #include "DS_Common.h"
 #include "DS_Protocol.h"
 
@@ -36,11 +35,10 @@
  * Manages the avaiable protocols and configures them correctly, so that
  * the Driver Station can safely send commands and joystick input to the robot.
  */
-class  DS_RobotManager : public QObject
-{
+class  DS_RobotManager : public QObject {
     Q_OBJECT
 
-public:
+  public:
     explicit DS_RobotManager();
     ~DS_RobotManager();
 
@@ -54,7 +52,7 @@ public:
      */
     QList<DS_Joystick*>* joysticks() const;
 
-public slots:
+  public slots:
     /**
      * Changes the protocol that we use to communicate with the robot
      */
@@ -96,7 +94,7 @@ public slots:
      */
     void readRobotData (QByteArray data);
 
-signals:
+  signals:
     /**
      * Emitted when the protocol detects that the status of the
      * user code has changed
@@ -151,7 +149,7 @@ signals:
      */
     void pcmVersionChanged (QString version);
 
-private:
+  private:
     DS_Protocol* m_protocol;
     QList<DS_Joystick*>* m_joysticks;
 
