@@ -79,7 +79,7 @@ namespace RobotStatus
 {
 enum Status
 {
-    Normal = 0x10,      /**< The robot will behave normally */
+    Normal      = 0x10, /**< The robot will behave normally */
     RebootRobot = 0x18, /**< The roboRIO will reboot itself */
     RestartCode = 0x14  /**< The robot will restart the user code */
 };
@@ -93,7 +93,7 @@ namespace Ports
 {
 enum Ports
 {
-    RobotPort = 1110, /**< The port in which we send instructions to the robot */
+    RobotPort  = 1110,/**< The port in which we send instructions to the robot */
     ClientPort = 1150 /**< The port in which we receive robot data */
 };
 }
