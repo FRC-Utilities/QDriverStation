@@ -101,12 +101,10 @@ void JoysticksWidget::onRowChanged (int row) {
         button->setMinimumSize (18, 12);
         button->setToolTip (m_manager->getButtonName (i));
 
+        /* Distribute the button items in a nice layout */
         int row = 0;
         int column = 0;
-
-        if (i <= 7)
-            row = i;
-
+        if (i <= 7) row = i;
         else {
             row = i - 8;
             column = (int) (i / 8);
@@ -118,11 +116,14 @@ void JoysticksWidget::onRowChanged (int row) {
 }
 
 void JoysticksWidget::onCountChanged (const QStringList& list) {
+    /* Current count is less and previous count */
     if (list.count() < ui.JoystickList->count())
         emit joystickRemoved();
 
+    /* Reset joystick list */
     ui.JoystickList->clear();
 
+    /* Add an item for each registered joystick */
     if (list.count() > 0) {
         for (int i = 1; i <= list.count(); ++i)
             ui.JoystickList->addItem (QString ("%1: ").arg (i) + list.at (i - 1));
@@ -130,22 +131,29 @@ void JoysticksWidget::onCountChanged (const QStringList& list) {
         ui.JoystickList->setCurrentRow (0);
     }
 
+    /* Notify other objects about the new/removed joysticks */
     emit statusChanged (list.count() > 0);
+
+    /* Show or hide the rumble button if needed */
     ui.Rumble->setVisible (list.count() > 0);
 }
 
 void JoysticksWidget::onAxisEvent (const GM_Axis& axis) {
+    /* Event is from another joystick */
     if (ui.JoystickList->currentRow() != axis.joystick.id)
         return;
 
+    /* Input axis is invalid */
     if (axis.rawId < m_axes.count())
         m_axes.at (axis.rawId)->setValue (axis.value * 100);
 }
 
 void JoysticksWidget::onButtonEvent (const GM_Button& button) {
+    /* Event is from another joystick */
     if (ui.JoystickList->currentRow() != button.joystick.id)
         return;
 
+    /* Input button is invalid */
     if (button.rawId < m_buttons.count())
         m_buttons.at (button.rawId)->setChecked (button.pressed);
 }

@@ -59,24 +59,29 @@ void Dashboard::loadDashboard() {
     QString path;
     m_current = Settings::get ("Dashboard", None).toInt();
 
+    /* Open the SFX Dashboard */
     if (m_current == SfxDashboard) {
         QDir dir;
         QStringList files;
 
+        /* Go to the WPILib directory and get the available folders */
         dir.cd (QString ("%1/wpilib/tools/").arg (QDir::homePath()));
         files = dir.entryList (QDir::Dirs);
 
+        /* In theory, the only folder should contain the SFX DB, open it */
         if (files.count() >= 3)
             path = QString ("java -jar \"%1/%2/sfx.jar\"")
                    .arg (dir.absolutePath())
                    .arg (files.at (2));
     }
 
+    /* Open the SmartDashboard, easy as cake */
     else if (m_current == SmartDashboard) {
         path = QString ("java -jar \"%1/wpilib/tools/SmartDashboard.jar\"")
                .arg (QDir::homePath());
     }
 
+    /* Open the LabVIEW Dashboard */
 #if defined _WIN32 || defined _WIN64
     else if (m_current == LabVIEW) {
         QString pF = is64Bits ? "C:/Program Files (x86)" : "C:/Program Files";

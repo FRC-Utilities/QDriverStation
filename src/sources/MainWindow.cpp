@@ -59,8 +59,6 @@
 #endif
 
 MainWindow::MainWindow() {
-    setVisible (false);
-
     m_ui = new Ui::MainWindow;
     m_ui->setupUi (this);
 
@@ -76,7 +74,7 @@ MainWindow::MainWindow() {
     DriverStation::getInstance()->init();
     GamepadManager::getInstance()->init();
 
-    setVisible (true);
+    show();
 }
 
 MainWindow::~MainWindow() {

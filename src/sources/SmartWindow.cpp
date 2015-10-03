@@ -34,8 +34,8 @@ SmartWindow::SmartWindow() {
     m_promptOnQuit = true;
     m_windowMode = Invalid;
 
-    resizeToFit();
     setWindowMode (Settings::get ("Docked", false).toBool() ? Docked : Normal);
+    hide();
 }
 
 bool SmartWindow::isDocked() {
@@ -60,9 +60,11 @@ void SmartWindow::moveEvent (QMoveEvent* e) {
 }
 
 void SmartWindow::closeEvent (QCloseEvent* e) {
+    /* User already confirmed his/her choice */
     if (m_closingDown)
         return;
 
+    /* Ask user for confirmation on quit */
     if (m_promptOnQuit) {
         QString name = qApp->applicationName();
 
@@ -72,17 +74,18 @@ void SmartWindow::closeEvent (QCloseEvent* e) {
         box.setDefaultButton (QMessageBox::Yes);
         box.setText (tr ("Are you sure you want to quit the %1?").arg (name));
 
+        /* User changed his/her mind */
         if (box.exec() != QMessageBox::Yes) {
             e->ignore();
             return;
         }
 
-        else
-            m_closingDown = true;
+        /* Ensure that this message is not shown twice in a row */
+        else m_closingDown = true;
     }
 
+    /* Here it comes... */
     e->accept();
-    qApp->exit (EXIT_SUCCESS);
 }
 
 void SmartWindow::setUseFixedSize (bool fixed) {
@@ -101,6 +104,7 @@ void SmartWindow::setWindowMode (const WindowMode& mode) {
     m_windowMode = mode;
     Settings::set ("Docked", isDocked());
 
+    /* Enable window borders and resize to minimum size */
     if (mode == Normal) {
         QDesktopWidget w;
         int dx = w.width() / 9;
@@ -117,6 +121,7 @@ void SmartWindow::setWindowMode (const WindowMode& mode) {
                         | Qt::WindowMinimizeButtonHint);
     }
 
+    /* Disable window borders */
     else if (mode == Docked)
         setWindowFlags (Qt::FramelessWindowHint);
 
@@ -125,6 +130,7 @@ void SmartWindow::setWindowMode (const WindowMode& mode) {
 }
 
 void SmartWindow::resizeToFit() {
+    /* 'Dock' the window at the bottom and extend it to the sides */
     if (isDocked()) {
         QDesktopWidget w;
         setMinimumWidth (w.width());
@@ -134,11 +140,13 @@ void SmartWindow::resizeToFit() {
         move (0, w.availableGeometry().height() - height());
     }
 
+    /* Show the window normally */
     else {
         resize (0, 0);
         setMinimumSize (size());
         setMaximumSize (size());
     }
 
-    QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (resizeToFit()));
+    /* Call this function later on, so that the window stays updated */
+    QTimer::singleShot (1000, Qt::CoarseTimer, this, SLOT (resizeToFit()));
 }

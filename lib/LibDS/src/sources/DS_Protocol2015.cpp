@@ -203,7 +203,7 @@ void DS_Protocol2015::readRobotData (QByteArray data) {
 
     /* Update the status of the communications and download robot information */
     if (!p_robotCommunication) {
-        p_robotCommunication = 1;
+        p_robotCommunication = true;
         downloadRobotInformation();
         emit communicationsChanged (true);
     }

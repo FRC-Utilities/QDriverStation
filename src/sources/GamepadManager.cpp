@@ -180,7 +180,6 @@ GM_Axis GamepadManager::getAxis (const SDL_Event* event) {
     return axis;
 }
 
-#include <qdebug.h>
 GM_Button GamepadManager::getButton (const SDL_Event* event) {
     GM_Button button;
 
@@ -269,15 +268,19 @@ void GamepadManager::onControllerAdded (const SDL_Event* event) {
     if (!SDL_IsGameController (event->cdevice.which)) {
         SDL_Joystick* js = SDL_JoystickOpen (event->cdevice.which);
 
-        if (js) {
-            char guid[1024];
+        /* Joystick exists, lets do some magic to get it working... */
+        if (js != Q_NULLPTR) {
+            /* Calculate the GUID string of the joystick */
+            char guid [1024];
             SDL_JoystickGetGUIDString (SDL_JoystickGetGUID (js), guid, sizeof (guid));
 
+            /* Generate a generic mapping with the GUID */
             QString mapping = QString ("%1,%2,%3")
                               .arg (guid)
                               .arg (SDL_JoystickName (js))
                               .arg (m_genericMapping);
 
+            /* Register the mapping and close the joystick */
             SDL_GameControllerAddMapping (mapping.toStdString().c_str());
             SDL_JoystickClose (js);
         }
@@ -289,7 +292,6 @@ void GamepadManager::onControllerAdded (const SDL_Event* event) {
 void GamepadManager::onControllerRemoved (const SDL_Event* event) {
     SDL_GameControllerClose (SDL_GameControllerOpen (event->cdevice.which));
 }
-
 
 void GamepadManager::registerJoysticksToDriverStation (int joystickCount) {
     m_ds->clearJoysticks();

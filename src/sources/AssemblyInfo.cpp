@@ -22,16 +22,42 @@
 
 #include "AssemblyInfo.h"
 
+#define APP_NAME    "QDriverStation"
+#define APP_MAJOR   "0"
+#define APP_MINOR   "1"
+#define APP_BUILD   "2"
+#define APP_STATE   "Beta"
+#define APP_COMPANY "WinT 3794"
+
 QString AssemblyInfo::name() {
-    return "QDriverStation";
+    return APP_NAME;
+}
+
+QString AssemblyInfo::major() {
+    return APP_MAJOR;
+}
+
+QString AssemblyInfo::minor() {
+    return APP_MINOR;
+}
+
+QString AssemblyInfo::build() {
+    return APP_BUILD;
+}
+
+QString AssemblyInfo::state() {
+    return APP_STATE;
 }
 
 QString AssemblyInfo::version() {
-    return "1.0 Beta";
+    return QString ("%1.%2%3 %4").arg (major(),
+                                       minor(),
+                                       build(),
+                                       state());
 }
 
 QString AssemblyInfo::organization() {
-    return "WinT 3794";
+    return APP_COMPANY;
 }
 
 QString AssemblyInfo::buildDateTime() {

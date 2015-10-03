@@ -29,10 +29,10 @@
 #include "Settings.h"
 #include "AdvancedSettings.h"
 
-#define COLOR_BASE       "#2a2a2a"
-#define COLOR_HIGHLIGHT  "#2edc00"
-#define COLOR_BACKGROUND "#313131"
-#define COLOR_FOREGROUND "#ffffff"
+#define ADV_COLOR_BASE       "#2a2a2a"
+#define ADV_COLOR_HIGHLIGHT  "#2edc00"
+#define ADV_COLOR_BACKGROUND "#313131"
+#define ADV_COLOR_FOREGROUND "#ffffff"
 
 AdvancedSettings::AdvancedSettings() {
     ui.setupUi (this);
@@ -72,10 +72,12 @@ void AdvancedSettings::setTeamNumber (int team) {
 void AdvancedSettings::readSettings() {
     loadApplicationColors();
 
-    QString base = Settings::get ("Base", COLOR_BASE).toString();
-    QString highlight = Settings::get ("Highlight", COLOR_HIGHLIGHT).toString();
-    QString background = Settings::get ("Background", COLOR_BACKGROUND).toString();
-    QString foreground = Settings::get ("Foreground", COLOR_FOREGROUND).toString();
+    QString base = Settings::get ("Base", ADV_COLOR_BASE).toString();
+    QString highlight = Settings::get ("Highlight", ADV_COLOR_HIGHLIGHT).toString();
+    QString background = Settings::get ("Background",
+                                        ADV_COLOR_BACKGROUND).toString();
+    QString foreground = Settings::get ("Foreground",
+                                        ADV_COLOR_FOREGROUND).toString();
 
     ui.BaseEdit->setText (base);
     ui.HighlightEdit->setText (highlight);
@@ -109,22 +111,22 @@ void AdvancedSettings::applySettings() {
 }
 
 void AdvancedSettings::resetSettings() {
-    Settings::set ("Base", COLOR_BASE);
-    Settings::set ("Highlight", COLOR_HIGHLIGHT);
-    Settings::set ("Background", COLOR_BACKGROUND);
-    Settings::set ("Foreground", COLOR_FOREGROUND);
+    Settings::set ("Base", ADV_COLOR_BASE);
+    Settings::set ("Highlight", ADV_COLOR_HIGHLIGHT);
+    Settings::set ("Background", ADV_COLOR_BACKGROUND);
+    Settings::set ("Foreground", ADV_COLOR_FOREGROUND);
 
     readSettings();
 }
 
 void AdvancedSettings::loadApplicationColors() {
-    QColor base = QColor (Settings::get ("Base", COLOR_BASE).toString());
+    QColor base = QColor (Settings::get ("Base", ADV_COLOR_BASE).toString());
     QColor highlight = QColor (Settings::get ("Highlight",
-                               COLOR_HIGHLIGHT).toString());
+                               ADV_COLOR_HIGHLIGHT).toString());
     QColor background = QColor (Settings::get ("Background",
-                                COLOR_BACKGROUND).toString());
+                                ADV_COLOR_BACKGROUND).toString());
     QColor foreground = QColor (Settings::get ("Foreground",
-                                COLOR_FOREGROUND).toString());
+                                ADV_COLOR_FOREGROUND).toString());
 
     QPalette palette = qApp->palette();
     palette.setColor (QPalette::Base, base);

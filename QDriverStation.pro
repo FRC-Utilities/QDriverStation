@@ -60,21 +60,21 @@ QMAKE_CXXFLAGS_RELEASE += -Ofast
 # Import source code and resources of the application
 #-------------------------------------------------------------------------------
 
-INCLUDEPATH += $$PWD/src/include/
+INCLUDEPATH += $$PWD/src/headers/
 RESOURCES += $$PWD/etc/resources/resources.qrc
 
 HEADERS += \
-    $$PWD/src/include/AdvancedSettings.h \
-    $$PWD/src/include/AssemblyInfo.h \
-    $$PWD/src/include/Battery.h \
-    $$PWD/src/include/CpuUsage.h \
-    $$PWD/src/include/Dashboard.h \
-    $$PWD/src/include/GamepadManager.h \
-    $$PWD/src/include/InitTasks.h \
-    $$PWD/src/include/MainWindow.h \
-    $$PWD/src/include/Settings.h \
-    $$PWD/src/include/SmartWindow.h \
-    $$PWD/src/include/JoysticksWidget.h
+    $$PWD/src/headers/AdvancedSettings.h \
+    $$PWD/src/headers/AssemblyInfo.h \
+    $$PWD/src/headers/Battery.h \
+    $$PWD/src/headers/CpuUsage.h \
+    $$PWD/src/headers/Dashboard.h \
+    $$PWD/src/headers/GamepadManager.h \
+    $$PWD/src/headers/InitTasks.h \
+    $$PWD/src/headers/MainWindow.h \
+    $$PWD/src/headers/Settings.h \
+    $$PWD/src/headers/SmartWindow.h \
+    $$PWD/src/headers/JoysticksWidget.h
 
 SOURCES += \
     $$PWD/src/sources/AdvancedSettings.cpp \
@@ -153,7 +153,7 @@ linux:!android {
 
 win32* {
     LIBS += -lPdh
-    RC_FILE = $$PWD/etc/deploy/windows/Info.rc
+    RC_FILE = $$PWD/etc/deploy/windows/info.rc
 }
 
 macx* {
