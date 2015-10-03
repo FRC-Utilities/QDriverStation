@@ -52,7 +52,15 @@
 #define FONT_NETCONSOLE QFont ("Inconsolata", 13)
 #endif
 
+#if defined __APPLE__
+#define INFO_SIZE 2.0
+#else
+#define INFO_SIZE 1.7
+#endif
+
 MainWindow::MainWindow() {
+    setVisible (false);
+
     m_ui = new Ui::MainWindow;
     m_ui->setupUi (this);
 
@@ -67,6 +75,8 @@ MainWindow::MainWindow() {
 
     DriverStation::getInstance()->init();
     GamepadManager::getInstance()->init();
+
+    setVisible (true);
 }
 
 MainWindow::~MainWindow() {
@@ -265,8 +275,8 @@ void MainWindow::configureWidgetAppearance() {
     int height = m_ui->StatusLabel->height() * 1.2;
     m_ui->StatusLabel->setMinimumHeight (height);
     m_ui->StatusLabel->setMaximumHeight (height);
-    m_ui->InfoFrame->setMinimumWidth (m_ui->StatusLabel->width() * 2);
-    m_ui->InfoFrame->setMaximumWidth (m_ui->StatusLabel->width() * 2);
+    m_ui->InfoFrame->setMinimumWidth (m_ui->StatusLabel->width() * INFO_SIZE);
+    m_ui->InfoFrame->setMaximumWidth (m_ui->StatusLabel->width() * INFO_SIZE);
 }
 
 void MainWindow::readSettings() {
