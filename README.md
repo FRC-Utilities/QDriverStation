@@ -20,18 +20,11 @@ To visit the wiki, please [click here](https://github.com/WinT-3794/QDriverStati
 
 ### Progress
 
-There is still a lot of work to be done in order to get a fully-working DriverStation library. Check the following:
-
-- [x] Discover if robot radio exists (by pinging 10.XX.YY.1)
-- [x] Discover if roboRIO exists (by pinging roboRIO-XXYY.local or using an user-provided address)
-- [x] Get robot information such as its library, PDP and PCM (by downloading and reading some files in the FTP server of the roboRIO)
-- [x] Discover if the robot code is loaded
-- [x] Generate and send robot packets (control modes are fully working)
-- [x] Encode joystick data to send it to the robot.
-- [x] Read robot battery voltage
-- [x] Built-in NetConsole for logging and finding issues in the robot
-- [x] Be able to reboot the roboRIO and restart the robot code from DS
-- [ ] Get CAN information (we need to do some more "Wiresharking" for that)
+- [x] Implement generic communication protocol
+- [x] Implement 2015 communication protocol
+- [ ] Implement 2014 communication protocol
+- [ ] Create unit tests
+- [ ] Analyze source code statically and squash possible bugs
 
 ### Credits
 
