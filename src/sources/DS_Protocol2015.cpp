@@ -262,12 +262,9 @@ DS_ControlMode DS_Protocol2015::getControlMode (char byte) {
     case CONTROL_AUTO:
         return DS_ControlAutonomous;
         break;
-    case CONTROL_ESTOP:
-        return DS_ControlEmergencyStop;
-        break;
     }
 
-    return DS_ControlDisabled;
+    return DS_ControlEmergencyStop;
 }
 
 char DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
