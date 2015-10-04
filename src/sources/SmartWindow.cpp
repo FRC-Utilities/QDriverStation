@@ -34,8 +34,8 @@ SmartWindow::SmartWindow() {
     m_promptOnQuit = true;
     m_windowMode = Invalid;
 
+    resizeToFit();
     setWindowMode (Settings::get ("Docked", false).toBool() ? Docked : Normal);
-    hide();
 }
 
 bool SmartWindow::isDocked() {
@@ -126,7 +126,6 @@ void SmartWindow::setWindowMode (const WindowMode& mode) {
         setWindowFlags (Qt::FramelessWindowHint);
 
     showNormal();
-    resizeToFit();
 }
 
 void SmartWindow::resizeToFit() {

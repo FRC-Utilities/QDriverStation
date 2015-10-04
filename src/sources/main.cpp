@@ -46,13 +46,6 @@
 #define _APP_ICON_CODE QIcon (":/icon.ico")
 #endif
 
-/*
- * Define the entry point functions
- */
-void loadTranslator();
-void loadApplicationFont();
-int main (int argc, char* argv[]);
-
 /**
  * @internal
  * Configures and runs the application
@@ -65,38 +58,16 @@ int main (int argc, char* argv[]) {
     app.setApplicationVersion (AssemblyInfo::version());
     app.setOrganizationName (AssemblyInfo::organization());
 
-    loadTranslator();
-    loadApplicationFont();
+    /* Load the application font */
+    QFontDatabase::addApplicationFont (":/fonts/FontAwesome.otf");
+    QFontDatabase::addApplicationFont (":/fonts/Inconsolata.otf");
+    QFontDatabase::addApplicationFont (":/fonts/Quicksand-Bold.ttf");
+    QFontDatabase::addApplicationFont (":/fonts/Quicksand-Regular.ttf");
+    app.setFont (QFont ("Quicksand", _PT_SIZE, -1, false));
 
     /* The window will show itself when initialized */
     MainWindow window;
     Q_UNUSED (window);
 
     return app.exec();
-}
-
-/**
- * @internal
- * Loads the translation file based on the user settings
- */
-void loadTranslator() {
-    QTranslator translator;
-    translator.load (
-        QString (":/translations/open-ds_%1")
-        .arg (Settings::get ("Language", "en").toString()));
-
-    qApp->installTranslator (&translator);
-}
-
-/**
- * @internal
- * Loads and configures an appropiate font for the UI
- */
-void loadApplicationFont() {
-    QFontDatabase::addApplicationFont (":/fonts/FontAwesome.otf");
-    QFontDatabase::addApplicationFont (":/fonts/Inconsolata.otf");
-    QFontDatabase::addApplicationFont (":/fonts/Quicksand-Bold.ttf");
-    QFontDatabase::addApplicationFont (":/fonts/Quicksand-Regular.ttf");
-
-    qApp->setFont (QFont ("Quicksand", _PT_SIZE, -1, false));
 }

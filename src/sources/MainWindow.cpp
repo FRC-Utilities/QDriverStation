@@ -73,8 +73,6 @@ MainWindow::MainWindow() {
 
     DriverStation::getInstance()->init();
     GamepadManager::getInstance()->init();
-
-    show();
 }
 
 MainWindow::~MainWindow() {
