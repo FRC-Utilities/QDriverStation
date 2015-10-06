@@ -50,12 +50,33 @@ class MainWindow : public SmartWindow {
     ~MainWindow();
 
   private:
-    bool m_network;
-
+    /**
+     * The DriverStation library, used for actually controling the robot
+     */
     DriverStation* m_ds;
+
+    /**
+     * Represents the UI of the dialog
+     */
     Ui::MainWindow* m_ui;
+
+    /**
+     * Used for showing the icons (which are in fact text) horizontally
+     * on the tab widgets, which use FontAwesome for the icons
+     */
     CustomTabStyle* m_tabStyle;
+
+    /**
+     * Used for showing the current axis and button values of a seleted
+     * joystick. We obtain joystick input with SDL
+     */
     JoysticksWidget* m_joysticksWidget;
+
+    /**
+     * Configures the application style and allows the user to input a
+     * custom network address for the robot (which is useful when
+     * the robot does not want to cooperate)
+     */
     AdvancedSettings* m_advancedSettings;
 
   private slots:
@@ -357,4 +378,4 @@ class CustomTabStyle : public QProxyStyle {
     }
 };
 
-#endif /* _QDRIVER_STATION_MAINWINDOW_H */
+#endif

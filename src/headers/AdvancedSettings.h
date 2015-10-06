@@ -69,8 +69,19 @@ class AdvancedSettings : public QDialog {
     void settingsChanged();
 
   private:
+    /**
+     * The user-interface components
+     */
     Ui::AdvancedSettings ui;
+
+    /**
+     * A list that represents the color preview boxes
+     */
     QList<QLabel*> m_colorBoxes;
+
+    /**
+     * A list that represents that line edits with the HEX colors
+     */
     QList<QLineEdit*> m_colorTexts;
 
   private slots:
@@ -143,4 +154,4 @@ class AdvancedSettings : public QDialog {
     int getEmitter (const QObject* object);
 };
 
-#endif /* _QDRIVER_STATION_ADVANCED_SETTINGS_H */
+#endif

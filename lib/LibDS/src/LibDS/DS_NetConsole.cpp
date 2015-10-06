@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,37 +20,28 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDRIVER_STATION_CPU_USAGE_H
-#define _QDRIVER_STATION_CPU_USAGE_H
+#include "LibDS/DS_Common.h"
+#include "LibDS/DS_NetConsole.h"
 
-/**
- * @class CpuUsage
- * @brief Provides information about the CPU usage of the host computer
- * @warning You must call CpuUsage::init() before using the class
- *
- * The \c CpuUsage class provides information regarding the total usage of the
- * CPU of the host computer. It currently supports Windows, Mac and Linux.
- *
- * The class was implemented for the sole use of the CPU progress bar in
- * the \c MainWindow, but we isolated its functions for readibility reasons.
- */
-class CpuUsage {
-  public:
-    /**
-     * Starts the processor time querying process on Microsoft Windows
-     */
-    static void init();
+#define NETCONSOLE_PORT 6666
 
-    /**
-     * Uses the native API calls of the target operating system to obtain the
-     * current CPU usage levels.
-     *
-     * If the target operating system is Mac or Linux, reads the output of a
-     * command line utility to determine the CPU usage level.
-     *
-     * @return an \c int between 0 and 100 that represents the CPU usage
-     */
-    static int getUsage();
-};
+DS_NetConsole::DS_NetConsole() {
+    connect (&m_socket, SIGNAL (readyRead()), this, SLOT (onDataReceived()));
+}
 
-#endif
+void DS_NetConsole::setTeamNumber (int team) {
+    m_socket.bind (QHostAddress (DS_GetStaticIp (team, 255)),
+                   NETCONSOLE_PORT,
+                   QUdpSocket::ShareAddress);
+}
+
+void DS_NetConsole::onDataReceived() {
+    QByteArray data;
+
+    while (m_socket.hasPendingDatagrams()) {
+        data.resize (m_socket.pendingDatagramSize());
+        m_socket.readDatagram (data.data(), data.size());
+    }
+
+    emit newMessage (QString::fromUtf8 (data));
+}

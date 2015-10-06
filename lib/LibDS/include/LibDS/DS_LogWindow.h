@@ -20,37 +20,35 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDRIVER_STATION_CPU_USAGE_H
-#define _QDRIVER_STATION_CPU_USAGE_H
+#ifndef _LIB_DS_LOG_WINDOW_H
+#define _LIB_DS_LOG_WINDOW_H
+
+#include <QWidget>
+#include <ui_DS_LogWindow.h>
+
+#include "DS_Global.h"
 
 /**
- * @class CpuUsage
- * @brief Provides information about the CPU usage of the host computer
- * @warning You must call CpuUsage::init() before using the class
+ * \class DS_LogWindow
  *
- * The \c CpuUsage class provides information regarding the total usage of the
- * CPU of the host computer. It currently supports Windows, Mac and Linux.
+ * Implements a simple window that displays the Driver Station log data
+ * in a graph.
  *
- * The class was implemented for the sole use of the CPU progress bar in
- * the \c MainWindow, but we isolated its functions for readibility reasons.
+ * The class is able to save the logs in the local storage and organize them
+ * by date and time automatically.
  */
-class CpuUsage {
-  public:
-    /**
-     * Starts the processor time querying process on Microsoft Windows
-     */
-    static void init();
+class LIB_DS_DECL DS_LogWindow : public QDialog {
+    Q_OBJECT
 
-    /**
-     * Uses the native API calls of the target operating system to obtain the
-     * current CPU usage levels.
-     *
-     * If the target operating system is Mac or Linux, reads the output of a
-     * command line utility to determine the CPU usage level.
-     *
-     * @return an \c int between 0 and 100 that represents the CPU usage
-     */
-    static int getUsage();
+  public:
+    explicit DS_LogWindow ();
+    ~DS_LogWindow();
+
+  public slots:
+    void setGraphPalette (QPalette palette);
+
+  private:
+    Ui::DS_LogWindow* m_ui;
 };
 
 #endif

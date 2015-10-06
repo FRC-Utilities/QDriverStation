@@ -88,10 +88,19 @@ class Dashboard : public QObject {
     explicit Dashboard();
     ~Dashboard();
 
-  private:
-    int m_current;
-    QProcess m_process;
     static Dashboard* m_instance;
+
+  private:
+    /**
+     * Represents the current dashboard index.
+     * This variable can be read with \c getCurrentDashboard()
+     */
+    int m_current;
+
+    /**
+     * Used for starting - and quiting - the dashboards
+     */
+    QProcess m_process;
 };
 
-#endif /* _QDRIVER_STATION_DASHBOARD_H */
+#endif

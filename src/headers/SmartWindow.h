@@ -91,7 +91,6 @@ class SmartWindow : public QMainWindow {
      */
     void setPromptOnQuit (bool prompt);
 
-
     /**
      * Changes the display mode of the window.
      * The available options are:
@@ -103,7 +102,6 @@ class SmartWindow : public QMainWindow {
 
   private slots:
     /**
-     * @internal
      * If the window is not docked and the window is configured to use a fixed
      * size, the function will resize the window to the smallest size possible
      * and will prevent the system from resizing it.
@@ -113,12 +111,30 @@ class SmartWindow : public QMainWindow {
     void resizeToFit();
 
   private:
-    int m_oldX;
-    int m_oldY;
+    /**
+     * Used to avoid showing a "Do you want to quit?" message twice when
+     * closing the applicaiton or closing the window.
+     */
     bool m_closingDown;
+
+    /**
+     * Used to determine whenever the user can resize the window or not.
+     * This variable can be changed using the \c setUseFixedSize() function
+     */
     bool m_useFixedSize;
+
+    /**
+     * Used to determine whenever we should ask for the user to confirm
+     * quiting the application or closing the current window.
+     *
+     * This variable can be changed using the \c setPromptOnQuit() function.
+     */
     bool m_promptOnQuit;
+
+    /**
+     * Represents the current window mode (normal or docked)
+     */
     WindowMode m_windowMode;
 };
 
-#endif /* _QDRIVER_STATION_SMART_WINDOW_H */
+#endif

@@ -20,37 +20,59 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDRIVER_STATION_CPU_USAGE_H
-#define _QDRIVER_STATION_CPU_USAGE_H
+#ifndef _LIB_DS_ELAPSED_TIME_H
+#define _LIB_DS_ELAPSED_TIME_H
+
+#include <QTimer>
+#include <QString>
+#include <QObject>
+#include <QElapsedTimer>
+
+#include "DS_Global.h"
 
 /**
- * @class CpuUsage
- * @brief Provides information about the CPU usage of the host computer
- * @warning You must call CpuUsage::init() before using the class
+ * \class DS_ElapsedTime
  *
- * The \c CpuUsage class provides information regarding the total usage of the
- * CPU of the host computer. It currently supports Windows, Mac and Linux.
- *
- * The class was implemented for the sole use of the CPU progress bar in
- * the \c MainWindow, but we isolated its functions for readibility reasons.
+ * The DS_ElapsedTime class calculates the elapsed time since a specified
+ * time in the execution of the application and presents it in human-readable
+ * format (mm::ss.ms).
  */
-class CpuUsage {
+class LIB_DS_DECL DS_ElapsedTime : public QObject {
+    Q_OBJECT
+
   public:
+    explicit DS_ElapsedTime();
+
+  public slots:
     /**
-     * Starts the processor time querying process on Microsoft Windows
+     * Pauses the elapsed time refresh process
      */
-    static void init();
+    void stop();
 
     /**
-     * Uses the native API calls of the target operating system to obtain the
-     * current CPU usage levels.
-     *
-     * If the target operating system is Mac or Linux, reads the output of a
-     * command line utility to determine the CPU usage level.
-     *
-     * @return an \c int between 0 and 100 that represents the CPU usage
+     * Resets the elapsed timer and starts the refresh process again
      */
-    static int getUsage();
+    void reset();
+
+  signals:
+    /**
+     * Emitted when the elapsed time is calculated and processed
+     * in a human-readable format
+     */
+    void elapsedTimeChanged (QString time);
+
+  private:
+    bool m_enabled;
+    QElapsedTimer m_time;
+
+  private slots:
+    /**
+     * @internal
+     * Uses the value given by the internal timer and processes its
+     * information into a human-readable format (mm::ss.ms)
+     */
+    void calculateElapsedTime();
 };
 
-#endif
+#endif /* _DRIVER_STATION_PORTS_H */
+

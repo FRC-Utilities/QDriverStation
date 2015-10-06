@@ -147,5 +147,5 @@ void SmartWindow::resizeToFit() {
     }
 
     /* Call this function later on, so that the window stays updated */
-    QTimer::singleShot (1000, Qt::CoarseTimer, this, SLOT (resizeToFit()));
+    QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (resizeToFit()));
 }

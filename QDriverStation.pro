@@ -77,6 +77,7 @@ HEADERS += \
     $$PWD/src/headers/JoysticksWidget.h
 
 SOURCES += \
+    $$PWD/src/main.cpp \
     $$PWD/src/sources/AdvancedSettings.cpp \
     $$PWD/src/sources/AssemblyInfo.cpp \
     $$PWD/src/sources/Battery.cpp \
@@ -84,7 +85,6 @@ SOURCES += \
     $$PWD/src/sources/Dashboard.cpp \
     $$PWD/src/sources/GamepadManager.cpp \
     $$PWD/src/sources/InitTasks.cpp \
-    $$PWD/src/sources/main.cpp \
     $$PWD/src/sources/MainWindow.cpp \
     $$PWD/src/sources/Settings.cpp \
     $$PWD/src/sources/SmartWindow.cpp \

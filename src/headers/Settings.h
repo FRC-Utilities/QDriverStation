@@ -54,4 +54,4 @@ class Settings {
     static QVariant get (QString key, const QVariant& defaultValue);
 };
 
-#endif /* _QDRIVER_STATION_SETTINGS_H */
+#endif

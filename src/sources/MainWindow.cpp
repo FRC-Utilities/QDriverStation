@@ -47,15 +47,15 @@
 #define CSS_DISABLED_UNCHECK "color: rgb(43, 0, 0); border-left: 0px;"
 
 #if defined __WIN32 || defined __WIN64
-#define FONT_NETCONSOLE QFont ("Consolas", 10)
+#  define FONT_NETCONSOLE QFont ("Consolas", 10)
 #else
-#define FONT_NETCONSOLE QFont ("Inconsolata", 13)
+#  define FONT_NETCONSOLE QFont ("Inconsolata", 13)
 #endif
 
 #if defined __APPLE__
-#define INFO_SIZE 2.0
+#  define INFO_SIZE 2.0
 #else
-#define INFO_SIZE 1.7
+#  define INFO_SIZE 1.7
 #endif
 
 MainWindow::MainWindow() {
@@ -356,7 +356,7 @@ void MainWindow::onStationChanged (int station) {
 }
 
 void MainWindow::onRebootClicked() {
-    if (!m_network)
+    if (!m_ds->networkAvailable())
         statusLabelAnimation();
 
     else
@@ -467,7 +467,7 @@ void MainWindow::setRobotEnabled (bool enabled) {
 }
 
 void MainWindow::updateLabelText (QLabel* label, QString text) {
-    if (m_network && !text.isEmpty())
+    if (m_ds->networkAvailable() && !text.isEmpty())
         label->setText (text);
 
     else
@@ -479,7 +479,6 @@ void MainWindow::onCodeChanged (bool available) {
 }
 
 void MainWindow::onCommunicationsChanged (bool available) {
-    m_network = available;
     m_ui->RobotCheck->setChecked (available);
     m_ui->Communications->setChecked (available);
 }

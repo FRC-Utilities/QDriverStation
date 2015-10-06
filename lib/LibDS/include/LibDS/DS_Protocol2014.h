@@ -20,37 +20,38 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDRIVER_STATION_CPU_USAGE_H
-#define _QDRIVER_STATION_CPU_USAGE_H
+#ifndef _LIB_DS_PROTOCOL_2014_H
+#define _LIB_DS_PROTOCOL_2014_H
+
+#include "DS_Global.h"
+#include "DS_Protocol.h"
+
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QNetworkAccessManager>
 
 /**
- * @class CpuUsage
- * @brief Provides information about the CPU usage of the host computer
- * @warning You must call CpuUsage::init() before using the class
- *
- * The \c CpuUsage class provides information regarding the total usage of the
- * CPU of the host computer. It currently supports Windows, Mac and Linux.
- *
- * The class was implemented for the sole use of the CPU progress bar in
- * the \c MainWindow, but we isolated its functions for readibility reasons.
+ * \class DS_Protocol2014
+ * Implements the 2014 communication protocol
  */
-class CpuUsage {
-  public:
-    /**
-     * Starts the processor time querying process on Microsoft Windows
-     */
-    static void init();
+class LIB_DS_DECL DS_Protocol2014 : public DS_Protocol {
+    Q_OBJECT
 
-    /**
-     * Uses the native API calls of the target operating system to obtain the
-     * current CPU usage levels.
-     *
-     * If the target operating system is Mac or Linux, reads the output of a
-     * command line utility to determine the CPU usage level.
-     *
-     * @return an \c int between 0 and 100 that represents the CPU usage
-     */
-    static int getUsage();
+  public slots:
+    void reset();
+    void reboot();
+    int robotPort();
+    int clientPort();
+    void restartCode();
+    QString robotAddress();
+    QString radioAddress();
+    void downloadRobotInformation();
+    QByteArray generateClientPacket();
+    QByteArray generateJoystickData();
+    void readRobotData (QByteArray data);
+    char getControlCode (DS_ControlMode mode);
+    DS_ControlMode getControlMode (char byte);
+    char getAllianceCode (DS_Alliance alliance);
 };
 
 #endif

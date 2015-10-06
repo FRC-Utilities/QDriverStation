@@ -66,7 +66,7 @@ int CpuUsage::getUsage() {
     int t = data.at (0) - '0';
     int u = data.at (1) - '0';
 
-    /* If the data is shit then make the value 0 */
+    /* Process data is invalid or we do not know how to read */
     if (t < 0) t = 0;
     if (u < 0) u = 0;
 
@@ -90,7 +90,7 @@ int CpuUsage::getUsage() {
     int t = data.at (0) - '0';
     int u = data.at (1) - '0';
 
-    /* If the data is shit then make the value 0 */
+    /* Process data is invalid or we do not know how to read */
     if (t < 0) t = 0;
     if (u < 0) u = 0;
 

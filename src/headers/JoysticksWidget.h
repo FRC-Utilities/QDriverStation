@@ -67,9 +67,24 @@ class JoysticksWidget : public QWidget {
     void statusChanged (bool joysticksAvailable);
 
   private:
+    /**
+     * Represents the UI components of the widget
+     */
     Ui::Joysticks ui;
+
+    /**
+     * Used for getting joystick input with SDL
+     */
     GamepadManager* m_manager;
+
+    /**
+     * Represents the axes of the selected joystick
+     */
     QList<QProgressBar*> m_axes;
+
+    /**
+     * Represents the buttons of the selected joystick
+     */
     QList<QPushButton*> m_buttons;
 
   private slots:
@@ -107,4 +122,4 @@ class JoysticksWidget : public QWidget {
     void onButtonEvent (const GM_Button& button);
 };
 
-#endif /* _QDRIVER_STATION_JOYSTICKS_H */
+#endif

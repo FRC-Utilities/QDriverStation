@@ -194,14 +194,40 @@ class GamepadManager : public QObject {
      */
     ~GamepadManager();
 
-  private:
-    int m_time;
-    int m_tracker;
-
-    DriverStation* m_ds;
-    QString m_genericMapping;
     static GamepadManager* m_instance;
 
+  private:
+    /**
+     * Represents the update/refresh interval of the application.
+     * Note that we use a continous loop to read joystick data, and
+     * this loop will be called at the specified interval described above
+     *
+     * This variable can be changed using the \c setInterval() function.
+     */
+    int m_time;
+
+    /**
+     * Used to ensure that the joystick index is dynamic.
+     * SDL only increases the joystick index, but we are inderested in
+     * getting a index that can be used with a list
+     */
+    int m_tracker;
+
+    /**
+     * Represents the current instance of the DriverStation, used for
+     * feeding it joystick data when a SDL event is fired up
+     */
+    DriverStation* m_ds;
+
+    /**
+     * Represents a generic Xbox 360 mapping that we use when we have to
+     * deal with an unsupported joystick
+     */
+    QString m_genericMapping;
+
+    /**
+     * Used to keep the dynamic IDs in sync with the SDL index IDs
+     */
     QList<int> idList;
 
     /**
@@ -291,4 +317,4 @@ class GamepadManager : public QObject {
     void registerJoysticksToDriverStation (int joystickCount);
 };
 
-#endif /* _QDRIVER_STATION_GAMEPAD_MANAGER_H */
+#endif

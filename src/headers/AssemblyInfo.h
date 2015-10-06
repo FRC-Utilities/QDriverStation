@@ -49,4 +49,4 @@ class AssemblyInfo {
     static QString buildDateTime();
 };
 
-#endif /* _QDRIVER_STATION_ASSEMBLY_INFO_H */
+#endif

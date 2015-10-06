@@ -139,7 +139,7 @@ QStringList GamepadManager::joystickList() {
 }
 
 void GamepadManager::init() {
-    m_time = 20;
+    m_time = 50;
     m_tracker = -1;
     QTimer::singleShot (500, this, SLOT (readSdlEvents()));
 }

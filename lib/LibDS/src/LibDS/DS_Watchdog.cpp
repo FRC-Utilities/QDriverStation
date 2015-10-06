@@ -20,37 +20,24 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDRIVER_STATION_CPU_USAGE_H
-#define _QDRIVER_STATION_CPU_USAGE_H
+#include "LibDS/DS_Watchdog.h"
 
-/**
- * @class CpuUsage
- * @brief Provides information about the CPU usage of the host computer
- * @warning You must call CpuUsage::init() before using the class
- *
- * The \c CpuUsage class provides information regarding the total usage of the
- * CPU of the host computer. It currently supports Windows, Mac and Linux.
- *
- * The class was implemented for the sole use of the CPU progress bar in
- * the \c MainWindow, but we isolated its functions for readibility reasons.
- */
-class CpuUsage {
-  public:
-    /**
-     * Starts the processor time querying process on Microsoft Windows
-     */
-    static void init();
+DS_Watchdog::DS_Watchdog() {
+    m_timeout = 0;
+    m_timer = new QTimer;
+    connect (m_timer, SIGNAL (timeout()), this, SIGNAL (timeout()));
+}
 
-    /**
-     * Uses the native API calls of the target operating system to obtain the
-     * current CPU usage levels.
-     *
-     * If the target operating system is Mac or Linux, reads the output of a
-     * command line utility to determine the CPU usage level.
-     *
-     * @return an \c int between 0 and 100 that represents the CPU usage
-     */
-    static int getUsage();
-};
+DS_Watchdog::~DS_Watchdog() {
+    delete m_timer;
+}
 
-#endif
+void DS_Watchdog::reset() {
+    m_timer->stop();
+    m_timer->start (m_timeout);
+}
+
+void DS_Watchdog::setTimeout (int timeout) {
+    m_timeout = timeout;
+    reset();
+}

@@ -46,7 +46,7 @@ class Battery {
      *
      * @return \c true if the computer is connected to an AC power supply
      */
-    static bool isPlugged();
+    static  bool isPlugged();
 
     /**
      * Uses the native API calls of the target operating system to obtain the
@@ -61,4 +61,4 @@ class Battery {
     static int currentLevel();
 };
 
-#endif /* _QDRIVER_STATION_BATTERY_H */
+#endif

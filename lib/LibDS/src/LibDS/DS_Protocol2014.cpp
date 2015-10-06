@@ -20,37 +20,60 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDRIVER_STATION_CPU_USAGE_H
-#define _QDRIVER_STATION_CPU_USAGE_H
+#include "LibDS/DS_Protocol2014.h"
 
-/**
- * @class CpuUsage
- * @brief Provides information about the CPU usage of the host computer
- * @warning You must call CpuUsage::init() before using the class
- *
- * The \c CpuUsage class provides information regarding the total usage of the
- * CPU of the host computer. It currently supports Windows, Mac and Linux.
- *
- * The class was implemented for the sole use of the CPU progress bar in
- * the \c MainWindow, but we isolated its functions for readibility reasons.
- */
-class CpuUsage {
-  public:
-    /**
-     * Starts the processor time querying process on Microsoft Windows
-     */
-    static void init();
+void DS_Protocol2014::reset() {
 
-    /**
-     * Uses the native API calls of the target operating system to obtain the
-     * current CPU usage levels.
-     *
-     * If the target operating system is Mac or Linux, reads the output of a
-     * command line utility to determine the CPU usage level.
-     *
-     * @return an \c int between 0 and 100 that represents the CPU usage
-     */
-    static int getUsage();
-};
+}
 
-#endif
+void DS_Protocol2014::reboot() {
+
+}
+
+int DS_Protocol2014::robotPort() {
+
+}
+
+int DS_Protocol2014::clientPort() {
+
+}
+
+void DS_Protocol2014::restartCode() {
+
+}
+
+QString DS_Protocol2014::robotAddress() {
+
+}
+
+QString DS_Protocol2014::radioAddress() {
+
+}
+
+void DS_Protocol2014::downloadRobotInformation() {
+
+}
+
+QByteArray DS_Protocol2014::generateClientPacket() {
+
+}
+
+QByteArray DS_Protocol2014::generateJoystickData() {
+
+}
+
+void DS_Protocol2014::readRobotData (QByteArray data) {
+
+}
+
+char DS_Protocol2014::getControlCode (DS_ControlMode mode) {
+
+}
+
+DS_ControlMode DS_Protocol2014::getControlMode (char byte) {
+
+}
+
+char DS_Protocol2014::getAllianceCode (DS_Alliance alliance) {
+
+}
