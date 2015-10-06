@@ -10,5 +10,8 @@
         <file>fonts/Quicksand-Regular.otf</file>
         <file>fonts/Inconsolata.otf</file>
         <file>fonts/FontAwesome.otf</file>
+        <file>icons/Theme.png</file>
+        <file>icons/Open.png</file>
+        <file>icons/Save.png</file>
     </qresource>
 </RCC>

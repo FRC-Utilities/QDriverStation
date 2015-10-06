@@ -26,7 +26,8 @@
 #include "Settings.h"
 #include "Dashboard.h"
 
-/* Decide whenever to use 'Program Files' or 'Program Files (x86)' */
+/*
+ * Decide whenever to use 'Program Files' or 'Program Files (x86)' }*/
 #if defined _WIN32 || defined _WIN64
 #include <windows.h>
 #define is64Bits true

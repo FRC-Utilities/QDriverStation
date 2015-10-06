@@ -130,6 +130,18 @@ class AdvancedSettings : public QDialog {
 
     /**
      * @internal
+     * Asks the user to point out to a theme file and loads it
+     */
+    void onImportClicked();
+
+    /**
+     * @internal
+     * Asks the user to save a theme file in the system and writes the theme file
+     */
+    void onExportClicked();
+
+    /**
+     * @internal
      * Shows a color dialog that allows the user to change a color of the UI
      */
     void onSelectorClicked();

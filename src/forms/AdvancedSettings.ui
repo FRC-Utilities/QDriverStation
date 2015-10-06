@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>374</width>
-    <height>438</height>
+    <width>359</width>
+    <height>463</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -47,8 +47,8 @@
          <property name="title">
           <string>Networking</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,1">
+          <item>
            <widget class="QWidget" name="widget_3" native="true">
             <layout class="QVBoxLayout" name="verticalLayout_2">
              <property name="leftMargin">
@@ -64,19 +64,19 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QLabel" name="label">
+              <widget class="QLabel" name="NetworkIcon">
                <property name="text">
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="../../../etc/resources/desktop/resources.qrc">:/icons/Network.png</pixmap>
+                <pixmap resource="../../etc/resources/resources.qrc">:/icons/Network.png</pixmap>
                </property>
               </widget>
              </item>
             </layout>
            </widget>
           </item>
-          <item row="0" column="1">
+          <item>
            <widget class="QWidget" name="widget_2" native="true">
             <layout class="QVBoxLayout" name="verticalLayout_5">
              <item>
@@ -276,6 +276,103 @@
          </layout>
         </widget>
        </item>
+       <item>
+        <widget class="QGroupBox" name="ThemeBox">
+         <property name="title">
+          <string>Themes</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,1">
+          <item>
+           <widget class="QWidget" name="widget_4" native="true">
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="ThemeIcon">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="pixmap">
+                <pixmap resource="../../etc/resources/resources.qrc">:/icons/Theme.png</pixmap>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widget_5" native="true">
+            <layout class="QGridLayout" name="gridLayout">
+             <item row="1" column="0">
+              <widget class="QToolButton" name="ExportButton">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Save theme file...</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../../etc/resources/resources.qrc">
+                 <normaloff>:/icons/Save.png</normaloff>:/icons/Save.png</iconset>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="lineEdit">
+               <property name="text">
+                <string>Import theme file...</string>
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QToolButton" name="ImportButton">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Import theme file...</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../../etc/resources/resources.qrc">
+                 <normaloff>:/icons/Open.png</normaloff>:/icons/Open.png</iconset>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="lineEdit_2">
+               <property name="text">
+                <string>Export theme file...</string>
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
       </layout>
      </widget>
     </widget>
@@ -345,7 +442,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../../etc/resources/desktop/resources.qrc"/>
+  <include location="../../etc/resources/resources.qrc"/>
  </resources>
  <connections>
   <connection>

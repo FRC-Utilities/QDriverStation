@@ -41,6 +41,14 @@
 #include "JoysticksWidget.h"
 #include "AdvancedSettings.h"
 
+/*
+ * Much code, very mess, wow
+ * -------------------------
+ * This file is so long because it must deal with very specific UI components,
+ * if you want to understand  something, I recommend you to go to the header
+ * file  and CTLR + Click a function/method that you are interested in.
+ */
+
 #define CSS_ENABLED_CHECK    "color: rgb(33, 255, 43);"
 #define CSS_DISABLED_CHECK   "color: rgb(255, 33, 43); border-left: 0px;"
 #define CSS_ENABLED_UNCHECK  "color: rgb(0, 43, 0);"

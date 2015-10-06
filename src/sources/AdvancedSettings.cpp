@@ -29,6 +29,12 @@
 #include "Settings.h"
 #include "AdvancedSettings.h"
 
+/*
+ * TODO
+ * ----
+ * Clean up this class, it makes you cry blood when you read it
+ */
+
 #define ADV_COLOR_BASE       "#2a2a2a"
 #define ADV_COLOR_HIGHLIGHT  "#2edc00"
 #define ADV_COLOR_BACKGROUND "#313131"
@@ -39,9 +45,11 @@ AdvancedSettings::AdvancedSettings() {
     resize (0, 0);
 
     /* Main dialog buttons */
-    connect (ui.ApplyButton, SIGNAL (clicked()), this, SLOT (onApplyClicked()));
-    connect (ui.ResetButton, SIGNAL (clicked()), this, SLOT (onResetClicked()));
+    connect (ui.ApplyButton,  SIGNAL (clicked()), this, SLOT (onApplyClicked()));
+    connect (ui.ResetButton,  SIGNAL (clicked()), this, SLOT (onResetClicked()));
     connect (ui.CancelButton, SIGNAL (clicked()), this, SLOT (onCancelClicked()));
+    connect (ui.ImportButton, SIGNAL (clicked()), this, SLOT (onImportClicked()));
+    connect (ui.ExportButton, SIGNAL (clicked()), this, SLOT (onExportClicked()));
 
     /* Appearance tab */
     connect (ui.BaseButton,       SIGNAL (clicked()),
@@ -164,6 +172,14 @@ void AdvancedSettings::onApplyClicked() {
 void AdvancedSettings::onCancelClicked() {
     hide();
     readSettings();
+}
+
+void AdvancedSettings::onImportClicked() {
+
+}
+
+void AdvancedSettings::onExportClicked() {
+
 }
 
 void AdvancedSettings::onSelectorClicked() {
