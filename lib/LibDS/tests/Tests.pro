@@ -1,6 +1,4 @@
 #
-# This file is part of QDriverStation
-#
 # Copyright (c) 2015 WinT 3794 <http:/wint3794.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -36,4 +34,5 @@ SOURCES += \
         $$PWD/TST_Protocol.cpp \
 		$$PWD/TST_Protocol2014.cpp \
         $$PWD/TST_Protocol2015.cpp \
-        $$PWD/TST_RobotManager.cpp
+        $$PWD/TST_RobotManager.cpp \
+	    $$PWD/TST_Watchdog.cpp
