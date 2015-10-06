@@ -22,18 +22,10 @@
 # THE SOFTWARE.
 #
 
-QT += testlib
-include ($$PWD/../LibDS.pri)
+TEMPLATE = lib
+TARGET = LibDS
+VERSION = 0.12
 
-SOURCES += \
-        $$PWD/TST_Client.cpp \
-        $$PWD/TST_Common.cpp \
-        $$PWD/TST_DriverStation.cpp \
-        $$PWD/TST_ElapsedTime.cpp \
-        $$PWD/TST_LogWindow.cpp \
-        $$PWD/TST_NetConsole.cpp \
-        $$PWD/TST_NetworkDiagnostics.cpp \
-        $$PWD/TST_Protocol.cpp \
-		$$PWD/TST_Protocol2014.cpp \
-        $$PWD/TST_Protocol2015.cpp \
-        $$PWD/TST_RobotManager.cpp
+DEFINES += LIB_DS_SHARED
+
+include ($$PWD/LibDS.pri)

@@ -26,15 +26,16 @@
 #include <QTimer>
 #include <QObject>
 
-#include "../src/headers/DS_Client.h"
-#include "../src/headers/DS_LogWindow.h"
-#include "../src/headers/DS_NetConsole.h"
-#include "../src/headers/DS_ElapsedTime.h"
-#include "../src/headers/DS_ProtocolManager.h"
+#include "LibDS/DS_Global.h"
+#include "LibDS/DS_Client.h"
+#include "LibDS/DS_LogWindow.h"
+#include "LibDS/DS_NetConsole.h"
+#include "LibDS/DS_ElapsedTime.h"
+#include "LibDS/DS_Protocol2014.h"
+#include "LibDS/DS_Protocol2015.h"
+#include "LibDS/DS_ProtocolManager.h"
 
-#include "../src/headers/DS_Protocol2015.h"
-
-class DriverStation : public QObject {
+class LIB_DS_DECL DriverStation : public QObject {
     Q_OBJECT
 
   public:
@@ -271,13 +272,50 @@ class DriverStation : public QObject {
     static DriverStation* m_instance;
 
   private:
+    /**
+     * This variable allows (or disallows) us to receive joystick
+     * data and perform most of the operations of the Driver Station.
+     *
+     * This variable is set to \c true when the \c init() function is called
+     */
     bool m_init;
 
+    /**
+     * The client, used for sending and receiving data
+     * from a specified network address and port, go on
+     * and crash the school's server if you wish
+     */
     DS_Client m_client;
+
+    /**
+     * Used for showing events and graphs of the robot
+     * behaviour over a specified time lapse
+     */
     DS_LogWindow m_logWindow;
+
+    /**
+     * Used for receiving messages broadcasted by the
+     * robot over the network
+     */
     DS_NetConsole m_netConsole;
+
+    /**
+     * The current operation protocol of the robot
+     */
     DS_Protocol2015 m_protocol;
+
+    /**
+     * Allows us to select an operation protocol and
+     * configure it automatically to fit the librarie's
+     * standards
+     */
     DS_ProtocolManager m_manager;
+
+    /**
+     * Counts the elapsed time since the robot was
+     * enabled. When the robot is disabled, the elapsed
+     * time is stopped (just as in the official Driver Station)
+     */
     DS_ElapsedTime m_elapsedTime;
 
   private slots:
@@ -290,17 +328,8 @@ class DriverStation : public QObject {
 
     /**
      * @internal
-     * Sends a 6-byte packet to the robot that contains:
-     *     - Ping diagnostic data
-     *     - Robot state command
-     *     - Control bit (TeleOp, Autonomous, etc)
-     *     - Alliance and position of the robot
-     *
-     * Additionaly, this function may send the robot a 27-byte packet that
-     * contains the system ASCII timezone if the client has just established
-     * a connection with the robot.
-     *
-     * This function is called once every 20 milliseconds.
+     * Sends the robot a generated packet from the current protocol every
+     * 20 milliseconds.
      */
     void sendRobotPackets();
 
@@ -314,6 +343,7 @@ class DriverStation : public QObject {
     QString getStatus();
 
     /**
+     * @internal
      * Updates the elapsed time when the control mode is changed
      */
     void onControlModeChanged (DS_ControlMode mode);

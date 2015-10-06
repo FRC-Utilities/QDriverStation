@@ -25,8 +25,11 @@
 CODECFORTR = UTF-8
 CODECFORSRC = UTF-8
 
+QT += gui
 QT += core
 QT += network
+QT += widgets
+
 CONFIG += c++11
 QMAKE_CXXFLAGS += -std=c++0x
 
@@ -35,33 +38,31 @@ INCLUDEPATH += $$PWD/include
 include ($$PWD/lib/QCustomPlot/QCustomPlot.pri)
 
 FORMS += \
-    $$PWD/src/forms/DS_LogWindow.ui
+    $$PWD/src/LibDS/ui/DS_LogWindow.ui
+
+SOURCES += \
+    $$PWD/src/DriverStation.cpp \
+    $$PWD/src/LibDS/DS_Client.cpp \
+    $$PWD/src/LibDS/DS_Common.cpp \
+    $$PWD/src/LibDS/DS_ElapsedTime.cpp \
+    $$PWD/src/LibDS/DS_LogWindow.cpp \
+    $$PWD/src/LibDS/DS_NetConsole.cpp \
+    $$PWD/src/LibDS/DS_Protocol.cpp \
+    $$PWD/src/LibDS/DS_Protocol2014.cpp \
+    $$PWD/src/LibDS/DS_Protocol2015.cpp \
+    $$PWD/src/LibDS/DS_ProtocolManager.cpp \
+    $$PWD/src/LibDS/DS_Watchdog.cpp
 
 HEADERS += \
     $$PWD/include/DriverStation.h \
-    $$PWD/src/headers/DS_Client.h \
-    $$PWD/src/headers/DS_Common.h \
-    $$PWD/src/headers/DS_LogWindow.h \
-    $$PWD/src/headers/DS_NetConsole.h \
-    $$PWD/src/headers/DS_Protocol.h \
-    $$PWD/src/headers/DS_Protocol2015.h \
-    $$PWD/src/headers/DS_ElapsedTime.h \
-    $$PWD/src/headers/DS_ProtocolManager.h
-
-SOURCES += \
-    $$PWD/src/sources/DriverStation.cpp \
-    $$PWD/src/sources/DS_Client.cpp \
-    $$PWD/src/sources/DS_Common.cpp \
-    $$PWD/src/sources/DS_LogWindow.cpp \
-    $$PWD/src/sources/DS_NetConsole.cpp \
-    $$PWD/src/sources/DS_Protocol.cpp \
-    $$PWD/src/sources/DS_Protocol2015.cpp \
-    $$PWD/src/sources/DS_ElapsedTime.cpp \
-    $$PWD/src/sources/DS_ProtocolManager.cpp
-
-
-
-
-
-
-
+    $$PWD/include/LibDS/DS_Client.h \
+    $$PWD/include/LibDS/DS_Common.h \
+    $$PWD/include/LibDS/DS_ElapsedTime.h \
+    $$PWD/include/LibDS/DS_Global.h \
+    $$PWD/include/LibDS/DS_LogWindow.h \
+    $$PWD/include/LibDS/DS_NetConsole.h \
+    $$PWD/include/LibDS/DS_Protocol.h \
+    $$PWD/include/LibDS/DS_Protocol2014.h \
+    $$PWD/include/LibDS/DS_Protocol2015.h \
+    $$PWD/include/LibDS/DS_ProtocolManager.h \
+    $$PWD/include/LibDS/DS_Watchdog.h
