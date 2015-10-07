@@ -89,8 +89,7 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
     void updateJoystickButton (int js, int button, bool status);
 
     /**
-     * @brief readRobotData
-     * @param data
+     * Sends the input \a data to the current protocol to decode
      */
     void readRobotData (QByteArray data);
 
@@ -161,6 +160,12 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
      * the PCM information files and analyzed them
      */
     void pcmVersionChanged (QString version);
+
+    /**
+     * Emitted when we receive a packet from the robot. Used by the library
+	 * to generate and send another control packet to the robot.
+     */
+    void packetReceived();
 
   private:
     /**

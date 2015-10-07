@@ -38,7 +38,8 @@ enum DS_ControlMode {
     DS_ControlTeleOp,
     DS_ControlDisabled,
     DS_ControlAutonomous,
-    DS_ControlEmergencyStop
+    DS_ControlEmergencyStop,
+    DS_ControlNoCommunication
 };
 
 /**
@@ -79,7 +80,7 @@ struct LIB_DS_DECL DS_PingData {
      * Generates the correct values for \c byte1 and \c byte2 based on the
      * value of the given \a index
      */
-    void generatePingData (int index);
+    int generatePingData (int index);
 
     /**
      * Returns the index of the packet as a normal \c int

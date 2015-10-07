@@ -31,6 +31,11 @@ DS_Timers::DS_Timers() {
     t500 = new QTimer (Q_NULLPTR);
     m_thread = new QThread (this);
 
+    t20->moveToThread  (m_thread);
+    t60->moveToThread  (m_thread);
+    t100->moveToThread (m_thread);
+    t500->moveToThread (m_thread);
+
     t20->setInterval  (20);
     t60->setInterval  (60);
     t100->setInterval (100);
@@ -40,11 +45,6 @@ DS_Timers::DS_Timers() {
     t60->setTimerType  (Qt::PreciseTimer);
     t100->setTimerType (Qt::PreciseTimer);
     t500->setTimerType (Qt::PreciseTimer);
-
-    t20->moveToThread  (m_thread);
-    t60->moveToThread  (m_thread);
-    t100->moveToThread (m_thread);
-    t500->moveToThread (m_thread);
 
     connect (t20,  SIGNAL (timeout()), this, SIGNAL (timeout20()));
     connect (t60,  SIGNAL (timeout()), this, SIGNAL (timeout60()));

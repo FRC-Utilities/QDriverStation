@@ -185,6 +185,12 @@ class LIB_DS_DECL DriverStation : public QObject {
      */
     void updateJoystickButton (int js, int button, bool state);
 
+    /**
+     * Sends a robot packet in a regular manner when we don´t get robot responses.
+     * This function will stop sending packets when we receive a robot packet
+     */
+    void contactRobot();
+
   signals:
     /**
      * Emitted when the client detects that the availability of the robot

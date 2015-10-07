@@ -31,18 +31,27 @@ DriverStation::DriverStation() {
     sendRobotPackets();
     setProtocol (&m_protocol);
 
-    connect (&m_manager,     SIGNAL (codeChanged (bool)),
-             this,           SIGNAL (codeChanged (bool)));
+    /* Update internal values and notify object on robot status events */
+    connect (&m_manager,     SIGNAL (codeChanged           (bool)),
+             this,           SLOT   (updateStatus          (bool)));
+    connect (&m_manager,     SIGNAL (communicationsChanged (bool)),
+             this,           SLOT   (updateStatus          (bool)));
+    connect (&m_manager,     SIGNAL (controlModeChanged    (DS_ControlMode)),
+             this,           SLOT   (onControlModeChanged  (DS_ControlMode)));
+    connect (&m_manager,     SIGNAL (codeChanged           (bool)),
+             this,           SIGNAL (codeChanged           (bool)));
     connect (&m_manager,     SIGNAL (communicationsChanged (bool)),
              this,           SIGNAL (communicationsChanged (bool)));
-    connect (&m_manager,     SIGNAL (controlModeChanged (DS_ControlMode)),
-             this,           SIGNAL (controlModeChanged (DS_ControlMode)));
-    connect (&m_manager,     SIGNAL (diskUsageChanged (int, int)),
-             this,           SIGNAL (diskUsageChanged (int, int)));
-    connect (&m_manager,     SIGNAL (ramUsageChanged (int, int)),
-             this,           SIGNAL (ramUsageChanged (int, int)));
-    connect (&m_manager,     SIGNAL (voltageChanged (QString)),
-             this,           SIGNAL (voltageChanged (QString)));
+    connect (&m_manager,     SIGNAL (controlModeChanged    (DS_ControlMode)),
+             this,           SIGNAL (controlModeChanged    (DS_ControlMode)));
+    connect (&m_manager,     SIGNAL (diskUsageChanged      (int, int)),
+             this,           SIGNAL (diskUsageChanged      (int, int)));
+    connect (&m_manager,     SIGNAL (ramUsageChanged       (int, int)),
+             this,           SIGNAL (ramUsageChanged       (int, int)));
+    connect (&m_manager,     SIGNAL (voltageChanged        (QString)),
+             this,           SIGNAL (voltageChanged        (QString)));
+
+    /* Robot information has changed */
     connect (&m_manager,     SIGNAL (libVersionChanged (QString)),
              this,           SIGNAL (libVersionChanged (QString)));
     connect (&m_manager,     SIGNAL (rioVersionChanged (QString)),
@@ -52,25 +61,25 @@ DriverStation::DriverStation() {
     connect (&m_manager,     SIGNAL (pdpVersionChanged (QString)),
              this,           SIGNAL (pdpVersionChanged (QString)));
 
-    connect (&m_manager,     SIGNAL (codeChanged           (bool)),
-             this,           SLOT   (updateStatus          (bool)));
-    connect (&m_manager,     SIGNAL (communicationsChanged (bool)),
-             this,           SLOT   (updateStatus          (bool)));
-    connect (&m_manager,     SIGNAL (controlModeChanged    (DS_ControlMode)),
-             this,           SLOT   (onControlModeChanged  (DS_ControlMode)));
-
+    /* Sync robot address and calculated IPs automatically */
     connect (&m_manager,     SIGNAL (robotAddressChanged (QString)),
              &m_client,      SLOT   (setRobotAddress     (QString)));
 
+    /* Update the elapsed time text automatically */
     connect (&m_elapsedTime, SIGNAL (elapsedTimeChanged (QString)),
              this,           SIGNAL (elapsedTimeChanged (QString)));
+
+    /* New NetConsole message received */
     connect (&m_netConsole,  SIGNAL (newMessage (QString)),
              this,           SIGNAL (newNetConsoleMessage (QString)));
-    connect (&m_client,      SIGNAL (dataReceived  (QByteArray)),
-             &m_manager,     SLOT   (readRobotData (QByteArray)));
 
+    /* Send and read robot packets */
+    connect (&m_manager,               SIGNAL (packetReceived()),
+             this,                     SLOT   (sendRobotPackets()));
+    connect (&m_client,                SIGNAL (dataReceived  (QByteArray)),
+             &m_manager,               SLOT   (readRobotData (QByteArray)));
     connect (DS_Timers::getInstance(), SIGNAL (timeout20()),
-             this,                    SLOT   (sendRobotPackets()));
+             this,                     SLOT   (contactRobot()));
 }
 
 DriverStation::~DriverStation() {
@@ -170,7 +179,6 @@ void DriverStation::setProtocol (DS_Protocol* protocol) {
 }
 
 void DriverStation::setTeamNumber (int team) {
-    m_netConsole.setTeamNumber (team);
     m_manager.protocol()->setTeamNumber (team);
 }
 
@@ -210,6 +218,11 @@ void DriverStation::updateJoystickButton (int js, int button, bool state) {
         m_manager.updateJoystickButton (js, button, state);
 }
 
+void DriverStation::contactRobot() {
+    if (m_init && !m_manager.protocol()->robotCommunication())
+        sendRobotPackets();
+}
+
 void DriverStation::resetInternalValues() {
     m_elapsedTime.reset();
     m_elapsedTime.stop();
@@ -226,10 +239,8 @@ void DriverStation::sendRobotPackets() {
 }
 
 QString DriverStation::getStatus() {
-    if (!m_manager.protocol()->robotCommunication())
-        return "No Robot Communication";
-
-    else if (!m_manager.protocol()->robotCode())
+    if (m_manager.protocol()->robotCommunication() &&
+            !m_manager.protocol()->robotCode())
         return "No Robot Code";
 
     return DS_GetControlModeString (m_manager.protocol()->controlMode());
@@ -241,7 +252,9 @@ void DriverStation::updateStatus (bool ignore_me) {
 }
 
 void DriverStation::onControlModeChanged (DS_ControlMode mode) {
-    mode == DS_ControlDisabled || mode == DS_ControlEmergencyStop ?
+    mode == DS_ControlDisabled
+    || mode == DS_ControlEmergencyStop
+    || mode == DS_ControlNoCommunication ?
     m_elapsedTime.stop() : m_elapsedTime.reset();
 
     emit robotStatusChanged (getStatus());
