@@ -23,21 +23,11 @@
 #include "LibDS/DS_Watchdog.h"
 
 DS_Watchdog::DS_Watchdog() {
-    m_timeout = 0;
-    m_timer = new QTimer;
-    connect (m_timer, SIGNAL (timeout()), this, SIGNAL (timeout()));
-}
-
-DS_Watchdog::~DS_Watchdog() {
-    delete m_timer;
+    connect (&m_timer, SIGNAL (timeout()), this, SIGNAL (timeout()));
+    m_timer.start (1000);
 }
 
 void DS_Watchdog::reset() {
-    m_timer->stop();
-    m_timer->start (m_timeout);
-}
-
-void DS_Watchdog::setTimeout (int timeout) {
-    m_timeout = timeout;
-    reset();
+    m_timer.stop();
+    m_timer.start (1000);
 }

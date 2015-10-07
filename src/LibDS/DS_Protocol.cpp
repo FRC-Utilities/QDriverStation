@@ -31,7 +31,6 @@ DS_Protocol::DS_Protocol() {
     p_controlMode = DS_ControlDisabled;
     p_joysticks = new QList<DS_Joystick*>;
 
-    p_watchdog.setTimeout (1000);
     connect (&p_watchdog, SIGNAL (timeout()), this, SLOT (reset()));
 }
 

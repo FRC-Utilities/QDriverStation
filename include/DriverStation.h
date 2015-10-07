@@ -23,7 +23,6 @@
 #ifndef _LIB_DS_DRIVER_STATION_H
 #define _LIB_DS_DRIVER_STATION_H
 
-#include <QTimer>
 #include <QObject>
 
 #include "LibDS/DS_Global.h"
@@ -341,6 +340,15 @@ class LIB_DS_DECL DriverStation : public QObject {
      *     - The control mode of the robot has changed
      */
     QString getStatus();
+
+    /**
+     * @internal
+     * Notifies other object when the status of the user code or the robot
+     * communications changed. The \a ignore_me variable is ignored because
+     * we use the \c getStatus() function to construct the status string
+     * of the robot.
+     */
+    void updateStatus (bool ignore_me);
 
     /**
      * @internal

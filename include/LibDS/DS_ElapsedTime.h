@@ -23,7 +23,6 @@
 #ifndef _LIB_DS_ELAPSED_TIME_H
 #define _LIB_DS_ELAPSED_TIME_H
 
-#include <QTimer>
 #include <QString>
 #include <QObject>
 #include <QElapsedTimer>
@@ -74,5 +73,5 @@ class LIB_DS_DECL DS_ElapsedTime : public QObject {
     void calculateElapsedTime();
 };
 
-#endif /* _DRIVER_STATION_PORTS_H */
+#endif
 

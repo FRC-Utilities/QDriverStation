@@ -20,38 +20,61 @@
  * THE SOFTWARE.
  */
 
-#include "LibDS/DS_Timers.h"
-#include "LibDS/DS_ElapsedTime.h"
+#include <QTimer>
+#include <QThread>
 
-DS_ElapsedTime::DS_ElapsedTime() {
-    stop();
-    calculateElapsedTime();
+#include "DS_Global.h"
 
-    connect (DS_Times::getInstance(), SIGNAL (timeout100()),
-             this,                    SLOT   (calculateElapsedTime()));
-}
+/**
+ * \class DS_Timer
+ *
+ * Implements a set of timers that are separeted from the main thread to
+ * guarantee that they are updated in a more timely manner.
+ * The timers can be used by objects and classes that are not related to
+ * the library for different functions.
+ */
+class LIB_DS_DECL DS_Times : public QObject {
+    Q_OBJECT
 
-void DS_ElapsedTime::stop() {
-    m_enabled = false;
-}
+  public:
+    static DS_Times* getInstance();
+    ~DS_Times();
 
-void DS_ElapsedTime::reset() {
-    m_enabled = true;
-    m_time.restart();
-}
+  public slots:
+    /**
+	 * Initializes the timers
+	 */
+    void start();
 
-void DS_ElapsedTime::calculateElapsedTime() {
-    if (m_enabled) {
-        int msec = m_time.elapsed();
-        int secs = (msec / 1000);
-        int mins = (secs / 60) % 60;
+  signals:
+    /**
+     * Emitted every 20 milliseconds
+     */
+    void timeout20();
 
-        secs = secs % 60;
-        msec = msec % 1000;
+    /**
+     * Emitted every 60 milliseconds
+     */
+    void timeout60();
 
-        emit elapsedTimeChanged (QString ("%1:%2.%3")
-                                 .arg (mins, 2, 10, QLatin1Char ('0'))
-                                 .arg (secs, 2, 10, QLatin1Char ('0'))
-                                 .arg (QString::number (msec).at (0)));
-    }
-}
+    /**
+     * Emitted every 100 milliseconds
+     */
+    void timeout100();
+
+    /**
+     * Emitted every 1000 milliseconds
+     */
+    void timeout500();
+
+  protected:
+    DS_Times();
+    static DS_Times* m_instance;
+
+  private:
+    QTimer* t20;
+    QTimer* t60;
+    QTimer* t100;
+    QTimer* t500;
+    QThread* m_thread;
+};
