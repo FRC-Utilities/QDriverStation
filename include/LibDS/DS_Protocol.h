@@ -176,6 +176,12 @@ class LIB_DS_DECL DS_Protocol : public QObject {
      */
     void robotAddressChanged (QString address);
 
+    /**
+     * Emitted when we receive a packet from the robot. Used by the library
+	 * to generate and send another control packet to the robot.
+     */
+    void packetReceived();
+
   protected slots:
     /**
      * Converts the input \a bits to bytes
@@ -231,7 +237,7 @@ class LIB_DS_DECL DS_Protocol : public QObject {
      * The watchdog, used to reset internal values and refresh data when
      * robot is not present or does not respond
      */
-    DS_Watchdog p_watchdog;
+    DS_Watchdog* p_watchdog;
 
     /**
      * The current control mode of the robot.

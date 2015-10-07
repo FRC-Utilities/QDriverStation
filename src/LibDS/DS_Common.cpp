@@ -22,9 +22,16 @@
 
 #include "LibDS/DS_Common.h"
 
-void DS_PingData::generatePingData (int index) {
+int DS_PingData::generatePingData (int index) {
+    index += 1;
+
+    if (index > 0xffff)
+        index = 0;
+
     byte1 = index / 0xff;
     byte2 = index % 0xff;
+
+    return index;
 }
 
 short DS_PingData::getPingIndex() {
@@ -73,6 +80,8 @@ QString DS_GetControlModeString (DS_ControlMode mode) {
         break;
     case DS_ControlEmergencyStop:
         return "Emergency Stop";
+    case DS_ControlNoCommunication:
+        return "No Robot Communication";
         break;
     }
 

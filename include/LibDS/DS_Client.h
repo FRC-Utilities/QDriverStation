@@ -23,6 +23,7 @@
 #ifndef _LIB_DS_CLIENT_H
 #define _LIB_DS_CLIENT_H
 
+#include <QTime>
 #include <QUdpSocket>
 #include <QHostAddress>
 
@@ -73,6 +74,8 @@ class LIB_DS_DECL DS_Client : public QObject {
     QString m_address;
     QUdpSocket m_robotSocket;
     QUdpSocket m_clientSocket;
+
+    QTime time;
 
   private slots:
     /**

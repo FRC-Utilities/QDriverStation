@@ -28,6 +28,9 @@ DS_Client::DS_Client() {
 }
 
 void DS_Client::sendToRobot (QByteArray data) {
+    if (data.isEmpty())
+        return;
+
     m_robotSocket.writeDatagram (data, QHostAddress (m_address), m_robotPort);
 }
 

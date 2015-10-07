@@ -54,7 +54,7 @@ class LIB_DS_DECL DS_Watchdog : public QObject {
      *
      * Think of this as "kicking the dog".
      */
-    void reset();
+    void restart();
 
   signals:
     /**

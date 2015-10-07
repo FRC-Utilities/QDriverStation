@@ -20,19 +20,11 @@
  * THE SOFTWARE.
  */
 
-#include "LibDS/DS_Common.h"
 #include "LibDS/DS_NetConsole.h"
 
-#define NETCONSOLE_PORT 6666
-
 DS_NetConsole::DS_NetConsole() {
+    m_socket.bind (6666, QUdpSocket::ShareAddress);
     connect (&m_socket, SIGNAL (readyRead()), this, SLOT (onDataReceived()));
-}
-
-void DS_NetConsole::setTeamNumber (int team) {
-    m_socket.bind (QHostAddress (DS_GetStaticIp (team, 255)),
-                   NETCONSOLE_PORT,
-                   QUdpSocket::ShareAddress);
 }
 
 void DS_NetConsole::onDataReceived() {

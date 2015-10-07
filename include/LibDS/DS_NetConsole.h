@@ -38,9 +38,6 @@ class LIB_DS_DECL DS_NetConsole : public QObject {
   public:
     explicit DS_NetConsole();
 
-  public slots:
-    void setTeamNumber (int team);
-
   signals:
     void newMessage (QString message);
 
