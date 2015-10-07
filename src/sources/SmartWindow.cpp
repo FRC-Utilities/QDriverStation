@@ -46,7 +46,7 @@ SmartWindow::SmartWindow() {
     resizeToFit();
     setWindowMode (Settings::get ("Docked", false).toBool() ? Docked : Normal);
 
-    connect (DS_Times::getInstance(), SIGNAL (timeout500()),
+    connect (DS_Timers::getInstance(), SIGNAL (timeout500()),
              this,                    SLOT   (resizeToFit()));
 }
 

@@ -27,8 +27,8 @@ DS_ElapsedTime::DS_ElapsedTime() {
     stop();
     calculateElapsedTime();
 
-    connect (DS_Times::getInstance(), SIGNAL (timeout100()),
-             this,                    SLOT   (calculateElapsedTime()));
+    connect (DS_Timers::getInstance(), SIGNAL (timeout100()),
+             this,                     SLOT   (calculateElapsedTime()));
 }
 
 void DS_ElapsedTime::stop() {

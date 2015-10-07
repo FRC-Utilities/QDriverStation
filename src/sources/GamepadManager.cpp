@@ -141,7 +141,7 @@ QStringList GamepadManager::joystickList() {
 void GamepadManager::init() {
     m_time = 50;
     m_tracker = -1;
-    connect (DS_Times::getInstance(), SIGNAL (timeout60()),
+    connect (DS_Timers::getInstance(), SIGNAL (timeout60()),
              this,                    SLOT   (readSdlEvents()));
 }
 

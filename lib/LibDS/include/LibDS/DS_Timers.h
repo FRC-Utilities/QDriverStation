@@ -33,17 +33,17 @@
  * The timers can be used by objects and classes that are not related to
  * the library for different functions.
  */
-class LIB_DS_DECL DS_Times : public QObject {
+class LIB_DS_DECL DS_Timers : public QObject {
     Q_OBJECT
 
   public:
-    static DS_Times* getInstance();
-    ~DS_Times();
+    static DS_Timers* getInstance();
+    ~DS_Timers();
 
   public slots:
     /**
-	 * Initializes the timers
-	 */
+     * Initializes the timers
+     */
     void start();
 
   signals:
@@ -68,8 +68,8 @@ class LIB_DS_DECL DS_Times : public QObject {
     void timeout500();
 
   protected:
-    DS_Times();
-    static DS_Times* m_instance;
+    DS_Timers();
+    static DS_Timers* m_instance;
 
   private:
     QTimer* t20;

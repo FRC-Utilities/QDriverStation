@@ -22,9 +22,9 @@
 
 #include "LibDS/DS_Timers.h"
 
-DS_Times* DS_Times::m_instance = Q_NULLPTR;
+DS_Timers* DS_Timers::m_instance = Q_NULLPTR;
 
-DS_Times::DS_Times() {
+DS_Timers::DS_Timers() {
     t20  = new QTimer (Q_NULLPTR);
     t60  = new QTimer (Q_NULLPTR);
     t100 = new QTimer (Q_NULLPTR);
@@ -52,7 +52,7 @@ DS_Times::DS_Times() {
     connect (t500, SIGNAL (timeout()), this, SIGNAL (timeout500()));
 }
 
-DS_Times::~DS_Times() {
+DS_Timers::~DS_Timers() {
     delete t20;
     delete t60;
     delete t100;
@@ -61,14 +61,14 @@ DS_Times::~DS_Times() {
     delete m_instance;
 }
 
-DS_Times* DS_Times::getInstance() {
+DS_Timers* DS_Timers::getInstance() {
     if (m_instance == Q_NULLPTR)
-        m_instance = new DS_Times;
+        m_instance = new DS_Timers;
 
     return m_instance;
 }
 
-void DS_Times::start() {
+void DS_Timers::start() {
     connect (m_thread, SIGNAL (started()), t20,  SLOT (start()));
     connect (m_thread, SIGNAL (started()), t60,  SLOT (start()));
     connect (m_thread, SIGNAL (started()), t100, SLOT (start()));

@@ -34,6 +34,16 @@
 #include "LibDS/DS_Protocol2015.h"
 #include "LibDS/DS_ProtocolManager.h"
 
+/**
+ * \class DriverStation
+ *
+ * Implements all the functions and features of the LibDS library into a single,
+ * compact and simple-to-use class.
+ *
+ * The \c DriverStation class also provides all the methods necessary to
+ * manage the user input, protocol versions and operate the robot in a
+ * straigthforward way.
+ */
 class LIB_DS_DECL DriverStation : public QObject {
     Q_OBJECT
 
