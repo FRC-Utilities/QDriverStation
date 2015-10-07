@@ -51,7 +51,8 @@ SOURCES += \
     $$PWD/src/LibDS/DS_Protocol2014.cpp \
     $$PWD/src/LibDS/DS_Protocol2015.cpp \
     $$PWD/src/LibDS/DS_ProtocolManager.cpp \
-    $$PWD/src/LibDS/DS_Watchdog.cpp
+    $$PWD/src/LibDS/DS_Watchdog.cpp \
+    $$PWD/src/LibDS/DS_Timers.cpp
 
 HEADERS += \
     $$PWD/include/DriverStation.h \
@@ -65,4 +66,5 @@ HEADERS += \
     $$PWD/include/LibDS/DS_Protocol2014.h \
     $$PWD/include/LibDS/DS_Protocol2015.h \
     $$PWD/include/LibDS/DS_ProtocolManager.h \
-    $$PWD/include/LibDS/DS_Watchdog.h
+    $$PWD/include/LibDS/DS_Watchdog.h \
+    $$PWD/include/LibDS/DS_Timers.h

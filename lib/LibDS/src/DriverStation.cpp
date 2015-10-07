@@ -21,6 +21,7 @@
  */
 
 #include "DriverStation.h"
+#include "LibDS/DS_Timers.h"
 
 DriverStation* DriverStation::m_instance = Q_NULLPTR;
 
@@ -50,10 +51,16 @@ DriverStation::DriverStation() {
              this,           SIGNAL (pcmVersionChanged (QString)));
     connect (&m_manager,     SIGNAL (pdpVersionChanged (QString)),
              this,           SIGNAL (pdpVersionChanged (QString)));
-    connect (&m_manager,     SIGNAL (controlModeChanged   (DS_ControlMode)),
-             this,           SLOT   (onControlModeChanged (DS_ControlMode)));
-    connect (&m_manager,      SIGNAL (robotAddressChanged (QString)),
-             &m_client,       SLOT   (setRobotAddress     (QString)));
+
+    connect (&m_manager,     SIGNAL (codeChanged           (bool)),
+             this,           SLOT   (updateStatus          (bool)));
+    connect (&m_manager,     SIGNAL (communicationsChanged (bool)),
+             this,           SLOT   (updateStatus          (bool)));
+    connect (&m_manager,     SIGNAL (controlModeChanged    (DS_ControlMode)),
+             this,           SLOT   (onControlModeChanged  (DS_ControlMode)));
+
+    connect (&m_manager,     SIGNAL (robotAddressChanged (QString)),
+             &m_client,      SLOT   (setRobotAddress     (QString)));
 
     connect (&m_elapsedTime, SIGNAL (elapsedTimeChanged (QString)),
              this,           SIGNAL (elapsedTimeChanged (QString)));
@@ -61,6 +68,9 @@ DriverStation::DriverStation() {
              this,           SIGNAL (newNetConsoleMessage (QString)));
     connect (&m_client,      SIGNAL (dataReceived  (QByteArray)),
              &m_manager,     SLOT   (readRobotData (QByteArray)));
+
+    connect (DS_Times::getInstance(), SIGNAL (timeout20()),
+             this,                    SLOT   (sendRobotPackets()));
 }
 
 DriverStation::~DriverStation() {
@@ -116,6 +126,7 @@ void DriverStation::init() {
     if (!m_init) {
         m_init = true;
         resetInternalValues();
+        DS_Times::getInstance()->start();
     }
 }
 
@@ -210,14 +221,8 @@ void DriverStation::resetInternalValues() {
 }
 
 void DriverStation::sendRobotPackets() {
-    /* Only send packets if the internal loops are running */
-    if (m_init) {
-        emit robotStatusChanged (getStatus());
+    if (m_init)
         m_client.sendToRobot (m_manager.protocol()->generateClientPacket());
-    }
-
-    /* Re-run this function in 20 milliseconds */
-    QTimer::singleShot (20, Qt::PreciseTimer, this, SLOT (sendRobotPackets()));
 }
 
 QString DriverStation::getStatus() {
@@ -230,7 +235,14 @@ QString DriverStation::getStatus() {
     return DS_GetControlModeString (m_manager.protocol()->controlMode());
 }
 
+void DriverStation::updateStatus (bool ignore_me) {
+    Q_UNUSED (ignore_me);
+    emit robotStatusChanged (getStatus());
+}
+
 void DriverStation::onControlModeChanged (DS_ControlMode mode) {
     mode == DS_ControlDisabled || mode == DS_ControlEmergencyStop ?
     m_elapsedTime.stop() : m_elapsedTime.reset();
+
+    emit robotStatusChanged (getStatus());
 }

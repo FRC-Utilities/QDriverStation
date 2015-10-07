@@ -90,20 +90,24 @@ void DS_ProtocolManager::addJoystick (int axes, int buttons, int povHats) {
 }
 
 void DS_ProtocolManager::updateJoystickPovHat (int js, int hat, int angle) {
-    if (joystickIsValid (js)) m_joysticks->at (js)->povHats [hat] = angle;
+    if (joystickIsValid (js))
+        m_joysticks->at (js)->povHats [hat] = angle;
 }
 
 void DS_ProtocolManager::updateJoystickAxis (int js, int axis, double value) {
-    if (joystickIsValid (js)) m_joysticks->at (js)->axes [axis] = value;
+    if (joystickIsValid (js))
+        m_joysticks->at (js)->axes [axis] = value;
 }
 
-void DS_ProtocolManager::updateJoystickButton (int js, int button,
+void DS_ProtocolManager::updateJoystickButton (int js,  int button,
         bool status) {
-    if (joystickIsValid (js)) m_joysticks->at (js)->buttons [button] = status;
+    if (joystickIsValid (js))
+        m_joysticks->at (js)->buttons [button] = status;
 }
 
 void DS_ProtocolManager::readRobotData (QByteArray data) {
-    if (protocolIsValid()) protocol()->readRobotData (data);
+    if (protocolIsValid())
+        protocol()->readRobotData (data);
 }
 
 bool DS_ProtocolManager::protocolIsValid() const {

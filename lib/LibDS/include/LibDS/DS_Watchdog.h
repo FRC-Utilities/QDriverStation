@@ -45,7 +45,6 @@ class LIB_DS_DECL DS_Watchdog : public QObject {
 
   public:
     explicit DS_Watchdog();
-    ~DS_Watchdog();
 
   public slots:
     /**
@@ -56,12 +55,6 @@ class LIB_DS_DECL DS_Watchdog : public QObject {
      * Think of this as "kicking the dog".
      */
     void reset();
-
-    /**
-     * Changes the timeout (in milliseconds) of the watchdog.
-     * Changes are reflected instantly
-     */
-    void setTimeout (int timeout);
 
   signals:
     /**
@@ -74,15 +67,10 @@ class LIB_DS_DECL DS_Watchdog : public QObject {
 
   private:
     /**
-     * The time in milliseconds that we give the watchdog to expire.
-     * This value is changed with the \c setTimeout() function
+     * The watchdog timer itself, it allows us regulate the behaviour of the
+     * application based on the elapsed time
      */
-    int m_timeout;
-
-    /**
-     * The timer object that we use to implement the watchdog
-     */
-    QTimer* m_timer;
+    QTimer m_timer;
 };
 
 #endif

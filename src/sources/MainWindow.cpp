@@ -23,7 +23,6 @@
 #include "MainWindow.h"
 
 #include <QList>
-#include <QTimer>
 #include <QColor>
 #include <QPalette>
 #include <QPointer>
@@ -40,6 +39,8 @@
 #include "AssemblyInfo.h"
 #include "JoysticksWidget.h"
 #include "AdvancedSettings.h"
+
+#include <LibDS/DS_Timers.h>
 
 /*
  * Much code, very mess, wow
@@ -146,6 +147,8 @@ void MainWindow::connectSlots() {
              this, SLOT   (onDiskUsageChanged (int, int)));
     connect (m_ds, SIGNAL (controlModeChanged (DS_ControlMode)),
              this, SLOT   (onControlModeChanged (DS_ControlMode)));
+    connect (DS_Times::getInstance(), SIGNAL (timeout500()),
+             this,                    SLOT   (updatePcStatusWidgets()));
 
     /* DriverStation to MainWindow UI */
     connect (m_ds,                 SIGNAL (newNetConsoleMessage (QString)),
@@ -346,9 +349,6 @@ void MainWindow::updatePcStatusWidgets() {
         m_ui->PcCpuProgress->setToolTip (tr ("CPU usage: %1%").arg (usage));
         m_ui->PcBatteryProgress->setToolTip (tr ("Battery level: %1%").arg (level));
     }
-
-    QTimer::singleShot (1000, Qt::CoarseTimer,
-                        this, SLOT (updatePcStatusWidgets()));
 }
 
 void MainWindow::onCopyClicked() {

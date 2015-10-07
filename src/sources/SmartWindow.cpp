@@ -20,10 +20,11 @@
  * THE SOFTWARE.
  */
 
-#include <QTimer>
 #include <QMessageBox>
 #include <QApplication>
 #include <QDesktopWidget>
+
+#include <LibDS/DS_Timers.h>
 
 #include "Settings.h"
 #include "SmartWindow.h"
@@ -44,6 +45,9 @@ SmartWindow::SmartWindow() {
 
     resizeToFit();
     setWindowMode (Settings::get ("Docked", false).toBool() ? Docked : Normal);
+
+    connect (DS_Times::getInstance(), SIGNAL (timeout500()),
+             this,                    SLOT   (resizeToFit()));
 }
 
 bool SmartWindow::isDocked() {
@@ -134,6 +138,7 @@ void SmartWindow::setWindowMode (const WindowMode& mode) {
         setWindowFlags (Qt::FramelessWindowHint);
 
     showNormal();
+    resizeToFit();
 }
 
 void SmartWindow::resizeToFit() {
@@ -153,7 +158,4 @@ void SmartWindow::resizeToFit() {
         setMinimumSize (size());
         setMaximumSize (size());
     }
-
-    /* Call this function later on, so that the window stays updated */
-    QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (resizeToFit()));
 }

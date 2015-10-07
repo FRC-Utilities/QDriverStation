@@ -52,9 +52,11 @@ OBJECTS_DIR = obj
 # C++ compiler optimization flags, may make compilation slower
 #-------------------------------------------------------------------------------
 
-QMAKE_LFLAGS_RELEASE -= -O1
-QMAKE_CXXFLAGS_RELEASE -= -O2
-QMAKE_CXXFLAGS_RELEASE += -Ofast
+CONFIG(release, debug|release) {
+    QMAKE_LFLAGS_RELEASE -= -O1
+    QMAKE_CXXFLAGS_RELEASE -= -O2
+    QMAKE_CXXFLAGS_RELEASE += -Ofast
+}
 
 #-------------------------------------------------------------------------------
 # Import source code and resources of the application
