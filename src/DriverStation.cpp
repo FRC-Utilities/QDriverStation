@@ -77,7 +77,7 @@ DriverStation::DriverStation() {
     connect (&m_manager,               SIGNAL (packetReceived()),
              this,                     SLOT   (sendRobotPackets()));
     connect (&m_client,                SIGNAL (dataReceived  (QByteArray)),
-             &m_manager,               SLOT   (readRobotData (QByteArray)));
+             &m_manager,                SLOT   (readRobotData (QByteArray)));
     connect (DS_Timers::getInstance(), SIGNAL (timeout20()),
              this,                     SLOT   (contactRobot()));
 }

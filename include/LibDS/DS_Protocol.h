@@ -178,7 +178,7 @@ class LIB_DS_DECL DS_Protocol : public QObject {
 
     /**
      * Emitted when we receive a packet from the robot. Used by the library
-	 * to generate and send another control packet to the robot.
+     * to generate and send another control packet to the robot.
      */
     void packetReceived();
 
