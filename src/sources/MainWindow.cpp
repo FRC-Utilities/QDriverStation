@@ -55,12 +55,19 @@
 #define CSS_ENABLED_UNCHECK  "color: rgb(0, 43, 0);"
 #define CSS_DISABLED_UNCHECK "color: rgb(43, 0, 0); border-left: 0px;"
 
+/*
+ * The font used in the NetConsole text edit
+ */
 #if defined __WIN32 || defined __WIN64
 #  define FONT_NETCONSOLE QFont ("Consolas", 10)
 #else
 #  define FONT_NETCONSOLE QFont ("Inconsolata", 13)
 #endif
 
+/*
+ * The horizontal size we give for the information widget, which displays
+ * the current robot status, voltage, etc...
+ */
 #if defined __APPLE__
 #  define INFO_SIZE 2.0
 #else
@@ -71,9 +78,6 @@ MainWindow::MainWindow() {
     m_ui = new Ui::MainWindow;
     m_ui->setupUi (this);
 
-    setUseFixedSize (true);
-    setPromptOnQuit (true);
-
     connectSlots();
     configureWidgetAppearance();
 
@@ -82,6 +86,9 @@ MainWindow::MainWindow() {
 
     DriverStation::getInstance()->init();
     GamepadManager::getInstance()->init();
+
+    m_ui->WindowDocked->setChecked (Settings::get ("Docked", false).toBool());
+    setWindowMode (m_ui->WindowDocked->isChecked() ? Docked : Normal);
 }
 
 MainWindow::~MainWindow() {
@@ -197,7 +204,6 @@ void MainWindow::connectSlots() {
 void MainWindow::configureWidgetAppearance() {
     m_ui->TeleOp->setChecked (true);
     m_ui->DisableButton->setChecked (true);
-    m_ui->WindowDocked->setChecked (isDocked());
 
     /* Rotate the text (or icons) in the tabs */
     m_tabStyle = new CustomTabStyle;
@@ -206,49 +212,49 @@ void MainWindow::configureWidgetAppearance() {
 
     /* Set the icon size of the tabs and buttons */
     QFont fontAwesome;
-    fontAwesome.setFamily ("FontAwesome");
-    fontAwesome.setPointSize (centralWidget()->font().pointSize() * 1.4);
-    m_ui->LeftTab->setFont (fontAwesome);
-    m_ui->RightTab->setFont (fontAwesome);
-    m_ui->CopyButton->setFont (fontAwesome);
-    m_ui->ClearButton->setFont (fontAwesome);
-    m_ui->UtilsWidget->setFont (fontAwesome);
+    fontAwesome.setFamily       ("FontAwesome");
+    fontAwesome.setPointSize    (centralWidget()->font().pointSize() * 1.4);
+    m_ui->LeftTab->setFont      (fontAwesome);
+    m_ui->RightTab->setFont     (fontAwesome);
+    m_ui->CopyButton->setFont   (fontAwesome);
+    m_ui->ClearButton->setFont  (fontAwesome);
+    m_ui->UtilsWidget->setFont  (fontAwesome);
     m_ui->WindowNormal->setFont (fontAwesome);
     m_ui->WindowDocked->setFont (fontAwesome);
 
     /* Set the voltage icon and plug icon fonts */
     QFont smallIconFont;
     QFont largeIconFont;
-    smallIconFont.setFamily ("FontAwesome");
-    largeIconFont.setFamily ("FontAwesome");
-    smallIconFont.setPointSize (centralWidget()->font().pointSize() * 1.2);
-    largeIconFont.setPointSize (centralWidget()->font().pointSize() * 4.0);
-    m_ui->PlugIcon->setFont (smallIconFont);
-    m_ui->CanIcon->setFont (largeIconFont);
-    m_ui->VoltageIcon->setFont (largeIconFont);
+    smallIconFont.setFamily       ("FontAwesome");
+    largeIconFont.setFamily       ("FontAwesome");
+    smallIconFont.setPointSize    (centralWidget()->font().pointSize() * 1.2);
+    largeIconFont.setPointSize    (centralWidget()->font().pointSize() * 4.0);
+    m_ui->PlugIcon->setFont       (smallIconFont);
+    m_ui->CanIcon->setFont        (largeIconFont);
+    m_ui->VoltageIcon->setFont    (largeIconFont);
     m_ui->NoJoystickIcon->setFont (largeIconFont);
 
     /* Restore the default application font to the widgets inside tabs */
     QFont defaultFont;
-    defaultFont.setFamily (centralWidget()->font().family());
-    defaultFont.setPointSize (centralWidget()->font().pointSize());
-    m_ui->AboutTab->setFont (defaultFont);
-    m_ui->PowerTab->setFont (defaultFont);
-    m_ui->SetupTab->setFont (defaultFont);
-    m_ui->MessagesTab->setFont (defaultFont);
-    m_ui->JoysticksTab->setFont (defaultFont);
-    m_ui->OperationTab->setFont (defaultFont);
+    defaultFont.setFamily         (centralWidget()->font().family());
+    defaultFont.setPointSize      (centralWidget()->font().pointSize());
+    m_ui->AboutTab->setFont       (defaultFont);
+    m_ui->PowerTab->setFont       (defaultFont);
+    m_ui->SetupTab->setFont       (defaultFont);
+    m_ui->MessagesTab->setFont    (defaultFont);
+    m_ui->JoysticksTab->setFont   (defaultFont);
+    m_ui->OperationTab->setFont   (defaultFont);
     m_ui->DiagnosticsTab->setFont (defaultFont);
 
     /* Make some labels have a bold and bigger font */
     QFont boldFont;
-    boldFont.setBold (true);
-    boldFont.setPointSize (boldFont.pointSize() * 1.4);
-    m_ui->AppName->setFont (boldFont);
-    m_ui->TeamLabel->setFont (boldFont);
-    m_ui->TeamNumber->setFont (boldFont);
-    m_ui->StatusLabel->setFont (boldFont);
-    m_ui->ElapsedTime->setFont (boldFont);
+    boldFont.setBold            (true);
+    boldFont.setPointSize       (boldFont.pointSize() * 1.4);
+    m_ui->AppName->setFont      (boldFont);
+    m_ui->TeamLabel->setFont    (boldFont);
+    m_ui->TeamNumber->setFont   (boldFont);
+    m_ui->StatusLabel->setFont  (boldFont);
+    m_ui->ElapsedTime->setFont  (boldFont);
     m_ui->VoltageLabel->setFont (boldFont);
 
     /* Change the palette of the items with a custom font to match app colors */
@@ -282,8 +288,8 @@ void MainWindow::configureWidgetAppearance() {
     int height = m_ui->StatusLabel->height() * 1.2;
     m_ui->StatusLabel->setMinimumHeight (height);
     m_ui->StatusLabel->setMaximumHeight (height);
-    m_ui->InfoFrame->setMinimumWidth (m_ui->StatusLabel->width() * INFO_SIZE);
-    m_ui->InfoFrame->setMaximumWidth (m_ui->StatusLabel->width() * INFO_SIZE);
+    m_ui->InfoFrame->setMinimumWidth    (m_ui->StatusLabel->width() * INFO_SIZE);
+    m_ui->InfoFrame->setMaximumWidth    (m_ui->StatusLabel->width() * INFO_SIZE);
 }
 
 void MainWindow::readSettings() {
@@ -295,10 +301,10 @@ void MainWindow::readSettings() {
     int a = Settings::get ("Practice Autonomous", 15).toInt();
 
     /* Apply practice values */
-    m_ui->PracticeDelay->setValue (d);
-    m_ui->PracticeTeleOp->setValue (t);
-    m_ui->PracticeEndGame->setValue (e);
-    m_ui->PracticeCountdown->setValue (c);
+    m_ui->PracticeDelay->setValue      (d);
+    m_ui->PracticeTeleOp->setValue     (t);
+    m_ui->PracticeEndGame->setValue    (e);
+    m_ui->PracticeCountdown->setValue  (c);
     m_ui->PracticeAutonomous->setValue (a);
 
     /* Read team station values */
@@ -313,22 +319,22 @@ void MainWindow::readSettings() {
 
 void MainWindow::updateLabelColors() {
     QPalette p;
-    m_ui->Test->setPalette (p);
-    m_ui->TeleOp->setPalette (p);
-    m_ui->AppName->setPalette (p);
-    m_ui->Practice->setPalette (p);
-    m_ui->PlugIcon->setPalette (p);
-    m_ui->CodeLabel->setPalette (p);
-    m_ui->TeamLabel->setPalette (p);
-    m_ui->Autonomous->setPalette (p);
-    m_ui->TeamNumber->setPalette (p);
-    m_ui->StatusLabel->setPalette (p);
-    m_ui->ElapsedTime->setPalette (p);
-    m_ui->VoltageIcon->setPalette (p);
-    m_ui->WindowNormal->setPalette (p);
-    m_ui->WindowDocked->setPalette (p);
-    m_ui->VoltageLabel->setPalette (p);
-    m_ui->JoysticksLabel->setPalette (p);
+    m_ui->Test->setPalette                (p);
+    m_ui->TeleOp->setPalette              (p);
+    m_ui->AppName->setPalette             (p);
+    m_ui->Practice->setPalette            (p);
+    m_ui->PlugIcon->setPalette            (p);
+    m_ui->CodeLabel->setPalette           (p);
+    m_ui->TeamLabel->setPalette           (p);
+    m_ui->Autonomous->setPalette          (p);
+    m_ui->TeamNumber->setPalette          (p);
+    m_ui->StatusLabel->setPalette         (p);
+    m_ui->ElapsedTime->setPalette         (p);
+    m_ui->VoltageIcon->setPalette         (p);
+    m_ui->WindowNormal->setPalette        (p);
+    m_ui->WindowDocked->setPalette        (p);
+    m_ui->VoltageLabel->setPalette        (p);
+    m_ui->JoysticksLabel->setPalette      (p);
     m_ui->CommunicationsLabel->setPalette (p);
 }
 
@@ -430,10 +436,10 @@ void MainWindow::onRobotModeChanged (int mode) {
 }
 
 void MainWindow::onPracticeValuesChanged() {
-    Settings::set ("Practice Delay", m_ui->PracticeDelay->value());
-    Settings::set ("Practice TeleOp", m_ui->PracticeTeleOp->value());
-    Settings::set ("Practice End Game", m_ui->PracticeEndGame->value());
-    Settings::set ("Practice Countdown", m_ui->PracticeCountdown->value());
+    Settings::set ("Practice Delay",      m_ui->PracticeDelay->value());
+    Settings::set ("Practice TeleOp",     m_ui->PracticeTeleOp->value());
+    Settings::set ("Practice End Game",   m_ui->PracticeEndGame->value());
+    Settings::set ("Practice Countdown",  m_ui->PracticeCountdown->value());
     Settings::set ("Practice Autonomous", m_ui->PracticeAutonomous->value());
 }
 

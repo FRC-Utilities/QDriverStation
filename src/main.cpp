@@ -51,18 +51,18 @@
 int main (int argc, char* argv[]) {
     QApplication app (argc, argv);
 
+    /* Load the application fonts */
+    QFontDatabase::addApplicationFont (":/fonts/FontAwesome.otf");
+    QFontDatabase::addApplicationFont (":/fonts/Inconsolata.otf");
+    QFontDatabase::addApplicationFont (":/fonts/Quicksand-Bold.ttf");
+    QFontDatabase::addApplicationFont (":/fonts/Quicksand-Regular.ttf");
+
     /* Configure application options */
     app.setWindowIcon (_APP_ICON_CODE);
     app.setApplicationName (AssemblyInfo::name());
     app.setStyle (QStyleFactory::create ("Fusion"));
     app.setApplicationVersion (AssemblyInfo::version());
     app.setOrganizationName (AssemblyInfo::organization());
-
-    /* Load the application font */
-    QFontDatabase::addApplicationFont (":/fonts/FontAwesome.otf");
-    QFontDatabase::addApplicationFont (":/fonts/Inconsolata.otf");
-    QFontDatabase::addApplicationFont (":/fonts/Quicksand-Bold.ttf");
-    QFontDatabase::addApplicationFont (":/fonts/Quicksand-Regular.ttf");
     app.setFont (QFont ("Quicksand", _PT_SIZE, -1, false));
 
     /* The window will show itself when initialized */

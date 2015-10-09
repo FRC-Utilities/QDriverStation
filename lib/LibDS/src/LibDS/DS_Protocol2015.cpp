@@ -22,45 +22,47 @@
 
 #include "LibDS/DS_Protocol2015.h"
 
-#define CONTROL_DISABLED 0x00 // The robot is disabled
-#define CONTROL_NO_COMM  0x02 // Robot has not responded to sent data
-#define CONTROL_TELEOP   0x04 // The robot is in TeleOp
-#define CONTROL_TEST     0x05 // The robot is in Test Mode
-#define CONTROL_AUTO     0x06 // The robot is in Autonomous
-#define CONTROL_ESTOP    0x80 // The robot is in Emergeny Stop
+#define CONTROL_DISABLED 0x00
+#define CONTROL_NO_COMM  0x02
+#define CONTROL_TELEOP   0x04
+#define CONTROL_TEST     0x05
+#define CONTROL_AUTO     0x06
+#define CONTROL_ESTOP    0x80
 
-#define SECTION_GENERAL  0x01 // Used for the general packet header
-#define SECTION_JOYSTICK 0x0C // Used at the start of a joystick definition
+#define SECTION_GENERAL  0x01
+#define SECTION_JOYSTICK 0x0C
 
-#define STATUS_OK        0x10 // Communications are ok
-#define STATUS_NULL      0x00 // No communications, ask the robot to respond
-#define STATUS_REBOOT    0x18 // Reboot the roboRIO
-#define STATUS_KILL_CODE 0x14 // Restart the user code process
+#define STATUS_OK        0x10
+#define STATUS_NULL      0x00
+#define STATUS_REBOOT    0x18
+#define STATUS_KILL_CODE 0x14
 
-#define PROGRAM_DISABLED 0x01 // Program reports that robot is disabled
-#define PROGRAM_TELEOP   0x02 // Program reports that robot is in TeleOp
-#define PROGRAM_AUTO     0x04 // Program reports that robot is in Autonomous
-#define PROGRAM_TEST     0x08 // Program reports that robot is in TeleOp
-#define PROGRAM_ROBORIO  0x10 // Unknown
-#define PROGRAM_USERCODE 0x20 // Unknown
-#define PROGRAM_NO_CODE  0x00 // No user code is loaded
+#define PROGRAM_DISABLED 0x01
+#define PROGRAM_TELEOP   0x02
+#define PROGRAM_AUTO     0x04
+#define PROGRAM_TEST     0x08
+#define PROGRAM_ROBORIO  0x10
+#define PROGRAM_USERCODE 0x20
+#define PROGRAM_NO_CODE  0x00
 
-#define ALLIANCE_RED1    0x00 // Red alliance, position 1
-#define ALLIANCE_RED2    0x01 // Red alliance, position 2
-#define ALLIANCE_RED3    0x02 // Red alliance, position 3
-#define ALLIANCE_BLUE1   0x03 // Blue alliance, position 1
-#define ALLIANCE_BLUE2   0x04 // Blue alliance, position 2
-#define ALLIANCE_BLUE3   0x05 // Blue alliance, position 3
+#define ALLIANCE_RED1    0x00
+#define ALLIANCE_RED2    0x01
+#define ALLIANCE_RED3    0x02
+#define ALLIANCE_BLUE1   0x03
+#define ALLIANCE_BLUE2   0x04
+#define ALLIANCE_BLUE3   0x05
 
-#define PORT_ROBOT       1110 // We send data to this port
-#define PORT_CLIENT      1150 // We receive data from this port
-#define DOUBLE_TO_CHAR   0x7F // Convert joystick axis value to char [-128, 128]
+#define PORT_ROBOT       1110
+#define PORT_CLIENT      1150
+#define DOUBLE_TO_CHAR   0x7F
 
 #define FTP_PCM          "/tmp/frc_versions/PCM-0-versions.ini"
 #define FTP_PDP          "/tmp/frc_versions/PDP-0-versions.ini"
 #define FTP_LIB          "/tmp/frc_versions/FRC_Lib_Version.ini"
 
 DS_Protocol2015::DS_Protocol2015() {
+    m_index = 0;
+
     connect (&m_manager, SIGNAL (finished              (QNetworkReply*)),
              this,       SLOT   (onDownloadFinished    (QNetworkReply*)));
     connect (this,       SIGNAL (robotAddressChanged   (QString)),
@@ -71,7 +73,6 @@ DS_Protocol2015::DS_Protocol2015() {
 
 void DS_Protocol2015::reset() {
     /* Reset internal values */
-    m_index = 0;
     p_robotCode = false;
     m_status = STATUS_OK;
     p_robotCommunication = false;

@@ -45,20 +45,20 @@ void DS_ProtocolManager::setProtocol (DS_Protocol* protocol) {
         m_protocol = protocol;
         m_protocol->setJoysticks (m_joysticks);
 
-        connect (m_protocol, SIGNAL (codeChanged (bool)),
-                 this,       SIGNAL (codeChanged (bool)));
+        connect (m_protocol, SIGNAL (codeChanged           (bool)),
+                 this,       SIGNAL (codeChanged           (bool)));
         connect (m_protocol, SIGNAL (communicationsChanged (bool)),
                  this,       SIGNAL (communicationsChanged (bool)));
-        connect (m_protocol, SIGNAL (robotAddressChanged (QString)),
-                 this,       SIGNAL (robotAddressChanged (QString)));
-        connect (m_protocol, SIGNAL (controlModeChanged (DS_ControlMode)),
-                 this,       SIGNAL (controlModeChanged (DS_ControlMode)));
-        connect (m_protocol, SIGNAL (diskUsageChanged (int, int)),
-                 this,       SIGNAL (diskUsageChanged (int, int)));
-        connect (m_protocol, SIGNAL (ramUsageChanged (int, int)),
-                 this,       SIGNAL (ramUsageChanged (int, int)));
-        connect (m_protocol, SIGNAL (voltageChanged (QString)),
-                 this,       SIGNAL (voltageChanged (QString)));
+        connect (m_protocol, SIGNAL (robotAddressChanged   (QString)),
+                 this,       SIGNAL (robotAddressChanged   (QString)));
+        connect (m_protocol, SIGNAL (controlModeChanged    (DS_ControlMode)),
+                 this,       SIGNAL (controlModeChanged    (DS_ControlMode)));
+        connect (m_protocol, SIGNAL (diskUsageChanged      (int, int)),
+                 this,       SIGNAL (diskUsageChanged      (int, int)));
+        connect (m_protocol, SIGNAL (ramUsageChanged       (int, int)),
+                 this,       SIGNAL (ramUsageChanged       (int, int)));
+        connect (m_protocol, SIGNAL (voltageChanged        (QString)),
+                 this,       SIGNAL (voltageChanged        (QString)));
         connect (m_protocol, SIGNAL (packetReceived()),
                  this,       SIGNAL (packetReceived()));
     }
