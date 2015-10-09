@@ -968,24 +968,14 @@ QPushButton:checked {
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="AdvancedSettings">
+            <widget class="QLabel" name="label_4">
              <property name="text">
-              <string>Advanced settings..</string>
+              <string>Protocol</string>
              </property>
             </widget>
            </item>
            <item>
-            <spacer name="verticalSpacer_9">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
+            <widget class="QComboBox" name="ProtocolCombo"/>
            </item>
            <item>
             <widget class="QLabel" name="label_28">
@@ -1009,22 +999,6 @@ QPushButton:checked {
               <size>
                <width>20</width>
                <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_6">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::MinimumExpanding</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>0</width>
-               <height>0</height>
               </size>
              </property>
             </spacer>
@@ -2061,8 +2035,8 @@ QPushButton:checked {
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="RobotStatusGroup"/>
-  <buttongroup name="RobotModeGroup"/>
   <buttongroup name="WindowModeGroup"/>
+  <buttongroup name="RobotModeGroup"/>
+  <buttongroup name="RobotStatusGroup"/>
  </buttongroups>
 </ui>

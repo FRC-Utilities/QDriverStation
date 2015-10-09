@@ -40,8 +40,14 @@ QList <DS_Joystick*>* DS_ProtocolManager::joysticks() const {
     return m_joysticks;
 }
 
+bool DS_ProtocolManager::protocolIsValid() const {
+    return (m_protocol != Q_NULLPTR);
+}
+
 void DS_ProtocolManager::setProtocol (DS_Protocol* protocol) {
     if (protocol != Q_NULLPTR) {
+        m_protocol = Q_NULLPTR;
+
         m_protocol = protocol;
         m_protocol->setJoysticks (m_joysticks);
 
@@ -110,10 +116,6 @@ void DS_ProtocolManager::updateJoystickButton (int js,  int button,
 void DS_ProtocolManager::readRobotData (QByteArray data) {
     if (protocolIsValid())
         protocol()->readRobotData (data);
-}
-
-bool DS_ProtocolManager::protocolIsValid() const {
-    return (m_protocol != Q_NULLPTR);
 }
 
 bool DS_ProtocolManager::joystickIsValid (int js) const {

@@ -20,20 +20,25 @@
  * THE SOFTWARE.
  */
 
+#include "ui_DS_LogWindow.h"
 #include "LibDS/DS_LogWindow.h"
 
 DS_LogWindow::DS_LogWindow() {
-    m_ui = new Ui::DS_LogWindow;
-    m_ui->setupUi (this);
+    ui = new Ui::DS_LogWindow;
+    ui->setupUi (this);
 
     QPalette palette;
-    setGraphPalette (palette);
+    setGraphPalette (&palette);
 }
 
 DS_LogWindow::~DS_LogWindow() {
-    delete m_ui;
+    delete ui;
 }
 
-void DS_LogWindow::setGraphPalette (QPalette palette) {
-    m_ui->CustomPlot->setBackground (palette.background());
+void DS_LogWindow::addVoltageData (QString voltage) {
+    Q_UNUSED (voltage);
+}
+
+void DS_LogWindow::setGraphPalette (QPalette* palette) {
+    ui->CustomPlot->setBackground (palette->background());
 }

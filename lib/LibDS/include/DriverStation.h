@@ -26,13 +26,14 @@
 #include <QObject>
 
 #include "LibDS/DS_Global.h"
-#include "LibDS/DS_Client.h"
-#include "LibDS/DS_LogWindow.h"
-#include "LibDS/DS_NetConsole.h"
-#include "LibDS/DS_ElapsedTime.h"
-#include "LibDS/DS_Protocol2014.h"
-#include "LibDS/DS_Protocol2015.h"
-#include "LibDS/DS_ProtocolManager.h"
+#include "LibDS/DS_Common.h"
+
+class DS_Client;
+class DS_Protocol;
+class DS_LogWindow;
+class DS_NetConsole;
+class DS_ElapsedTime;
+class DS_ProtocolManager;
 
 /**
  * \class DriverStation
@@ -54,6 +55,26 @@ class LIB_DS_DECL DriverStation : public QObject {
     static DriverStation* getInstance();
 
     /**
+     * The available protocols for the user
+     */
+    enum ProtocolType {
+        Protocol2014 = 0x00,
+        Protocol2015 = 0x01
+    };
+
+    /**
+     * The available alliances and positions for the user
+     */
+    enum AllianceType {
+        Red1 = 0x00,
+        Red2 = 0x01,
+        Red3 = 0x02,
+        Blue1 = 0x03,
+        Blue2 = 0x04,
+        Blue3 = 0x05
+    };
+
+    /**
      * Returns \c true if the robot has communication and the code is loaded.
      * This function is useful in the case that you want to warn the user
      * when he/she clicks the 'Enable' button and something is not working
@@ -68,6 +89,12 @@ class LIB_DS_DECL DriverStation : public QObject {
      * the alliance (Blue or Red) and position (1, 2 & 3) of the robot.
      */
     QStringList alliances();
+
+    /**
+     * Returns a list with the available protocols that we can use to drive
+     * a FRC robot.
+     */
+    QStringList protocols();
 
     /**
      * Returns the IP address of the robot radio
@@ -118,7 +145,7 @@ class LIB_DS_DECL DriverStation : public QObject {
     /**
      * Updates the palette of the graph widget in the log window
      */
-    void setGraphPalette (QPalette palette);
+    void setGraphPalette (QPalette* palette);
 
     /**
      * Simulates a timed match with the input time values (in seconds)
@@ -135,6 +162,11 @@ class LIB_DS_DECL DriverStation : public QObject {
     void setProtocol (DS_Protocol* protocol);
 
     /**
+     * Changes the protocol that we use to control the robot
+     */
+    void setProtocol (ProtocolType protocol);
+
+    /**
      * Changes the team number used by the protocol and network diagnostics
      */
     void setTeamNumber (int team);
@@ -142,7 +174,7 @@ class LIB_DS_DECL DriverStation : public QObject {
     /**
      * Changes the alliance of the robot using the specified protocol
      */
-    void setAlliance (DS_Alliance alliance);
+    void setAlliance (AllianceType alliance);
 
     /**
      * Changes the control mode of the robot, available options are:
@@ -184,12 +216,6 @@ class LIB_DS_DECL DriverStation : public QObject {
      * Updates the \a state of the selected \a button in the specified \a josytick
      */
     void updateJoystickButton (int js, int button, bool state);
-
-    /**
-     * Sends a robot packet in a regular manner when we don´t get robot responses.
-     * This function will stop sending packets when we receive a robot packet
-     */
-    void contactRobot();
 
   signals:
     /**
@@ -300,38 +326,33 @@ class LIB_DS_DECL DriverStation : public QObject {
      * from a specified network address and port, go on
      * and crash the school's server if you wish
      */
-    DS_Client m_client;
+    DS_Client* m_client;
 
     /**
      * Used for showing events and graphs of the robot
      * behaviour over a specified time lapse
      */
-    DS_LogWindow m_logWindow;
+    DS_LogWindow* m_logWindow;
 
     /**
      * Used for receiving messages broadcasted by the
      * robot over the network
      */
-    DS_NetConsole m_netConsole;
-
-    /**
-     * The current operation protocol of the robot
-     */
-    DS_Protocol2015 m_protocol;
+    DS_NetConsole* m_netConsole;
 
     /**
      * Allows us to select an operation protocol and
      * configure it automatically to fit the librarie's
      * standards
      */
-    DS_ProtocolManager m_manager;
+    DS_ProtocolManager* m_manager;
 
     /**
      * Counts the elapsed time since the robot was
      * enabled. When the robot is disabled, the elapsed
      * time is stopped (just as in the official Driver Station)
      */
-    DS_ElapsedTime m_elapsedTime;
+    DS_ElapsedTime* m_elapsedTime;
 
   private slots:
     /**
@@ -343,10 +364,19 @@ class LIB_DS_DECL DriverStation : public QObject {
 
     /**
      * @internal
-     * Sends the robot a generated packet from the current protocol every
-     * 20 milliseconds.
+     * Sends the robot a generated packet from the current protocol.
+     * This function is called when:
+     *     - We get a response packet from the robot
+     *     - We send a "null" packet to the robot requesting it to respond
      */
     void sendRobotPackets();
+
+    /**
+     * @internal
+     * Sends a robot packet in a regular manner when we don´t get robot responses.
+     * This function will stop sending packets when we receive a robot packet
+     */
+    void contactRobot();
 
     /**
      * @internal

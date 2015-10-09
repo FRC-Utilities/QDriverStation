@@ -57,6 +57,11 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
      */
     QList<DS_Joystick*>* joysticks() const;
 
+    /**
+     * Returns \c true if the current protocol is initialized
+     */
+    bool protocolIsValid() const;
+
   public slots:
     /**
      * Changes the protocol that we use to communicate with the robot
@@ -178,11 +183,6 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
      * The list with the registered joysticks and their respective data
      */
     QList<DS_Joystick*>* m_joysticks;
-
-    /**
-     * Returns \c true if the current protocol is initialized
-     */
-    bool protocolIsValid() const;
 
     /**
      * Returns \c true if the \a joystick is registered to the DS

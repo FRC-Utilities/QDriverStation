@@ -62,7 +62,7 @@ class AdvancedSettings : public QDialog {
      * Updates the placeholder text of the custom address to match current
      * team number
      */
-    void setTeamNumber (int team);
+    void updatePlaceholder();
 
   signals:
     void updateColors();

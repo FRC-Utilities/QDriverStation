@@ -23,10 +23,12 @@
 #ifndef _LIB_DS_LOG_WINDOW_H
 #define _LIB_DS_LOG_WINDOW_H
 
-#include <QWidget>
-#include <ui_DS_LogWindow.h>
-
+#include <QDialog>
 #include "DS_Global.h"
+
+namespace Ui {
+class DS_LogWindow;
+}
 
 /**
  * \class DS_LogWindow
@@ -45,10 +47,11 @@ class LIB_DS_DECL DS_LogWindow : public QDialog {
     ~DS_LogWindow();
 
   public slots:
-    void setGraphPalette (QPalette palette);
+    void addVoltageData (QString voltage);
+    void setGraphPalette (QPalette* palette);
 
   private:
-    Ui::DS_LogWindow* m_ui;
+    Ui::DS_LogWindow* ui;
 };
 
 #endif

@@ -72,9 +72,9 @@ AdvancedSettings::AdvancedSettings() {
     readSettings();
 }
 
-void AdvancedSettings::setTeamNumber (int team) {
+void AdvancedSettings::updatePlaceholder () {
     ui.CustomAddressEdit->setPlaceholderText (
-        QString ("roboRIO-%1.local").arg (team));
+        DriverStation::getInstance()->robotAddress());
 }
 
 void AdvancedSettings::readSettings() {
@@ -152,7 +152,7 @@ void AdvancedSettings::loadApplicationColors() {
     palette.setColor (QPalette::AlternateBase, background);
 
     qApp->setPalette (palette);
-    DriverStation::getInstance()->setGraphPalette (palette);
+    DriverStation::getInstance()->setGraphPalette (&palette);
 }
 
 void AdvancedSettings::onResetClicked() {

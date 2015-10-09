@@ -58,7 +58,7 @@ class MainWindow : public SmartWindow {
     /**
      * Represents the UI of the dialog
      */
-    Ui::MainWindow* m_ui;
+    Ui::MainWindow* ui;
 
     /**
      * Used for showing the icons (which are in fact text) horizontally
@@ -118,9 +118,16 @@ class MainWindow : public SmartWindow {
     /**
      * @internal
      * Changes the robot alliance and position when the user changes the
-     * allianche from the combobox
+     * alliance from the combobox
      */
     void onStationChanged (int station);
+
+    /**
+     * @internal
+     * Changes the Driver Station protocol when the user changes the
+     * protocol from the combobox
+     */
+    void onProtocolChanged (int protocol);
 
     /**
      * @internal

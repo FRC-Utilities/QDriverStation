@@ -37,6 +37,9 @@
 class LIB_DS_DECL DS_Protocol2014 : public DS_Protocol {
     Q_OBJECT
 
+  public:
+    explicit DS_Protocol2014();
+
   public slots:
     void reset();
     void reboot();
