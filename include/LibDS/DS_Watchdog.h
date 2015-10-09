@@ -56,6 +56,12 @@ class LIB_DS_DECL DS_Watchdog : public QObject {
      */
     void restart();
 
+    /**
+     * Changes the timeout interval of the watchdog. The default value is
+     * 1000 milliseconds.
+     */
+    void setInterval (int interval);
+
   signals:
     /**
      * Emitted when the timer has elapsed and a timeout signal
