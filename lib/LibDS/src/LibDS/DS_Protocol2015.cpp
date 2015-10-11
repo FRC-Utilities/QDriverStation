@@ -179,7 +179,7 @@ QByteArray DS_Protocol2015::generateJoystickData() {
 
         /* Add axis data */
         if (numAxes > 0) {
-            data.append ((uint8_t) numAxes);
+            data.append (numAxes);
             for (int axis = 0; axis < numAxes; ++axis)
                 data.append (p_joysticks->at (i)->axes [axis] * P15_DOUBLE_TO_CHAR);
         }
@@ -189,25 +189,25 @@ QByteArray DS_Protocol2015::generateJoystickData() {
             int extraBit = (numButtons % 8 == 0) ? 0 : 1;
             int byteCount = (numButtons / 8) + extraBit;
 
-            QBitArray buttons ((uint8_t) numButtons + extraBit);
+            QBitArray buttons (numButtons + extraBit);
             for (int button = 0; button < numButtons; ++button)
                 buttons [button] = p_joysticks->at (i)->buttons [button];
 
             buttons.setBit (buttons.count() - 1, byteCount * 8);
 
-            data.append ((uint8_t) p_joysticks->at (i)->numButtons);
+            data.append (p_joysticks->at (i)->numButtons);
             data.append (bitsToBytes (buttons));
         }
 
         /* Add hat/pov data */
         if (numPovHats > 0) {
-            data.append ((uint8_t) numPovHats);
+            data.append (numPovHats);
             for (int hat = 0; hat < numPovHats; ++hat) {
                 int value = p_joysticks->at (i)->povHats [hat];
                 if (value <= 0) value = -1;
 
-                data.append ((uint8_t) value);
-                data.append ((uint8_t) value);
+                data.append (value);
+                data.append (value);
             }
         }
     }
@@ -269,6 +269,7 @@ char DS_Protocol2015::getControlCode (DS_ControlMode mode) {
         break;
     case DS_ControlEmergencyStop:
         return P15_CONTROL_ESTOP;
+        break;
     case DS_ControlNoCommunication:
         return P15_CONTROL_NO_COMM;
         break;
@@ -290,6 +291,7 @@ DS_ControlMode DS_Protocol2015::getControlMode (char byte) {
         break;
     case P15_CONTROL_AUTO:
         return DS_ControlAutonomous;
+        break;
     case P15_CONTROL_NO_COMM:
         return DS_ControlNoCommunication;
         break;

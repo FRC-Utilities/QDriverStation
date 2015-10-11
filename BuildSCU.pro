@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include ($$PWD/../etc/config/cpp-config.pri)
-include ($$PWD/../etc/config/unity-build.pri)
-include ($$PWD/../etc/config/deploy-config.pri)
-include ($$PWD/../etc/config/sdl-boilerplate.pri)
+include ($$PWD/etc/config/scu-build.pri)
+include ($$PWD/etc/config/cpp-config.pri)
+include ($$PWD/etc/config/deploy-config.pri)
+include ($$PWD/etc/config/sdl-boilerplate.pri)

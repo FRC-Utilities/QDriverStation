@@ -22,7 +22,7 @@
 # THE SOFTWARE.
 #
 
-DEFINES += UNITY_BUILD
+DEFINES += SCU_BUILD
 
 QT += gui
 QT += core
@@ -60,7 +60,7 @@ HEADERS += \
     $$PWD/../../src/headers/SmartWindow.h \
     $$PWD/../../src/headers/JoysticksWidget.h
 
-SOURCES += $$PWD/unity-build/build.cpp
+SOURCES += $$PWD/../../src/scu.cpp
 
 FORMS += \
     $$PWD/../../src/forms/MainWindow.ui \
