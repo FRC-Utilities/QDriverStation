@@ -31,7 +31,10 @@ QT += network
 QT += widgets
 
 CONFIG += c++11
-QMAKE_CXXFLAGS += -std=c++0x
+
+!win32* {
+    QMAKE_CXXFLAGS += -std=c++0x
+}
 
 INCLUDEPATH += $$PWD/include
 
