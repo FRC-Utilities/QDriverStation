@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1184</width>
-    <height>284</height>
+    <width>822</width>
+    <height>223</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -314,7 +314,7 @@ QPushButton:checked {
             </spacer>
            </item>
            <item row="2" column="3">
-            <widget class="QProgressBar" name="PcBatteryProgress">
+            <widget class="BatteryProgressbar" name="PcBatteryProgress">
              <property name="minimumSize">
               <size>
                <width>95</width>
@@ -968,16 +968,6 @@ QPushButton:checked {
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_4">
-             <property name="text">
-              <string>Protocol</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="ProtocolCombo"/>
-           </item>
-           <item>
             <widget class="QLabel" name="label_28">
              <property name="text">
               <string>Dashboard Type</string>
@@ -1002,6 +992,16 @@ QPushButton:checked {
               </size>
              </property>
             </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Protocol</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="ProtocolCombo"/>
            </item>
           </layout>
          </widget>
@@ -1975,25 +1975,6 @@ QPushButton:checked {
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="ChartButton">
-         <property name="minimumSize">
-          <size>
-           <width>36</width>
-           <height>36</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>36</width>
-           <height>36</height>
-          </size>
-         </property>
-         <property name="text">
-          <string></string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <spacer name="CloseSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -2013,6 +1994,13 @@ QPushButton:checked {
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>BatteryProgressbar</class>
+   <extends>QProgressBar</extends>
+   <header>BatteryProgressbar.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../etc/resources/resources.qrc"/>
  </resources>
@@ -2035,8 +2023,8 @@ QPushButton:checked {
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="WindowModeGroup"/>
   <buttongroup name="RobotModeGroup"/>
+  <buttongroup name="WindowModeGroup"/>
   <buttongroup name="RobotStatusGroup"/>
  </buttongroups>
 </ui>

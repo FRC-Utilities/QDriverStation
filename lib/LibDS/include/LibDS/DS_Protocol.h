@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+#pragma once
 #ifndef _LIB_DS_PROTOCOL_H
 #define _LIB_DS_PROTOCOL_H
 
@@ -188,11 +189,6 @@ class LIB_DS_DECL DS_Protocol : public QObject {
      */
     QByteArray bitsToBytes (QBitArray bits);
 
-    /**
-     * Restarts the watch dog timer
-     */
-    void resetWatchdog();
-
   protected:
     /**
      * This is the team number, you may use it for a variety of purposes
@@ -210,6 +206,11 @@ class LIB_DS_DECL DS_Protocol : public QObject {
      * the packets that we send to the robot
      */
     bool p_robotCommunication;
+
+    /**
+     * @brief p_sendTimezone
+     */
+    bool p_sendTimezone;
 
     /**
      * The IP address of the robot, calculate it with the \c QHostInfo class

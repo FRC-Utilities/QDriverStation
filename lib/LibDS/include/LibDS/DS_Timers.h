@@ -20,6 +20,10 @@
  * THE SOFTWARE.
  */
 
+#pragma once
+#ifndef _LIB_DS_TIMERS_H
+#define _LIB_DS_TIMERS_H
+
 #include <QTimer>
 #include <QThread>
 
@@ -78,3 +82,5 @@ class LIB_DS_DECL DS_Timers : public QObject {
     QTimer* t500;
     QThread* m_thread;
 };
+
+#endif

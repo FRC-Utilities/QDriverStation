@@ -21,5 +21,6 @@ script:
     - cd .. && cd ..
     
     # Build QDriverStation
-    - qmake -qt=qt5 QDriverStation.pro
+	- cd build
+    - qmake -qt=qt5 UnityBuild.pro
     - make -j4

@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+#pragma once
 #ifndef _QDRIVER_STATION_BATTERY_PROGRESSBAR_H
 #define _QDRIVER_STATION_BATTERY_PROGRESSBAR_H
 
@@ -28,6 +29,9 @@
 
 class BatteryProgressbar : public QProgressBar {
     Q_OBJECT
+
+  public:
+    explicit BatteryProgressbar (QWidget* parent = 0);
 
   public slots:
     void onValueChanged (int value);

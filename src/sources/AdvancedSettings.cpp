@@ -80,8 +80,9 @@ void AdvancedSettings::updatePlaceholder () {
 void AdvancedSettings::readSettings() {
     loadApplicationColors();
 
-    QString base = Settings::get ("Base", ADV_COLOR_BASE).toString();
-    QString highlight = Settings::get ("Highlight", ADV_COLOR_HIGHLIGHT).toString();
+    QString base       = Settings::get ("Base",       ADV_COLOR_BASE).toString();
+    QString highlight  = Settings::get ("Highlight",
+                                        ADV_COLOR_HIGHLIGHT).toString();
     QString background = Settings::get ("Background",
                                         ADV_COLOR_BACKGROUND).toString();
     QString foreground = Settings::get ("Foreground",
@@ -128,9 +129,10 @@ void AdvancedSettings::resetSettings() {
 }
 
 void AdvancedSettings::loadApplicationColors() {
-    QColor base = QColor (Settings::get ("Base", ADV_COLOR_BASE).toString());
-    QColor highlight = QColor (Settings::get ("Highlight",
-                               ADV_COLOR_HIGHLIGHT).toString());
+    QColor base       = QColor (Settings::get ("Base",
+                                ADV_COLOR_BASE).toString());
+    QColor highlight  = QColor (Settings::get ("Highlight",
+                                ADV_COLOR_HIGHLIGHT).toString());
     QColor background = QColor (Settings::get ("Background",
                                 ADV_COLOR_BACKGROUND).toString());
     QColor foreground = QColor (Settings::get ("Foreground",
@@ -152,11 +154,11 @@ void AdvancedSettings::loadApplicationColors() {
     palette.setColor (QPalette::AlternateBase, background);
 
     qApp->setPalette (palette);
-    DriverStation::getInstance()->setGraphPalette (&palette);
 }
 
 void AdvancedSettings::onResetClicked() {
-    int ret = QMessageBox::question (this, tr ("Clear Settings"),
+    int ret = QMessageBox::question (this,
+                                     tr ("Clear Settings"),
                                      tr ("Are you sure you want to clear the "
                                          "application settings?"));
 

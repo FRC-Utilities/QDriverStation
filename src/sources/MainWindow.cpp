@@ -67,6 +67,9 @@
 /*
  * The horizontal size we give for the information widget, which displays
  * the current robot status, voltage, etc...
+ *
+ * The information widget must have a fixed size to avoid resizing the
+ * window when the robot voltage changes.
  */
 #if defined __APPLE__
 #  define INFO_SIZE 2.0
@@ -75,7 +78,7 @@
 #endif
 
 MainWindow::MainWindow() {
-    /* Initialize members */
+    /* Initialize private members */
     ui = new Ui::MainWindow;
     ui->setupUi (this);
     m_tabStyle = new CustomTabStyle;
@@ -86,13 +89,12 @@ MainWindow::MainWindow() {
     connectSlots();
     configureWidgetAppearance();
 
-    /* Initial tasks */
+    /* Initialize the DriverStation processes */
+    DriverStation::getInstance()->init();
+
+    /* Initial tasks, such as getting team number or downloading drivers */
     setTeamNumber (InitTasks::getTeamNumber());
     InitTasks::executeFirstRunTasks();
-
-    /* Initialize sub-modules */
-    DriverStation::getInstance()->init();
-    GamepadManager::getInstance()->init();
 
     /* Read settings & show window */
     readSettings();
@@ -148,10 +150,6 @@ void MainWindow::connectSlots() {
              ui->NetConsoleEdit, SLOT   (append               (QString)));
     connect (m_ds,               SIGNAL (elapsedTimeChanged   (QString)),
              ui->ElapsedTime,    SLOT   (setText              (QString)));
-
-    /* MainWindow UI to Driver Station */
-    connect (ui->ChartButton,    SIGNAL (clicked()),
-             m_ds,               SLOT   (showLogWindow()));
     connect (ui->NetConsoleEdit, SIGNAL (textChanged()),
              this,               SLOT   (scrollNetConsole()));
 
@@ -320,7 +318,11 @@ void MainWindow::readSettings() {
     onStationChanged  (ui->StationCombo->currentIndex());
     onProtocolChanged (ui->ProtocolCombo->currentIndex());
 
-    /* Update next values automatically */
+    /* Send the saved networking config to the Driver Station */
+    m_advancedSettings->readSettings();
+    m_advancedSettings->applySettings();
+
+    /* Update DriverStation and Dashboard when user changes something in UI */
     connect (ui->StationCombo,       SIGNAL (currentIndexChanged (int)),
              this,                   SLOT   (onStationChanged    (int)));
     connect (ui->ProtocolCombo,      SIGNAL (currentIndexChanged (int)),
@@ -330,24 +332,24 @@ void MainWindow::readSettings() {
 }
 
 void MainWindow::updateLabelColors() {
-    QPalette p;
-    ui->Test->setPalette                (p);
-    ui->TeleOp->setPalette              (p);
-    ui->AppName->setPalette             (p);
-    ui->Practice->setPalette            (p);
-    ui->PlugIcon->setPalette            (p);
-    ui->CodeLabel->setPalette           (p);
-    ui->TeamLabel->setPalette           (p);
-    ui->Autonomous->setPalette          (p);
-    ui->TeamNumber->setPalette          (p);
-    ui->StatusLabel->setPalette         (p);
-    ui->ElapsedTime->setPalette         (p);
-    ui->VoltageIcon->setPalette         (p);
-    ui->WindowNormal->setPalette        (p);
-    ui->WindowDocked->setPalette        (p);
-    ui->VoltageLabel->setPalette        (p);
-    ui->JoysticksLabel->setPalette      (p);
-    ui->CommunicationsLabel->setPalette (p);
+    QPalette palette;
+    ui->Test->setPalette                (palette);
+    ui->TeleOp->setPalette              (palette);
+    ui->AppName->setPalette             (palette);
+    ui->Practice->setPalette            (palette);
+    ui->PlugIcon->setPalette            (palette);
+    ui->CodeLabel->setPalette           (palette);
+    ui->TeamLabel->setPalette           (palette);
+    ui->Autonomous->setPalette          (palette);
+    ui->TeamNumber->setPalette          (palette);
+    ui->StatusLabel->setPalette         (palette);
+    ui->ElapsedTime->setPalette         (palette);
+    ui->VoltageIcon->setPalette         (palette);
+    ui->WindowNormal->setPalette        (palette);
+    ui->WindowDocked->setPalette        (palette);
+    ui->VoltageLabel->setPalette        (palette);
+    ui->JoysticksLabel->setPalette      (palette);
+    ui->CommunicationsLabel->setPalette (palette);
 }
 
 void MainWindow::updatePcStatusWidgets() {
@@ -355,17 +357,12 @@ void MainWindow::updatePcStatusWidgets() {
         int usage = CpuUsage::getUsage();
         int level = Battery::currentLevel();
 
-        if (usage < 0 || usage > 100)
-            usage = 0;
-
-        if (level < 0 || level > 100)
-            level = 0;
-
+        /* Update progress bars */
         ui->PcCpuProgress->setValue (usage);
         ui->PcBatteryProgress->setValue (level);
+
+        /* Change status of AC plug icon */
         ui->PlugIcon->setVisible (Battery::isPlugged());
-        ui->PcCpuProgress->setToolTip (tr ("CPU usage: %1%").arg (usage));
-        ui->PcBatteryProgress->setToolTip (tr ("Battery level: %1%").arg (level));
     }
 }
 
@@ -390,19 +387,11 @@ void MainWindow::onProtocolChanged (int protocol) {
 }
 
 void MainWindow::onRebootClicked() {
-    if (!m_ds->networkAvailable())
-        statusLabelAnimation();
-
-    else
-        m_ds->reboot();
+    m_ds->canBeEnabled() ? m_ds->reboot() : statusLabelAnimation();
 }
 
 void MainWindow::onRestartClicked() {
-    if (!m_ds->canBeEnabled())
-        statusLabelAnimation();
-
-    else
-        m_ds->restartCode();
+    m_ds->canBeEnabled() ? m_ds->restartCode() : statusLabelAnimation();
 }
 
 void MainWindow::onWebsiteClicked() {
@@ -417,19 +406,24 @@ void MainWindow::onEnabledClicked() {
         return;
     }
 
+    /* Enable robot and update application style */
     setRobotEnabled (true);
     ui->EnableButton->setChecked (true);
-    ui->EnableButton->setStyleSheet (CSS_ENABLED_CHECK);
+    ui->EnableButton->setStyleSheet  (CSS_ENABLED_CHECK);
     ui->DisableButton->setStyleSheet (CSS_DISABLED_UNCHECK);
 }
 
 void MainWindow::onDisabledClicked() {
-    if (m_ds->controlMode() != DS_ControlDisabled)
+    /* Only disable the robot if it can be disabled */
+    if (m_ds->controlMode() != DS_ControlDisabled
+            && m_ds->controlMode() != DS_ControlEmergencyStop
+            && m_ds->controlMode() != DS_ControlNoCommunication)
         setRobotEnabled (false);
 
+    /* Update the application style */
     ui->DisableButton->setChecked (true);
     ui->DisableButton->setStyleSheet (CSS_DISABLED_CHECK);
-    ui->EnableButton->setStyleSheet (CSS_ENABLED_UNCHECK);
+    ui->EnableButton->setStyleSheet  (CSS_ENABLED_UNCHECK);
 }
 
 void MainWindow::onJoystickRemoved() {
@@ -443,11 +437,7 @@ void MainWindow::updateJoysticksTab (bool available) {
 }
 
 void MainWindow::onWindowModeChanged() {
-    if (ui->WindowDocked->isChecked())
-        setWindowMode (WindowMode::Docked);
-
-    else
-        setWindowMode (WindowMode::Normal);
+    setWindowMode (ui->WindowDocked->isChecked() ? Docked : Normal);
 }
 
 void MainWindow::onRobotModeChanged (int mode) {
@@ -478,6 +468,8 @@ void MainWindow::setTeamNumber (int team) {
 }
 
 void MainWindow::setRobotEnabled (bool enabled) {
+    /* Robot can be enabled because we have communications and the
+     * operation mode is not set to E-Stop */
     if (enabled) {
         if (ui->Test->isChecked())
             m_ds->setControlMode (DS_ControlTest);
@@ -496,16 +488,12 @@ void MainWindow::setRobotEnabled (bool enabled) {
                                  ui->PracticeEndGame->value());
     }
 
-    else
-        m_ds->setControlMode (DS_ControlDisabled);
+    /* Disable the robot */
+    else m_ds->setControlMode (DS_ControlDisabled);
 }
 
 void MainWindow::updateLabelText (QLabel* label, QString text) {
-    if (m_ds->networkAvailable() && !text.isEmpty())
-        label->setText (text);
-
-    else
-        label->setText ("--.--");
+    label->setText (m_ds->networkAvailable() && !text.isEmpty() ? text : "--.--");
 }
 
 void MainWindow::onCodeChanged (bool available) {
@@ -518,7 +506,10 @@ void MainWindow::onCommunicationsChanged (bool available) {
 }
 
 void MainWindow::onControlModeChanged (DS_ControlMode mode) {
-    if (mode == DS_ControlDisabled)
+    /* We should update the UI because the robot cannot be enabled */
+    if ((mode == DS_ControlDisabled)
+            || (mode == DS_ControlEmergencyStop)
+            || (mode == DS_ControlNoCommunication))
         ui->DisableButton->click();
 }
 
@@ -585,14 +576,18 @@ void MainWindow::toggleStatusColor() {
     QPalette palette;
     QColor redColor = QColor (255, 33, 43);
 
+    /* Decide the color to use on the label */
     if (ui->StatusLabel->palette().windowText().color() != redColor)
         palette.setColor (QPalette::WindowText, redColor);
 
+    /* Apply the generated color */
     ui->StatusLabel->setPalette (palette);
 
+    /* Flash communications label */
     if (!ui->Communications->isChecked())
         ui->CommunicationsLabel->setPalette (palette);
 
+    /* Flash robot code label */
     if (!ui->RobotCode->isChecked())
         ui->CodeLabel->setPalette (palette);
 }

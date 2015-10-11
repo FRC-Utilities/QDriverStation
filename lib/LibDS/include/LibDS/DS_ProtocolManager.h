@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+#pragma once
 #ifndef _LIB_DS_PROTOCOL_MANAGER_H
 #define _LIB_DS_PROTOCOL_MANAGER_H
 

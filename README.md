@@ -16,16 +16,6 @@ The actual code that moves and manages a FRC robot is found in a [separate repos
 
 [![Screenshot](/etc/screenshots/Mac.png)](https://raw.githubusercontent.com/WinT-3794/QDriverStation/master/etc/screenshots/Mac.png)
 
-##### Other open-source Driver Stations from us...
-
-###### Mobile Version
-
-We are also working in a touch-friendly version of the Driver Station, which is intended for mobile phones and tablets. You can find more info about the Mobile Driver Station [here](http://github.com/wint-3794/ds-mobile)
-
-###### 'Lite' Version
-
-Did you ever want to drive your robot with your keyboard? We wanted too. If you just want to drive your robot without all the bells and whistles of the QDriverStation, we've got you covered! Click [here](http://github.com/wint-3794/ds-lite) for more information!
-
 ### Install notes
 
 Once you finish installing the software, you can launch it and begin driving your robot. Just be sure to input your team number and to verify that the joysticks are working correctly. 
@@ -49,12 +39,10 @@ The project already contains the compiled SDL libraries for Windows and Mac.
 
 ###### Compiling the application
 
-Once you have Qt installed, open *Desktop.pro* in Qt Creator and click the "Run" button.
+Once you have Qt installed, navigate to the build folder and open "App.pro" with Qt Creator.
+If you just want to compile the application by yourself, open "UnityBuild.pro" with Qt Creator.
 
-Alternatively, you can also use the following commands:
-- qmake
-- make
-- **Optional:** sudo make install
+The main difference between these two files is that the UnityBuild.pro uses the "unity build" method, which results with a faster compilation and (in some cases) a smaller binary file. The caveat with this method is that we must do some ugly hacking and include all the *.cpp files in a master build file.
 
 ### Credits
 

@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+#pragma once
 #ifndef _QDRIVER_STATION_JOYSTICKS_H
 #define _QDRIVER_STATION_JOYSTICKS_H
 
@@ -48,6 +49,7 @@ class JoysticksWidget : public QWidget {
 
   public:
     explicit JoysticksWidget (QWidget* parent = 0);
+    ~JoysticksWidget();
 
   signals:
     /**

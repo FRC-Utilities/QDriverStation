@@ -24,7 +24,6 @@
 
 #include "LibDS/DS_Timers.h"
 #include "LibDS/DS_Client.h"
-#include "LibDS/DS_LogWindow.h"
 #include "LibDS/DS_NetConsole.h"
 #include "LibDS/DS_ElapsedTime.h"
 #include "LibDS/DS_ProtocolManager.h"
@@ -40,13 +39,11 @@ DriverStation* DriverStation::m_instance = Q_NULLPTR;
 DriverStation::DriverStation() {
     m_init = false;
 
+    /* Initialize private members */
     m_client      = new DS_Client;
-    m_logWindow   = new DS_LogWindow;
     m_netConsole  = new DS_NetConsole;
     m_elapsedTime = new DS_ElapsedTime;
     m_manager     = new DS_ProtocolManager;
-
-    //setProtocol (Protocol2015);
 
     /* Update internal values and notify object on robot status events */
     connect (m_manager, SIGNAL (codeChanged           (bool)),
@@ -102,7 +99,6 @@ DriverStation::DriverStation() {
 DriverStation::~DriverStation() {
     delete m_client;
     delete m_manager;
-    delete m_logWindow;
     delete m_netConsole;
     delete m_elapsedTime;
 
@@ -196,15 +192,6 @@ void DriverStation::restartCode() {
         m_manager->protocol()->restartCode();
 }
 
-void DriverStation::showLogWindow() {
-    if (m_init)
-        m_logWindow->show();
-}
-
-void DriverStation::setGraphPalette (QPalette* palette) {
-    m_logWindow->setGraphPalette (palette);
-}
-
 void DriverStation::startPractice (int countdown,
                                    int autonomous,
                                    int delay,
@@ -244,35 +231,35 @@ void DriverStation::setTeamNumber (int team) {
         m_manager->protocol()->setTeamNumber (team);
 }
 
-void DriverStation::setAlliance (AllianceType alliance) {
-    DS_Alliance a;
+void DriverStation::setAlliance (AllianceType allianceType) {
+    DS_Alliance alliance;
 
-    switch (alliance) {
+    switch (allianceType) {
     case Red1:
-        a = DS_AllianceRed1;
+        alliance = DS_AllianceRed1;
         break;
     case Red2:
-        a = DS_AllianceRed2;
+        alliance = DS_AllianceRed2;
         break;
     case Red3:
-        a = DS_AllianceRed3;
+        alliance = DS_AllianceRed3;
         break;
     case Blue1:
-        a = DS_AllianceBlue1;
+        alliance = DS_AllianceBlue1;
         break;
     case Blue2:
-        a = DS_AllianceBlue2;
+        alliance = DS_AllianceBlue2;
         break;
     case Blue3:
-        a = DS_AllianceBlue3;
+        alliance = DS_AllianceBlue3;
         break;
     default:
-        a = DS_AllianceRed1;
+        alliance = DS_AllianceRed1;
         break;
     }
 
     if (m_manager->protocolIsValid() && m_init)
-        m_manager->protocol()->setAlliance (a);
+        m_manager->protocol()->setAlliance (alliance);
 }
 
 void DriverStation::setControlMode (DS_ControlMode mode) {
@@ -281,7 +268,7 @@ void DriverStation::setControlMode (DS_ControlMode mode) {
 }
 
 void DriverStation::setCustomAddress (QString address) {
-    if (m_manager->protocolIsValid() && m_init)
+    if (m_manager->protocolIsValid())
         m_manager->protocol()->setRobotAddress (address);
 }
 
@@ -349,10 +336,13 @@ void DriverStation::updateStatus (bool ignore_me) {
 }
 
 void DriverStation::onControlModeChanged (DS_ControlMode mode) {
-    (mode == DS_ControlDisabled
-     || mode == DS_ControlEmergencyStop
-     || mode == DS_ControlNoCommunication) ?
-    m_elapsedTime->stop() : m_elapsedTime->reset();
+    if ((mode == DS_ControlDisabled
+            || mode == DS_ControlEmergencyStop
+            || mode == DS_ControlNoCommunication))
+        m_elapsedTime->stop();
+
+    else
+        m_elapsedTime->reset();
 
     emit robotStatusChanged (getStatus());
 }

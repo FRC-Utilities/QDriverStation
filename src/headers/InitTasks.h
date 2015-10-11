@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+#pragma once
 #ifndef _QDRIVER_STATION_INIT_TASKS_H
 #define _QDRIVER_STATION_INIT_TASKS_H
 

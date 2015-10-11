@@ -33,18 +33,25 @@ JoysticksWidget::JoysticksWidget (QWidget* parent) : QWidget (parent) {
     ui.Buttons->setVisible (false);
     ui.Rumble->setMinimumWidth (ui.JoystickList->width());
 
-    m_manager = GamepadManager::getInstance();
+    m_manager = new GamepadManager;
 
-    connect (m_manager, SIGNAL (axisEvent (GM_Axis)),
-             this,      SLOT   (onAxisEvent (GM_Axis)));
-    connect (m_manager, SIGNAL (buttonEvent (GM_Button)),
-             this,      SLOT   (onButtonEvent (GM_Button)));
-    connect (m_manager, SIGNAL (countChanged (QStringList)),
+    connect (m_manager, SIGNAL (axisEvent      (GM_Axis)),
+             this,      SLOT   (onAxisEvent    (GM_Axis)));
+    connect (m_manager, SIGNAL (buttonEvent    (GM_Button)),
+             this,      SLOT   (onButtonEvent  (GM_Button)));
+    connect (m_manager, SIGNAL (countChanged   (QStringList)),
              this,      SLOT   (onCountChanged (QStringList)));
     connect (ui.Rumble, SIGNAL (clicked()),
              this,      SLOT   (onRumbleClicked()));
+
     connect (ui.JoystickList, SIGNAL (currentRowChanged (int)),
-             this,            SLOT   (onRowChanged (int)));
+             this,            SLOT   (onRowChanged      (int)));
+
+    m_manager->init();
+}
+
+JoysticksWidget::~JoysticksWidget() {
+    delete m_manager;
 }
 
 void JoysticksWidget::onRumbleClicked() {
@@ -53,10 +60,8 @@ void JoysticksWidget::onRumbleClicked() {
 
 void JoysticksWidget::onRowChanged (int row) {
     /* Remove all buttons and progress bars in the widget */
-    foreach (QPushButton* c, findChildren<QPushButton*>())
-        delete c;
-    foreach (QProgressBar* p, findChildren<QProgressBar*>())
-        delete p;
+    foreach (QPushButton *  c, findChildren<QPushButton*>())  delete c;
+    foreach (QProgressBar * p, findChildren<QProgressBar*>()) delete p;
 
     /* Clear joystick data */
     m_axes.clear();
@@ -65,8 +70,7 @@ void JoysticksWidget::onRowChanged (int row) {
     ui.Buttons->setVisible (false);
 
     /* Avoid crashing the application when there are no joysticks */
-    if (row < 0)
-        return;
+    if (row < 0)  return;
 
     /* Get joystick information */
     int axisCount = m_manager->getNumAxes (row);
@@ -102,13 +106,8 @@ void JoysticksWidget::onRowChanged (int row) {
         button->setToolTip (m_manager->getButtonName (i));
 
         /* Distribute the button items in a nice layout */
-        int row = 0;
-        int column = 0;
-        if (i <= 7) row = i;
-        else {
-            row = i - 8;
-            column = (int) (i / 8);
-        }
+        int row = (i <= 7) ? i : i - 8;
+        int column = (i <= 7) ? 0 : (i / 8);
 
         m_buttons.append (button);
         ui.ButtonLayout->addWidget (button, row, column);

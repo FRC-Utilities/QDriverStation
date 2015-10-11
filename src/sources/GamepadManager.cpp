@@ -50,8 +50,6 @@
 #define SDL_MAIN_HANDLED
 #define _INIT_CODE SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER
 
-GamepadManager* GamepadManager::m_instance = Q_NULLPTR;
-
 GamepadManager::GamepadManager() {
     SDL_SetHint (SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
 
@@ -94,15 +92,6 @@ GamepadManager::~GamepadManager() {
         SDL_GameControllerClose (SDL_GameControllerOpen (i));
 
     SDL_Quit();
-
-    delete m_instance;
-}
-
-GamepadManager* GamepadManager::getInstance() {
-    if (m_instance == Q_NULLPTR)
-        m_instance = new GamepadManager();
-
-    return m_instance;
 }
 
 int GamepadManager::getNumHats (int js) {

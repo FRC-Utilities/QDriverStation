@@ -22,6 +22,20 @@
 
 #include "BatteryProgressbar.h"
 
-void BatteryProgressbar::onValueChanged (int value) {
+BatteryProgressbar::BatteryProgressbar (QWidget* parent)
+    : QProgressBar (parent) {
+    connect (this, SIGNAL (valueChanged   (int)),
+             this, SLOT   (onValueChanged (int)));
+}
 
+void BatteryProgressbar::onValueChanged (int value) {
+    QPalette palette;
+
+    if (value <= 25)
+        palette.setColor (QPalette::Highlight, QColor ("#EE141A"));
+
+    else if (value <= 60)
+        palette.setColor (QPalette::Highlight, QColor ("#DEAE00"));
+
+    setPalette (palette);
 }

@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+#pragma once
 #ifndef _QDRIVER_STATION_ADVANCED_SETTINGS_H
 #define _QDRIVER_STATION_ADVANCED_SETTINGS_H
 
@@ -64,6 +65,22 @@ class AdvancedSettings : public QDialog {
      */
     void updatePlaceholder();
 
+    /**
+     * Reads settings and updates dialog UI accordingly
+     */
+    void readSettings();
+
+    /**
+     * Changes settings based on the values of the UI elements
+     */
+    void applySettings();
+
+    /**
+     * Resets all the settings that are managed by this dialog to their default
+     * values
+     */
+    void resetSettings();
+
   signals:
     void updateColors();
     void settingsChanged();
@@ -85,25 +102,6 @@ class AdvancedSettings : public QDialog {
     QList<QLineEdit*> m_colorTexts;
 
   private slots:
-    /**
-     * @internal
-     * Reads settings and updates dialog UI accordingly
-     */
-    void readSettings();
-
-    /**
-     * @internal
-     * Changes settings based on the values of the UI elements
-     */
-    void applySettings();
-
-    /**
-     * @internal
-     * Resets all the settings that are managed by this dialog to their default
-     * values
-     */
-    void resetSettings();
-
     /**
      * @internal
      * Changes the palette of the application based on current settings

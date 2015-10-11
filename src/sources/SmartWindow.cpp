@@ -91,11 +91,13 @@ void SmartWindow::closeEvent (QCloseEvent* e) {
         }
 
         /* Ensure that this message is not shown twice in a row */
-        else m_closingDown = true;
+        else
+            m_closingDown = true;
     }
 
-    /* Here it comes... */
+    /* Close MainWindow and any other window that is open */
     e->accept();
+    qApp->closeAllWindows();
 }
 
 void SmartWindow::setUseFixedSize (bool fixed) {

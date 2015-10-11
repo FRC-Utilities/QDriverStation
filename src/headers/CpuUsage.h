@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+#pragma once
 #ifndef _QDRIVER_STATION_CPU_USAGE_H
 #define _QDRIVER_STATION_CPU_USAGE_H
 

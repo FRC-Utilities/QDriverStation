@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+#pragma once
 #ifndef _QDRIVER_STATION_GAMEPAD_MANAGER_H
 #define _QDRIVER_STATION_GAMEPAD_MANAGER_H
 
@@ -90,10 +91,8 @@ class GamepadManager : public QObject {
     Q_OBJECT
 
   public:
-    /**
-     * Returns the only instance of the class
-     */
-    static GamepadManager* getInstance();
+    explicit GamepadManager();
+    ~GamepadManager();
 
   public slots:
     /**
@@ -182,19 +181,6 @@ class GamepadManager : public QObject {
      * one of the connected joysticks
      */
     void buttonEvent (GM_Button button);
-
-  protected:
-    /**
-     * Initializes SDL, loads controller mappings and starts the event loop
-     */
-    explicit GamepadManager();
-
-    /**
-     * Closes all SDL controllers and quits the SDL system
-     */
-    ~GamepadManager();
-
-    static GamepadManager* m_instance;
 
   private:
     /**

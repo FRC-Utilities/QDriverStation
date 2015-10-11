@@ -1,0 +1,62 @@
+#
+# This file is part of QDriverStation
+#
+# Copyright (c) 2015 WinT 3794 <http:/wint3794.org>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+#
+
+include ($$PWD/../../lib/LibDS/lib-driverstation.pri)
+
+INCLUDEPATH += $$PWD/../../src/headers/
+RESOURCES += $$PWD/../../etc/resources/resources.qrc
+
+HEADERS += \
+    $$PWD/../../src/headers/AdvancedSettings.h \
+    $$PWD/../../src/headers/AssemblyInfo.h \
+    $$PWD/../../src/headers/Battery.h \
+    $$PWD/../../src/headers/BatteryProgressbar.h \
+    $$PWD/../../src/headers/CpuUsage.h \
+    $$PWD/../../src/headers/Dashboard.h \
+    $$PWD/../../src/headers/GamepadManager.h \
+    $$PWD/../../src/headers/InitTasks.h \
+    $$PWD/../../src/headers/MainWindow.h \
+    $$PWD/../../src/headers/Settings.h \
+    $$PWD/../../src/headers/SmartWindow.h \
+    $$PWD/../../src/headers/JoysticksWidget.h
+
+SOURCES += \
+    $$PWD/../../src/main.cpp \
+    $$PWD/../../src/sources/AdvancedSettings.cpp \
+    $$PWD/../../src/sources/AssemblyInfo.cpp \
+    $$PWD/../../src/sources/Battery.cpp \
+    $$PWD/../../src/sources/BatteryProgressbar.cpp \
+    $$PWD/../../src/sources/CpuUsage.cpp \
+    $$PWD/../../src/sources/Dashboard.cpp \
+    $$PWD/../../src/sources/GamepadManager.cpp \
+    $$PWD/../../src/sources/InitTasks.cpp \
+    $$PWD/../../src/sources/MainWindow.cpp \
+    $$PWD/../../src/sources/Settings.cpp \
+    $$PWD/../../src/sources/SmartWindow.cpp \
+    $$PWD/../../src/sources/JoysticksWidget.cpp
+
+FORMS += \
+    $$PWD/../../src/forms/MainWindow.ui \
+    $$PWD/../../src/forms/JoysticksWidget.ui \
+    $$PWD/../../src/forms/AdvancedSettings.ui
