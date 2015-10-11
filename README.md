@@ -39,9 +39,12 @@ The project already contains the compiled SDL libraries for Windows and Mac.
 
 ###### Compiling the application
 
-Once you have Qt installed, open "BuildNormal.pro" with Qt Creator. If you just want to compile the application by yourself (and not change the source code), open "BuildSCU.pro" with Qt Creator.
+Once you have Qt installed, open *QDriverStation.pro* in Qt Creator and click the "Run" button.
 
-The main difference between these two files is that the BuildSCU.pro uses the SCU (single compulation unit) method, which results with a faster compilation and (in some cases) a smaller binary file. The caveat with this method is that we must do some ugly hacking and include all the *.cpp files in a master build file, which must be updated regularly in order to include all files.
+Alternatively, you can also use the following commands:
+- qmake
+- make
+- **Optional:** sudo make install
 
 ### Credits
 

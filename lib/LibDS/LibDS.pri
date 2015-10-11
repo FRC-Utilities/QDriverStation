@@ -22,25 +22,45 @@
 # THE SOFTWARE.
 #
 
-TARGET = QDriverStation
+CODECFORTR = UTF-8
+CODECFORSRC = UTF-8
 
-win32* {
-    LIBS += -lPdh
-    RC_FILE = $$PWD/../deploy/windows/info.rc
+QT += gui
+QT += core
+QT += network
+QT += widgets
+
+CONFIG += c++11
+
+!win32* {
+    QMAKE_CXXFLAGS += -std=c++0x
 }
 
-macx* {
-    ICON = $$PWD/../deploy/mac-osx/AppIcon.icns
-    RC_FILE = $$PWD/../deploy/mac-osx/AppIcon.icns
-    QMAKE_INFO_PLIST = $$PWD/../deploy/mac-osx/Info.plist
-}
+INCLUDEPATH += $$PWD/include
 
-linux:!android {
-    target.path = /usr/bin
-    TARGET = qdriverstation
-    icon.path = /usr/share/pixmaps
-    desktop.path = /usr/share/applications
-    icon.files += $$PWD/../deploy/linux/qdriverstation.ico
-    desktop.files += $$PWD/../deploy/linux/qdriverstation.desktop
-    INSTALLS += target desktop icon
-}
+SOURCES += \
+    $$PWD/src/DriverStation.cpp \
+    $$PWD/src/LibDS/DS_Client.cpp \
+    $$PWD/src/LibDS/DS_Common.cpp \
+    $$PWD/src/LibDS/DS_ElapsedTime.cpp \
+    $$PWD/src/LibDS/DS_NetConsole.cpp \
+    $$PWD/src/LibDS/DS_Protocol.cpp \
+    $$PWD/src/LibDS/DS_Protocol2014.cpp \
+    $$PWD/src/LibDS/DS_Protocol2015.cpp \
+    $$PWD/src/LibDS/DS_ProtocolManager.cpp \
+    $$PWD/src/LibDS/DS_Watchdog.cpp \
+    $$PWD/src/LibDS/DS_Timers.cpp
+
+HEADERS += \
+    $$PWD/include/DriverStation.h \
+    $$PWD/include/LibDS/DS_Client.h \
+    $$PWD/include/LibDS/DS_Common.h \
+    $$PWD/include/LibDS/DS_ElapsedTime.h \
+    $$PWD/include/LibDS/DS_Global.h \
+    $$PWD/include/LibDS/DS_NetConsole.h \
+    $$PWD/include/LibDS/DS_Protocol.h \
+    $$PWD/include/LibDS/DS_Protocol2014.h \
+    $$PWD/include/LibDS/DS_Protocol2015.h \
+    $$PWD/include/LibDS/DS_ProtocolManager.h \
+    $$PWD/include/LibDS/DS_Watchdog.h \
+    $$PWD/include/LibDS/DS_Timers.h
