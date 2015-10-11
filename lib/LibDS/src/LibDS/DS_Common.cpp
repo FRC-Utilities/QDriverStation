@@ -22,9 +22,6 @@
 
 #include "LibDS/DS_Common.h"
 
-#include <QDateTime>
-#include <QTimeZone>
-
 int DS_PingData::generatePingData (int index) {
     index += 1;
 
@@ -68,7 +65,7 @@ QString DS_GetStaticIp (int team, int host) {
 }
 
 QString DS_GetTimezone() {
-    return QString::fromUtf8 (QTimeZone::systemTimeZone().id());
+    /* TODO */
 }
 
 QString DS_GetControlModeString (DS_ControlMode mode) {
