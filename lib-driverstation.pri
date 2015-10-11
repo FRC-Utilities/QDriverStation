@@ -35,17 +35,11 @@ QMAKE_CXXFLAGS += -std=c++0x
 
 INCLUDEPATH += $$PWD/include
 
-include ($$PWD/lib/QCustomPlot/QCustomPlot.pri)
-
-FORMS += \
-    $$PWD/src/LibDS/ui/DS_LogWindow.ui
-
 SOURCES += \
     $$PWD/src/DriverStation.cpp \
     $$PWD/src/LibDS/DS_Client.cpp \
     $$PWD/src/LibDS/DS_Common.cpp \
     $$PWD/src/LibDS/DS_ElapsedTime.cpp \
-    $$PWD/src/LibDS/DS_LogWindow.cpp \
     $$PWD/src/LibDS/DS_NetConsole.cpp \
     $$PWD/src/LibDS/DS_Protocol.cpp \
     $$PWD/src/LibDS/DS_Protocol2014.cpp \
@@ -60,7 +54,6 @@ HEADERS += \
     $$PWD/include/LibDS/DS_Common.h \
     $$PWD/include/LibDS/DS_ElapsedTime.h \
     $$PWD/include/LibDS/DS_Global.h \
-    $$PWD/include/LibDS/DS_LogWindow.h \
     $$PWD/include/LibDS/DS_NetConsole.h \
     $$PWD/include/LibDS/DS_Protocol.h \
     $$PWD/include/LibDS/DS_Protocol2014.h \

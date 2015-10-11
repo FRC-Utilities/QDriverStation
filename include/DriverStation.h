@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+#pragma once
 #ifndef _LIB_DS_DRIVER_STATION_H
 #define _LIB_DS_DRIVER_STATION_H
 
@@ -30,7 +31,6 @@
 
 class DS_Client;
 class DS_Protocol;
-class DS_LogWindow;
 class DS_NetConsole;
 class DS_ElapsedTime;
 class DS_ProtocolManager;
@@ -138,16 +138,6 @@ class LIB_DS_DECL DriverStation : public QObject {
     void restartCode();
 
     /**
-     * What can I say, this function just shows the DS Log Window
-     */
-    void showLogWindow();
-
-    /**
-     * Updates the palette of the graph widget in the log window
-     */
-    void setGraphPalette (QPalette* palette);
-
-    /**
      * Simulates a timed match with the input time values (in seconds)
      */
     void startPractice (int countdown,
@@ -174,7 +164,7 @@ class LIB_DS_DECL DriverStation : public QObject {
     /**
      * Changes the alliance of the robot using the specified protocol
      */
-    void setAlliance (AllianceType alliance);
+    void setAlliance (AllianceType allianceType);
 
     /**
      * Changes the control mode of the robot, available options are:
@@ -327,12 +317,6 @@ class LIB_DS_DECL DriverStation : public QObject {
      * and crash the school's server if you wish
      */
     DS_Client* m_client;
-
-    /**
-     * Used for showing events and graphs of the robot
-     * behaviour over a specified time lapse
-     */
-    DS_LogWindow* m_logWindow;
 
     /**
      * Used for receiving messages broadcasted by the

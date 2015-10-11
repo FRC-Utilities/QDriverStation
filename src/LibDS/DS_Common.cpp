@@ -22,6 +22,9 @@
 
 #include "LibDS/DS_Common.h"
 
+#include <QDateTime>
+#include <QTimeZone>
+
 int DS_PingData::generatePingData (int index) {
     index += 1;
 
@@ -64,24 +67,29 @@ QString DS_GetStaticIp (int team, int host) {
     return QString ("10.%1.%2").arg (string, QString::number (host));
 }
 
+QString DS_GetTimezone() {
+    return QString::fromUtf8 (QTimeZone::systemTimeZone().id());
+}
+
 QString DS_GetControlModeString (DS_ControlMode mode) {
     switch (mode) {
     case DS_ControlTest:
-        return "Test";
+        return QString ("Test");
         break;
     case DS_ControlTeleOp:
-        return "Teleoperated";
+        return QString ("Teleoperated");
         break;
     case DS_ControlDisabled:
-        return "Disabled";
+        return QString ("Disabled");
         break;
     case DS_ControlAutonomous:
-        return "Autonomous";
+        return QString ("Autonomous");
         break;
     case DS_ControlEmergencyStop:
-        return "Emergency Stop";
+        return QString ("Emergency Stop");
+        break;
     case DS_ControlNoCommunication:
-        return "No Robot Communication";
+        return QString ("No Robot Communication");
         break;
     }
 

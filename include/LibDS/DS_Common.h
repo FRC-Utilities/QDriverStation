@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+#pragma once
 #ifndef _LIB_DS_COMMON_H
 #define _LIB_DS_COMMON_H
 
@@ -98,6 +99,11 @@ struct LIB_DS_DECL DS_PingData {
  *     - And so on...
  */
 QString LIB_DS_DECL DS_GetStaticIp (int team, int host);
+
+/**
+ *
+ */
+QString LIB_DS_DECL DS_GetTimezone();
 
 /**
  * Returns an user-friendly string given the inputed robot control mode

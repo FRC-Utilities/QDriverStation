@@ -106,6 +106,8 @@ void DS_Protocol2014::readRobotData (QByteArray data) {
     Q_UNUSED (data);
 
     /* TODO */
+
+    emit packetReceived();
 }
 
 char DS_Protocol2014::getControlCode (DS_ControlMode mode) {

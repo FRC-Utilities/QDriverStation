@@ -22,43 +22,46 @@
 
 #include "LibDS/DS_Protocol2015.h"
 
-#define CONTROL_DISABLED 0x00
-#define CONTROL_NO_COMM  0x02
-#define CONTROL_TELEOP   0x04
-#define CONTROL_TEST     0x05
-#define CONTROL_AUTO     0x06
-#define CONTROL_ESTOP    0x80
+/* Control modes */
+#define P15_CONTROL_DISABLED 0x00
+#define P15_CONTROL_NO_COMM  0x02
+#define P15_CONTROL_TELEOP   0x04
+#define P15_CONTROL_TEST     0x05
+#define P15_CONTROL_AUTO     0x06
+#define P15_CONTROL_ESTOP    0x80
 
-#define SECTION_GENERAL  0x01
-#define SECTION_JOYSTICK 0x0C
+/* Section headers */
+#define P15_SECTION_GENERAL  0x01
+#define P15_SECTION_JOYSTICK 0x0C
 
-#define STATUS_OK        0x10
-#define STATUS_NULL      0x00
-#define STATUS_REBOOT    0x18
-#define STATUS_KILL_CODE 0x14
+/* Robot instructions */
+#define P15_STATUS_OK        0x10
+#define P15_STATUS_NULL      0x00
+#define P15_STATUS_REBOOT    0x18
+#define P15_STATUS_KILL_CODE 0x14
 
-#define PROGRAM_DISABLED 0x01
-#define PROGRAM_TELEOP   0x02
-#define PROGRAM_AUTO     0x04
-#define PROGRAM_TEST     0x08
-#define PROGRAM_ROBORIO  0x10
-#define PROGRAM_USERCODE 0x20
-#define PROGRAM_NO_CODE  0x00
+/* Program statuses */
+#define P15_PROGRAM_NO_CODE  0x00
 
-#define ALLIANCE_RED1    0x00
-#define ALLIANCE_RED2    0x01
-#define ALLIANCE_RED3    0x02
-#define ALLIANCE_BLUE1   0x03
-#define ALLIANCE_BLUE2   0x04
-#define ALLIANCE_BLUE3   0x05
+/* Alliance codes */
+#define P15_ALLIANCE_RED1    0x00
+#define P15_ALLIANCE_RED2    0x01
+#define P15_ALLIANCE_RED3    0x02
+#define P15_ALLIANCE_BLUE1   0x03
+#define P15_ALLIANCE_BLUE2   0x04
+#define P15_ALLIANCE_BLUE3   0x05
 
-#define PORT_ROBOT       1110
-#define PORT_CLIENT      1150
-#define DOUBLE_TO_CHAR   0x7F
+/* Network ports */
+#define P15_PORT_ROBOT       1110
+#define P15_PORT_CLIENT      1150
 
-#define FTP_PCM          "/tmp/frc_versions/PCM-0-versions.ini"
-#define FTP_PDP          "/tmp/frc_versions/PDP-0-versions.ini"
-#define FTP_LIB          "/tmp/frc_versions/FRC_Lib_Version.ini"
+/* Joystick double to char conversion */
+#define P15_DOUBLE_TO_CHAR   0x7F
+
+/* FTP locations for robot information */
+#define P15_FTP_PCM          "/tmp/frc_versions/PCM-0-versions.ini"
+#define P15_FTP_PDP          "/tmp/frc_versions/PDP-0-versions.ini"
+#define P15_FTP_LIB          "/tmp/frc_versions/FRC_Lib_Version.ini"
 
 DS_Protocol2015::DS_Protocol2015() {
     m_index = 0;
@@ -73,8 +76,11 @@ DS_Protocol2015::DS_Protocol2015() {
 
 void DS_Protocol2015::reset() {
     /* Reset internal values */
+    m_status = P15_STATUS_OK;
+    m_timezoneIterator = 0;
+
     p_robotCode = false;
-    m_status = STATUS_OK;
+    p_sendTimezone = false;
     p_robotCommunication = false;
 
     /* Notify other objects */
@@ -83,33 +89,31 @@ void DS_Protocol2015::reset() {
     emit communicationsChanged (p_robotCommunication);
 
     /* Disable the robot, avoid bad surprises */
-    setControlMode (DS_ControlNoCommunication);
+    setControlMode (DS_ControlDisabled);
 
     /* Lookup for the robot IP again */
     QHostInfo::lookupHost (p_robotIp, this,  SLOT (onLookupFinished (QHostInfo)));
 }
 
 void DS_Protocol2015::reboot() {
-    m_status = STATUS_REBOOT;
+    m_status = P15_STATUS_REBOOT;
 }
 
 int DS_Protocol2015::robotPort() {
-    return PORT_ROBOT;
+    return P15_PORT_ROBOT;
 }
 
 int DS_Protocol2015::clientPort() {
-    return PORT_CLIENT;
+    return P15_PORT_CLIENT;
 }
 
 void DS_Protocol2015::restartCode() {
-    m_status = STATUS_KILL_CODE;
+    m_status = P15_STATUS_KILL_CODE;
 }
 
 QString DS_Protocol2015::robotAddress() {
-    if (p_robotAddress.isEmpty())
-        return QString ("roboRIO-%1.local").arg (p_team);
-
-    return p_robotAddress;
+    return p_robotAddress.isEmpty() ?
+           QString ("roboRIO-%1.local").arg (p_team) : p_robotAddress;
 }
 
 QString DS_Protocol2015::radioAddress() {
@@ -121,9 +125,9 @@ QString DS_Protocol2015::radioAddress() {
 
 void DS_Protocol2015::downloadRobotInformation() {
     QString host = "ftp://" + robotAddress();
-    m_manager.get (QNetworkRequest (host + FTP_LIB));
-    m_manager.get (QNetworkRequest (host + FTP_PCM));
-    m_manager.get (QNetworkRequest (host + FTP_PDP));
+    m_manager.get (QNetworkRequest (host + P15_FTP_LIB));
+    m_manager.get (QNetworkRequest (host + P15_FTP_PCM));
+    m_manager.get (QNetworkRequest (host + P15_FTP_PDP));
 }
 
 QByteArray DS_Protocol2015::generateClientPacket() {
@@ -137,15 +141,24 @@ QByteArray DS_Protocol2015::generateClientPacket() {
     data.append (ping.byte2);
 
     /* Add the section header */
-    data.append (SECTION_GENERAL);
+    data.append (P15_SECTION_GENERAL);
 
     /* Add the desired control mode, robot status and alliance data */
     data.append (getControlCode (controlMode()));
-    data.append (p_robotCommunication ? m_status : (char) STATUS_NULL);
+    data.append (p_robotCommunication ? m_status : (char) P15_STATUS_NULL);
     data.append (getAllianceCode (alliance()));
 
+    /* Add timezone data */
+    if (m_timezoneIterator < 7) {
+        m_timezoneIterator += 1;
+        if (p_sendTimezone) {
+            data.append (DS_GetTimezone());
+            p_sendTimezone = false;
+        }
+    }
+
     /* Add joystick input information if the robot is in TeleOp */
-    if (controlMode() == DS_ControlTeleOp)
+    else if (controlMode() == DS_ControlTeleOp)
         data.append (generateJoystickData());
 
     return data;
@@ -154,19 +167,21 @@ QByteArray DS_Protocol2015::generateClientPacket() {
 QByteArray DS_Protocol2015::generateJoystickData() {
     QByteArray data;
 
+    /* Generate data for each joystick */
     for (int i = 0; i < p_joysticks->count(); ++i) {
         int numAxes = p_joysticks->at (i)->numAxes;
         int numButtons = p_joysticks->at (i)->numButtons;
         int numPovHats = p_joysticks->at (i)->numPovHats;
 
+        /* Add joystick information and put the section header */
         data.append (getJoystickSize (p_joysticks->at (i)) + 1);
-        data.append (SECTION_JOYSTICK);
+        data.append (P15_SECTION_JOYSTICK);
 
         /* Add axis data */
         if (numAxes > 0) {
             data.append ((uint8_t) numAxes);
             for (int axis = 0; axis < numAxes; ++axis)
-                data.append (p_joysticks->at (i)->axes [axis] * DOUBLE_TO_CHAR);
+                data.append (p_joysticks->at (i)->axes [axis] * P15_DOUBLE_TO_CHAR);
         }
 
         /* Add button data */
@@ -207,6 +222,7 @@ void DS_Protocol2015::readRobotData (QByteArray data) {
 
     /* Update the status of the communications and download robot information */
     if (!p_robotCommunication) {
+        p_sendTimezone = true;
         p_robotCommunication = true;
         emit communicationsChanged (true);
 
@@ -219,15 +235,18 @@ void DS_Protocol2015::readRobotData (QByteArray data) {
     QString minor = QString::number (data.at (6));
     minor = minor.replace ("-", "");
 
+    /* Trim the minor voltage to 2 digits */
+    if (minor.length() == 1)
+        minor = minor + "0";
+    else if (minor.length() > 2)
+        minor = QString (minor.at (0)) + QString (minor.at (1));
+
     /* Get robot code */
-    bool code = data.at (4) != PROGRAM_NO_CODE;
+    bool code = data.at (4) != P15_PROGRAM_NO_CODE;
     if (p_robotCode != code) {
         p_robotCode = code;
         emit codeChanged (code);
     }
-
-    /* Restart the watchdog to avoid reseting the class */
-    resetWatchdog();
 
     /* Send new values extracted from the packet to other objects */
     emit packetReceived();
@@ -237,41 +256,41 @@ void DS_Protocol2015::readRobotData (QByteArray data) {
 char DS_Protocol2015::getControlCode (DS_ControlMode mode) {
     switch (mode) {
     case DS_ControlTest:
-        return CONTROL_TEST;
+        return P15_CONTROL_TEST;
         break;
     case DS_ControlTeleOp:
-        return CONTROL_TELEOP;
+        return P15_CONTROL_TELEOP;
         break;
     case DS_ControlDisabled:
-        return CONTROL_DISABLED;
+        return P15_CONTROL_DISABLED;
         break;
     case DS_ControlAutonomous:
-        return CONTROL_AUTO;
+        return P15_CONTROL_AUTO;
         break;
     case DS_ControlEmergencyStop:
-        return CONTROL_ESTOP;
+        return P15_CONTROL_ESTOP;
     case DS_ControlNoCommunication:
-        return CONTROL_NO_COMM;
+        return P15_CONTROL_NO_COMM;
         break;
     }
 
-    return CONTROL_DISABLED;
+    return P15_CONTROL_DISABLED;
 }
 
 DS_ControlMode DS_Protocol2015::getControlMode (char byte) {
     switch (byte) {
-    case CONTROL_DISABLED:
+    case P15_CONTROL_DISABLED:
         return DS_ControlDisabled;
         break;
-    case CONTROL_TELEOP:
+    case P15_CONTROL_TELEOP:
         return DS_ControlTeleOp;
         break;
-    case CONTROL_TEST:
+    case P15_CONTROL_TEST:
         return DS_ControlTest;
         break;
-    case CONTROL_AUTO:
+    case P15_CONTROL_AUTO:
         return DS_ControlAutonomous;
-    case CONTROL_NO_COMM:
+    case P15_CONTROL_NO_COMM:
         return DS_ControlNoCommunication;
         break;
     }
@@ -282,26 +301,26 @@ DS_ControlMode DS_Protocol2015::getControlMode (char byte) {
 char DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
     switch (alliance) {
     case DS_AllianceRed1:
-        return ALLIANCE_RED1;
+        return P15_ALLIANCE_RED1;
         break;
     case DS_AllianceRed2:
-        return ALLIANCE_RED2;
+        return P15_ALLIANCE_RED2;
         break;
     case DS_AllianceRed3:
-        return ALLIANCE_RED3;
+        return P15_ALLIANCE_RED3;
         break;
     case DS_AllianceBlue1:
-        return ALLIANCE_BLUE1;
+        return P15_ALLIANCE_BLUE1;
         break;
     case DS_AllianceBlue2:
-        return ALLIANCE_BLUE2;
+        return P15_ALLIANCE_BLUE2;
         break;
     case DS_AllianceBlue3:
-        return ALLIANCE_BLUE3;
+        return P15_ALLIANCE_BLUE3;
         break;
     }
 
-    return ALLIANCE_RED1;
+    return P15_ALLIANCE_RED1;
 }
 
 void DS_Protocol2015::onRobotAddressChanged (QString address) {
@@ -335,7 +354,7 @@ void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply) {
         return;
 
     /* This is the PCM information file */
-    else if (url.contains (FTP_PCM, Qt::CaseInsensitive)) {
+    else if (url.contains (P15_FTP_PCM, Qt::CaseInsensitive)) {
         QString version;
         QString key = "currentVersion";
 
@@ -348,7 +367,7 @@ void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply) {
     }
 
     /* This is the PDP information file */
-    else if (url.contains (FTP_PDP, Qt::CaseInsensitive)) {
+    else if (url.contains (P15_FTP_PDP, Qt::CaseInsensitive)) {
         QString version;
         QString key = "currentVersion";
 
@@ -361,6 +380,6 @@ void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply) {
     }
 
     /* This is the library version file */
-    else if (url.contains (FTP_LIB, Qt::CaseInsensitive))
+    else if (url.contains (P15_FTP_LIB, Qt::CaseInsensitive))
         emit libVersionChanged (data);
 }

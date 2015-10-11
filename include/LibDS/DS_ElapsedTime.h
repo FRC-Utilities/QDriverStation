@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+#pragma once
 #ifndef _LIB_DS_ELAPSED_TIME_H
 #define _LIB_DS_ELAPSED_TIME_H
 

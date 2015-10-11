@@ -25,6 +25,7 @@
 DS_Protocol::DS_Protocol() {
     p_team = 0;
     p_robotCode = false;
+    p_sendTimezone = false;
     p_robotCommunication = false;
     p_alliance = DS_AllianceRed1;
     p_robotAddress = QString ("");
@@ -34,6 +35,7 @@ DS_Protocol::DS_Protocol() {
     p_joysticks = new QList<DS_Joystick*>;
 
     connect (p_watchdog, SIGNAL (timeout()), this, SLOT (reset()));
+    connect (this, SIGNAL (packetReceived()), p_watchdog, SLOT (restart()));
 }
 
 DS_Protocol::~DS_Protocol() {
@@ -87,8 +89,4 @@ QByteArray DS_Protocol::bitsToBytes (QBitArray bits) {
         bytes [i / 8] = (bytes.at (i / 8) | ((bits [i] ? 1 : 0) << (i % 8)));
 
     return bytes;
-}
-
-void DS_Protocol::resetWatchdog() {
-    p_watchdog->restart();
 }

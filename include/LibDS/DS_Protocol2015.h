@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+#pragma once
 #ifndef _LIB_DS_PROTOCOL_2015_H
 #define _LIB_DS_PROTOCOL_2015_H
 
@@ -126,6 +127,7 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_Protocol {
     int m_index;
     int m_status;
     bool m_isLooking;
+    int m_timezoneIterator;
     QNetworkAccessManager m_manager;
 
   private slots:

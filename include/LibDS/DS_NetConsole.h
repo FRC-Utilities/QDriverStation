@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+#pragma once
 #ifndef _LIB_DS_NET_CONSOLE_H
 #define _LIB_DS_NET_CONSOLE_H
 
