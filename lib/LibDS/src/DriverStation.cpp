@@ -33,6 +33,7 @@
 #include "LibDS/DS_Protocol2015.h"
 
 #include <QDebug>
+#include <QStringList>
 
 DriverStation* DriverStation::m_instance = Q_NULLPTR;
 
