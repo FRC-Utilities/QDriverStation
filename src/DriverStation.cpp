@@ -89,10 +89,8 @@ DriverStation::DriverStation() {
              this,          SIGNAL (newNetConsoleMessage (QString)));
 
     /* Send and read robot packets */
-    connect (m_manager, SIGNAL (packetReceived()),
-             this,      SLOT   (sendRobotPackets()));
-    connect (m_client,  SIGNAL (dataReceived  (QByteArray)),
-             m_manager, SLOT   (readRobotData (QByteArray)));
+    connect (m_client,  SIGNAL (dataReceived     (QByteArray)),
+             this,      SLOT   (sendRobotPackets (QByteArray)));
     connect (DS_Timers::getInstance(), SIGNAL (timeout20()),
              this,                     SLOT   (contactRobot()));
 }
@@ -307,15 +305,17 @@ void DriverStation::resetInternalValues() {
     emit elapsedTimeChanged ("00:00.0");
 }
 
-void DriverStation::sendRobotPackets() {
-    if (m_manager->protocolIsValid() && m_init)
+void DriverStation::sendRobotPackets (QByteArray robotResponse) {
+    if (m_manager->protocolIsValid() && m_init) {
+        m_manager->protocol()->readRobotData (robotResponse);
         m_client->sendToRobot (m_manager->protocol()->generateClientPacket());
+    }
 }
 
 void DriverStation::contactRobot() {
     if (m_manager->protocolIsValid() && m_init) {
         if (!m_manager->protocol()->robotCommunication())
-            sendRobotPackets();
+            m_client->sendToRobot (m_manager->protocol()->generateClientPacket());
     }
 }
 

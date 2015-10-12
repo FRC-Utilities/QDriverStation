@@ -55,33 +55,24 @@
 #define P15_PORT_ROBOT       1110
 #define P15_PORT_CLIENT      1150
 
-/* Joystick double to char conversion */
-#define P15_DOUBLE_TO_CHAR   0x7F
-
 /* FTP locations for robot information */
 #define P15_FTP_PCM          "/tmp/frc_versions/PCM-0-versions.ini"
 #define P15_FTP_PDP          "/tmp/frc_versions/PDP-0-versions.ini"
 #define P15_FTP_LIB          "/tmp/frc_versions/FRC_Lib_Version.ini"
 
 DS_Protocol2015::DS_Protocol2015() {
+    reset();
     m_index = 0;
-
     connect (&m_manager, SIGNAL (finished              (QNetworkReply*)),
              this,       SLOT   (onDownloadFinished    (QNetworkReply*)));
     connect (this,       SIGNAL (robotAddressChanged   (QString)),
              this,       SLOT   (onRobotAddressChanged (QString)));
-
-    reset();
 }
 
 void DS_Protocol2015::reset() {
     /* Reset internal values */
-    m_status = P15_STATUS_OK;
-    m_timezoneIterator = 0;
-
     p_robotCode = false;
-    p_sendTimezone = false;
-    p_robotCommunication = false;
+    m_status = P15_STATUS_OK;
 
     /* Notify other objects */
     emit codeChanged (p_robotCode);
@@ -148,17 +139,8 @@ QByteArray DS_Protocol2015::generateClientPacket() {
     data.append (p_robotCommunication ? m_status : (char) P15_STATUS_NULL);
     data.append (getAllianceCode (alliance()));
 
-    /* Add timezone data */
-    if (m_timezoneIterator < 7) {
-        m_timezoneIterator += 1;
-        if (p_sendTimezone) {
-            data.append (DS_GetTimezone());
-            p_sendTimezone = false;
-        }
-    }
-
     /* Add joystick input information if the robot is in TeleOp */
-    else if (controlMode() == DS_ControlTeleOp)
+    if (controlMode() == DS_ControlTeleOp)
         data.append (generateJoystickData());
 
     return data;
@@ -181,7 +163,7 @@ QByteArray DS_Protocol2015::generateJoystickData() {
         if (numAxes > 0) {
             data.append (numAxes);
             for (int axis = 0; axis < numAxes; ++axis)
-                data.append (p_joysticks->at (i)->axes [axis] * P15_DOUBLE_TO_CHAR);
+                data.append (p_joysticks->at (i)->axes [axis] * 127);
         }
 
         /* Add button data */
@@ -222,7 +204,6 @@ void DS_Protocol2015::readRobotData (QByteArray data) {
 
     /* Update the status of the communications and download robot information */
     if (!p_robotCommunication) {
-        p_sendTimezone = true;
         p_robotCommunication = true;
         emit communicationsChanged (true);
 
@@ -332,8 +313,6 @@ void DS_Protocol2015::onRobotAddressChanged (QString address) {
 }
 
 void DS_Protocol2015::onLookupFinished (QHostInfo info) {
-    m_isLooking = false;
-
     if (!info.addresses().isEmpty())
         setRobotAddress (info.addresses().first().toString());
 }

@@ -126,8 +126,6 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_Protocol {
   private:
     int m_index;
     int m_status;
-    bool m_isLooking;
-    int m_timezoneIterator;
     QNetworkAccessManager m_manager;
 
   private slots:

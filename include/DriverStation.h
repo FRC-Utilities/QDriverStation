@@ -348,12 +348,10 @@ class LIB_DS_DECL DriverStation : public QObject {
 
     /**
      * @internal
-     * Sends the robot a generated packet from the current protocol.
-     * This function is called when:
-     *     - We get a response packet from the robot
-     *     - We send a "null" packet to the robot requesting it to respond
+     * Sends the robot response data to the protocol and sends a new packet to
+     * the robot
      */
-    void sendRobotPackets();
+    void sendRobotPackets (QByteArray robotResponse);
 
     /**
      * @internal

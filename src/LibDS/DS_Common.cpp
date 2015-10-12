@@ -34,10 +34,6 @@ int DS_PingData::generatePingData (int index) {
     return index;
 }
 
-short DS_PingData::getPingIndex() {
-    return byte1 * 0xff + byte2;
-}
-
 QString DS_GetStaticIp (int team, int host) {
     QString string = QString ("%1").arg (team);
 
@@ -62,10 +58,6 @@ QString DS_GetStaticIp (int team, int host) {
     }
 
     return QString ("10.%1.%2").arg (string, QString::number (host));
-}
-
-QString DS_GetTimezone() {
-    /* TODO */
 }
 
 QString DS_GetControlModeString (DS_ControlMode mode) {
