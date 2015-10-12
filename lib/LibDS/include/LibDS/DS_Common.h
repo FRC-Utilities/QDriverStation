@@ -82,11 +82,6 @@ struct LIB_DS_DECL DS_PingData {
      * value of the given \a index
      */
     int generatePingData (int index);
-
-    /**
-     * Returns the index of the packet as a normal \c int
-     */
-    short getPingIndex();
 };
 
 /**
@@ -99,11 +94,6 @@ struct LIB_DS_DECL DS_PingData {
  *     - And so on...
  */
 QString LIB_DS_DECL DS_GetStaticIp (int team, int host);
-
-/**
- *
- */
-QString LIB_DS_DECL DS_GetTimezone();
 
 /**
  * Returns an user-friendly string given the inputed robot control mode

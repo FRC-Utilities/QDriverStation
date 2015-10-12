@@ -29,14 +29,6 @@
 #include "Settings.h"
 #include "SmartWindow.h"
 
-/*
- * TODO
- * ----
- * Change way we implement a fixed size window/dialog/widget,
- * having a continous loop to ensure that everything stays in place is not
- * a very good idea in my opinion...
- */
-
 SmartWindow::SmartWindow() {
     m_closingDown = false;
     m_useFixedSize = true;

@@ -39,11 +39,11 @@
 #define _CONTROLLER_DB ":/sdl/database.txt"
 
 /* Used to create mappings from unsupported controllers */
-#if defined _WIN32 || defined _WIN64
+#if defined Q_OS_WIN
 #define _GENERIC_MAPPINGS ":/sdl/generic/windows.txt"
-#elif defined __APPLE__
+#elif defined Q_OS_MAC
 #define _GENERIC_MAPPINGS ":/sdl/generic/mac-osx.txt"
-#elif defined __gnu_linux__
+#elif defined Q_OS_LINUX
 #define _GENERIC_MAPPINGS ":/sdl/generic/linux.txt"
 #endif
 

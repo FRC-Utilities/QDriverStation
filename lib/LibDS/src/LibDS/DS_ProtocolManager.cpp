@@ -36,10 +36,6 @@ DS_Protocol* DS_ProtocolManager::protocol() const {
     return protocolIsValid() ? m_protocol : Q_NULLPTR;
 }
 
-QList <DS_Joystick*>* DS_ProtocolManager::joysticks() const {
-    return m_joysticks;
-}
-
 bool DS_ProtocolManager::protocolIsValid() const {
     return (m_protocol != Q_NULLPTR);
 }
@@ -65,8 +61,6 @@ void DS_ProtocolManager::setProtocol (DS_Protocol* protocol) {
                  this,       SIGNAL (ramUsageChanged       (int, int)));
         connect (m_protocol, SIGNAL (voltageChanged        (QString)),
                  this,       SIGNAL (voltageChanged        (QString)));
-        connect (m_protocol, SIGNAL (packetReceived()),
-                 this,       SIGNAL (packetReceived()));
     }
 }
 

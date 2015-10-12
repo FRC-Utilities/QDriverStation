@@ -28,12 +28,12 @@
 
 /*
  * Decide whenever to use 'Program Files' or 'Program Files (x86)' }*/
-#if defined _WIN32 || defined _WIN64
+#if defined Q_OS_WIN
 #include <windows.h>
-#define is64Bits true
+#define IS64BIT true
 #if _WIN32
-#undef is64Bits
-#define is64Bits \
+#undef IS64BIT
+#define IS64BIT \
     GetProcAddress(GetModuleHandle(TEXT("kernel32")),("IsWow64Process"))
 #endif
 #endif
@@ -85,7 +85,7 @@ void Dashboard::loadDashboard() {
     /* Open the LabVIEW Dashboard */
 #if defined _WIN32 || defined _WIN64
     else if (m_current == LabVIEW) {
-        QString pF = is64Bits ? "C:/Program Files (x86)" : "C:/Program Files";
+        QString pF = IS64BIT ? "C:/Program Files (x86)" : "C:/Program Files";
         path = QString ("%1/FRC Dashboard/Dashboard.exe").arg (pF);
         path = "\"" + path + "\"";
     }

@@ -208,11 +208,6 @@ class LIB_DS_DECL DS_Protocol : public QObject {
     bool p_robotCommunication;
 
     /**
-     * @brief p_sendTimezone
-     */
-    bool p_sendTimezone;
-
-    /**
      * The IP address of the robot, calculate it with the \c QHostInfo class
      */
     QString p_robotIp;

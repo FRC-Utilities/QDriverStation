@@ -25,7 +25,6 @@
 DS_Protocol::DS_Protocol() {
     p_team = 0;
     p_robotCode = false;
-    p_sendTimezone = false;
     p_robotCommunication = false;
     p_alliance = DS_AllianceRed1;
     p_robotAddress = QString ("");

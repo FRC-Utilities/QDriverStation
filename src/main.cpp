@@ -33,10 +33,10 @@
 #include "AssemblyInfo.h"
 
 /* Custom appearance options for each operating system */
-#if defined __APPLE__
+#if defined Q_OS_MAC
 #  define _PT_SIZE 12
 #  define _APP_ICON_CODE QIcon ("")
-#elif defined __gnu_linux__
+#elif defined Q_OS_LINUX
 #  define _PT_SIZE 9
 #  define _APP_ICON_CODE QIcon (":/icon.ico")
 #else

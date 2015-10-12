@@ -58,7 +58,7 @@
 /*
  * The font used in the NetConsole text edit
  */
-#if defined __WIN32 || defined __WIN64
+#if defined Q_OS_WIN
 #  define FONT_NETCONSOLE QFont ("Consolas", 10)
 #else
 #  define FONT_NETCONSOLE QFont ("Inconsolata", 13)

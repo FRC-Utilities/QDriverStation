@@ -36,10 +36,10 @@ DS_Timers::DS_Timers() {
     t100->moveToThread (m_thread);
     t500->moveToThread (m_thread);
 
-    t20->setInterval  (20);
-    t60->setInterval  (60);
-    t100->setInterval (100);
-    t500->setInterval (500);
+    t20->setInterval  (20 + 5);
+    t60->setInterval  (60 + 5);
+    t100->setInterval (100 + 5);
+    t500->setInterval (500 + 5);
 
     t20->setTimerType  (Qt::PreciseTimer);
     t60->setTimerType  (Qt::PreciseTimer);

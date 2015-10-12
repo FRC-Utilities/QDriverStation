@@ -40,6 +40,10 @@ class LIB_DS_DECL DS_NetConsole : public QObject {
     explicit DS_NetConsole();
 
   signals:
+    /**
+     * Emitted when a message is received from the robot or the
+     * internal Driver Station system
+     */
     void newMessage (QString message);
 
   private:

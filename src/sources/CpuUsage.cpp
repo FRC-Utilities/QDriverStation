@@ -22,21 +22,21 @@
 
 #include "CpuUsage.h"
 
-#if defined _WIN32 || defined _WIN64
+#include <QtGlobal>
+
+#if defined Q_OS_WIN
 #include <pdh.h>
 #include <tchar.h>
 #include <windows.h>
 static PDH_HQUERY cpuQuery;
 static PDH_HCOUNTER cpuTotal;
 #define COUNTER_PATH L"\\Processor(_Total)\\% Processor Time"
-#endif
-
-#if defined __APPLE__ || defined __gnu_linux__
+#else
 #include <QProcess>
 #endif
 
 void CpuUsage::init() {
-#if defined _WIN32 || defined _WIN64
+#if defined Q_OS_WIN
     PdhOpenQuery (0, 0, &cpuQuery);
     PdhAddCounter (cpuQuery, COUNTER_PATH, 0, &cpuTotal);
     PdhCollectQueryData (cpuQuery);
@@ -44,14 +44,14 @@ void CpuUsage::init() {
 }
 
 int CpuUsage::getUsage() {
-#if defined _WIN32 || defined _WIN64
+#if defined Q_OS_WIN
     PDH_FMT_COUNTERVALUE counterVal;
     PdhCollectQueryData (cpuQuery);
     PdhGetFormattedCounterValue (cpuTotal, PDH_FMT_DOUBLE, 0, &counterVal);
     return static_cast<int> (counterVal.doubleValue);
 #endif
 
-#if defined __APPLE__
+#if defined Q_OS_MAC
     QByteArray data;
     QProcess process;
 
@@ -73,7 +73,7 @@ int CpuUsage::getUsage() {
     return (t * 10) + u;
 #endif
 
-#if defined __gnu_linux__
+#if defined Q_OS_LINUX
     QByteArray data;
     QProcess process;
 

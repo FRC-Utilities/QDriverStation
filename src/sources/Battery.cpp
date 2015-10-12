@@ -22,20 +22,22 @@
 
 #include "Battery.h"
 
-#if defined _WIN32 || defined _WIN64
+#include <QtGlobal>
+
+#if defined Q_OS_WIN
 #include <windows.h>
 static SYSTEM_POWER_STATUS power;
-#elif defined __APPLE__ || defined __gnu_linux__
+#else
 #include <QProcess>
 #endif
 
 bool Battery::isPlugged() {
-#if defined _WIN32 || defined _WIN64
+#if defined Q_OS_WIN
     GetSystemPowerStatus (&power);
     return power.ACLineStatus != 0;
 #endif
 
-#if defined __APPLE__
+#if defined Q_OS_MAC
     QByteArray data;
     QProcess process;
 
@@ -50,7 +52,7 @@ bool Battery::isPlugged() {
     return true;
 #endif
 
-#if defined __gnu_linux__
+#if defined Q_OS_LINUX
     QByteArray data;
     QProcess process;
 
@@ -68,12 +70,12 @@ bool Battery::isPlugged() {
 }
 
 int Battery::currentLevel() {
-#if defined _WIN32 || defined _WIN64
+#if defined Q_OS_WIN
     GetSystemPowerStatus (&power);
     return static_cast<int> (power.BatteryLifePercent);
 #endif
 
-#if defined __APPLE__
+#if defined Q_OS_MAC
     QByteArray data;
     QProcess process;
 
@@ -87,7 +89,7 @@ int Battery::currentLevel() {
     int t = data.at (data.indexOf ("%") - 2) - '0'; // Tens
     int u = data.at (data.indexOf ("%") - 1) - '0'; // Units
 
-    /* If the character is shit then make the value 0 */
+    /* Process data is invalid or we do not know how to read */
     if (h < 0) h = 0;
     if (t < 0) t = 0;
     if (u < 0) u = 0;
@@ -95,7 +97,7 @@ int Battery::currentLevel() {
     return (h * 100) + (t * 10) + u;
 #endif
 
-#if defined __gnu_linux__
+#if defined Q_OS_LINUX
     QByteArray data;
     QProcess process;
 
@@ -110,7 +112,7 @@ int Battery::currentLevel() {
     int t = data.at (data.indexOf ("%") - 2) - '0'; // Tens
     int u = data.at (data.indexOf ("%") - 1) - '0'; // Units
 
-    /* If the character is shit then make the value 0 */
+    /* Process data is invalid or we do not know how to read */
     if (h < 0) h = 0;
     if (t < 0) t = 0;
     if (u < 0) u = 0;
