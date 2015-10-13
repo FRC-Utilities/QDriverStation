@@ -22,6 +22,9 @@
 
 #include "LibDS/DS_Timers.h"
 
+#include <QTimer>
+#include <QThread>
+
 DS_Timers* DS_Timers::m_instance = Q_NULLPTR;
 
 DS_Timers::DS_Timers() {

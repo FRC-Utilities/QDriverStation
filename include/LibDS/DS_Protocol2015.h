@@ -24,13 +24,7 @@
 #ifndef _LIB_DS_PROTOCOL_2015_H
 #define _LIB_DS_PROTOCOL_2015_H
 
-#include "DS_Global.h"
 #include "DS_Protocol.h"
-
-#include <QHostInfo>
-#include <QNetworkReply>
-#include <QNetworkRequest>
-#include <QNetworkAccessManager>
 
 /**
  * \class DS_Protocol2015
@@ -124,8 +118,21 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_Protocol {
     char getAllianceCode (DS_Alliance alliance);
 
   private:
+    /**
+     * Used to generate the ping data for each client packet
+     */
     int m_index;
+
+    /**
+     * Used for sending specific instructions to the roboRIO, such as restarting
+     * the robot code or rebooting the system
+     */
     int m_status;
+
+    /**
+     * Used for downloading and analyzing robot information through a FTP
+     * connection with the roboRIO
+     */
     QNetworkAccessManager m_manager;
 
   private slots:

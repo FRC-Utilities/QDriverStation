@@ -24,11 +24,8 @@
 #ifndef _LIB_DS_ELAPSED_TIME_H
 #define _LIB_DS_ELAPSED_TIME_H
 
-#include <QString>
-#include <QObject>
-#include <QElapsedTimer>
-
 #include "DS_Global.h"
+#include <QElapsedTimer>
 
 /**
  * \class DS_ElapsedTime

@@ -24,9 +24,6 @@
 #ifndef _LIB_DS_DRIVER_STATION_H
 #define _LIB_DS_DRIVER_STATION_H
 
-#include <QObject>
-
-#include "LibDS/DS_Global.h"
 #include "LibDS/DS_Common.h"
 
 class DS_Client;

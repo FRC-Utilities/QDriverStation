@@ -24,10 +24,10 @@
 #ifndef _LIB_DS_TIMERS_H
 #define _LIB_DS_TIMERS_H
 
-#include <QTimer>
-#include <QThread>
-
 #include "DS_Global.h"
+
+class QTimer;
+class QThread;
 
 /**
  * \class DS_Timer
@@ -76,10 +76,29 @@ class LIB_DS_DECL DS_Timers : public QObject {
     static DS_Timers* m_instance;
 
   private:
+    /**
+     * A 20-millisecond timer
+     */
     QTimer* t20;
+
+    /**
+     * A 60-millisecond timer
+     */
     QTimer* t60;
+
+    /**
+     * A 100-millisecond timer
+     */
     QTimer* t100;
+
+    /**
+     * A 500-millisecond timer
+     */
     QTimer* t500;
+
+    /**
+     * The separate thread in which we run the timers
+     */
     QThread* m_thread;
 };
 

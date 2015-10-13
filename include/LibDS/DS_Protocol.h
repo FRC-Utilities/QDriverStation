@@ -24,13 +24,10 @@
 #ifndef _LIB_DS_PROTOCOL_H
 #define _LIB_DS_PROTOCOL_H
 
-#include <QList>
-#include <QString>
-#include <QObject>
 #include <QBitArray>
-#include <QByteArray>
+#include <QHostInfo>
+#include <QNetworkReply>
 
-#include "DS_Global.h"
 #include "DS_Common.h"
 #include "DS_Watchdog.h"
 

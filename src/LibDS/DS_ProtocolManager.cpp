@@ -20,6 +20,9 @@
  * THE SOFTWARE.
  */
 
+#include <QList>
+
+#include "LibDS/DS_Protocol.h"
 #include "LibDS/DS_ProtocolManager.h"
 
 DS_ProtocolManager::DS_ProtocolManager() {

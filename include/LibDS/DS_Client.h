@@ -25,8 +25,6 @@
 #define _LIB_DS_CLIENT_H
 
 #include <QUdpSocket>
-#include <QHostAddress>
-
 #include "DS_Global.h"
 
 /**
