@@ -26,6 +26,7 @@
 
 #include <SDL.h>
 #include <QObject>
+#include <QStringList>
 
 /**
  * Represents a joystick and provides some information about it
