@@ -22,13 +22,9 @@
 
 #include "MainWindow.h"
 
-#include <QList>
-#include <QColor>
+#include <QTimer>
 #include <QPalette>
-#include <QPointer>
 #include <QClipboard>
-#include <QApplication>
-#include <QDesktopWidget>
 #include <QDesktopServices>
 
 #include "Battery.h"

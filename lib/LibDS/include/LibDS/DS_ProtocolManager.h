@@ -24,12 +24,9 @@
 #ifndef _LIB_DS_PROTOCOL_MANAGER_H
 #define _LIB_DS_PROTOCOL_MANAGER_H
 
-#include <QList>
-#include <QObject>
-
-#include "DS_Global.h"
 #include "DS_Common.h"
-#include "DS_Protocol.h"
+
+class DS_Protocol;
 
 /**
  * \class DS_RobotManager

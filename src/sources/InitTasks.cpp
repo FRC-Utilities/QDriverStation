@@ -21,7 +21,6 @@
  */
 
 #include <QUrl>
-#include <QObject>
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QDesktopServices>
@@ -46,6 +45,7 @@ int InitTasks::getTeamNumber() {
 }
 
 void InitTasks::executeFirstRunTasks() {
+    /* Initialize the CPU querying process */
     CpuUsage::init();
 
     /* Not first run, nothing to do here *flies away* */
@@ -53,7 +53,7 @@ void InitTasks::executeFirstRunTasks() {
         return;
 
     /* Download Xbox 360 controller drivers for Mac OS X*/
-#if defined __APPLE__
+#if defined Q_OS_MAC
     QMessageBox box;
     box.setIcon (QMessageBox::Information);
     box.setStandardButtons (QMessageBox::Yes | QMessageBox::No);
@@ -67,7 +67,7 @@ void InitTasks::executeFirstRunTasks() {
 #endif
 
     /* Download Bonjour for Windows to get mDNS working */
-#if defined __WIN32 || defined __WIN64
+#if defined Q_OS_WIN
     QMessageBox box;
     box.setIcon (QMessageBox::Information);
     box.setStandardButtons (QMessageBox::Yes | QMessageBox::No);

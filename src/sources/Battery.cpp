@@ -20,9 +20,8 @@
  * THE SOFTWARE.
  */
 
-#include "Battery.h"
-
 #include <QtGlobal>
+#include "Battery.h"
 
 #if defined Q_OS_WIN
 #include <windows.h>

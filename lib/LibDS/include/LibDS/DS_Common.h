@@ -24,9 +24,6 @@
 #ifndef _LIB_DS_COMMON_H
 #define _LIB_DS_COMMON_H
 
-#include <QString>
-#include <QObject>
-
 #include "DS_Global.h"
 
 /**

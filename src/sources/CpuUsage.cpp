@@ -20,9 +20,8 @@
  * THE SOFTWARE.
  */
 
-#include "CpuUsage.h"
-
 #include <QtGlobal>
+#include "CpuUsage.h"
 
 #if defined Q_OS_WIN
 #include <pdh.h>

@@ -24,6 +24,7 @@
 #ifndef _LIB_DS_GLOBAL_H
 #define _LIB_DS_GLOBAL_H
 
+#include <QObject>
 #include <QtCore/QtGlobal>
 
 #if defined (LIB_DS_SHARED)

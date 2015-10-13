@@ -29,12 +29,6 @@
 #include "Settings.h"
 #include "AdvancedSettings.h"
 
-/*
- * TODO
- * ----
- * Clean up this class, it makes you cry blood when you read it
- */
-
 #define ADV_COLOR_BASE       "#2a2a2a"
 #define ADV_COLOR_HIGHLIGHT  "#2edc00"
 #define ADV_COLOR_BACKGROUND "#313131"

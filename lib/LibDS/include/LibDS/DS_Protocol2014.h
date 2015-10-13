@@ -24,12 +24,7 @@
 #ifndef _LIB_DS_PROTOCOL_2014_H
 #define _LIB_DS_PROTOCOL_2014_H
 
-#include "DS_Global.h"
 #include "DS_Protocol.h"
-
-#include <QNetworkReply>
-#include <QNetworkRequest>
-#include <QNetworkAccessManager>
 
 /**
  * \class DS_Protocol2014

@@ -24,7 +24,6 @@
 #ifndef _QDRIVER_STATION_BATTERY_PROGRESSBAR_H
 #define _QDRIVER_STATION_BATTERY_PROGRESSBAR_H
 
-#include <QObject>
 #include <QProgressBar>
 
 class BatteryProgressbar : public QProgressBar {

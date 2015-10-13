@@ -21,14 +21,8 @@
  */
 
 #include <QIcon>
-#include <QFile>
-#include <QPalette>
-#include <QTranslator>
-#include <QLibraryInfo>
 #include <QFontDatabase>
-#include <QStyleFactory>
 
-#include "Settings.h"
 #include "MainWindow.h"
 #include "AssemblyInfo.h"
 

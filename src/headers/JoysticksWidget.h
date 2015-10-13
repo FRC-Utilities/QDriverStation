@@ -24,12 +24,8 @@
 #ifndef _QDRIVER_STATION_JOYSTICKS_H
 #define _QDRIVER_STATION_JOYSTICKS_H
 
-#include <QList>
-#include <QWidget>
-#include <QStringList>
-#include <ui_JoysticksWidget.h>
-
 #include "GamepadManager.h"
+#include <ui_JoysticksWidget.h>
 
 class QPushButton;
 class QProgressBar;

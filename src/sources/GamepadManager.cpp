@@ -25,11 +25,9 @@
 #include <QMessageBox>
 #include <QApplication>
 
-#include <math.h>
 #include <DriverStation.h>
 #include <LibDS/DS_Timers.h>
 
-#include "Settings.h"
 #include "GamepadManager.h"
 
 /* Maximum axis value */
@@ -40,11 +38,11 @@
 
 /* Used to create mappings from unsupported controllers */
 #if defined Q_OS_WIN
-#define _GENERIC_MAPPINGS ":/sdl/generic/windows.txt"
+#    define _GENERIC_MAPPINGS ":/sdl/generic/windows.txt"
 #elif defined Q_OS_MAC
-#define _GENERIC_MAPPINGS ":/sdl/generic/mac-osx.txt"
+#    define _GENERIC_MAPPINGS ":/sdl/generic/mac-osx.txt"
 #elif defined Q_OS_LINUX
-#define _GENERIC_MAPPINGS ":/sdl/generic/linux.txt"
+#    define _GENERIC_MAPPINGS ":/sdl/generic/linux.txt"
 #endif
 
 #define SDL_MAIN_HANDLED

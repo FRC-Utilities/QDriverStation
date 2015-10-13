@@ -24,8 +24,6 @@
 #ifndef _QDRIVER_STATION_ADVANCED_SETTINGS_H
 #define _QDRIVER_STATION_ADVANCED_SETTINGS_H
 
-#include <QList>
-#include <QDialog>
 #include <ui_AdvancedSettings.h>
 
 /**
