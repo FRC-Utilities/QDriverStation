@@ -22,6 +22,7 @@
 
 #include <QDir>
 #include <QFile>
+#include <QStringList>
 #include <QMessageBox>
 #include <QApplication>
 
