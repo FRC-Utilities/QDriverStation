@@ -25,7 +25,6 @@
 #define _LIB_DS_WATCHDOG_H
 
 #include "DS_Global.h"
-
 class QTimer;
 
 /**
@@ -47,6 +46,7 @@ class LIB_DS_DECL DS_Watchdog : public QObject {
 
   public:
     explicit DS_Watchdog();
+    ~DS_Watchdog();
 
   public slots:
     /**
@@ -57,12 +57,6 @@ class LIB_DS_DECL DS_Watchdog : public QObject {
      * Think of this as "kicking the dog".
      */
     void restart();
-
-    /**
-     * Changes the timeout interval of the watchdog. The default value is
-     * 1000 milliseconds.
-     */
-    void setInterval (int interval);
 
   signals:
     /**
@@ -75,8 +69,7 @@ class LIB_DS_DECL DS_Watchdog : public QObject {
 
   private:
     /**
-     * The watchdog timer itself, it allows us regulate the behaviour of the
-     * application based on the elapsed time
+     * The timer that regulates the behavior of the class
      */
     QTimer* m_timer;
 };

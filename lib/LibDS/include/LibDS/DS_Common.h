@@ -68,18 +68,23 @@ struct LIB_DS_DECL DS_Joystick {
 };
 
 /**
- * Represents the ping data of a packet
+ * Generates a byte array from the \a input data
  */
-struct LIB_DS_DECL DS_PingData {
-    short byte1; /**< The first byte of the packet */
-    short byte2; /**< The second byte of the packet */
+template <class t>
+QByteArray  LIB_DS_DECL DS_ToBytes (t input) {
+    QByteArray data;
 
-    /**
-     * Generates the correct values for \c byte1 and \c byte2 based on the
-     * value of the given \a index
-     */
-    int generatePingData (int index);
-};
+    for (int i = sizeof (input); i != 0; --i)
+        data.append ((char) (input >> ((i - 1) * 8)) & 0xff);
+
+    return data;
+}
+
+/**
+ * Returns the current timezone code by calculating the difference between
+ * the system timezone and the UTC timezone
+ */
+QString LIB_DS_DECL DS_GetTimezoneCode();
 
 /**
  * Returns a calculated IP address based on the team address.

@@ -138,7 +138,7 @@ void MainWindow::connectSlots() {
              this, SLOT   (onDiskUsageChanged (int, int)));
     connect (m_ds, SIGNAL (controlModeChanged (DS_ControlMode)),
              this, SLOT   (onControlModeChanged (DS_ControlMode)));
-    connect (DS_Timers::getInstance(), SIGNAL (timeout500()),
+    connect (DS_Timers::getInstance(), SIGNAL (timeout1000()),
              this,                     SLOT   (updatePcStatusWidgets()));
 
     /* DriverStation to MainWindow UI */

@@ -69,18 +69,13 @@ class LIB_DS_DECL DS_Timers : public QObject {
     /**
      * Emitted every 1000 milliseconds
      */
-    void timeout500();
+    void timeout1000();
 
   protected:
     DS_Timers();
     static DS_Timers* m_instance;
 
   private:
-    /**
-     * A 20-millisecond timer
-     */
-    QTimer* t20;
-
     /**
      * A 60-millisecond timer
      */
@@ -94,7 +89,7 @@ class LIB_DS_DECL DS_Timers : public QObject {
     /**
      * A 500-millisecond timer
      */
-    QTimer* t500;
+    QTimer* t1000;
 
     /**
      * The separate thread in which we run the timers

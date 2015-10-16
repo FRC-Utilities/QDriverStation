@@ -355,7 +355,7 @@ class LIB_DS_DECL DriverStation : public QObject {
      * Sends a robot packet in a regular manner when we don´t get robot responses.
      * This function will stop sending packets when we receive a robot packet
      */
-    void contactRobot();
+    void sendDummyPacket();
 
     /**
      * @internal

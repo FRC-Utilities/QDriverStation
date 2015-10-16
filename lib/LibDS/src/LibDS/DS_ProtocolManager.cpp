@@ -112,7 +112,7 @@ void DS_ProtocolManager::updateJoystickButton (int js,  int button,
 
 void DS_ProtocolManager::readRobotData (QByteArray data) {
     if (protocolIsValid())
-        protocol()->readRobotData (data);
+        protocol()->readRobotPacket (data);
 }
 
 bool DS_ProtocolManager::joystickIsValid (int js) const {
