@@ -39,12 +39,6 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_Protocol {
 
   public slots:
     /**
-     * Resets the internal values, disables the robot and begins
-     * searching for it over the network
-     */
-    void reset();
-
-    /**
      * Changes the status byte to instruct the roboRIO to reboot
      */
     void reboot();
@@ -66,15 +60,47 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_Protocol {
     void restartCode();
 
     /**
-     * Returns the address of the roboRIO (e.g roboRIO-xxyy.local) or,
-     * if applicable, the custom address
+     * Generates a client packet, which is later sent to the robot.
+     * If the control mode is in TeleOp, we also send joystick input data
      */
-    QString robotAddress();
+    QByteArray getClientPacket();
+
+  private:
+    /**
+     * Used for sending specific instructions to the roboRIO, such as restarting
+     * the robot code or rebooting the system
+     */
+    int m_status;
+
+    /**
+     * If set to \c true, the client will generate a packet that contains the
+     * timezone of the computer. This value is automatically updated when a
+     * robot packet is received
+     */
+    bool m_sendDateTime;
+
+    /**
+     * Used for downloading and analyzing robot information through a FTP
+     * connection with the roboRIO
+     */
+    QNetworkAccessManager m_manager;
+
+  private slots:
+    /**
+     * Resets the internal values, disables the robot and begins
+     * searching for it over the network
+     */
+    void resetProtocol();
 
     /**
      * Returns the address of the robot radio (e.g 10.xx.yy.1)
      */
-    QString radioAddress();
+    QString defaultRadioAddress();
+
+    /**
+     * Returns the address of the roboRIO (e.g roboRIO-xxyy.local)
+     */
+    QString defaultRobotAddress();
 
     /**
      * Downloads information about the roboRIO, the PCM and PDP firmware
@@ -86,16 +112,15 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_Protocol {
     void downloadRobotInformation();
 
     /**
-     * Generates a client packet, which is later sent to the robot.
-     * If the control mode is in TeleOp, we also send joystick input data
-     */
-    QByteArray generateClientPacket();
-
-    /**
      * Reads joystick input and generates a packet that will be sent to
      * the robot
      */
     QByteArray generateJoystickData();
+
+    /**
+     * Generates a timezone section data to be sent to the robot when needed
+     */
+    QByteArray generateTimezoneData();
 
     /**
      * Reads and interprets packets received from the robot.
@@ -116,31 +141,6 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_Protocol {
      * Returns the value used to represent the input \a alliance
      */
     char getAllianceCode (DS_Alliance alliance);
-
-  private:
-    /**
-     * Used to generate the ping data for each client packet
-     */
-    int m_index;
-
-    /**
-     * Used for sending specific instructions to the roboRIO, such as restarting
-     * the robot code or rebooting the system
-     */
-    int m_status;
-
-    /**
-     * Used for downloading and analyzing robot information through a FTP
-     * connection with the roboRIO
-     */
-    QNetworkAccessManager m_manager;
-
-  private slots:
-    /**
-     * Changes the address of the roboRIO and looks
-     * for the robot address in order to get its IP
-     */
-    void onRobotAddressChanged (QString address);
 
     /**
      * Gets the IP of the roboRIO when we finish looking for

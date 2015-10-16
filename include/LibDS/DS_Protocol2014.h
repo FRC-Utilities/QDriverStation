@@ -37,16 +37,19 @@ class LIB_DS_DECL DS_Protocol2014 : public DS_Protocol {
     explicit DS_Protocol2014();
 
   public slots:
-    void reset();
     void reboot();
     int robotPort();
     int clientPort();
     void restartCode();
-    QString robotAddress();
-    QString radioAddress();
+    QByteArray getClientPacket();
+
+  private slots:
+    void resetProtocol();
+    QString defaultRadioAddress();
+    QString defaultRobotAddress();
     void downloadRobotInformation();
-    QByteArray generateClientPacket();
     QByteArray generateJoystickData();
+    QByteArray generateTimezoneData();
     void readRobotData (QByteArray data);
     char getControlCode (DS_ControlMode mode);
     DS_ControlMode getControlMode (char byte);

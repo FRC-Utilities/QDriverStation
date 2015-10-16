@@ -91,8 +91,8 @@ DriverStation::DriverStation() {
     /* Send and read robot packets */
     connect (m_client,  SIGNAL (dataReceived     (QByteArray)),
              this,      SLOT   (sendRobotPackets (QByteArray)));
-    connect (DS_Timers::getInstance(), SIGNAL (timeout20()),
-             this,                     SLOT   (contactRobot()));
+    connect (DS_Timers::getInstance(), SIGNAL (timeout1000()),
+             this,                     SLOT   (sendDummyPacket()));
 }
 
 DriverStation::~DriverStation() {
@@ -307,15 +307,15 @@ void DriverStation::resetInternalValues() {
 
 void DriverStation::sendRobotPackets (QByteArray robotResponse) {
     if (m_manager->protocolIsValid() && m_init) {
-        m_manager->protocol()->readRobotData (robotResponse);
-        m_client->sendToRobot (m_manager->protocol()->generateClientPacket());
+        m_manager->protocol()->readRobotPacket (robotResponse);
+        m_client->sendToRobot (m_manager->protocol()->getClientPacket());
     }
 }
 
-void DriverStation::contactRobot() {
+void DriverStation::sendDummyPacket() {
     if (m_manager->protocolIsValid() && m_init) {
         if (!m_manager->protocol()->robotCommunication())
-            m_client->sendToRobot (m_manager->protocol()->generateClientPacket());
+            m_client->sendToRobot (m_manager->protocol()->getClientPacket());
     }
 }
 
