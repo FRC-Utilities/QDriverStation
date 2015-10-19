@@ -27,7 +27,8 @@
 
 DS_Timers* DS_Timers::m_instance = Q_NULLPTR;
 
-DS_Timers::DS_Timers() {
+DS_Timers::DS_Timers()
+{
     t60  = new QTimer (Q_NULLPTR);
     t100 = new QTimer (Q_NULLPTR);
     t1000 = new QTimer (Q_NULLPTR);
@@ -50,7 +51,8 @@ DS_Timers::DS_Timers() {
     connect (t1000, SIGNAL (timeout()), this, SIGNAL (timeout1000()));
 }
 
-DS_Timers::~DS_Timers() {
+DS_Timers::~DS_Timers()
+{
     delete t60;
     delete t100;
     delete t1000;
@@ -58,14 +60,16 @@ DS_Timers::~DS_Timers() {
     delete m_instance;
 }
 
-DS_Timers* DS_Timers::getInstance() {
+DS_Timers* DS_Timers::getInstance()
+{
     if (m_instance == Q_NULLPTR)
         m_instance = new DS_Timers;
 
     return m_instance;
 }
 
-void DS_Timers::start() {
+void DS_Timers::start()
+{
     connect (m_thread, SIGNAL (started()), t60,  SLOT (start()));
     connect (m_thread, SIGNAL (started()), t100, SLOT (start()));
     connect (m_thread, SIGNAL (started()), t1000, SLOT (start()));

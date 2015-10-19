@@ -71,7 +71,8 @@ struct LIB_DS_DECL DS_Joystick {
  * Generates a byte array from the \a input data
  */
 template <class t>
-QByteArray  LIB_DS_DECL DS_ToBytes (t input) {
+QByteArray  LIB_DS_DECL DS_ToBytes (t input)
+{
     QByteArray data;
 
     for (int i = sizeof (input); i != 0; --i)

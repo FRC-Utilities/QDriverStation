@@ -22,12 +22,15 @@
 
 #include "LibDS/DS_NetConsole.h"
 
-DS_NetConsole::DS_NetConsole() {
+DS_NetConsole::DS_NetConsole()
+{
+    setObjectName ("NetConsole");
     m_socket.bind (6666, QUdpSocket::ShareAddress);
     connect (&m_socket, SIGNAL (readyRead()), this, SLOT (onDataReceived()));
 }
 
-void DS_NetConsole::onDataReceived() {
+void DS_NetConsole::onDataReceived()
+{
     QByteArray data;
 
     while (m_socket.hasPendingDatagrams()) {

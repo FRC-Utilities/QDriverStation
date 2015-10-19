@@ -41,14 +41,15 @@ class QTimer;
  * The corrective actions typically include placing the computer system in a
  * safe state and restoring normal system operation.
  */
-class LIB_DS_DECL DS_Watchdog : public QObject {
+class LIB_DS_DECL DS_Watchdog : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     explicit DS_Watchdog();
     ~DS_Watchdog();
 
-  public slots:
+public slots:
     /**
      * Restarts the watchdog, used when an operation is
      * completed successfully and we want the software or
@@ -58,7 +59,7 @@ class LIB_DS_DECL DS_Watchdog : public QObject {
      */
     void restart();
 
-  signals:
+signals:
     /**
      * Emitted when the timer has elapsed and a timeout signal
      * was emitted. You should implement a method to abort the current
@@ -67,7 +68,7 @@ class LIB_DS_DECL DS_Watchdog : public QObject {
      */
     void timeout();
 
-  private:
+private:
     /**
      * The timer that regulates the behavior of the class
      */

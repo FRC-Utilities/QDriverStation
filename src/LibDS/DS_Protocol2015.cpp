@@ -59,7 +59,8 @@
 #define FTP_PDP_PATH         "/tmp/frc_versions/PDP-0-versions.ini"
 #define FTP_LIB_PATH         "/tmp/frc_versions/FRC_Lib_Version.ini"
 
-DS_Protocol2015::DS_Protocol2015() {
+DS_Protocol2015::DS_Protocol2015()
+{
     p_minPacketLength = 8;
 
     reset();
@@ -67,23 +68,28 @@ DS_Protocol2015::DS_Protocol2015() {
              this,       SLOT   (onDownloadFinished (QNetworkReply*)));
 }
 
-void DS_Protocol2015::reboot() {
+void DS_Protocol2015::reboot()
+{
     m_status = STATUS_REBOOT;
 }
 
-int DS_Protocol2015::robotPort() {
+int DS_Protocol2015::robotPort()
+{
     return 1110;
 }
 
-int DS_Protocol2015::clientPort() {
+int DS_Protocol2015::clientPort()
+{
     return 1150;
 }
 
-void DS_Protocol2015::restartCode() {
+void DS_Protocol2015::restartCode()
+{
     m_status = STATUS_KILL_CODE;
 }
 
-QByteArray DS_Protocol2015::getClientPacket() {
+QByteArray DS_Protocol2015::getClientPacket()
+{
     QByteArray data;
 
     p_sentPackets += 1;
@@ -103,29 +109,34 @@ QByteArray DS_Protocol2015::getClientPacket() {
     return data;
 }
 
-void DS_Protocol2015::resetProtocol() {
+void DS_Protocol2015::resetProtocol()
+{
     m_status = STATUS_NULL;
     m_sendDateTime = false;
     QHostInfo::lookupHost (robotAddress(), this,
                            SLOT (onLookupFinished (QHostInfo)));
 }
 
-QString DS_Protocol2015::defaultRadioAddress() {
+QString DS_Protocol2015::defaultRadioAddress()
+{
     return DS_GetStaticIp (p_team, 1);
 }
 
-QString DS_Protocol2015::defaultRobotAddress() {
+QString DS_Protocol2015::defaultRobotAddress()
+{
     return QString ("roboRIO-%1.local").arg (p_team);
 }
 
-void DS_Protocol2015::downloadRobotInformation() {
+void DS_Protocol2015::downloadRobotInformation()
+{
     QString host = "ftp://" + robotAddress();
     m_manager.get (QNetworkRequest (host + FTP_LIB_PATH));
     m_manager.get (QNetworkRequest (host + FTP_PCM_PATH));
     m_manager.get (QNetworkRequest (host + FTP_PDP_PATH));
 }
 
-QByteArray DS_Protocol2015::generateJoystickData() {
+QByteArray DS_Protocol2015::generateJoystickData()
+{
     QByteArray data;
 
     /* Generate data for each joystick */
@@ -171,7 +182,8 @@ QByteArray DS_Protocol2015::generateJoystickData() {
     return data;
 }
 
-QByteArray DS_Protocol2015::generateTimezoneData() {
+QByteArray DS_Protocol2015::generateTimezoneData()
+{
     QByteArray data;
 
     /* Add size (always 11) */
@@ -200,7 +212,8 @@ QByteArray DS_Protocol2015::generateTimezoneData() {
     return data;
 }
 
-void DS_Protocol2015::readRobotData (QByteArray data) {
+void DS_Protocol2015::readRobotData (QByteArray data)
+{
     /* We just have connected to the robot */
     if (!p_robotCommunication && p_receivedPackets > 5) {
         p_robotCommunication = true;
@@ -243,7 +256,8 @@ void DS_Protocol2015::readRobotData (QByteArray data) {
     emit voltageChanged (QString ("%1.%2").arg (major, minor));
 }
 
-char DS_Protocol2015::getControlCode (DS_ControlMode mode) {
+char DS_Protocol2015::getControlCode (DS_ControlMode mode)
+{
     switch (mode) {
     case DS_ControlTest:
         return CONTROL_TEST;
@@ -268,7 +282,8 @@ char DS_Protocol2015::getControlCode (DS_ControlMode mode) {
     return CONTROL_DISABLED;
 }
 
-DS_ControlMode DS_Protocol2015::getControlMode (char byte) {
+DS_ControlMode DS_Protocol2015::getControlMode (char byte)
+{
     switch (byte) {
     case CONTROL_DISABLED:
         return DS_ControlDisabled;
@@ -290,7 +305,8 @@ DS_ControlMode DS_Protocol2015::getControlMode (char byte) {
     return DS_ControlEmergencyStop;
 }
 
-char DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
+char DS_Protocol2015::getAllianceCode (DS_Alliance alliance)
+{
     switch (alliance) {
     case DS_AllianceRed1:
         return ALLIANCE_RED1;
@@ -315,12 +331,14 @@ char DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
     return ALLIANCE_RED1;
 }
 
-void DS_Protocol2015::onLookupFinished (QHostInfo info) {
+void DS_Protocol2015::onLookupFinished (QHostInfo info)
+{
     if (!info.addresses().isEmpty())
         setRobotAddress (info.addresses().first().toString());
 }
 
-int DS_Protocol2015::getJoystickSize (DS_Joystick* joystick) {
+int DS_Protocol2015::getJoystickSize (DS_Joystick* joystick)
+{
     return  5
             + (joystick->numAxes > 0 ? joystick->numAxes : 0)
             + (joystick->numButtons / 8)
@@ -328,7 +346,8 @@ int DS_Protocol2015::getJoystickSize (DS_Joystick* joystick) {
             + (joystick->numPovHats > 0 ? joystick->numPovHats * 2 : 0);
 }
 
-void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply) {
+void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply)
+{
     QString url = reply->url().toString();
     QString data = QString::fromUtf8 (reply->readAll());
 

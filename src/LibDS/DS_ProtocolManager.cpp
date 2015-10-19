@@ -25,25 +25,30 @@
 #include "LibDS/DS_Protocol.h"
 #include "LibDS/DS_ProtocolManager.h"
 
-DS_ProtocolManager::DS_ProtocolManager() {
+DS_ProtocolManager::DS_ProtocolManager()
+{
     m_protocol = Q_NULLPTR;
     m_joysticks = new QList<DS_Joystick*>;
 }
 
-DS_ProtocolManager::~DS_ProtocolManager() {
+DS_ProtocolManager::~DS_ProtocolManager()
+{
     delete m_protocol;
     delete m_joysticks;
 }
 
-DS_Protocol* DS_ProtocolManager::protocol() const {
+DS_Protocol* DS_ProtocolManager::protocol() const
+{
     return protocolIsValid() ? m_protocol : Q_NULLPTR;
 }
 
-bool DS_ProtocolManager::protocolIsValid() const {
+bool DS_ProtocolManager::protocolIsValid() const
+{
     return (m_protocol != Q_NULLPTR);
 }
 
-void DS_ProtocolManager::setProtocol (DS_Protocol* protocol) {
+void DS_ProtocolManager::setProtocol (DS_Protocol* protocol)
+{
     if (protocol != Q_NULLPTR) {
         m_protocol = Q_NULLPTR;
 
@@ -67,11 +72,13 @@ void DS_ProtocolManager::setProtocol (DS_Protocol* protocol) {
     }
 }
 
-void DS_ProtocolManager::clearJoysticks() {
+void DS_ProtocolManager::clearJoysticks()
+{
     m_joysticks->clear();
 }
 
-void DS_ProtocolManager::addJoystick (int axes, int buttons, int povHats) {
+void DS_ProtocolManager::addJoystick (int axes, int buttons, int povHats)
+{
     DS_Joystick* js = new DS_Joystick;
 
     js->numAxes = axes;
@@ -94,27 +101,32 @@ void DS_ProtocolManager::addJoystick (int axes, int buttons, int povHats) {
     m_joysticks->append (js);
 }
 
-void DS_ProtocolManager::updateJoystickPovHat (int js, int hat, int angle) {
+void DS_ProtocolManager::updateJoystickPovHat (int js, int hat, int angle)
+{
     if (joystickIsValid (js))
         m_joysticks->at (js)->povHats [hat] = angle;
 }
 
-void DS_ProtocolManager::updateJoystickAxis (int js, int axis, double value) {
+void DS_ProtocolManager::updateJoystickAxis (int js, int axis, double value)
+{
     if (joystickIsValid (js))
         m_joysticks->at (js)->axes [axis] = value;
 }
 
 void DS_ProtocolManager::updateJoystickButton (int js,  int button,
-        bool status) {
+        bool status)
+{
     if (joystickIsValid (js))
         m_joysticks->at (js)->buttons [button] = status;
 }
 
-void DS_ProtocolManager::readRobotData (QByteArray data) {
+void DS_ProtocolManager::readRobotData (QByteArray data)
+{
     if (protocolIsValid())
         protocol()->readRobotPacket (data);
 }
 
-bool DS_ProtocolManager::joystickIsValid (int js) const {
+bool DS_ProtocolManager::joystickIsValid (int js) const
+{
     return (js < m_joysticks->count());
 }

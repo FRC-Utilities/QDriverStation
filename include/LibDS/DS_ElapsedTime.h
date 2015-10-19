@@ -34,13 +34,14 @@
  * time in the execution of the application and presents it in human-readable
  * format (mm::ss.ms).
  */
-class LIB_DS_DECL DS_ElapsedTime : public QObject {
+class LIB_DS_DECL DS_ElapsedTime : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     explicit DS_ElapsedTime();
 
-  public slots:
+public slots:
     /**
      * Pauses the elapsed time refresh process
      */
@@ -51,18 +52,18 @@ class LIB_DS_DECL DS_ElapsedTime : public QObject {
      */
     void reset();
 
-  signals:
+signals:
     /**
      * Emitted when the elapsed time is calculated and processed
      * in a human-readable format
      */
     void elapsedTimeChanged (QString time);
 
-  private:
+private:
     bool m_enabled;
     QElapsedTimer m_time;
 
-  private slots:
+private slots:
     /**
      * @internal
      * Uses the value given by the internal timer and processes its

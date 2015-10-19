@@ -42,10 +42,11 @@ class DS_ProtocolManager;
  * manage the user input, protocol versions and operate the robot in a
  * straigthforward way.
  */
-class LIB_DS_DECL DriverStation : public QObject {
+class LIB_DS_DECL DriverStation : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     explicit DriverStation();
     ~DriverStation();
 
@@ -118,7 +119,7 @@ class LIB_DS_DECL DriverStation : public QObject {
      */
     bool networkAvailable();
 
-  public slots:
+public slots:
     /**
      * Initializes the class and the interlal loop/refresh system
      */
@@ -164,6 +165,11 @@ class LIB_DS_DECL DriverStation : public QObject {
     void setAlliance (AllianceType allianceType);
 
     /**
+     * Processes the input \a message and sends it to the other objects
+     */
+    void writeMessage (QString message);
+
+    /**
      * Changes the control mode of the robot, available options are:
      *     - \c DS_Disabled
      *     - \c DS_Teleoperated
@@ -204,7 +210,7 @@ class LIB_DS_DECL DriverStation : public QObject {
      */
     void updateJoystickButton (int js, int button, bool state);
 
-  signals:
+signals:
     /**
      * Emitted when the client detects that the availability of the robot
      * software/code has changed
@@ -239,7 +245,7 @@ class LIB_DS_DECL DriverStation : public QObject {
      * Emitted when the NetConsole receives and decodes a message from the
      * robot
      */
-    void newNetConsoleMessage (QString message);
+    void newMessage (QString message);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
@@ -296,10 +302,10 @@ class LIB_DS_DECL DriverStation : public QObject {
      */
     void elapsedTimeChanged (QString elapsedTime);
 
-  protected:
+protected:
     static DriverStation* m_instance;
 
-  private:
+private:
     /**
      * This variable allows (or disallows) us to receive joystick
      * data and perform most of the operations of the Driver Station.
@@ -335,7 +341,7 @@ class LIB_DS_DECL DriverStation : public QObject {
      */
     DS_ElapsedTime* m_elapsedTime;
 
-  private slots:
+private slots:
     /**
      * @internal
      * Resets the internal values of the library when we disconnect from the

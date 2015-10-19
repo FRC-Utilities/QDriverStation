@@ -37,10 +37,11 @@
  * Implements an abstract class to be used as a base for any protocol that
  * will be used to drive an FRC robot.
  */
-class LIB_DS_DECL DS_Protocol : public QObject {
+class LIB_DS_DECL DS_Protocol : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     explicit DS_Protocol();
     ~DS_Protocol();
 
@@ -74,7 +75,7 @@ class LIB_DS_DECL DS_Protocol : public QObject {
      */
     QString robotAddress();
 
-  public slots:
+public slots:
     /**
      * @brief reset
      */
@@ -119,7 +120,7 @@ class LIB_DS_DECL DS_Protocol : public QObject {
     virtual QByteArray getClientPacket() = 0;
     virtual DS_ControlMode getControlMode (char mode) = 0;
 
-  private slots:
+private slots:
     /**
      * Implements the necessary steps to reset the internal values of a protocol
      */
@@ -169,7 +170,7 @@ class LIB_DS_DECL DS_Protocol : public QObject {
      */
     virtual char getAllianceCode (DS_Alliance alliance) = 0;
 
-  signals:
+signals:
     /**
      * Emitted when the protocol detects that the status of the
      * user code has changed
@@ -242,13 +243,13 @@ class LIB_DS_DECL DS_Protocol : public QObject {
      */
     void packetReceived();
 
-  protected:
+protected:
     /**
      * Converts the input \a bits to bytes
      */
     QByteArray bitsToBytes (QBitArray bits);
 
-  protected:
+protected:
     /**
      * This is the team number, you may use it for a variety of purposes
      * This variable is changed with the \c setTeamNumber() function.

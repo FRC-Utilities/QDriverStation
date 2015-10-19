@@ -33,69 +33,85 @@
 #define PORT_ROBOT       1110
 #define PORT_CLIENT      1150
 
-DS_Protocol2014::DS_Protocol2014() {
+DS_Protocol2014::DS_Protocol2014()
+{
 
 }
 
-void DS_Protocol2014::reboot() {
+void DS_Protocol2014::reboot()
+{
 
 }
 
-int DS_Protocol2014::robotPort() {
+int DS_Protocol2014::robotPort()
+{
     return PORT_ROBOT;
 }
 
-int DS_Protocol2014::clientPort() {
+int DS_Protocol2014::clientPort()
+{
     return PORT_CLIENT;
 }
 
-void DS_Protocol2014::restartCode() {
+void DS_Protocol2014::restartCode()
+{
 
 }
 
-QByteArray DS_Protocol2014::getClientPacket() {
+QByteArray DS_Protocol2014::getClientPacket()
+{
     QByteArray data;
     return data;
 }
 
-void DS_Protocol2014::resetProtocol() {
+void DS_Protocol2014::resetProtocol()
+{
 
 }
 
-QString DS_Protocol2014::defaultRadioAddress() {
+QString DS_Protocol2014::defaultRadioAddress()
+{
     return DS_GetStaticIp (p_team, 1);
 }
 
-QString DS_Protocol2014::defaultRobotAddress() {
+QString DS_Protocol2014::defaultRobotAddress()
+{
     return DS_GetStaticIp (p_team, 2);
 }
 
-void DS_Protocol2014::downloadRobotInformation() {
+void DS_Protocol2014::downloadRobotInformation()
+{
 
 }
 
-QByteArray DS_Protocol2014::generateJoystickData() {
+QByteArray DS_Protocol2014::generateJoystickData()
+{
     QByteArray data;
     return data;
 }
 
-QByteArray DS_Protocol2014::generateTimezoneData() {
+QByteArray DS_Protocol2014::generateTimezoneData()
+{
     QByteArray data;
     return data;
 }
 
-void DS_Protocol2014::readRobotData (QByteArray data) {
+void DS_Protocol2014::readRobotData (QByteArray data)
+{
 
 }
 
-char DS_Protocol2014::getControlCode (DS_ControlMode mode) {
+char DS_Protocol2014::getControlCode (DS_ControlMode mode)
+{
     return CONTROL_DISABLED;
 }
 
-DS_ControlMode DS_Protocol2014::getControlMode (char byte) {
+DS_ControlMode DS_Protocol2014::getControlMode (char byte)
+{
     return DS_ControlDisabled;
 }
 
-char DS_Protocol2014::getAllianceCode (DS_Alliance alliance) {
+char DS_Protocol2014::getAllianceCode (DS_Alliance alliance)
+{
     return ALLIANCE_RED1;
 }
