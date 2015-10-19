@@ -30,12 +30,6 @@
 
 #include "GamepadManager.h"
 
-/* Maximum axis value */
-#define _MAX_VAL 32767
-
-/* Location of community-maintained joystick mappings */
-#define _CONTROLLER_DB ":/sdl/database.txt"
-
 /* Used to create mappings from unsupported controllers */
 #if defined Q_OS_WIN
 #    define _GENERIC_MAPPINGS ":/sdl/generic/windows.txt"
@@ -46,7 +40,10 @@
 #endif
 
 #define SDL_MAIN_HANDLED
-#define _INIT_CODE SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER
+
+#define _MAX_VAL       32767
+#define _CONTROLLER_DB ":/sdl/database.txt"
+#define _INIT_CODE     SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER
 
 GamepadManager::GamepadManager()
 {
@@ -95,6 +92,10 @@ GamepadManager::~GamepadManager()
     SDL_Quit();
 }
 
+//------------------------------------------------------------------------------
+// FUNCTIONS THAT PROVIDE INFORMATION ABOUT A JOYSTICK
+//------------------------------------------------------------------------------
+
 int GamepadManager::getNumHats (int js)
 {
     return SDL_JoystickNumHats (SDL_JoystickOpen (js));
@@ -135,6 +136,10 @@ QStringList GamepadManager::joystickList()
     return list;
 }
 
+//------------------------------------------------------------------------------
+// INIT-RELATED FUNCTIONS
+//------------------------------------------------------------------------------
+
 void GamepadManager::init()
 {
     m_time = 50;
@@ -149,6 +154,10 @@ void GamepadManager::setUpdateInterval (int time)
         m_time = time;
 }
 
+//------------------------------------------------------------------------------
+// FUNCTIONS THAT CHANGE SOMETHING ON THE JOYSTICK
+//------------------------------------------------------------------------------
+
 void GamepadManager::rumble (int js, int time)
 {
     SDL_InitSubSystem (SDL_INIT_HAPTIC);
@@ -159,6 +168,10 @@ void GamepadManager::rumble (int js, int time)
         SDL_HapticRumblePlay (haptic, 1, time);
     }
 }
+
+//------------------------------------------------------------------------------
+// FUNCTIONS THAT GENERATE JOYSTICK INFORMATION STRUCTURES
+//------------------------------------------------------------------------------
 
 GM_Hat GamepadManager::getHat (const SDL_Event* event)
 {
@@ -207,6 +220,10 @@ GM_Joystick GamepadManager::getJoystick (const SDL_Event* event)
     return stick;
 }
 
+//------------------------------------------------------------------------------
+// UGLY HACKS
+//------------------------------------------------------------------------------
+
 int GamepadManager::getDynamicId (int id)
 {
     id = m_tracker - (id + 1);
@@ -215,6 +232,10 @@ int GamepadManager::getDynamicId (int id)
 
     return id;
 }
+
+//------------------------------------------------------------------------------
+// SDL LOOP
+//------------------------------------------------------------------------------
 
 void GamepadManager::readSdlEvents()
 {
@@ -247,6 +268,10 @@ void GamepadManager::readSdlEvents()
         }
     }
 }
+
+//------------------------------------------------------------------------------
+// FUNCTIONS THAT RESPOND TO SDL EVENTS
+//------------------------------------------------------------------------------
 
 void GamepadManager::onHatEvent (const SDL_Event* event)
 {
@@ -302,6 +327,10 @@ void GamepadManager::onControllerRemoved (const SDL_Event* event)
 {
     SDL_GameControllerClose (SDL_GameControllerOpen (event->cdevice.which));
 }
+
+//------------------------------------------------------------------------------
+// MISC FUNCTIONS
+//------------------------------------------------------------------------------
 
 void GamepadManager::registerJoysticksToDriverStation (int joystickCount)
 {

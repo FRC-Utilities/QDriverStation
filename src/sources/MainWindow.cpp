@@ -96,6 +96,10 @@ MainWindow::~MainWindow()
     delete m_advancedSettings;
 }
 
+//------------------------------------------------------------------------------
+// LONG & UGLY FUNCTIONS
+//------------------------------------------------------------------------------
+
 void MainWindow::connectSlots()
 {
     /* Joystick information tab */
@@ -285,10 +289,10 @@ void MainWindow::configureWidgetAppearance()
     ui->SettingsButton->setFixedSize (utilSize);
 
     /* Configure the progress bars */
-    ui->PcCpuProgress->setFixedHeight      (utilSize.height() * 0.4);
-    ui->PcBatteryProgress->setFixedHeight  (utilSize.height() * 0.4);
-    ui->PcCpuProgress->setMaximumWidth     (ui->EnableButton->width() * 1.2);
-    ui->PcBatteryProgress->setMinimumWidth (ui->EnableButton->width() * 1.2);
+    ui->PcCpuProgress->setFixedHeight      (utilSize.height() * 0.45);
+    ui->PcBatteryProgress->setFixedHeight  (utilSize.height() * 0.45);
+    ui->PcCpuProgress->setMinimumWidth     (ui->EnableButton->width() * 0.8);
+    ui->PcBatteryProgress->setMinimumWidth (ui->EnableButton->width() * 0.8);
 
     /* Populate list-related widgets */
     ui->StationCombo->clear();
@@ -342,6 +346,10 @@ void MainWindow::readSettings()
              this,                   SLOT   (setDashboard        (int)));
 }
 
+//------------------------------------------------------------------------------
+// FUNCTIONS THAT MAY BE CALLED REGULARLY
+//------------------------------------------------------------------------------
+
 void MainWindow::updateLabelColors()
 {
     QPalette palette;
@@ -378,6 +386,10 @@ void MainWindow::updatePcStatusWidgets()
         ui->PlugIcon->setVisible (Battery::isPlugged());
     }
 }
+
+//------------------------------------------------------------------------------
+// UI-WINDOW LOGIC FUNCTIONS
+//------------------------------------------------------------------------------
 
 void MainWindow::onCopyClicked()
 {
@@ -521,6 +533,10 @@ void MainWindow::setRobotEnabled (bool enabled)
     else m_ds->setControlMode (DS_ControlDisabled);
 }
 
+//------------------------------------------------------------------------------
+// DRIVER STATION TO WINDOW FUNCTIONS
+//------------------------------------------------------------------------------
+
 void MainWindow::updateLabelText (QLabel* label, QString text)
 {
     label->setText (m_ds->networkAvailable() && !text.isEmpty() ? text : "--.--");
@@ -607,6 +623,10 @@ void MainWindow::onDiskUsageChanged (int total, int used)
 {
     updateLabelText (ui->DiskUsage, tr ("%1 MB / %2 MB").arg (used, total));
 }
+
+//------------------------------------------------------------------------------
+// MISC. FUNCTIONS
+//------------------------------------------------------------------------------
 
 void MainWindow::scrollNetConsole()
 {
