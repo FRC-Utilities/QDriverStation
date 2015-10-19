@@ -255,17 +255,6 @@ void MainWindow::configureWidgetAppearance()
                              .arg (AssemblyInfo::version())
                              .arg (AssemblyInfo::buildDateTime()));
 
-    /* Set appearance of the 'Enable' and 'Disable' buttons */
-    ui->DisableButton->setStyleSheet (CSS_DISABLED_CHECK);
-    ui->EnableButton->setStyleSheet  (CSS_ENABLED_UNCHECK);
-
-    if (ui->DisableButton->width() > ui->EnableButton->width())
-        ui->EnableButton->resize (ui->DisableButton->width(),
-                                  ui->EnableButton->height());
-    else
-        ui->DisableButton->resize (ui->EnableButton->width(),
-                                   ui->DisableButton->height());
-
     /* Configure the NetConsole */
     ui->NetConsoleEdit->setFont (FONT_NETCONSOLE);
     connect (ui->ClearButton,    SIGNAL (clicked()),
@@ -278,9 +267,11 @@ void MainWindow::configureWidgetAppearance()
     ui->InfoFrame->setFixedWidth (metrics.width ("TeleOperated Enabled"));
 
     /* Configure the enable/disable buttons */
+    ui->DisableButton->setStyleSheet   (CSS_DISABLED_CHECK);
+    ui->EnableButton->setStyleSheet    (CSS_ENABLED_UNCHECK);
     ui->EnableButton->setFixedHeight   (metrics.height() * 3.2);
     ui->DisableButton->setFixedHeight  (metrics.height() * 3.2);
-    ui->RobotModeWidget->setFixedWidth (ui->RobotModeWidget->width() * 1.5);
+    ui->RobotModeWidget->setFixedWidth (ui->RobotModeWidget->width() * 1.7);
 
     /* Configure the close and settings buttons */
     QSize utilSize = QSize (metrics.height() * 1.85,
