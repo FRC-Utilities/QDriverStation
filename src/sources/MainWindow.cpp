@@ -60,20 +60,10 @@
 #  define FONT_NETCONSOLE QFont ("Inconsolata", 13)
 #endif
 
-/*
- * The horizontal size we give for the information widget, which displays
- * the current robot status, voltage, etc...
- *
- * The information widget must have a fixed size to avoid resizing the
- * window when the robot voltage changes.
- */
-#if defined __APPLE__
-#  define INFO_SIZE 2.0
-#else
-#  define INFO_SIZE 1.7
-#endif
+MainWindow::MainWindow()
+{
+    setObjectName ("Client");
 
-MainWindow::MainWindow() {
     /* Initialize private members */
     ui = new Ui::MainWindow;
     ui->setupUi (this);
@@ -98,14 +88,16 @@ MainWindow::MainWindow() {
     setWindowMode (ui->WindowDocked->isChecked() ? Docked : Normal);
 }
 
-MainWindow::~MainWindow() {
+MainWindow::~MainWindow()
+{
     delete ui;
     delete m_tabStyle;
     delete m_joysticksWidget;
     delete m_advancedSettings;
 }
 
-void MainWindow::connectSlots() {
+void MainWindow::connectSlots()
+{
     /* Joystick information tab */
     ui->JoysticksTab->layout()->addWidget (m_joysticksWidget);
     updateJoysticksTab (false);
@@ -142,7 +134,7 @@ void MainWindow::connectSlots() {
              this,                     SLOT   (updatePcStatusWidgets()));
 
     /* DriverStation to MainWindow UI */
-    connect (m_ds,               SIGNAL (newNetConsoleMessage (QString)),
+    connect (m_ds,               SIGNAL (newMessage (QString)),
              ui->NetConsoleEdit, SLOT   (append               (QString)));
     connect (m_ds,               SIGNAL (elapsedTimeChanged   (QString)),
              ui->ElapsedTime,    SLOT   (setText              (QString)));
@@ -186,7 +178,8 @@ void MainWindow::connectSlots() {
              this,               SLOT   (updateLabelColors()));
 }
 
-void MainWindow::configureWidgetAppearance() {
+void MainWindow::configureWidgetAppearance()
+{
     ui->TeleOp->setChecked (true);
     ui->DisableButton->setChecked (true);
 
@@ -212,7 +205,7 @@ void MainWindow::configureWidgetAppearance() {
     smallIconFont.setFamily     ("FontAwesome");
     largeIconFont.setFamily     ("FontAwesome");
     smallIconFont.setPointSize  (centralWidget()->font().pointSize() * 1.2);
-    largeIconFont.setPointSize  (centralWidget()->font().pointSize() * 4.0);
+    largeIconFont.setPointSize  (centralWidget()->font().pointSize() * 3.5);
     ui->PlugIcon->setFont       (smallIconFont);
     ui->CanIcon->setFont        (largeIconFont);
     ui->VoltageIcon->setFont    (largeIconFont);
@@ -235,11 +228,18 @@ void MainWindow::configureWidgetAppearance() {
     boldFont.setBold          (true);
     boldFont.setPointSize     (boldFont.pointSize() * 1.4);
     ui->AppName->setFont      (boldFont);
-    ui->TeamLabel->setFont    (boldFont);
-    ui->TeamNumber->setFont   (boldFont);
-    ui->StatusLabel->setFont  (boldFont);
-    ui->ElapsedTime->setFont  (boldFont);
     ui->VoltageLabel->setFont (boldFont);
+
+    /* Configure the status label font */
+    QFont statusFont;
+    statusFont.setBold         (true);
+    statusFont.setPointSize    (statusFont.pointSize() * 1.4);
+    ui->TeamLabel->setFont     (statusFont);
+    ui->TeamNumber->setFont    (statusFont);
+    ui->StatusLabel->setFont   (statusFont);
+    ui->ElapsedTime->setFont   (statusFont);
+    ui->EnableButton->setFont  (statusFont);
+    ui->DisableButton->setFont (statusFont);
 
     /* Change the palette of the items with a custom font to match app colors */
     updateLabelColors();
@@ -270,11 +270,25 @@ void MainWindow::configureWidgetAppearance() {
              this,               SLOT   (onCopyClicked()));
 
     /* Configure the info frame */
-    int height = ui->StatusLabel->height() * 1.2;
-    ui->StatusLabel->setMinimumHeight (height);
-    ui->StatusLabel->setMaximumHeight (height);
-    ui->InfoFrame->setMinimumWidth    (ui->StatusLabel->width() * INFO_SIZE);
-    ui->InfoFrame->setMaximumWidth    (ui->StatusLabel->width() * INFO_SIZE);
+    QFontMetrics metrics (boldFont);
+    ui->InfoFrame->setFixedWidth (metrics.width ("TeleOperated Enabled"));
+
+    /* Configure the enable/disable buttons */
+    ui->EnableButton->setFixedHeight   (metrics.height() * 3.2);
+    ui->DisableButton->setFixedHeight  (metrics.height() * 3.2);
+    ui->RobotModeWidget->setFixedWidth (ui->RobotModeWidget->width() * 1.5);
+
+    /* Configure the close and settings buttons */
+    QSize utilSize = QSize (metrics.height() * 1.85,
+                            metrics.height() * 1.85);
+    ui->CloseButton->setFixedSize    (utilSize);
+    ui->SettingsButton->setFixedSize (utilSize);
+
+    /* Configure the progress bars */
+    ui->PcCpuProgress->setFixedHeight      (utilSize.height() * 0.4);
+    ui->PcBatteryProgress->setFixedHeight  (utilSize.height() * 0.4);
+    ui->PcCpuProgress->setMaximumWidth     (ui->EnableButton->width() * 1.2);
+    ui->PcBatteryProgress->setMinimumWidth (ui->EnableButton->width() * 1.2);
 
     /* Populate list-related widgets */
     ui->StationCombo->clear();
@@ -285,7 +299,8 @@ void MainWindow::configureWidgetAppearance() {
     ui->DbCombo->setCurrentIndex (Dashboard::getInstance()->getCurrentDashboard());
 }
 
-void MainWindow::readSettings() {
+void MainWindow::readSettings()
+{
     /* Read practice values */
     int d = Settings::get ("Practice Delay", 1).toInt();
     int t = Settings::get ("Practice TeleOp", 100).toInt();
@@ -327,7 +342,8 @@ void MainWindow::readSettings() {
              this,                   SLOT   (setDashboard        (int)));
 }
 
-void MainWindow::updateLabelColors() {
+void MainWindow::updateLabelColors()
+{
     QPalette palette;
     ui->Test->setPalette                (palette);
     ui->TeleOp->setPalette              (palette);
@@ -348,7 +364,8 @@ void MainWindow::updateLabelColors() {
     ui->CommunicationsLabel->setPalette (palette);
 }
 
-void MainWindow::updatePcStatusWidgets() {
+void MainWindow::updatePcStatusWidgets()
+{
     if (ui->LeftTab->currentIndex() == 0) {
         int usage = CpuUsage::getUsage();
         int level = Battery::currentLevel();
@@ -362,19 +379,22 @@ void MainWindow::updatePcStatusWidgets() {
     }
 }
 
-void MainWindow::onCopyClicked() {
+void MainWindow::onCopyClicked()
+{
     qApp->clipboard()->setText (ui->NetConsoleEdit->toPlainText());
     ui->NetConsoleEdit->append ("<font color=\"#aaa\"><p>"
                                 "INFO: NetConsole output copied to clipboard"
                                 "</p></font>");
 }
 
-void MainWindow::onStationChanged (int station) {
+void MainWindow::onStationChanged (int station)
+{
     Settings::set ("Station", station);
     m_ds->setAlliance ((DriverStation::AllianceType) station);
 }
 
-void MainWindow::onProtocolChanged (int protocol) {
+void MainWindow::onProtocolChanged (int protocol)
+{
     m_ds->setProtocol ((DriverStation::ProtocolType) protocol);
     m_ds->setTeamNumber (ui->TeamNumberSpin->value());
 
@@ -382,19 +402,23 @@ void MainWindow::onProtocolChanged (int protocol) {
     m_advancedSettings->updatePlaceholder();
 }
 
-void MainWindow::onRebootClicked() {
+void MainWindow::onRebootClicked()
+{
     m_ds->canBeEnabled() ? m_ds->reboot() : statusLabelAnimation();
 }
 
-void MainWindow::onRestartClicked() {
+void MainWindow::onRestartClicked()
+{
     m_ds->canBeEnabled() ? m_ds->restartCode() : statusLabelAnimation();
 }
 
-void MainWindow::onWebsiteClicked() {
+void MainWindow::onWebsiteClicked()
+{
     QDesktopServices::openUrl (QUrl ("http://github.com/WinT-3794/QDriverStation"));
 }
 
-void MainWindow::onEnabledClicked() {
+void MainWindow::onEnabledClicked()
+{
     /* Flash status label if we cannot enable the robot */
     if (!m_ds->canBeEnabled()) {
         onDisabledClicked();
@@ -409,11 +433,12 @@ void MainWindow::onEnabledClicked() {
     ui->DisableButton->setStyleSheet (CSS_DISABLED_UNCHECK);
 }
 
-void MainWindow::onDisabledClicked() {
+void MainWindow::onDisabledClicked()
+{
     /* Only disable the robot if it can be disabled */
     if (m_ds->controlMode() != DS_ControlDisabled
-            && m_ds->controlMode() != DS_ControlEmergencyStop
-            && m_ds->controlMode() != DS_ControlNoCommunication)
+        && m_ds->controlMode() != DS_ControlEmergencyStop
+        && m_ds->controlMode() != DS_ControlNoCommunication)
         setRobotEnabled (false);
 
     /* Update the application style */
@@ -422,26 +447,31 @@ void MainWindow::onDisabledClicked() {
     ui->EnableButton->setStyleSheet  (CSS_ENABLED_UNCHECK);
 }
 
-void MainWindow::onJoystickRemoved() {
+void MainWindow::onJoystickRemoved()
+{
     if (m_ds->controlMode() == DS_ControlTeleOp)
         onDisabledClicked();
 }
 
-void MainWindow::updateJoysticksTab (bool available) {
+void MainWindow::updateJoysticksTab (bool available)
+{
     m_joysticksWidget->setVisible (available);
     ui->NoJoystickWidget->setVisible (!available);
 }
 
-void MainWindow::onWindowModeChanged() {
+void MainWindow::onWindowModeChanged()
+{
     setWindowMode (ui->WindowDocked->isChecked() ? Docked : Normal);
 }
 
-void MainWindow::onRobotModeChanged (int mode) {
+void MainWindow::onRobotModeChanged (int mode)
+{
     Q_UNUSED (mode);
     m_ds->setControlMode (DS_ControlDisabled);
 }
 
-void MainWindow::onPracticeValuesChanged() {
+void MainWindow::onPracticeValuesChanged()
+{
     Settings::set ("Practice Delay",      ui->PracticeDelay->value());
     Settings::set ("Practice TeleOp",     ui->PracticeTeleOp->value());
     Settings::set ("Practice End Game",   ui->PracticeEndGame->value());
@@ -449,12 +479,14 @@ void MainWindow::onPracticeValuesChanged() {
     Settings::set ("Practice Autonomous", ui->PracticeAutonomous->value());
 }
 
-void MainWindow::setDashboard (int dashboard) {
+void MainWindow::setDashboard (int dashboard)
+{
     Settings::set ("Dashboard", dashboard);
     Dashboard::getInstance()->reloadDashboard();
 }
 
-void MainWindow::setTeamNumber (int team) {
+void MainWindow::setTeamNumber (int team)
+{
     Settings::set ("Team ID", team);
     ui->TeamNumberSpin->setValue (team);
     ui->TeamNumber->setText (QString ("%1").arg (team));
@@ -463,7 +495,8 @@ void MainWindow::setTeamNumber (int team) {
     m_advancedSettings->updatePlaceholder();
 }
 
-void MainWindow::setRobotEnabled (bool enabled) {
+void MainWindow::setRobotEnabled (bool enabled)
+{
     /* Robot can be enabled because we have communications and the
      * operation mode is not set to E-Stop */
     if (enabled) {
@@ -488,44 +521,53 @@ void MainWindow::setRobotEnabled (bool enabled) {
     else m_ds->setControlMode (DS_ControlDisabled);
 }
 
-void MainWindow::updateLabelText (QLabel* label, QString text) {
+void MainWindow::updateLabelText (QLabel* label, QString text)
+{
     label->setText (m_ds->networkAvailable() && !text.isEmpty() ? text : "--.--");
 }
 
-void MainWindow::onCodeChanged (bool available) {
+void MainWindow::onCodeChanged (bool available)
+{
     ui->RobotCode->setChecked (available);
 }
 
-void MainWindow::onCommunicationsChanged (bool available) {
+void MainWindow::onCommunicationsChanged (bool available)
+{
     ui->RobotCheck->setChecked (available);
     ui->Communications->setChecked (available);
 }
 
-void MainWindow::onControlModeChanged (DS_ControlMode mode) {
+void MainWindow::onControlModeChanged (DS_ControlMode mode)
+{
     /* We should update the UI because the robot cannot be enabled */
     if ((mode == DS_ControlDisabled)
-            || (mode == DS_ControlEmergencyStop)
-            || (mode == DS_ControlNoCommunication))
+        || (mode == DS_ControlEmergencyStop)
+        || (mode == DS_ControlNoCommunication))
         ui->DisableButton->click();
 }
 
-void MainWindow::onRadioChanged (bool available) {
+void MainWindow::onRadioChanged (bool available)
+{
     ui->DsRadioCheck->setChecked (available);
 }
 
-void MainWindow::onVoltageChanged (QString voltage) {
+void MainWindow::onVoltageChanged (QString voltage)
+{
     updateLabelText (ui->VoltageLabel, tr ("%1 V").arg (voltage));
 }
 
-void MainWindow::onLibVersionChanged (QString version) {
+void MainWindow::onLibVersionChanged (QString version)
+{
     updateLabelText (ui->LibVersion, version);
 }
 
-void MainWindow::onRioVersionChanged (QString version) {
+void MainWindow::onRioVersionChanged (QString version)
+{
     updateLabelText (ui->RioVersion, version);
 }
 
-void MainWindow::onRobotStatusChanged (QString status) {
+void MainWindow::onRobotStatusChanged (QString status)
+{
     if (m_ds->canBeEnabled() && m_ds->controlMode() != DS_ControlEmergencyStop) {
 
         /* Get 'TeleOp Disabled' instead of 'Disabled' */
@@ -556,19 +598,23 @@ void MainWindow::onRobotStatusChanged (QString status) {
         ui->StatusLabel->setText (status);
 }
 
-void MainWindow::onRamUsageChanged (int total, int used) {
+void MainWindow::onRamUsageChanged (int total, int used)
+{
     updateLabelText (ui->RamUsage, tr ("%1 MB / %2 MB").arg (used, total));
 }
 
-void MainWindow::onDiskUsageChanged (int total, int used) {
+void MainWindow::onDiskUsageChanged (int total, int used)
+{
     updateLabelText (ui->DiskUsage, tr ("%1 MB / %2 MB").arg (used, total));
 }
 
-void MainWindow::scrollNetConsole() {
+void MainWindow::scrollNetConsole()
+{
     ui->NetConsoleEdit->ensureCursorVisible();
 }
 
-void MainWindow::toggleStatusColor() {
+void MainWindow::toggleStatusColor()
+{
     QPalette palette;
     QColor redColor = QColor (255, 33, 43);
 
@@ -588,7 +634,8 @@ void MainWindow::toggleStatusColor() {
         ui->CodeLabel->setPalette (palette);
 }
 
-void MainWindow::statusLabelAnimation() {
+void MainWindow::statusLabelAnimation()
+{
     for (int i = 0; i < 8; ++i)
         QTimer::singleShot (100 * i, Qt::PreciseTimer,
                             this, SLOT (toggleStatusColor()));

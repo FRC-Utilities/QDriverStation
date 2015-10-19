@@ -35,8 +35,9 @@
  * The class was implemented for the sole use of the CPU progress bar in
  * the \c MainWindow, but we isolated its functions for readibility reasons.
  */
-class CpuUsage {
-  public:
+class CpuUsage
+{
+public:
     /**
      * Starts the processor time querying process on Microsoft Windows
      */

@@ -37,10 +37,11 @@
  * us to quit the Dashboard when the Open DriverStation is closed or when the
  * user selects another Dashboard type.
  */
-class Dashboard : public QObject {
+class Dashboard : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     /**
      * Represents the available dashboard options to the user
      */
@@ -56,7 +57,7 @@ class Dashboard : public QObject {
      */
     static Dashboard* getInstance();
 
-  public slots:
+public slots:
     /**
      * Opens a Dashboard using \c QProcess based on the saved settings
      */
@@ -83,13 +84,13 @@ class Dashboard : public QObject {
      */
     QStringList getAvailableDashboards();
 
-  protected:
+protected:
     explicit Dashboard();
     ~Dashboard();
 
     static Dashboard* m_instance;
 
-  private:
+private:
     /**
      * Represents the current dashboard index.
      * This variable can be read with \c getCurrentDashboard()

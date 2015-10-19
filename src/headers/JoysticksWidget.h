@@ -40,14 +40,15 @@ class QProgressBar;
  *
  * This widget is used in the "Gamepad" tab of the MainWindow.
  */
-class JoysticksWidget : public QWidget {
+class JoysticksWidget : public QWidget
+{
     Q_OBJECT
 
-  public:
+public:
     explicit JoysticksWidget (QWidget* parent = 0);
     ~JoysticksWidget();
 
-  signals:
+signals:
     /**
      * Emitted when a joystick is removed from the computer
      */
@@ -64,7 +65,7 @@ class JoysticksWidget : public QWidget {
      */
     void statusChanged (bool joysticksAvailable);
 
-  private:
+private:
     /**
      * Represents the UI components of the widget
      */
@@ -85,7 +86,7 @@ class JoysticksWidget : public QWidget {
      */
     QList<QPushButton*> m_buttons;
 
-  private slots:
+private slots:
     /**
      * @internal
      * Rumbles the currently selected joystick

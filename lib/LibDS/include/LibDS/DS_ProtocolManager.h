@@ -38,10 +38,11 @@ class DS_Protocol;
  * automatically. Please note that you should implement a way to read joystick
  * input by yourself (be it a software-based or hardware based).
  */
-class LIB_DS_DECL DS_ProtocolManager : public QObject {
+class LIB_DS_DECL DS_ProtocolManager : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     explicit DS_ProtocolManager();
     ~DS_ProtocolManager();
 
@@ -55,7 +56,7 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
      */
     bool protocolIsValid() const;
 
-  public slots:
+public slots:
     /**
      * Changes the protocol that we use to communicate with the robot
      */
@@ -91,7 +92,7 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
      */
     void readRobotData (QByteArray data);
 
-  signals:
+signals:
     /**
      * Emitted when the protocol detects that the status of the
      * user code has changed
@@ -159,7 +160,7 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
      */
     void pcmVersionChanged (QString version);
 
-  private:
+private:
     /**
      * The current communication protocol being used by the library.
      * This variable is changed with the \c setProtocol() function.

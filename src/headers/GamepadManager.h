@@ -87,14 +87,15 @@ class DriverStation;
  * in question and is saved in a configuration folder in the home path
  * of the user.
  */
-class GamepadManager : public QObject {
+class GamepadManager : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     explicit GamepadManager();
     ~GamepadManager();
 
-  public slots:
+public slots:
     /**
      * Returns the number of hats that the selected \a joystick has
      */
@@ -153,7 +154,7 @@ class GamepadManager : public QObject {
      */
     void rumble (int js, int time);
 
-  signals:
+signals:
     /**
      * Emitted when a joystick is attached or removed
      */
@@ -182,7 +183,7 @@ class GamepadManager : public QObject {
      */
     void buttonEvent (GM_Button button);
 
-  private:
+private:
     /**
      * Represents the update/refresh interval of the application.
      * Note that we use a continous loop to read joystick data, and
@@ -252,7 +253,7 @@ class GamepadManager : public QObject {
      */
     int getDynamicId (int js);
 
-  private slots:
+private slots:
     /**
      * @internal
      * Polls the SDL events and calls the appropriate handler functions.

@@ -26,13 +26,14 @@
 
 #include <QProgressBar>
 
-class BatteryProgressbar : public QProgressBar {
+class BatteryProgressbar : public QProgressBar
+{
     Q_OBJECT
 
-  public:
+public:
     explicit BatteryProgressbar (QWidget* parent = 0);
 
-  public slots:
+public slots:
     void onValueChanged (int value);
 };
 

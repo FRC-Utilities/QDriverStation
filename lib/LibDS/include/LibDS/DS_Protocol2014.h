@@ -30,20 +30,21 @@
  * \class DS_Protocol2014
  * Implements the 2014 communication protocol
  */
-class LIB_DS_DECL DS_Protocol2014 : public DS_Protocol {
+class LIB_DS_DECL DS_Protocol2014 : public DS_Protocol
+{
     Q_OBJECT
 
-  public:
+public:
     explicit DS_Protocol2014();
 
-  public slots:
+public slots:
     void reboot();
     int robotPort();
     int clientPort();
     void restartCode();
     QByteArray getClientPacket();
 
-  private slots:
+private slots:
     void resetProtocol();
     QString defaultRadioAddress();
     QString defaultRobotAddress();

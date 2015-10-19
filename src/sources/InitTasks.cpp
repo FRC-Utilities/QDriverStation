@@ -32,7 +32,8 @@
 #define URL_XBOX_DRIVER  "https://github.com/d235j/360Controller/releases"
 #define URL_BONJOUR_MDNS "https://support.apple.com/kb/dl999?locale=en_US"
 
-int InitTasks::getTeamNumber() {
+int InitTasks::getTeamNumber()
+{
     /* First launch, ask for team number */
     if (Settings::get ("First Launch", true).toBool())
         return QInputDialog::getInt (0, 0,
@@ -44,7 +45,8 @@ int InitTasks::getTeamNumber() {
         return Settings::get ("Team ID", 0).toInt();
 }
 
-void InitTasks::executeFirstRunTasks() {
+void InitTasks::executeFirstRunTasks()
+{
     /* Initialize the CPU querying process */
     CpuUsage::init();
 

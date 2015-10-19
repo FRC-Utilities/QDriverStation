@@ -31,13 +31,14 @@
  *
  * Implements the 2015 communication protocol.
  */
-class LIB_DS_DECL DS_Protocol2015 : public DS_Protocol {
+class LIB_DS_DECL DS_Protocol2015 : public DS_Protocol
+{
     Q_OBJECT
 
-  public:
+public:
     explicit DS_Protocol2015();
 
-  public slots:
+public slots:
     /**
      * Changes the status byte to instruct the roboRIO to reboot
      */
@@ -65,7 +66,7 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_Protocol {
      */
     QByteArray getClientPacket();
 
-  private:
+private:
     /**
      * Used for sending specific instructions to the roboRIO, such as restarting
      * the robot code or rebooting the system
@@ -85,7 +86,7 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_Protocol {
      */
     QNetworkAccessManager m_manager;
 
-  private slots:
+private slots:
     /**
      * Resets the internal values, disables the robot and begins
      * searching for it over the network

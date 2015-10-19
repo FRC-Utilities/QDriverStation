@@ -30,7 +30,8 @@ static SYSTEM_POWER_STATUS power;
 #include <QProcess>
 #endif
 
-bool Battery::isPlugged() {
+bool Battery::isPlugged()
+{
 #if defined Q_OS_WIN
     GetSystemPowerStatus (&power);
     return power.ACLineStatus != 0;
@@ -68,7 +69,8 @@ bool Battery::isPlugged() {
 #endif
 }
 
-int Battery::currentLevel() {
+int Battery::currentLevel()
+{
 #if defined Q_OS_WIN
     GetSystemPowerStatus (&power);
     return static_cast<int> (power.BatteryLifePercent);

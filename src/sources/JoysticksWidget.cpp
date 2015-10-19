@@ -26,7 +26,8 @@
 
 #include "JoysticksWidget.h"
 
-JoysticksWidget::JoysticksWidget (QWidget* parent) : QWidget (parent) {
+JoysticksWidget::JoysticksWidget (QWidget* parent) : QWidget (parent)
+{
     ui.setupUi (this);
     ui.Axes->setVisible (false);
     ui.Rumble->setVisible (false);
@@ -50,15 +51,18 @@ JoysticksWidget::JoysticksWidget (QWidget* parent) : QWidget (parent) {
     m_manager->init();
 }
 
-JoysticksWidget::~JoysticksWidget() {
+JoysticksWidget::~JoysticksWidget()
+{
     delete m_manager;
 }
 
-void JoysticksWidget::onRumbleClicked() {
+void JoysticksWidget::onRumbleClicked()
+{
     m_manager->rumble (ui.JoystickList->currentRow(), 1000);
 }
 
-void JoysticksWidget::onRowChanged (int row) {
+void JoysticksWidget::onRowChanged (int row)
+{
     /* Remove all buttons and progress bars in the widget */
     foreach (QPushButton *  c, findChildren<QPushButton*>())  delete c;
     foreach (QProgressBar * p, findChildren<QProgressBar*>()) delete p;
@@ -114,7 +118,8 @@ void JoysticksWidget::onRowChanged (int row) {
     }
 }
 
-void JoysticksWidget::onCountChanged (const QStringList& list) {
+void JoysticksWidget::onCountChanged (const QStringList& list)
+{
     /* Current count is less and previous count */
     if (list.count() < ui.JoystickList->count())
         emit joystickRemoved();
@@ -137,7 +142,8 @@ void JoysticksWidget::onCountChanged (const QStringList& list) {
     ui.Rumble->setVisible (list.count() > 0);
 }
 
-void JoysticksWidget::onAxisEvent (const GM_Axis& axis) {
+void JoysticksWidget::onAxisEvent (const GM_Axis& axis)
+{
     /* Event is from another joystick */
     if (ui.JoystickList->currentRow() != axis.joystick.id)
         return;
@@ -147,7 +153,8 @@ void JoysticksWidget::onAxisEvent (const GM_Axis& axis) {
         m_axes.at (axis.rawId)->setValue (axis.value * 100);
 }
 
-void JoysticksWidget::onButtonEvent (const GM_Button& button) {
+void JoysticksWidget::onButtonEvent (const GM_Button& button)
+{
     /* Event is from another joystick */
     if (ui.JoystickList->currentRow() != button.joystick.id)
         return;

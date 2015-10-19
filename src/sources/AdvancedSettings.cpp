@@ -32,9 +32,10 @@
 #define ADV_COLOR_BASE       "#2a2a2a"
 #define ADV_COLOR_HIGHLIGHT  "#2edc00"
 #define ADV_COLOR_BACKGROUND "#313131"
-#define ADV_COLOR_FOREGROUND "#ffffff"
+#define ADV_COLOR_FOREGROUND "#dedede"
 
-AdvancedSettings::AdvancedSettings() {
+AdvancedSettings::AdvancedSettings()
+{
     ui.setupUi (this);
     resize (0, 0);
 
@@ -42,8 +43,6 @@ AdvancedSettings::AdvancedSettings() {
     connect (ui.ApplyButton,  SIGNAL (clicked()), this, SLOT (onApplyClicked()));
     connect (ui.ResetButton,  SIGNAL (clicked()), this, SLOT (onResetClicked()));
     connect (ui.CancelButton, SIGNAL (clicked()), this, SLOT (onCancelClicked()));
-    connect (ui.ImportButton, SIGNAL (clicked()), this, SLOT (onImportClicked()));
-    connect (ui.ExportButton, SIGNAL (clicked()), this, SLOT (onExportClicked()));
 
     /* Appearance tab */
     connect (ui.BaseButton,       SIGNAL (clicked()),
@@ -66,15 +65,17 @@ AdvancedSettings::AdvancedSettings() {
     readSettings();
 }
 
-void AdvancedSettings::updatePlaceholder () {
+void AdvancedSettings::updatePlaceholder ()
+{
     ui.CustomAddressEdit->setPlaceholderText (
         DriverStation::getInstance()->robotAddress());
 }
 
-void AdvancedSettings::readSettings() {
+void AdvancedSettings::readSettings()
+{
     loadApplicationColors();
 
-    QString base       = Settings::get ("Base",       ADV_COLOR_BASE).toString();
+    QString base       = Settings::get ("Base", ADV_COLOR_BASE).toString();
     QString highlight  = Settings::get ("Highlight",
                                         ADV_COLOR_HIGHLIGHT).toString();
     QString background = Settings::get ("Background",
@@ -95,7 +96,8 @@ void AdvancedSettings::readSettings() {
     emit updateColors();
 }
 
-void AdvancedSettings::applySettings() {
+void AdvancedSettings::applySettings()
+{
     Settings::set ("Base", ui.BaseEdit->text());
     Settings::set ("Highlight", ui.HighlightEdit->text());
     Settings::set ("Background", ui.BackgroundEdit->text());
@@ -113,7 +115,8 @@ void AdvancedSettings::applySettings() {
     emit settingsChanged();
 }
 
-void AdvancedSettings::resetSettings() {
+void AdvancedSettings::resetSettings()
+{
     Settings::set ("Base", ADV_COLOR_BASE);
     Settings::set ("Highlight", ADV_COLOR_HIGHLIGHT);
     Settings::set ("Background", ADV_COLOR_BACKGROUND);
@@ -122,7 +125,8 @@ void AdvancedSettings::resetSettings() {
     readSettings();
 }
 
-void AdvancedSettings::loadApplicationColors() {
+void AdvancedSettings::loadApplicationColors()
+{
     QColor base       = QColor (Settings::get ("Base",
                                 ADV_COLOR_BASE).toString());
     QColor highlight  = QColor (Settings::get ("Highlight",
@@ -150,7 +154,8 @@ void AdvancedSettings::loadApplicationColors() {
     qApp->setPalette (palette);
 }
 
-void AdvancedSettings::onResetClicked() {
+void AdvancedSettings::onResetClicked()
+{
     int ret = QMessageBox::question (this,
                                      tr ("Clear Settings"),
                                      tr ("Are you sure you want to clear the "
@@ -160,25 +165,20 @@ void AdvancedSettings::onResetClicked() {
         resetSettings();
 }
 
-void AdvancedSettings::onApplyClicked() {
+void AdvancedSettings::onApplyClicked()
+{
     hide();
     applySettings();
 }
 
-void AdvancedSettings::onCancelClicked() {
+void AdvancedSettings::onCancelClicked()
+{
     hide();
     readSettings();
 }
 
-void AdvancedSettings::onImportClicked() {
-
-}
-
-void AdvancedSettings::onExportClicked() {
-
-}
-
-void AdvancedSettings::onSelectorClicked() {
+void AdvancedSettings::onSelectorClicked()
+{
     int emitter = getEmitter (QObject::sender());
 
     /* Configure the color dialog */
@@ -212,7 +212,8 @@ void AdvancedSettings::onSelectorClicked() {
     }
 }
 
-void AdvancedSettings::onColorChanged (QString color) {
+void AdvancedSettings::onColorChanged (QString color)
+{
     int emitter = getEmitter (QObject::sender());
 
     /* The color is empty, use the previous value */
@@ -247,7 +248,8 @@ void AdvancedSettings::onColorChanged (QString color) {
     }
 }
 
-QColor AdvancedSettings::getColor (int type) {
+QColor AdvancedSettings::getColor (int type)
+{
     QColor color;
     switch (type) {
     case Base:
@@ -267,7 +269,8 @@ QColor AdvancedSettings::getColor (int type) {
     return color;
 }
 
-int AdvancedSettings::getEmitter (const QObject* object) {
+int AdvancedSettings::getEmitter (const QObject* object)
+{
     int emitter = Base;
     QString name = object->objectName();
 

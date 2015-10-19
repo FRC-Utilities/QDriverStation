@@ -34,13 +34,14 @@
  * The class "redirects" the received data from the robot to the current
  * protocol that is in use by the Driver Station and vice-versa.
  */
-class LIB_DS_DECL DS_Client : public QObject {
+class LIB_DS_DECL DS_Client : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     explicit DS_Client();
 
-  public slots:
+public slots:
     /**
      * Sends a the input \a data to the robot
      */
@@ -61,19 +62,19 @@ class LIB_DS_DECL DS_Client : public QObject {
      */
     void setRobotAddress (QString address);
 
-  signals:
+signals:
     /**
      * Emitted when the client receives a packet from the robot
      */
     void dataReceived (QByteArray data);
 
-  private:
+private:
     int m_robotPort;
     QString m_address;
     QUdpSocket m_robotSocket;
     QUdpSocket m_clientSocket;
 
-  private slots:
+private slots:
     /**
      * @internal
      * Reads the packet data that the client received from the robot

@@ -42,7 +42,8 @@
  * @internal
  * Configures and runs the application
  */
-int main (int argc, char* argv[]) {
+int main (int argc, char* argv[])
+{
     QApplication app (argc, argv);
 
     /* Load the application fonts */

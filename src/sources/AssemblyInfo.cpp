@@ -29,37 +29,45 @@
 #define APP_STATE   "Beta"
 #define APP_COMPANY "WinT 3794"
 
-QString AssemblyInfo::name() {
+QString AssemblyInfo::name()
+{
     return APP_NAME;
 }
 
-QString AssemblyInfo::major() {
+QString AssemblyInfo::major()
+{
     return APP_MAJOR;
 }
 
-QString AssemblyInfo::minor() {
+QString AssemblyInfo::minor()
+{
     return APP_MINOR;
 }
 
-QString AssemblyInfo::build() {
+QString AssemblyInfo::build()
+{
     return APP_BUILD;
 }
 
-QString AssemblyInfo::state() {
+QString AssemblyInfo::state()
+{
     return APP_STATE;
 }
 
-QString AssemblyInfo::version() {
+QString AssemblyInfo::version()
+{
     return QString ("%1.%2%3 %4").arg (major(),
                                        minor(),
                                        build(),
                                        state());
 }
 
-QString AssemblyInfo::organization() {
+QString AssemblyInfo::organization()
+{
     return APP_COMPANY;
 }
 
-QString AssemblyInfo::buildDateTime() {
+QString AssemblyInfo::buildDateTime()
+{
     return QObject::tr ("Built on %1 at %2").arg (__DATE__, __TIME__);
 }

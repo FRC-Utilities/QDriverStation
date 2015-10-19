@@ -48,7 +48,9 @@
 #define SDL_MAIN_HANDLED
 #define _INIT_CODE SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER
 
-GamepadManager::GamepadManager() {
+GamepadManager::GamepadManager()
+{
+    setObjectName ("Gamepad Manager");
     SDL_SetHint (SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
 
     if (SDL_Init (_INIT_CODE) != 0) {
@@ -85,38 +87,46 @@ GamepadManager::GamepadManager() {
              this, SLOT   (registerJoysticksToDriverStation (int)));
 }
 
-GamepadManager::~GamepadManager() {
+GamepadManager::~GamepadManager()
+{
     for (int i = 0; i < SDL_NumJoysticks(); ++i)
         SDL_GameControllerClose (SDL_GameControllerOpen (i));
 
     SDL_Quit();
 }
 
-int GamepadManager::getNumHats (int js) {
+int GamepadManager::getNumHats (int js)
+{
     return SDL_JoystickNumHats (SDL_JoystickOpen (js));
 }
 
-int GamepadManager::getNumAxes (int js) {
+int GamepadManager::getNumAxes (int js)
+{
     return SDL_JoystickNumAxes (SDL_JoystickOpen (js));
 }
 
-int GamepadManager::getNumButtons (int js) {
+int GamepadManager::getNumButtons (int js)
+{
     return SDL_JoystickNumButtons (SDL_JoystickOpen (js));
 }
 
-QString GamepadManager::getAxisName (int axis) {
+QString GamepadManager::getAxisName (int axis)
+{
     return QString ("Axis %1").arg (axis);
 }
 
-QString GamepadManager::getButtonName (int button) {
+QString GamepadManager::getButtonName (int button)
+{
     return QString ("Button %1").arg (button);
 }
 
-QString GamepadManager::getJoystickName (int js) {
+QString GamepadManager::getJoystickName (int js)
+{
     return SDL_JoystickNameForIndex (js);
 }
 
-QStringList GamepadManager::joystickList() {
+QStringList GamepadManager::joystickList()
+{
     QStringList list;
 
     for (int i = 0; i < SDL_NumJoysticks(); ++i)
@@ -125,19 +135,22 @@ QStringList GamepadManager::joystickList() {
     return list;
 }
 
-void GamepadManager::init() {
+void GamepadManager::init()
+{
     m_time = 50;
     m_tracker = -1;
     connect (DS_Timers::getInstance(), SIGNAL (timeout60()),
-             this,                    SLOT   (readSdlEvents()));
+             this,                     SLOT   (readSdlEvents()));
 }
 
-void GamepadManager::setUpdateInterval (int time) {
+void GamepadManager::setUpdateInterval (int time)
+{
     if (time >= 0)
         m_time = time;
 }
 
-void GamepadManager::rumble (int js, int time) {
+void GamepadManager::rumble (int js, int time)
+{
     SDL_InitSubSystem (SDL_INIT_HAPTIC);
     SDL_Haptic* haptic = SDL_HapticOpen (js);
 
@@ -147,7 +160,8 @@ void GamepadManager::rumble (int js, int time) {
     }
 }
 
-GM_Hat GamepadManager::getHat (const SDL_Event* event) {
+GM_Hat GamepadManager::getHat (const SDL_Event* event)
+{
     GM_Hat hat;
 
     hat.rawId = event->jhat.hat;
@@ -157,7 +171,8 @@ GM_Hat GamepadManager::getHat (const SDL_Event* event) {
     return hat;
 }
 
-GM_Axis GamepadManager::getAxis (const SDL_Event* event) {
+GM_Axis GamepadManager::getAxis (const SDL_Event* event)
+{
     GM_Axis axis;
 
     axis.rawId = event->caxis.axis;
@@ -168,7 +183,8 @@ GM_Axis GamepadManager::getAxis (const SDL_Event* event) {
     return axis;
 }
 
-GM_Button GamepadManager::getButton (const SDL_Event* event) {
+GM_Button GamepadManager::getButton (const SDL_Event* event)
+{
     GM_Button button;
 
     button.rawId = event->cbutton.button;
@@ -179,7 +195,8 @@ GM_Button GamepadManager::getButton (const SDL_Event* event) {
     return button;
 }
 
-GM_Joystick GamepadManager::getJoystick (const SDL_Event* event) {
+GM_Joystick GamepadManager::getJoystick (const SDL_Event* event)
+{
     GM_Joystick stick;
 
     stick.id = getDynamicId (event->cdevice.which);
@@ -190,7 +207,8 @@ GM_Joystick GamepadManager::getJoystick (const SDL_Event* event) {
     return stick;
 }
 
-int GamepadManager::getDynamicId (int id) {
+int GamepadManager::getDynamicId (int id)
+{
     id = m_tracker - (id + 1);
     if (id < 0) id = abs (id);
     if (id >= SDL_NumJoysticks()) id -= 1;
@@ -198,7 +216,8 @@ int GamepadManager::getDynamicId (int id) {
     return id;
 }
 
-void GamepadManager::readSdlEvents() {
+void GamepadManager::readSdlEvents()
+{
     SDL_Event event;
     while (SDL_PollEvent (&event)) {
         switch (event.type) {
@@ -229,28 +248,32 @@ void GamepadManager::readSdlEvents() {
     }
 }
 
-void GamepadManager::onHatEvent (const SDL_Event* event) {
+void GamepadManager::onHatEvent (const SDL_Event* event)
+{
     GM_Hat hat = getHat (event);
     m_ds->updateJoystickPovHat (hat.joystick.id, hat.rawId, hat.angle);
 
     emit hatEvent (hat);
 }
 
-void GamepadManager::onAxisEvent (const SDL_Event* event) {
+void GamepadManager::onAxisEvent (const SDL_Event* event)
+{
     GM_Axis axis = getAxis (event);
     m_ds->updateJoystickAxis (axis.joystick.id, axis.rawId, axis.value);
 
     emit axisEvent (axis);
 }
 
-void GamepadManager::onButtonEvent (const SDL_Event* event) {
+void GamepadManager::onButtonEvent (const SDL_Event* event)
+{
     GM_Button button = getButton (event);
     m_ds->updateJoystickButton (button.joystick.id, button.rawId, button.pressed);
 
     emit buttonEvent (button);
 }
 
-void GamepadManager::onControllerAdded (const SDL_Event* event) {
+void GamepadManager::onControllerAdded (const SDL_Event* event)
+{
     if (!SDL_IsGameController (event->cdevice.which)) {
         SDL_Joystick* js = SDL_JoystickOpen (event->cdevice.which);
 
@@ -275,11 +298,13 @@ void GamepadManager::onControllerAdded (const SDL_Event* event) {
     SDL_GameControllerOpen (event->cdevice.which);
 }
 
-void GamepadManager::onControllerRemoved (const SDL_Event* event) {
+void GamepadManager::onControllerRemoved (const SDL_Event* event)
+{
     SDL_GameControllerClose (SDL_GameControllerOpen (event->cdevice.which));
 }
 
-void GamepadManager::registerJoysticksToDriverStation (int joystickCount) {
+void GamepadManager::registerJoysticksToDriverStation (int joystickCount)
+{
     m_ds->clearJoysticks();
 
     for (int i = 0; i <= joystickCount - 1; ++i)

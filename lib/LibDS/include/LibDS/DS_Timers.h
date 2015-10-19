@@ -37,20 +37,21 @@ class QThread;
  * The timers can be used by objects and classes that are not related to
  * the library for different functions.
  */
-class LIB_DS_DECL DS_Timers : public QObject {
+class LIB_DS_DECL DS_Timers : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     static DS_Timers* getInstance();
     ~DS_Timers();
 
-  public slots:
+public slots:
     /**
      * Initializes the timers
      */
     void start();
 
-  signals:
+signals:
     /**
      * Emitted every 20 milliseconds
      */
@@ -71,11 +72,11 @@ class LIB_DS_DECL DS_Timers : public QObject {
      */
     void timeout1000();
 
-  protected:
+protected:
     DS_Timers();
     static DS_Timers* m_instance;
 
-  private:
+private:
     /**
      * A 60-millisecond timer
      */

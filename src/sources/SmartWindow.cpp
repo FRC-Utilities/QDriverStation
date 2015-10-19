@@ -29,30 +29,35 @@
 #include "Settings.h"
 #include "SmartWindow.h"
 
-SmartWindow::SmartWindow() {
+SmartWindow::SmartWindow()
+{
     m_closingDown = false;
     m_useFixedSize = true;
     m_promptOnQuit = true;
     m_windowMode = Invalid;
 
     resizeToFit();
-    connect (DS_Timers::getInstance(), SIGNAL (timeout1000()),
+    connect (DS_Timers::getInstance(), SIGNAL (timeout60()),
              this,                     SLOT   (resizeToFit()));
 }
 
-bool SmartWindow::isDocked() {
+bool SmartWindow::isDocked()
+{
     return m_windowMode == Docked;
 }
 
-bool SmartWindow::isFixedSize() {
+bool SmartWindow::isFixedSize()
+{
     return m_useFixedSize;
 }
 
-bool SmartWindow::isPromptOnQuit() {
+bool SmartWindow::isPromptOnQuit()
+{
     return m_promptOnQuit;
 }
 
-void SmartWindow::moveEvent (QMoveEvent* e) {
+void SmartWindow::moveEvent (QMoveEvent* e)
+{
     e->accept();
 
     if (!isDocked()) {
@@ -61,7 +66,8 @@ void SmartWindow::moveEvent (QMoveEvent* e) {
     }
 }
 
-void SmartWindow::closeEvent (QCloseEvent* e) {
+void SmartWindow::closeEvent (QCloseEvent* e)
+{
     /* User already confirmed his/her choice */
     if (m_closingDown)
         return;
@@ -92,15 +98,18 @@ void SmartWindow::closeEvent (QCloseEvent* e) {
     qApp->closeAllWindows();
 }
 
-void SmartWindow::setUseFixedSize (bool fixed) {
+void SmartWindow::setUseFixedSize (bool fixed)
+{
     m_useFixedSize = fixed;
 }
 
-void SmartWindow::setPromptOnQuit (bool prompt) {
+void SmartWindow::setPromptOnQuit (bool prompt)
+{
     m_promptOnQuit = prompt;
 }
 
-void SmartWindow::setWindowMode (const WindowMode& mode) {
+void SmartWindow::setWindowMode (const WindowMode& mode)
+{
     if (m_windowMode == mode)
         return;
 
@@ -133,7 +142,8 @@ void SmartWindow::setWindowMode (const WindowMode& mode) {
     resizeToFit();
 }
 
-void SmartWindow::resizeToFit() {
+void SmartWindow::resizeToFit()
+{
     /* 'Dock' the window at the bottom and extend it to the sides */
     if (isDocked()) {
         QDesktopWidget w;
