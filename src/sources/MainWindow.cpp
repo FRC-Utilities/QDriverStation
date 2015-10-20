@@ -282,8 +282,8 @@ void MainWindow::configureWidgetAppearance()
     /* Configure the progress bars */
     ui->PcCpuProgress->setFixedHeight      (utilSize.height() * 0.45);
     ui->PcBatteryProgress->setFixedHeight  (utilSize.height() * 0.45);
-    ui->PcCpuProgress->setMinimumWidth     (ui->EnableButton->width() * 0.8);
-    ui->PcBatteryProgress->setMinimumWidth (ui->EnableButton->width() * 0.8);
+    ui->PcCpuProgress->setMinimumWidth     (metrics.width ("----------") * 1.4);
+    ui->PcBatteryProgress->setMinimumWidth (metrics.width ("----------") * 1.4);
 
     /* Populate list-related widgets */
     ui->StationCombo->clear();

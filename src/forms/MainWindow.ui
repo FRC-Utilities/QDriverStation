@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1211</width>
-    <height>286</height>
+    <width>0</width>
+    <height>0</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -417,7 +417,7 @@ padding: 12px;</string>
               <string>00:00:00</string>
              </property>
              <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
             </widget>
            </item>
@@ -2004,8 +2004,8 @@ QPushButton:checked {
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="WindowModeGroup"/>
   <buttongroup name="RobotStatusGroup"/>
+  <buttongroup name="WindowModeGroup"/>
   <buttongroup name="RobotModeGroup"/>
  </buttongroups>
 </ui>
