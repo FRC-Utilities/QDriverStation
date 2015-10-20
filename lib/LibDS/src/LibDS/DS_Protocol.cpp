@@ -27,7 +27,6 @@ DS_Protocol::DS_Protocol()
     p_team = 0;
     p_robotCode = false;
     p_sentPackets = 0;
-    p_receivedPackets = 0;
     p_minPacketLength = 0xffff;
     p_robotCommunication = false;
     p_alliance = DS_AllianceRed1;
@@ -80,7 +79,6 @@ QString DS_Protocol::robotAddress()
 void DS_Protocol::reset()
 {
     p_robotCode = false;
-    p_receivedPackets = 0;
     p_robotCommunication = false;
 
     setControlMode (DS_ControlNoCommunication);
@@ -122,10 +120,8 @@ void DS_Protocol::setJoysticks (QList<DS_Joystick*>* joysticks)
 
 void DS_Protocol::readRobotPacket (QByteArray& data)
 {
-    if (!data.isEmpty() && data.length() >= p_minPacketLength) {
-        ++p_receivedPackets;
+    if (!data.isEmpty() && data.length() >= p_minPacketLength)
         readRobotData (data);
-    }
 }
 
 QByteArray DS_Protocol::bitsToBytes (QBitArray bits)

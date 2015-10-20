@@ -262,11 +262,6 @@ protected:
     short p_sentPackets;
 
     /**
-     * Represents the number of received robot packets
-     */
-    short p_receivedPackets;
-
-    /**
      * Represents the minimum length of a robot packet of a protocol
      */
     int p_minPacketLength;
