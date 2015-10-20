@@ -153,7 +153,7 @@ QByteArray DS_Protocol2015::generateJoystickData()
         if (numAxes > 0) {
             data.append (numAxes);
             for (int axis = 0; axis < numAxes; ++axis)
-                data.append (p_joysticks->at (i)->axes [axis] * 0x7f);
+                data.append (p_joysticks->at (i)->axes [axis] * 0x7Fu);
         }
 
         /* Add button data */
@@ -215,11 +215,12 @@ QByteArray DS_Protocol2015::generateTimezoneData()
 void DS_Protocol2015::readRobotData (QByteArray data)
 {
     /* We just have connected to the robot */
-    if (!p_robotCommunication && p_receivedPackets > 5) {
+    if (!p_robotCommunication) {
         p_robotCommunication = true;
         emit communicationsChanged (true);
-        setControlMode (DS_ControlDisabled);
+
         downloadRobotInformation();
+        setControlMode (DS_ControlDisabled);
     }
 
     /* Get robot program status */
@@ -248,8 +249,7 @@ void DS_Protocol2015::readRobotData (QByteArray data)
     minor = minor.replace ("-", "");
 
     /* Trim the minor voltage to 2 digits */
-    if (minor.length() == 1)
-        minor = minor + "0";
+    if (minor.length() == 1) minor = minor + "0";
     else if (minor.length() > 2)
         minor = QString (minor.at (0)) + QString (minor.at (1));
 

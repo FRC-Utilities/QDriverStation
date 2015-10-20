@@ -93,7 +93,7 @@ DriverStation::DriverStation()
     /* Send and read robot packets */
     connect (m_client,  SIGNAL (dataReceived     (QByteArray)),
              this,      SLOT   (sendRobotPackets (QByteArray)));
-    connect (DS_Timers::getInstance(), SIGNAL (timeout1000()),
+    connect (DS_Timers::getInstance(), SIGNAL (timeout60()),
              this,                     SLOT   (sendDummyPacket()));
 }
 
@@ -251,14 +251,7 @@ void DriverStation::setTeamNumber (int team)
 
 void DriverStation::writeMessage (QString message)
 {
-    QString object = "NULL";
-
-    if (QObject::sender() != Q_NULLPTR)
-        object = QObject::sender()->objectName();
-
-    emit newMessage (QString ("[%1] %2")
-                     .arg (object)
-                     .arg (message));
+    emit newMessage (message);
 }
 
 void DriverStation::setAlliance (AllianceType allianceType)
