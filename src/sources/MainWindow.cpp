@@ -379,7 +379,7 @@ void MainWindow::updatePcStatusWidgets()
 }
 
 //------------------------------------------------------------------------------
-// UI-WINDOW LOGIC FUNCTIONS
+// UI TO WINDOW-LOGIC FUNCTIONS
 //------------------------------------------------------------------------------
 
 void MainWindow::onCopyClicked()
@@ -633,7 +633,7 @@ void MainWindow::toggleStatusColor()
     if (ui->StatusLabel->palette().windowText().color() != redColor)
         palette.setColor (QPalette::WindowText, redColor);
 
-    /* Apply the generated color */
+    /* Flash status label */
     ui->StatusLabel->setPalette (palette);
 
     /* Flash communications label */

@@ -40,7 +40,6 @@ DriverStation* DriverStation::m_instance = Q_NULLPTR;
 DriverStation::DriverStation()
 {
     m_init = false;
-    setObjectName ("Driver Station");
 
     /* Initialize private members */
     m_client      = new DS_Client;
@@ -67,6 +66,8 @@ DriverStation::DriverStation()
              this,      SIGNAL (ramUsageChanged       (int, int)));
     connect (m_manager, SIGNAL (voltageChanged        (QString)),
              this,      SIGNAL (voltageChanged        (QString)));
+    connect (m_manager, SIGNAL (newMessage            (QString)),
+             this,      SIGNAL (newMessage            (QString)));
 
     /* Robot information has changed */
     connect (m_manager, SIGNAL (libVersionChanged (QString)),
@@ -88,7 +89,7 @@ DriverStation::DriverStation()
 
     /* New NetConsole message received */
     connect (m_netConsole,  SIGNAL (newMessage   (QString)),
-             this,          SLOT   (writeMessage (QString)));
+             this,          SIGNAL (newMessage   (QString)));
 
     /* Send and read robot packets */
     connect (m_client,  SIGNAL (dataReceived     (QByteArray)),

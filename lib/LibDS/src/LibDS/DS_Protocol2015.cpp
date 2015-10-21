@@ -71,6 +71,7 @@ DS_Protocol2015::DS_Protocol2015()
 void DS_Protocol2015::reboot()
 {
     m_status = STATUS_REBOOT;
+    log ("Changed status to STATUS_REBOOT");
 }
 
 int DS_Protocol2015::robotPort()
@@ -86,6 +87,7 @@ int DS_Protocol2015::clientPort()
 void DS_Protocol2015::restartCode()
 {
     m_status = STATUS_KILL_CODE;
+    log ("Changed status to STATUS_KILL_CODE");
 }
 
 QByteArray DS_Protocol2015::getClientPacket()
@@ -113,8 +115,8 @@ void DS_Protocol2015::resetProtocol()
 {
     m_status = STATUS_NULL;
     m_sendDateTime = false;
-    QHostInfo::lookupHost (robotAddress(), this,
-                           SLOT (onLookupFinished (QHostInfo)));
+    QHostInfo::lookupHost (robotAddress(),
+                           this, SLOT (onLookupFinished (QHostInfo)));
 }
 
 QString DS_Protocol2015::defaultRadioAddress()
@@ -133,6 +135,8 @@ void DS_Protocol2015::downloadRobotInformation()
     m_manager.get (QNetworkRequest (host + FTP_LIB_PATH));
     m_manager.get (QNetworkRequest (host + FTP_PCM_PATH));
     m_manager.get (QNetworkRequest (host + FTP_PDP_PATH));
+
+    log ("Downloading robot information...");
 }
 
 QByteArray DS_Protocol2015::generateJoystickData()
@@ -333,8 +337,13 @@ char DS_Protocol2015::getAllianceCode (DS_Alliance alliance)
 
 void DS_Protocol2015::onLookupFinished (QHostInfo info)
 {
-    if (!info.addresses().isEmpty())
-        setRobotAddress (info.addresses().first().toString());
+    if (!info.addresses().isEmpty()) {
+        QString address = info.addresses().first().toString();
+
+        setRobotAddress (address);
+
+        log (QString ("Robot IP is %1").arg (address));
+    }
 }
 
 int DS_Protocol2015::getJoystickSize (DS_Joystick* joystick)

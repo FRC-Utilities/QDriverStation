@@ -124,6 +124,11 @@ void DS_Protocol::readRobotPacket (QByteArray& data)
         readRobotData (data);
 }
 
+void DS_Protocol::log (QString message)
+{
+    emit newMessage (QString ("[DS] %1").arg (message));
+}
+
 QByteArray DS_Protocol::bitsToBytes (QBitArray bits)
 {
     QByteArray bytes (bits.count() / 8, 0);
