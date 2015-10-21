@@ -112,6 +112,11 @@ public slots:
      */
     void readRobotPacket (QByteArray& data);
 
+    /**
+     * Logs a message in the Driver Station
+     */
+    void log (QString message);
+
     /* Functions that need to be implemented for each protocol */
     virtual void reboot() = 0;
     virtual int robotPort() = 0;
@@ -236,6 +241,13 @@ signals:
      * Can be used internally or externally to update network addresses.
      */
     void robotAddressChanged (QString address);
+
+    /**
+     * Used by each protocol to log messages through the DriverStation, thus
+     * allowing the final user to see informative messages about the status of
+     * the client application
+     */
+    void newMessage (QString message);
 
     /**
      * Emitted when we receive a packet from the robot. Used by the library

@@ -69,6 +69,8 @@ void DS_ProtocolManager::setProtocol (DS_Protocol* protocol)
                  this,       SIGNAL (ramUsageChanged       (int, int)));
         connect (m_protocol, SIGNAL (voltageChanged        (QString)),
                  this,       SIGNAL (voltageChanged        (QString)));
+        connect (m_protocol, SIGNAL (newMessage            (QString)),
+                 this,       SIGNAL (newMessage            (QString)));
     }
 }
 

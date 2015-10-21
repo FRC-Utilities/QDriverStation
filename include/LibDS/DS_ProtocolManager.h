@@ -160,6 +160,13 @@ signals:
      */
     void pcmVersionChanged (QString version);
 
+    /**
+     * Used by each protocol to log messages through the DriverStation, thus
+     * allowing the final user to see informative messages about the status of
+     * the client application
+     */
+    void newMessage (QString message);
+
 private:
     /**
      * The current communication protocol being used by the library.
