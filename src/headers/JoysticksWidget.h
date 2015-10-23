@@ -29,6 +29,7 @@
 
 class QPushButton;
 class QProgressBar;
+class KeyboardDrive;
 
 /**
  * @class Joysticks
@@ -47,6 +48,9 @@ class JoysticksWidget : public QWidget
 public:
     explicit JoysticksWidget (QWidget* parent = 0);
     ~JoysticksWidget();
+
+public slots:
+    void showKeyboardWindow();
 
 signals:
     /**
@@ -85,6 +89,11 @@ private:
      * Represents the buttons of the selected joystick
      */
     QList<QPushButton*> m_buttons;
+
+    /**
+     * The keyboard drive window
+     */
+    KeyboardDrive* m_keyboardDrive;
 
 private slots:
     /**

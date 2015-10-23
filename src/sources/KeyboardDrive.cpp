@@ -20,25 +20,47 @@
  * THE SOFTWARE.
  */
 
-#include <QTimer>
-#include "LibDS/DS_Watchdog.h"
+#include "KeyboardDrive.h"
 
-DS_Watchdog::DS_Watchdog()
+KeyboardDrive::KeyboardDrive()
 {
-    m_timer = new QTimer;
-    connect (m_timer, SIGNAL (timeout()), this, SIGNAL (timeout()));
+    ui.setupUi (this);
+    setDriveEnabled (false);
+    setWindowFlags (Qt::WindowStaysOnTopHint);
 
-    m_timer->setInterval (1000);
-    m_timer->start();
+    connect (ui.Close, SIGNAL (clicked()),
+             this,     SLOT   (hide()));
+    connect (ui.UseKeyboardCheckbox, SIGNAL (clicked (bool)),
+             this,                   SLOT   (setDriveEnabled (bool)));
+
+    resizeToFit();
 }
 
-DS_Watchdog::~DS_Watchdog()
+//------------------------------------------------------------------------------
+// READ AND PROCESS KEYBOARD INPUT
+//------------------------------------------------------------------------------
+
+void KeyboardDrive::keyPressEvent (QKeyEvent* event)
 {
-    delete m_timer;
+    event->ignore();
 }
 
-void DS_Watchdog::restart()
+void KeyboardDrive::keyReleaseEvent (QKeyEvent* event)
 {
-    m_timer->stop();
-    m_timer->start();
+    event->ignore();
+}
+
+//------------------------------------------------------------------------------
+// MISC. FUNCTIONS
+//------------------------------------------------------------------------------
+
+void KeyboardDrive::resizeToFit()
+{
+    resize (0, 0);
+    setFixedSize (size());
+}
+
+void KeyboardDrive::setDriveEnabled (bool enabled)
+{
+    m_driveEnabled = enabled;
 }

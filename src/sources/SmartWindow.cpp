@@ -95,7 +95,7 @@ void SmartWindow::closeEvent (QCloseEvent* e)
 
     /* Close MainWindow and any other window that is open */
     e->accept();
-    qApp->closeAllWindows();
+    qApp->quit();
 }
 
 void SmartWindow::setUseFixedSize (bool fixed)

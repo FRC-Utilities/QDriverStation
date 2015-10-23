@@ -24,6 +24,7 @@
 #include <QPushButton>
 #include <QProgressBar>
 
+#include "KeyboardDrive.h"
 #include "JoysticksWidget.h"
 
 JoysticksWidget::JoysticksWidget (QWidget* parent) : QWidget (parent)
@@ -35,6 +36,7 @@ JoysticksWidget::JoysticksWidget (QWidget* parent) : QWidget (parent)
     ui.Rumble->setMinimumWidth (ui.JoystickList->width());
 
     m_manager = new GamepadManager;
+    m_keyboardDrive = new KeyboardDrive;
 
     connect (m_manager, SIGNAL (axisEvent      (GM_Axis)),
              this,      SLOT   (onAxisEvent    (GM_Axis)));
@@ -54,7 +56,17 @@ JoysticksWidget::JoysticksWidget (QWidget* parent) : QWidget (parent)
 JoysticksWidget::~JoysticksWidget()
 {
     delete m_manager;
+    delete m_keyboardDrive;
 }
+
+void JoysticksWidget::showKeyboardWindow()
+{
+    m_keyboardDrive->show();
+}
+
+//------------------------------------------------------------------------------
+// REACT TO UI EVENTS
+//------------------------------------------------------------------------------
 
 void JoysticksWidget::onRumbleClicked()
 {
@@ -117,6 +129,10 @@ void JoysticksWidget::onRowChanged (int row)
         ui.ButtonLayout->addWidget (button, row, column);
     }
 }
+
+//------------------------------------------------------------------------------
+// REACT TO GAMEPAD EVENTS
+//------------------------------------------------------------------------------
 
 void JoysticksWidget::onCountChanged (const QStringList& list)
 {

@@ -20,25 +20,39 @@
  * THE SOFTWARE.
  */
 
-#include <QTimer>
-#include "LibDS/DS_Watchdog.h"
+#pragma once
+#ifndef _QDRIVER_STATION_KEYBOARD_DRIVE_H
+#define _QDRIVER_STATION_KEYBOARD_DRIVE_H
 
-DS_Watchdog::DS_Watchdog()
+#include <QKeyEvent>
+#include <QCloseEvent>
+#include <ui_KeyboardDrive.h>
+
+/**
+ * \class KeyboardDrive
+ * \brief Moves the robot with the keyboard
+ *
+ * The \c KeyboardDrive class allows the user to operate the robot using input
+ * from the computer's keyboard
+ */
+class KeyboardDrive : public QDialog
 {
-    m_timer = new QTimer;
-    connect (m_timer, SIGNAL (timeout()), this, SIGNAL (timeout()));
+    Q_OBJECT
 
-    m_timer->setInterval (1000);
-    m_timer->start();
-}
+public:
+    KeyboardDrive();
 
-DS_Watchdog::~DS_Watchdog()
-{
-    delete m_timer;
-}
+protected:
+    void keyPressEvent (QKeyEvent* event);
+    void keyReleaseEvent (QKeyEvent* event);
 
-void DS_Watchdog::restart()
-{
-    m_timer->stop();
-    m_timer->start();
-}
+private:
+    bool m_driveEnabled;
+    Ui::KeyboardDrive ui;
+
+private slots:
+    void resizeToFit();
+    void setDriveEnabled (bool enabled);
+};
+
+#endif

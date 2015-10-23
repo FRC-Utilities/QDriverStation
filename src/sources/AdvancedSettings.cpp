@@ -71,6 +71,10 @@ void AdvancedSettings::updatePlaceholder ()
         DriverStation::getInstance()->robotAddress());
 }
 
+//------------------------------------------------------------------------------
+// READ, APPLY AND RESET SAVED SETTINGS
+//------------------------------------------------------------------------------
+
 void AdvancedSettings::readSettings()
 {
     loadApplicationColors();
@@ -153,6 +157,10 @@ void AdvancedSettings::loadApplicationColors()
 
     qApp->setPalette (palette);
 }
+
+//------------------------------------------------------------------------------
+// REACT TO UI EVENTS
+//------------------------------------------------------------------------------
 
 void AdvancedSettings::onResetClicked()
 {
@@ -247,6 +255,10 @@ void AdvancedSettings::onColorChanged (QString color)
         break;
     }
 }
+
+//------------------------------------------------------------------------------
+// GET COLOR TYPE BASED ON EXTERNAL VALUES
+//------------------------------------------------------------------------------
 
 QColor AdvancedSettings::getColor (int type)
 {

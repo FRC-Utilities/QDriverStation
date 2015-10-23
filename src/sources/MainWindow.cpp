@@ -68,7 +68,7 @@ MainWindow::MainWindow()
     ui = new Ui::MainWindow;
     ui->setupUi (this);
     m_tabStyle = new CustomTabStyle;
-    m_advancedSettings = new AdvancedSettings();
+    m_advancedSettings = new AdvancedSettings;
     m_joysticksWidget = new JoysticksWidget (ui->JoysticksTab);
 
     /* Configure application appearance & behavior */
@@ -111,6 +111,8 @@ void MainWindow::connectSlots()
              this,              SLOT   (updateJoysticksTab (bool)));
     connect (m_joysticksWidget, SIGNAL (statusChanged (bool)),
              ui->Joysticks,     SLOT   (setChecked (bool)));
+    connect (ui->KeysButton,    SIGNAL (clicked()),
+             m_joysticksWidget, SLOT   (showKeyboardWindow()));
 
     /* DriverStation to MainWindow */
     m_ds = DriverStation::getInstance();
@@ -273,9 +275,9 @@ void MainWindow::configureWidgetAppearance()
     ui->DisableButton->setFixedHeight  (metrics.height() * 3.2);
     ui->RobotModeWidget->setFixedWidth (ui->RobotModeWidget->width() * 1.7);
 
-    /* Configure the close and settings buttons */
-    QSize utilSize = QSize (metrics.height() * 1.85,
-                            metrics.height() * 1.85);
+    /* Configure the application buttons */
+    QSize utilSize = QSize (metrics.height() * 1.85, metrics.height() * 1.85);
+    ui->KeysButton->setFixedSize     (utilSize);
     ui->CloseButton->setFixedSize    (utilSize);
     ui->SettingsButton->setFixedSize (utilSize);
 

@@ -27,8 +27,8 @@
 #include <ui_AdvancedSettings.h>
 
 /**
- * @class AdvancedSettings
- * @brief Implements a dialog for users that seek to customize the application
+ * \class AdvancedSettings
+ * \brief Implements a dialog for users that seek to customize the application
  *
  * The \c AdvancedSettings dialog allows the user to change the network settings
  * of the DriverStation and to change the palette of the application
