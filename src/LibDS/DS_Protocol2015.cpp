@@ -22,7 +22,7 @@
 
 #include "LibDS/DS_Protocol2015.h"
 
-#define CONTROL_DISABLED     0x00u
+#define CONTROL_DISABLED     0x01u
 #define CONTROL_TELEOP       0x04u
 #define CONTROL_TEST         0x05u
 #define CONTROL_AUTO         0x06u
@@ -338,11 +338,12 @@ char DS_Protocol2015::getAllianceCode (DS_Alliance alliance)
 void DS_Protocol2015::onLookupFinished (QHostInfo info)
 {
     if (!info.addresses().isEmpty()) {
-        QString address = info.addresses().first().toString();
-
-        setRobotAddress (address);
-
-        log (QString ("Robot IP is %1").arg (address));
+        for (int i = 0; i < info.addresses().count(); ++i) {
+            if (info.addresses().at (i).toString().contains (".")) {
+                setRobotAddress (info.addresses().at (i).toString());
+                return;
+            }
+        }
     }
 }
 
@@ -389,4 +390,6 @@ void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply)
 
     else if (url.contains (FTP_LIB_PATH, Qt::CaseInsensitive))
         emit libVersionChanged (data);
+
+    log ("Robot information received");
 }

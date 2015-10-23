@@ -28,7 +28,7 @@ DS_Watchdog::DS_Watchdog()
     m_timer = new QTimer;
     connect (m_timer, SIGNAL (timeout()), this, SIGNAL (timeout()));
 
-    m_timer->setInterval (200);
+    m_timer->setInterval (1000);
     m_timer->start();
 }
 

@@ -67,7 +67,7 @@ DriverStation::DriverStation()
     connect (m_manager, SIGNAL (voltageChanged        (QString)),
              this,      SIGNAL (voltageChanged        (QString)));
     connect (m_manager, SIGNAL (newMessage            (QString)),
-             this,      SIGNAL (newMessage            (QString)));
+             this,      SLOT   (writeMessage          (QString)));
 
     /* Robot information has changed */
     connect (m_manager, SIGNAL (libVersionChanged (QString)),
@@ -89,7 +89,7 @@ DriverStation::DriverStation()
 
     /* New NetConsole message received */
     connect (m_netConsole,  SIGNAL (newMessage   (QString)),
-             this,          SIGNAL (newMessage   (QString)));
+             this,          SLOT   (writeMessage (QString)));
 
     /* Send and read robot packets */
     connect (m_client,  SIGNAL (dataReceived     (QByteArray)),
@@ -252,7 +252,7 @@ void DriverStation::setTeamNumber (int team)
 
 void DriverStation::writeMessage (QString message)
 {
-    emit newMessage (message);
+    emit newMessage (QString ("<font color='#888'>[DS] %1</font>").arg (message));
 }
 
 void DriverStation::setAlliance (AllianceType allianceType)

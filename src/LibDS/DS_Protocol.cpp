@@ -78,10 +78,11 @@ QString DS_Protocol::robotAddress()
 
 void DS_Protocol::reset()
 {
+    if (p_robotCommunication)
+        log ("Robot communication lost");
+
     p_robotCode = false;
     p_robotCommunication = false;
-
-    setControlMode (DS_ControlNoCommunication);
 
     emit codeChanged (p_robotCode);
     emit voltageChanged (QString (""));
@@ -126,7 +127,7 @@ void DS_Protocol::readRobotPacket (QByteArray& data)
 
 void DS_Protocol::log (QString message)
 {
-    emit newMessage (QString ("[DS] %1").arg (message));
+    emit newMessage (message);
 }
 
 QByteArray DS_Protocol::bitsToBytes (QBitArray bits)
