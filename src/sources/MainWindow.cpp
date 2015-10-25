@@ -62,8 +62,6 @@
 
 MainWindow::MainWindow()
 {
-    setObjectName ("Client");
-
     /* Initialize private members */
     ui = new Ui::MainWindow;
     ui->setupUi (this);
@@ -282,10 +280,12 @@ void MainWindow::configureWidgetAppearance()
     ui->SettingsButton->setFixedSize (utilSize);
 
     /* Configure the progress bars */
-    ui->PcCpuProgress->setFixedHeight      (utilSize.height() * 0.45);
-    ui->PcBatteryProgress->setFixedHeight  (utilSize.height() * 0.45);
-    ui->PcCpuProgress->setMinimumWidth     (metrics.width ("----------") * 1.4);
-    ui->PcBatteryProgress->setMinimumWidth (metrics.width ("----------") * 1.4);
+    ui->PcCpuProgress->setFixedHeight       (utilSize.height() * 0.45);
+    ui->PcBatteryProgress->setFixedHeight   (utilSize.height() * 0.45);
+    ui->PcCpuProgress->setMinimumWidth      (metrics.width ("----------") * 1.4);
+    ui->PcBatteryProgress->setMinimumWidth  (metrics.width ("----------") * 1.4);
+    ui->PcCpuProgress->setMaximumWidth      (metrics.width ("----------") * 1.8);
+    ui->PcBatteryProgress->setMaximumWidth  (metrics.width ("----------") * 1.8);
 
     /* Populate list-related widgets */
     ui->StationCombo->clear();

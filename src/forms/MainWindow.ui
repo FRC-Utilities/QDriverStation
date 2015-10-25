@@ -6,35 +6,38 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1211</width>
-    <height>305</height>
+    <width>1041</width>
+    <height>263</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::StrongFocus</enum>
+  </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::NoContextMenu</enum>
   </property>
   <property name="windowTitle">
    <string>QDriverStation</string>
-  </property>
-  <property name="styleSheet">
-   <string notr="true"/>
-  </property>
-  <property name="tabShape">
-   <enum>QTabWidget::Rounded</enum>
   </property>
   <widget class="QWidget" name="CentralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="0,0,1,0">
     <property name="spacing">
      <number>12</number>
     </property>
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMinimumSize</enum>
+    </property>
     <property name="rightMargin">
      <number>12</number>
     </property>
     <item>
      <widget class="QTabWidget" name="LeftTab">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>0</height>
-       </size>
-      </property>
       <property name="tabPosition">
        <enum>QTabWidget::West</enum>
       </property>
@@ -58,7 +61,7 @@ QPushButton:checked {
        <attribute name="toolTip">
         <string>Operation</string>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <property name="spacing">
          <number>15</number>
         </property>
@@ -258,8 +261,21 @@ padding: 12px;</string>
          </widget>
         </item>
         <item>
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>10</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <widget class="QWidget" name="OpStatusWidget" native="true">
-          <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0,0,0">
+          <layout class="QGridLayout" name="gridLayout">
            <property name="leftMargin">
             <number>0</number>
            </property>
@@ -417,7 +433,7 @@ padding: 12px;</string>
               <string>00:00:00</string>
              </property>
              <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              <set>Qt::AlignCenter</set>
              </property>
             </widget>
            </item>
@@ -579,6 +595,19 @@ padding: 12px;</string>
            </item>
           </layout>
          </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_7">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>10</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </widget>
@@ -1188,7 +1217,7 @@ padding: 12px;</string>
                  </sizepolicy>
                 </property>
                 <property name="text">
-                 <string> Configure Virtual Joystick </string>
+                 <string> Configure the virtual joystick... </string>
                 </property>
                </widget>
               </item>
@@ -1891,6 +1920,12 @@ QPushButton:checked {
     </item>
     <item>
      <widget class="QWidget" name="UtilsWidget" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <layout class="QVBoxLayout" name="verticalLayout_9">
        <property name="leftMargin">
         <number>0</number>
@@ -2087,8 +2122,8 @@ QPushButton:checked {
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="RobotModeGroup"/>
-  <buttongroup name="RobotStatusGroup"/>
   <buttongroup name="WindowModeGroup"/>
+  <buttongroup name="RobotStatusGroup"/>
+  <buttongroup name="RobotModeGroup"/>
  </buttongroups>
 </ui>

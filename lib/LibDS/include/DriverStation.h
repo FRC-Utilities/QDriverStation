@@ -56,8 +56,7 @@ public:
      * The available protocols for the user
      */
     enum ProtocolType {
-        Protocol2014 = 0x00,
-        Protocol2015 = 0x01
+        Protocol2015 = 0x00
     };
 
     /**

@@ -45,7 +45,6 @@ SOURCES += \
     $$PWD/src/LibDS/DS_ElapsedTime.cpp \
     $$PWD/src/LibDS/DS_NetConsole.cpp \
     $$PWD/src/LibDS/DS_Protocol.cpp \
-    $$PWD/src/LibDS/DS_Protocol2014.cpp \
     $$PWD/src/LibDS/DS_Protocol2015.cpp \
     $$PWD/src/LibDS/DS_ProtocolManager.cpp \
     $$PWD/src/LibDS/DS_Watchdog.cpp \
@@ -59,7 +58,6 @@ HEADERS += \
     $$PWD/include/LibDS/DS_Global.h \
     $$PWD/include/LibDS/DS_NetConsole.h \
     $$PWD/include/LibDS/DS_Protocol.h \
-    $$PWD/include/LibDS/DS_Protocol2014.h \
     $$PWD/include/LibDS/DS_Protocol2015.h \
     $$PWD/include/LibDS/DS_ProtocolManager.h \
     $$PWD/include/LibDS/DS_Watchdog.h \

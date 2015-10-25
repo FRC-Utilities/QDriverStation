@@ -24,6 +24,8 @@
 #include "GamepadManager.h"
 #include "VirtualJoystick.h"
 
+#include <DriverStation.h>
+
 VirtualJoystick::VirtualJoystick()
 {
     ui.setupUi (this);
@@ -58,7 +60,7 @@ VirtualJoystick::VirtualJoystick()
 
 void VirtualJoystick::readSettings()
 {
-    ui.Range->setValue (Settings::get ("Axis Range", 1.0).toDouble());
+    ui.Range->setValue (Settings::get ("Axis Range", 0.80).toDouble());
     setVirtualJoystickEnabled (Settings::get ("Virtual Joystick", false).toBool());
 }
 
@@ -185,6 +187,10 @@ void VirtualJoystick::readAxes (int key, double value)
         data.joystick = m_joystick;
         data.identifier = QString ("Axis %1").arg (axis);
 
+        DriverStation::getInstance()->updateJoystickAxis (data.joystick.id,
+                data.rawId,
+                data.value);
+
         emit axisEvent (data);
     }
 }
@@ -221,6 +227,9 @@ void VirtualJoystick::readButtons (int key, bool pressed)
         data.joystick = m_joystick;
         data.identifier = QString ("Button %1").arg (button);
 
+        DriverStation::getInstance()->updateJoystickButton (data.joystick.id,
+                data.rawId,
+                data.pressed);
         emit buttonEvent (data);
     }
 }
