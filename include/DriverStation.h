@@ -215,61 +215,61 @@ signals:
      * Emitted when the client detects that the availability of the robot
      * software/code has changed
      */
-    void codeChanged (bool available);
+    void codeChanged (bool);
 
     /**
      * Emitted when the library detects that the CPU usage of the robot has
      * changed
      */
-    void cpuUsageChanged (int percent);
+    void cpuUsageChanged (int);
 
     /**
      * Emitted when the client detects that the availability of the robot
      * has changed (eg. when the robot is powered off with the breaker)
      */
-    void communicationsChanged (bool available);
+    void communicationsChanged (bool);
 
     /**
      * Emitted when the client detects that the availability of the robot radio
      * has changed (eg. when the robot is powered off with the breaker)
      */
-    void radioChanged (bool available);
+    void radioChanged (bool);
 
     /**
      * Emitted when the client analyzes a packet from the robot and extracts
      * the battery voltage of the robot.
      */
-    void voltageChanged (QString voltage);
+    void voltageChanged (QString);
 
     /**
      * Emitted when the NetConsole receives and decodes a message from the
      * robot
      */
-    void newMessage (QString message);
+    void newMessage (QString);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * its library INI files and analyzed them
      */
-    void libVersionChanged (QString version);
+    void libVersionChanged (QString);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * its PCM INI files and analyzed them
      */
-    void rioVersionChanged (QString version);
+    void rioVersionChanged (QString);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * its PDP information and analyzed them
      */
-    void pdpVersionChanged (QString version);
+    void pdpVersionChanged (QString);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * the PCM information files and analyzed them
      */
-    void pcmVersionChanged (QString version);
+    void pcmVersionChanged (QString);
 
     /**
      * Emitted when one of the following happens:
@@ -277,30 +277,30 @@ signals:
      *     - The communication status changes
      *     - The control mode of the robot is changed
      */
-    void robotStatusChanged (QString status);
+    void robotStatusChanged (QString);
 
     /**
      * Emitted when the control mode is changed
      */
-    void controlModeChanged (DS_ControlMode mode);
+    void controlModeChanged (DS_ControlMode);
 
     /**
      * Emitted when the libary detects that the RAM usage of the robot has
      * changed since the last update.
      */
-    void ramUsageChanged (int total, int used);
+    void ramUsageChanged (int);
 
     /**
      * Emitted when the libary detects that the disk usage of the robot has
      * changed since the last update.
      */
-    void diskUsageChanged (int total, int used);
+    void diskUsageChanged (int);
 
     /**
      * Emitted when the robot is enabled and the elapsed time
      * has been updated by the library.
      */
-    void elapsedTimeChanged (QString elapsedTime);
+    void elapsedTimeChanged (QString);
 
 protected:
     static DriverStation* m_instance;

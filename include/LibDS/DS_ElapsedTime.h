@@ -57,7 +57,7 @@ signals:
      * Emitted when the elapsed time is calculated and processed
      * in a human-readable format
      */
-    void elapsedTimeChanged (QString time);
+    void elapsedTimeChanged (QString);
 
 private:
     bool m_enabled;

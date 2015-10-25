@@ -180,74 +180,74 @@ signals:
      * Emitted when the protocol detects that the status of the
      * user code has changed
      */
-    void codeChanged (bool available);
+    void codeChanged (bool);
 
     /**
      * Emitted when the state of the network communications with the robot
      * has been changed
      */
-    void communicationsChanged (bool available);
+    void communicationsChanged (bool);
 
     /**
      * Emitted when the protocol detects that the robot voltage has changed
      */
-    void voltageChanged (QString voltage);
+    void voltageChanged (QString);
 
     /**
      * Emitted when the protocol detects that the RAM usage of the robot
      * has changed
      */
-    void ramUsageChanged (int total, int used);
+    void ramUsageChanged (int);
 
     /**
      * Emitted when the protocol detects that the disk usage of the robot
      * has changed
      */
-    void diskUsageChanged (int total, int used);
+    void diskUsageChanged (int);
 
     /**
      * Emitted when the protocol detects that the control mode has changed.
      * Note: this signal can be emitted when the user changes the control mode
      * or when the robot itself changes its mode (e.g. e-stop)
      */
-    void controlModeChanged (DS_ControlMode mode);
+    void controlModeChanged (DS_ControlMode);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * its library INI files and analyzed them
      */
-    void libVersionChanged (QString version);
+    void libVersionChanged (QString);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * its PCM INI files and analyzed them
      */
-    void rioVersionChanged (QString version);
+    void rioVersionChanged (QString);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * its PDP information and analyzed them
      */
-    void pdpVersionChanged (QString version);
+    void pdpVersionChanged (QString);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * the PCM information files and analyzed them
      */
-    void pcmVersionChanged (QString version);
+    void pcmVersionChanged (QString);
 
     /**
      * Emitted when the Driver Station changes the robot address or the team number
      * Can be used internally or externally to update network addresses.
      */
-    void robotAddressChanged (QString address);
+    void robotAddressChanged (QString);
 
     /**
      * Used by each protocol to log messages through the DriverStation, thus
      * allowing the final user to see informative messages about the status of
      * the client application
      */
-    void newMessage (QString message);
+    void newMessage (QString);
 
     /**
      * Emitted when we receive a packet from the robot. Used by the library

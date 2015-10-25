@@ -45,7 +45,7 @@ signals:
      * Emitted when a message is received from the robot or the
      * internal Driver Station system
      */
-    void newMessage (QString message);
+    void newMessage (QString);
 
 private:
     /**

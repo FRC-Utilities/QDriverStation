@@ -60,10 +60,10 @@ DriverStation::DriverStation()
              this,      SIGNAL (communicationsChanged (bool)));
     connect (m_manager, SIGNAL (controlModeChanged    (DS_ControlMode)),
              this,      SIGNAL (controlModeChanged    (DS_ControlMode)));
-    connect (m_manager, SIGNAL (diskUsageChanged      (int, int)),
-             this,      SIGNAL (diskUsageChanged      (int, int)));
-    connect (m_manager, SIGNAL (ramUsageChanged       (int, int)),
-             this,      SIGNAL (ramUsageChanged       (int, int)));
+    connect (m_manager, SIGNAL (diskUsageChanged      (int)),
+             this,      SIGNAL (diskUsageChanged      (int)));
+    connect (m_manager, SIGNAL (ramUsageChanged       (int)),
+             this,      SIGNAL (ramUsageChanged       (int)));
     connect (m_manager, SIGNAL (voltageChanged        (QString)),
              this,      SIGNAL (voltageChanged        (QString)));
     connect (m_manager, SIGNAL (newMessage            (QString)),
