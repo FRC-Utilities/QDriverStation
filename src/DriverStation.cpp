@@ -29,7 +29,6 @@
 #include "LibDS/DS_ProtocolManager.h"
 
 #include "LibDS/DS_Protocol.h"
-#include "LibDS/DS_Protocol2014.h"
 #include "LibDS/DS_Protocol2015.h"
 
 #include <QDebug>
@@ -139,10 +138,7 @@ QStringList DriverStation::alliances()
 QStringList DriverStation::protocols()
 {
     QStringList list;
-
-    list.append ("2014 Protocol");
     list.append ("2015 Protocol");
-
     return list;
 }
 
@@ -232,9 +228,6 @@ void DriverStation::setProtocol (DS_Protocol* protocol)
 void DriverStation::setProtocol (ProtocolType protocol)
 {
     switch (protocol) {
-    case Protocol2014:
-        setProtocol (new DS_Protocol2014);
-        break;
     case Protocol2015:
         setProtocol (new DS_Protocol2015);
         break;
