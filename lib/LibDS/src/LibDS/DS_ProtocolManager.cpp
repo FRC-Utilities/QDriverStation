@@ -63,10 +63,10 @@ void DS_ProtocolManager::setProtocol (DS_Protocol* protocol)
                  this,       SIGNAL (robotAddressChanged   (QString)));
         connect (m_protocol, SIGNAL (controlModeChanged    (DS_ControlMode)),
                  this,       SIGNAL (controlModeChanged    (DS_ControlMode)));
-        connect (m_protocol, SIGNAL (diskUsageChanged      (int, int)),
-                 this,       SIGNAL (diskUsageChanged      (int, int)));
-        connect (m_protocol, SIGNAL (ramUsageChanged       (int, int)),
-                 this,       SIGNAL (ramUsageChanged       (int, int)));
+        connect (m_protocol, SIGNAL (diskUsageChanged      (int)),
+                 this,       SIGNAL (diskUsageChanged      (int)));
+        connect (m_protocol, SIGNAL (ramUsageChanged       (int)),
+                 this,       SIGNAL (ramUsageChanged       (int)));
         connect (m_protocol, SIGNAL (voltageChanged        (QString)),
                  this,       SIGNAL (voltageChanged        (QString)));
         connect (m_protocol, SIGNAL (newMessage            (QString)),

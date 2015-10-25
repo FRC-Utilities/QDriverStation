@@ -313,7 +313,7 @@ private slots:
      *
      * @note The text will be set to '--.--' if there are are no communications
      */
-    void onRamUsageChanged (int total, int used);
+    void onRamUsageChanged (int percent);
 
     /**
      * @internal
@@ -322,7 +322,7 @@ private slots:
      *
      * @note The text will be set to '--.--' if there are are no communications
      */
-    void onDiskUsageChanged (int total, int used);
+    void onDiskUsageChanged (int percent);
 
     /**
      * @internal
@@ -345,6 +345,10 @@ private slots:
      * there is a problem with the robot and it cannot be enabled.
      */
     void statusLabelAnimation();
+
+protected:
+    void keyPressEvent (QKeyEvent* e);
+    void keyReleaseEvent (QKeyEvent* e);
 };
 
 /**

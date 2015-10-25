@@ -28,47 +28,7 @@
 #include <QObject>
 #include <QStringList>
 
-/**
- * Represents a joystick and provides some information about it
- */
-struct GM_Joystick {
-    int id;              /**< The raw ID of the joystick */
-    int numAxes;         /**< The number of axes that the joystick has */
-    int numButtons;      /**< The number of buttons that the joystick has */
-    QString displayName; /**< The user-friendly name of the joystick*/
-};
-
-
-/**
- * Represents the state of a joystick hat and provides some data about it
- */
-struct GM_Hat {
-    int rawId;            /**< The raw ID of the hat */
-    short angle;          /**< The pressed angle of the hat */
-    GM_Joystick joystick; /**< The joystick that the hat belongs to */
-};
-
-/**
- * Represents the state of a joystick axis and provides some data about it
- */
-struct GM_Axis {
-    int rawId;            /**< The raw ID of the axis */
-    int processedId;      /**< The calculated ID based on the axis type */
-    double value;         /**< The value (between -1 and 1) of the axis */
-    QString identifier;   /**< The user-friendly name of the axis */
-    GM_Joystick joystick; /**< The joystick that the axis belongs to */
-};
-
-/**
- * Represents the state of a joystick button and provides some data about it
- */
-struct GM_Button {
-    int rawId;            /**< The raw ID of the button */
-    bool pressed;         /**< The current state of the button */
-    int processedId;      /**< The calculated ID based on the button type */
-    QString identifier;   /**< The user-friendly name of the button */
-    GM_Joystick joystick; /**< The joystick that the button belongs to */
-};
+#include "JoystickCommon.h"
 
 class DriverStation;
 
@@ -92,8 +52,7 @@ class GamepadManager : public QObject
     Q_OBJECT
 
 public:
-    explicit GamepadManager();
-    ~GamepadManager();
+    static GamepadManager* getInstance();
 
 public slots:
     /**
@@ -158,30 +117,30 @@ signals:
     /**
      * Emitted when a joystick is attached or removed
      */
-    void countChanged (int count);
+    void countChanged (int);
 
     /**
      * Emitted when a joystick is attached or removed
      */
-    void countChanged (QStringList joysticks);
+    void countChanged (QStringList);
 
     /**
      * Emitted when the system detects a change in the state of the hats of
      * one of the connected joysticks
      */
-    void hatEvent (GM_Hat hat);
+    void hatEvent (GM_Hat);
 
     /**
      * Emitted when the system detects a change in the state of the axes of
      * one of the connected joysticks
      */
-    void axisEvent (GM_Axis axis);
+    void axisEvent (GM_Axis);
 
     /**
      * Emitted when the system detects a change in the state of the buttons of
      * one of the connected joysticks
      */
-    void buttonEvent (GM_Button button);
+    void buttonEvent (GM_Button);
 
 private:
     /**
@@ -252,6 +211,12 @@ private:
      * to the robot
      */
     int getDynamicId (int js);
+
+protected:
+    explicit GamepadManager();
+    ~GamepadManager();
+
+    static GamepadManager* m_instance;
 
 private slots:
     /**

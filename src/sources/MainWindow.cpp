@@ -130,10 +130,10 @@ void MainWindow::connectSlots()
              this, SLOT   (onRioVersionChanged (QString)));
     connect (m_ds, SIGNAL (robotStatusChanged (QString)),
              this, SLOT   (onRobotStatusChanged (QString)));
-    connect (m_ds, SIGNAL (ramUsageChanged (int, int)),
-             this, SLOT   (onRamUsageChanged (int, int)));
-    connect (m_ds, SIGNAL (diskUsageChanged (int, int)),
-             this, SLOT   (onDiskUsageChanged (int, int)));
+    connect (m_ds, SIGNAL (ramUsageChanged (int)),
+             this, SLOT   (onRamUsageChanged (int)));
+    connect (m_ds, SIGNAL (diskUsageChanged (int)),
+             this, SLOT   (onDiskUsageChanged (int)));
     connect (m_ds, SIGNAL (controlModeChanged (DS_ControlMode)),
              this, SLOT   (onControlModeChanged (DS_ControlMode)));
     connect (DS_Timers::getInstance(), SIGNAL (timeout1000()),
@@ -337,6 +337,9 @@ void MainWindow::readSettings()
              this,                   SLOT   (onProtocolChanged   (int)));
     connect (ui->DbCombo,            SIGNAL (currentIndexChanged (int)),
              this,                   SLOT   (setDashboard        (int)));
+
+    /* Configure the joysticks widget */
+    m_joysticksWidget->readSettings();
 }
 
 //------------------------------------------------------------------------------
@@ -607,14 +610,14 @@ void MainWindow::onRobotStatusChanged (QString status)
         ui->StatusLabel->setText (status);
 }
 
-void MainWindow::onRamUsageChanged (int total, int used)
+void MainWindow::onRamUsageChanged (int percent)
 {
-    updateLabelText (ui->RamUsage, tr ("%1 MB / %2 MB").arg (used, total));
+    updateLabelText (ui->RamUsage, tr ("%1 %").arg (percent));
 }
 
-void MainWindow::onDiskUsageChanged (int total, int used)
+void MainWindow::onDiskUsageChanged (int percent)
 {
-    updateLabelText (ui->DiskUsage, tr ("%1 MB / %2 MB").arg (used, total));
+    updateLabelText (ui->DiskUsage, tr ("%1 %").arg (percent));
 }
 
 //------------------------------------------------------------------------------
@@ -652,4 +655,18 @@ void MainWindow::statusLabelAnimation()
     for (int i = 0; i < 8; ++i)
         QTimer::singleShot (100 * i, Qt::PreciseTimer,
                             this, SLOT (toggleStatusColor()));
+}
+
+//------------------------------------------------------------------------------
+// SEND KEYBOARD INPUT TO THE VIRTUAL KEYBOARD
+//------------------------------------------------------------------------------
+
+void MainWindow::keyPressEvent (QKeyEvent* e)
+{
+    m_joysticksWidget->registerKeyPress (e);
+}
+
+void MainWindow::keyReleaseEvent (QKeyEvent* e)
+{
+    m_joysticksWidget->registerKeyRelease (e);
 }

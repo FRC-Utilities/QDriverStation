@@ -24,39 +24,37 @@
 #include <QPushButton>
 #include <QProgressBar>
 
-#include "KeyboardDrive.h"
+#include "GamepadManager.h"
 #include "JoysticksWidget.h"
+#include "VirtualJoystick.h"
 
 JoysticksWidget::JoysticksWidget (QWidget* parent) : QWidget (parent)
 {
     ui.setupUi (this);
     ui.Axes->setVisible (false);
-    ui.Rumble->setVisible (false);
     ui.Buttons->setVisible (false);
-    ui.Rumble->setMinimumWidth (ui.JoystickList->width());
 
-    m_manager = new GamepadManager;
-    m_keyboardDrive = new KeyboardDrive;
+    m_keyboardDrive = new VirtualJoystick;
+    m_manager = GamepadManager::getInstance();
 
-    connect (m_manager, SIGNAL (axisEvent      (GM_Axis)),
-             this,      SLOT   (onAxisEvent    (GM_Axis)));
-    connect (m_manager, SIGNAL (buttonEvent    (GM_Button)),
-             this,      SLOT   (onButtonEvent  (GM_Button)));
-    connect (m_manager, SIGNAL (countChanged   (QStringList)),
-             this,      SLOT   (onCountChanged (QStringList)));
-    connect (ui.Rumble, SIGNAL (clicked()),
-             this,      SLOT   (onRumbleClicked()));
-
+    connect (m_keyboardDrive, SIGNAL (axisEvent      (GM_Axis)),
+             this,            SLOT   (onAxisEvent    (GM_Axis)));
+    connect (m_keyboardDrive, SIGNAL (buttonEvent    (GM_Button)),
+             this,            SLOT   (onButtonEvent  (GM_Button)));
+    connect (m_keyboardDrive, SIGNAL (countChanged   (QStringList)),
+             this,            SLOT   (onCountChanged (QStringList)));
     connect (ui.JoystickList, SIGNAL (currentRowChanged (int)),
              this,            SLOT   (onRowChanged      (int)));
-
-    m_manager->init();
 }
 
 JoysticksWidget::~JoysticksWidget()
 {
-    delete m_manager;
     delete m_keyboardDrive;
+}
+
+void JoysticksWidget::readSettings()
+{
+    m_keyboardDrive->readSettings();
 }
 
 void JoysticksWidget::showKeyboardWindow()
@@ -64,14 +62,19 @@ void JoysticksWidget::showKeyboardWindow()
     m_keyboardDrive->show();
 }
 
+void JoysticksWidget::registerKeyPress (QKeyEvent* event)
+{
+    m_keyboardDrive->registerKeyPress (event);
+}
+
+void JoysticksWidget::registerKeyRelease (QKeyEvent* event)
+{
+    m_keyboardDrive->registerKeyRelease (event);
+}
+
 //------------------------------------------------------------------------------
 // REACT TO UI EVENTS
 //------------------------------------------------------------------------------
-
-void JoysticksWidget::onRumbleClicked()
-{
-    m_manager->rumble (ui.JoystickList->currentRow(), 1000);
-}
 
 void JoysticksWidget::onRowChanged (int row)
 {
@@ -89,8 +92,8 @@ void JoysticksWidget::onRowChanged (int row)
     if (row < 0)  return;
 
     /* Get joystick information */
-    int axisCount = m_manager->getNumAxes (row);
-    int buttonCount = m_manager->getNumButtons (row);
+    int axisCount = m_keyboardDrive->getNumAxes (row);
+    int buttonCount = m_keyboardDrive->getNumButtons (row);
 
     ui.Axes->setVisible (axisCount > 0);
     ui.Buttons->setVisible (buttonCount > 0);
@@ -134,16 +137,13 @@ void JoysticksWidget::onRowChanged (int row)
 // REACT TO GAMEPAD EVENTS
 //------------------------------------------------------------------------------
 
-void JoysticksWidget::onCountChanged (const QStringList& list)
+void JoysticksWidget::onCountChanged (QStringList list)
 {
-    /* Current count is less and previous count */
     if (list.count() < ui.JoystickList->count())
         emit joystickRemoved();
 
-    /* Reset joystick list */
     ui.JoystickList->clear();
 
-    /* Add an item for each registered joystick */
     if (list.count() > 0) {
         for (int i = 1; i <= list.count(); ++i)
             ui.JoystickList->addItem (QString ("%1: ").arg (i) + list.at (i - 1));
@@ -151,31 +151,23 @@ void JoysticksWidget::onCountChanged (const QStringList& list)
         ui.JoystickList->setCurrentRow (0);
     }
 
-    /* Notify other objects about the new/removed joysticks */
     emit statusChanged (list.count() > 0);
-
-    /* Show or hide the rumble button if needed */
-    ui.Rumble->setVisible (list.count() > 0);
 }
 
 void JoysticksWidget::onAxisEvent (const GM_Axis& axis)
 {
-    /* Event is from another joystick */
     if (ui.JoystickList->currentRow() != axis.joystick.id)
         return;
 
-    /* Input axis is invalid */
     if (axis.rawId < m_axes.count())
         m_axes.at (axis.rawId)->setValue (axis.value * 100);
 }
 
 void JoysticksWidget::onButtonEvent (const GM_Button& button)
 {
-    /* Event is from another joystick */
     if (ui.JoystickList->currentRow() != button.joystick.id)
         return;
 
-    /* Input button is invalid */
     if (button.rawId < m_buttons.count())
         m_buttons.at (button.rawId)->setChecked (button.pressed);
 }

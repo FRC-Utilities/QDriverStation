@@ -149,7 +149,8 @@ HEADERS += \
     $$PWD/src/headers/MainWindow.h \
     $$PWD/src/headers/Settings.h \
     $$PWD/src/headers/SmartWindow.h \
-    $$PWD/src/headers/KeyboardDrive.h
+    $$PWD/src/headers/VirtualJoystick.h \
+    $$PWD/src/headers/JoystickCommon.h
 
 SOURCES += \
     $$PWD/src/sources/AdvancedSettings.cpp \
@@ -164,14 +165,14 @@ SOURCES += \
     $$PWD/src/sources/MainWindow.cpp \
     $$PWD/src/sources/Settings.cpp \
     $$PWD/src/sources/SmartWindow.cpp \
-    $$PWD/src/main.cpp \
-    $$PWD/src/sources/KeyboardDrive.cpp
+    $$PWD/src/sources/VirtualJoystick.cpp \
+    $$PWD/src/main.cpp
 
 FORMS += \
     $$PWD/src/forms/AdvancedSettings.ui \
     $$PWD/src/forms/JoysticksWidget.ui \
     $$PWD/src/forms/MainWindow.ui \
-    $$PWD/src/forms/KeyboardDrive.ui
+    $$PWD/src/forms/VirtualJoystick.ui
 
 #-------------------------------------------------------------------------------
 # Import resources

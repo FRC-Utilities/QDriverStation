@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1184</width>
-    <height>286</height>
+    <width>1211</width>
+    <height>305</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1156,11 +1156,56 @@ padding: 12px;</string>
            <item>
             <widget class="QLabel" name="NoJoystickDetails">
              <property name="text">
-              <string>Connect a joystick to get started</string>
+              <string>Connect a joystick or configure the virtual joystick</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
              </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QWidget" name="widget_5" native="true">
+             <layout class="QHBoxLayout" name="horizontalLayout_16">
+              <item>
+               <spacer name="horizontalSpacer_4">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QPushButton" name="KeyboardDrive">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string> Configure Virtual Joystick </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_5">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
             </widget>
            </item>
            <item>
@@ -2024,10 +2069,26 @@ QPushButton:checked {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>KeyboardDrive</sender>
+   <signal>clicked()</signal>
+   <receiver>KeysButton</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>256</x>
+     <y>203</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1115</x>
+     <y>115</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <buttongroups>
   <buttongroup name="RobotModeGroup"/>
-  <buttongroup name="WindowModeGroup"/>
   <buttongroup name="RobotStatusGroup"/>
+  <buttongroup name="WindowModeGroup"/>
  </buttongroups>
 </ui>

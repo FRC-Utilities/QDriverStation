@@ -24,12 +24,15 @@
 #ifndef _QDRIVER_STATION_JOYSTICKS_H
 #define _QDRIVER_STATION_JOYSTICKS_H
 
-#include "GamepadManager.h"
+#include "JoystickCommon.h"
+
+#include <QKeyEvent>
 #include <ui_JoysticksWidget.h>
 
 class QPushButton;
 class QProgressBar;
-class KeyboardDrive;
+class VirtualJoystick;
+class GamepadManager;
 
 /**
  * @class Joysticks
@@ -50,7 +53,10 @@ public:
     ~JoysticksWidget();
 
 public slots:
+    void readSettings();
     void showKeyboardWindow();
+    void registerKeyPress (QKeyEvent* event);
+    void registerKeyRelease (QKeyEvent* event);
 
 signals:
     /**
@@ -60,14 +66,8 @@ signals:
 
     /**
      * Emitted when a joystick is attached or removed from the computer
-     *
-     * \a joysticksAvailable is \c true if there is at least one joystick
-     * attached to the computer.
-     *
-     * \a joysticksAvailable is \c false when there are no joystick attached
-     * to the computer
      */
-    void statusChanged (bool joysticksAvailable);
+    void statusChanged (bool);
 
 private:
     /**
@@ -93,15 +93,9 @@ private:
     /**
      * The keyboard drive window
      */
-    KeyboardDrive* m_keyboardDrive;
+    VirtualJoystick* m_keyboardDrive;
 
 private slots:
-    /**
-     * @internal
-     * Rumbles the currently selected joystick
-     */
-    void onRumbleClicked();
-
     /**
      * @internal
      * Re-creates the indicator widgets for the currently selected joystick
@@ -113,7 +107,7 @@ private slots:
      * Re-populates the joystick list when the QJoystickManager detects that
      * the user attached or removed a joystick
      */
-    void onCountChanged (const QStringList& list);
+    void onCountChanged (QStringList list);
 
     /**
      * @internal

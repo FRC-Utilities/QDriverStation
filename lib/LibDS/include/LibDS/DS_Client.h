@@ -66,7 +66,7 @@ signals:
     /**
      * Emitted when the client receives a packet from the robot
      */
-    void dataReceived (QByteArray data);
+    void dataReceived (QByteArray);
 
 private:
     int m_robotPort;
