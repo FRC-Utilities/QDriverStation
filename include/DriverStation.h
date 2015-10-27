@@ -342,6 +342,11 @@ private:
 
 private slots:
     /**
+     * @brief sendRobotPackets
+     */
+    void sendRobotPackets();
+
+    /**
      * @internal
      * Resets the internal values of the library when we disconnect from the
      * robot.
@@ -350,17 +355,9 @@ private slots:
 
     /**
      * @internal
-     * Sends the robot response data to the protocol and sends a new packet to
-     * the robot
+     * Sends the received data to the current protocol
      */
-    void sendRobotPackets (QByteArray robotResponse);
-
-    /**
-     * @internal
-     * Sends a robot packet in a regular manner when we don´t get robot responses.
-     * This function will stop sending packets when we receive a robot packet
-     */
-    void sendDummyPacket();
+    void readRobotPackets (QByteArray robotResponse);
 
     /**
      * @internal
@@ -378,7 +375,7 @@ private slots:
      * we use the \c getStatus() function to construct the status string
      * of the robot.
      */
-    void updateStatus (bool ignore_me);
+    void updateStatus (bool ignored);
 
     /**
      * @internal

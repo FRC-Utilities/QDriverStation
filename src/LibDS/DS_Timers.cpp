@@ -29,31 +29,31 @@ DS_Timers* DS_Timers::m_instance = Q_NULLPTR;
 
 DS_Timers::DS_Timers()
 {
-    t60  = new QTimer (Q_NULLPTR);
+    t20  = new QTimer (Q_NULLPTR);
     t100 = new QTimer (Q_NULLPTR);
     t1000 = new QTimer (Q_NULLPTR);
     m_thread = new QThread (this);
 
-    t60->moveToThread  (m_thread);
+    t20->moveToThread  (m_thread);
     t100->moveToThread (m_thread);
     t1000->moveToThread (m_thread);
 
-    t60->setInterval  (60);
+    t20->setInterval  (20);
     t100->setInterval (100);
     t1000->setInterval (1000);
 
-    t60->setTimerType  (Qt::PreciseTimer);
+    t20->setTimerType  (Qt::PreciseTimer);
     t100->setTimerType (Qt::PreciseTimer);
     t1000->setTimerType (Qt::PreciseTimer);
 
-    connect (t60,  SIGNAL (timeout()), this, SIGNAL (timeout60()));
+    connect (t20,  SIGNAL (timeout()), this, SIGNAL (timeout20()));
     connect (t100, SIGNAL (timeout()), this, SIGNAL (timeout100()));
     connect (t1000, SIGNAL (timeout()), this, SIGNAL (timeout1000()));
 }
 
 DS_Timers::~DS_Timers()
 {
-    delete t60;
+    delete t20;
     delete t100;
     delete t1000;
     delete m_thread;
@@ -70,7 +70,7 @@ DS_Timers* DS_Timers::getInstance()
 
 void DS_Timers::start()
 {
-    connect (m_thread, SIGNAL (started()), t60,  SLOT (start()));
+    connect (m_thread, SIGNAL (started()), t20,  SLOT (start()));
     connect (m_thread, SIGNAL (started()), t100, SLOT (start()));
     connect (m_thread, SIGNAL (started()), t1000, SLOT (start()));
 
