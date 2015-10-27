@@ -37,7 +37,7 @@ SmartWindow::SmartWindow()
     m_windowMode = Invalid;
 
     resizeToFit();
-    connect (DS_Timers::getInstance(), SIGNAL (timeout60()),
+    connect (DS_Timers::getInstance(), SIGNAL (timeout20()),
              this,                     SLOT   (resizeToFit()));
 }
 

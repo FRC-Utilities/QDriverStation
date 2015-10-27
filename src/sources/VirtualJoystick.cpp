@@ -96,7 +96,13 @@ int VirtualJoystick::getNumButtons (int js)
 
 void VirtualJoystick::onCountChanged (int count)
 {
-    m_joystick.id = count;
+    if (m_enabled) {
+        m_joystick.id = count;
+        DriverStation::getInstance()->addJoystick (m_joystick.numAxes,
+                m_joystick.numButtons,
+                0);
+    }
+
     emit countChanged (count + (m_enabled ? 1 : 0));
 }
 
@@ -128,22 +134,32 @@ void VirtualJoystick::registerKeyRelease (QKeyEvent* event)
     event->ignore();
 }
 
+void VirtualJoystick::keyPressEvent (QKeyEvent* e)
+{
+    registerKeyPress (e);
+}
+
+void VirtualJoystick::keyReleaseEvent (QKeyEvent* e)
+{
+    registerKeyRelease (e);
+}
+
 void VirtualJoystick::readAxes (int key, double value)
 {
     int axis = -1;
 
-    /* Vertical axis on thumb 1 */
-    if (key == Qt::Key_W)
+    /* Horizontal axis on thumb 1 */
+    if (key == Qt::Key_D)
         axis = 0;
-    else if (key == Qt::Key_S) {
+    else if (key == Qt::Key_A) {
         axis = 0;
         value *= -1;
     }
 
-    /* Horizontal axis on thumb 1 */
-    if (key == Qt::Key_D)
+    /* Vertical axis on thumb 1 */
+    if (key == Qt::Key_S)
         axis = 1;
-    else if (key == Qt::Key_A) {
+    else if (key == Qt::Key_W) {
         axis = 1;
         value *= -1;
     }
@@ -164,18 +180,18 @@ void VirtualJoystick::readAxes (int key, double value)
         value *= -1;
     }
 
-    /* Vertical axis on thumb 2 */
-    if (key == Qt::Key_I)
+    /* Horizontal axis on thumb 2 */
+    if (key == Qt::Key_L)
         axis = 4;
-    else if (key == Qt::Key_K) {
+    else if (key == Qt::Key_J) {
         axis = 4;
         value *= -1;
     }
 
-    /* Horizontal axis on thumb 2 */
-    if (key == Qt::Key_L)
+    /* Vertical axis on thumb 2 */
+    if (key == Qt::Key_I)
         axis = 5;
-    else if (key == Qt::Key_J) {
+    else if (key == Qt::Key_K) {
         axis = 5;
         value *= -1;
     }

@@ -22,11 +22,11 @@
 
 #include <QDir>
 #include <QFile>
+#include <QTimer>
 #include <QMessageBox>
 #include <QApplication>
 
 #include <DriverStation.h>
-#include <LibDS/DS_Timers.h>
 
 #include "GamepadManager.h"
 
@@ -154,8 +154,6 @@ void GamepadManager::init()
 {
     m_time = 50;
     m_tracker = -1;
-    connect (DS_Timers::getInstance(), SIGNAL (timeout60()),
-             this,                     SLOT   (readSdlEvents()));
 }
 
 void GamepadManager::setUpdateInterval (int time)
@@ -277,6 +275,8 @@ void GamepadManager::readSdlEvents()
             break;
         }
     }
+
+    QTimer::singleShot (m_time, Qt::PreciseTimer, this, SLOT (readSdlEvents()));
 }
 
 //------------------------------------------------------------------------------

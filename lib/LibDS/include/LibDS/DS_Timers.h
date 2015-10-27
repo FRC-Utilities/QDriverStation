@@ -58,11 +58,6 @@ signals:
     void timeout20();
 
     /**
-     * Emitted every 60 milliseconds
-     */
-    void timeout60();
-
-    /**
      * Emitted every 100 milliseconds
      */
     void timeout100();
@@ -80,7 +75,7 @@ private:
     /**
      * A 60-millisecond timer
      */
-    QTimer* t60;
+    QTimer* t20;
 
     /**
      * A 100-millisecond timer

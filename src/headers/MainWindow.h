@@ -347,7 +347,14 @@ private slots:
     void statusLabelAnimation();
 
 protected:
+    /**
+     * Reacts when the user presses a key
+     */
     void keyPressEvent (QKeyEvent* e);
+
+    /**
+     * Reacts when the user releases a key
+     */
     void keyReleaseEvent (QKeyEvent* e);
 };
 

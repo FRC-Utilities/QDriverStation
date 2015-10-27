@@ -92,9 +92,9 @@ DriverStation::DriverStation()
 
     /* Send and read robot packets */
     connect (m_client,  SIGNAL (dataReceived     (QByteArray)),
-             this,      SLOT   (sendRobotPackets (QByteArray)));
-    connect (DS_Timers::getInstance(), SIGNAL (timeout60()),
-             this,                     SLOT   (sendDummyPacket()));
+             this,      SLOT   (readRobotPackets (QByteArray)));
+    connect (DS_Timers::getInstance(), SIGNAL (timeout20()),
+             this,                     SLOT   (sendRobotPackets()));
 }
 
 DriverStation::~DriverStation()
@@ -321,6 +321,12 @@ void DriverStation::updateJoystickButton (int js, int button, bool state)
         m_manager->updateJoystickButton (js, button, state);
 }
 
+void DriverStation::sendRobotPackets()
+{
+    if (m_manager->protocolIsValid() && m_init)
+        m_client->sendToRobot (m_manager->protocol()->getClientPacket());
+}
+
 void DriverStation::resetInternalValues()
 {
     m_elapsedTime->reset();
@@ -332,20 +338,10 @@ void DriverStation::resetInternalValues()
     emit elapsedTimeChanged ("00:00.0");
 }
 
-void DriverStation::sendRobotPackets (QByteArray robotResponse)
+void DriverStation::readRobotPackets (QByteArray robotResponse)
 {
-    if (m_manager->protocolIsValid() && m_init) {
+    if (m_manager->protocolIsValid() && m_init)
         m_manager->protocol()->readRobotPacket (robotResponse);
-        m_client->sendToRobot (m_manager->protocol()->getClientPacket());
-    }
-}
-
-void DriverStation::sendDummyPacket()
-{
-    if (m_manager->protocolIsValid() && m_init) {
-        if (!m_manager->protocol()->robotCommunication())
-            m_client->sendToRobot (m_manager->protocol()->getClientPacket());
-    }
 }
 
 QString DriverStation::getStatus()
@@ -361,9 +357,9 @@ QString DriverStation::getStatus()
     return DS_GetControlModeString (DS_ControlNoCommunication);
 }
 
-void DriverStation::updateStatus (bool ignore_me)
+void DriverStation::updateStatus (bool ignored)
 {
-    Q_UNUSED (ignore_me);
+    Q_UNUSED (ignored);
     emit robotStatusChanged (getStatus());
 }
 

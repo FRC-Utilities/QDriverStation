@@ -84,6 +84,17 @@ public slots:
      */
     void registerKeyRelease (QKeyEvent* event);
 
+protected:
+    /**
+     * Reacts when the user presses a key
+     */
+    void keyPressEvent (QKeyEvent* e);
+
+    /**
+     * Reacts when the user releases a key
+     */
+    void keyReleaseEvent (QKeyEvent* e);
+
 signals:
     /**
      * Emitted when the joystick count is adjusted and updated
