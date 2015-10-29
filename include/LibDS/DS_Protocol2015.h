@@ -68,6 +68,10 @@ const short ALLIANCE_BLUE1 = 0x03u;
 const short ALLIANCE_BLUE2 = 0x04u;
 const short ALLIANCE_BLUE3 = 0x05u;
 
+/* Tags, used for reading additional data from robot packets */
+const short TAG_CPU = 0x05u;
+const short TAG_RAM = 0x06u;
+
 /* Robot information paths */
 const QString FTP_PCM_PATH = "/tmp/frc_versions/PCM-0-versions.ini";
 const QString FTP_PDP_PATH = "/tmp/frc_versions/PDP-0-versions.ini";
