@@ -77,7 +77,8 @@ public:
 
 public slots:
     /**
-     * @brief reset
+     * Resets the internal values of the protocol and emits the appropiate
+     * signals when the robot communication is lost
      */
     void reset();
 
@@ -174,6 +175,14 @@ private slots:
      * \a alliance
      */
     virtual char getAllianceCode (DS_Alliance alliance) = 0;
+
+    /**
+     * Gets the IP of any network address.
+     * Can be used for getting the IP of the robot instead of using its
+     * mDNS address
+     */
+    void onLookupFinished (QHostInfo info);
+
 
 signals:
     /**

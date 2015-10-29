@@ -78,15 +78,15 @@ QString DS_Protocol::robotAddress()
 
 void DS_Protocol::reset()
 {
-    if (p_robotCommunication)
-        log ("Robot communication lost");
-
     p_robotCode = false;
     p_robotCommunication = false;
 
     emit codeChanged (p_robotCode);
     emit voltageChanged (QString (""));
     emit communicationsChanged (p_robotCommunication);
+
+    QHostInfo::lookupHost (robotAddress(),
+                           this, SLOT (onLookupFinished (QHostInfo)));
 
     resetProtocol();
 }
@@ -128,6 +128,18 @@ void DS_Protocol::readRobotPacket (QByteArray& data)
 void DS_Protocol::log (QString message)
 {
     emit newMessage (message);
+}
+
+void DS_Protocol::onLookupFinished (QHostInfo info)
+{
+    if (!info.addresses().isEmpty()) {
+        for (int i = 0; i < info.addresses().count(); ++i) {
+            if (info.addresses().at (i).toString().contains (".")) {
+                setRobotAddress (info.addresses().at (i).toString());
+                return;
+            }
+        }
+    }
 }
 
 QByteArray DS_Protocol::bitsToBytes (QBitArray bits)

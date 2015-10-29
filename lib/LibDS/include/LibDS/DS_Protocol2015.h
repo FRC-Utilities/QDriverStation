@@ -27,6 +27,54 @@
 #include "DS_Protocol.h"
 
 /**
+ * \namespace DS_Protocol2015_Definitions
+ * Defines the values used by the protocol to communicate with the robot
+ */
+namespace DS_Protocol2015_Definitions
+{
+/* Control Modes */
+const short CONTROL_DISABLED = 0x01u;
+const short CONTROL_TELEOP   = 0x04u;
+const short CONTROL_TEST     = 0x05u;
+const short CONTROL_AUTO     = 0x06u;
+const short CONTROL_ESTOP    = 0x80u;
+const short CONTROL_NO_COMM  = 0x02u;
+
+/* Headers for client packets */
+const short HEADER_GENERAL  = 0x01u;
+const short HEADER_JOYSTICK = 0x0Cu;
+const short HEADER_TIME     = 0x0Fu;
+const short HEADER_TIMEZONE = 0x10u;
+
+/* Robot instructions */
+const short STATUS_OK        = 0x10u;
+const short STATUS_NULL      = 0x00u;
+const short STATUS_REBOOT    = 0x18u;
+const short STATUS_KILL_CODE = 0x14u;
+
+/* Robot program statuses */
+const short PROGRAM_NO_CODE      = 0x00u;
+const short PROGRAM_AUTO         = 0x30u;
+const short PROGRAM_DISABLED     = 0x31u;
+const short PROGRAM_TELEOP       = 0x32u;
+const short PROGRAM_TEST         = 0x38u;
+const short PROGRAM_REQUEST_TIME = 0x01u;
+
+/* Alliance codes */
+const short ALLIANCE_RED1  = 0x00u;
+const short ALLIANCE_RED2  = 0x01u;
+const short ALLIANCE_RED3  = 0x02u;
+const short ALLIANCE_BLUE1 = 0x03u;
+const short ALLIANCE_BLUE2 = 0x04u;
+const short ALLIANCE_BLUE3 = 0x05u;
+
+/* Robot information paths */
+const QString FTP_PCM_PATH = "/tmp/frc_versions/PCM-0-versions.ini";
+const QString FTP_PDP_PATH = "/tmp/frc_versions/PDP-0-versions.ini";
+const QString FTP_LIB_PATH = "/tmp/frc_versions/FRC_Lib_Version.ini";
+}
+
+/**
  * \class DS_Protocol2015
  *
  * Implements the 2015 communication protocol.
@@ -142,12 +190,6 @@ private slots:
      * Returns the value used to represent the input \a alliance
      */
     char getAllianceCode (DS_Alliance alliance);
-
-    /**
-     * Gets the IP of the roboRIO when we finish looking for
-     * its mDNS address of the roboRIO
-     */
-    void onLookupFinished (QHostInfo info);
 
     /**
      * Returns the size of the input \a joystick structure

@@ -21,43 +21,7 @@
  */
 
 #include "LibDS/DS_Protocol2015.h"
-
-#define CONTROL_DISABLED     0x01u
-#define CONTROL_TELEOP       0x04u
-#define CONTROL_TEST         0x05u
-#define CONTROL_AUTO         0x06u
-#define CONTROL_ESTOP        0x80u
-
-#define CONTROL_NO_COMM      0x02u
-#define CONTROL_TIMEZONE     0x10u
-
-#define HEADER_GENERAL       0x01u
-#define HEADER_JOYSTICK      0x0Cu
-#define HEADER_TIME          0x0Fu
-#define HEADER_TIMEZONE      0x10u
-
-#define STATUS_OK            0x10u
-#define STATUS_NULL          0x00u
-#define STATUS_REBOOT        0x18u
-#define STATUS_KILL_CODE     0x14u
-
-#define PROGRAM_NO_CODE      0x00u
-#define PROGRAM_AUTO         0x30u
-#define PROGRAM_DISABLED     0x31u
-#define PROGRAM_TELEOP       0x32u
-#define PROGRAM_TEST         0x38u
-#define PROGRAM_REQUEST_TIME 0x01u
-
-#define ALLIANCE_RED1        0x00u
-#define ALLIANCE_RED2        0x01u
-#define ALLIANCE_RED3        0x02u
-#define ALLIANCE_BLUE1       0x03u
-#define ALLIANCE_BLUE2       0x04u
-#define ALLIANCE_BLUE3       0x05u
-
-#define FTP_PCM_PATH         "/tmp/frc_versions/PCM-0-versions.ini"
-#define FTP_PDP_PATH         "/tmp/frc_versions/PDP-0-versions.ini"
-#define FTP_LIB_PATH         "/tmp/frc_versions/FRC_Lib_Version.ini"
+using namespace DS_Protocol2015_Definitions;
 
 DS_Protocol2015::DS_Protocol2015()
 {
@@ -71,7 +35,6 @@ DS_Protocol2015::DS_Protocol2015()
 void DS_Protocol2015::reboot()
 {
     m_status = STATUS_REBOOT;
-    log ("Changed status to STATUS_REBOOT");
 }
 
 int DS_Protocol2015::robotPort()
@@ -87,24 +50,33 @@ int DS_Protocol2015::clientPort()
 void DS_Protocol2015::restartCode()
 {
     m_status = STATUS_KILL_CODE;
-    log ("Changed status to STATUS_KILL_CODE");
 }
 
 QByteArray DS_Protocol2015::getClientPacket()
 {
     QByteArray data;
 
+    /* Add ping data */
     p_sentPackets += 1;
     data.append (DS_ToBytes (p_sentPackets));
 
+    /* Add the client header */
     data.append (HEADER_GENERAL);
+
+    /* Add the current control mode */
     data.append (getControlCode (controlMode()));
+
+    /* Add the current status (normal, reboot, etc) */
     data.append (p_robotCommunication ? m_status : (char) STATUS_NULL);
+
+    /* Add the current alliance */
     data.append (getAllianceCode (alliance()));
 
+    /* Add joystick input data */
     if (p_robotCommunication && !m_sendDateTime)
         data.append (generateJoystickData());
 
+    /* Send the timezone data if required */
     else if (m_sendDateTime)
         data.append (generateTimezoneData());
 
@@ -115,8 +87,6 @@ void DS_Protocol2015::resetProtocol()
 {
     m_status = STATUS_NULL;
     m_sendDateTime = false;
-    QHostInfo::lookupHost (robotAddress(),
-                           this, SLOT (onLookupFinished (QHostInfo)));
 }
 
 QString DS_Protocol2015::defaultRadioAddress()
@@ -135,8 +105,6 @@ void DS_Protocol2015::downloadRobotInformation()
     m_manager.get (QNetworkRequest (host + FTP_LIB_PATH));
     m_manager.get (QNetworkRequest (host + FTP_PCM_PATH));
     m_manager.get (QNetworkRequest (host + FTP_PDP_PATH));
-
-    log ("Downloading robot information...");
 }
 
 QByteArray DS_Protocol2015::generateJoystickData()
@@ -335,18 +303,6 @@ char DS_Protocol2015::getAllianceCode (DS_Alliance alliance)
     return ALLIANCE_RED1;
 }
 
-void DS_Protocol2015::onLookupFinished (QHostInfo info)
-{
-    if (!info.addresses().isEmpty()) {
-        for (int i = 0; i < info.addresses().count(); ++i) {
-            if (info.addresses().at (i).toString().contains (".")) {
-                setRobotAddress (info.addresses().at (i).toString());
-                return;
-            }
-        }
-    }
-}
-
 int DS_Protocol2015::getJoystickSize (DS_Joystick* joystick)
 {
     return  5
@@ -390,6 +346,4 @@ void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply)
 
     else if (url.contains (FTP_LIB_PATH, Qt::CaseInsensitive))
         emit libVersionChanged (data);
-
-    log ("Robot information received");
 }
