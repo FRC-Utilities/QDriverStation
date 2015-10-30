@@ -58,6 +58,7 @@ int main (int argc, char* argv[])
     app.setStyle (QStyleFactory::create ("Fusion"));
     app.setApplicationVersion (AssemblyInfo::version());
     app.setOrganizationName (AssemblyInfo::organization());
+    app.setOrganizationDomain (AssemblyInfo::organizationDomain());
     app.setFont (QFont ("Quicksand", _PT_SIZE, -1, false));
 
     /* The window will show itself when initialized */

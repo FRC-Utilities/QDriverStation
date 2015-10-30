@@ -28,6 +28,7 @@
 #define APP_BUILD   "2"
 #define APP_STATE   "Beta"
 #define APP_COMPANY "WinT 3794"
+#define APP_DOMAIN  "wint3794.org"
 
 QString AssemblyInfo::name()
 {
@@ -65,6 +66,11 @@ QString AssemblyInfo::version()
 QString AssemblyInfo::organization()
 {
     return APP_COMPANY;
+}
+
+QString AssemblyInfo::organizationDomain()
+{
+    return APP_DOMAIN;
 }
 
 QString AssemblyInfo::buildDateTime()

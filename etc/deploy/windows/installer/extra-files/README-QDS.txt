@@ -11,7 +11,6 @@ What should I do next?
 
 If you just want to drive your robot, you should be able to 
 do so by running the  QDriverStation from the Start menu.
-The Driver Station works with both 2015 robots and 2009-2014 robots.
 
 If you want to drive a 2015 robot, we recommend you to download a 
 mDNS service installer for your system. 
@@ -32,7 +31,7 @@ What do I do if it doesn't work?
 The most common way to repair this would be to:
 
     - Check that you are actually connected to the robot
-    - Check that your team number is 
+    - Check that your team number is correctly set
 
 If that still doesn't work:
 

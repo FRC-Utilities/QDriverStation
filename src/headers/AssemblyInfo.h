@@ -47,6 +47,7 @@ public:
     static QString state();
     static QString version();
     static QString organization();
+    static QString organizationDomain();
     static QString buildDateTime();
 };
 

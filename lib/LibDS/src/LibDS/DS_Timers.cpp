@@ -29,25 +29,25 @@ DS_Timers* DS_Timers::m_instance = Q_NULLPTR;
 
 DS_Timers::DS_Timers()
 {
-    t20  = new QTimer (Q_NULLPTR);
-    t100 = new QTimer (Q_NULLPTR);
+    t20  = new QTimer  (Q_NULLPTR);
+    t100 = new QTimer  (Q_NULLPTR);
     t1000 = new QTimer (Q_NULLPTR);
     m_thread = new QThread (this);
 
-    t20->moveToThread  (m_thread);
-    t100->moveToThread (m_thread);
+    t20->moveToThread   (m_thread);
+    t100->moveToThread  (m_thread);
     t1000->moveToThread (m_thread);
 
-    t20->setInterval  (20);
-    t100->setInterval (100);
+    t20->setInterval   (20);
+    t100->setInterval  (100);
     t1000->setInterval (1000);
 
-    t20->setTimerType  (Qt::PreciseTimer);
-    t100->setTimerType (Qt::PreciseTimer);
+    t20->setTimerType   (Qt::PreciseTimer);
+    t100->setTimerType  (Qt::PreciseTimer);
     t1000->setTimerType (Qt::PreciseTimer);
 
-    connect (t20,  SIGNAL (timeout()), this, SIGNAL (timeout20()));
-    connect (t100, SIGNAL (timeout()), this, SIGNAL (timeout100()));
+    connect (t20,   SIGNAL (timeout()), this, SIGNAL (timeout20()));
+    connect (t100,  SIGNAL (timeout()), this, SIGNAL (timeout100()));
     connect (t1000, SIGNAL (timeout()), this, SIGNAL (timeout1000()));
 }
 
