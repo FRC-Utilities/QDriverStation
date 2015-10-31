@@ -117,8 +117,12 @@ DriverStation* DriverStation::getInstance()
 
 bool DriverStation::canBeEnabled()
 {
-    return m_manager->protocol()->robotCode() &&
-           m_manager->protocol()->robotCommunication();
+    if (m_manager->protocolIsValid()) {
+        return m_manager->protocol()->robotCode() &&
+               m_manager->protocol()->robotCommunication();
+    }
+
+    return false;
 }
 
 QStringList DriverStation::alliances()
@@ -348,7 +352,7 @@ QString DriverStation::getStatus()
 {
     if (m_manager->protocolIsValid() && m_init) {
         if (m_manager->protocol()->robotCommunication()
-            && !m_manager->protocol()->robotCode())
+                && !m_manager->protocol()->robotCode())
             return "No Robot Code";
 
         return DS_GetControlModeString (m_manager->protocol()->controlMode());
@@ -366,8 +370,8 @@ void DriverStation::updateStatus (bool ignored)
 void DriverStation::onControlModeChanged (DS_ControlMode mode)
 {
     if ((mode == DS_ControlDisabled
-         || mode == DS_ControlEmergencyStop
-         || mode == DS_ControlNoCommunication))
+            || mode == DS_ControlEmergencyStop
+            || mode == DS_ControlNoCommunication))
         m_elapsedTime->stop();
 
     else
