@@ -76,7 +76,7 @@ public:
      * This function is useful in the case that you want to warn the user
      * when he/she clicks the 'Enable' button and something is not working
      */
-    bool canBeEnabled();
+    Q_INVOKABLE bool canBeEnabled();
 
     /**
      * Returns a list with the available alliances and positions that the robot
@@ -85,88 +85,88 @@ public:
      * This is used by the robot program to change its behaviour depending on
      * the alliance (Blue or Red) and position (1, 2 & 3) of the robot.
      */
-    QStringList alliances();
+    Q_INVOKABLE QStringList alliances();
 
     /**
      * Returns a list with the available protocols that we can use to drive
      * a FRC robot.
      */
-    QStringList protocols();
+    Q_INVOKABLE QStringList protocols();
 
     /**
      * Returns the IP address of the robot radio
      */
-    QString radioAddress();
+    Q_INVOKABLE QString radioAddress();
 
     /**
      * Returns the network address of the robot
      */
-    QString robotAddress();
+    Q_INVOKABLE QString robotAddress();
 
     /**
      * Returns the current control mode of the robot
      */
-    DS_ControlMode controlMode();
+    Q_INVOKABLE DS_ControlMode controlMode();
 
     /**
      * Returns \c true if the robot reports that the user code is loaded
      */
-    bool robotHasCode();
+    Q_INVOKABLE bool robotHasCode();
 
     /**
      * Returns \c true if the DS is connected to the robot
      */
-    bool networkAvailable();
+    Q_INVOKABLE bool networkAvailable();
 
 public slots:
     /**
      * Initializes the class and the interlal loop/refresh system
      */
-    void init();
+    Q_INVOKABLE void init();
 
     /**
      * Reboots the robot using the specified protocol
      */
-    void reboot();
+    Q_INVOKABLE void reboot();
 
     /**
      * Restarts the robot code using the specified protocol
      */
-    void restartCode();
+    Q_INVOKABLE void restartCode();
 
     /**
      * Simulates a timed match with the input time values (in seconds)
      */
-    void startPractice (int countdown,
-                        int autonomous,
-                        int delay,
-                        int teleop,
-                        int endgame);
+    Q_INVOKABLE void startPractice (int countdown,
+                                    int autonomous,
+                                    int delay,
+                                    int teleop,
+                                    int endgame);
 
     /**
      * Changes the protocol that we use to control the robot
      */
-    void setProtocol (DS_Protocol* protocol);
+    Q_INVOKABLE void setProtocol (DS_Protocol* protocol);
 
     /**
      * Changes the protocol that we use to control the robot
      */
-    void setProtocol (ProtocolType protocol);
+    Q_INVOKABLE void setProtocol (ProtocolType protocol);
 
     /**
      * Changes the team number used by the protocol and network diagnostics
      */
-    void setTeamNumber (int team);
+    Q_INVOKABLE void setTeamNumber (int team);
 
     /**
      * Changes the alliance of the robot using the specified protocol
      */
-    void setAlliance (AllianceType allianceType);
+    Q_INVOKABLE void setAlliance (AllianceType allianceType);
 
     /**
      * Processes the input \a message and sends it to the other objects
      */
-    void writeMessage (QString message);
+    Q_INVOKABLE void writeMessage (QString message);
 
     /**
      * Changes the control mode of the robot, available options are:
@@ -176,38 +176,38 @@ public slots:
      *     - \c DS_Test
      *     - \c DS_EmergencyStop
      */
-    void setControlMode (DS_ControlMode mode);
+    Q_INVOKABLE void setControlMode (DS_ControlMode mode);
 
     /**
      * Changes the network address of the robot
      */
-    void setCustomAddress (QString address);
+    Q_INVOKABLE void setCustomAddress (QString address);
 
     /**
      * Un-registers all the joysticks from the Driver Station
      */
-    void clearJoysticks();
+    Q_INVOKABLE void clearJoysticks();
 
     /**
      * Updates the \a angle of the selected \a hat in the specified \a josytick
      */
-    void updateJoystickPovHat (int js, int hat, int angle);
+    Q_INVOKABLE void updateJoystickPovHat (int js, int hat, int angle);
 
     /**
      * Registers a new joystick to the Driver Station with the specified number
      * of \a axes, \a buttons and \a povHats
      */
-    void addJoystick (int axes, int buttons, int povHats);
+    Q_INVOKABLE void addJoystick (int axes, int buttons, int povHats);
 
     /**
      * Updates the \a value of the selected \a axis in the specified \a josytick
      */
-    void updateJoystickAxis (int js, int axis, double value);
+    Q_INVOKABLE void updateJoystickAxis (int js, int axis, double value);
 
     /**
      * Updates the \a state of the selected \a button in the specified \a josytick
      */
-    void updateJoystickButton (int js, int button, bool state);
+    Q_INVOKABLE void updateJoystickButton (int js, int button, bool state);
 
 signals:
     /**
