@@ -34,10 +34,10 @@ void BatteryProgressbar::onValueChanged (int value)
     QPalette palette;
 
     if (value <= 25)
-        palette.setColor (QPalette::Highlight, QColor ("#EE141A"));
+        palette.setColor (QPalette::Highlight, QColor ("#ee141a"));
 
     else if (value <= 75)
-        palette.setColor (QPalette::Highlight, QColor ("#DEAE00"));
+        palette.setColor (QPalette::Highlight, QColor ("#deae00"));
 
     setPalette (palette);
 }

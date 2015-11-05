@@ -32,7 +32,6 @@
 #include "LibDS/DS_Protocol2015.h"
 
 #include <QDebug>
-#include <QStringList>
 
 DriverStation* DriverStation::m_instance = Q_NULLPTR;
 
@@ -284,6 +283,27 @@ void DriverStation::setAlliance (AllianceType allianceType)
         m_manager->protocol()->setAlliance (alliance);
 }
 
+void DriverStation::setControlMode (ControlMode mode)
+{
+    switch (mode) {
+    case Teleoperated:
+        setControlMode (DS_ControlTeleOp);
+        break;
+    case Autonomous:
+        setControlMode (DS_ControlAutonomous);
+        break;
+    case Test:
+        setControlMode (DS_ControlTest);
+        break;
+    case EmergencyStop:
+        setControlMode (DS_ControlEmergencyStop);
+        break;
+    default:
+        setControlMode (DS_ControlDisabled);
+        break;
+    }
+}
+
 void DriverStation::setControlMode (DS_ControlMode mode)
 {
     if (m_manager->protocolIsValid() && m_init)
@@ -352,7 +372,7 @@ QString DriverStation::getStatus()
 {
     if (m_manager->protocolIsValid() && m_init) {
         if (m_manager->protocol()->robotCommunication()
-                && !m_manager->protocol()->robotCode())
+            && !m_manager->protocol()->robotCode())
             return "No Robot Code";
 
         return DS_GetControlModeString (m_manager->protocol()->controlMode());
@@ -370,8 +390,8 @@ void DriverStation::updateStatus (bool ignored)
 void DriverStation::onControlModeChanged (DS_ControlMode mode)
 {
     if ((mode == DS_ControlDisabled
-            || mode == DS_ControlEmergencyStop
-            || mode == DS_ControlNoCommunication))
+         || mode == DS_ControlEmergencyStop
+         || mode == DS_ControlNoCommunication))
         m_elapsedTime->stop();
 
     else
