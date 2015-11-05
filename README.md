@@ -14,6 +14,8 @@ Joystick input is achieved with SDL 2.0, which is a cross-platform library for C
 
 The actual code that moves and manages a FRC robot is found in a [separate repository](https://github.com/WinT-3794/LibDS), which you can use in your own Qt projects or change it to support older (and future) communication protocols. Please check the [progress](https://github.com/WinT-3794/LibDS#progress) section for more info.
 
+We are also developing a **mobile version** of the QDriverStation. [Check it here](https://github.com/wint-3794/ds-mobile)!
+
 [![Screenshot](/etc/screenshots/Win.png)](https://raw.githubusercontent.com/WinT-3794/QDriverStation/master/etc/screenshots/Win.png)
 
 ### Install notes
