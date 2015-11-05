@@ -10,7 +10,6 @@ before_install:
     - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50
     
 script:
-    # Download and install SDL 2 (seems that libsdl2-dev is not available)
     - mkdir sdl2 && cd sdl2
     - hg clone http://hg.libsdl.org/SDL
     - cd SDL
@@ -19,7 +18,5 @@ script:
     - sudo make install
     - sudo ldconfig
     - cd .. && cd ..
-    
-    # Build QDriverStation
     - qmake -qt=qt5 QDriverStation.pro
     - make -j4
