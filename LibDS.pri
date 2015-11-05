@@ -26,6 +26,7 @@ CODECFORTR = UTF-8
 CODECFORSRC = UTF-8
 
 QT += gui
+QT += qml
 QT += core
 QT += network
 QT += widgets

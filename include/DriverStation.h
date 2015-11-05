@@ -24,7 +24,6 @@
 #ifndef _LIB_DS_DRIVER_STATION_H
 #define _LIB_DS_DRIVER_STATION_H
 
-#include <QStringList>
 #include "LibDS/DS_Common.h"
 
 class DS_Client;
@@ -46,6 +45,9 @@ class DS_ProtocolManager;
 class LIB_DS_DECL DriverStation : public QObject
 {
     Q_OBJECT
+    Q_ENUMS (ControlMode)
+    Q_ENUMS (ProtocolType)
+    Q_ENUMS (AllianceType)
 
 public:
     explicit DriverStation();
@@ -55,21 +57,41 @@ public:
 
     /**
      * The available protocols for the user
+     *
+     * \note We assign a value to the enums so that they can be used
+     * with a list-based object
      */
     enum ProtocolType {
-        Protocol2015 = 0x00
+        Protocol2015 = 0
     };
 
     /**
      * The available alliances and positions for the user
+     *
+     * \note We assign a value to the enums so that they can be used
+     * with a list-based object
      */
     enum AllianceType {
-        Red1 = 0x00,
-        Red2 = 0x01,
-        Red3 = 0x02,
-        Blue1 = 0x03,
-        Blue2 = 0x04,
-        Blue3 = 0x05
+        Red1  = 0,
+        Red2  = 1,
+        Red3  = 2,
+        Blue1 = 3,
+        Blue2 = 4,
+        Blue3 = 5
+    };
+
+    /**
+     * The available control modes
+     *
+     * \note We assign a value to the enums so that they can be used
+     * with a list-based object
+     */
+    enum ControlMode {
+        Disabled      = 0,
+        Teleoperated  = 1,
+        Autonomous    = 2,
+        Test          = 3,
+        EmergencyStop = 4
     };
 
     /**
@@ -171,13 +193,23 @@ public slots:
 
     /**
      * Changes the control mode of the robot, available options are:
+     *     - \c Disabled
+     *     - \c Teleoperated
+     *     - \c Autonomous
+     *     - \c Test
+     *     - \c EmergencyStop
+     */
+    Q_INVOKABLE void setControlMode (ControlMode mode);
+
+    /**
+     * Changes the control mode of the robot, available options are:
      *     - \c DS_Disabled
      *     - \c DS_Teleoperated
      *     - \c DS_Autonomous
      *     - \c DS_Test
      *     - \c DS_EmergencyStop
      */
-    Q_INVOKABLE void setControlMode (DS_ControlMode mode);
+    void setControlMode (DS_ControlMode mode);
 
     /**
      * Changes the network address of the robot

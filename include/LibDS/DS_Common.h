@@ -25,6 +25,7 @@
 #define _LIB_DS_COMMON_H
 
 #include "DS_Global.h"
+#include <QStringList>
 
 /**
  * Represents the available operation modes of the robot.
