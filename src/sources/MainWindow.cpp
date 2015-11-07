@@ -55,8 +55,10 @@
  * The font used in the NetConsole text edit
  */
 #if defined Q_OS_WIN
+#  define SCROLLBARS_MULTIPLIER 1.4
 #  define FONT_NETCONSOLE QFont ("Consolas", 10)
 #else
+#  define SCROLLBARS_MULTIPLIER 0.9
 #  define FONT_NETCONSOLE QFont ("Inconsolata", 13)
 #endif
 
@@ -280,12 +282,12 @@ void MainWindow::configureWidgetAppearance()
     ui->SettingsButton->setFixedSize (utilSize);
 
     /* Configure the progress bars */
-    ui->PcCpuProgress->setFixedHeight       (utilSize.height() * 0.45);
-    ui->PcBatteryProgress->setFixedHeight   (utilSize.height() * 0.45);
-    ui->PcCpuProgress->setMinimumWidth      (metrics.width ("----------") * 1.4);
-    ui->PcBatteryProgress->setMinimumWidth  (metrics.width ("----------") * 1.4);
-    ui->PcCpuProgress->setMaximumWidth      (metrics.width ("----------") * 1.8);
-    ui->PcBatteryProgress->setMaximumWidth  (metrics.width ("----------") * 1.8);
+    ui->PcCpuProgress->setFixedHeight     (utilSize.height() * 0.45);
+    ui->PcBatteryProgress->setFixedHeight (utilSize.height() * 0.45);
+    ui->PcCpuProgress->setFixedWidth      (metrics.width ("----------") *
+                                           SCROLLBARS_MULTIPLIER);
+    ui->PcBatteryProgress->setFixedWidth  (metrics.width ("----------") *
+                                           SCROLLBARS_MULTIPLIER);
 
     /* Populate list-related widgets */
     ui->StationCombo->clear();
