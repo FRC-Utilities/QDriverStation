@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1041</width>
+    <width>1019</width>
     <height>263</height>
    </rect>
   </property>
@@ -175,12 +175,12 @@ text-align: left;</string>
                  <enum>Qt::Vertical</enum>
                 </property>
                 <property name="sizeType">
-                 <enum>QSizePolicy::MinimumExpanding</enum>
+                 <enum>QSizePolicy::Expanding</enum>
                 </property>
                 <property name="sizeHint" stdset="0">
                  <size>
-                  <width>1</width>
-                  <height>1</height>
+                  <width>0</width>
+                  <height>0</height>
                  </size>
                 </property>
                </spacer>
@@ -265,10 +265,13 @@ padding: 12px;</string>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>10</width>
-            <height>20</height>
+            <width>0</width>
+            <height>0</height>
            </size>
           </property>
          </spacer>
@@ -417,7 +420,7 @@ padding: 12px;</string>
               <enum>Qt::Vertical</enum>
              </property>
              <property name="sizeType">
-              <enum>QSizePolicy::MinimumExpanding</enum>
+              <enum>QSizePolicy::Expanding</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
@@ -443,7 +446,7 @@ padding: 12px;</string>
               <enum>Qt::Vertical</enum>
              </property>
              <property name="sizeType">
-              <enum>QSizePolicy::MinimumExpanding</enum>
+              <enum>QSizePolicy::Expanding</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
@@ -459,7 +462,7 @@ padding: 12px;</string>
               <enum>Qt::Vertical</enum>
              </property>
              <property name="sizeType">
-              <enum>QSizePolicy::MinimumExpanding</enum>
+              <enum>QSizePolicy::Expanding</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
@@ -583,7 +586,7 @@ padding: 12px;</string>
               <enum>Qt::Vertical</enum>
              </property>
              <property name="sizeType">
-              <enum>QSizePolicy::MinimumExpanding</enum>
+              <enum>QSizePolicy::Expanding</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
@@ -601,10 +604,13 @@ padding: 12px;</string>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>10</width>
-            <height>20</height>
+            <width>0</width>
+            <height>0</height>
            </size>
           </property>
          </spacer>
@@ -706,12 +712,12 @@ padding: 12px;</string>
               <enum>Qt::Vertical</enum>
              </property>
              <property name="sizeType">
-              <enum>QSizePolicy::MinimumExpanding</enum>
+              <enum>QSizePolicy::Expanding</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>10</width>
-               <height>10</height>
+               <width>0</width>
+               <height>0</height>
               </size>
              </property>
             </spacer>
@@ -859,12 +865,12 @@ padding: 12px;</string>
               <enum>Qt::Vertical</enum>
              </property>
              <property name="sizeType">
-              <enum>QSizePolicy::MinimumExpanding</enum>
+              <enum>QSizePolicy::Expanding</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>10</width>
-               <height>10</height>
+               <width>0</width>
+               <height>0</height>
               </size>
              </property>
             </spacer>
@@ -976,12 +982,12 @@ padding: 12px;</string>
               <enum>Qt::Vertical</enum>
              </property>
              <property name="sizeType">
-              <enum>QSizePolicy::MinimumExpanding</enum>
+              <enum>QSizePolicy::Expanding</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>10</width>
-               <height>10</height>
+               <width>0</width>
+               <height>0</height>
               </size>
              </property>
             </spacer>
@@ -1114,12 +1120,12 @@ padding: 12px;</string>
               <enum>Qt::Vertical</enum>
              </property>
              <property name="sizeType">
-              <enum>QSizePolicy::MinimumExpanding</enum>
+              <enum>QSizePolicy::Expanding</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>10</width>
-               <height>10</height>
+               <width>0</width>
+               <height>0</height>
               </size>
              </property>
             </spacer>
@@ -1146,12 +1152,12 @@ padding: 12px;</string>
               <enum>Qt::Vertical</enum>
              </property>
              <property name="sizeType">
-              <enum>QSizePolicy::MinimumExpanding</enum>
+              <enum>QSizePolicy::Expanding</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>10</width>
-               <height>10</height>
+               <width>0</width>
+               <height>0</height>
               </size>
              </property>
             </spacer>
@@ -1200,10 +1206,13 @@ padding: 12px;</string>
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Expanding</enum>
+                </property>
                 <property name="sizeHint" stdset="0">
                  <size>
-                  <width>40</width>
-                  <height>20</height>
+                  <width>0</width>
+                  <height>0</height>
                  </size>
                 </property>
                </spacer>
@@ -1226,10 +1235,13 @@ padding: 12px;</string>
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Expanding</enum>
+                </property>
                 <property name="sizeHint" stdset="0">
                  <size>
-                  <width>40</width>
-                  <height>20</height>
+                  <width>0</width>
+                  <height>0</height>
                  </size>
                 </property>
                </spacer>
@@ -1243,12 +1255,12 @@ padding: 12px;</string>
               <enum>Qt::Vertical</enum>
              </property>
              <property name="sizeType">
-              <enum>QSizePolicy::MinimumExpanding</enum>
+              <enum>QSizePolicy::Expanding</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>10</width>
-               <height>10</height>
+               <width>0</width>
+               <height>0</height>
               </size>
              </property>
             </spacer>
@@ -1379,7 +1391,7 @@ QPushButton:checked {
              <enum>Qt::Horizontal</enum>
             </property>
             <property name="sizeType">
-             <enum>QSizePolicy::MinimumExpanding</enum>
+             <enum>QSizePolicy::Expanding</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -1615,7 +1627,7 @@ QPushButton:checked {
              <enum>Qt::Horizontal</enum>
             </property>
             <property name="sizeType">
-             <enum>QSizePolicy::MinimumExpanding</enum>
+             <enum>QSizePolicy::Expanding</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -1698,7 +1710,7 @@ QPushButton:checked {
               <enum>Qt::Horizontal</enum>
              </property>
              <property name="sizeType">
-              <enum>QSizePolicy::MinimumExpanding</enum>
+              <enum>QSizePolicy::Expanding</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
@@ -1737,12 +1749,12 @@ QPushButton:checked {
            <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::MinimumExpanding</enum>
+           <enum>QSizePolicy::Expanding</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>10</width>
-            <height>10</height>
+            <width>0</width>
+            <height>0</height>
            </size>
           </property>
          </spacer>
@@ -1789,12 +1801,12 @@ QPushButton:checked {
            <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::MinimumExpanding</enum>
+           <enum>QSizePolicy::Expanding</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>10</width>
-            <height>10</height>
+            <width>0</width>
+            <height>0</height>
            </size>
           </property>
          </spacer>
@@ -1865,12 +1877,12 @@ QPushButton:checked {
               <enum>Qt::Vertical</enum>
              </property>
              <property name="sizeType">
-              <enum>QSizePolicy::MinimumExpanding</enum>
+              <enum>QSizePolicy::Expanding</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>10</width>
-               <height>10</height>
+               <width>0</width>
+               <height>0</height>
               </size>
              </property>
             </spacer>
@@ -1878,7 +1890,7 @@ QPushButton:checked {
            <item>
             <widget class="QLabel" name="LicenseLabel">
              <property name="text">
-              <string>&lt;p&gt;Created, tested and released by FRC team 3794, aka &quot;WinT&quot;. &lt;/p&gt;&lt;p&gt;You are free to use, distribute and modify this application under the terms of the MIT license.&lt;/p&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You are free to use, distribute and modify this application under the terms of the MIT license.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="textFormat">
               <enum>Qt::RichText</enum>
@@ -1894,12 +1906,12 @@ QPushButton:checked {
               <enum>Qt::Vertical</enum>
              </property>
              <property name="sizeType">
-              <enum>QSizePolicy::MinimumExpanding</enum>
+              <enum>QSizePolicy::Expanding</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>10</width>
-               <height>10</height>
+               <width>0</width>
+               <height>0</height>
               </size>
              </property>
             </spacer>
@@ -2060,12 +2072,12 @@ QPushButton:checked {
           <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeType">
-          <enum>QSizePolicy::MinimumExpanding</enum>
+          <enum>QSizePolicy::Expanding</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>10</width>
-           <height>10</height>
+           <width>0</width>
+           <height>0</height>
           </size>
          </property>
         </spacer>
@@ -2123,7 +2135,7 @@ QPushButton:checked {
  </connections>
  <buttongroups>
   <buttongroup name="WindowModeGroup"/>
-  <buttongroup name="RobotStatusGroup"/>
   <buttongroup name="RobotModeGroup"/>
+  <buttongroup name="RobotStatusGroup"/>
  </buttongroups>
 </ui>

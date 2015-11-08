@@ -27,6 +27,7 @@
 #include <QClipboard>
 #include <QDesktopServices>
 
+#include "Updater.h"
 #include "Battery.h"
 #include "Settings.h"
 #include "CpuUsage.h"
@@ -67,6 +68,7 @@ MainWindow::MainWindow()
     /* Initialize private members */
     ui = new Ui::MainWindow;
     ui->setupUi (this);
+    m_updater = new Updater;
     m_tabStyle = new CustomTabStyle;
     m_advancedSettings = new AdvancedSettings;
     m_joysticksWidget = new JoysticksWidget (ui->JoysticksTab);
@@ -91,6 +93,7 @@ MainWindow::MainWindow()
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete m_updater;
     delete m_tabStyle;
     delete m_joysticksWidget;
     delete m_advancedSettings;

@@ -31,6 +31,7 @@
 #include <ui_MainWindow.h>
 #include <DriverStation.h>
 
+class Updater;
 class CustomTabStyle;
 class JoysticksWidget;
 class AdvancedSettings;
@@ -80,6 +81,11 @@ private:
      * the robot does not want to cooperate)
      */
     AdvancedSettings* m_advancedSettings;
+
+    /**
+     * The auto updater object
+     */
+    Updater* m_updater;
 
 private slots:
     /**

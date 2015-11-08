@@ -138,7 +138,8 @@ HEADERS += \
     $$PWD/src/headers/Settings.h \
     $$PWD/src/headers/SmartWindow.h \
     $$PWD/src/headers/VirtualJoystick.h \
-    $$PWD/src/headers/JoystickCommon.h
+    $$PWD/src/headers/JoystickCommon.h \
+    src/headers/Updater.h
 
 SOURCES += \
     $$PWD/src/sources/AdvancedSettings.cpp \
@@ -154,7 +155,8 @@ SOURCES += \
     $$PWD/src/sources/Settings.cpp \
     $$PWD/src/sources/SmartWindow.cpp \
     $$PWD/src/sources/VirtualJoystick.cpp \
-    $$PWD/src/main.cpp
+    $$PWD/src/main.cpp \
+    src/sources/Updater.cpp
 
 FORMS += \
     $$PWD/src/forms/AdvancedSettings.ui \

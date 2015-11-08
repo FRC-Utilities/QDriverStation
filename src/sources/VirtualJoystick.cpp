@@ -120,6 +120,9 @@ void VirtualJoystick::onCountChanged (QStringList input)
 
 void VirtualJoystick::registerKeyPress (QKeyEvent* event)
 {
+    if (event->key() == Qt::Key_Space)
+        DriverStation::getInstance()->setControlMode (DS_ControlEmergencyStop);
+
     readButtons (event->key(), true);
     readAxes (event->key(), ui.Range->value());
 
@@ -196,7 +199,7 @@ void VirtualJoystick::readAxes (int key, double value)
         value *= -1;
     }
 
-    if (axis != -1) {
+    if (axis != -1 && m_enabled) {
         GM_Axis data;
         data.rawId = axis;
         data.value = value;
@@ -236,7 +239,7 @@ void VirtualJoystick::readButtons (int key, bool pressed)
     else if (key == Qt::Key_9)
         button = 9;
 
-    if (button != -1) {
+    if (button != -1 && m_enabled) {
         GM_Button data;
         data.rawId = button;
         data.pressed = pressed;
@@ -246,6 +249,7 @@ void VirtualJoystick::readButtons (int key, bool pressed)
         DriverStation::getInstance()->updateJoystickButton (data.joystick.id,
                 data.rawId,
                 data.pressed);
+
         emit buttonEvent (data);
     }
 }
