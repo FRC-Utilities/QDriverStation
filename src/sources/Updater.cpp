@@ -67,9 +67,9 @@ void Updater::showUpdateMessages()
                      + "</h3>");
 
         box.setInformativeText (tr ("A new version of %1 has been released! "
-                                    "Version %2 is now available to latest."
+                                    "Version %2 is now available to download."
                                     "<br/><br/>"
-                                    "You can latest this version using the link:"
+                                    "You can download this version using the link:"
                                     "<br/><br/>"
                                     "%3")
                                 .arg (qApp->applicationName())
