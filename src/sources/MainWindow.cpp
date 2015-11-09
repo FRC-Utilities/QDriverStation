@@ -56,10 +56,10 @@
  * The font used in the NetConsole text edit
  */
 #if defined Q_OS_WIN
-#  define SCROLLBARS_MULTIPLIER 1.4
+#  define SCROLLBARS_CONST 1.8
 #  define FONT_NETCONSOLE QFont ("Consolas", 10)
 #else
-#  define SCROLLBARS_MULTIPLIER 0.9
+#  define SCROLLBARS_CONST 1.6
 #  define FONT_NETCONSOLE QFont ("Inconsolata", 13)
 #endif
 
@@ -269,17 +269,17 @@ void MainWindow::configureWidgetAppearance()
 
     /* Configure the info frame */
     QFontMetrics metrics (boldFont);
-    ui->InfoFrame->setFixedWidth (metrics.width ("TeleOperated Enabled"));
+    ui->InfoFrame->setFixedWidth  (metrics.width ("TeleOperated Enabled"));
 
     /* Configure the enable/disable buttons */
     ui->DisableButton->setStyleSheet   (CSS_DISABLED_CHECK);
     ui->EnableButton->setStyleSheet    (CSS_ENABLED_UNCHECK);
-    ui->EnableButton->setFixedHeight   (metrics.height() * 3.2);
-    ui->DisableButton->setFixedHeight  (metrics.height() * 3.2);
+    ui->EnableButton->setFixedHeight   (metrics.height() * 2.8);
+    ui->DisableButton->setFixedHeight  (metrics.height() * 2.8);
     ui->RobotModeWidget->setFixedWidth (ui->RobotModeWidget->width() * 1.7);
 
     /* Configure the application buttons */
-    QSize utilSize = QSize (metrics.height() * 1.85, metrics.height() * 1.85);
+    QSize utilSize = QSize (metrics.height() * 1.9, metrics.height() * 1.9);
     ui->KeysButton->setFixedSize     (utilSize);
     ui->CloseButton->setFixedSize    (utilSize);
     ui->SettingsButton->setFixedSize (utilSize);
@@ -287,10 +287,10 @@ void MainWindow::configureWidgetAppearance()
     /* Configure the progress bars */
     ui->PcCpuProgress->setFixedHeight     (utilSize.height() * 0.45);
     ui->PcBatteryProgress->setFixedHeight (utilSize.height() * 0.45);
-    ui->PcCpuProgress->setFixedWidth      (metrics.width ("----------") *
-                                           SCROLLBARS_MULTIPLIER);
-    ui->PcBatteryProgress->setFixedWidth  (metrics.width ("----------") *
-                                           SCROLLBARS_MULTIPLIER);
+    ui->PcCpuProgress->setFixedWidth      (metrics.width ("-------") *
+                                           SCROLLBARS_CONST);
+    ui->PcBatteryProgress->setFixedWidth  (metrics.width ("-------") *
+                                           SCROLLBARS_CONST);
 
     /* Populate list-related widgets */
     ui->StationCombo->clear();

@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+#include <QLayout>
 #include <QMessageBox>
 #include <QApplication>
 #include <QDesktopWidget>
@@ -147,17 +148,16 @@ void SmartWindow::resizeToFit()
     /* 'Dock' the window at the bottom and extend it to the sides */
     if (isDocked()) {
         QDesktopWidget w;
-        setMinimumWidth (w.width());
-        setMaximumWidth (w.width());
-        setMinimumHeight (size().height());
-        setMaximumHeight (size().height());
+        setFixedWidth (w.width());
+        setFixedHeight (size().height());
         move (0, w.availableGeometry().height() - height());
+        layout()->setSizeConstraint (QLayout::SetNoConstraint);
     }
 
     /* Show the window normally */
     else {
         resize (0, 0);
-        setMinimumSize (size());
-        setMaximumSize (size());
+        setFixedSize (size());
+        layout()->setSizeConstraint (QLayout::SetMinimumSize);
     }
 }

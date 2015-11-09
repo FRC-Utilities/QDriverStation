@@ -6,15 +6,9 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1019</width>
-    <height>263</height>
+    <width>0</width>
+    <height>0</height>
    </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
   </property>
   <property name="focusPolicy">
    <enum>Qt::StrongFocus</enum>
@@ -67,7 +61,7 @@ QPushButton:checked {
         </property>
         <item>
          <widget class="QWidget" name="RobotModeWidget" native="true">
-          <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0">
+          <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0">
            <property name="spacing">
             <number>0</number>
            </property>
@@ -424,8 +418,8 @@ padding: 12px;</string>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>1</width>
-               <height>1</height>
+               <width>0</width>
+               <height>0</height>
               </size>
              </property>
             </spacer>
@@ -450,8 +444,8 @@ padding: 12px;</string>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>1</width>
-               <height>1</height>
+               <width>0</width>
+               <height>0</height>
               </size>
              </property>
             </spacer>
@@ -466,8 +460,8 @@ padding: 12px;</string>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>1</width>
-               <height>1</height>
+               <width>0</width>
+               <height>0</height>
               </size>
              </property>
             </spacer>
@@ -590,8 +584,8 @@ padding: 12px;</string>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>1</width>
-               <height>1</height>
+               <width>0</width>
+               <height>0</height>
               </size>
              </property>
             </spacer>
@@ -1368,7 +1362,7 @@ QPushButton:checked {
         </widget>
        </item>
        <item>
-        <widget class="QWidget" name="widget_4" native="true">
+        <widget class="QWidget" name="InfoWidget" native="true">
          <layout class="QHBoxLayout" name="horizontalLayout_15">
           <property name="spacing">
            <number>0</number>
@@ -1395,7 +1389,7 @@ QPushButton:checked {
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>1</width>
+              <width>0</width>
               <height>20</height>
              </size>
             </property>
@@ -1404,6 +1398,9 @@ QPushButton:checked {
           <item>
            <widget class="QWidget" name="widget_3" native="true">
             <layout class="QVBoxLayout" name="verticalLayout_11">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetMinimumSize</enum>
+             </property>
              <property name="rightMargin">
               <number>0</number>
              </property>
@@ -1631,7 +1628,7 @@ QPushButton:checked {
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>1</width>
+              <width>0</width>
               <height>20</height>
              </size>
             </property>
@@ -1642,6 +1639,12 @@ QPushButton:checked {
        </item>
        <item>
         <widget class="QLabel" name="StatusLabel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text">
           <string>No Robot Communication</string>
          </property>
@@ -1933,12 +1936,15 @@ QPushButton:checked {
     <item>
      <widget class="QWidget" name="UtilsWidget" native="true">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_9">
+       <property name="spacing">
+        <number>2</number>
+       </property>
        <property name="leftMargin">
         <number>0</number>
        </property>
@@ -2134,8 +2140,8 @@ QPushButton:checked {
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="WindowModeGroup"/>
   <buttongroup name="RobotModeGroup"/>
+  <buttongroup name="WindowModeGroup"/>
   <buttongroup name="RobotStatusGroup"/>
  </buttongroups>
 </ui>
