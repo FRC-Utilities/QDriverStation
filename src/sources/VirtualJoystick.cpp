@@ -38,13 +38,12 @@ VirtualJoystick::VirtualJoystick()
     connect (ui.UseKeyboardCheckbox, SIGNAL (clicked (bool)),
              this,                   SLOT   (setVirtualJoystickEnabled (bool)));
 
-    connect (GamepadManager::getInstance(), SIGNAL (hatEvent   (GM_Hat)),
-             this,                          SIGNAL (hatEvent   (GM_Hat)));
+    connect (GamepadManager::getInstance(), SIGNAL (hatEvent    (GM_Hat)),
+             this,                          SIGNAL (hatEvent    (GM_Hat)));
     connect (GamepadManager::getInstance(), SIGNAL (axisEvent   (GM_Axis)),
              this,                          SIGNAL (axisEvent   (GM_Axis)));
     connect (GamepadManager::getInstance(), SIGNAL (buttonEvent (GM_Button)),
              this,                          SIGNAL (buttonEvent (GM_Button)));
-
     connect (GamepadManager::getInstance(), SIGNAL (countChanged   (int)),
              this,                          SLOT   (onCountChanged (int)));
     connect (GamepadManager::getInstance(), SIGNAL (countChanged   (QStringList)),
@@ -96,6 +95,14 @@ int VirtualJoystick::getNumButtons (int js)
 
 void VirtualJoystick::onCountChanged (int count)
 {
+    DriverStation::getInstance()->clearJoysticks();
+
+    for (int i = 0; i <= count - 1; ++i)
+        DriverStation::getInstance()->addJoystick (
+            GamepadManager::getInstance()->getNumAxes (i),
+            GamepadManager::getInstance()->getNumButtons (i),
+            GamepadManager::getInstance()->getNumHats (i));
+
     if (m_enabled) {
         m_joystick.id = count;
         DriverStation::getInstance()->addJoystick (m_joystick.numAxes,
@@ -120,7 +127,7 @@ void VirtualJoystick::onCountChanged (QStringList input)
 
 void VirtualJoystick::registerKeyPress (QKeyEvent* event)
 {
-    if (event->key() == Qt::Key_Space)
+    if (event->key() == Qt::Key_Shift)
         DriverStation::getInstance()->setControlMode (DS_ControlEmergencyStop);
 
     readButtons (event->key(), true);

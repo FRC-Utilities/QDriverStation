@@ -552,6 +552,8 @@ void MainWindow::onCommunicationsChanged (bool available)
 {
     ui->RobotCheck->setChecked (available);
     ui->Communications->setChecked (available);
+
+    onDisabledClicked();
 }
 
 void MainWindow::onControlModeChanged (DS_ControlMode mode)

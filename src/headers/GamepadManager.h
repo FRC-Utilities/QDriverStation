@@ -160,12 +160,6 @@ private:
     int m_tracker;
 
     /**
-     * Represents the current instance of the DriverStation, used for
-     * feeding it joystick data when a SDL event is fired up
-     */
-    DriverStation* m_ds;
-
-    /**
      * Represents a generic Xbox 360 mapping that we use when we have to
      * deal with an unsupported joystick
      */
@@ -261,12 +255,6 @@ private slots:
      * Closes the game controller that was removed
      */
     void onControllerRemoved (const SDL_Event* event);
-
-    /**
-     * @internal
-     * Registers and configures all the attached joysticks to the Driver Staiton
-     */
-    void registerJoysticksToDriverStation (int joystickCount);
 };
 
 #endif

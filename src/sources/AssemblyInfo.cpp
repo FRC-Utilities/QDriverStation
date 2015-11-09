@@ -25,7 +25,7 @@
 #define APP_NAME    "QDriverStation"
 #define APP_MAJOR   "0"
 #define APP_MINOR   "1"
-#define APP_BUILD   "2"
+#define APP_BUILD   "3"
 #define APP_STATE   "Beta"
 #define APP_COMPANY "WinT 3794"
 #define APP_DOMAIN  "wint3794.org"

@@ -147,7 +147,7 @@ QString DS_GetControlModeString (DS_ControlMode mode)
         return QString ("Autonomous");
         break;
     case DS_ControlEmergencyStop:
-        return QString ("Emergency Stop");
+        return QString ("Emergency Stopped");
         break;
     case DS_ControlNoCommunication:
         return QString ("No Robot Communication");
