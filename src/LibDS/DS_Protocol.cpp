@@ -108,8 +108,10 @@ void DS_Protocol::setAlliance (DS_Alliance alliance)
 
 void DS_Protocol::setControlMode (DS_ControlMode mode)
 {
-    p_controlMode = p_robotCommunication ? mode : DS_ControlNoCommunication;
-    emit controlModeChanged (controlMode());
+    if (p_controlMode != DS_ControlEmergencyStop) {
+        p_controlMode = p_robotCommunication ? mode : DS_ControlNoCommunication;
+        emit controlModeChanged (controlMode());
+    }
 }
 
 void DS_Protocol::setJoysticks (QList<DS_Joystick*>* joysticks)

@@ -66,6 +66,10 @@ DriverStation::DriverStation()
     connect (m_manager, SIGNAL (newMessage            (QString)),
              this,      SLOT   (writeMessage          (QString)));
 
+    /* Stop timer when the communications status changes */
+    connect (m_manager,     SIGNAL (communicationsChanged (bool)),
+             m_elapsedTime, SLOT   (stop()));
+
     /* Robot information has changed */
     connect (m_manager, SIGNAL (libVersionChanged (QString)),
              this,      SIGNAL (libVersionChanged (QString)));
@@ -117,7 +121,8 @@ bool DriverStation::canBeEnabled()
 {
     if (m_manager->protocolIsValid()) {
         return m_manager->protocol()->robotCode() &&
-               m_manager->protocol()->robotCommunication();
+               m_manager->protocol()->robotCommunication() &&
+               m_manager->protocol()->controlMode() != DS_ControlEmergencyStop;
     }
 
     return false;
@@ -388,9 +393,7 @@ void DriverStation::updateStatus (bool ignored)
 
 void DriverStation::onControlModeChanged (DS_ControlMode mode)
 {
-    if ((mode == DS_ControlDisabled
-         || mode == DS_ControlEmergencyStop
-         || mode == DS_ControlNoCommunication))
+    if (!canBeEnabled() || mode == DS_ControlDisabled)
         m_elapsedTime->stop();
 
     else
