@@ -335,7 +335,7 @@ signals:
     void elapsedTimeChanged (QString);
 
 protected:
-    static DriverStation* m_instance;
+    static DriverStation* s_instance;
 
 private:
     /**

@@ -33,16 +33,14 @@ DS_Protocol::DS_Protocol()
     p_robotAddress = QString ("");
     p_controlMode = DS_ControlNoCommunication;
 
-    p_watchdog = new DS_Watchdog;
     p_joysticks = new QList<DS_Joystick*>;
 
-    connect (p_watchdog, SIGNAL (timeout()), this, SLOT (reset()));
-    connect (this, SIGNAL (packetReceived()), p_watchdog, SLOT (restart()));
+    connect (&p_watchdog, SIGNAL (timeout()), this, SLOT (reset()));
+    connect (this, SIGNAL (packetReceived()), &p_watchdog, SLOT (restart()));
 }
 
 DS_Protocol::~DS_Protocol()
 {
-    delete p_watchdog;
     delete p_joysticks;
 }
 
@@ -85,8 +83,8 @@ void DS_Protocol::reset()
     emit voltageChanged (QString (""));
     emit communicationsChanged (p_robotCommunication);
 
-    QHostInfo::lookupHost (robotAddress(),
-                           this, SLOT (onLookupFinished (QHostInfo)));
+    p_discovery.getIp (p_robotAddress,
+                       this, SLOT (onAddressResolved (QString, QString)));
 
     resetProtocol();
 }
@@ -130,16 +128,10 @@ void DS_Protocol::log (QString message)
     emit newMessage (message);
 }
 
-void DS_Protocol::onLookupFinished (QHostInfo info)
+void DS_Protocol::onAddressResolved (QString address, QString ip)
 {
-    if (!info.addresses().isEmpty()) {
-        for (int i = 0; i < info.addresses().count(); ++i) {
-            if (info.addresses().at (i).toString().contains (".")) {
-                setRobotAddress (info.addresses().at (i).toString());
-                return;
-            }
-        }
-    }
+    if (address == robotAddress())
+        setRobotAddress (ip);
 }
 
 QByteArray DS_Protocol::bitsToBytes (QBitArray bits)

@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-#include "LibDS/DS_Protocol2015.h"
+#include "Protocols/DS_Protocol2015.h"
 using namespace DS_Protocol2015_Definitions;
 
 DS_Protocol2015::DS_Protocol2015()
