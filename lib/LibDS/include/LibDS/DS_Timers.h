@@ -69,7 +69,7 @@ signals:
 
 protected:
     DS_Timers();
-    static DS_Timers* m_instance;
+    static DS_Timers* s_instance;
 
 private:
     /**

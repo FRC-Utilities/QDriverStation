@@ -88,7 +88,7 @@ protected:
     explicit Dashboard();
     ~Dashboard();
 
-    static Dashboard* m_instance;
+    static Dashboard* s_instance;
 
 private:
     /**

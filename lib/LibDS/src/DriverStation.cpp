@@ -28,12 +28,11 @@
 #include "LibDS/DS_ElapsedTime.h"
 #include "LibDS/DS_ProtocolManager.h"
 
-#include "LibDS/DS_Protocol.h"
-#include "LibDS/DS_Protocol2015.h"
+#include "Protocols/DS_Protocol2015.h"
 
 #include <QDebug>
 
-DriverStation* DriverStation::m_instance = Q_NULLPTR;
+DriverStation* DriverStation::s_instance = Q_NULLPTR;
 
 DriverStation::DriverStation()
 {
@@ -103,15 +102,15 @@ DriverStation::~DriverStation()
     delete m_netConsole;
     delete m_elapsedTime;
 
-    delete m_instance;
+    delete s_instance;
 }
 
 DriverStation* DriverStation::getInstance()
 {
-    if (m_instance == Q_NULLPTR)
-        m_instance = new DriverStation();
+    if (s_instance == Q_NULLPTR)
+        s_instance = new DriverStation();
 
-    return m_instance;
+    return s_instance;
 }
 
 bool DriverStation::canBeEnabled()

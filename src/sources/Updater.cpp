@@ -21,7 +21,6 @@
  */
 
 #include "Updater.h"
-#include "Settings.h"
 
 Updater::Updater()
 {
@@ -51,11 +50,7 @@ Updater::Updater()
 
 void Updater::showUpdateMessages()
 {
-    bool alreadyShown = Settings::get (m_version, false).toBool();
-
-    if (m_updateAvailable && !alreadyShown) {
-        Settings::set (m_version, true);
-
+    if (m_updateAvailable) {
         QMessageBox box;
         box.setTextFormat (Qt::RichText);
         box.setIcon (QMessageBox::Information);

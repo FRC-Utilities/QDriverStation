@@ -31,6 +31,8 @@
 #include "DS_Common.h"
 #include "DS_Watchdog.h"
 
+#include "Extra/Discovery.h"
+
 /**
  * \class DS_Protocol
  *
@@ -128,6 +130,11 @@ public slots:
 
 private slots:
     /**
+     * Changes the address of the robot to the robot's IP
+     */
+    void onAddressResolved (QString address, QString ip);
+
+    /**
      * Implements the necessary steps to reset the internal values of a protocol
      */
     virtual void resetProtocol() = 0;
@@ -175,14 +182,6 @@ private slots:
      * \a alliance
      */
     virtual char getAllianceCode (DS_Alliance alliance) = 0;
-
-    /**
-     * Gets the IP of any network address.
-     * Can be used for getting the IP of the robot instead of using its
-     * mDNS address
-     */
-    void onLookupFinished (QHostInfo info);
-
 
 signals:
     /**
@@ -324,7 +323,12 @@ protected:
      * The watchdog, used to reset internal values and refresh data when
      * robot is not present or does not respond
      */
-    DS_Watchdog* p_watchdog;
+    DS_Watchdog p_watchdog;
+
+    /**
+     * Finds out the IP of the robot address in a cross-platform way
+     */
+    NetworkDiscovery p_discovery;
 
     /**
      * The current control mode of the robot.

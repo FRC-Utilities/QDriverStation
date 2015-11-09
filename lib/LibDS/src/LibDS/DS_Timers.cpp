@@ -25,7 +25,7 @@
 #include <QTimer>
 #include <QThread>
 
-DS_Timers* DS_Timers::m_instance = Q_NULLPTR;
+DS_Timers* DS_Timers::s_instance = Q_NULLPTR;
 
 DS_Timers::DS_Timers()
 {
@@ -57,15 +57,15 @@ DS_Timers::~DS_Timers()
     delete t100;
     delete t1000;
     delete m_thread;
-    delete m_instance;
+    delete s_instance;
 }
 
 DS_Timers* DS_Timers::getInstance()
 {
-    if (m_instance == Q_NULLPTR)
-        m_instance = new DS_Timers;
+    if (s_instance == Q_NULLPTR)
+        s_instance = new DS_Timers;
 
-    return m_instance;
+    return s_instance;
 }
 
 void DS_Timers::start()

@@ -216,7 +216,7 @@ protected:
     explicit GamepadManager();
     ~GamepadManager();
 
-    static GamepadManager* m_instance;
+    static GamepadManager* s_instance;
 
 private slots:
     /**

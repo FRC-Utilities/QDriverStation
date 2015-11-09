@@ -45,7 +45,7 @@
 #define _CONTROLLER_DB ":/sdl/database.txt"
 #define _INIT_CODE     SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER
 
-GamepadManager* GamepadManager::m_instance = Q_NULLPTR;
+GamepadManager* GamepadManager::s_instance = Q_NULLPTR;
 
 GamepadManager::GamepadManager()
 {
@@ -96,10 +96,10 @@ GamepadManager::~GamepadManager()
 
 GamepadManager* GamepadManager::getInstance()
 {
-    if (m_instance == Q_NULLPTR)
-        m_instance = new GamepadManager;
+    if (s_instance == Q_NULLPTR)
+        s_instance = new GamepadManager;
 
-    return m_instance;
+    return s_instance;
 }
 
 //------------------------------------------------------------------------------

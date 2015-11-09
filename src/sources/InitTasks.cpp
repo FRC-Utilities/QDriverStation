@@ -30,7 +30,6 @@
 #include "InitTasks.h"
 
 #define URL_XBOX_DRIVER  "https://github.com/d235j/360Controller/releases"
-#define URL_BONJOUR_MDNS "https://support.apple.com/kb/dl999?locale=en_US"
 
 int InitTasks::getTeamNumber()
 {
@@ -66,24 +65,6 @@ void InitTasks::executeFirstRunTasks()
 
     if (box.exec() == QMessageBox::Yes)
         QDesktopServices::openUrl (QUrl (URL_XBOX_DRIVER));
-#endif
-
-    /* Download Bonjour for Windows to get mDNS working */
-#if defined Q_OS_WIN
-    QMessageBox box;
-    box.setIcon (QMessageBox::Information);
-    box.setStandardButtons (QMessageBox::Yes | QMessageBox::No);
-    box.setDefaultButton (QMessageBox::Yes);
-    box.setText ("<h3>" + QObject::tr ("Install mDNS service for Windows?") +
-                 "</h3>");
-    box.setInformativeText (QObject::tr ("Do you want to download Bonjour to "
-                                         "be able to communicate with the robot?"
-                                         "\n\nIf you have the official "
-                                         "FRC DriverStation installed, this "
-                                         "step is not required."));
-
-    if (box.exec() == QMessageBox::Yes)
-        QDesktopServices::openUrl (QUrl (URL_BONJOUR_MDNS));
 #endif
 
     /* Ensure that this code does not run again */

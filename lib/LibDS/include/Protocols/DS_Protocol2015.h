@@ -24,7 +24,7 @@
 #ifndef _LIB_DS_PROTOCOL_2015_H
 #define _LIB_DS_PROTOCOL_2015_H
 
-#include "DS_Protocol.h"
+#include "LibDS/DS_Protocol.h"
 
 /**
  * \namespace DS_Protocol2015_Definitions
