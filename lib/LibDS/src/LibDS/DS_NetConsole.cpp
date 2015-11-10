@@ -20,23 +20,16 @@
  * THE SOFTWARE.
  */
 
+#include "LibDS/DS_Common.h"
 #include "LibDS/DS_NetConsole.h"
 
 DS_NetConsole::DS_NetConsole()
 {
-    setObjectName ("NetConsole");
     m_socket.bind (6666, QUdpSocket::ShareAddress);
     connect (&m_socket, SIGNAL (readyRead()), this, SLOT (onDataReceived()));
 }
 
 void DS_NetConsole::onDataReceived()
 {
-    QByteArray data;
-
-    while (m_socket.hasPendingDatagrams()) {
-        data.resize (m_socket.pendingDatagramSize());
-        m_socket.readDatagram (data.data(), data.size());
-    }
-
-    emit newMessage (QString::fromUtf8 (data));
+    emit newMessage (QString::fromUtf8 (DS_GetSocketData (&m_socket)));
 }

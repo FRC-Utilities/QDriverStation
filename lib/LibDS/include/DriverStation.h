@@ -367,6 +367,11 @@ private:
     DS_ProtocolManager* m_manager;
 
     /**
+     * Represents the current protocol in operation
+     */
+    DS_Protocol* m_protocol;
+
+    /**
      * Counts the elapsed time since the robot was
      * enabled. When the robot is disabled, the elapsed
      * time is stopped (just as in the official Driver Station)

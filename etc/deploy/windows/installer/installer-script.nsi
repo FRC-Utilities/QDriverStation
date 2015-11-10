@@ -58,6 +58,7 @@ ${EndIf}
 !macroend
 
 Name "${APPNAME}"
+ManifestDPIAware true
 InstallDir "${INSTALL_DIR}"
 RequestExecutionLevel admin
 OutFile "${UNIXNAME}-${VERSIONMAJOR}.${VERSIONMINOR}${VERSIONBUILD}-installer.exe"

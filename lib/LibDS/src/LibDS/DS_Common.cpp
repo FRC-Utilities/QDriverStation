@@ -22,8 +22,6 @@
 
 #include "LibDS/DS_Common.h"
 
-#include <QDateTime>
-
 QString DS_GetTimezoneCode()
 {
     switch (QDateTime::currentDateTime().offsetFromUtc() / 3600) {
@@ -155,4 +153,16 @@ QString DS_GetControlModeString (DS_ControlMode mode)
     }
 
     return QString ("");
+}
+
+QByteArray DS_GetSocketData (QUdpSocket* socket)
+{
+    QByteArray data;
+
+    while (socket->hasPendingDatagrams()) {
+        data.resize (socket->pendingDatagramSize());
+        socket->readDatagram (data.data(), data.size());
+    }
+
+    return data;
 }
