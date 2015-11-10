@@ -20,25 +20,18 @@
  * THE SOFTWARE.
  */
 
-#include <QTimer>
 #include "LibDS/DS_Watchdog.h"
 
 DS_Watchdog::DS_Watchdog()
 {
-    m_timer = new QTimer;
-    connect (m_timer, SIGNAL (timeout()), this, SIGNAL (timeout()));
+    connect (&m_timer, SIGNAL (timeout()), this, SIGNAL (timeout()));
 
-    m_timer->setInterval (1000);
-    m_timer->start();
-}
-
-DS_Watchdog::~DS_Watchdog()
-{
-    delete m_timer;
+    m_timer.setInterval (1000);
+    m_timer.start();
 }
 
 void DS_Watchdog::restart()
 {
-    m_timer->stop();
-    m_timer->start();
+    m_timer.stop();
+    m_timer.start();
 }

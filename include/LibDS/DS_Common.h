@@ -25,6 +25,10 @@
 #define _LIB_DS_COMMON_H
 
 #include "DS_Global.h"
+
+#include <QString>
+#include <QDateTime>
+#include <QUdpSocket>
 #include <QStringList>
 
 /**
@@ -103,5 +107,10 @@ QString LIB_DS_DECL DS_GetStaticIp (int team, int host);
  * Returns an user-friendly string given the inputed robot control mode
  */
 QString LIB_DS_DECL DS_GetControlModeString (DS_ControlMode mode);
+
+/**
+ * Reads the contents of the \a socket and returns its data
+ */
+QByteArray LIB_DS_DECL DS_GetSocketData (QUdpSocket* socket);
 
 #endif

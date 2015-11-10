@@ -21,6 +21,7 @@
  */
 
 #include "LibDS/DS_Client.h"
+#include "LibDS/DS_Common.h"
 
 DS_Client::DS_Client()
 {
@@ -50,12 +51,5 @@ void DS_Client::setRobotAddress (QString address)
 
 void DS_Client::onDataReceived()
 {
-    QByteArray data;
-
-    while (m_clientSocket.hasPendingDatagrams()) {
-        data.resize (m_clientSocket.pendingDatagramSize());
-        m_clientSocket.readDatagram (data.data(), data.size());
-    }
-
-    emit dataReceived (data);
+    emit dataReceived (DS_GetSocketData (&m_clientSocket));
 }

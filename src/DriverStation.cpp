@@ -43,6 +43,7 @@ DriverStation::DriverStation()
     m_netConsole  = new DS_NetConsole;
     m_elapsedTime = new DS_ElapsedTime;
     m_manager     = new DS_ProtocolManager;
+    m_protocol    = Q_NULLPTR;
 
     /* Update internal values and notify object on robot status events */
     connect (m_manager, SIGNAL (codeChanged           (bool)),
@@ -103,6 +104,7 @@ DriverStation::~DriverStation()
 {
     delete m_client;
     delete m_manager;
+    delete m_protocol;
     delete m_netConsole;
     delete m_elapsedTime;
 
@@ -234,13 +236,9 @@ void DriverStation::setProtocol (DS_Protocol* protocol)
 
 void DriverStation::setProtocol (ProtocolType protocol)
 {
-    switch (protocol) {
-    case Protocol2015:
-        setProtocol (new DS_Protocol2015);
-        break;
-    default:
-        qWarning() << Q_FUNC_INFO << "Invalid protocol" << protocol;
-        break;
+    if (protocol == Protocol2015) {
+        m_protocol = new DS_Protocol2015;
+        m_manager->setProtocol (m_protocol);
     }
 }
 
