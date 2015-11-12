@@ -20,64 +20,35 @@
  * THE SOFTWARE.
  */
 
-#include <QDir>
-#include <QFile>
 #include <QTimer>
 #include <QMessageBox>
 #include <QApplication>
-
 #include <DriverStation.h>
 
 #include "GamepadManager.h"
 
-/* Used to create mappings from unsupported controllers */
-#if defined Q_OS_WIN
-#    define _GENERIC_MAPPINGS ":/sdl/generic/windows.txt"
-#elif defined Q_OS_MAC
-#    define _GENERIC_MAPPINGS ":/sdl/generic/mac-osx.txt"
-#elif defined Q_OS_LINUX
-#    define _GENERIC_MAPPINGS ":/sdl/generic/linux.txt"
-#endif
+//------------------------------------------------------------------------------
+// SDL DEFINITIONS
+//------------------------------------------------------------------------------
 
 #define SDL_MAIN_HANDLED
 
-#define _MAX_VAL       32767
-#define _CONTROLLER_DB ":/sdl/database.txt"
-#define _INIT_CODE     SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER
+//------------------------------------------------------------------------------
+// CONSTRUCTOR/DESTRUCTOR CODE
+//------------------------------------------------------------------------------
 
 GamepadManager* GamepadManager::s_instance = Q_NULLPTR;
 
 GamepadManager::GamepadManager()
 {
-    setObjectName ("Gamepad Manager");
+    SDL_JoystickEventState (SDL_ENABLE);
     SDL_SetHint (SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
 
-    if (SDL_Init (_INIT_CODE) != 0) {
+    if (SDL_Init (SDL_INIT_JOYSTICK) != 0) {
         QMessageBox::critical (Q_NULLPTR, tr ("Fatal Error!"),
                                tr ("SDL Init Error: %1").arg (SDL_GetError()));
 
         exit (EXIT_FAILURE);
-    }
-
-    /* Enable event states to use them in the event loop */
-    SDL_JoystickEventState (SDL_ENABLE);
-    SDL_GameControllerEventState (SDL_ENABLE);
-
-    /* Load community controller database */
-    QFile db (_CONTROLLER_DB);
-    if (db.open (QFile::ReadOnly)) {
-        while (!db.atEnd())
-            SDL_GameControllerAddMapping (
-                QVariant (db.readLine()).toString().toStdString().c_str());
-
-        db.close();
-    }
-
-    /* Load generic mapping string, used for unsupported controllers */
-    QFile generic (_GENERIC_MAPPINGS);
-    if (generic.open (QFile::ReadOnly)) {
-        m_genericMapping = (QString)generic.readAll();
-        generic.close();
     }
 }
 
@@ -98,7 +69,7 @@ GamepadManager* GamepadManager::getInstance()
 }
 
 //------------------------------------------------------------------------------
-// FUNCTIONS THAT PROVIDE INFORMATION ABOUT A JOYSTICK
+// PROVIDE INFORMATION ABOUT A JOYSTICK
 //------------------------------------------------------------------------------
 
 int GamepadManager::getNumHats (int js)
@@ -150,7 +121,7 @@ void GamepadManager::init()
     m_time = 50;
     m_tracker = -1;
 
-    readSdlEvents();
+    QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (readSdlEvents()));
 }
 
 void GamepadManager::setUpdateInterval (int time)
@@ -193,10 +164,10 @@ GM_Axis GamepadManager::getAxis (const SDL_Event* event)
 {
     GM_Axis axis;
 
-    axis.rawId = event->caxis.axis;
+    axis.rawId = event->jaxis.axis;
     axis.joystick = getJoystick (event);
     axis.identifier = getAxisName (axis.rawId);
-    axis.value = (double) (event->caxis.value) / _MAX_VAL;
+    axis.value = (double) (event->jaxis.value) / 32767;
 
     return axis;
 }
@@ -205,10 +176,10 @@ GM_Button GamepadManager::getButton (const SDL_Event* event)
 {
     GM_Button button;
 
-    button.rawId = event->cbutton.button;
+    button.rawId = event->jbutton.button;
     button.joystick = getJoystick (event);
     button.identifier = getButtonName (button.rawId);
-    button.pressed = event->cbutton.state == SDL_PRESSED;
+    button.pressed = event->jbutton.state == SDL_PRESSED;
 
     return button;
 }
@@ -217,10 +188,10 @@ GM_Joystick GamepadManager::getJoystick (const SDL_Event* event)
 {
     GM_Joystick stick;
 
-    stick.id = getDynamicId (event->cdevice.which);
-    stick.numAxes = getNumAxes (event->cdevice.which);
-    stick.numButtons = getNumButtons (event->cdevice.which);
-    stick.displayName = getJoystickName (event->cdevice.which);
+    stick.id = getDynamicId (event->jdevice.which);
+    stick.numAxes = getNumAxes (event->jdevice.which);
+    stick.numButtons = getNumButtons (event->jdevice.which);
+    stick.displayName = getJoystickName (event->jdevice.which);
 
     return stick;
 }
@@ -249,22 +220,20 @@ void GamepadManager::readSdlEvents()
         switch (event.type) {
         case SDL_JOYDEVICEADDED:
             ++m_tracker;
-            onControllerAdded (&event);
             emit countChanged (joystickList());
             emit countChanged (SDL_NumJoysticks());
             break;
-        case SDL_CONTROLLERDEVICEREMOVED:
-            onControllerRemoved (&event);
+        case SDL_JOYDEVICEREMOVED:
             emit countChanged (joystickList());
             emit countChanged (SDL_NumJoysticks());
             break;
-        case SDL_CONTROLLERAXISMOTION:
+        case SDL_JOYAXISMOTION:
             onAxisEvent (&event);
             break;
-        case SDL_CONTROLLERBUTTONDOWN:
+        case SDL_JOYBUTTONUP:
             onButtonEvent (&event);
             break;
-        case SDL_CONTROLLERBUTTONUP:
+        case SDL_JOYBUTTONDOWN:
             onButtonEvent (&event);
             break;
         case SDL_JOYHATMOTION:
@@ -309,35 +278,4 @@ void GamepadManager::onButtonEvent (const SDL_Event* event)
             button.pressed);
 
     emit buttonEvent (button);
-}
-
-void GamepadManager::onControllerAdded (const SDL_Event* event)
-{
-    if (!SDL_IsGameController (event->cdevice.which)) {
-        SDL_Joystick* js = SDL_JoystickOpen (event->cdevice.which);
-
-        /* Joystick exists, lets do some magic to get it working... */
-        if (js != Q_NULLPTR) {
-            /* Calculate the GUID string of the joystick */
-            char guid [1024];
-            SDL_JoystickGetGUIDString (SDL_JoystickGetGUID (js), guid, sizeof (guid));
-
-            /* Generate a generic mapping with the GUID */
-            QString mapping = QString ("%1,%2,%3")
-                              .arg (guid)
-                              .arg (SDL_JoystickName (js))
-                              .arg (m_genericMapping);
-
-            /* Register the mapping and close the joystick */
-            SDL_GameControllerAddMapping (mapping.toStdString().c_str());
-            SDL_JoystickClose (js);
-        }
-    }
-
-    SDL_GameControllerOpen (event->cdevice.which);
-}
-
-void GamepadManager::onControllerRemoved (const SDL_Event* event)
-{
-    SDL_GameControllerClose (SDL_GameControllerOpen (event->cdevice.which));
 }

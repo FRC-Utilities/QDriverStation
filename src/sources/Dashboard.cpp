@@ -26,8 +26,10 @@
 #include "Settings.h"
 #include "Dashboard.h"
 
-/*
- * Decide whenever to use 'Program Files' or 'Program Files (x86)' }*/
+//------------------------------------------------------------------------------
+// DECIDE IF WE SHOULD USE 'Program Files' or 'Program Files (x86)'
+//------------------------------------------------------------------------------
+
 #if defined Q_OS_WIN
 #include <windows.h>
 #define IS64BIT true
@@ -37,6 +39,10 @@
     GetProcAddress(GetModuleHandle(TEXT("kernel32")),("IsWow64Process"))
 #endif
 #endif
+
+//------------------------------------------------------------------------------
+// INITIALIZATION FUNCTIONS
+//------------------------------------------------------------------------------
 
 Dashboard* Dashboard::s_instance = Q_NULLPTR;
 
@@ -58,6 +64,10 @@ Dashboard* Dashboard::getInstance()
 
     return s_instance;
 }
+
+//------------------------------------------------------------------------------
+// PROCESS-RELATED STUFF
+//------------------------------------------------------------------------------
 
 void Dashboard::loadDashboard()
 {
@@ -108,6 +118,10 @@ void Dashboard::reloadDashboard()
     quitDashboard();
     loadDashboard();
 }
+
+//------------------------------------------------------------------------------
+// SEND INFORMATION TO OTHER OBJECTS
+//------------------------------------------------------------------------------
 
 int Dashboard::getCurrentDashboard()
 {

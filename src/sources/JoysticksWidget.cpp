@@ -62,6 +62,10 @@ void JoysticksWidget::showKeyboardWindow()
     m_keyboardDrive->show();
 }
 
+//------------------------------------------------------------------------------
+// SEND KEYBOARD INPUT TO VIRTUAL JOSYTICK
+//------------------------------------------------------------------------------
+
 void JoysticksWidget::registerKeyPress (QKeyEvent* event)
 {
     m_keyboardDrive->registerKeyPress (event);

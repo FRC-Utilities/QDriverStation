@@ -40,12 +40,6 @@ class DriverStation;
  * and management of joysticks by using the SDL library. The class automatically
  * parses SDL events into Qt signals to easily have access to joystick data and
  * implement methods to react to joystick input.
- *
- * Finally, the class uses a 'generic' mapping when it detects that an
- * unsupported controller was attached to the computer.
- * The generated mapping changes its UUID and displayname for the controller
- * in question and is saved in a configuration folder in the home path
- * of the user.
  */
 class GamepadManager : public QObject
 {
@@ -160,12 +154,6 @@ private:
     int m_tracker;
 
     /**
-     * Represents a generic Xbox 360 mapping that we use when we have to
-     * deal with an unsupported joystick
-     */
-    QString m_genericMapping;
-
-    /**
      * Used to keep the dynamic IDs in sync with the SDL index IDs
      */
     QList<int> idList;
@@ -238,23 +226,6 @@ private slots:
      * Gets joystick and button information and emits the appropriate signal
      */
     void onButtonEvent (const SDL_Event* event);
-
-    /**
-     * @internal
-     * Opens the game controller that was added in order to be able to use it
-     * in the event loop.
-     *
-     * In the case that there are no mappings available for the controller, the
-     * function will assign a 'generic' Xbox mapping to the controller and will
-     * save such mapping in the filesystem for future use.
-     */
-    void onControllerAdded (const SDL_Event* event);
-
-    /**
-     * @internal
-     * Closes the game controller that was removed
-     */
-    void onControllerRemoved (const SDL_Event* event);
 };
 
 #endif
