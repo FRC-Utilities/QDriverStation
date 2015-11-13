@@ -65,16 +65,6 @@ public slots:
     int getNumButtons (int js);
 
     /**
-     * Returns the display name of the axis in the joystick
-     */
-    QString getAxisName (int axis);
-
-    /**
-     * Returns the display name of the button in the joystick
-     */
-    QString getButtonName (int button);
-
-    /**
      * Returns the display name of the joystick
      */
     QString getJoystickName (int js);

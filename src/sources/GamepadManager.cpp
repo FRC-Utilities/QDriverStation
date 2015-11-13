@@ -86,16 +86,6 @@ int GamepadManager::getNumButtons (int js)
     return SDL_JoystickNumButtons (SDL_JoystickOpen (js));
 }
 
-QString GamepadManager::getAxisName (int axis)
-{
-    return QString ("Axis %1").arg (axis);
-}
-
-QString GamepadManager::getButtonName (int button)
-{
-    return QString ("Button %1").arg (button);
-}
-
 QString GamepadManager::getJoystickName (int js)
 {
     return SDL_JoystickNameForIndex (js);
