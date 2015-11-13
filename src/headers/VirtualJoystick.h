@@ -35,7 +35,11 @@
  * \brief Moves the robot with the keyboard
  *
  * The \c KeyboardDrive class allows the user to operate the robot using input
- * from the computer's keyboard
+ * from the computer's keyboard.
+ *
+ * Additionally, this class is in charge of processing both the keyboard input
+ * and the joystick input. The generated data is then sent to the \a JoystickWidget
+ * and the Driver Station
  */
 class VirtualJoystick : public QDialog
 {
@@ -107,12 +111,6 @@ signals:
     void countChanged (QStringList);
 
     /**
-     * Emitted when the system detects a change in the state of the hats of
-     * one of the connected joysticks
-     */
-    void hatEvent (GM_Hat);
-
-    /**
      * Emitted when the system detects a change in the state of the axes of
      * one of the connected joysticks
      */
@@ -169,6 +167,16 @@ private slots:
      * required internal values
      */
     void setVirtualJoystickEnabled (bool enabled);
+
+    /**
+     * Sends the axis data to the Driver Station
+     */
+    void onAxisEvent (GM_Axis axis);
+
+    /**
+     * Sends the button data to the Driver Station
+     */
+    void onButtonEvent (GM_Button button);
 };
 
 #endif

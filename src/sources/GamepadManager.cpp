@@ -23,7 +23,6 @@
 #include <QTimer>
 #include <QMessageBox>
 #include <QApplication>
-#include <DriverStation.h>
 
 #include "GamepadManager.h"
 
@@ -153,7 +152,7 @@ GM_Hat GamepadManager::getHat (const SDL_Event* event)
 {
     GM_Hat hat;
 
-    hat.rawId = event->jhat.hat;
+    hat.id = event->jhat.hat;
     hat.angle = event->jhat.value;
     hat.joystick = getJoystick (event);
 
@@ -164,9 +163,8 @@ GM_Axis GamepadManager::getAxis (const SDL_Event* event)
 {
     GM_Axis axis;
 
-    axis.rawId = event->jaxis.axis;
+    axis.id = event->jaxis.axis;
     axis.joystick = getJoystick (event);
-    axis.identifier = getAxisName (axis.rawId);
     axis.value = (double) (event->jaxis.value) / 32767;
 
     return axis;
@@ -176,9 +174,8 @@ GM_Button GamepadManager::getButton (const SDL_Event* event)
 {
     GM_Button button;
 
-    button.rawId = event->jbutton.button;
+    button.id = event->jbutton.button;
     button.joystick = getJoystick (event);
-    button.identifier = getButtonName (button.rawId);
     button.pressed = event->jbutton.state == SDL_PRESSED;
 
     return button;
@@ -242,7 +239,7 @@ void GamepadManager::readSdlEvents()
         }
     }
 
-    QTimer::singleShot (m_time, Qt::PreciseTimer, this, SLOT (readSdlEvents()));
+    QTimer::singleShot (m_time, this, SLOT (readSdlEvents()));
 }
 
 //------------------------------------------------------------------------------
@@ -251,31 +248,15 @@ void GamepadManager::readSdlEvents()
 
 void GamepadManager::onHatEvent (const SDL_Event* event)
 {
-    GM_Hat hat = getHat (event);
-    DriverStation::getInstance()->updateJoystickPovHat (hat.joystick.id,
-            hat.rawId,
-            hat.angle);
-
-
-    emit hatEvent (hat);
+    emit hatEvent (getHat (event));
 }
 
 void GamepadManager::onAxisEvent (const SDL_Event* event)
 {
-    GM_Axis axis = getAxis (event);
-    DriverStation::getInstance()->updateJoystickAxis (axis.joystick.id,
-            axis.rawId,
-            axis.value);
-
-    emit axisEvent (axis);
+    emit axisEvent (getAxis (event));
 }
 
 void GamepadManager::onButtonEvent (const SDL_Event* event)
 {
-    GM_Button button = getButton (event);
-    DriverStation::getInstance()->updateJoystickButton (button.joystick.id,
-            button.rawId,
-            button.pressed);
-
-    emit buttonEvent (button);
+    emit buttonEvent (getButton (event));
 }

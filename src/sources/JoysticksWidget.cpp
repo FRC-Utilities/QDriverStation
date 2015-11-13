@@ -24,7 +24,6 @@
 #include <QPushButton>
 #include <QProgressBar>
 
-#include "GamepadManager.h"
 #include "JoysticksWidget.h"
 #include "VirtualJoystick.h"
 
@@ -35,7 +34,6 @@ JoysticksWidget::JoysticksWidget (QWidget* parent) : QWidget (parent)
     ui.Buttons->setVisible (false);
 
     m_keyboardDrive = new VirtualJoystick;
-    m_manager = GamepadManager::getInstance();
 
     connect (m_keyboardDrive, SIGNAL (axisEvent      (GM_Axis)),
              this,            SLOT   (onAxisEvent    (GM_Axis)));
@@ -112,7 +110,7 @@ void JoysticksWidget::onRowChanged (int row)
         bar->setValue (0);
         bar->setMaximum (100);
         bar->setMinimum (-100);
-        bar->setFormat (m_manager->getAxisName (i));
+        bar->setFormat  (tr ("Axis %1").arg (i));
 
         m_axes.append (bar);
         ui.AxesWidget->layout()->addWidget (bar);
@@ -126,7 +124,7 @@ void JoysticksWidget::onRowChanged (int row)
         button->setCheckable (true);
         button->setMaximumSize (18, 12);
         button->setMinimumSize (18, 12);
-        button->setToolTip (m_manager->getButtonName (i));
+        button->setToolTip     (tr ("Button %1").arg (i));
 
         /* Distribute the button items in a nice layout */
         int row = (i <= 7) ? i : i - 8;
@@ -138,7 +136,7 @@ void JoysticksWidget::onRowChanged (int row)
 }
 
 //------------------------------------------------------------------------------
-// REACT TO GAMEPAD EVENTS
+// REACT TO JOYSTICK EVENTS
 //------------------------------------------------------------------------------
 
 void JoysticksWidget::onCountChanged (QStringList list)
@@ -163,8 +161,8 @@ void JoysticksWidget::onAxisEvent (const GM_Axis& axis)
     if (ui.JoystickList->currentRow() != axis.joystick.id)
         return;
 
-    if (axis.rawId < m_axes.count())
-        m_axes.at (axis.rawId)->setValue (axis.value * 100);
+    if (axis.id < m_axes.count())
+        m_axes.at (axis.id)->setValue (axis.value * 100);
 }
 
 void JoysticksWidget::onButtonEvent (const GM_Button& button)
@@ -172,6 +170,6 @@ void JoysticksWidget::onButtonEvent (const GM_Button& button)
     if (ui.JoystickList->currentRow() != button.joystick.id)
         return;
 
-    if (button.rawId < m_buttons.count())
-        m_buttons.at (button.rawId)->setChecked (button.pressed);
+    if (button.id < m_buttons.count())
+        m_buttons.at (button.id)->setChecked (button.pressed);
 }

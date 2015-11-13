@@ -32,7 +32,6 @@
 class QPushButton;
 class QProgressBar;
 class VirtualJoystick;
-class GamepadManager;
 
 /**
  * @class Joysticks
@@ -74,11 +73,6 @@ private:
      * Represents the UI components of the widget
      */
     Ui::Joysticks ui;
-
-    /**
-     * Used for getting joystick input with SDL
-     */
-    GamepadManager* m_manager;
 
     /**
      * Represents the axes of the selected joystick

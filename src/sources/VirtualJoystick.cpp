@@ -38,8 +38,6 @@ VirtualJoystick::VirtualJoystick()
     connect (ui.UseKeyboardCheckbox, SIGNAL (clicked (bool)),
              this,                   SLOT   (setVirtualJoystickEnabled (bool)));
 
-    connect (GamepadManager::getInstance(), SIGNAL (hatEvent    (GM_Hat)),
-             this,                          SIGNAL (hatEvent    (GM_Hat)));
     connect (GamepadManager::getInstance(), SIGNAL (axisEvent   (GM_Axis)),
              this,                          SIGNAL (axisEvent   (GM_Axis)));
     connect (GamepadManager::getInstance(), SIGNAL (buttonEvent (GM_Button)),
@@ -48,6 +46,11 @@ VirtualJoystick::VirtualJoystick()
              this,                          SLOT   (onCountChanged (int)));
     connect (GamepadManager::getInstance(), SIGNAL (countChanged   (QStringList)),
              this,                          SLOT   (onCountChanged (QStringList)));
+
+    connect (this, SIGNAL (axisEvent     (GM_Axis)),
+             this, SLOT   (onAxisEvent   (GM_Axis)));
+    connect (this, SIGNAL (buttonEvent   (GM_Button)),
+             this, SLOT   (onButtonEvent (GM_Button)));
 
     m_joystick.numAxes = 6;
     m_joystick.numButtons = 10;
@@ -100,8 +103,7 @@ void VirtualJoystick::onCountChanged (int count)
     for (int i = 0; i <= count - 1; ++i)
         DriverStation::getInstance()->addJoystick (
             GamepadManager::getInstance()->getNumAxes (i),
-            GamepadManager::getInstance()->getNumButtons (i),
-            GamepadManager::getInstance()->getNumHats (i));
+            GamepadManager::getInstance()->getNumButtons (i), 0);
 
     if (m_enabled) {
         m_joystick.id = count;
@@ -208,14 +210,9 @@ void VirtualJoystick::readAxes (int key, double value)
 
     if (axis != -1 && m_enabled) {
         GM_Axis data;
-        data.rawId = axis;
+        data.id = axis;
         data.value = value;
         data.joystick = m_joystick;
-        data.identifier = QString ("Axis %1").arg (axis);
-
-        DriverStation::getInstance()->updateJoystickAxis (data.joystick.id,
-                data.rawId,
-                data.value);
 
         emit axisEvent (data);
     }
@@ -248,14 +245,9 @@ void VirtualJoystick::readButtons (int key, bool pressed)
 
     if (button != -1 && m_enabled) {
         GM_Button data;
-        data.rawId = button;
+        data.id = button;
         data.pressed = pressed;
         data.joystick = m_joystick;
-        data.identifier = QString ("Button %1").arg (button);
-
-        DriverStation::getInstance()->updateJoystickButton (data.joystick.id,
-                data.rawId,
-                data.pressed);
 
         emit buttonEvent (data);
     }
@@ -287,4 +279,20 @@ void VirtualJoystick::setVirtualJoystickEnabled (bool enabled)
 
     onCountChanged (list);
     onCountChanged (list.count());
+}
+
+//------------------------------------------------------------------------------
+// REACT TO EVENTS AND SEND THEM TO THE DRIVER STATION
+//------------------------------------------------------------------------------
+
+void VirtualJoystick::onAxisEvent (GM_Axis axis)
+{
+    DriverStation::getInstance()->updateJoystickAxis (axis.joystick.id,
+            axis.id, axis.value);
+}
+
+void VirtualJoystick::onButtonEvent (GM_Button button)
+{
+    DriverStation::getInstance()->updateJoystickButton (button.joystick.id,
+            button.id, button.pressed);
 }
