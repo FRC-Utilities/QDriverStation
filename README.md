@@ -4,6 +4,8 @@
 [![BitCoin donate button](https://img.shields.io/badge/bitcoin-donate-yellow.svg)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
 [![Download QDriverStation](https://img.shields.io/sourceforge/dt/qdriverstation.svg)](https://sourceforge.net/projects/qdriverstation/files/latest/download)
 
+[![Screenshot](/etc/screenshots/Ubuntu.png)](/etc/screenshots)
+
 ### Introduction
 
 QDriverStation is an open-source, cross-platform alternative to the FRC Driver Station.
@@ -15,8 +17,6 @@ Joystick input is achieved with SDL 2.0, which is a cross-platform library for C
 The actual code that moves and manages a FRC robot is found in a [separate repository](https://github.com/WinT-3794/LibDS), which you can use in your own Qt projects or change it to support older (and future) communication protocols. Please check the [progress](https://github.com/WinT-3794/LibDS#progress) section for more info.
 
 We are also developing a **mobile version** of the QDriverStation. [Check it here](https://github.com/wint-3794/ds-mobile)!
-
-[![Screenshot](/etc/screenshots/Ubuntu.png)](/etc/screenshots)
 
 ### Install notes
 
