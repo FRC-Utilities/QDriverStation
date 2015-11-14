@@ -42,33 +42,33 @@ class LIB_DS_DECL DS_Timers : public QObject
     Q_OBJECT
 
 public:
-    static DS_Timers* getInstance();
-    ~DS_Timers();
+    static DS_Timers* getInstance ();
+    ~DS_Timers ();
 
 public slots:
     /**
      * Initializes the timers
      */
-    void start();
+    void start ();
 
 signals:
     /**
      * Emitted every 20 milliseconds
      */
-    void timeout20();
+    void timeout20 ();
 
     /**
      * Emitted every 100 milliseconds
      */
-    void timeout100();
+    void timeout100 ();
 
     /**
      * Emitted every 1000 milliseconds
      */
-    void timeout1000();
+    void timeout1000 ();
 
 protected:
-    DS_Timers();
+    DS_Timers ();
     static DS_Timers* s_instance;
 
 private:

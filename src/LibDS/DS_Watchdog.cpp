@@ -22,16 +22,16 @@
 
 #include "LibDS/DS_Watchdog.h"
 
-DS_Watchdog::DS_Watchdog()
+DS_Watchdog::DS_Watchdog ()
 {
-    connect (&m_timer, SIGNAL (timeout()), this, SIGNAL (timeout()));
+    connect (&m_timer, SIGNAL (timeout ()), this, SIGNAL (timeout ()));
 
     m_timer.setInterval (1000);
-    m_timer.start();
+    m_timer.start ();
 }
 
-void DS_Watchdog::restart()
+void DS_Watchdog::restart ()
 {
-    m_timer.stop();
-    m_timer.start();
+    m_timer.stop ();
+    m_timer.start ();
 }

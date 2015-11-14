@@ -43,18 +43,18 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject
     Q_OBJECT
 
 public:
-    explicit DS_ProtocolManager();
-    ~DS_ProtocolManager();
+    explicit DS_ProtocolManager ();
+    ~DS_ProtocolManager ();
 
     /**
      * Returns the current protocol in use
      */
-    DS_ProtocolBase* protocol() const;
+    DS_ProtocolBase* protocol () const;
 
     /**
      * Returns \c true if the current protocol is initialized
      */
-    bool protocolIsValid() const;
+    bool protocolIsValid () const;
 
 public slots:
     /**
@@ -65,7 +65,7 @@ public slots:
     /**
      * Un-registeres all the joysticks from the Driver Station
      */
-    void clearJoysticks();
+    void clearJoysticks ();
 
     /**
      * Registers a new joystick and its characteristics to the Driver Station
