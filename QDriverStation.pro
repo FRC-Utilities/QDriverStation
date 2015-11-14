@@ -41,7 +41,7 @@ linux:!android {
     TARGET = qdriverstation
     icon.path = /usr/share/pixmaps
     desktop.path = /usr/share/applications
-    icon.files += $$PWD/etc/deploy/linux/qdriverstation.ico
+    icon.files += $$PWD/etc/deploy/linux/qdriverstation.png
     desktop.files += $$PWD/etc/deploy/linux/qdriverstation.desktop
     INSTALLS += target desktop icon
 }
