@@ -22,7 +22,7 @@
 
 #include "LibDS/DS_Protocol.h"
 
-DS_Protocol::DS_Protocol()
+DS_Protocol::DS_Protocol ()
 {
     p_team = 0;
     p_robotCode = false;
@@ -35,46 +35,46 @@ DS_Protocol::DS_Protocol()
 
     p_joysticks = new QList<DS_Joystick*>;
 
-    connect (&p_watchdog, SIGNAL (timeout()), this, SLOT (reset()));
-    connect (this, SIGNAL (packetReceived()), &p_watchdog, SLOT (restart()));
+    connect (&p_watchdog, SIGNAL (timeout ()), this, SLOT (reset ()));
+    connect (this, SIGNAL (packetReceived ()), &p_watchdog, SLOT (restart ()));
 }
 
-DS_Protocol::~DS_Protocol()
+DS_Protocol::~DS_Protocol ()
 {
     delete p_joysticks;
 }
 
-bool DS_Protocol::robotCode() const
+bool DS_Protocol::robotCode () const
 {
     return p_robotCode;
 }
 
-bool DS_Protocol::robotCommunication() const
+bool DS_Protocol::robotCommunication () const
 {
     return p_robotCommunication;
 }
 
-DS_Alliance DS_Protocol::alliance() const
+DS_Alliance DS_Protocol::alliance () const
 {
     return p_alliance;
 }
 
-DS_ControlMode DS_Protocol::controlMode() const
+DS_ControlMode DS_Protocol::controlMode () const
 {
     return p_controlMode;
 }
 
-QString DS_Protocol::radioAddress()
+QString DS_Protocol::radioAddress ()
 {
-    return p_radioAddress.isEmpty() ? defaultRadioAddress() : p_radioAddress;
+    return p_radioAddress.isEmpty () ? defaultRadioAddress () : p_radioAddress;
 }
 
-QString DS_Protocol::robotAddress()
+QString DS_Protocol::robotAddress ()
 {
-    return p_robotAddress.isEmpty() ? defaultRobotAddress() : p_robotAddress;
+    return p_robotAddress.isEmpty () ? defaultRobotAddress () : p_robotAddress;
 }
 
-void DS_Protocol::reset()
+void DS_Protocol::reset ()
 {
     p_robotCode = false;
     p_robotCommunication = false;
@@ -86,19 +86,19 @@ void DS_Protocol::reset()
     p_discovery.getIp (p_robotAddress,
                        this, SLOT (onAddressResolved (QString, QString)));
 
-    resetProtocol();
+    resetProtocol ();
 }
 
 void DS_Protocol::setTeamNumber (int team)
 {
     p_team = team;
-    emit robotAddressChanged (robotAddress());
+    emit robotAddressChanged (robotAddress ());
 }
 
 void DS_Protocol::setRobotAddress (QString address)
 {
     p_robotAddress = address;
-    emit robotAddressChanged (robotAddress());
+    emit robotAddressChanged (robotAddress ());
 }
 
 void DS_Protocol::setAlliance (DS_Alliance alliance)
@@ -110,7 +110,7 @@ void DS_Protocol::setControlMode (DS_ControlMode mode)
 {
     if (p_controlMode != DS_ControlEmergencyStop) {
         p_controlMode = p_robotCommunication ? mode : DS_ControlNoCommunication;
-        emit controlModeChanged (controlMode());
+        emit controlModeChanged (controlMode ());
     }
 }
 
@@ -121,7 +121,7 @@ void DS_Protocol::setJoysticks (QList<DS_Joystick*>* joysticks)
 
 void DS_Protocol::readRobotPacket (QByteArray& data)
 {
-    if (!data.isEmpty() && data.length() >= p_minPacketLength)
+    if (!data.isEmpty () && data.length () >= p_minPacketLength)
         readRobotData (data);
 }
 
@@ -132,15 +132,15 @@ void DS_Protocol::log (QString message)
 
 void DS_Protocol::onAddressResolved (QString address, QString ip)
 {
-    if (address == robotAddress())
+    if (address == robotAddress ())
         setRobotAddress (ip);
 }
 
 QByteArray DS_Protocol::bitsToBytes (QBitArray bits)
 {
-    QByteArray bytes (bits.count() / 8, 0);
+    QByteArray bytes (bits.count () / 8, 0);
 
-    for (int i = 0; i < bits.count(); ++i)
+    for (int i = 0; i < bits.count (); ++i)
         bytes [i / 8] = (bytes.at (i / 8) | ((bits [i] ? 1 : 0) << (i % 8)));
 
     return bytes;

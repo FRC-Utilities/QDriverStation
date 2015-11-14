@@ -39,18 +39,18 @@ class LIB_DS_DECL DS_ElapsedTime : public QObject
     Q_OBJECT
 
 public:
-    explicit DS_ElapsedTime();
+    explicit DS_ElapsedTime ();
 
 public slots:
     /**
      * Pauses the elapsed time refresh process
      */
-    void stop();
+    void stop ();
 
     /**
      * Resets the elapsed timer and starts the refresh process again
      */
-    void reset();
+    void reset ();
 
 signals:
     /**
@@ -69,7 +69,7 @@ private slots:
      * Uses the value given by the internal timer and processes its
      * information into a human-readable format (mm::ss.ms)
      */
-    void calculateElapsedTime();
+    void calculateElapsedTime ();
 };
 
 #endif
