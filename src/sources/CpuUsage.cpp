@@ -34,7 +34,7 @@ static PDH_HCOUNTER cpuTotal;
 #include <QProcess>
 #endif
 
-void CpuUsage::init()
+void CpuUsage::init ()
 {
 #if defined Q_OS_WIN
     PdhOpenQuery (0, 0, &cpuQuery);
@@ -43,7 +43,7 @@ void CpuUsage::init()
 #endif
 }
 
-int CpuUsage::getUsage()
+int CpuUsage::getUsage ()
 {
 #if defined Q_OS_WIN
     PDH_FMT_COUNTERVALUE counterVal;
@@ -60,8 +60,8 @@ int CpuUsage::getUsage()
     process.start ("bash -c \"ps -A -o %cpu | awk '{s+=$1} END {print s}'\"");
 
     /* Read process output */
-    while (process.waitForReadyRead())
-        data.append (process.readAll());
+    while (process.waitForReadyRead ())
+        data.append (process.readAll ());
 
     /* Parse the digits of the percentage */
     int t = data.at (0) - '0';
@@ -84,8 +84,8 @@ int CpuUsage::getUsage()
                    "END {print usage}'\"");
 
     /* Read process output */
-    while (process.waitForReadyRead())
-        data.append (process.readAll());
+    while (process.waitForReadyRead ())
+        data.append (process.readAll ());
 
     /* Parse the digits of the percentage */
     int t = data.at (0) - '0';

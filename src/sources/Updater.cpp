@@ -22,7 +22,7 @@
 
 #include "Updater.h"
 
-Updater::Updater()
+Updater::Updater ()
 {
     m_version = "";
     m_platform = "";
@@ -48,7 +48,7 @@ Updater::Updater()
                      "WinT-3794/QDriverStation/updater/current");
 }
 
-void Updater::showUpdateMessages()
+void Updater::showUpdateMessages ()
 {
     if (m_updateAvailable) {
         QMessageBox box;
@@ -67,12 +67,12 @@ void Updater::showUpdateMessages()
                                     "You can download this version using the link:"
                                     "<br/><br/>"
                                     "%3")
-                                .arg (qApp->applicationName())
+                                .arg (qApp->applicationName ())
                                 .arg (QString ("<strong>%1</strong>").arg (m_version))
                                 .arg (QString ("<a href=%1>%2</a>").arg (m_downloadLink,
                                         m_downloadLink)));
 
-        box.exec();
+        box.exec ();
     }
 }
 
@@ -83,11 +83,11 @@ void Updater::checkForUpdates (QString url)
 
 void Updater::onFinished (QNetworkReply* reply)
 {
-    QByteArray data = reply->readAll();
+    QByteArray data = reply->readAll ();
 
     readDownloadLink (data);
     readApplicationVersion (data);
-    showUpdateMessages();
+    showUpdateMessages ();
 
     delete reply;
 }
@@ -105,18 +105,18 @@ void Updater::readApplicationVersion (QByteArray data)
                          QString ("latest-%1").arg (m_platform));
 
     QStringList online = m_version.split (".");
-    QStringList local  = qApp->applicationVersion().split (".");
+    QStringList local  = qApp->applicationVersion ().split (".");
 
     /* Figure out if local version is smaller than online version */
-    for (int i = 0; i <= online.count() - 1; ++i) {
-        if (online.count() - 1 >= i && local.count() - 1 >= i) {
+    for (int i = 0; i <= online.count () - 1; ++i) {
+        if (online.count () - 1 >= i && local.count () - 1 >= i) {
             if (online.at (i) > local.at (i)) {
                 m_updateAvailable = true;
                 return;
             }
         }
 
-        else if (local.count() < online.count()) {
+        else if (local.count () < online.count ()) {
             if (local.at (i - 1) == online.at (i - 1))
                 break;
 
@@ -134,14 +134,14 @@ QString Updater::readKey (QString data, QString key)
     int startIndex = -1;
     int finishIndex = -1;
 
-    if (data.isEmpty() || key.isEmpty())
+    if (data.isEmpty () || key.isEmpty ())
         return value;
 
     startIndex = data.indexOf (QString ("<%1>").arg (key));
     finishIndex = data.indexOf (QString ("</%1>").arg (key));
 
     if (startIndex != -1 && finishIndex != -1) {
-        for (int i = startIndex + key.length() + 2; i < finishIndex; ++i)
+        for (int i = startIndex + key.length () + 2; i < finishIndex; ++i)
             value.append (data.at (i));
     }
 

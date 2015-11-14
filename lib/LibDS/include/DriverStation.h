@@ -50,10 +50,10 @@ class LIB_DS_DECL DriverStation : public QObject
     Q_ENUMS (AllianceType)
 
 public:
-    explicit DriverStation();
-    ~DriverStation();
+    explicit DriverStation ();
+    ~DriverStation ();
 
-    static DriverStation* getInstance();
+    static DriverStation* getInstance ();
 
     /**
      * The available protocols for the user
@@ -99,7 +99,7 @@ public:
      * This function is useful in the case that you want to warn the user
      * when he/she clicks the 'Enable' button and something is not working
      */
-    Q_INVOKABLE bool canBeEnabled();
+    Q_INVOKABLE bool canBeEnabled ();
 
     /**
      * Returns a list with the available alliances and positions that the robot
@@ -108,54 +108,54 @@ public:
      * This is used by the robot program to change its behaviour depending on
      * the alliance (Blue or Red) and position (1, 2 & 3) of the robot.
      */
-    Q_INVOKABLE QStringList alliances();
+    Q_INVOKABLE QStringList alliances ();
 
     /**
      * Returns a list with the available protocols that we can use to drive
      * a FRC robot.
      */
-    Q_INVOKABLE QStringList protocols();
+    Q_INVOKABLE QStringList protocols ();
 
     /**
      * Returns the IP address of the robot radio
      */
-    Q_INVOKABLE QString radioAddress();
+    Q_INVOKABLE QString radioAddress ();
 
     /**
      * Returns the network address of the robot
      */
-    Q_INVOKABLE QString robotAddress();
+    Q_INVOKABLE QString robotAddress ();
 
     /**
      * Returns the current control mode of the robot
      */
-    Q_INVOKABLE DS_ControlMode controlMode();
+    Q_INVOKABLE DS_ControlMode controlMode ();
 
     /**
      * Returns \c true if the robot reports that the user code is loaded
      */
-    Q_INVOKABLE bool robotHasCode();
+    Q_INVOKABLE bool robotHasCode ();
 
     /**
      * Returns \c true if the DS is connected to the robot
      */
-    Q_INVOKABLE bool networkAvailable();
+    Q_INVOKABLE bool networkAvailable ();
 
 public slots:
     /**
      * Initializes the class and the interlal loop/refresh system
      */
-    Q_INVOKABLE void init();
+    Q_INVOKABLE void init ();
 
     /**
      * Reboots the robot using the specified protocol
      */
-    Q_INVOKABLE void reboot();
+    Q_INVOKABLE void reboot ();
 
     /**
      * Restarts the robot code using the specified protocol
      */
-    Q_INVOKABLE void restartCode();
+    Q_INVOKABLE void restartCode ();
 
     /**
      * Simulates a timed match with the input time values (in seconds)
@@ -219,7 +219,7 @@ public slots:
     /**
      * Un-registers all the joysticks from the Driver Station
      */
-    Q_INVOKABLE void clearJoysticks();
+    Q_INVOKABLE void clearJoysticks ();
 
     /**
      * Updates the \a angle of the selected \a hat in the specified \a josytick
@@ -382,14 +382,14 @@ private slots:
     /**
      * @brief sendRobotPackets
      */
-    void sendRobotPackets();
+    void sendRobotPackets ();
 
     /**
      * @internal
      * Resets the internal values of the library when we disconnect from the
      * robot.
      */
-    void resetInternalValues();
+    void resetInternalValues ();
 
     /**
      * @internal
@@ -404,7 +404,7 @@ private slots:
      *     - The robot code status has changed
      *     - The control mode of the robot has changed
      */
-    QString getStatus();
+    QString getStatus ();
 
     /**
      * @internal

@@ -23,30 +23,30 @@
 #include "LibDS/DS_Timers.h"
 #include "LibDS/DS_ElapsedTime.h"
 
-DS_ElapsedTime::DS_ElapsedTime()
+DS_ElapsedTime::DS_ElapsedTime ()
 {
-    stop();
-    calculateElapsedTime();
+    stop ();
+    calculateElapsedTime ();
 
-    connect (DS_Timers::getInstance(), SIGNAL (timeout100()),
-             this,                     SLOT   (calculateElapsedTime()));
+    connect (DS_Timers::getInstance (), SIGNAL (timeout100 ()),
+             this,                     SLOT   (calculateElapsedTime ()));
 }
 
-void DS_ElapsedTime::stop()
+void DS_ElapsedTime::stop ()
 {
     m_enabled = false;
 }
 
-void DS_ElapsedTime::reset()
+void DS_ElapsedTime::reset ()
 {
     m_enabled = true;
-    m_time.restart();
+    m_time.restart ();
 }
 
-void DS_ElapsedTime::calculateElapsedTime()
+void DS_ElapsedTime::calculateElapsedTime ()
 {
     if (m_enabled) {
-        int msec = m_time.elapsed();
+        int msec = m_time.elapsed ();
         int secs = (msec / 1000);
         int mins = (secs / 60) % 60;
 

@@ -22,7 +22,7 @@
 
 #include "Extra/Discovery.h"
 
-NetworkDiscovery::NetworkDiscovery()
+NetworkDiscovery::NetworkDiscovery ()
 {
     m_address = "";
 }
@@ -34,9 +34,9 @@ NetworkDiscovery::AddressType NetworkDiscovery::getAddressType (QString address)
         return mDNS_Address;
 
     /* Address has 4 dots and respects the character length range of an IPv4 address*/
-    else if (address.split (".").count() == 4
-             && address.length() <= 15
-             && address.length() >= 7)
+    else if (address.split (".").count () == 4
+             && address.length () <= 15
+             && address.length () >= 7)
         return IPv4_Address;
 
     /* Something different */
@@ -98,12 +98,12 @@ void NetworkDiscovery::getIp (QString address, AddressType type,
 void NetworkDiscovery::onLookupFinished (QHostInfo info)
 {
     /* The response was invalid or we haven't set a target */
-    if (info.addresses().isEmpty() || m_address.isEmpty())
+    if (info.addresses ().isEmpty () || m_address.isEmpty ())
         return;
 
     /* Iterate to the address list until we find an IPv4 address */
-    for (int i = 0; i < info.addresses().count(); ++i) {
-        QString ip = info.addresses().at (i).toString();
+    for (int i = 0; i < info.addresses ().count (); ++i) {
+        QString ip = info.addresses ().at (i).toString ();
 
         if (getAddressType (ip) == IPv4_Address) {
             emit ipFound (m_address, ip);

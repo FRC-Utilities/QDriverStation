@@ -41,7 +41,7 @@ public:
     /**
      * Resets the user settings of the application
      */
-    static void clear();
+    static void clear ();
 
     /**
      * Saves the specified \a value to the specified \a key

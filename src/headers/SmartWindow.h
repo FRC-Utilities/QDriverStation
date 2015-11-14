@@ -44,7 +44,7 @@ public:
     /**
      * Initializes the window and moves it to its previous position
      */
-    explicit SmartWindow();
+    explicit SmartWindow ();
 
     /**
      * Represents the available window display modes
@@ -54,17 +54,17 @@ public:
     /**
      * Returns \c true if the window mode is 'Docked'
      */
-    bool isDocked();
+    bool isDocked ();
 
     /**
      * Returns \c true if the window is set to have the smallest size possible
      */
-    bool isFixedSize();
+    bool isFixedSize ();
 
     /**
      * Returns \c true if the window is set to ask the user to confirm close
      */
-    bool isPromptOnQuit();
+    bool isPromptOnQuit ();
 
 protected:
     /**
@@ -110,7 +110,7 @@ private slots:
      *
      * This function is called periodically by the window
      */
-    void resizeToFit();
+    void resizeToFit ();
 
 private:
     /**

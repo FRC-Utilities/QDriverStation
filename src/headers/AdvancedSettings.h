@@ -44,7 +44,7 @@ public:
      * Configures the user interface and the dialog and loads the saved
      * settings in the UI controls
      */
-    explicit AdvancedSettings();
+    explicit AdvancedSettings ();
 
     /**
      * This enum represents the different colors that compose the palette
@@ -62,27 +62,27 @@ public:
      * Updates the placeholder text of the custom address to match current
      * team number
      */
-    void updatePlaceholder();
+    void updatePlaceholder ();
 
     /**
      * Reads settings and updates dialog UI accordingly
      */
-    void readSettings();
+    void readSettings ();
 
     /**
      * Changes settings based on the values of the UI elements
      */
-    void applySettings();
+    void applySettings ();
 
     /**
      * Resets all the settings that are managed by this dialog to their default
      * values
      */
-    void resetSettings();
+    void resetSettings ();
 
 signals:
-    void updateColors();
-    void settingsChanged();
+    void updateColors ();
+    void settingsChanged ();
 
 private:
     /**
@@ -105,31 +105,31 @@ private slots:
      * @internal
      * Changes the palette of the application based on current settings
      */
-    void loadApplicationColors();
+    void loadApplicationColors ();
 
     /**
      * @internal
      * Clears the settings and re-loads them
      */
-    void onResetClicked();
+    void onResetClicked ();
 
     /**
      * @internal
      * Applies the settings, updates the UI and closes the dialog
      */
-    void onApplyClicked();
+    void onApplyClicked ();
 
     /**
      * @internal
      * Resets the UI elements to match previous settings and closes the dialog
      */
-    void onCancelClicked();
+    void onCancelClicked ();
 
     /**
      * @internal
      * Shows a color dialog that allows the user to change a color of the UI
      */
-    void onSelectorClicked();
+    void onSelectorClicked ();
 
     /**
      * @internal

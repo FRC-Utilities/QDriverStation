@@ -22,9 +22,9 @@
 
 #include "LibDS/DS_Common.h"
 
-QString DS_GetTimezoneCode()
+QString DS_GetTimezoneCode ()
 {
-    switch (QDateTime::currentDateTime().offsetFromUtc() / 3600) {
+    switch (QDateTime::currentDateTime ().offsetFromUtc () / 3600) {
     case -11:
         return "BST11BDT";
         break;
@@ -106,7 +106,7 @@ QString DS_GetStaticIp (int team, int host)
 {
     QString string = QString ("%1").arg (team);
 
-    switch (string.length()) {
+    switch (string.length ()) {
     case 1:
         string = "00.0" + string;
         break;
@@ -159,9 +159,9 @@ QByteArray DS_GetSocketData (QUdpSocket* socket)
 {
     QByteArray data;
 
-    while (socket->hasPendingDatagrams()) {
-        data.resize (socket->pendingDatagramSize());
-        socket->readDatagram (data.data(), data.size());
+    while (socket->hasPendingDatagrams ()) {
+        data.resize (socket->pendingDatagramSize ());
+        socket->readDatagram (data.data (), data.size ());
     }
 
     return data;

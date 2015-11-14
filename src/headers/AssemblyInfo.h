@@ -40,15 +40,15 @@
 class AssemblyInfo
 {
 public:
-    static QString name();
-    static QString major();
-    static QString minor();
-    static QString build();
-    static QString state();
-    static QString version();
-    static QString organization();
-    static QString organizationDomain();
-    static QString buildDateTime();
+    static QString name ();
+    static QString major ();
+    static QString minor ();
+    static QString build ();
+    static QString state ();
+    static QString version ();
+    static QString organization ();
+    static QString organizationDomain ();
+    static QString buildDateTime ();
 };
 
 #endif

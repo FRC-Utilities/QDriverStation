@@ -41,7 +41,7 @@ public:
     /**
      * Starts the processor time querying process on Microsoft Windows
      */
-    static void init();
+    static void init ();
 
     /**
      * Uses the native API calls of the target operating system to obtain the
@@ -52,7 +52,7 @@ public:
      *
      * @return an \c int between 0 and 100 that represents the CPU usage
      */
-    static int getUsage();
+    static int getUsage ();
 };
 
 #endif

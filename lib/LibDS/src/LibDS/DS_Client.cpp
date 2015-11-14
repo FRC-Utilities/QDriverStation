@@ -23,10 +23,10 @@
 #include "LibDS/DS_Client.h"
 #include "LibDS/DS_Common.h"
 
-DS_Client::DS_Client()
+DS_Client::DS_Client ()
 {
-    connect (&m_clientSocket, SIGNAL (readyRead()),
-             this,            SLOT   (onDataReceived()));
+    connect (&m_clientSocket, SIGNAL (readyRead ()),
+             this,            SLOT   (onDataReceived ()));
 }
 
 void DS_Client::sendToRobot (QByteArray data)
@@ -49,7 +49,7 @@ void DS_Client::setRobotAddress (QString address)
     m_address = address;
 }
 
-void DS_Client::onDataReceived()
+void DS_Client::onDataReceived ()
 {
     emit dataReceived (DS_GetSocketData (&m_clientSocket));
 }
