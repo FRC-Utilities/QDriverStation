@@ -24,7 +24,7 @@
 #ifndef _LIB_DS_PROTOCOL_2015_H
 #define _LIB_DS_PROTOCOL_2015_H
 
-#include "LibDS/DS_Protocol.h"
+#include "LibDS/DS_ProtocolBase.h"
 
 /**
  * \namespace DS_Protocol2015_Definitions
@@ -33,44 +33,44 @@
 namespace DS_Protocol2015_Definitions
 {
 /* Control Modes */
-const short CONTROL_DISABLED = 0x01u;
-const short CONTROL_TELEOP   = 0x04u;
-const short CONTROL_TEST     = 0x05u;
-const short CONTROL_AUTO     = 0x06u;
-const short CONTROL_ESTOP    = 0x80u;
-const short CONTROL_NO_COMM  = 0x02u;
+const unsigned short CONTROL_DISABLED = 0x01;
+const unsigned short CONTROL_TELEOP   = 0x04;
+const unsigned short CONTROL_TEST     = 0x05;
+const unsigned short CONTROL_AUTO     = 0x06;
+const unsigned short CONTROL_ESTOP    = 0x80;
+const unsigned short CONTROL_NO_COMM  = 0x02;
 
 /* Headers for client packets */
-const short HEADER_GENERAL  = 0x01u;
-const short HEADER_JOYSTICK = 0x0Cu;
-const short HEADER_TIME     = 0x0Fu;
-const short HEADER_TIMEZONE = 0x10u;
+const unsigned short HEADER_GENERAL  = 0x01;
+const unsigned short HEADER_JOYSTICK = 0x0C;
+const unsigned short HEADER_TIME     = 0x0F;
+const unsigned short HEADER_TIMEZONE = 0x10;
 
 /* Robot instructions */
-const short STATUS_OK        = 0x10u;
-const short STATUS_NULL      = 0x00u;
-const short STATUS_REBOOT    = 0x18u;
-const short STATUS_KILL_CODE = 0x14u;
+const unsigned short STATUS_OK        = 0x10;
+const unsigned short STATUS_NULL      = 0x00;
+const unsigned short STATUS_REBOOT    = 0x18;
+const unsigned short STATUS_KILL_CODE = 0x14;
 
 /* Robot program statuses */
-const short PROGRAM_NO_CODE      = 0x00u;
-const short PROGRAM_AUTO         = 0x30u;
-const short PROGRAM_DISABLED     = 0x31u;
-const short PROGRAM_TELEOP       = 0x32u;
-const short PROGRAM_TEST         = 0x38u;
-const short PROGRAM_REQUEST_TIME = 0x01u;
+const unsigned short PROGRAM_NO_CODE      = 0x00;
+const unsigned short PROGRAM_AUTO         = 0x30;
+const unsigned short PROGRAM_DISABLED     = 0x31;
+const unsigned short PROGRAM_TELEOP       = 0x32;
+const unsigned short PROGRAM_TEST         = 0x38;
+const unsigned short PROGRAM_REQUEST_TIME = 0x01;
 
 /* Alliance codes */
-const short ALLIANCE_RED1  = 0x00u;
-const short ALLIANCE_RED2  = 0x01u;
-const short ALLIANCE_RED3  = 0x02u;
-const short ALLIANCE_BLUE1 = 0x03u;
-const short ALLIANCE_BLUE2 = 0x04u;
-const short ALLIANCE_BLUE3 = 0x05u;
+const unsigned short ALLIANCE_RED1  = 0x00;
+const unsigned short ALLIANCE_RED2  = 0x01;
+const unsigned short ALLIANCE_RED3  = 0x02;
+const unsigned short ALLIANCE_BLUE1 = 0x03;
+const unsigned short ALLIANCE_BLUE2 = 0x04;
+const unsigned short ALLIANCE_BLUE3 = 0x05;
 
 /* Tags, used for reading additional data from robot packets */
-const short TAG_CPU = 0x05u;
-const short TAG_RAM = 0x06u;
+const unsigned short TAG_CPU = 0x05;
+const unsigned short TAG_RAM = 0x06;
 
 /* Robot information paths */
 const QString FTP_PCM_PATH = "/tmp/frc_versions/PCM-0-versions.ini";
@@ -83,40 +83,40 @@ const QString FTP_LIB_PATH = "/tmp/frc_versions/FRC_Lib_Version.ini";
  *
  * Implements the 2015 communication protocol.
  */
-class LIB_DS_DECL DS_Protocol2015 : public DS_Protocol
+class LIB_DS_DECL DS_Protocol2015 : public DS_ProtocolBase
 {
     Q_OBJECT
 
 public:
-    explicit DS_Protocol2015 ();
+    explicit DS_Protocol2015();
 
 public slots:
     /**
      * Changes the status byte to instruct the roboRIO to reboot
      */
-    void reboot ();
+    void reboot();
 
     /**
      * Returns the port in the roboRIO in which we send DS packets
      */
-    int robotPort ();
+    int robotPort();
 
     /**
      * Returns the port in which we receive data from the roboRIO
      */
-    int clientPort ();
+    int clientPort();
 
     /**
      * Changes the status byte to instruct the roboRIO to kill the user code
      * and start it again
      */
-    void restartCode ();
+    void restartCode();
 
     /**
      * Generates a client packet, which is later sent to the robot.
      * If the control mode is in TeleOp, we also send joystick input data
      */
-    QByteArray getClientPacket ();
+    QByteArray getClientPacket();
 
 private:
     /**
@@ -143,17 +143,17 @@ private slots:
      * Resets the internal values, disables the robot and begins
      * searching for it over the network
      */
-    void resetProtocol ();
+    void resetProtocol();
 
     /**
      * Returns the address of the robot radio (e.g 10.xx.yy.1)
      */
-    QString defaultRadioAddress ();
+    QString defaultRadioAddress();
 
     /**
      * Returns the address of the roboRIO (e.g roboRIO-xxyy.local)
      */
-    QString defaultRobotAddress ();
+    QString defaultRobotAddress();
 
     /**
      * Downloads information about the roboRIO, the PCM and PDP firmware
@@ -162,18 +162,18 @@ private slots:
      * This function is called the first time we receive a packet from the
      * roboRIO
      */
-    void downloadRobotInformation ();
+    void downloadRobotInformation();
 
     /**
      * Reads joystick input and generates a packet that will be sent to
      * the robot
      */
-    QByteArray generateJoystickData ();
+    QByteArray generateJoystickData();
 
     /**
      * Generates a timezone section data to be sent to the robot when needed
      */
-    QByteArray generateTimezoneData ();
+    QByteArray generateTimezoneData();
 
     /**
      * Reads and interprets packets received from the robot.

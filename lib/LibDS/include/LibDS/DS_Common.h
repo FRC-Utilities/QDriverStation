@@ -90,7 +90,7 @@ QByteArray  LIB_DS_DECL DS_ToBytes (t input)
  * Returns the current timezone code by calculating the difference between
  * the system timezone and the UTC timezone
  */
-QString LIB_DS_DECL DS_GetTimezoneCode ();
+QString LIB_DS_DECL DS_GetTimezoneCode();
 
 /**
  * Returns a calculated IP address based on the team address.

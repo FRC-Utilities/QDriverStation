@@ -46,13 +46,13 @@ class VirtualJoystick : public QDialog
     Q_OBJECT
 
 public:
-    VirtualJoystick ();
+    VirtualJoystick();
 
 public slots:
     /**
      * Loads the saved settings on the UI
      */
-    void readSettings ();
+    void readSettings();
 
     /**
      * Returns the number of axes for the selected joystick
@@ -155,7 +155,7 @@ private slots:
     /**
      * Resizes the window to a minimum size
      */
-    void resizeToFit ();
+    void resizeToFit();
 
     /**
      * Saves the new range value on the settings registry

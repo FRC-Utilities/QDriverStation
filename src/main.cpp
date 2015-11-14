@@ -54,16 +54,16 @@ int main (int argc, char* argv[])
 
     /* Configure application options */
     app.setWindowIcon (_APP_ICON_CODE);
-    app.setApplicationName (AssemblyInfo::name ());
+    app.setApplicationName (AssemblyInfo::name());
     app.setStyle (QStyleFactory::create ("fusion"));
-    app.setApplicationVersion (AssemblyInfo::version ());
-    app.setOrganizationName (AssemblyInfo::organization ());
-    app.setOrganizationDomain (AssemblyInfo::organizationDomain ());
+    app.setApplicationVersion (AssemblyInfo::version());
+    app.setOrganizationName (AssemblyInfo::organization());
+    app.setOrganizationDomain (AssemblyInfo::organizationDomain());
     app.setFont (QFont ("Quicksand", _PT_SIZE, -1, false));
 
     /* The window will show itself when initialized */
     MainWindow window;
     Q_UNUSED (window);
 
-    return app.exec ();
+    return app.exec();
 }

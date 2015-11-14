@@ -46,7 +46,7 @@ class GamepadManager : public QObject
     Q_OBJECT
 
 public:
-    static GamepadManager* getInstance ();
+    static GamepadManager* getInstance();
 
 public slots:
     /**
@@ -73,7 +73,7 @@ public slots:
      * Returns an ordered \c QStringList with the names and IDs of the
      * attached joysticks
      */
-    QStringList joystickList ();
+    QStringList joystickList();
 
     /**
      * Initializes the event loop system.
@@ -81,7 +81,7 @@ public slots:
      * This function is not called in the constructor to give the application
      * time to initialize its user interface before sending signals.
      */
-    void init ();
+    void init();
 
     /**
      * Changes the time interval between the SDL Event reader calls
@@ -185,8 +185,8 @@ private:
     int getDynamicId (int js);
 
 protected:
-    explicit GamepadManager ();
-    ~GamepadManager ();
+    explicit GamepadManager();
+    ~GamepadManager();
 
     static GamepadManager* s_instance;
 
@@ -197,7 +197,7 @@ private slots:
      * When the function finishes reading SDL events, it waits some time and
      * calls itself again to continue the game loop.
      */
-    void readSdlEvents ();
+    void readSdlEvents();
 
     /**
      * @internal

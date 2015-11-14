@@ -26,7 +26,7 @@
 
 #include "DS_Common.h"
 
-class DS_Protocol;
+class DS_ProtocolBase;
 
 /**
  * \class DS_RobotManager
@@ -43,29 +43,29 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject
     Q_OBJECT
 
 public:
-    explicit DS_ProtocolManager ();
-    ~DS_ProtocolManager ();
+    explicit DS_ProtocolManager();
+    ~DS_ProtocolManager();
 
     /**
      * Returns the current protocol in use
      */
-    DS_Protocol* protocol () const;
+    DS_ProtocolBase* protocol() const;
 
     /**
      * Returns \c true if the current protocol is initialized
      */
-    bool protocolIsValid () const;
+    bool protocolIsValid() const;
 
 public slots:
     /**
      * Changes the protocol that we use to communicate with the robot
      */
-    void setProtocol (DS_Protocol* protocol);
+    void setProtocol (DS_ProtocolBase* protocol);
 
     /**
      * Un-registeres all the joysticks from the Driver Station
      */
-    void clearJoysticks ();
+    void clearJoysticks();
 
     /**
      * Registers a new joystick and its characteristics to the Driver Station
@@ -172,7 +172,7 @@ private:
      * The current communication protocol being used by the library.
      * This variable is changed with the \c setProtocol() function.
      */
-    DS_Protocol* m_protocol;
+    DS_ProtocolBase* m_protocol;
 
     /**
      * The list with the registered joysticks and their respective data

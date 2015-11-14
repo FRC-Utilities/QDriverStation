@@ -39,7 +39,7 @@ class LIB_DS_DECL DS_Client : public QObject
     Q_OBJECT
 
 public:
-    explicit DS_Client ();
+    explicit DS_Client();
 
 public slots:
     /**
@@ -79,7 +79,7 @@ private slots:
      * @internal
      * Reads the packet data that the client received from the robot
      */
-    void onDataReceived ();
+    void onDataReceived();
 };
 
 #endif

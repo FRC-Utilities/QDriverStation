@@ -46,7 +46,7 @@ class LIB_DS_DECL DS_Watchdog : public QObject
     Q_OBJECT
 
 public:
-    explicit DS_Watchdog ();
+    explicit DS_Watchdog();
 
 public slots:
     /**
@@ -56,7 +56,7 @@ public slots:
      *
      * Think of this as "kicking the dog".
      */
-    void restart ();
+    void restart();
 
 signals:
     /**
@@ -65,7 +65,7 @@ signals:
      * operation or to initiate corrective action in the case you
      * receive this signal
      */
-    void timeout ();
+    void timeout();
 
 private:
     /**

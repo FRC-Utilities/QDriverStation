@@ -63,7 +63,7 @@
 #  define FONT_NETCONSOLE QFont ("Inconsolata", 13)
 #endif
 
-MainWindow::MainWindow ()
+MainWindow::MainWindow()
 {
     /* Initialize private members */
     ui = new Ui::MainWindow;
@@ -74,24 +74,24 @@ MainWindow::MainWindow ()
     m_joysticksWidget = new JoysticksWidget (ui->JoysticksTab);
 
     /* Configure application appearance & behavior */
-    connectSlots ();
-    configureWidgetAppearance ();
+    connectSlots();
+    configureWidgetAppearance();
 
     /* Initialize the DriverStation processes */
-    DriverStation::getInstance ()->init ();
+    DriverStation::getInstance()->init();
 
     /* Initial tasks, such as getting team number or downloading drivers */
-    setTeamNumber (InitTasks::getTeamNumber ());
-    InitTasks::executeFirstRunTasks ();
+    setTeamNumber (InitTasks::getTeamNumber());
+    InitTasks::executeFirstRunTasks();
 
     /* Read settings & show window */
-    readSettings ();
-    redrawWidgets ();
-    ui->WindowDocked->setChecked (Settings::get ("Docked", false).toBool ());
-    setWindowMode (ui->WindowDocked->isChecked () ? Docked : Normal);
+    readSettings();
+    redrawWidgets();
+    ui->WindowDocked->setChecked (Settings::get ("Docked", false).toBool());
+    setWindowMode (ui->WindowDocked->isChecked() ? Docked : Normal);
 }
 
-MainWindow::~MainWindow ()
+MainWindow::~MainWindow()
 {
     delete ui;
     delete m_updater;
@@ -104,22 +104,22 @@ MainWindow::~MainWindow ()
 // LONG & UGLY FUNCTIONS
 //------------------------------------------------------------------------------
 
-void MainWindow::connectSlots ()
+void MainWindow::connectSlots()
 {
     /* Joystick information tab */
-    ui->JoysticksTab->layout ()->addWidget (m_joysticksWidget);
+    ui->JoysticksTab->layout()->addWidget (m_joysticksWidget);
     updateJoysticksTab (false);
-    connect (m_joysticksWidget, SIGNAL (joystickRemoved ()),
-             this,              SLOT   (onJoystickRemoved ()));
+    connect (m_joysticksWidget, SIGNAL (joystickRemoved()),
+             this,              SLOT   (onJoystickRemoved()));
     connect (m_joysticksWidget, SIGNAL (statusChanged (bool)),
              this,              SLOT   (updateJoysticksTab (bool)));
     connect (m_joysticksWidget, SIGNAL (statusChanged (bool)),
              ui->Joysticks,     SLOT   (setChecked (bool)));
-    connect (ui->KeysButton,    SIGNAL (clicked ()),
-             m_joysticksWidget, SLOT   (showKeyboardWindow ()));
+    connect (ui->KeysButton,    SIGNAL (clicked()),
+             m_joysticksWidget, SLOT   (showKeyboardWindow()));
 
     /* DriverStation to MainWindow */
-    m_ds = DriverStation::getInstance ();
+    m_ds = DriverStation::getInstance();
     connect (m_ds, SIGNAL (codeChanged (bool)),
              this, SLOT   (onCodeChanged (bool)));
     connect (m_ds, SIGNAL (communicationsChanged (bool)),
@@ -140,67 +140,67 @@ void MainWindow::connectSlots ()
              this, SLOT   (onDiskUsageChanged (int)));
     connect (m_ds, SIGNAL (controlModeChanged (DS_ControlMode)),
              this, SLOT   (onControlModeChanged (DS_ControlMode)));
-    connect (DS_Timers::getInstance (), SIGNAL (timeout1000 ()),
-             this,                     SLOT   (updatePcStatusWidgets ()));
+    connect (DS_Timers::getInstance(), SIGNAL (timeout1000()),
+             this,                     SLOT   (updatePcStatusWidgets()));
 
     /* DriverStation to MainWindow UI */
     connect (m_ds,               SIGNAL (newMessage (QString)),
              ui->NetConsoleEdit, SLOT   (append               (QString)));
     connect (m_ds,               SIGNAL (elapsedTimeChanged   (QString)),
              ui->ElapsedTime,    SLOT   (setText              (QString)));
-    connect (ui->NetConsoleEdit, SIGNAL (textChanged ()),
-             this,               SLOT   (scrollNetConsole ()));
+    connect (ui->NetConsoleEdit, SIGNAL (textChanged()),
+             this,               SLOT   (scrollNetConsole()));
 
     /* UI to window logic */
-    connect (ui->Website,            SIGNAL (clicked ()),
-             this,                   SLOT   (onWebsiteClicked ()));
-    connect (ui->EnableButton,       SIGNAL (clicked ()),
-             this,                   SLOT   (onEnabledClicked ()));
-    connect (ui->DisableButton,      SIGNAL (clicked ()),
-             this,                   SLOT   (onDisabledClicked ()));
-    connect (ui->RebootRioButton,    SIGNAL (clicked ()),
-             this,                   SLOT   (onRebootClicked ()));
-    connect (ui->WindowDocked,       SIGNAL (clicked ()),
-             this,                   SLOT   (onWindowModeChanged ()));
-    connect (ui->WindowNormal,       SIGNAL (clicked ()),
-             this,                   SLOT   (onWindowModeChanged ()));
-    connect (ui->RestartCodeButton,  SIGNAL (clicked ()),
-             this,                   SLOT   (onRestartClicked ()));
+    connect (ui->Website,            SIGNAL (clicked()),
+             this,                   SLOT   (onWebsiteClicked()));
+    connect (ui->EnableButton,       SIGNAL (clicked()),
+             this,                   SLOT   (onEnabledClicked()));
+    connect (ui->DisableButton,      SIGNAL (clicked()),
+             this,                   SLOT   (onDisabledClicked()));
+    connect (ui->RebootRioButton,    SIGNAL (clicked()),
+             this,                   SLOT   (onRebootClicked()));
+    connect (ui->WindowDocked,       SIGNAL (clicked()),
+             this,                   SLOT   (onWindowModeChanged()));
+    connect (ui->WindowNormal,       SIGNAL (clicked()),
+             this,                   SLOT   (onWindowModeChanged()));
+    connect (ui->RestartCodeButton,  SIGNAL (clicked()),
+             this,                   SLOT   (onRestartClicked()));
     connect (ui->RobotModeGroup,     SIGNAL (buttonClicked       (int)),
              this,                   SLOT   (onRobotModeChanged  (int)));
     connect (ui->TeamNumberSpin,     SIGNAL (valueChanged        (int)),
              this,                   SLOT   (setTeamNumber       (int)));
     connect (ui->PracticeDelay,      SIGNAL (valueChanged        (int)),
-             this,                   SLOT   (onPracticeValuesChanged ()));
+             this,                   SLOT   (onPracticeValuesChanged()));
     connect (ui->PracticeTeleOp,     SIGNAL (valueChanged        (int)),
-             this,                   SLOT   (onPracticeValuesChanged ()));
+             this,                   SLOT   (onPracticeValuesChanged()));
     connect (ui->PracticeEndGame,    SIGNAL (valueChanged        (int)),
-             this,                   SLOT   (onPracticeValuesChanged ()));
+             this,                   SLOT   (onPracticeValuesChanged()));
     connect (ui->PracticeCountdown,  SIGNAL (valueChanged        (int)),
-             this,                   SLOT   (onPracticeValuesChanged ()));
+             this,                   SLOT   (onPracticeValuesChanged()));
     connect (ui->PracticeAutonomous, SIGNAL (valueChanged        (int)),
-             this,                   SLOT   (onPracticeValuesChanged ()));
+             this,                   SLOT   (onPracticeValuesChanged()));
 
     /* Advanced settings window */
-    connect (ui->SettingsButton, SIGNAL (clicked ()),
-             m_advancedSettings, SLOT   (show ()));
-    connect (m_advancedSettings, SIGNAL (updateColors ()),
-             this,               SLOT   (redrawWidgets ()));
+    connect (ui->SettingsButton, SIGNAL (clicked()),
+             m_advancedSettings, SLOT   (show()));
+    connect (m_advancedSettings, SIGNAL (updateColors()),
+             this,               SLOT   (redrawWidgets()));
 }
 
-void MainWindow::configureWidgetAppearance ()
+void MainWindow::configureWidgetAppearance()
 {
     ui->TeleOp->setChecked (true);
     ui->DisableButton->setChecked (true);
 
     /* Rotate the text (or icons) in the tabs */
-    ui->LeftTab->tabBar ()->setStyle (m_tabStyle);
-    ui->RightTab->tabBar ()->setStyle (m_tabStyle);
+    ui->LeftTab->tabBar()->setStyle (m_tabStyle);
+    ui->RightTab->tabBar()->setStyle (m_tabStyle);
 
     /* Set the icon size of the tabs and buttons */
     QFont fontAwesome;
     fontAwesome.setFamily     ("FontAwesome");
-    fontAwesome.setPointSize  (centralWidget ()->font ().pointSize () * 1.4);
+    fontAwesome.setPointSize  (centralWidget()->font().pointSize() * 1.4);
     ui->LeftTab->setFont      (fontAwesome);
     ui->RightTab->setFont     (fontAwesome);
     ui->CopyButton->setFont   (fontAwesome);
@@ -214,8 +214,8 @@ void MainWindow::configureWidgetAppearance ()
     QFont largeIconFont;
     smallIconFont.setFamily     ("FontAwesome");
     largeIconFont.setFamily     ("FontAwesome");
-    smallIconFont.setPointSize  (centralWidget ()->font ().pointSize () * 1.2);
-    largeIconFont.setPointSize  (centralWidget ()->font ().pointSize () * 3.5);
+    smallIconFont.setPointSize  (centralWidget()->font().pointSize() * 1.2);
+    largeIconFont.setPointSize  (centralWidget()->font().pointSize() * 3.5);
     ui->PlugIcon->setFont       (smallIconFont);
     ui->CanIcon->setFont        (largeIconFont);
     ui->VoltageIcon->setFont    (largeIconFont);
@@ -223,8 +223,8 @@ void MainWindow::configureWidgetAppearance ()
 
     /* Restore the default application font to the widgets inside tabs */
     QFont defaultFont;
-    defaultFont.setFamily       (centralWidget ()->font ().family ());
-    defaultFont.setPointSize    (centralWidget ()->font ().pointSize ());
+    defaultFont.setFamily       (centralWidget()->font().family());
+    defaultFont.setPointSize    (centralWidget()->font().pointSize());
     ui->AboutTab->setFont       (defaultFont);
     ui->PowerTab->setFont       (defaultFont);
     ui->SetupTab->setFont       (defaultFont);
@@ -236,14 +236,14 @@ void MainWindow::configureWidgetAppearance ()
     /* Make some labels have a bold and bigger font */
     QFont boldFont;
     boldFont.setBold          (true);
-    boldFont.setPointSize     (boldFont.pointSize () * 1.4);
+    boldFont.setPointSize     (boldFont.pointSize() * 1.4);
     ui->AppName->setFont      (boldFont);
     ui->VoltageLabel->setFont (boldFont);
 
     /* Configure the status label font */
     QFont statusFont;
     statusFont.setBold         (true);
-    statusFont.setPointSize    (statusFont.pointSize () * 1.4);
+    statusFont.setPointSize    (statusFont.pointSize() * 1.4);
     ui->TeamLabel->setFont     (statusFont);
     ui->TeamNumber->setFont    (statusFont);
     ui->StatusLabel->setFont   (statusFont);
@@ -252,18 +252,18 @@ void MainWindow::configureWidgetAppearance ()
     ui->DisableButton->setFont (statusFont);
 
     /* Configure the 'About' tab */
-    ui->AppName->setText (AssemblyInfo::name ());
-    ui->DsVersion->setText (AssemblyInfo::version ());
+    ui->AppName->setText (AssemblyInfo::name());
+    ui->DsVersion->setText (AssemblyInfo::version());
     ui->AppVersion->setText (QString ("%1 (%2)")
-                             .arg (AssemblyInfo::version ())
-                             .arg (AssemblyInfo::buildDateTime ()));
+                             .arg (AssemblyInfo::version())
+                             .arg (AssemblyInfo::buildDateTime()));
 
     /* Configure the NetConsole */
     ui->NetConsoleEdit->setFont (FONT_NETCONSOLE);
-    connect (ui->ClearButton,    SIGNAL (clicked ()),
-             ui->NetConsoleEdit, SLOT   (clear ()));
-    connect (ui->CopyButton,     SIGNAL (clicked ()),
-             this,               SLOT   (onCopyClicked ()));
+    connect (ui->ClearButton,    SIGNAL (clicked()),
+             ui->NetConsoleEdit, SLOT   (clear()));
+    connect (ui->CopyButton,     SIGNAL (clicked()),
+             this,               SLOT   (onCopyClicked()));
 
     /* Configure the info frame */
     QFontMetrics metrics (boldFont);
@@ -272,41 +272,41 @@ void MainWindow::configureWidgetAppearance ()
     /* Configure the enable/disable buttons */
     ui->DisableButton->setStyleSheet   (CSS_DISABLED_CHECK);
     ui->EnableButton->setStyleSheet    (CSS_ENABLED_UNCHECK);
-    ui->EnableButton->setFixedHeight   (metrics.height () * 2.8);
-    ui->DisableButton->setFixedHeight  (metrics.height () * 2.8);
+    ui->EnableButton->setFixedHeight   (metrics.height() * 2.8);
+    ui->DisableButton->setFixedHeight  (metrics.height() * 2.8);
 
     /* Configure the application buttons */
-    QSize utilSize = QSize (metrics.height () * 1.9, metrics.height () * 1.9);
+    QSize utilSize = QSize (metrics.height() * 1.9, metrics.height() * 1.9);
     ui->KeysButton->setFixedSize     (utilSize);
     ui->CloseButton->setFixedSize    (utilSize);
     ui->SettingsButton->setFixedSize (utilSize);
 
     /* Configure the progress bars */
-    ui->PcCpuProgress->setFixedHeight     (utilSize.height () * 0.45);
-    ui->PcBatteryProgress->setFixedHeight (utilSize.height () * 0.45);
+    ui->PcCpuProgress->setFixedHeight     (utilSize.height() * 0.45);
+    ui->PcBatteryProgress->setFixedHeight (utilSize.height() * 0.45);
     ui->PcCpuProgress->setFixedWidth      (metrics.width ("-------") *
                                            SCROLLBARS_CONST);
     ui->PcBatteryProgress->setFixedWidth  (metrics.width ("-------") *
                                            SCROLLBARS_CONST);
 
     /* Populate list-related widgets */
-    ui->StationCombo->clear ();
-    ui->ProtocolCombo->clear ();
-    ui->StationCombo->addItems (m_ds->alliances ());
-    ui->ProtocolCombo->addItems (m_ds->protocols ());
-    ui->DbCombo->addItems (Dashboard::getInstance ()->getAvailableDashboards ());
+    ui->StationCombo->clear();
+    ui->ProtocolCombo->clear();
+    ui->StationCombo->addItems (m_ds->alliances());
+    ui->ProtocolCombo->addItems (m_ds->protocols());
+    ui->DbCombo->addItems (Dashboard::getInstance()->getAvailableDashboards());
     ui->DbCombo->setCurrentIndex (
-        Dashboard::getInstance ()->getCurrentDashboard ());
+        Dashboard::getInstance()->getCurrentDashboard());
 }
 
-void MainWindow::readSettings ()
+void MainWindow::readSettings()
 {
     /* Read practice values */
-    int d = Settings::get ("Practice Delay", 1).toInt ();
-    int t = Settings::get ("Practice TeleOp", 100).toInt ();
-    int e = Settings::get ("Practice End Game", 20).toInt ();
-    int c = Settings::get ("Practice Countdown", 5).toInt ();
-    int a = Settings::get ("Practice Autonomous", 15).toInt ();
+    int d = Settings::get ("Practice Delay", 1).toInt();
+    int t = Settings::get ("Practice TeleOp", 100).toInt();
+    int e = Settings::get ("Practice End Game", 20).toInt();
+    int c = Settings::get ("Practice Countdown", 5).toInt();
+    int a = Settings::get ("Practice Autonomous", 15).toInt();
 
     /* Apply practice values */
     ui->PracticeDelay->setValue      (d);
@@ -316,22 +316,22 @@ void MainWindow::readSettings ()
     ui->PracticeAutonomous->setValue (a);
 
     /* Read team station and protocol values */
-    int station  = Settings::get ("Station",  DriverStation::Red1).toInt ();
-    int protocol = Settings::get ("Protocol", DriverStation::Protocol2015).toInt ();
+    int station  = Settings::get ("Station",  DriverStation::Red1).toInt();
+    int protocol = Settings::get ("Protocol", DriverStation::Protocol2015).toInt();
 
     /* Apply saved settings without crashing app if something goes wrong */
-    if (ui->StationCombo->count () > station)
+    if (ui->StationCombo->count() > station)
         ui->StationCombo->setCurrentIndex (station);
-    if (ui->ProtocolCombo->count () > protocol)
+    if (ui->ProtocolCombo->count() > protocol)
         ui->ProtocolCombo->setCurrentIndex (protocol);
 
     /* Update internal values */
-    onStationChanged  (ui->StationCombo->currentIndex ());
-    onProtocolChanged (ui->ProtocolCombo->currentIndex ());
+    onStationChanged  (ui->StationCombo->currentIndex());
+    onProtocolChanged (ui->ProtocolCombo->currentIndex());
 
     /* Send the saved networking config to the Driver Station */
-    m_advancedSettings->readSettings ();
-    m_advancedSettings->applySettings ();
+    m_advancedSettings->readSettings();
+    m_advancedSettings->applySettings();
 
     /* Update DriverStation and Dashboard when user changes something in UI */
     connect (ui->StationCombo,       SIGNAL (currentIndexChanged (int)),
@@ -342,18 +342,18 @@ void MainWindow::readSettings ()
              this,                   SLOT   (setDashboard        (int)));
 
     /* Configure the joysticks widget */
-    m_joysticksWidget->readSettings ();
+    m_joysticksWidget->readSettings();
 }
 
 //------------------------------------------------------------------------------
 // FUNCTIONS THAT MAY BE CALLED REGULARLY
 //------------------------------------------------------------------------------
 
-void MainWindow::redrawWidgets ()
+void MainWindow::redrawWidgets()
 {
     /* Update colors of every widget*/
     QPalette palette;
-    foreach (QWidget * w, findChildren<QWidget*> ())
+    foreach (QWidget * w, findChildren<QWidget*>())
     w->setPalette (palette);
 
     /* Make the close button red */
@@ -373,18 +373,18 @@ void MainWindow::redrawWidgets ()
     ui->CloseButton->setPalette (closePalette);
 }
 
-void MainWindow::updatePcStatusWidgets ()
+void MainWindow::updatePcStatusWidgets()
 {
-    if (ui->LeftTab->currentIndex () == 0) {
-        int usage = CpuUsage::getUsage ();
-        int level = Battery::currentLevel ();
+    if (ui->LeftTab->currentIndex() == 0) {
+        int usage = CpuUsage::getUsage();
+        int level = Battery::currentLevel();
 
         /* Update progress bars */
         ui->PcCpuProgress->setValue (usage);
         ui->PcBatteryProgress->setValue (level);
 
         /* Change status of AC plug icon */
-        ui->PlugIcon->setVisible (Battery::isPlugged ());
+        ui->PlugIcon->setVisible (Battery::isPlugged());
     }
 }
 
@@ -392,9 +392,9 @@ void MainWindow::updatePcStatusWidgets ()
 // UI TO WINDOW-LOGIC FUNCTIONS
 //------------------------------------------------------------------------------
 
-void MainWindow::onCopyClicked ()
+void MainWindow::onCopyClicked()
 {
-    qApp->clipboard ()->setText (ui->NetConsoleEdit->toPlainText ());
+    qApp->clipboard()->setText (ui->NetConsoleEdit->toPlainText());
     ui->NetConsoleEdit->append ("<font color=\"#aaa\"><p>"
                                 "INFO: NetConsole output copied to clipboard"
                                 "</p></font>");
@@ -409,33 +409,33 @@ void MainWindow::onStationChanged (int station)
 void MainWindow::onProtocolChanged (int protocol)
 {
     m_ds->setProtocol ((DriverStation::ProtocolType) protocol);
-    m_ds->setTeamNumber (ui->TeamNumberSpin->value ());
+    m_ds->setTeamNumber (ui->TeamNumberSpin->value());
 
     Settings::set ("Protocol", protocol);
-    m_advancedSettings->updatePlaceholder ();
+    m_advancedSettings->updatePlaceholder();
 }
 
-void MainWindow::onRebootClicked ()
+void MainWindow::onRebootClicked()
 {
-    m_ds->canBeEnabled () ? m_ds->reboot () : statusLabelAnimation ();
+    m_ds->canBeEnabled() ? m_ds->reboot() : statusLabelAnimation();
 }
 
-void MainWindow::onRestartClicked ()
+void MainWindow::onRestartClicked()
 {
-    m_ds->canBeEnabled () ? m_ds->restartCode () : statusLabelAnimation ();
+    m_ds->canBeEnabled() ? m_ds->restartCode() : statusLabelAnimation();
 }
 
-void MainWindow::onWebsiteClicked ()
+void MainWindow::onWebsiteClicked()
 {
     QDesktopServices::openUrl (QUrl ("http://qdriverstation.sf.net"));
 }
 
-void MainWindow::onEnabledClicked ()
+void MainWindow::onEnabledClicked()
 {
     /* Flash status label if we cannot enable the robot */
-    if (!m_ds->canBeEnabled ()) {
-        onDisabledClicked ();
-        statusLabelAnimation ();
+    if (!m_ds->canBeEnabled()) {
+        onDisabledClicked();
+        statusLabelAnimation();
         return;
     }
 
@@ -446,12 +446,12 @@ void MainWindow::onEnabledClicked ()
     ui->DisableButton->setStyleSheet (CSS_DISABLED_UNCHECK);
 }
 
-void MainWindow::onDisabledClicked ()
+void MainWindow::onDisabledClicked()
 {
     /* Only disable the robot if it can be disabled */
-    if (m_ds->controlMode () != DS_ControlDisabled
-        && m_ds->controlMode () != DS_ControlEmergencyStop
-        && m_ds->controlMode () != DS_ControlNoCommunication)
+    if (m_ds->controlMode() != DS_ControlDisabled
+        && m_ds->controlMode() != DS_ControlEmergencyStop
+        && m_ds->controlMode() != DS_ControlNoCommunication)
         setRobotEnabled (false);
 
     /* Update the application style */
@@ -460,10 +460,10 @@ void MainWindow::onDisabledClicked ()
     ui->EnableButton->setStyleSheet  (CSS_ENABLED_UNCHECK);
 }
 
-void MainWindow::onJoystickRemoved ()
+void MainWindow::onJoystickRemoved()
 {
-    if (m_ds->controlMode () == DS_ControlTeleOp)
-        onDisabledClicked ();
+    if (m_ds->controlMode() == DS_ControlTeleOp)
+        onDisabledClicked();
 }
 
 void MainWindow::updateJoysticksTab (bool available)
@@ -472,9 +472,9 @@ void MainWindow::updateJoysticksTab (bool available)
     ui->NoJoystickWidget->setVisible (!available);
 }
 
-void MainWindow::onWindowModeChanged ()
+void MainWindow::onWindowModeChanged()
 {
-    setWindowMode (ui->WindowDocked->isChecked () ? Docked : Normal);
+    setWindowMode (ui->WindowDocked->isChecked() ? Docked : Normal);
 }
 
 void MainWindow::onRobotModeChanged (int mode)
@@ -483,19 +483,19 @@ void MainWindow::onRobotModeChanged (int mode)
     m_ds->setControlMode (DS_ControlDisabled);
 }
 
-void MainWindow::onPracticeValuesChanged ()
+void MainWindow::onPracticeValuesChanged()
 {
-    Settings::set ("Practice Delay",      ui->PracticeDelay->value ());
-    Settings::set ("Practice TeleOp",     ui->PracticeTeleOp->value ());
-    Settings::set ("Practice End Game",   ui->PracticeEndGame->value ());
-    Settings::set ("Practice Countdown",  ui->PracticeCountdown->value ());
-    Settings::set ("Practice Autonomous", ui->PracticeAutonomous->value ());
+    Settings::set ("Practice Delay",      ui->PracticeDelay->value());
+    Settings::set ("Practice TeleOp",     ui->PracticeTeleOp->value());
+    Settings::set ("Practice End Game",   ui->PracticeEndGame->value());
+    Settings::set ("Practice Countdown",  ui->PracticeCountdown->value());
+    Settings::set ("Practice Autonomous", ui->PracticeAutonomous->value());
 }
 
 void MainWindow::setDashboard (int dashboard)
 {
     Settings::set ("Dashboard", dashboard);
-    Dashboard::getInstance ()->reloadDashboard ();
+    Dashboard::getInstance()->reloadDashboard();
 }
 
 void MainWindow::setTeamNumber (int team)
@@ -505,7 +505,7 @@ void MainWindow::setTeamNumber (int team)
     ui->TeamNumber->setText (QString ("%1").arg (team));
 
     m_ds->setTeamNumber (team);
-    m_advancedSettings->updatePlaceholder ();
+    m_advancedSettings->updatePlaceholder();
 }
 
 void MainWindow::setRobotEnabled (bool enabled)
@@ -513,21 +513,21 @@ void MainWindow::setRobotEnabled (bool enabled)
     /* Robot can be enabled because we have communications and the
      * operation mode is not set to E-Stop */
     if (enabled) {
-        if (ui->Test->isChecked ())
+        if (ui->Test->isChecked())
             m_ds->setControlMode (DS_ControlTest);
 
-        else if (ui->TeleOp->isChecked ())
+        else if (ui->TeleOp->isChecked())
             m_ds->setControlMode (DS_ControlTeleOp);
 
-        else if (ui->Autonomous->isChecked ())
+        else if (ui->Autonomous->isChecked())
             m_ds->setControlMode (DS_ControlAutonomous);
 
-        else if (ui->Practice->isChecked ())
-            m_ds->startPractice (ui->PracticeCountdown->value (),
-                                 ui->PracticeAutonomous->value (),
-                                 ui->PracticeDelay->value (),
-                                 ui->PracticeTeleOp->value (),
-                                 ui->PracticeEndGame->value ());
+        else if (ui->Practice->isChecked())
+            m_ds->startPractice (ui->PracticeCountdown->value(),
+                                 ui->PracticeAutonomous->value(),
+                                 ui->PracticeDelay->value(),
+                                 ui->PracticeTeleOp->value(),
+                                 ui->PracticeEndGame->value());
     }
 
     /* Disable the robot */
@@ -540,7 +540,7 @@ void MainWindow::setRobotEnabled (bool enabled)
 
 void MainWindow::updateLabelText (QLabel* label, QString text)
 {
-    label->setText (m_ds->networkAvailable () && !text.isEmpty () ? text : "--.--");
+    label->setText (m_ds->networkAvailable() && !text.isEmpty() ? text : "--.--");
 }
 
 void MainWindow::onCodeChanged (bool available)
@@ -553,7 +553,7 @@ void MainWindow::onCommunicationsChanged (bool available)
     ui->RobotCheck->setChecked (available);
     ui->Communications->setChecked (available);
 
-    onDisabledClicked ();
+    onDisabledClicked();
 }
 
 void MainWindow::onControlModeChanged (DS_ControlMode mode)
@@ -562,7 +562,7 @@ void MainWindow::onControlModeChanged (DS_ControlMode mode)
     if ((mode == DS_ControlDisabled)
         || (mode == DS_ControlEmergencyStop)
         || (mode == DS_ControlNoCommunication))
-        ui->DisableButton->click ();
+        ui->DisableButton->click();
 }
 
 void MainWindow::onRadioChanged (bool available)
@@ -587,23 +587,23 @@ void MainWindow::onRioVersionChanged (QString version)
 
 void MainWindow::onRobotStatusChanged (QString status)
 {
-    if (m_ds->canBeEnabled () && m_ds->controlMode () != DS_ControlEmergencyStop) {
+    if (m_ds->canBeEnabled() && m_ds->controlMode() != DS_ControlEmergencyStop) {
 
         /* Get 'TeleOp Disabled' instead of 'Disabled' */
-        if (m_ds->controlMode () == DS_ControlDisabled) {
+        if (m_ds->controlMode() == DS_ControlDisabled) {
             QString mode;
 
-            if (ui->Test->isChecked ())
-                mode = ui->Test->text ();
+            if (ui->Test->isChecked())
+                mode = ui->Test->text();
 
-            else if (ui->TeleOp->isChecked ())
-                mode = ui->TeleOp->text ();
+            else if (ui->TeleOp->isChecked())
+                mode = ui->TeleOp->text();
 
-            else if (ui->Autonomous->isChecked ())
-                mode = ui->Autonomous->text ();
+            else if (ui->Autonomous->isChecked())
+                mode = ui->Autonomous->text();
 
-            else if (ui->Practice->isChecked ())
-                mode = ui->Practice->text ();
+            else if (ui->Practice->isChecked())
+                mode = ui->Practice->text();
 
             ui->StatusLabel->setText (QString ("%1\nDisabled").arg (mode));
         }
@@ -631,37 +631,37 @@ void MainWindow::onDiskUsageChanged (int percent)
 // MISC. FUNCTIONS
 //------------------------------------------------------------------------------
 
-void MainWindow::scrollNetConsole ()
+void MainWindow::scrollNetConsole()
 {
-    ui->NetConsoleEdit->ensureCursorVisible ();
+    ui->NetConsoleEdit->ensureCursorVisible();
 }
 
-void MainWindow::toggleStatusColor ()
+void MainWindow::toggleStatusColor()
 {
     QPalette palette;
     QColor redColor = QColor (255, 33, 43);
 
     /* Decide the color to use on the label */
-    if (ui->StatusLabel->palette ().windowText ().color () != redColor)
+    if (ui->StatusLabel->palette().windowText().color() != redColor)
         palette.setColor (QPalette::WindowText, redColor);
 
     /* Flash status label */
     ui->StatusLabel->setPalette (palette);
 
     /* Flash communications label */
-    if (!ui->Communications->isChecked ())
+    if (!ui->Communications->isChecked())
         ui->CommunicationsLabel->setPalette (palette);
 
     /* Flash robot code label */
-    if (!ui->RobotCode->isChecked ())
+    if (!ui->RobotCode->isChecked())
         ui->CodeLabel->setPalette (palette);
 }
 
-void MainWindow::statusLabelAnimation ()
+void MainWindow::statusLabelAnimation()
 {
     for (int i = 0; i < 8; ++i)
         QTimer::singleShot (100 * i, Qt::PreciseTimer,
-                            this, SLOT (toggleStatusColor ()));
+                            this, SLOT (toggleStatusColor()));
 }
 
 //------------------------------------------------------------------------------

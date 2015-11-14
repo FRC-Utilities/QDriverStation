@@ -31,26 +31,26 @@
 
 #define URL_XBOX_DRIVER  "https://github.com/d235j/360Controller/releases"
 
-int InitTasks::getTeamNumber ()
+int InitTasks::getTeamNumber()
 {
     /* First launch, ask for team number */
-    if (Settings::get ("First Launch", true).toBool ())
+    if (Settings::get ("First Launch", true).toBool())
         return QInputDialog::getInt (0, 0,
                                      QObject::tr ("Input team number:"), 0, 0,
                                      9999);
 
     /* Retrieve team number from settings */
     else
-        return Settings::get ("Team ID", 0).toInt ();
+        return Settings::get ("Team ID", 0).toInt();
 }
 
-void InitTasks::executeFirstRunTasks ()
+void InitTasks::executeFirstRunTasks()
 {
     /* Initialize the CPU querying process */
-    CpuUsage::init ();
+    CpuUsage::init();
 
     /* Not first run, nothing to do here *flies away* */
-    if (!Settings::get ("First Launch", true).toBool ())
+    if (!Settings::get ("First Launch", true).toBool())
         return;
 
     /* Download Xbox 360 controller drivers for Mac OS X*/
@@ -63,7 +63,7 @@ void InitTasks::executeFirstRunTasks ()
     box.setInformativeText (QObject::tr ("Do you want to download a driver "
                                          "for Xbox 360 joysticks?"));
 
-    if (box.exec () == QMessageBox::Yes)
+    if (box.exec() == QMessageBox::Yes)
         QDesktopServices::openUrl (QUrl (URL_XBOX_DRIVER));
 #endif
 
