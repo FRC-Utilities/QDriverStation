@@ -49,8 +49,8 @@ class MainWindow : public SmartWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow();
-    ~MainWindow();
+    explicit MainWindow ();
+    ~MainWindow ();
 
 private:
     /**
@@ -93,35 +93,35 @@ private slots:
      * Configures the window so that it reacts to various events throughout the
      * application
      */
-    void connectSlots();
+    void connectSlots ();
 
     /**
      * @internal
      * Ensures that the widgets are configured correctly and that their
      * appearance is updated according to the current state of the application
      */
-    void configureWidgetAppearance();
+    void configureWidgetAppearance ();
 
     /**
      * @internal
      * Reads settings to get the time frames to use when using the practice
      * feature of the DriverStation
      */
-    void readSettings();
+    void readSettings ();
 
     /**
      * @internal
      * Updates the colors of some labels which use a custom font or are under
      * the influence of a stylesheet
      */
-    void updateLabelColors();
+    void redrawWidgets ();
 
     /**
      * @internal
      * Updates the values of the battery and CPU progress bars only if the
      * main tab is currently selected.
      */
-    void updatePcStatusWidgets();
+    void updatePcStatusWidgets ();
 
     /**
      * @internal
@@ -141,25 +141,25 @@ private slots:
      * @internal
      * Copies the output of the NetConsole to the system clipboard
      */
-    void onCopyClicked();
+    void onCopyClicked ();
 
     /**
      * @internal
      * Instructs the DriverStation library to reboot the robot
      */
-    void onRebootClicked();
+    void onRebootClicked ();
 
     /**
      * @internal
      * Instructs the DriverStation library to restart the robot code
      */
-    void onRestartClicked();
+    void onRestartClicked ();
 
     /**
      * @internal
      * Opens the Open DriverStation website in a web browser
      */
-    void onWebsiteClicked();
+    void onWebsiteClicked ();
 
     /**
      * @internal
@@ -170,14 +170,14 @@ private slots:
      * If the robot cannot be enabled, it calls a function that creates a
      * 'flashing' effect in the status label to get user attention.
      */
-    void onEnabledClicked();
+    void onEnabledClicked ();
 
     /**
      * @internal
      * Disables the robot and updates the appearance of the 'Enable' and
      * 'Disable' buttons
      */
-    void onDisabledClicked();
+    void onDisabledClicked ();
 
     /**
      * @internal
@@ -185,7 +185,7 @@ private slots:
      * that the robot is currently in Operator Control (TeleOp), it disables
      * the robot for safety reasons.
      */
-    void onJoystickRemoved();
+    void onJoystickRemoved ();
 
     /**
      * @internal
@@ -198,7 +198,7 @@ private slots:
      * @internal
      * Changes the display mode of the window based on which button is checked
      */
-    void onWindowModeChanged();
+    void onWindowModeChanged ();
 
     /**
      * @internal
@@ -210,7 +210,7 @@ private slots:
      * @internal
      * Saves the settings when a value of the practice times is changed
      */
-    void onPracticeValuesChanged();
+    void onPracticeValuesChanged ();
 
     /**
      * @internal
@@ -334,7 +334,7 @@ private slots:
      * @internal
      * Scrolls the NetConsole widget automatically when a message is added
      */
-    void scrollNetConsole();
+    void scrollNetConsole ();
 
     /**
      * @internal
@@ -342,7 +342,7 @@ private slots:
      * Used for displaying an animation that draws the attention of the user
      * to the status label.
      */
-    void toggleStatusColor();
+    void toggleStatusColor ();
 
     /**
      * @internal
@@ -350,7 +350,7 @@ private slots:
      * a limited amount of time. Used to draw the attention of the user when
      * there is a problem with the robot and it cannot be enabled.
      */
-    void statusLabelAnimation();
+    void statusLabelAnimation ();
 
 protected:
     /**
@@ -371,19 +371,17 @@ protected:
 class CustomTabStyle : public QProxyStyle
 {
 public:
-    explicit CustomTabStyle()
-    {
+    explicit CustomTabStyle () {
         setBaseStyle (QStyleFactory::create ("Fusion"));
     }
 
     QSize sizeFromContents (ContentsType type, const QStyleOption* option,
-                            const QSize& size, const QWidget* widget) const
-    {
+                            const QSize& size, const QWidget* widget) const {
         QSize s = QProxyStyle::sizeFromContents (type, option, size, widget);
 
         if (type == QStyle::CT_TabBarTab) {
-            s.transpose();
-            s.setHeight (s.width());
+            s.transpose ();
+            s.setHeight (s.width ());
         }
 
         return s;
@@ -392,8 +390,7 @@ public:
     void drawControl (ControlElement element,
                       const QStyleOption* option,
                       QPainter* painter,
-                      const QWidget* widget) const
-    {
+                      const QWidget* widget) const {
         if (element == CE_TabBarTabLabel) {
             if (const QStyleOptionTab* tab =
                     qstyleoption_cast <const QStyleOptionTab*> (option)) {

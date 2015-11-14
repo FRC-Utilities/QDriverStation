@@ -25,24 +25,24 @@
 #include "LibDS/DS_Protocol.h"
 #include "LibDS/DS_ProtocolManager.h"
 
-DS_ProtocolManager::DS_ProtocolManager()
+DS_ProtocolManager::DS_ProtocolManager ()
 {
     m_protocol = Q_NULLPTR;
     m_joysticks = new QList<DS_Joystick*>;
 }
 
-DS_ProtocolManager::~DS_ProtocolManager()
+DS_ProtocolManager::~DS_ProtocolManager ()
 {
     delete m_protocol;
     delete m_joysticks;
 }
 
-DS_Protocol* DS_ProtocolManager::protocol() const
+DS_Protocol* DS_ProtocolManager::protocol () const
 {
-    return protocolIsValid() ? m_protocol : Q_NULLPTR;
+    return protocolIsValid () ? m_protocol : Q_NULLPTR;
 }
 
-bool DS_ProtocolManager::protocolIsValid() const
+bool DS_ProtocolManager::protocolIsValid () const
 {
     return (m_protocol != Q_NULLPTR);
 }
@@ -74,9 +74,9 @@ void DS_ProtocolManager::setProtocol (DS_Protocol* protocol)
     }
 }
 
-void DS_ProtocolManager::clearJoysticks()
+void DS_ProtocolManager::clearJoysticks ()
 {
-    m_joysticks->clear();
+    m_joysticks->clear ();
 }
 
 void DS_ProtocolManager::addJoystick (int axes, int buttons, int povHats)
@@ -124,11 +124,11 @@ void DS_ProtocolManager::updateJoystickButton (int js,  int button,
 
 void DS_ProtocolManager::readRobotData (QByteArray data)
 {
-    if (protocolIsValid())
-        protocol()->readRobotPacket (data);
+    if (protocolIsValid ())
+        protocol ()->readRobotPacket (data);
 }
 
 bool DS_ProtocolManager::joystickIsValid (int js) const
 {
-    return (js < m_joysticks->count());
+    return (js < m_joysticks->count ());
 }

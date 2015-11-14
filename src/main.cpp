@@ -31,7 +31,7 @@
 #  define _PT_SIZE 12
 #  define _APP_ICON_CODE QIcon ("")
 #elif defined Q_OS_LINUX
-#  define _PT_SIZE 9
+#  define _PT_SIZE 8
 #  define _APP_ICON_CODE QIcon (":/icon.ico")
 #else
 #  define _PT_SIZE qApp->font().pointSize()
@@ -54,16 +54,16 @@ int main (int argc, char* argv[])
 
     /* Configure application options */
     app.setWindowIcon (_APP_ICON_CODE);
-    app.setApplicationName (AssemblyInfo::name());
-    app.setStyle (QStyleFactory::create ("Fusion"));
-    app.setApplicationVersion (AssemblyInfo::version());
-    app.setOrganizationName (AssemblyInfo::organization());
-    app.setOrganizationDomain (AssemblyInfo::organizationDomain());
+    app.setApplicationName (AssemblyInfo::name ());
+    app.setStyle (QStyleFactory::create ("fusion"));
+    app.setApplicationVersion (AssemblyInfo::version ());
+    app.setOrganizationName (AssemblyInfo::organization ());
+    app.setOrganizationDomain (AssemblyInfo::organizationDomain ());
     app.setFont (QFont ("Quicksand", _PT_SIZE, -1, false));
 
     /* The window will show itself when initialized */
     MainWindow window;
     Q_UNUSED (window);
 
-    return app.exec();
+    return app.exec ();
 }

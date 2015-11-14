@@ -44,45 +44,45 @@ class LIB_DS_DECL DS_Protocol : public QObject
     Q_OBJECT
 
 public:
-    explicit DS_Protocol();
-    ~DS_Protocol();
+    explicit DS_Protocol ();
+    ~DS_Protocol ();
 
     /**
      * Returns \c true if the user code is loaded on the robot
      */
-    bool robotCode() const;
+    bool robotCode () const;
 
     /**
      * Returns \c true if the robot communications are working
      */
-    bool robotCommunication() const;
+    bool robotCommunication () const;
 
     /**
      * Returns the current alliance of the robot
      */
-    DS_Alliance alliance() const;
+    DS_Alliance alliance () const;
 
     /**
      * Returns the current control mode of the robot
      */
-    DS_ControlMode controlMode() const;
+    DS_ControlMode controlMode () const;
 
     /**
      * Returns the default radio address or the custom radio address
      */
-    QString radioAddress();
+    QString radioAddress ();
 
     /**
      * Returns the default robot address or the custom robot address
      */
-    QString robotAddress();
+    QString robotAddress ();
 
 public slots:
     /**
      * Resets the internal values of the protocol and emits the appropiate
      * signals when the robot communication is lost
      */
-    void reset();
+    void reset ();
 
     /**
      * Changes the team number of the robot, this can be used to generate
@@ -121,11 +121,11 @@ public slots:
     void log (QString message);
 
     /* Functions that need to be implemented for each protocol */
-    virtual void reboot() = 0;
-    virtual int robotPort() = 0;
-    virtual int clientPort() = 0;
-    virtual void restartCode() = 0;
-    virtual QByteArray getClientPacket() = 0;
+    virtual void reboot () = 0;
+    virtual int robotPort () = 0;
+    virtual int clientPort () = 0;
+    virtual void restartCode () = 0;
+    virtual QByteArray getClientPacket () = 0;
     virtual DS_ControlMode getControlMode (char mode) = 0;
 
 private slots:
@@ -137,34 +137,34 @@ private slots:
     /**
      * Implements the necessary steps to reset the internal values of a protocol
      */
-    virtual void resetProtocol() = 0;
+    virtual void resetProtocol () = 0;
 
     /**
      * Returns the default radio address
      */
-    virtual QString defaultRadioAddress() = 0;
+    virtual QString defaultRadioAddress () = 0;
 
     /**
      * Returns the default robot address
      */
-    virtual QString defaultRobotAddress() = 0;
+    virtual QString defaultRobotAddress () = 0;
 
     /**
      * Implements a method to get more information about the robot components
      */
-    virtual void downloadRobotInformation() = 0;
+    virtual void downloadRobotInformation () = 0;
 
     /**
      * Uses the joystick input information to generate a data array to be
      * sent along the client packet
      */
-    virtual QByteArray generateJoystickData() = 0;
+    virtual QByteArray generateJoystickData () = 0;
 
     /**
      * Generates the neccesary data to send the robot the current timezone
      * of the client DS
      */
-    virtual QByteArray generateTimezoneData() = 0;
+    virtual QByteArray generateTimezoneData () = 0;
 
     /**
      * Interprets the received robot \a data
@@ -261,7 +261,7 @@ signals:
      * Emitted when we receive a packet from the robot. Used by the library
      * to generate and send another control packet to the robot.
      */
-    void packetReceived();
+    void packetReceived ();
 
 protected:
     /**

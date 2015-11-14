@@ -38,7 +38,7 @@ class LIB_DS_DECL DS_NetConsole : public QObject
     Q_OBJECT
 
 public:
-    explicit DS_NetConsole();
+    explicit DS_NetConsole ();
 
 signals:
     /**
@@ -59,7 +59,7 @@ private slots:
      * Called when we receive data in the network socket.
      * Used to read the input data and process it.
      */
-    void onDataReceived();
+    void onDataReceived ();
 };
 
 #endif

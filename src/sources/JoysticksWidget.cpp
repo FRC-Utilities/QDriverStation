@@ -45,19 +45,19 @@ JoysticksWidget::JoysticksWidget (QWidget* parent) : QWidget (parent)
              this,            SLOT   (onRowChanged      (int)));
 }
 
-JoysticksWidget::~JoysticksWidget()
+JoysticksWidget::~JoysticksWidget ()
 {
     delete m_keyboardDrive;
 }
 
-void JoysticksWidget::readSettings()
+void JoysticksWidget::readSettings ()
 {
-    m_keyboardDrive->readSettings();
+    m_keyboardDrive->readSettings ();
 }
 
-void JoysticksWidget::showKeyboardWindow()
+void JoysticksWidget::showKeyboardWindow ()
 {
-    m_keyboardDrive->show();
+    m_keyboardDrive->show ();
 }
 
 //------------------------------------------------------------------------------
@@ -81,12 +81,12 @@ void JoysticksWidget::registerKeyRelease (QKeyEvent* event)
 void JoysticksWidget::onRowChanged (int row)
 {
     /* Remove all buttons and progress bars in the widget */
-    foreach (QPushButton *  c, findChildren<QPushButton*>())  delete c;
-    foreach (QProgressBar * p, findChildren<QProgressBar*>()) delete p;
+    foreach (QPushButton *  c, findChildren<QPushButton*> ())  delete c;
+    foreach (QProgressBar * p, findChildren<QProgressBar*> ()) delete p;
 
     /* Clear joystick data */
-    m_axes.clear();
-    m_buttons.clear();
+    m_axes.clear ();
+    m_buttons.clear ();
     ui.Axes->setVisible (false);
     ui.Buttons->setVisible (false);
 
@@ -113,7 +113,7 @@ void JoysticksWidget::onRowChanged (int row)
         bar->setFormat  (tr ("Axis %1").arg (i));
 
         m_axes.append (bar);
-        ui.AxesWidget->layout()->addWidget (bar);
+        ui.AxesWidget->layout ()->addWidget (bar);
     }
 
     /* Create a button for each joystick button */
@@ -141,35 +141,35 @@ void JoysticksWidget::onRowChanged (int row)
 
 void JoysticksWidget::onCountChanged (QStringList list)
 {
-    if (list.count() < ui.JoystickList->count())
-        emit joystickRemoved();
+    if (list.count () < ui.JoystickList->count ())
+        emit joystickRemoved ();
 
-    ui.JoystickList->clear();
+    ui.JoystickList->clear ();
 
-    if (list.count() > 0) {
-        for (int i = 1; i <= list.count(); ++i)
+    if (list.count () > 0) {
+        for (int i = 1; i <= list.count (); ++i)
             ui.JoystickList->addItem (QString ("%1: ").arg (i) + list.at (i - 1));
 
         ui.JoystickList->setCurrentRow (0);
     }
 
-    emit statusChanged (list.count() > 0);
+    emit statusChanged (list.count () > 0);
 }
 
 void JoysticksWidget::onAxisEvent (const GM_Axis& axis)
 {
-    if (ui.JoystickList->currentRow() != axis.joystick.id)
+    if (ui.JoystickList->currentRow () != axis.joystick.id)
         return;
 
-    if (axis.id < m_axes.count())
+    if (axis.id < m_axes.count ())
         m_axes.at (axis.id)->setValue (axis.value * 100);
 }
 
 void JoysticksWidget::onButtonEvent (const GM_Button& button)
 {
-    if (ui.JoystickList->currentRow() != button.joystick.id)
+    if (ui.JoystickList->currentRow () != button.joystick.id)
         return;
 
-    if (button.id < m_buttons.count())
+    if (button.id < m_buttons.count ())
         m_buttons.at (button.id)->setChecked (button.pressed);
 }

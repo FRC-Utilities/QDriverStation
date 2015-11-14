@@ -88,35 +88,35 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_Protocol
     Q_OBJECT
 
 public:
-    explicit DS_Protocol2015();
+    explicit DS_Protocol2015 ();
 
 public slots:
     /**
      * Changes the status byte to instruct the roboRIO to reboot
      */
-    void reboot();
+    void reboot ();
 
     /**
      * Returns the port in the roboRIO in which we send DS packets
      */
-    int robotPort();
+    int robotPort ();
 
     /**
      * Returns the port in which we receive data from the roboRIO
      */
-    int clientPort();
+    int clientPort ();
 
     /**
      * Changes the status byte to instruct the roboRIO to kill the user code
      * and start it again
      */
-    void restartCode();
+    void restartCode ();
 
     /**
      * Generates a client packet, which is later sent to the robot.
      * If the control mode is in TeleOp, we also send joystick input data
      */
-    QByteArray getClientPacket();
+    QByteArray getClientPacket ();
 
 private:
     /**
@@ -143,17 +143,17 @@ private slots:
      * Resets the internal values, disables the robot and begins
      * searching for it over the network
      */
-    void resetProtocol();
+    void resetProtocol ();
 
     /**
      * Returns the address of the robot radio (e.g 10.xx.yy.1)
      */
-    QString defaultRadioAddress();
+    QString defaultRadioAddress ();
 
     /**
      * Returns the address of the roboRIO (e.g roboRIO-xxyy.local)
      */
-    QString defaultRobotAddress();
+    QString defaultRobotAddress ();
 
     /**
      * Downloads information about the roboRIO, the PCM and PDP firmware
@@ -162,18 +162,18 @@ private slots:
      * This function is called the first time we receive a packet from the
      * roboRIO
      */
-    void downloadRobotInformation();
+    void downloadRobotInformation ();
 
     /**
      * Reads joystick input and generates a packet that will be sent to
      * the robot
      */
-    QByteArray generateJoystickData();
+    QByteArray generateJoystickData ();
 
     /**
      * Generates a timezone section data to be sent to the robot when needed
      */
-    QByteArray generateTimezoneData();
+    QByteArray generateTimezoneData ();
 
     /**
      * Reads and interprets packets received from the robot.

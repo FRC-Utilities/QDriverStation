@@ -7,7 +7,7 @@
 cd "$(dirname ${BASH_SOURCE[0]})"
 
 # Style and format recursively
-astyle --pad-oper --pad-first-paren-out --align-pointer=type --remove-brackets --convert-tabs --max-code-length=80 --style=linux --lineend=windows --suffix=none --recursive ../../*.h ../../*.cpp
+astyle --pad-oper --pad-first-paren-out --align-pointer=type  --convert-tabs --max-code-length=80 --style=linux --lineend=windows --suffix=none --recursive ../../*.h ../../*.cpp
 
 # Notify the user that we are done
 echo

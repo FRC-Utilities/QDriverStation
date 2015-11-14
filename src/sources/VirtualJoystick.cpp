@@ -26,25 +26,25 @@
 
 #include <DriverStation.h>
 
-VirtualJoystick::VirtualJoystick()
+VirtualJoystick::VirtualJoystick ()
 {
     ui.setupUi (this);
 
-    connect (ui.Close, SIGNAL (clicked()),
-             this,     SLOT   (hide()));
+    connect (ui.Close, SIGNAL (clicked ()),
+             this,     SLOT   (hide ()));
 
     connect (ui.Range, SIGNAL (valueChanged   (double)),
              this,     SLOT   (onRangeChanged (double)));
     connect (ui.UseKeyboardCheckbox, SIGNAL (clicked (bool)),
              this,                   SLOT   (setVirtualJoystickEnabled (bool)));
 
-    connect (GamepadManager::getInstance(), SIGNAL (axisEvent   (GM_Axis)),
+    connect (GamepadManager::getInstance (), SIGNAL (axisEvent   (GM_Axis)),
              this,                          SIGNAL (axisEvent   (GM_Axis)));
-    connect (GamepadManager::getInstance(), SIGNAL (buttonEvent (GM_Button)),
+    connect (GamepadManager::getInstance (), SIGNAL (buttonEvent (GM_Button)),
              this,                          SIGNAL (buttonEvent (GM_Button)));
-    connect (GamepadManager::getInstance(), SIGNAL (countChanged   (int)),
+    connect (GamepadManager::getInstance (), SIGNAL (countChanged   (int)),
              this,                          SLOT   (onCountChanged (int)));
-    connect (GamepadManager::getInstance(), SIGNAL (countChanged   (QStringList)),
+    connect (GamepadManager::getInstance (), SIGNAL (countChanged   (QStringList)),
              this,                          SLOT   (onCountChanged (QStringList)));
 
     connect (this, SIGNAL (axisEvent     (GM_Axis)),
@@ -56,14 +56,14 @@ VirtualJoystick::VirtualJoystick()
     m_joystick.numButtons = 10;
     m_joystick.displayName = tr ("Virtual Joystick");
 
-    resizeToFit();
-    GamepadManager::getInstance()->init();
+    resizeToFit ();
+    GamepadManager::getInstance ()->init ();
 }
 
-void VirtualJoystick::readSettings()
+void VirtualJoystick::readSettings ()
 {
-    ui.Range->setValue (Settings::get ("Axis Range", 0.80).toDouble());
-    setVirtualJoystickEnabled (Settings::get ("Virtual Joystick", false).toBool());
+    ui.Range->setValue (Settings::get ("Axis Range", 0.80).toDouble ());
+    setVirtualJoystickEnabled (Settings::get ("Virtual Joystick", false).toBool ());
 }
 
 //------------------------------------------------------------------------------
@@ -72,42 +72,42 @@ void VirtualJoystick::readSettings()
 
 int VirtualJoystick::getNumAxes (int js)
 {
-    int count = GamepadManager::getInstance()->joystickList().count();
+    int count = GamepadManager::getInstance ()->joystickList ().count ();
 
     if (js >= count && m_enabled)
         return m_joystick.numAxes;
 
     else if (js < count)
-        return GamepadManager::getInstance()->getNumAxes (js);
+        return GamepadManager::getInstance ()->getNumAxes (js);
 
     return 0;
 }
 
 int VirtualJoystick::getNumButtons (int js)
 {
-    int count = GamepadManager::getInstance()->joystickList().count();
+    int count = GamepadManager::getInstance ()->joystickList ().count ();
 
     if (js >= count && m_enabled)
         return m_joystick.numButtons;
 
     else if (js < count)
-        return GamepadManager::getInstance()->getNumButtons (js);
+        return GamepadManager::getInstance ()->getNumButtons (js);
 
     return 0;
 }
 
 void VirtualJoystick::onCountChanged (int count)
 {
-    DriverStation::getInstance()->clearJoysticks();
+    DriverStation::getInstance ()->clearJoysticks ();
 
     for (int i = 0; i <= count - 1; ++i)
-        DriverStation::getInstance()->addJoystick (
-            GamepadManager::getInstance()->getNumAxes (i),
-            GamepadManager::getInstance()->getNumButtons (i), 0);
+        DriverStation::getInstance ()->addJoystick (
+            GamepadManager::getInstance ()->getNumAxes (i),
+            GamepadManager::getInstance ()->getNumButtons (i), 0);
 
     if (m_enabled) {
         m_joystick.id = count;
-        DriverStation::getInstance()->addJoystick (m_joystick.numAxes,
+        DriverStation::getInstance ()->addJoystick (m_joystick.numAxes,
                 m_joystick.numButtons,
                 0);
     }
@@ -129,21 +129,21 @@ void VirtualJoystick::onCountChanged (QStringList input)
 
 void VirtualJoystick::registerKeyPress (QKeyEvent* event)
 {
-    if (event->key() == Qt::Key_Shift)
-        DriverStation::getInstance()->setControlMode (DS_ControlEmergencyStop);
+    if (event->key () == Qt::Key_Shift)
+        DriverStation::getInstance ()->setControlMode (DS_ControlEmergencyStop);
 
-    readButtons (event->key(), true);
-    readAxes (event->key(), ui.Range->value());
+    readButtons (event->key (), true);
+    readAxes (event->key (), ui.Range->value ());
 
-    event->ignore();
+    event->ignore ();
 }
 
 void VirtualJoystick::registerKeyRelease (QKeyEvent* event)
 {
-    readAxes (event->key(), 0.0);
-    readButtons (event->key(), false);
+    readAxes (event->key (), 0.0);
+    readButtons (event->key (), false);
 
-    event->ignore();
+    event->ignore ();
 }
 
 void VirtualJoystick::keyPressEvent (QKeyEvent* e)
@@ -257,10 +257,10 @@ void VirtualJoystick::readButtons (int key, bool pressed)
 // MISC. FUNCTIONS
 //------------------------------------------------------------------------------
 
-void VirtualJoystick::resizeToFit()
+void VirtualJoystick::resizeToFit ()
 {
     resize (0, 0);
-    setFixedSize (size());
+    setFixedSize (size ());
 }
 
 void VirtualJoystick::onRangeChanged (double value)
@@ -275,10 +275,10 @@ void VirtualJoystick::setVirtualJoystickEnabled (bool enabled)
     Settings::set ("Virtual Joystick", m_enabled);
     ui.UseKeyboardCheckbox->setChecked (m_enabled);
 
-    QStringList list = GamepadManager::getInstance()->joystickList();
+    QStringList list = GamepadManager::getInstance ()->joystickList ();
 
     onCountChanged (list);
-    onCountChanged (list.count());
+    onCountChanged (list.count ());
 }
 
 //------------------------------------------------------------------------------
@@ -287,12 +287,12 @@ void VirtualJoystick::setVirtualJoystickEnabled (bool enabled)
 
 void VirtualJoystick::onAxisEvent (GM_Axis axis)
 {
-    DriverStation::getInstance()->updateJoystickAxis (axis.joystick.id,
+    DriverStation::getInstance ()->updateJoystickAxis (axis.joystick.id,
             axis.id, axis.value);
 }
 
 void VirtualJoystick::onButtonEvent (GM_Button button)
 {
-    DriverStation::getInstance()->updateJoystickButton (button.joystick.id,
+    DriverStation::getInstance ()->updateJoystickButton (button.joystick.id,
             button.id, button.pressed);
 }
