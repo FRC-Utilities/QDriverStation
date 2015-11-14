@@ -16,7 +16,7 @@ The actual code that moves and manages a FRC robot is found in a [separate repos
 
 We are also developing a **mobile version** of the QDriverStation. [Check it here](https://github.com/wint-3794/ds-mobile)!
 
-[![Screenshot](/etc/screenshots/Win.png)](https://raw.githubusercontent.com/WinT-3794/QDriverStation/master/etc/screenshots/Win.png)
+[![Screenshot](/etc/screenshots/Ubuntu.png)](/etc/screenshots)
 
 ### Install notes
 
