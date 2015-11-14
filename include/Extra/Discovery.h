@@ -56,7 +56,7 @@ public:
         IPv4_Address
     };
 
-    explicit NetworkDiscovery ();
+    explicit NetworkDiscovery();
 
     /**
      * Guesses the address type of the inputed \a address
