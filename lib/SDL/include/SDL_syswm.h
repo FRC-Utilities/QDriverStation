@@ -194,7 +194,7 @@ struct SDL_SysWMinfo {
             struct wl_display* display; /**< Wayland display */
             struct wl_surface* surface; /**< Wayland surface */
             struct wl_shell_surface*
-                    shell_surface; /**< Wayland shell_surface (window manager handle) */
+                shell_surface; /**< Wayland shell_surface (window manager handle) */
         } wl;
 #endif
 #if defined(SDL_VIDEO_DRIVER_MIR)

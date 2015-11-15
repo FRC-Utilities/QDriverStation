@@ -56,10 +56,8 @@
  * The font used in the NetConsole text edit
  */
 #if defined Q_OS_WIN
-#  define SCROLLBARS_CONST 1.8
 #  define FONT_NETCONSOLE QFont ("Consolas", 10)
 #else
-#  define SCROLLBARS_CONST 1.6
 #  define FONT_NETCONSOLE QFont ("Inconsolata", 13)
 #endif
 
@@ -284,10 +282,8 @@ void MainWindow::configureWidgetAppearance ()
     /* Configure the progress bars */
     ui->PcCpuProgress->setFixedHeight     (utilSize.height () * 0.45);
     ui->PcBatteryProgress->setFixedHeight (utilSize.height () * 0.45);
-    ui->PcCpuProgress->setFixedWidth      (metrics.width ("-------") *
-                                           SCROLLBARS_CONST);
-    ui->PcBatteryProgress->setFixedWidth  (metrics.width ("-------") *
-                                           SCROLLBARS_CONST);
+    ui->PcCpuProgress->setFixedWidth      (utilSize.height () * 2.45);
+    ui->PcBatteryProgress->setFixedWidth  (utilSize.height () * 2.45);
 
     /* Populate list-related widgets */
     ui->StationCombo->clear ();
@@ -353,8 +349,8 @@ void MainWindow::redrawWidgets ()
 {
     /* Update colors of every widget*/
     QPalette palette;
-    foreach (QWidget * w, findChildren<QWidget*> ())
-    w->setPalette (palette);
+    foreach (QWidget* w, findChildren<QWidget*> ())
+        w->setPalette (palette);
 
     /* Make the close button red */
     QPalette closePalette;
