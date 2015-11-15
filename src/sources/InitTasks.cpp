@@ -29,7 +29,7 @@
 #include "CpuUsage.h"
 #include "InitTasks.h"
 
-#define URL_XBOX_DRIVER  "https://github.com/d235j/360Controller/releases"
+#define URL_XBOX_DRIVER "http://files.tattiebogle.net/360/360ControllerInstall.dmg"
 
 int InitTasks::getTeamNumber ()
 {
