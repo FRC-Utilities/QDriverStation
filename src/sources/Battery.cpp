@@ -30,7 +30,7 @@ static SYSTEM_POWER_STATUS power;
 #include <QProcess>
 #endif
 
-bool Battery::isPlugged ()
+bool Battery::isPlugged()
 {
 #if defined Q_OS_WIN
     GetSystemPowerStatus (&power);
@@ -43,8 +43,8 @@ bool Battery::isPlugged ()
 
     process.start ("pmset -g batt");
 
-    while (process.waitForReadyRead ())
-        data.append (process.readAll ());
+    while (process.waitForReadyRead())
+        data.append (process.readAll());
 
     if (data.contains ("discharging"))
         return false;
@@ -59,8 +59,8 @@ bool Battery::isPlugged ()
     process.start ("bash -c \"upower -i $(upower -e | grep 'BAT') | "
                    "grep -E 'state|to\\ full|percentage'\"");
 
-    while (process.waitForReadyRead ())
-        data.append (process.readAll ());
+    while (process.waitForReadyRead())
+        data.append (process.readAll());
 
     if (data.contains ("discharging"))
         return false;
@@ -69,7 +69,7 @@ bool Battery::isPlugged ()
 #endif
 }
 
-int Battery::currentLevel ()
+int Battery::currentLevel()
 {
 #if defined Q_OS_WIN
     GetSystemPowerStatus (&power);
@@ -82,8 +82,8 @@ int Battery::currentLevel ()
 
     process.start ("pmset -g batt");
 
-    while (process.waitForReadyRead ())
-        data.append (process.readAll ());
+    while (process.waitForReadyRead())
+        data.append (process.readAll());
 
     /* Parse the digits of the percentage */
     int h = data.at (data.indexOf ("%") - 3) - '0'; // Hundreds
@@ -104,9 +104,9 @@ int Battery::currentLevel ()
 
     process.start ("bash -c \"upower -i $(upower -e | grep 'BAT') | "
                    "grep -E 'state|to\\ full|percentage'\"");
-
-    while (process.waitForReadyRead ())
-        data.append (process.readAll ());
+    s
+    while (process.waitForReadyRead())
+        data.append (process.readAll());
 
     /* Parse the digits of the percentage */
     int h = data.at (data.indexOf ("%") - 3) - '0'; // Hundreds

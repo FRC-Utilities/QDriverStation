@@ -34,7 +34,7 @@ static PDH_HCOUNTER cpuTotal;
 #include <QProcess>
 #endif
 
-void CpuUsage::init ()
+void CpuUsage::init()
 {
 #if defined Q_OS_WIN
     PdhOpenQuery (0, 0, &cpuQuery);
@@ -43,13 +43,15 @@ void CpuUsage::init ()
 #endif
 }
 
-int CpuUsage::getUsage ()
+int CpuUsage::getUsage()
 {
+    int usage = 0;
+
 #if defined Q_OS_WIN
     PDH_FMT_COUNTERVALUE counterVal;
     PdhCollectQueryData (cpuQuery);
     PdhGetFormattedCounterValue (cpuTotal, PDH_FMT_DOUBLE, 0, &counterVal);
-    return static_cast<int> (counterVal.doubleValue);
+    usage = counterVal.doubleValue;
 #endif
 
 #if defined Q_OS_MAC
@@ -60,8 +62,8 @@ int CpuUsage::getUsage ()
     process.start ("bash -c \"ps -A -o %cpu | awk '{s+=$1} END {print s}'\"");
 
     /* Read process output */
-    while (process.waitForReadyRead ())
-        data.append (process.readAll ());
+    while (process.waitForReadyRead())
+        data.append (process.readAll());
 
     /* Parse the digits of the percentage */
     int t = data.at (0) - '0';
@@ -71,7 +73,7 @@ int CpuUsage::getUsage ()
     if (t < 0) t = 0;
     if (u < 0) u = 0;
 
-    return (t * 10) + u;
+    usage = (t * 10) + u;
 #endif
 
 #if defined Q_OS_LINUX
@@ -84,8 +86,8 @@ int CpuUsage::getUsage ()
                    "END {print usage}'\"");
 
     /* Read process output */
-    while (process.waitForReadyRead ())
-        data.append (process.readAll ());
+    while (process.waitForReadyRead())
+        data.append (process.readAll());
 
     /* Parse the digits of the percentage */
     int t = data.at (0) - '0';
@@ -95,6 +97,9 @@ int CpuUsage::getUsage ()
     if (t < 0) t = 0;
     if (u < 0) u = 0;
 
-    return (t * 10) + u;
+    usage = (t * 10) + u;
 #endif
+
+    if (usage < 5) usage = 5;
+    return usage;
 }

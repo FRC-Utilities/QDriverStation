@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>958</width>
-    <height>231</height>
+    <width>1202</width>
+    <height>285</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -427,7 +427,7 @@ padding: 12px;</string>
            <item row="0" column="3">
             <widget class="QLabel" name="ElapsedTime">
              <property name="text">
-              <string>00:00:00</string>
+              <string>--.--</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -467,7 +467,7 @@ padding: 12px;</string>
             </spacer>
            </item>
            <item row="3" column="3">
-            <widget class="QProgressBar" name="PcCpuProgress">
+            <widget class="SmartProgressbar" name="PcCpuProgress">
              <property name="value">
               <number>0</number>
              </property>
@@ -480,7 +480,7 @@ padding: 12px;</string>
             </widget>
            </item>
            <item row="2" column="3">
-            <widget class="BatteryProgressbar" name="PcBatteryProgress">
+            <widget class="SmartProgressbar" name="PcBatteryProgress">
              <property name="value">
               <number>0</number>
              </property>
@@ -1609,7 +1609,7 @@ QPushButton:checked {
           </sizepolicy>
          </property>
          <property name="text">
-          <string>No Robot Communication</string>
+          <string>--.--</string>
          </property>
          <property name="scaledContents">
           <bool>false</bool>
@@ -1996,9 +1996,9 @@ QPushButton:checked {
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>BatteryProgressbar</class>
+   <class>SmartProgressbar</class>
    <extends>QProgressBar</extends>
-   <header>BatteryProgressbar.h</header>
+   <header>SmartProgressbar.h</header>
   </customwidget>
  </customwidgets>
  <resources>
@@ -2039,8 +2039,8 @@ QPushButton:checked {
   </connection>
  </connections>
  <buttongroups>
+  <buttongroup name="RobotStatusGroup"/>
   <buttongroup name="RobotModeGroup"/>
   <buttongroup name="WindowModeGroup"/>
-  <buttongroup name="RobotStatusGroup"/>
  </buttongroups>
 </ui>

@@ -128,7 +128,7 @@ HEADERS += \
     $$PWD/src/headers/AdvancedSettings.h \
     $$PWD/src/headers/AssemblyInfo.h \
     $$PWD/src/headers/Battery.h \
-    $$PWD/src/headers/BatteryProgressbar.h \
+    $$PWD/src/headers/SmartProgressbar.h \
     $$PWD/src/headers/CpuUsage.h \
     $$PWD/src/headers/Dashboard.h \
     $$PWD/src/headers/GamepadManager.h \
@@ -145,7 +145,7 @@ SOURCES += \
     $$PWD/src/sources/AdvancedSettings.cpp \
     $$PWD/src/sources/AssemblyInfo.cpp \
     $$PWD/src/sources/Battery.cpp \
-    $$PWD/src/sources/BatteryProgressbar.cpp \
+    $$PWD/src/sources/SmartProgressbar.cpp \
     $$PWD/src/sources/CpuUsage.cpp \
     $$PWD/src/sources/Dashboard.cpp \
     $$PWD/src/sources/GamepadManager.cpp \

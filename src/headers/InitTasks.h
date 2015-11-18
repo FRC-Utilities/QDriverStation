@@ -41,14 +41,14 @@ public:
      * If this is the first launch, it will ask the user to input his/her team
      * number using a \c QInputDialog
      */
-    static int getTeamNumber ();
+    static int getTeamNumber();
 
     /**
      * Initializes the CPU querying process and prompts the user to download
      * additional software required for the correct functionality of the
      * Open DriverStation
      */
-    static void executeFirstRunTasks ();
+    static void executeFirstRunTasks();
 };
 
 #endif

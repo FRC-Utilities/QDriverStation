@@ -46,21 +46,21 @@
 
 Dashboard* Dashboard::s_instance = Q_NULLPTR;
 
-Dashboard::Dashboard ()
+Dashboard::Dashboard()
 {
-    connect (qApp, SIGNAL (aboutToQuit ()), this, SLOT (quitDashboard ()));
-    loadDashboard ();
+    connect (qApp, SIGNAL (aboutToQuit()), this, SLOT (quitDashboard()));
+    loadDashboard();
 }
 
-Dashboard::~Dashboard ()
+Dashboard::~Dashboard()
 {
     delete s_instance;
 }
 
-Dashboard* Dashboard::getInstance ()
+Dashboard* Dashboard::getInstance()
 {
     if (s_instance == Q_NULLPTR)
-        s_instance = new Dashboard ();
+        s_instance = new Dashboard();
 
     return s_instance;
 }
@@ -69,10 +69,10 @@ Dashboard* Dashboard::getInstance ()
 // PROCESS-RELATED STUFF
 //------------------------------------------------------------------------------
 
-void Dashboard::loadDashboard ()
+void Dashboard::loadDashboard()
 {
     QString path;
-    m_current = Settings::get ("Dashboard", None).toInt ();
+    m_current = Settings::get ("Dashboard", None).toInt();
 
     /* Open the SFX Dashboard */
     if (m_current == SfxDashboard) {
@@ -80,20 +80,20 @@ void Dashboard::loadDashboard ()
         QStringList files;
 
         /* Go to the WPILib directory and get the available folders */
-        dir.cd (QString ("%1/wpilib/tools/").arg (QDir::homePath ()));
+        dir.cd (QString ("%1/wpilib/tools/").arg (QDir::homePath()));
         files = dir.entryList (QDir::Dirs);
 
         /* In theory, the only folder should contain the SFX DB, open it */
-        if (files.count () >= 3)
+        if (files.count() >= 3)
             path = QString ("java -jar \"%1/%2/sfx.jar\"")
-                   .arg (dir.absolutePath ())
+                   .arg (dir.absolutePath())
                    .arg (files.at (2));
     }
 
     /* Open the SmartDashboard, easy as cake */
     else if (m_current == SmartDashboard) {
         path = QString ("java -jar \"%1/wpilib/tools/SmartDashboard.jar\"")
-               .arg (QDir::homePath ());
+               .arg (QDir::homePath());
     }
 
     /* Open the LabVIEW Dashboard */
@@ -108,27 +108,27 @@ void Dashboard::loadDashboard ()
     m_process.start (path);
 }
 
-void Dashboard::quitDashboard ()
+void Dashboard::quitDashboard()
 {
-    m_process.close ();
+    m_process.close();
 }
 
-void Dashboard::reloadDashboard ()
+void Dashboard::reloadDashboard()
 {
-    quitDashboard ();
-    loadDashboard ();
+    quitDashboard();
+    loadDashboard();
 }
 
 //------------------------------------------------------------------------------
 // SEND INFORMATION TO OTHER OBJECTS
 //------------------------------------------------------------------------------
 
-int Dashboard::getCurrentDashboard ()
+int Dashboard::getCurrentDashboard()
 {
     return m_current;
 }
 
-QStringList Dashboard::getAvailableDashboards ()
+QStringList Dashboard::getAvailableDashboards()
 {
     QStringList list;
     list.append ("None");

@@ -49,11 +49,11 @@ class JoysticksWidget : public QWidget
 
 public:
     explicit JoysticksWidget (QWidget* parent = 0);
-    ~JoysticksWidget ();
+    ~JoysticksWidget();
 
 public slots:
-    void readSettings ();
-    void showKeyboardWindow ();
+    void readSettings();
+    void showKeyboardWindow();
     void registerKeyPress (QKeyEvent* event);
     void registerKeyRelease (QKeyEvent* event);
 
@@ -61,7 +61,7 @@ signals:
     /**
      * Emitted when a joystick is removed from the computer
      */
-    void joystickRemoved ();
+    void joystickRemoved();
 
     /**
      * Emitted when a joystick is attached or removed from the computer

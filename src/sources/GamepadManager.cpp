@@ -38,28 +38,28 @@
 
 GamepadManager* GamepadManager::s_instance = Q_NULLPTR;
 
-GamepadManager::GamepadManager ()
+GamepadManager::GamepadManager()
 {
     SDL_JoystickEventState (SDL_ENABLE);
     SDL_SetHint (SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
 
     if (SDL_Init (SDL_INIT_JOYSTICK) != 0) {
         QMessageBox::critical (Q_NULLPTR, tr ("Fatal Error!"),
-                               tr ("SDL Init Error: %1").arg (SDL_GetError ()));
+                               tr ("SDL Init Error: %1").arg (SDL_GetError()));
 
         exit (EXIT_FAILURE);
     }
 }
 
-GamepadManager::~GamepadManager ()
+GamepadManager::~GamepadManager()
 {
-    for (int i = 0; i < SDL_NumJoysticks (); ++i)
+    for (int i = 0; i < SDL_NumJoysticks(); ++i)
         SDL_GameControllerClose (SDL_GameControllerOpen (i));
 
-    SDL_Quit ();
+    SDL_Quit();
 }
 
-GamepadManager* GamepadManager::getInstance ()
+GamepadManager* GamepadManager::getInstance()
 {
     if (s_instance == Q_NULLPTR)
         s_instance = new GamepadManager;
@@ -91,11 +91,11 @@ QString GamepadManager::getJoystickName (int js)
     return SDL_JoystickNameForIndex (js);
 }
 
-QStringList GamepadManager::joystickList ()
+QStringList GamepadManager::joystickList()
 {
     QStringList list;
 
-    for (int i = 0; i < SDL_NumJoysticks (); ++i)
+    for (int i = 0; i < SDL_NumJoysticks(); ++i)
         list.append (getJoystickName (i));
 
     return list;
@@ -105,12 +105,12 @@ QStringList GamepadManager::joystickList ()
 // INIT-RELATED FUNCTIONS
 //------------------------------------------------------------------------------
 
-void GamepadManager::init ()
+void GamepadManager::init()
 {
     m_time = 50;
     m_tracker = -1;
 
-    QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (readSdlEvents ()));
+    QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (readSdlEvents()));
 }
 
 void GamepadManager::setUpdateInterval (int time)
@@ -191,7 +191,7 @@ int GamepadManager::getDynamicId (int id)
 {
     id = m_tracker - (id + 1);
     if (id < 0) id = abs (id);
-    if (id >= SDL_NumJoysticks ()) id -= 1;
+    if (id >= SDL_NumJoysticks()) id -= 1;
 
     return id;
 }
@@ -200,19 +200,19 @@ int GamepadManager::getDynamicId (int id)
 // SDL LOOP
 //------------------------------------------------------------------------------
 
-void GamepadManager::readSdlEvents ()
+void GamepadManager::readSdlEvents()
 {
     SDL_Event event;
     while (SDL_PollEvent (&event)) {
         switch (event.type) {
         case SDL_JOYDEVICEADDED:
             ++m_tracker;
-            emit countChanged (joystickList ());
-            emit countChanged (SDL_NumJoysticks ());
+            emit countChanged (joystickList());
+            emit countChanged (SDL_NumJoysticks());
             break;
         case SDL_JOYDEVICEREMOVED:
-            emit countChanged (joystickList ());
-            emit countChanged (SDL_NumJoysticks ());
+            emit countChanged (joystickList());
+            emit countChanged (SDL_NumJoysticks());
             break;
         case SDL_JOYAXISMOTION:
             onAxisEvent (&event);
@@ -229,7 +229,7 @@ void GamepadManager::readSdlEvents ()
         }
     }
 
-    QTimer::singleShot (m_time, this, SLOT (readSdlEvents ()));
+    QTimer::singleShot (m_time, this, SLOT (readSdlEvents()));
 }
 
 //------------------------------------------------------------------------------

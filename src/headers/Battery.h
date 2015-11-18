@@ -48,7 +48,7 @@ public:
      *
      * @return \c true if the computer is connected to an AC power supply
      */
-    static  bool isPlugged ();
+    static  bool isPlugged();
 
     /**
      * Uses the native API calls of the target operating system to obtain the
@@ -60,7 +60,7 @@ public:
      *
      * @return an \c int between 0 and 100 that represents the battery level
      */
-    static int currentLevel ();
+    static int currentLevel();
 };
 
 #endif

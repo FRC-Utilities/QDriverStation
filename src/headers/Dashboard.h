@@ -55,38 +55,38 @@ public:
     /**
      * Returns the only instance of this class
      */
-    static Dashboard* getInstance ();
+    static Dashboard* getInstance();
 
 public slots:
     /**
      * Opens a Dashboard using \c QProcess based on the saved settings
      */
-    void loadDashboard ();
+    void loadDashboard();
 
     /**
      * Quits the current dashboard by using the \c QProcess library
      */
-    void quitDashboard ();
+    void quitDashboard();
 
     /**
      * Quits the current dashboard and opens a new one
      */
-    void reloadDashboard ();
+    void reloadDashboard();
 
     /**
      * Returns the currently selected Dashboard
      */
-    int getCurrentDashboard ();
+    int getCurrentDashboard();
 
     /**
      * Returns an ordered list with the matching Dashboards
      * Modify as needed!
      */
-    QStringList getAvailableDashboards ();
+    QStringList getAvailableDashboards();
 
 protected:
-    explicit Dashboard ();
-    ~Dashboard ();
+    explicit Dashboard();
+    ~Dashboard();
 
     static Dashboard* s_instance;
 

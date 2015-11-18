@@ -40,10 +40,10 @@ class Updater : public QObject
     Q_OBJECT
 
 public:
-    explicit Updater ();
+    explicit Updater();
 
 private slots:
-    void showUpdateMessages ();
+    void showUpdateMessages();
     void checkForUpdates (QString url);
     void onFinished (QNetworkReply* reply);
     void readDownloadLink (QByteArray data);

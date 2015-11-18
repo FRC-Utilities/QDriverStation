@@ -40,28 +40,30 @@ CONFIG += c++11
 INCLUDEPATH += $$PWD/include
 
 HEADERS += \
-    $$PWD/include/LibDS/DS_Client.h \
-    $$PWD/include/LibDS/DS_Common.h \
-    $$PWD/include/LibDS/DS_ElapsedTime.h \
-    $$PWD/include/LibDS/DS_Global.h \
-    $$PWD/include/LibDS/DS_NetConsole.h \
-    $$PWD/include/LibDS/DS_ProtocolManager.h \
-    $$PWD/include/LibDS/DS_Timers.h \
-    $$PWD/include/LibDS/DS_Watchdog.h \
-    $$PWD/include/Protocols/DS_Protocol2015.h \
     $$PWD/include/DriverStation.h \
-    $$PWD/include/Extra/Discovery.h \
-    $$PWD/include/LibDS/DS_ProtocolBase.h
+    $$PWD/include/Protocols/Protocol2015.h \
+    $$PWD/include/Core/Client.h \
+    $$PWD/include/Core/Common.h \
+    $$PWD/include/Core/ElapsedTimer.h \
+    $$PWD/include/Core/Library.h \
+    $$PWD/include/Core/NetConsole.h \
+    $$PWD/include/Core/ProtocolBase.h \
+    $$PWD/include/Core/ProtocolManager.h \
+    $$PWD/include/Core/Timers.h \
+    $$PWD/include/Core/Watchdog.h \
+    $$PWD/include/Core/Discovery/Discovery.h \
+    $$PWD/include/Core/Discovery/MDNSResponder.h
 
 SOURCES += \
-    $$PWD/src/LibDS/DS_Client.cpp \
-    $$PWD/src/LibDS/DS_Common.cpp \
-    $$PWD/src/LibDS/DS_ElapsedTime.cpp \
-    $$PWD/src/LibDS/DS_NetConsole.cpp \
-    $$PWD/src/LibDS/DS_ProtocolManager.cpp \
-    $$PWD/src/LibDS/DS_Timers.cpp \
-    $$PWD/src/LibDS/DS_Watchdog.cpp \
-    $$PWD/src/Protocols/DS_Protocol2015.cpp \
     $$PWD/src/DriverStation.cpp \
-    $$PWD/src/Extra/Discovery.cpp \
-    $$PWD/src/LibDS/DS_ProtocolBase.cpp
+    $$PWD/src/Core/Client.cpp \
+    $$PWD/src/Core/Common.cpp \
+    $$PWD/src/Core/ElapsedTimer.cpp \
+    $$PWD/src/Core/NetConsole.cpp \
+    $$PWD/src/Core/ProtocolBase.cpp \
+    $$PWD/src/Core/ProtocolManager.cpp \
+    $$PWD/src/Core/Timers.cpp \
+    $$PWD/src/Core/Watchdog.cpp \
+    $$PWD/src/Core/Discovery/Discovery.cpp \
+    $$PWD/src/Core/Discovery/MDNSResponder.cpp \
+    $$PWD/src/Protocols/Protocol2015.cpp

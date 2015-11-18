@@ -26,11 +26,11 @@
 #include <QSettings>
 
 static QSettings* settings =
-    new QSettings (AssemblyInfo::organization (), AssemblyInfo::name ());
+    new QSettings (AssemblyInfo::organization(), AssemblyInfo::name());
 
-void Settings::clear ()
+void Settings::clear()
 {
-    settings->clear ();
+    settings->clear();
 }
 
 void Settings::set (QString key, const QVariant& value)
