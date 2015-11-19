@@ -104,7 +104,7 @@ int Battery::currentLevel()
 
     process.start ("bash -c \"upower -i $(upower -e | grep 'BAT') | "
                    "grep -E 'state|to\\ full|percentage'\"");
-    s
+    
     while (process.waitForReadyRead())
         data.append (process.readAll());
 
