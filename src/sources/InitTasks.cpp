@@ -62,7 +62,7 @@ void InitTasks::executeFirstRunTasks() {
                                          "for Xbox 360 joysticks?"));
 
     if (box.exec() == QMessageBox::Yes)
-        QDesktopServices::openUrl (QUrl (URL_XBOX_DRIVER));
+        QDesktopServices::openUrl (QUrl (dXboxDriverUrl));
 #endif
 
     QMessageBox::information (Q_NULLPTR,
