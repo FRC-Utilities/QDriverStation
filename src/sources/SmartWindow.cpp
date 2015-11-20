@@ -100,9 +100,6 @@ void SmartWindow::setPromptOnQuit (bool prompt) {
 }
 
 void SmartWindow::setWindowMode (const WindowMode& mode) {
-    if (m_windowMode == mode)
-        return;
-
     hide();
     m_windowMode = mode;
     Settings::set ("Docked", isDocked());
