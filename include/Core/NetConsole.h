@@ -24,8 +24,7 @@
 #ifndef _LIB_DS_NET_CONSOLE_H
 #define _LIB_DS_NET_CONSOLE_H
 
-#include <QUdpSocket>
-#include "Core/Library.h"
+#include "Core/Common.h"
 
 /**
  * \class DS_NetConsole
@@ -33,27 +32,26 @@
  * The DS_NetConsole class receives and decodes messages broadcasted
  * by the robot over the local area network.
  */
-class LIB_DS_DECL DS_NetConsole : public QObject
-{
+class LIB_DS_DECL DS_NetConsole : public QObject {
     Q_OBJECT
 
-public:
+  public:
     explicit DS_NetConsole();
 
-signals:
+  signals:
     /**
      * Emitted when a message is received from the robot or the
      * internal Driver Station system
      */
     void newMessage (QString);
 
-private:
+  private:
     /**
      * The network socket in which we receive data from the robot
      */
     QUdpSocket m_socket;
 
-private slots:
+  private slots:
     /**
      * @internal
      * Called when we receive data in the network socket.

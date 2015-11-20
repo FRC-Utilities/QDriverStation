@@ -27,13 +27,11 @@
 #include "Core/NetConsole.h"
 #include "Core/ElapsedTimer.h"
 #include "Core/ProtocolManager.h"
-
 #include "Protocols/Protocol2015.h"
 
 DriverStation* DriverStation::s_instance = Q_NULLPTR;
 
-DriverStation::DriverStation()
-{
+DriverStation::DriverStation() {
     m_init = false;
 
     /* Initialize private members */
@@ -62,8 +60,6 @@ DriverStation::DriverStation()
              this,      SIGNAL (ramUsageChanged       (int)));
     connect (m_manager, SIGNAL (voltageChanged        (QString)),
              this,      SIGNAL (voltageChanged        (QString)));
-    connect (m_manager, SIGNAL (newMessage            (QString)),
-             this,      SIGNAL (newMessage            (QString)));
 
     /* Stop timer when the communications status changes */
     connect (m_manager,     SIGNAL (communicationsChanged (bool)),
@@ -98,8 +94,7 @@ DriverStation::DriverStation()
              this,                     SLOT   (sendRobotPackets()));
 }
 
-DriverStation::~DriverStation()
-{
+DriverStation::~DriverStation() {
     delete m_client;
     delete m_manager;
     delete m_protocol;
@@ -109,16 +104,14 @@ DriverStation::~DriverStation()
     delete s_instance;
 }
 
-DriverStation* DriverStation::getInstance()
-{
+DriverStation* DriverStation::getInstance() {
     if (s_instance == Q_NULLPTR)
         s_instance = new DriverStation();
 
     return s_instance;
 }
 
-bool DriverStation::canBeEnabled()
-{
+bool DriverStation::canBeEnabled() {
     if (m_manager->protocolIsValid()) {
         return m_manager->protocol()->robotCode() &&
                m_manager->protocol()->robotCommunication() &&
@@ -128,8 +121,7 @@ bool DriverStation::canBeEnabled()
     return false;
 }
 
-QStringList DriverStation::alliances()
-{
+QStringList DriverStation::alliances() {
     QStringList list;
 
     list.append ("Red 1");
@@ -142,55 +134,48 @@ QStringList DriverStation::alliances()
     return list;
 }
 
-QStringList DriverStation::protocols()
-{
+QStringList DriverStation::protocols() {
     QStringList list;
     list.append ("2015 Protocol");
     return list;
 }
 
-QString DriverStation::radioAddress()
-{
+QString DriverStation::radioAddress() {
     if (m_manager->protocolIsValid())
         return m_manager->protocol()->radioAddress();
 
     return "";
 }
 
-QString DriverStation::robotAddress()
-{
+QString DriverStation::robotAddress() {
     if (m_manager->protocolIsValid())
         return m_manager->protocol()->robotAddress();
 
     return "";
 }
 
-DS_ControlMode DriverStation::controlMode()
-{
+DS_ControlMode DriverStation::controlMode() {
     if (m_manager->protocolIsValid())
         return m_manager->protocol()->controlMode();
 
     return kControlNoCommunication;
 }
 
-bool DriverStation::robotHasCode()
-{
+bool DriverStation::robotHasCode() {
     if (m_manager->protocolIsValid())
         return m_manager->protocol()->robotCode();
 
     return false;
 }
 
-bool DriverStation::networkAvailable()
-{
+bool DriverStation::networkAvailable() {
     if (m_manager->protocolIsValid())
         return m_manager->protocol()->robotCommunication();
 
     return false;
 }
 
-void DriverStation::init()
-{
+void DriverStation::init() {
     if (!m_init) {
         m_init = true;
         QTimer::singleShot (1500, this, SLOT (resetInternalValues()));
@@ -198,24 +183,21 @@ void DriverStation::init()
     }
 }
 
-void DriverStation::reboot()
-{
+void DriverStation::reboot() {
     if (m_manager->protocolIsValid())
         m_manager->protocol()->reboot();
 }
 
-void DriverStation::restartCode()
-{
+void DriverStation::restartCode() {
     if (m_manager->protocolIsValid())
         m_manager->protocol()->restartCode();
 }
 
-void DriverStation::startPractice (int countdown,
-                                   int autonomous,
-                                   int delay,
-                                   int teleop,
-                                   int endgame)
-{
+void DriverStation::startPractice (DS_Char countdown,
+                                   DS_Char autonomous,
+                                   DS_Char delay,
+                                   DS_Char teleop,
+                                   DS_Char endgame) {
     Q_UNUSED (countdown);
     Q_UNUSED (autonomous);
     Q_UNUSED (delay);
@@ -223,8 +205,7 @@ void DriverStation::startPractice (int countdown,
     Q_UNUSED (endgame);
 }
 
-void DriverStation::setProtocol (DS_ProtocolBase* protocol)
-{
+void DriverStation::setProtocol (DS_ProtocolBase* protocol) {
     if (protocol != Q_NULLPTR) {
         m_manager->setProtocol (protocol);
         m_client->setRobotPort (protocol->robotPort());
@@ -232,75 +213,71 @@ void DriverStation::setProtocol (DS_ProtocolBase* protocol)
     }
 }
 
-void DriverStation::setProtocol (ProtocolType protocol)
-{
+void DriverStation::setProtocol (ProtocolType protocol) {
     if (protocol == kProtocol2015) {
         m_protocol = new DS_Protocol2015;
         setProtocol (m_protocol);
     }
 }
 
-void DriverStation::setTeamNumber (int team)
-{
+void DriverStation::setTeamNumber (DS_Short team) {
     if (m_manager->protocolIsValid())
         m_manager->protocol()->setTeamNumber (team);
 }
 
-void DriverStation::setAlliance (DS_Alliance alliance)
-{
+void DriverStation::setAlliance (DS_Alliance alliance) {
     if (m_manager->protocolIsValid())
         m_manager->protocol()->setAlliance (alliance);
 }
 
-void DriverStation::setControlMode (DS_ControlMode mode)
-{
+void DriverStation::setControlMode (DS_ControlMode mode) {
     if (m_manager->protocolIsValid())
         m_manager->protocol()->setControlMode (mode);
 }
 
-void DriverStation::setCustomAddress (QString address)
-{
+void DriverStation::setCustomAddress (QString address) {
     if (m_manager->protocolIsValid())
         m_manager->protocol()->setRobotAddress (address);
 }
 
-void DriverStation::clearJoysticks()
-{
+void DriverStation::clearJoysticks() {
     m_manager->clearJoysticks();
 }
 
-void DriverStation::updateJoystickPovHat (int js, int hat, int angle)
-{
+void DriverStation::updateJoystickPovHat (DS_Char js,
+        DS_Char hat,
+        DS_Char angle) {
     if (m_manager->protocolIsValid())
         m_manager->updateJoystickPovHat (js, hat, angle);
 }
 
-void DriverStation::addJoystick (int axes, int buttons, int povHats)
-{
+void DriverStation::addJoystick (DS_Char axes,
+                                 DS_Char buttons,
+                                 DS_Char povHats) {
     if (m_manager->protocolIsValid())
         m_manager->addJoystick (axes, buttons, povHats);
 }
 
-void DriverStation::updateJoystickAxis (int js, int axis, double value)
-{
+void DriverStation::updateJoystickAxis (DS_Char js,
+                                        DS_Char axis,
+                                        double value) {
     if (m_manager->protocolIsValid())
         m_manager->updateJoystickAxis (js, axis, value);
 }
 
-void DriverStation::updateJoystickButton (int js, int button, bool state)
-{
+void DriverStation::updateJoystickButton (DS_Char js,
+        DS_Char button,
+        bool state) {
     if (m_manager->protocolIsValid())
         m_manager->updateJoystickButton (js, button, state);
 }
 
-void DriverStation::sendRobotPackets()
-{
+void DriverStation::sendRobotPackets() {
     if (m_manager->protocolIsValid())
         m_client->sendToRobot (m_manager->protocol()->getClientPacket());
 }
 
-void DriverStation::resetInternalValues()
-{
+void DriverStation::resetInternalValues() {
     m_elapsedTime->reset();
     m_elapsedTime->stop();
 
@@ -310,17 +287,15 @@ void DriverStation::resetInternalValues()
     emit elapsedTimeChanged ("00:00.0");
 }
 
-void DriverStation::readRobotPackets (QByteArray robotResponse)
-{
+void DriverStation::readRobotPackets (QByteArray robotResponse) {
     if (m_manager->protocolIsValid())
         m_manager->protocol()->readRobotPacket (robotResponse);
 }
 
-QString DriverStation::getStatus()
-{
+QString DriverStation::getStatus() {
     if (m_manager->protocolIsValid()) {
         if (m_manager->protocol()->robotCommunication()
-            && !m_manager->protocol()->robotCode())
+                && !m_manager->protocol()->robotCode())
             return "No Robot Code";
 
         return DS_GetControlModeString (m_manager->protocol()->controlMode());
@@ -329,14 +304,12 @@ QString DriverStation::getStatus()
     return DS_GetControlModeString (kControlNoCommunication);
 }
 
-void DriverStation::updateStatus (bool ignored)
-{
+void DriverStation::updateStatus (bool ignored) {
     Q_UNUSED (ignored);
     emit robotStatusChanged (getStatus());
 }
 
-void DriverStation::onControlModeChanged (DS_ControlMode mode)
-{
+void DriverStation::onControlModeChanged (DS_ControlMode mode) {
     if (!canBeEnabled() || mode == kControlDisabled)
         m_elapsedTime->stop();
 

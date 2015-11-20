@@ -23,13 +23,11 @@
 #include "Core/Common.h"
 #include "Core/NetConsole.h"
 
-DS_NetConsole::DS_NetConsole()
-{
+DS_NetConsole::DS_NetConsole() {
     m_socket.bind (6666, QUdpSocket::ShareAddress);
     connect (&m_socket, SIGNAL (readyRead()), this, SLOT (onDataReceived()));
 }
 
-void DS_NetConsole::onDataReceived()
-{
+void DS_NetConsole::onDataReceived() {
     emit newMessage (QString::fromUtf8 (DS_GetSocketData (&m_socket)));
 }

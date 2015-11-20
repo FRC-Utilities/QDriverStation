@@ -25,73 +25,74 @@
 #define _LIB_DS_NETWORK_RESOLVER_H
 
 #include <QHostInfo>
-#include "Core/Library.h"
+#include "Core/Discovery/MDNSResponder.h"
 
 /**
  * Allows the library to get the robot IP from a DNS or
  * mDNS address without relying on third-party applications
- * or libraries. Well, you will need to have the base networking libraries
- * for your operating system...
- *
- * \warning This class is intended to work for FRC-related configurations,
- *          I strongly discourage you to use it for other purposes, as it may
- *          be incomplete and may not respect some networking standards.
- *          For example, ".local" can be used in both mDNS and 'normal' DNS
- *          services, but this class will asume that ".local" refers to
- *          a mDNS service.
+ * or libraries.
  */
-class LIB_DS_DECL NetworkDiscovery : public QObject
-{
+class LIB_DS_DECL NetworkDiscovery : public QObject {
     Q_OBJECT
 
-public:
-    /**
-     * Represents the available types of addresses
-     * that the user can input to this class
-     */
-    enum AddressType {
-        kDNS,
-        kMDNS,
-        kIPv4
-    };
-
+  public:
     explicit NetworkDiscovery();
 
     /**
-     * Guesses the address type of the inputed \a address
+     * Represents the possible types of addresses that we
+     * can use to communicate with the robot through a direct
+     * connection
+     */
+    enum AddressType {
+        kMDNS,
+        kIPv4,
+        kIPv6,
+        kUnknown
+    };
+
+    /**
+     * Looks for patterns in the \a address to determine the
+     * address type
      */
     AddressType getAddressType (QString address);
 
-public slots:
+  public slots:
     /**
-     * Finds the IP of the \a address
+     * Uses the \c getAddressType() function to 'guess' the \a address
+     * type and the steps that we need to take to resolve it.
      *
-     * \note This function is overloaded, the address type
-     *       will be determined automatically
+     * When the address is resolved, this function will automatically
+     * call the \a member function in the \a receiver object
      */
-    void getIp (QString address,
-                QObject* receiver, const char* member);
+    void getIp (QString address, QObject* receiver, const char* member);
 
     /**
-     * Finds the IP of the \a address
+     * Resolves the given \a address based on the address \a type.
+     *
+     * When the address is resolved, this function will automatically
+     * call the \a member function in the \a receiver object
      */
-    void getIp (QString address, AddressType type,
-                QObject* receiver, const char* member);
+    void getIp (QString address, AddressType type, QObject* receiver,
+                const char* member);
 
-signals:
+  signals:
     /**
-     * Emitted when the \a ip of the \a address is found/resolved
+     * Emitted when the \a ip of the \a address is resolved
      */
     void ipFound (QString address, QString ip);
 
-private:
-    QString m_address;
-
-private slots:
+  private slots:
     /**
-     * Extracts the IP address from the host \a info
+     * Gets the available addresses from the \a info object and
+     * emits the \c ipFound() signal with the appropiate data
      */
     void onLookupFinished (QHostInfo info);
+
+  private:
+    /**
+     * Figures out the IP address of a mDNS domain
+     */
+    MDNSResponder m_responder;
 };
 
 #endif

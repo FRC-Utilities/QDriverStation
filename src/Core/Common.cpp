@@ -22,8 +22,7 @@
 
 #include "Core/Common.h"
 
-QString DS_GetTimezoneCode()
-{
+QString DS_GetTimezoneCode() {
     switch (QDateTime::currentDateTime().offsetFromUtc() / 3600) {
     case -11:
         return "BST11BDT";
@@ -102,8 +101,7 @@ QString DS_GetTimezoneCode()
     return "GMT0BST";
 }
 
-QString DS_GetStaticIp (int team, int host)
-{
+QString DS_GetStaticIp (DS_Char team, DS_Char host) {
     QString string = QString ("%1").arg (team);
 
     switch (string.length()) {
@@ -129,8 +127,7 @@ QString DS_GetStaticIp (int team, int host)
     return QString ("10.%1.%2").arg (string, QString::number (host));
 }
 
-QString DS_GetControlModeString (DS_ControlMode mode)
-{
+QString DS_GetControlModeString (DS_ControlMode mode) {
     switch (mode) {
     case kControlTest:
         return QString ("Test");
@@ -155,8 +152,7 @@ QString DS_GetControlModeString (DS_ControlMode mode)
     return QString ("");
 }
 
-QByteArray DS_GetSocketData (QUdpSocket* socket)
-{
+QByteArray DS_GetSocketData (QUdpSocket* socket) {
     QByteArray data;
 
     while (socket->hasPendingDatagrams()) {

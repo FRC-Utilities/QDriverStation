@@ -23,8 +23,7 @@
 #include "Core/Timers.h"
 #include "Core/ElapsedTimer.h"
 
-DS_ElapsedTime::DS_ElapsedTime()
-{
+DS_ElapsedTime::DS_ElapsedTime() {
     stop();
     calculateElapsedTime();
 
@@ -32,19 +31,16 @@ DS_ElapsedTime::DS_ElapsedTime()
              this,                     SLOT   (calculateElapsedTime()));
 }
 
-void DS_ElapsedTime::stop()
-{
+void DS_ElapsedTime::stop() {
     m_enabled = false;
 }
 
-void DS_ElapsedTime::reset()
-{
+void DS_ElapsedTime::reset() {
     m_enabled = true;
     m_time.restart();
 }
 
-void DS_ElapsedTime::calculateElapsedTime()
-{
+void DS_ElapsedTime::calculateElapsedTime() {
     if (m_enabled) {
         int msec = m_time.elapsed();
         int secs = (msec / 1000);

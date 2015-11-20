@@ -22,9 +22,9 @@
 
 #include "Protocols/Protocol2015.h"
 
-#define FTP_PCM_PATH "/tmp/frc_versions/PCM-0-versions.ini"
-#define FTP_PDP_PATH "/tmp/frc_versions/PDP-0-versions.ini"
-#define FTP_LIB_PATH "/tmp/frc_versions/FRC_Lib_Version.ini"
+#define dPcmPath "/tmp/frc_versions/PCM-0-versions.ini"
+#define dPdpPath "/tmp/frc_versions/PDP-0-versions.ini"
+#define dLibPath "/tmp/frc_versions/FRC_Lib_Version.ini"
 
 enum ControlModes {
     pControlTest = 0x05,
@@ -67,8 +67,7 @@ enum Alliances {
     pBlue3 = 0x06
 };
 
-DS_Protocol2015::DS_Protocol2015()
-{
+DS_Protocol2015::DS_Protocol2015() {
     p_minPacketLength = 8;
 
     reset();
@@ -76,28 +75,23 @@ DS_Protocol2015::DS_Protocol2015()
              this,       SLOT   (onDownloadFinished (QNetworkReply*)));
 }
 
-void DS_Protocol2015::reboot()
-{
-    m_status = pStatusRebootRio;
+void DS_Protocol2015::reboot() {
+    p_status = pStatusRebootRio;
 }
 
-int DS_Protocol2015::robotPort()
-{
+void DS_Protocol2015::restartCode() {
+    p_status = pStatusRestartCode;
+}
+
+DS_Short DS_Protocol2015::robotPort() {
     return 1110;
 }
 
-int DS_Protocol2015::clientPort()
-{
+DS_Short DS_Protocol2015::clientPort() {
     return 1150;
 }
 
-void DS_Protocol2015::restartCode()
-{
-    m_status = pStatusRestartCode;
-}
-
-QByteArray DS_Protocol2015::getClientPacket()
-{
+QByteArray DS_Protocol2015::getClientPacket() {
     QByteArray data;
 
     /* Add ping data */
@@ -111,48 +105,122 @@ QByteArray DS_Protocol2015::getClientPacket()
     data.append (getControlCode (controlMode()));
 
     /* Add the current status (normal, reboot, etc) */
-    data.append (p_robotCommunication ? m_status : (char) pStatusInvalid);
+    data.append (p_robotCommunication ? p_status : (char) pStatusInvalid);
 
     /* Add the current alliance */
     data.append (getAllianceCode (alliance()));
 
     /* Add joystick input data */
-    if (p_robotCommunication && !m_sendDateTime)
+    if (p_robotCommunication && !p_sendDateTime)
         data.append (generateJoystickData());
 
     /* Send the timezone data if required */
-    else if (m_sendDateTime)
+    else if (p_sendDateTime)
         data.append (generateTimezoneData());
 
     return data;
 }
 
-void DS_Protocol2015::resetProtocol()
-{
-    m_status = pStatusInvalid;
-    m_sendDateTime = false;
+void DS_Protocol2015::resetProtocol() {
+    p_status = pStatusInvalid;
 }
 
-QString DS_Protocol2015::defaultRadioAddress()
-{
+void DS_Protocol2015::downloadRobotInformation() {
+    QString host = "FTP_://" + robotAddress();
+    m_manager.get (QNetworkRequest (host + dLibPath));
+    m_manager.get (QNetworkRequest (host + dPcmPath));
+    m_manager.get (QNetworkRequest (host + dPdpPath));
+}
+
+void DS_Protocol2015::readRobotData (QByteArray data) {
+    /* We just have connected to the robot */
+    if (!p_robotCommunication) {
+        p_robotCommunication = true;
+        emit communicationsChanged (true);
+
+        downloadRobotInformation();
+        setControlMode (kControlDisabled);
+    }
+
+    /* Get robot program status */
+    if (p_robotCommunication) {
+        /* Reset status bit */
+        if (p_status == pStatusInvalid)
+            p_status = pStatusNormal;
+
+        /* Get robot code value */
+        bool code = (data.at (4) != pProgramNoCode);
+        if (p_robotCode != code) {
+            p_robotCode = code;
+            emit codeChanged (code);
+        }
+
+        /* Know if robot requests timezone to be sent */
+        p_sendDateTime = (data.at (7) == pProgramRequestTime);
+
+        /* Reset the watchdog and update the DS */
+        emit packetReceived();
+    }
+
+    /* Get robot voltage */
+    QString major = QString::number (data.at (5));
+    QString minor = QString::number (data.at (6));
+    minor = minor.replace ("-", "");
+
+    /* Trim the minor voltage to 2 digits */
+    if (minor.length() == 1) minor = minor + "0";
+    else if (minor.length() > 2)
+        minor = QString (minor.at (0)) + QString (minor.at (1));
+
+    emit voltageChanged (QString ("%1.%2").arg (major, minor));
+}
+
+void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply) {
+    QString url = reply->url().toString();
+    QString data = QString::fromUtf8 (reply->readAll());
+
+    if (data.isEmpty() || url.isEmpty())
+        return;
+
+    else if (url.contains (dPcmPath, Qt::CaseInsensitive)) {
+        QString version;
+        QString key = "currentVersion";
+
+        version.append (data.at (data.indexOf (key) + key.length() + 1));
+        version.append (data.at (data.indexOf (key) + key.length() + 2));
+        version.append (data.at (data.indexOf (key) + key.length() + 3));
+        version.append (data.at (data.indexOf (key) + key.length() + 4));
+
+        emit pcmVersionChanged (version);
+    }
+
+    else if (url.contains (dPdpPath, Qt::CaseInsensitive)) {
+        QString version;
+        QString key = "currentVersion";
+
+        version.append (data.at (data.indexOf (key) + key.length() + 1));
+        version.append (data.at (data.indexOf (key) + key.length() + 2));
+        version.append (data.at (data.indexOf (key) + key.length() + 3));
+        version.append (data.at (data.indexOf (key) + key.length() + 4));
+
+        emit pdpVersionChanged (version);
+    }
+
+    else if (url.contains (dLibPath, Qt::CaseInsensitive))
+        emit libVersionChanged (data);
+
+    delete reply;
+}
+
+QString DS_Protocol2015::defaultRadioAddress() {
     return DS_GetStaticIp (p_team, 1);
 }
 
-QString DS_Protocol2015::defaultRobotAddress()
-{
+QString DS_Protocol2015::defaultRobotAddress() {
     return QString ("roboRIO-%1.local").arg (p_team);
 }
 
-void DS_Protocol2015::downloadRobotInformation()
-{
-    QString host = "FTP_://" + robotAddress();
-    m_manager.get (QNetworkRequest (host + FTP_LIB_PATH));
-    m_manager.get (QNetworkRequest (host + FTP_PCM_PATH));
-    m_manager.get (QNetworkRequest (host + FTP_PDP_PATH));
-}
-
-QByteArray DS_Protocol2015::generateJoystickData()
-{
+QByteArray DS_Protocol2015::generateJoystickData() {
     QByteArray data;
 
     /* Generate data for each joystick */
@@ -198,8 +266,7 @@ QByteArray DS_Protocol2015::generateJoystickData()
     return data;
 }
 
-QByteArray DS_Protocol2015::generateTimezoneData()
-{
+QByteArray DS_Protocol2015::generateTimezoneData() {
     QByteArray data;
 
     /* Add size (always 11) */
@@ -228,52 +295,7 @@ QByteArray DS_Protocol2015::generateTimezoneData()
     return data;
 }
 
-void DS_Protocol2015::readRobotData (QByteArray data)
-{
-    /* We just have connected to the robot */
-    if (!p_robotCommunication) {
-        p_robotCommunication = true;
-        emit communicationsChanged (true);
-
-        downloadRobotInformation();
-        setControlMode (kControlDisabled);
-    }
-
-    /* Get robot program status */
-    if (p_robotCommunication) {
-        /* Reset status bit */
-        if (m_status == pStatusInvalid)
-            m_status = pStatusNormal;
-
-        /* Get robot code value */
-        bool code = (data.at (4) != pProgramNoCode);
-        if (p_robotCode != code) {
-            p_robotCode = code;
-            emit codeChanged (code);
-        }
-
-        /* Know if robot requests timezone to be sent */
-        m_sendDateTime = (data.at (7) == pProgramRequestTime);
-
-        /* Reset the watchdog and update the DS */
-        emit packetReceived();
-    }
-
-    /* Get robot voltage */
-    QString major = QString::number (data.at (5));
-    QString minor = QString::number (data.at (6));
-    minor = minor.replace ("-", "");
-
-    /* Trim the minor voltage to 2 digits */
-    if (minor.length() == 1) minor = minor + "0";
-    else if (minor.length() > 2)
-        minor = QString (minor.at (0)) + QString (minor.at (1));
-
-    emit voltageChanged (QString ("%1.%2").arg (major, minor));
-}
-
-uint8_t DS_Protocol2015::getControlCode (DS_ControlMode mode)
-{
+DS_Char DS_Protocol2015::getControlCode (DS_ControlMode mode) {
     switch (mode) {
     case kControlTest:
         return pControlTest;
@@ -298,8 +320,7 @@ uint8_t DS_Protocol2015::getControlCode (DS_ControlMode mode)
     return pControlDisabled;
 }
 
-DS_ControlMode DS_Protocol2015::getControlMode (uint8_t byte)
-{
+DS_ControlMode DS_Protocol2015::getControlMode (DS_Char byte) {
     switch (byte) {
     case pControlDisabled:
         return kControlDisabled;
@@ -321,8 +342,7 @@ DS_ControlMode DS_Protocol2015::getControlMode (uint8_t byte)
     return kControlEmergencyStop;
 }
 
-uint8_t DS_Protocol2015::getAllianceCode (DS_Alliance alliance)
-{
+DS_Char DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
     switch (alliance) {
     case kAllianceRed1:
         return pRed1;
@@ -347,47 +367,10 @@ uint8_t DS_Protocol2015::getAllianceCode (DS_Alliance alliance)
     return pRed1;
 }
 
-int DS_Protocol2015::getJoystickSize (DS_Joystick* joystick)
-{
+DS_Char DS_Protocol2015::getJoystickSize (DS_Joystick* joystick) {
     return  5
             + (joystick->numAxes > 0 ? joystick->numAxes : 0)
             + (joystick->numButtons / 8)
             + (joystick->numButtons % 8 == 0 ? 0 : 1)
             + (joystick->numPovHats > 0 ? joystick->numPovHats * 2 : 0);
-}
-
-void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply)
-{
-    QString url = reply->url().toString();
-    QString data = QString::fromUtf8 (reply->readAll());
-
-    if (data.isEmpty() || url.isEmpty())
-        return;
-
-    else if (url.contains (FTP_PCM_PATH, Qt::CaseInsensitive)) {
-        QString version;
-        QString key = "currentVersion";
-
-        version.append (data.at (data.indexOf (key) + key.length() + 1));
-        version.append (data.at (data.indexOf (key) + key.length() + 2));
-        version.append (data.at (data.indexOf (key) + key.length() + 3));
-        version.append (data.at (data.indexOf (key) + key.length() + 4));
-
-        emit pcmVersionChanged (version);
-    }
-
-    else if (url.contains (FTP_PDP_PATH, Qt::CaseInsensitive)) {
-        QString version;
-        QString key = "currentVersion";
-
-        version.append (data.at (data.indexOf (key) + key.length() + 1));
-        version.append (data.at (data.indexOf (key) + key.length() + 2));
-        version.append (data.at (data.indexOf (key) + key.length() + 3));
-        version.append (data.at (data.indexOf (key) + key.length() + 4));
-
-        emit pdpVersionChanged (version);
-    }
-
-    else if (url.contains (FTP_LIB_PATH, Qt::CaseInsensitive))
-        emit libVersionChanged (data);
 }

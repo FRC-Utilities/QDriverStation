@@ -21,35 +21,28 @@
  */
 
 #include "Core/Client.h"
-#include "Core/Common.h"
 
-DS_Client::DS_Client()
-{
+DS_Client::DS_Client() {
     connect (&m_clientSocket, SIGNAL (readyRead()),
              this,            SLOT   (onDataReceived()));
 }
 
-void DS_Client::sendToRobot (QByteArray data)
-{
+void DS_Client::sendToRobot (QByteArray data) {
     m_robotSocket.writeDatagram (data, QHostAddress (m_address), m_robotPort);
 }
 
-void DS_Client::setRobotPort (int port)
-{
+void DS_Client::setRobotPort (DS_Short port) {
     m_robotPort = port;
 }
 
-void DS_Client::setClientPort (int port)
-{
+void DS_Client::setClientPort (DS_Short port) {
     m_clientSocket.bind (port, QUdpSocket::ShareAddress);
 }
 
-void DS_Client::setRobotAddress (QString address)
-{
+void DS_Client::setRobotAddress (QString address) {
     m_address = address;
 }
 
-void DS_Client::onDataReceived()
-{
+void DS_Client::onDataReceived() {
     emit dataReceived (DS_GetSocketData (&m_clientSocket));
 }

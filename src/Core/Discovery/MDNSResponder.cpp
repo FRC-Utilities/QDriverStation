@@ -20,4 +20,42 @@
  * THE SOFTWARE.
  */
 
+#include "Core/Common.h"
 #include "Core/Discovery/MDNSResponder.h"
+
+#define dPort        5335
+#define dIPv6Address "FF02::FB"
+#define dIPv4Address "224.0.0.251"
+
+MDNSResponder::MDNSResponder() {
+    connect (&m_IPv4_receiver, SIGNAL (readyRead()), this, SLOT (readIPv4Socket()));
+    connect (&m_IPv6_receiver, SIGNAL (readyRead()), this, SLOT (readIPv6Socket()));
+
+    m_IPv4_receiver.bind (QHostAddress (dIPv4Address), dPort,
+                          QUdpSocket::ShareAddress);
+    m_IPv6_receiver.bind (QHostAddress (dIPv6Address), dPort,
+                          QUdpSocket::ShareAddress);
+}
+
+void MDNSResponder::query (QString domain) {
+    QByteArray data;
+    domain = domain.replace (".local", "").toLower();
+    sendPacket (data);
+}
+
+void MDNSResponder::readIPv4Socket() {
+    processResponse (DS_GetSocketData (&m_IPv4_receiver));
+}
+
+void MDNSResponder::readIPv6Socket() {
+    processResponse (DS_GetSocketData (&m_IPv6_receiver));
+}
+
+void MDNSResponder::sendPacket (QByteArray data) {
+    m_IPv4_sender.writeDatagram (data, QHostAddress (dIPv4Address), dPort);
+    m_IPv6_sender.writeDatagram (data, QHostAddress (dIPv6Address), dPort);
+}
+
+void MDNSResponder::processResponse (QByteArray response) {
+    qDebug() << response.toHex();
+}

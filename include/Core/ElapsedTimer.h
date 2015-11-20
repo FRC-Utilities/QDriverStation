@@ -24,7 +24,7 @@
 #ifndef _LIB_DS_ELAPSED_TIME_H
 #define _LIB_DS_ELAPSED_TIME_H
 
-#include "Core/Library.h"
+#include "Core/Common.h"
 #include <QElapsedTimer>
 
 /**
@@ -34,14 +34,13 @@
  * time in the execution of the application and presents it in human-readable
  * format (mm::ss.ms).
  */
-class LIB_DS_DECL DS_ElapsedTime : public QObject
-{
+class LIB_DS_DECL DS_ElapsedTime : public QObject {
     Q_OBJECT
 
-public:
+  public:
     explicit DS_ElapsedTime();
 
-public slots:
+  public slots:
     /**
      * Pauses the elapsed time refresh process
      */
@@ -52,20 +51,28 @@ public slots:
      */
     void reset();
 
-signals:
+  signals:
     /**
      * Emitted when the elapsed time is calculated and processed
      * in a human-readable format
      */
     void elapsedTimeChanged (QString);
 
-private:
+  private:
+    /**
+     * If set to \c true, the timer will be enabled and the class
+     * will emit the \a elapsedTimeChanged() signal periodically
+     */
     bool m_enabled;
+
+    /**
+     * The timer that is used to calculate the elapsed time and
+     * provide it in a more human-friendly format
+     */
     QElapsedTimer m_time;
 
-private slots:
+  private slots:
     /**
-     * @internal
      * Uses the value given by the internal timer and processes its
      * information into a human-readable format (mm::ss.ms)
      */
