@@ -32,11 +32,11 @@
 
 #if defined Q_OS_WIN
 #include <windows.h>
-#define IS64BIT true
+#define dIs64Bit true
 #if _WIN32
-#undef IS64BIT
-#define IS64BIT \
-    GetProcAddress(GetModuleHandle(TEXT("kernel32")),("IsWow64Process"))
+#undef dIs64Bit
+#define dIs64Bit \
+    GetProcAddress (GetModuleHandle (TEXT ("kernel32")), ("IsWow64Process"))
 #endif
 #endif
 
@@ -46,19 +46,16 @@
 
 Dashboard* Dashboard::s_instance = Q_NULLPTR;
 
-Dashboard::Dashboard()
-{
+Dashboard::Dashboard() {
     connect (qApp, SIGNAL (aboutToQuit()), this, SLOT (quitDashboard()));
     loadDashboard();
 }
 
-Dashboard::~Dashboard()
-{
+Dashboard::~Dashboard() {
     delete s_instance;
 }
 
-Dashboard* Dashboard::getInstance()
-{
+Dashboard* Dashboard::getInstance() {
     if (s_instance == Q_NULLPTR)
         s_instance = new Dashboard();
 
@@ -69,13 +66,12 @@ Dashboard* Dashboard::getInstance()
 // PROCESS-RELATED STUFF
 //------------------------------------------------------------------------------
 
-void Dashboard::loadDashboard()
-{
+void Dashboard::loadDashboard() {
     QString path;
-    m_current = Settings::get ("Dashboard", None).toInt();
+    m_current = Settings::get ("Dashboard", kNone).toInt();
 
     /* Open the SFX Dashboard */
-    if (m_current == SfxDashboard) {
+    if (m_current == kSfxDashboard) {
         QDir dir;
         QStringList files;
 
@@ -91,15 +87,15 @@ void Dashboard::loadDashboard()
     }
 
     /* Open the SmartDashboard, easy as cake */
-    else if (m_current == SmartDashboard) {
+    else if (m_current == kSmartDashboard) {
         path = QString ("java -jar \"%1/wpilib/tools/SmartDashboard.jar\"")
                .arg (QDir::homePath());
     }
 
     /* Open the LabVIEW Dashboard */
 #if defined _WIN32 || defined _WIN64
-    else if (m_current == LabVIEW) {
-        QString pF = IS64BIT ? "C:/Program Files (x86)" : "C:/Program Files";
+    else if (m_current == kLabVIEW) {
+        QString pF = dIs64Bit ? "C:/Program Files (x86)" : "C:/Program Files";
         path = QString ("%1/FRC Dashboard/Dashboard.exe").arg (pF);
         path = "\"" + path + "\"";
     }
@@ -108,13 +104,11 @@ void Dashboard::loadDashboard()
     m_process.start (path);
 }
 
-void Dashboard::quitDashboard()
-{
+void Dashboard::quitDashboard() {
     m_process.close();
 }
 
-void Dashboard::reloadDashboard()
-{
+void Dashboard::reloadDashboard() {
     quitDashboard();
     loadDashboard();
 }
@@ -123,13 +117,11 @@ void Dashboard::reloadDashboard()
 // SEND INFORMATION TO OTHER OBJECTS
 //------------------------------------------------------------------------------
 
-int Dashboard::getCurrentDashboard()
-{
+DS_Char Dashboard::getCurrentDashboard() {
     return m_current;
 }
 
-QStringList Dashboard::getAvailableDashboards()
-{
+QStringList Dashboard::getAvailableDashboards() {
     QStringList list;
     list.append ("None");
     list.append ("SFX Dashboard");

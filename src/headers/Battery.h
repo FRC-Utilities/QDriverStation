@@ -24,6 +24,8 @@
 #ifndef _QDRIVER_STATION_BATTERY_H
 #define _QDRIVER_STATION_BATTERY_H
 
+#include <DriverStation.h>
+
 /**
  * @class Battery
  * @brief Provides information about the battery of the host computer
@@ -34,9 +36,8 @@
  * The class was implemented for the sole use of the battery progress bar in
  * the \c MainWindow, but we isolated its functions for readability reasons.
  */
-class Battery
-{
-public:
+class Battery {
+  public:
     /**
      * Uses native API calls for the target operating system to obtain the
      * status of the AC line power. Used to display the 'plug' icon near the
@@ -48,7 +49,7 @@ public:
      *
      * @return \c true if the computer is connected to an AC power supply
      */
-    static  bool isPlugged();
+    static bool isPlugged();
 
     /**
      * Uses the native API calls of the target operating system to obtain the
@@ -58,9 +59,9 @@ public:
      * If the target operating system is Mac or Linux, reads the output of a
      * command line utility to determine the battery level of the laptop.
      *
-     * @return an \c int between 0 and 100 that represents the battery level
+     * @return an \c DS_Char between 0 and 100 that represents the battery level
      */
-    static int currentLevel();
+    static DS_Char currentLevel();
 };
 
 #endif

@@ -27,8 +27,7 @@
 #include "JoysticksWidget.h"
 #include "VirtualJoystick.h"
 
-JoysticksWidget::JoysticksWidget (QWidget* parent) : QWidget (parent)
-{
+JoysticksWidget::JoysticksWidget (QWidget* parent) : QWidget (parent) {
     ui.setupUi (this);
     ui.Axes->setVisible (false);
     ui.Buttons->setVisible (false);
@@ -45,18 +44,15 @@ JoysticksWidget::JoysticksWidget (QWidget* parent) : QWidget (parent)
              this,            SLOT   (onRowChanged      (int)));
 }
 
-JoysticksWidget::~JoysticksWidget()
-{
+JoysticksWidget::~JoysticksWidget() {
     delete m_keyboardDrive;
 }
 
-void JoysticksWidget::readSettings()
-{
+void JoysticksWidget::readSettings() {
     m_keyboardDrive->readSettings();
 }
 
-void JoysticksWidget::showKeyboardWindow()
-{
+void JoysticksWidget::showKeyboardWindow() {
     m_keyboardDrive->show();
 }
 
@@ -64,13 +60,11 @@ void JoysticksWidget::showKeyboardWindow()
 // SEND KEYBOARD INPUT TO VIRTUAL JOSYTICK
 //------------------------------------------------------------------------------
 
-void JoysticksWidget::registerKeyPress (QKeyEvent* event)
-{
+void JoysticksWidget::registerKeyPress (QKeyEvent* event) {
     m_keyboardDrive->registerKeyPress (event);
 }
 
-void JoysticksWidget::registerKeyRelease (QKeyEvent* event)
-{
+void JoysticksWidget::registerKeyRelease (QKeyEvent* event) {
     m_keyboardDrive->registerKeyRelease (event);
 }
 
@@ -78,8 +72,7 @@ void JoysticksWidget::registerKeyRelease (QKeyEvent* event)
 // REACT TO UI EVENTS
 //------------------------------------------------------------------------------
 
-void JoysticksWidget::onRowChanged (int row)
-{
+void JoysticksWidget::onRowChanged (int row) {
     /* Remove all buttons and progress bars in the widget */
     foreach (QPushButton *  c, findChildren<QPushButton*>())  delete c;
     foreach (QProgressBar * p, findChildren<QProgressBar*>()) delete p;
@@ -139,8 +132,7 @@ void JoysticksWidget::onRowChanged (int row)
 // REACT TO JOYSTICK EVENTS
 //------------------------------------------------------------------------------
 
-void JoysticksWidget::onCountChanged (QStringList list)
-{
+void JoysticksWidget::onCountChanged (QStringList list) {
     if (list.count() < ui.JoystickList->count())
         emit joystickRemoved();
 
@@ -156,8 +148,7 @@ void JoysticksWidget::onCountChanged (QStringList list)
     emit statusChanged (list.count() > 0);
 }
 
-void JoysticksWidget::onAxisEvent (const GM_Axis& axis)
-{
+void JoysticksWidget::onAxisEvent (const GM_Axis& axis) {
     if (ui.JoystickList->currentRow() != axis.joystick.id)
         return;
 
@@ -165,8 +156,7 @@ void JoysticksWidget::onAxisEvent (const GM_Axis& axis)
         m_axes.at (axis.id)->setValue (axis.value * 100);
 }
 
-void JoysticksWidget::onButtonEvent (const GM_Button& button)
-{
+void JoysticksWidget::onButtonEvent (const GM_Button& button) {
     if (ui.JoystickList->currentRow() != button.joystick.id)
         return;
 

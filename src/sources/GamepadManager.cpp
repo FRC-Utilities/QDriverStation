@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
+ * Copyright (c) 2015 WinT 3794 <http://wDS_Char3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,10 +38,8 @@
 
 GamepadManager* GamepadManager::s_instance = Q_NULLPTR;
 
-GamepadManager::GamepadManager()
-{
+GamepadManager::GamepadManager() {
     SDL_JoystickEventState (SDL_ENABLE);
-    SDL_SetHint (SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
 
     if (SDL_Init (SDL_INIT_JOYSTICK) != 0) {
         QMessageBox::critical (Q_NULLPTR, tr ("Fatal Error!"),
@@ -51,16 +49,14 @@ GamepadManager::GamepadManager()
     }
 }
 
-GamepadManager::~GamepadManager()
-{
-    for (int i = 0; i < SDL_NumJoysticks(); ++i)
+GamepadManager::~GamepadManager() {
+    for (DS_Char i = 0; i < SDL_NumJoysticks(); ++i)
         SDL_GameControllerClose (SDL_GameControllerOpen (i));
 
     SDL_Quit();
 }
 
-GamepadManager* GamepadManager::getInstance()
-{
+GamepadManager* GamepadManager::getInstance() {
     if (s_instance == Q_NULLPTR)
         s_instance = new GamepadManager;
 
@@ -71,31 +67,26 @@ GamepadManager* GamepadManager::getInstance()
 // PROVIDE INFORMATION ABOUT A JOYSTICK
 //------------------------------------------------------------------------------
 
-int GamepadManager::getNumHats (int js)
-{
+DS_Char GamepadManager::getNumHats (DS_Char js) {
     return SDL_JoystickNumHats (SDL_JoystickOpen (js));
 }
 
-int GamepadManager::getNumAxes (int js)
-{
+DS_Char GamepadManager::getNumAxes (DS_Char js) {
     return SDL_JoystickNumAxes (SDL_JoystickOpen (js));
 }
 
-int GamepadManager::getNumButtons (int js)
-{
+DS_Char GamepadManager::getNumButtons (DS_Char js) {
     return SDL_JoystickNumButtons (SDL_JoystickOpen (js));
 }
 
-QString GamepadManager::getJoystickName (int js)
-{
+QString GamepadManager::getJoystickName (DS_Char js) {
     return SDL_JoystickNameForIndex (js);
 }
 
-QStringList GamepadManager::joystickList()
-{
+QStringList GamepadManager::joystickList() {
     QStringList list;
 
-    for (int i = 0; i < SDL_NumJoysticks(); ++i)
+    for (DS_Char i = 0; i < SDL_NumJoysticks(); ++i)
         list.append (getJoystickName (i));
 
     return list;
@@ -105,26 +96,22 @@ QStringList GamepadManager::joystickList()
 // INIT-RELATED FUNCTIONS
 //------------------------------------------------------------------------------
 
-void GamepadManager::init()
-{
+void GamepadManager::init() {
     m_time = 50;
     m_tracker = -1;
 
     QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (readSdlEvents()));
 }
 
-void GamepadManager::setUpdateInterval (int time)
-{
-    if (time >= 0)
-        m_time = time;
+void GamepadManager::setUpdateInterval (DS_Char time) {
+    m_time = time;
 }
 
 //------------------------------------------------------------------------------
 // FUNCTIONS THAT CHANGE SOMETHING ON THE JOYSTICK
 //------------------------------------------------------------------------------
 
-void GamepadManager::rumble (int js, int time)
-{
+void GamepadManager::rumble (DS_Char js, DS_Char time) {
     SDL_InitSubSystem (SDL_INIT_HAPTIC);
     SDL_Haptic* haptic = SDL_HapticOpen (js);
 
@@ -138,8 +125,7 @@ void GamepadManager::rumble (int js, int time)
 // FUNCTIONS THAT GENERATE JOYSTICK INFORMATION STRUCTURES
 //------------------------------------------------------------------------------
 
-GM_Hat GamepadManager::getHat (const SDL_Event* event)
-{
+GM_Hat GamepadManager::getHat (const SDL_Event* event) {
     GM_Hat hat;
 
     hat.id = event->jhat.hat;
@@ -149,8 +135,7 @@ GM_Hat GamepadManager::getHat (const SDL_Event* event)
     return hat;
 }
 
-GM_Axis GamepadManager::getAxis (const SDL_Event* event)
-{
+GM_Axis GamepadManager::getAxis (const SDL_Event* event) {
     GM_Axis axis;
 
     axis.id = event->jaxis.axis;
@@ -160,8 +145,7 @@ GM_Axis GamepadManager::getAxis (const SDL_Event* event)
     return axis;
 }
 
-GM_Button GamepadManager::getButton (const SDL_Event* event)
-{
+GM_Button GamepadManager::getButton (const SDL_Event* event) {
     GM_Button button;
 
     button.id = event->jbutton.button;
@@ -171,8 +155,7 @@ GM_Button GamepadManager::getButton (const SDL_Event* event)
     return button;
 }
 
-GM_Joystick GamepadManager::getJoystick (const SDL_Event* event)
-{
+GM_Joystick GamepadManager::getJoystick (const SDL_Event* event) {
     GM_Joystick stick;
 
     stick.id = getDynamicId (event->jdevice.which);
@@ -187,10 +170,8 @@ GM_Joystick GamepadManager::getJoystick (const SDL_Event* event)
 // UGLY HACKS
 //------------------------------------------------------------------------------
 
-int GamepadManager::getDynamicId (int id)
-{
+DS_Char GamepadManager::getDynamicId (DS_Char id) {
     id = m_tracker - (id + 1);
-    if (id < 0) id = abs (id);
     if (id >= SDL_NumJoysticks()) id -= 1;
 
     return id;
@@ -200,8 +181,7 @@ int GamepadManager::getDynamicId (int id)
 // SDL LOOP
 //------------------------------------------------------------------------------
 
-void GamepadManager::readSdlEvents()
-{
+void GamepadManager::readSdlEvents() {
     SDL_Event event;
     while (SDL_PollEvent (&event)) {
         switch (event.type) {
@@ -236,17 +216,14 @@ void GamepadManager::readSdlEvents()
 // FUNCTIONS THAT RESPOND TO SDL EVENTS
 //------------------------------------------------------------------------------
 
-void GamepadManager::onHatEvent (const SDL_Event* event)
-{
+void GamepadManager::onHatEvent (const SDL_Event* event) {
     emit hatEvent (getHat (event));
 }
 
-void GamepadManager::onAxisEvent (const SDL_Event* event)
-{
+void GamepadManager::onAxisEvent (const SDL_Event* event) {
     emit axisEvent (getAxis (event));
 }
 
-void GamepadManager::onButtonEvent (const SDL_Event* event)
-{
+void GamepadManager::onButtonEvent (const SDL_Event* event) {
     emit buttonEvent (getButton (event));
 }

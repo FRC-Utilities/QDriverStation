@@ -24,8 +24,7 @@
 #ifndef _LIB_DS_CLIENT_H
 #define _LIB_DS_CLIENT_H
 
-#include <QUdpSocket>
-#include "Core/Library.h"
+#include "Core/Common.h"
 
 /**
  * \class DS_Client
@@ -34,14 +33,13 @@
  * The class "redirects" the received data from the robot to the current
  * protocol that is in use by the Driver Station and vice-versa.
  */
-class LIB_DS_DECL DS_Client : public QObject
-{
+class LIB_DS_DECL DS_Client : public QObject {
     Q_OBJECT
 
-public:
+  public:
     explicit DS_Client();
 
-public slots:
+  public slots:
     /**
      * Sends a the input \a data to the robot
      */
@@ -50,36 +48,50 @@ public slots:
     /**
      * Changes the port in which we send the packets to
      */
-    void setRobotPort (int port);
+    void setRobotPort (DS_Short port);
 
     /**
      * Changes the port in where we receive robot packets
      */
-    void setClientPort (int port);
+    void setClientPort (DS_Short port);
 
     /**
      * Changes the address where we send the packets to
      */
     void setRobotAddress (QString address);
 
-signals:
+  signals:
     /**
      * Emitted when the client receives a packet from the robot
      */
     void dataReceived (QByteArray);
 
-private:
-    int m_robotPort;
-    QString m_address;
-    QUdpSocket m_robotSocket;
-    QUdpSocket m_clientSocket;
-
-private slots:
+  private slots:
     /**
-     * @internal
-     * Reads the packet data that the client received from the robot
+     * Reads the received data and sends it to the \c DriverStation
      */
     void onDataReceived();
+
+  private:
+    /**
+     * The port in which we send data to the robot
+     */
+    DS_Short m_robotPort;
+
+    /**
+     * The address of the robot
+     */
+    QString m_address;
+
+    /**
+     * We send data to the robot through this socket
+     */
+    QUdpSocket m_robotSocket;
+
+    /**
+     * We receive data from the robot through this socket
+     */
+    QUdpSocket m_clientSocket;
 };
 
 #endif

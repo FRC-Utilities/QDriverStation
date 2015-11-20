@@ -44,15 +44,14 @@ class AdvancedSettings;
  * application and the robot without needing to worry about all the tiny,
  * pesky details that go under the hood of any modern application.
  */
-class MainWindow : public SmartWindow
-{
+class MainWindow : public SmartWindow {
     Q_OBJECT
 
-public:
+  public:
     explicit MainWindow();
     ~MainWindow();
 
-private:
+  private:
     /**
      * The DriverStation library, used for actually controling the robot
      */
@@ -87,7 +86,7 @@ private:
      */
     Updater* m_updater;
 
-private slots:
+  private slots:
     /**
      * @internal
      * Configures the window so that it reacts to various events throughout the
@@ -352,7 +351,7 @@ private slots:
      */
     void statusLabelAnimation();
 
-protected:
+  protected:
     /**
      * Reacts when the user presses a key
      */
@@ -368,17 +367,14 @@ protected:
  * Quick and dirty hack for having horizontal text on a vertical tab bar
  * Stolen from: http://www.qtcentre.org/threads/13293-QTabWidget-customization
  */
-class CustomTabStyle : public QProxyStyle
-{
-public:
-    explicit CustomTabStyle()
-    {
+class CustomTabStyle : public QProxyStyle {
+  public:
+    explicit CustomTabStyle() {
         setBaseStyle (QStyleFactory::create ("Fusion"));
     }
 
     QSize sizeFromContents (ContentsType type, const QStyleOption* option,
-                            const QSize& size, const QWidget* widget) const
-    {
+                            const QSize& size, const QWidget* widget) const {
         QSize s = QProxyStyle::sizeFromContents (type, option, size, widget);
 
         if (type == QStyle::CT_TabBarTab) {
@@ -392,11 +388,10 @@ public:
     void drawControl (ControlElement element,
                       const QStyleOption* option,
                       QPainter* painter,
-                      const QWidget* widget) const
-    {
+                      const QWidget* widget) const {
         if (element == CE_TabBarTabLabel) {
             if (const QStyleOptionTab* tab =
-                    qstyleoption_cast <const QStyleOptionTab*> (option)) {
+                        qstyleoption_cast <const QStyleOptionTab*> (option)) {
                 QStyleOptionTab opt (*tab);
                 opt.shape = QTabBar::RoundedNorth;
                 QProxyStyle::drawControl (element, &opt, painter, widget);

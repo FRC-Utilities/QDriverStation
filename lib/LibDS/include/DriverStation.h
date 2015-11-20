@@ -42,14 +42,13 @@ class DS_ProtocolManager;
  * manage the user input, protocol versions and operate the robot in a
  * straigthforward way.
  */
-class LIB_DS_DECL DriverStation : public QObject
-{
+class LIB_DS_DECL DriverStation : public QObject {
     Q_OBJECT
     Q_ENUMS (ControlMode)
     Q_ENUMS (ProtocolType)
     Q_ENUMS (AllianceType)
 
-public:
+  public:
     explicit DriverStation();
     ~DriverStation();
 
@@ -112,7 +111,7 @@ public:
      */
     Q_INVOKABLE bool networkAvailable();
 
-public slots:
+  public slots:
     /**
      * Initializes the class and the interlal loop/refresh system
      */
@@ -131,11 +130,11 @@ public slots:
     /**
      * Simulates a timed match with the input time values (in seconds)
      */
-    Q_INVOKABLE void startPractice (int countdown,
-                                    int autonomous,
-                                    int delay,
-                                    int teleop,
-                                    int endgame);
+    Q_INVOKABLE void startPractice (DS_Char countdown,
+                                    DS_Char autonomous,
+                                    DS_Char delay,
+                                    DS_Char teleop,
+                                    DS_Char endgame);
 
     /**
      * Changes the protocol that we use to control the robot
@@ -150,7 +149,7 @@ public slots:
     /**
      * Changes the team number used by the protocol and network diagnostics
      */
-    Q_INVOKABLE void setTeamNumber (int team);
+    Q_INVOKABLE void setTeamNumber (DS_Short team);
 
     /**
      * Changes the alliance of the robot using the specified protocol
@@ -180,25 +179,33 @@ public slots:
     /**
      * Updates the \a angle of the selected \a hat in the specified \a josytick
      */
-    Q_INVOKABLE void updateJoystickPovHat (int js, int hat, int angle);
+    Q_INVOKABLE void updateJoystickPovHat (DS_Char js,
+                                           DS_Char hat,
+                                           DS_Char angle);
 
     /**
      * Registers a new joystick to the Driver Station with the specified number
      * of \a axes, \a buttons and \a povHats
      */
-    Q_INVOKABLE void addJoystick (int axes, int buttons, int povHats);
+    Q_INVOKABLE void addJoystick (DS_Char axes,
+                                  DS_Char buttons,
+                                  DS_Char povHats);
 
     /**
      * Updates the \a value of the selected \a axis in the specified \a josytick
      */
-    Q_INVOKABLE void updateJoystickAxis (int js, int axis, double value);
+    Q_INVOKABLE void updateJoystickAxis (DS_Char js,
+                                         DS_Char axis,
+                                         double value);
 
     /**
      * Updates the \a state of the selected \a button in the specified \a josytick
      */
-    Q_INVOKABLE void updateJoystickButton (int js, int button, bool state);
+    Q_INVOKABLE void updateJoystickButton (DS_Char js,
+                                           DS_Char button,
+                                           bool state);
 
-signals:
+  signals:
     /**
      * Emitted when the client detects that the availability of the robot
      * software/code has changed
@@ -290,10 +297,10 @@ signals:
      */
     void elapsedTimeChanged (QString time);
 
-protected:
+  protected:
     static DriverStation* s_instance;
 
-private:
+  private:
     /**
      * This variable allows (or disallows) us to receive joystick
      * data and perform most of the operations of the Driver Station.
@@ -334,7 +341,7 @@ private:
      */
     DS_ElapsedTime* m_elapsedTime;
 
-private slots:
+  private slots:
     /**
      * @brief sendRobotPackets
      */

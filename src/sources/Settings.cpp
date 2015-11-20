@@ -28,17 +28,14 @@
 static QSettings* settings =
     new QSettings (AssemblyInfo::organization(), AssemblyInfo::name());
 
-void Settings::clear()
-{
+void Settings::clear() {
     settings->clear();
 }
 
-void Settings::set (QString key, const QVariant& value)
-{
+void Settings::set (QString key, const QVariant& value) {
     settings->setValue (key, value);
 }
 
-QVariant Settings::get (QString key, const QVariant& defaultValue)
-{
+QVariant Settings::get (QString key, const QVariant& defaultValue) {
     return settings->value (key, defaultValue);
 }

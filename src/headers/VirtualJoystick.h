@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
+ * Copyright (c) 2015 WinT 3794 <http://wDS_Char3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,14 +41,13 @@
  * and the joystick input. The generated data is then sent to the \a JoystickWidget
  * and the Driver Station
  */
-class VirtualJoystick : public QDialog
-{
+class VirtualJoystick : public QDialog {
     Q_OBJECT
 
-public:
+  public:
     VirtualJoystick();
 
-public slots:
+  public slots:
     /**
      * Loads the saved settings on the UI
      */
@@ -58,19 +57,19 @@ public slots:
      * Returns the number of axes for the selected joystick
      * @note The joystick can be either the 'real' one or the virtual one
      */
-    int getNumAxes (int js);
+    DS_Char getNumAxes (DS_Char js);
 
     /**
      * Returns the number of buttons for the selected joystick
      * @note The joystick can be either the 'real' one or the virtual one
      */
-    int getNumButtons (int js);
+    DS_Char getNumButtons (DS_Char js);
 
     /**
      * Returns the total number of joysticks, including the SDL joysticks and
      * the virtual joystick
      */
-    void onCountChanged (int count);
+    void onCountChanged (DS_Char count);
 
     /**
      * Returns a list with the names of all joysticks, including the SDL
@@ -88,7 +87,7 @@ public slots:
      */
     void registerKeyRelease (QKeyEvent* event);
 
-protected:
+  protected:
     /**
      * Reacts when the user presses a key
      */
@@ -99,11 +98,11 @@ protected:
      */
     void keyReleaseEvent (QKeyEvent* e);
 
-signals:
+  signals:
     /**
      * Emitted when the joystick count is adjusted and updated
      */
-    void countChanged (int);
+    void countChanged (DS_Char);
 
     /**
      * Emitted when the joystick count is adjusted and updated
@@ -122,7 +121,7 @@ signals:
      */
     void buttonEvent (GM_Button);
 
-private:
+  private:
     /**
      * If set to \c true, the application will use some keys of the keyboard to
      * simulate a virtual joystick
@@ -139,12 +138,12 @@ private:
      */
     GM_Joystick m_joystick;
 
-private slots:
+  private slots:
     /**
      * Filters the \a key to update the \a value of the axis assigned to a
      * specific key
      */
-    void readAxes (int key, double value);
+    void readAxes (int key, DS_Decimal value);
 
     /**
      * Filters the \a key to update the \a pressed state of the button assigned
@@ -164,7 +163,7 @@ private slots:
 
     /**
      * Changes the \a enabled state of the virtual joystick and updates the
-     * required internal values
+     * required DS_Charernal values
      */
     void setVirtualJoystickEnabled (bool enabled);
 

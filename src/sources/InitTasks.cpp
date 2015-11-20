@@ -29,10 +29,9 @@
 #include "CpuUsage.h"
 #include "InitTasks.h"
 
-#define URL_XBOX_DRIVER "http://files.tattiebogle.net/360/360ControllerInstall.dmg"
+#define dXboxDriverUrl "http://files.tattiebogle.net/360/360ControllerInstall.dmg"
 
-int InitTasks::getTeamNumber()
-{
+DS_Short InitTasks::getTeamNumber() {
     /* First launch, ask for team number */
     if (Settings::get ("First Launch", true).toBool())
         return QInputDialog::getInt (0, 0,
@@ -44,8 +43,7 @@ int InitTasks::getTeamNumber()
         return Settings::get ("Team ID", 0).toInt();
 }
 
-void InitTasks::executeFirstRunTasks()
-{
+void InitTasks::executeFirstRunTasks() {
     /* Initialize the CPU querying process */
     CpuUsage::init();
 

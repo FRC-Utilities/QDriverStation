@@ -48,10 +48,10 @@
  * file  and CTLR + Click a function/method that you are interested in.
  */
 
-#define CSS_ENABLED_CHECK    "color: rgb(33, 255, 43);"
-#define CSS_DISABLED_CHECK   "color: rgb(255, 33, 43); border-left: 0px;"
-#define CSS_ENABLED_UNCHECK  "color: rgb(0, 43, 0);"
-#define CSS_DISABLED_UNCHECK "color: rgb(43, 0, 0); border-left: 0px;"
+#define dEnabledCheck    "color: rgb(33, 255, 43);"
+#define dDisabledCheck   "color: rgb(255, 33, 43); border-left: 0px;"
+#define dEnabledUncheck  "color: rgb(0, 43, 0);"
+#define dDisabledUncheck "color: rgb(43, 0, 0); border-left: 0px;"
 
 /*
  * The font used in the NetConsole text edit
@@ -62,8 +62,7 @@
 #  define FONT_NETCONSOLE QFont ("Inconsolata", 13)
 #endif
 
-MainWindow::MainWindow()
-{
+MainWindow::MainWindow() {
     ui = new Ui::MainWindow;
     ui->setupUi (this);
     m_updater = new Updater;
@@ -85,8 +84,7 @@ MainWindow::MainWindow()
     setWindowMode (ui->WindowDocked->isChecked() ? kDocked : kNormal);
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete ui;
     delete m_updater;
     delete m_tabStyle;
@@ -98,8 +96,7 @@ MainWindow::~MainWindow()
 // LONG & UGLY FUNCTIONS
 //------------------------------------------------------------------------------
 
-void MainWindow::connectSlots()
-{
+void MainWindow::connectSlots() {
     /* Joystick information tab */
     ui->JoysticksTab->layout()->addWidget (m_joysticksWidget);
     updateJoysticksTab (false);
@@ -182,8 +179,7 @@ void MainWindow::connectSlots()
              this,               SLOT   (redrawWidgets()));
 }
 
-void MainWindow::configureWidgetAppearance()
-{
+void MainWindow::configureWidgetAppearance() {
     ui->TeleOp->setChecked (true);
     ui->DisableButton->setChecked (true);
 
@@ -263,8 +259,8 @@ void MainWindow::configureWidgetAppearance()
     QFontMetrics metrics (boldFont);
 
     /* Configure the enable/disable buttons */
-    ui->DisableButton->setStyleSheet   (CSS_DISABLED_CHECK);
-    ui->EnableButton->setStyleSheet    (CSS_ENABLED_UNCHECK);
+    ui->DisableButton->setStyleSheet   (dDisabledCheck);
+    ui->EnableButton->setStyleSheet    (dEnabledUncheck);
     ui->EnableButton->setFixedHeight   (metrics.height() * 2.8);
     ui->DisableButton->setFixedHeight  (metrics.height() * 2.8);
 
@@ -280,8 +276,6 @@ void MainWindow::configureWidgetAppearance()
     ui->PcBatteryProgress->setFixedHeight (utilSize.height() * 0.45);
     ui->PcCpuProgress->setFixedWidth      (utilSize.height() * 2.45);
     ui->PcBatteryProgress->setFixedWidth  (utilSize.height() * 2.45);
-    ui->PcCpuProgress->setType (SmartProgressbar::kCpuUsageProgressbar);
-    ui->PcBatteryProgress->setType (SmartProgressbar::kBatteryProgressbar);
 
     /* Populate list-related widgets */
     ui->StationCombo->clear();
@@ -293,8 +287,7 @@ void MainWindow::configureWidgetAppearance()
         Dashboard::getInstance()->getCurrentDashboard());
 }
 
-void MainWindow::readSettings()
-{
+void MainWindow::readSettings() {
     /* Read practice values */
     int d = Settings::get ("Practice Delay", 1).toInt();
     int t = Settings::get ("Practice TeleOp", 100).toInt();
@@ -344,8 +337,7 @@ void MainWindow::readSettings()
 // FUNCTIONS THAT MAY BE CALLED REGULARLY
 //------------------------------------------------------------------------------
 
-void MainWindow::redrawWidgets()
-{
+void MainWindow::redrawWidgets() {
     /* Update colors of every widget*/
     QPalette palette;
     foreach (QWidget* w, findChildren<QWidget*>())
@@ -366,10 +358,13 @@ void MainWindow::redrawWidgets()
     brush4.setStyle (Qt::SolidPattern);
     closePalette.setBrush (QPalette::Disabled, QPalette::ButtonText, brush4);
     ui->CloseButton->setPalette (closePalette);
+
+    /* Set the colors of the PC progress bars */
+    ui->PcCpuProgress->setType (SmartProgressbar::kCpuUsageProgressbar);
+    ui->PcBatteryProgress->setType (SmartProgressbar::kBatteryProgressbar);
 }
 
-void MainWindow::updatePcStatusWidgets()
-{
+void MainWindow::updatePcStatusWidgets() {
     if (ui->LeftTab->currentIndex() == 0) {
         int usage = CpuUsage::getUsage();
         int level = Battery::currentLevel();
@@ -387,22 +382,19 @@ void MainWindow::updatePcStatusWidgets()
 // UI TO WINDOW-LOGIC FUNCTIONS
 //------------------------------------------------------------------------------
 
-void MainWindow::onCopyClicked()
-{
+void MainWindow::onCopyClicked() {
     qApp->clipboard()->setText (ui->NetConsoleEdit->toPlainText());
     ui->NetConsoleEdit->append ("<font color=\"#aaa\"><p>"
                                 "INFO: NetConsole output copied to clipboard"
                                 "</p></font>");
 }
 
-void MainWindow::onStationChanged (int station)
-{
+void MainWindow::onStationChanged (int station) {
     Settings::set ("Station", station);
     m_ds->setAlliance ((DS_Alliance) station);
 }
 
-void MainWindow::onProtocolChanged (int protocol)
-{
+void MainWindow::onProtocolChanged (int protocol) {
     m_ds->setProtocol ((DriverStation::ProtocolType) protocol);
     m_ds->setTeamNumber (ui->TeamNumberSpin->value());
 
@@ -410,23 +402,19 @@ void MainWindow::onProtocolChanged (int protocol)
     m_advancedSettings->updatePlaceholder();
 }
 
-void MainWindow::onRebootClicked()
-{
+void MainWindow::onRebootClicked() {
     m_ds->canBeEnabled() ? m_ds->reboot() : statusLabelAnimation();
 }
 
-void MainWindow::onRestartClicked()
-{
+void MainWindow::onRestartClicked() {
     m_ds->canBeEnabled() ? m_ds->restartCode() : statusLabelAnimation();
 }
 
-void MainWindow::onWebsiteClicked()
-{
+void MainWindow::onWebsiteClicked() {
     QDesktopServices::openUrl (QUrl ("http://qdriverstation.sf.net"));
 }
 
-void MainWindow::onEnabledClicked()
-{
+void MainWindow::onEnabledClicked() {
     /* Flash status label if we cannot enable the robot */
     if (!m_ds->canBeEnabled()) {
         onDisabledClicked();
@@ -437,49 +425,43 @@ void MainWindow::onEnabledClicked()
     /* Enable robot and update application style */
     setRobotEnabled (true);
     ui->EnableButton->setChecked (true);
-    ui->EnableButton->setStyleSheet  (CSS_ENABLED_CHECK);
-    ui->DisableButton->setStyleSheet (CSS_DISABLED_UNCHECK);
+    ui->EnableButton->setStyleSheet  (dEnabledCheck);
+    ui->DisableButton->setStyleSheet (dDisabledUncheck);
 }
 
-void MainWindow::onDisabledClicked()
-{
+void MainWindow::onDisabledClicked() {
     /* Only disable the robot if it can be disabled */
     if (m_ds->controlMode() != kControlDisabled
-        && m_ds->controlMode() != kControlEmergencyStop
-        && m_ds->controlMode() != kControlNoCommunication)
+            && m_ds->controlMode() != kControlEmergencyStop
+            && m_ds->controlMode() != kControlNoCommunication)
         setRobotEnabled (false);
 
     /* Update the application style */
     ui->DisableButton->setChecked (true);
-    ui->DisableButton->setStyleSheet (CSS_DISABLED_CHECK);
-    ui->EnableButton->setStyleSheet  (CSS_ENABLED_UNCHECK);
+    ui->DisableButton->setStyleSheet (dDisabledCheck);
+    ui->EnableButton->setStyleSheet  (dEnabledUncheck);
 }
 
-void MainWindow::onJoystickRemoved()
-{
+void MainWindow::onJoystickRemoved() {
     if (m_ds->controlMode() == kControlTeleoperated)
         onDisabledClicked();
 }
 
-void MainWindow::updateJoysticksTab (bool available)
-{
+void MainWindow::updateJoysticksTab (bool available) {
     m_joysticksWidget->setVisible (available);
     ui->NoJoystickWidget->setVisible (!available);
 }
 
-void MainWindow::onWindowModeChanged()
-{
+void MainWindow::onWindowModeChanged() {
     setWindowMode (ui->WindowDocked->isChecked() ? kDocked : kNormal);
 }
 
-void MainWindow::onRobotModeChanged (int mode)
-{
+void MainWindow::onRobotModeChanged (int mode) {
     Q_UNUSED (mode);
     m_ds->setControlMode (kControlDisabled);
 }
 
-void MainWindow::onPracticeValuesChanged()
-{
+void MainWindow::onPracticeValuesChanged() {
     Settings::set ("Practice Delay",      ui->PracticeDelay->value());
     Settings::set ("Practice TeleOp",     ui->PracticeTeleOp->value());
     Settings::set ("Practice End Game",   ui->PracticeEndGame->value());
@@ -487,14 +469,12 @@ void MainWindow::onPracticeValuesChanged()
     Settings::set ("Practice Autonomous", ui->PracticeAutonomous->value());
 }
 
-void MainWindow::setDashboard (int dashboard)
-{
+void MainWindow::setDashboard (int dashboard) {
     Settings::set ("Dashboard", dashboard);
     Dashboard::getInstance()->reloadDashboard();
 }
 
-void MainWindow::setTeamNumber (int team)
-{
+void MainWindow::setTeamNumber (int team) {
     Settings::set ("Team ID", team);
     ui->TeamNumberSpin->setValue (team);
     ui->TeamNumber->setText (QString ("%1").arg (team));
@@ -503,8 +483,7 @@ void MainWindow::setTeamNumber (int team)
     m_advancedSettings->updatePlaceholder();
 }
 
-void MainWindow::setRobotEnabled (bool enabled)
-{
+void MainWindow::setRobotEnabled (bool enabled) {
     /* Robot can be enabled because we have communications and the
      * operation mode is not set to E-Stop */
     if (enabled) {
@@ -533,55 +512,46 @@ void MainWindow::setRobotEnabled (bool enabled)
 // DRIVER STATION TO WINDOW FUNCTIONS
 //------------------------------------------------------------------------------
 
-void MainWindow::updateLabelText (QLabel* label, QString text)
-{
+void MainWindow::updateLabelText (QLabel* label, QString text) {
     label->setText (m_ds->networkAvailable() && !text.isEmpty() ? text : "--.--");
 }
 
-void MainWindow::onCodeChanged (bool available)
-{
+void MainWindow::onCodeChanged (bool available) {
     ui->RobotCode->setChecked (available);
 }
 
-void MainWindow::onCommunicationsChanged (bool available)
-{
+void MainWindow::onCommunicationsChanged (bool available) {
     ui->RobotCheck->setChecked (available);
     ui->Communications->setChecked (available);
 
     onDisabledClicked();
 }
 
-void MainWindow::onControlModeChanged (DS_ControlMode mode)
-{
+void MainWindow::onControlModeChanged (DS_ControlMode mode) {
     /* We should update the UI because the robot cannot be enabled */
     if ((mode == kControlDisabled)
-        || (mode == kControlEmergencyStop)
-        || (mode == kControlNoCommunication))
+            || (mode == kControlEmergencyStop)
+            || (mode == kControlNoCommunication))
         ui->DisableButton->click();
 }
 
-void MainWindow::onRadioChanged (bool available)
-{
+void MainWindow::onRadioChanged (bool available) {
     ui->DsRadioCheck->setChecked (available);
 }
 
-void MainWindow::onVoltageChanged (QString voltage)
-{
+void MainWindow::onVoltageChanged (QString voltage) {
     updateLabelText (ui->VoltageLabel, tr ("%1 V").arg (voltage));
 }
 
-void MainWindow::onLibVersionChanged (QString version)
-{
+void MainWindow::onLibVersionChanged (QString version) {
     updateLabelText (ui->LibVersion, version);
 }
 
-void MainWindow::onRioVersionChanged (QString version)
-{
+void MainWindow::onRioVersionChanged (QString version) {
     updateLabelText (ui->RioVersion, version);
 }
 
-void MainWindow::onRobotStatusChanged (QString status)
-{
+void MainWindow::onRobotStatusChanged (QString status) {
     if (m_ds->canBeEnabled() && m_ds->controlMode() != kControlEmergencyStop) {
 
         /* Get 'TeleOp Disabled' instead of 'Disabled' */
@@ -612,13 +582,11 @@ void MainWindow::onRobotStatusChanged (QString status)
         ui->StatusLabel->setText (status);
 }
 
-void MainWindow::onRamUsageChanged (int percent)
-{
+void MainWindow::onRamUsageChanged (int percent) {
     updateLabelText (ui->RamUsage, tr ("%1 %").arg (percent));
 }
 
-void MainWindow::onDiskUsageChanged (int percent)
-{
+void MainWindow::onDiskUsageChanged (int percent) {
     updateLabelText (ui->DiskUsage, tr ("%1 %").arg (percent));
 }
 
@@ -626,13 +594,11 @@ void MainWindow::onDiskUsageChanged (int percent)
 // MISC. FUNCTIONS
 //------------------------------------------------------------------------------
 
-void MainWindow::scrollNetConsole()
-{
+void MainWindow::scrollNetConsole() {
     ui->NetConsoleEdit->ensureCursorVisible();
 }
 
-void MainWindow::toggleStatusColor()
-{
+void MainWindow::toggleStatusColor() {
     QPalette palette;
     QColor redColor = QColor (255, 33, 43);
 
@@ -652,8 +618,7 @@ void MainWindow::toggleStatusColor()
         ui->CodeLabel->setPalette (palette);
 }
 
-void MainWindow::statusLabelAnimation()
-{
+void MainWindow::statusLabelAnimation() {
     for (int i = 0; i < 8; ++i)
         QTimer::singleShot (100 * i, Qt::PreciseTimer,
                             this, SLOT (toggleStatusColor()));
@@ -663,12 +628,10 @@ void MainWindow::statusLabelAnimation()
 // SEND KEYBOARD INPUT TO THE VIRTUAL KEYBOARD
 //------------------------------------------------------------------------------
 
-void MainWindow::keyPressEvent (QKeyEvent* e)
-{
+void MainWindow::keyPressEvent (QKeyEvent* e) {
     m_joysticksWidget->registerKeyPress (e);
 }
 
-void MainWindow::keyReleaseEvent (QKeyEvent* e)
-{
+void MainWindow::keyReleaseEvent (QKeyEvent* e) {
     m_joysticksWidget->registerKeyRelease (e);
 }

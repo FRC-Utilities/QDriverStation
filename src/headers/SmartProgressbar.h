@@ -32,19 +32,18 @@
  * Implements a progress bar that can change its color based
  * on the current value that it holds
  */
-class SmartProgressbar : public QProgressBar
-{
+class SmartProgressbar : public QProgressBar {
     Q_OBJECT
 
-public:
+  public:
     explicit SmartProgressbar (QWidget* parent = 0);
     enum Type { kBatteryProgressbar, kCpuUsageProgressbar };
 
-public slots:
+  public slots:
     void setType (Type type);
     void onValueChanged (int value);
 
-private:
+  private:
     Type m_type;
 };
 

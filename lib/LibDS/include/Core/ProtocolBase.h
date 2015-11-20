@@ -39,11 +39,10 @@
  * Implements an abstract class to be used as a base for any protocol that
  * will be used to drive an FRC robot.
  */
-class LIB_DS_DECL DS_ProtocolBase : public QObject
-{
+class LIB_DS_DECL DS_ProtocolBase : public QObject {
     Q_OBJECT
 
-public:
+  public:
     explicit DS_ProtocolBase();
     ~DS_ProtocolBase();
 
@@ -77,7 +76,7 @@ public:
      */
     QString robotAddress();
 
-public slots:
+  public slots:
     /**
      * Resets the internal values of the protocol and emits the appropiate
      * signals when the robot communication is lost
@@ -88,7 +87,7 @@ public slots:
      * Changes the team number of the robot, this can be used to generate
      * the robot and radio address.
      */
-    void setTeamNumber (int team);
+    void setTeamNumber (DS_Short team);
 
     /**
      * Changes the robot address to \a address
@@ -116,74 +115,49 @@ public slots:
     void readRobotPacket (QByteArray& data);
 
     /**
-     * Logs a message in the Driver Station
+     * Reboots the robot
+     *
+     * \note This function must be implemented by each protocol
      */
-    void log (QString message);
-
-    /* Functions that need to be implemented for each protocol */
     virtual void reboot() = 0;
-    virtual int robotPort() = 0;
-    virtual int clientPort() = 0;
+
+    /**
+     * Restarts the robot code or the user program
+     *
+     * \note This function must be implemented by each protocol
+     */
     virtual void restartCode() = 0;
+
+    /**
+     * Returns the port in which we send data to the robot
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual DS_Short robotPort() = 0;
+
+    /**
+     * Returns the port in which we receive robot data
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual DS_Short clientPort() = 0;
+
+    /**
+     * Generates a control packet to be sent to the robot
+     *
+     * \note This function must be implemented by each protocol
+     */
     virtual QByteArray getClientPacket() = 0;
-    virtual DS_ControlMode getControlMode (uint8_t mode) = 0;
-
-private slots:
-    /**
-     * Changes the address of the robot to the robot's IP
-     */
-    void onAddressResolved (QString address, QString ip);
 
     /**
-     * Implements the necessary steps to reset the internal values of a protocol
+     * Returns a 'generic' \c DS_ControlMode \c enum by reading
+     * the 'raw' value of the given \a mode.
+     *
+     * \note This function must be implemented by each protocol
      */
-    virtual void resetProtocol() = 0;
+    virtual DS_ControlMode getControlMode (DS_Char mode) = 0;
 
-    /**
-     * Returns the default radio address
-     */
-    virtual QString defaultRadioAddress() = 0;
-
-    /**
-     * Returns the default robot address
-     */
-    virtual QString defaultRobotAddress() = 0;
-
-    /**
-     * Implements a method to get more information about the robot components
-     */
-    virtual void downloadRobotInformation() = 0;
-
-    /**
-     * Uses the joystick input information to generate a data array to be
-     * sent along the client packet
-     */
-    virtual QByteArray generateJoystickData() = 0;
-
-    /**
-     * Generates the neccesary data to send the robot the current timezone
-     * of the client DS
-     */
-    virtual QByteArray generateTimezoneData() = 0;
-
-    /**
-     * Interprets the received robot \a data
-     */
-    virtual void readRobotData (QByteArray data) = 0;
-
-    /**
-     * Returns the control code used by the protocol to represent the selected
-     * control \a mode
-     */
-    virtual uint8_t getControlCode (DS_ControlMode mode) = 0;
-
-    /**
-     * Returns the code used by the protocol to represent the selected
-     * \a alliance
-     */
-    virtual uint8_t getAllianceCode (DS_Alliance alliance) = 0;
-
-signals:
+  signals:
     /**
      * Emitted when the protocol detects that the status of the
      * user code has changed
@@ -251,40 +225,118 @@ signals:
     void robotAddressChanged (QString);
 
     /**
-     * Used by each protocol to log messages through the DriverStation, thus
-     * allowing the final user to see informative messages about the status of
-     * the client application
-     */
-    void newMessage (QString);
-
-    /**
      * Emitted when we receive a packet from the robot. Used by the library
      * to generate and send another control packet to the robot.
      */
     void packetReceived();
 
-protected:
+  protected slots:
+    /**
+     * Implements the necessary steps to reset the internal values of a protocol
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual void resetProtocol() = 0;
+
+    /**
+     * Implements a method to get more information about the robot components
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual void downloadRobotInformation() = 0;
+
+    /**
+     * Interprets the received robot \a data and emits the appropiate signals
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual void readRobotData (QByteArray data) = 0;
+
+  protected:
+    /**
+     * Returns the default radio address
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual QString defaultRadioAddress() = 0;
+
+    /**
+     * Returns the default robot address
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual QString defaultRobotAddress() = 0;
+
+    /**
+     * Uses the joystick input information to generate a data array to be
+     * sent along the client packet
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual QByteArray generateJoystickData() = 0;
+
+    /**
+     * Generates the neccesary data to send the robot the current timezone
+     * of the client DS
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual QByteArray generateTimezoneData() = 0;
+
+    /**
+     * Returns the control code used by the protocol to represent the selected
+     * control \a mode
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual DS_Char getControlCode (DS_ControlMode mode) = 0;
+
+    /**
+     * Returns the code used by the protocol to represent the selected
+     * \a alliance
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual DS_Char getAllianceCode (DS_Alliance alliance) = 0;
+
+    /**
+     * Calculates the size of the \a joystick.
+     * This function is implemented for each protocol to meet the
+     * specific requirements of the protocol in question.
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual DS_Char getJoystickSize (DS_Joystick* joystick) = 0;
+
     /**
      * Converts the input \a bits to bytes
      */
     QByteArray bitsToBytes (QBitArray bits);
 
-protected:
+  protected:
     /**
      * This is the team number, you may use it for a variety of purposes
      * This variable is changed with the \c setTeamNumber() function.
      */
-    int p_team;
+    DS_Short p_team;
+
+    /**
+     * Represents the operation status of the robot.
+     * This value can be used to send 'special' commands to the robot,
+     * such as rebooting the main controller (e.g. roboRIO or cRIO) or restarting
+     * the user code
+     */
+    DS_Char p_status;
 
     /**
      * Represents the number of packets sent to the robot
      */
-    short p_sentPackets;
+    DS_Short p_sentPackets;
 
     /**
      * Represents the minimum length of a robot packet of a protocol
      */
-    int p_minPacketLength;
+    DS_Short p_minPacketLength;
 
     /**
      * This variable should be set to \c true when the user code is loaded
@@ -297,6 +349,13 @@ protected:
      */
     bool p_robotCommunication;
 
+    /**
+     * If set to \c true, you should send the current date time data
+     * with the \c generateTimezoneData() function
+     */
+    bool p_sendDateTime;
+
+  protected:
     /**
      * The IP address of the robot, calculate it with the \c QHostInfo class
      */
@@ -341,6 +400,12 @@ protected:
      * to the joystick list in the protocol manager.
      */
     QList<DS_Joystick*>* p_joysticks;
+
+  private slots:
+    /**
+     * Changes the address of the robot to the robot's IP
+     */
+    void onAddressResolved (QString address, QString ip);
 };
 
 #endif

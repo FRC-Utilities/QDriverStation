@@ -25,6 +25,7 @@
 #define _QDRIVER_STATION_DASHBOARD_H
 
 #include <QProcess>
+#include <DriverStation.h>
 
 /**
  * @class Dashboard
@@ -37,19 +38,18 @@
  * us to quit the Dashboard when the Open DriverStation is closed or when the
  * user selects another Dashboard type.
  */
-class Dashboard : public QObject
-{
+class Dashboard : public QObject {
     Q_OBJECT
 
-public:
+  public:
     /**
      * Represents the available dashboard options to the user
      */
     enum Dashboards {
-        None = 0x0,
-        SfxDashboard = 0x1,
-        SmartDashboard = 0x2,
-        LabVIEW = 0x3
+        kNone = 0x0,
+        kSfxDashboard = 0x1,
+        kSmartDashboard = 0x2,
+        kLabVIEW = 0x3
     };
 
     /**
@@ -57,7 +57,7 @@ public:
      */
     static Dashboard* getInstance();
 
-public slots:
+  public slots:
     /**
      * Opens a Dashboard using \c QProcess based on the saved settings
      */
@@ -76,7 +76,7 @@ public slots:
     /**
      * Returns the currently selected Dashboard
      */
-    int getCurrentDashboard();
+    DS_Char getCurrentDashboard();
 
     /**
      * Returns an ordered list with the matching Dashboards
@@ -84,18 +84,18 @@ public slots:
      */
     QStringList getAvailableDashboards();
 
-protected:
+  protected:
     explicit Dashboard();
     ~Dashboard();
 
     static Dashboard* s_instance;
 
-private:
+  private:
     /**
      * Represents the current dashboard index.
      * This variable can be read with \c getCurrentDashboard()
      */
-    int m_current;
+    DS_Char m_current;
 
     /**
      * Used for starting - and quiting - the dashboards

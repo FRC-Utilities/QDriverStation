@@ -20,7 +20,6 @@
  * THE SOFTWARE.
  */
 
-#include <QtGlobal>
 #include "CpuUsage.h"
 
 #if defined Q_OS_WIN
@@ -29,23 +28,21 @@
 #include <windows.h>
 static PDH_HQUERY cpuQuery;
 static PDH_HCOUNTER cpuTotal;
-#define COUNTER_PATH L"\\Processor(_Total)\\% Processor Time"
+#define dCounterPath L"\\Processor(_Total)\\% Processor Time"
 #else
 #include <QProcess>
 #endif
 
-void CpuUsage::init()
-{
+void CpuUsage::init() {
 #if defined Q_OS_WIN
     PdhOpenQuery (0, 0, &cpuQuery);
-    PdhAddCounter (cpuQuery, COUNTER_PATH, 0, &cpuTotal);
+    PdhAddCounter (cpuQuery, dCounterPath, 0, &cpuTotal);
     PdhCollectQueryData (cpuQuery);
 #endif
 }
 
-int CpuUsage::getUsage()
-{
-    int usage = 0;
+DS_Char CpuUsage::getUsage() {
+    DS_Char usage = 0;
 
 #if defined Q_OS_WIN
     PDH_FMT_COUNTERVALUE counterVal;

@@ -25,32 +25,27 @@
 #include "Core/ProtocolBase.h"
 #include "Core/ProtocolManager.h"
 
-DS_ProtocolManager::DS_ProtocolManager()
-{
+DS_ProtocolManager::DS_ProtocolManager() {
     m_protocol = Q_NULLPTR;
     m_joysticks = new QList<DS_Joystick*>;
 }
 
-DS_ProtocolManager::~DS_ProtocolManager()
-{
+DS_ProtocolManager::~DS_ProtocolManager() {
     delete m_protocol;
     delete m_joysticks;
 }
 
-DS_ProtocolBase* DS_ProtocolManager::protocol() const
-{
+DS_ProtocolBase* DS_ProtocolManager::protocol() const {
     return protocolIsValid() ? m_protocol : Q_NULLPTR;
 }
 
-bool DS_ProtocolManager::protocolIsValid() const
-{
+bool DS_ProtocolManager::protocolIsValid() const {
     return (m_protocol != Q_NULLPTR);
 }
 
-void DS_ProtocolManager::setProtocol (DS_ProtocolBase* protocol)
-{
+void DS_ProtocolManager::setProtocol (DS_ProtocolBase* protocol) {
     if (protocol != Q_NULLPTR) {
-        m_protocol = Q_NULLPTR;
+        free (m_protocol);
 
         m_protocol = protocol;
         m_protocol->setJoysticks (m_joysticks);
@@ -69,66 +64,61 @@ void DS_ProtocolManager::setProtocol (DS_ProtocolBase* protocol)
                  this,       SIGNAL (ramUsageChanged       (int)));
         connect (m_protocol, SIGNAL (voltageChanged        (QString)),
                  this,       SIGNAL (voltageChanged        (QString)));
-        connect (m_protocol, SIGNAL (newMessage            (QString)),
-                 this,       SIGNAL (newMessage            (QString)));
     }
 }
 
-void DS_ProtocolManager::clearJoysticks()
-{
+void DS_ProtocolManager::clearJoysticks() {
     m_joysticks->clear();
 }
 
-void DS_ProtocolManager::addJoystick (int axes, int buttons, int povHats)
-{
+void DS_ProtocolManager::addJoystick (DS_Char axes, DS_Char buttons,
+                                      DS_Char povHats) {
+
     DS_Joystick* js = new DS_Joystick;
 
     js->numAxes = axes;
     js->numButtons = buttons;
     js->numPovHats = povHats;
 
-    js->axes = new double [axes];
-    js->povHats = new int [povHats];
-    js->buttons = new bool [buttons];
+    js->axes = new DS_Decimal [axes];
+    js->povHats = new DS_Char [povHats];
+    js->buttons = new bool    [buttons];
 
-    for (int i = 0; i < js->numAxes; i++)
+    for (DS_Char i = 0; i < js->numAxes; i++)
         js->axes [i] = 0;
 
-    for (int i = 0; i < js->numPovHats; i++)
+    for (DS_Char i = 0; i < js->numPovHats; i++)
         js->povHats [i] = -1;
 
-    for (int i = 0; i < js->numButtons; i++)
+    for (DS_Char i = 0; i < js->numButtons; i++)
         js->buttons [i] = false;
 
     m_joysticks->append (js);
 }
 
-void DS_ProtocolManager::updateJoystickPovHat (int js, int hat, int angle)
-{
+void DS_ProtocolManager::updateJoystickPovHat (DS_Char js, DS_Char hat,
+        DS_Char angle) {
     if (joystickIsValid (js))
         m_joysticks->at (js)->povHats [hat] = angle;
 }
 
-void DS_ProtocolManager::updateJoystickAxis (int js, int axis, double value)
-{
+void DS_ProtocolManager::updateJoystickAxis (DS_Char js, DS_Char axis,
+        DS_Decimal value) {
     if (joystickIsValid (js))
         m_joysticks->at (js)->axes [axis] = value;
 }
 
-void DS_ProtocolManager::updateJoystickButton (int js,  int button,
-        bool status)
-{
+void DS_ProtocolManager::updateJoystickButton (DS_Char js, DS_Char button,
+        bool status) {
     if (joystickIsValid (js))
         m_joysticks->at (js)->buttons [button] = status;
 }
 
-void DS_ProtocolManager::readRobotData (QByteArray data)
-{
+void DS_ProtocolManager::readRobotData (QByteArray data) {
     if (protocolIsValid())
         protocol()->readRobotPacket (data);
 }
 
-bool DS_ProtocolManager::joystickIsValid (int js) const
-{
+bool DS_ProtocolManager::joystickIsValid (DS_Char js) const {
     return (js < m_joysticks->count());
 }

@@ -22,58 +22,49 @@
 
 #include "AssemblyInfo.h"
 
-#define APP_NAME    "QDriverStation"
-#define APP_MAJOR   "0"
-#define APP_MINOR   "1"
-#define APP_BUILD   "3"
-#define APP_STATE   "Beta"
-#define APP_COMPANY "WinT 3794"
-#define APP_DOMAIN  "wint3794.org"
+#define dName    "QDriverStation"
+#define dMajor   "0"
+#define dMinor   "1"
+#define dBuild   "3"
+#define dState   "Beta"
+#define dCompany "WinT 3794"
+#define dDomain  "wint3794.org"
 
-QString AssemblyInfo::name()
-{
-    return APP_NAME;
+QString AssemblyInfo::name() {
+    return dName;
 }
 
-QString AssemblyInfo::major()
-{
-    return APP_MAJOR;
+QString AssemblyInfo::major() {
+    return dMajor;
 }
 
-QString AssemblyInfo::minor()
-{
-    return APP_MINOR;
+QString AssemblyInfo::minor() {
+    return dMinor;
 }
 
-QString AssemblyInfo::build()
-{
-    return APP_BUILD;
+QString AssemblyInfo::build() {
+    return dBuild;
 }
 
-QString AssemblyInfo::state()
-{
-    return APP_STATE;
+QString AssemblyInfo::state() {
+    return dState;
 }
 
-QString AssemblyInfo::version()
-{
+QString AssemblyInfo::version() {
     return QString ("%1.%2%3 %4").arg (major(),
                                        minor(),
                                        build(),
                                        state());
 }
 
-QString AssemblyInfo::organization()
-{
-    return APP_COMPANY;
+QString AssemblyInfo::organization() {
+    return dCompany;
 }
 
-QString AssemblyInfo::organizationDomain()
-{
-    return APP_DOMAIN;
+QString AssemblyInfo::organizationDomain() {
+    return dDomain;
 }
 
-QString AssemblyInfo::buildDateTime()
-{
+QString AssemblyInfo::buildDateTime() {
     return QObject::tr ("Built on %1 at %2").arg (__DATE__, __TIME__);
 }

@@ -43,21 +43,20 @@ class VirtualJoystick;
  *
  * This widget is used in the "Gamepad" tab of the MainWindow.
  */
-class JoysticksWidget : public QWidget
-{
+class JoysticksWidget : public QWidget {
     Q_OBJECT
 
-public:
+  public:
     explicit JoysticksWidget (QWidget* parent = 0);
     ~JoysticksWidget();
 
-public slots:
+  public slots:
     void readSettings();
     void showKeyboardWindow();
     void registerKeyPress (QKeyEvent* event);
     void registerKeyRelease (QKeyEvent* event);
 
-signals:
+  signals:
     /**
      * Emitted when a joystick is removed from the computer
      */
@@ -68,7 +67,7 @@ signals:
      */
     void statusChanged (bool);
 
-private:
+  private:
     /**
      * Represents the UI components of the widget
      */
@@ -89,7 +88,7 @@ private:
      */
     VirtualJoystick* m_keyboardDrive;
 
-private slots:
+  private slots:
     /**
      * @internal
      * Re-creates the indicator widgets for the currently selected joystick

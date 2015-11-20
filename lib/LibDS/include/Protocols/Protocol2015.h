@@ -28,132 +28,40 @@
 
 /**
  * \class DS_Protocol2015
- *
- * Implements the 2015 communication protocol.
+ * \brief Implements the 2015 communication protocol
+ * \note  the virtual functions are already documented in the
+ *        \c DS_ProtocolBase class
  */
-class LIB_DS_DECL DS_Protocol2015 : public DS_ProtocolBase
-{
+class LIB_DS_DECL DS_Protocol2015 : public DS_ProtocolBase {
     Q_OBJECT
 
-public:
+  public:
     explicit DS_Protocol2015();
 
-public slots:
-    /**
-     * Changes the status byte to instruct the roboRIO to reboot
-     */
+  public slots:
     void reboot();
-
-    /**
-     * Returns the port in the roboRIO in which we send DS packets
-     */
-    int robotPort();
-
-    /**
-     * Returns the port in which we receive data from the roboRIO
-     */
-    int clientPort();
-
-    /**
-     * Changes the status byte to instruct the roboRIO to kill the user code
-     * and start it again
-     */
     void restartCode();
-
-    /**
-     * Generates a client packet, which is later sent to the robot.
-     * If the control mode is in TeleOp, we also send joystick input data
-     */
+    DS_Short robotPort();
+    DS_Short clientPort();
     QByteArray getClientPacket();
 
-private:
-    /**
-     * Used for sending specific instructions to the roboRIO, such as restarting
-     * the robot code or rebooting the system
-     */
-    int m_status;
-
-    /**
-     * If set to \c true, the client will generate a packet that contains the
-     * timezone of the computer. This value is automatically updated when a
-     * robot packet is received
-     */
-    bool m_sendDateTime;
-
-    /**
-     * Used for downloading and analyzing robot information through a FTP
-     * connection with the roboRIO
-     */
-    QNetworkAccessManager m_manager;
-
-private slots:
-    /**
-     * Resets the internal values, disables the robot and begins
-     * searching for it over the network
-     */
+  private slots:
     void resetProtocol();
-
-    /**
-     * Returns the address of the robot radio (e.g 10.xx.yy.1)
-     */
-    QString defaultRadioAddress();
-
-    /**
-     * Returns the address of the roboRIO (e.g roboRIO-xxyy.local)
-     */
-    QString defaultRobotAddress();
-
-    /**
-     * Downloads information about the roboRIO, the PCM and PDP firmware
-     * information using a FTP connection.
-     *
-     * This function is called the first time we receive a packet from the
-     * roboRIO
-     */
     void downloadRobotInformation();
-
-    /**
-     * Reads joystick input and generates a packet that will be sent to
-     * the robot
-     */
-    QByteArray generateJoystickData();
-
-    /**
-     * Generates a timezone section data to be sent to the robot when needed
-     */
-    QByteArray generateTimezoneData();
-
-    /**
-     * Reads and interprets packets received from the robot.
-     */
     void readRobotData (QByteArray data);
-
-    /**
-     * Returns the value used to represent the input the control \a mode
-     */
-    uint8_t getControlCode (DS_ControlMode mode);
-
-    /**
-     * Returns the control mode represented by the input \a byte
-     */
-    DS_ControlMode getControlMode (uint8_t byte);
-
-    /**
-     * Returns the value used to represent the input \a alliance
-     */
-    uint8_t getAllianceCode (DS_Alliance alliance);
-
-    /**
-     * Returns the size of the input \a joystick structure
-     * Used for encoding the joystick input and sending it to the robot
-     */
-    int getJoystickSize (DS_Joystick* joystick);
-
-    /**
-     * Reads and interprets the files that contain information about the
-     * roboRIO, the PCM and PDP firmware versions
-     */
     void onDownloadFinished (QNetworkReply* reply);
+
+  private:
+    QString defaultRadioAddress();
+    QString defaultRobotAddress();
+    QByteArray generateJoystickData();
+    QByteArray generateTimezoneData();
+    DS_Char getControlCode (DS_ControlMode mode);
+    DS_ControlMode getControlMode (DS_Char byte);
+    DS_Char getAllianceCode (DS_Alliance alliance);
+    DS_Char getJoystickSize (DS_Joystick* joystick);
+
+    QNetworkAccessManager m_manager;
 };
 
 #endif

@@ -24,7 +24,7 @@
 #ifndef _LIB_DS_TIMERS_H
 #define _LIB_DS_TIMERS_H
 
-#include "Core/Library.h"
+#include "Core/Common.h"
 
 class QTimer;
 class QThread;
@@ -37,59 +37,29 @@ class QThread;
  * The timers can be used by objects and classes that are not related to
  * the library for different functions.
  */
-class LIB_DS_DECL DS_Timers : public QObject
-{
+class LIB_DS_DECL DS_Timers : public QObject {
     Q_OBJECT
 
-public:
+  public:
     static DS_Timers* getInstance();
     ~DS_Timers();
 
-public slots:
-    /**
-     * Initializes the timers
-     */
+  public slots:
     void start();
 
-signals:
-    /**
-     * Emitted every 20 milliseconds
-     */
+  signals:
     void timeout20();
-
-    /**
-     * Emitted every 100 milliseconds
-     */
     void timeout100();
-
-    /**
-     * Emitted every 1000 milliseconds
-     */
     void timeout1000();
 
-protected:
+  protected:
     DS_Timers();
     static DS_Timers* s_instance;
 
-private:
-    /**
-     * A 60-millisecond timer
-     */
+  private:
     QTimer* t20;
-
-    /**
-     * A 100-millisecond timer
-     */
     QTimer* t100;
-
-    /**
-     * A 500-millisecond timer
-     */
     QTimer* t1000;
-
-    /**
-     * The separate thread in which we run the timers
-     */
     QThread* m_thread;
 };
 

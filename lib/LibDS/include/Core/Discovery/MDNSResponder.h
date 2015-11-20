@@ -24,11 +24,75 @@
 #ifndef _LIB_DS_MDNS_RESPONDER_H
 #define _LIB_DS_MDNS_RESPONDER_H
 
-#include "Core/Library.h"
+#include "Core/Common.h"
 
-class LIB_DS_DECL MDNSResponder
-{
+/**
+ * \class MDNSResponder
+ *
+ * Implements a rundimentary mDNS lookup process that
+ * allows us to get the IP of any mDNS device in the
+ * local network.
+ */
+class LIB_DS_DECL MDNSResponder : public QObject {
+    Q_OBJECT
 
+  public:
+    explicit MDNSResponder();
+
+  public slots:
+    /**
+     * Looks for the given \a domain, the class will emit
+     * the \c ipFound() \c SIGNAL when the domain is resolved
+     */
+    void query (QString domain);
+
+  signals:
+    /**
+     * Emitted when the \a ip of the \a address is resolved
+     */
+    void ipFound (QString address, QString ip);
+
+  private slots:
+    /**
+     * Reads the data received on the IPv4 socket
+     */
+    void readIPv4Socket();
+
+    /**
+     * Reads the data received on the IPv6 socket
+     */
+    void readIPv6Socket();
+
+    /**
+     * Sends the input \a data to the mDNS the appropiate IP4 and IP6 addresses
+     */
+    void sendPacket (QByteArray data);
+
+    /**
+     * Interprets and decodes the \a response
+     */
+    void processResponse (QByteArray response);
+
+  private:
+    /**
+     * Used to multicast data to the reserved IPv4 address
+     */
+    QUdpSocket m_IPv4_sender;
+
+    /**
+     * Used to multicast data to the reserved IPv6 address
+     */
+    QUdpSocket m_IPv6_sender;
+
+    /**
+     * Used to read mDNS responses from the IPv4 multicast address
+     */
+    QUdpSocket m_IPv4_receiver;
+
+    /**
+     * Used to read mDNS responses from the IPv6 multicast address
+     */
+    QUdpSocket m_IPv6_receiver;
 };
 
 #endif

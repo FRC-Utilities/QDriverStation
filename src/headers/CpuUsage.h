@@ -24,6 +24,8 @@
 #ifndef _QDRIVER_STATION_CPU_USAGE_H
 #define _QDRIVER_STATION_CPU_USAGE_H
 
+#include <DriverStation.h>
+
 /**
  * @class CpuUsage
  * @brief Provides information about the CPU usage of the host computer
@@ -35,9 +37,8 @@
  * The class was implemented for the sole use of the CPU progress bar in
  * the \c MainWindow, but we isolated its functions for readibility reasons.
  */
-class CpuUsage
-{
-public:
+class CpuUsage {
+  public:
     /**
      * Starts the processor time querying process on Microsoft Windows
      */
@@ -52,7 +53,7 @@ public:
      *
      * @return an \c int between 0 and 100 that represents the CPU usage
      */
-    static int getUsage();
+    static DS_Char getUsage();
 };
 
 #endif

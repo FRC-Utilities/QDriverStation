@@ -25,7 +25,7 @@
 #define _LIB_DS_WATCHDOG_H
 
 #include <QTimer>
-#include "Core/Library.h"
+#include "Core/Common.h"
 
 /**
  * \class DS_Watchdog
@@ -41,35 +41,27 @@
  * The corrective actions typically include placing the computer system in a
  * safe state and restoring normal system operation.
  */
-class LIB_DS_DECL DS_Watchdog : public QObject
-{
+class LIB_DS_DECL DS_Watchdog : public QObject {
     Q_OBJECT
 
-public:
+  public:
     explicit DS_Watchdog();
 
-public slots:
+  public slots:
     /**
-     * Restarts the watchdog, used when an operation is
-     * completed successfully and we want the software or
-     * operation to continue executing normally.
-     *
-     * Think of this as "kicking the dog".
+     * Kicks the dog so that it doesn't bite us
      */
     void restart();
 
-signals:
+  signals:
     /**
-     * Emitted when the timer has elapsed and a timeout signal
-     * was emitted. You should implement a method to abort the current
-     * operation or to initiate corrective action in the case you
-     * receive this signal
+     * Emitted when the dog gets angry and wants to bite you
      */
     void timeout();
 
-private:
+  private:
     /**
-     * The timer that regulates the behavior of the class
+     * Defines how patient our dear dog is
      */
     QTimer m_timer;
 };

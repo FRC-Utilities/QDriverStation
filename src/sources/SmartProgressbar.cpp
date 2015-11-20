@@ -23,19 +23,16 @@
 #include "SmartProgressbar.h"
 
 SmartProgressbar::SmartProgressbar (QWidget* parent)
-    : QProgressBar (parent)
-{
+    : QProgressBar (parent) {
     connect (this, SIGNAL (valueChanged   (int)),
              this, SLOT   (onValueChanged (int)));
 }
 
-void SmartProgressbar::setType (Type type)
-{
+void SmartProgressbar::setType (Type type) {
     m_type = type;
 }
 
-void SmartProgressbar::onValueChanged (int value)
-{
+void SmartProgressbar::onValueChanged (int value) {
     QPalette palette;
 
     switch (m_type) {

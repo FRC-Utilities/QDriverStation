@@ -30,8 +30,7 @@ static SYSTEM_POWER_STATUS power;
 #include <QProcess>
 #endif
 
-bool Battery::isPlugged()
-{
+bool Battery::isPlugged() {
 #if defined Q_OS_WIN
     GetSystemPowerStatus (&power);
     return power.ACLineStatus != 0;
@@ -69,8 +68,7 @@ bool Battery::isPlugged()
 #endif
 }
 
-int Battery::currentLevel()
-{
+DS_Char Battery::currentLevel() {
 #if defined Q_OS_WIN
     GetSystemPowerStatus (&power);
     return static_cast<int> (power.BatteryLifePercent);
@@ -104,7 +102,7 @@ int Battery::currentLevel()
 
     process.start ("bash -c \"upower -i $(upower -e | grep 'BAT') | "
                    "grep -E 'state|to\\ full|percentage'\"");
-    
+
     while (process.waitForReadyRead())
         data.append (process.readAll());
 

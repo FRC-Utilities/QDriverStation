@@ -34,11 +34,10 @@
  * of the DriverStation and to change the palette of the application
  * (ex: to match the colors of the user's team)
  */
-class AdvancedSettings : public QDialog
-{
+class AdvancedSettings : public QDialog {
     Q_OBJECT
 
-public:
+  public:
     /**
      * @internal
      * Configures the user interface and the dialog and loads the saved
@@ -80,11 +79,11 @@ public:
      */
     void resetSettings();
 
-signals:
+  signals:
     void updateColors();
     void settingsChanged();
 
-private:
+  private:
     /**
      * The user-interface components
      */
@@ -100,7 +99,7 @@ private:
      */
     QList<QLineEdit*> m_colorTexts;
 
-private slots:
+  private slots:
     /**
      * @internal
      * Changes the palette of the application based on current settings

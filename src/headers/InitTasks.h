@@ -24,6 +24,8 @@
 #ifndef _QDRIVER_STATION_INIT_TASKS_H
 #define _QDRIVER_STATION_INIT_TASKS_H
 
+#include <DriverStation.h>
+
 /**
  * @class InitTasks
  * @brief Isolates complex first run tasks from the MainWindow
@@ -33,15 +35,14 @@
  * such as asking the user for his/her team number of downloading additional
  * drivers required by the Open DriverStation.
  */
-class InitTasks
-{
-public:
+class InitTasks {
+  public:
     /**
      * Returns the team number to be used to control the robot.
      * If this is the first launch, it will ask the user to input his/her team
      * number using a \c QInputDialog
      */
-    static int getTeamNumber();
+    static DS_Short getTeamNumber();
 
     /**
      * Initializes the CPU querying process and prompts the user to download

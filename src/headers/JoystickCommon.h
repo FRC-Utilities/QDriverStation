@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
+ * Copyright (c) 2015 WinT 3794 <http://wDS_Char3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,15 +24,15 @@
 #ifndef _QDRIVER_STATION_JOYSTICK_COMMON_H
 #define _QDRIVER_STATION_JOYSTICK_COMMON_H
 
-#include <QString>
+#include <DriverStation.h>
 
 /**
  * Represents a joystick and provides some information about it
  */
 struct GM_Joystick {
-    int id;              /**< The raw ID of the joystick */
-    int numAxes;         /**< The number of axes that the joystick has */
-    int numButtons;      /**< The number of buttons that the joystick has */
+    DS_Char id;          /**< The raw ID of the joystick */
+    DS_Char numAxes;     /**< The number of axes that the joystick has */
+    DS_Char numButtons;  /**< The number of buttons that the joystick has */
     QString displayName; /**< The user-friendly name of the joystick*/
 };
 
@@ -41,8 +41,8 @@ struct GM_Joystick {
  * Represents the state of a joystick hat and provides some data about it
  */
 struct GM_Hat {
-    int id;               /**< The raw ID of the hat */
-    short angle;          /**< The pressed angle of the hat */
+    DS_Char id;           /**< The raw ID of the hat */
+    DS_Char angle;        /**< The pressed angle of the hat */
     GM_Joystick joystick; /**< The joystick that the hat belongs to */
 };
 
@@ -50,8 +50,8 @@ struct GM_Hat {
  * Represents the state of a joystick axis and provides some data about it
  */
 struct GM_Axis {
-    int id;               /**< The raw ID of the axis */
-    double value;         /**< The value (between -1 and 1) of the axis */
+    DS_Char id;           /**< The raw ID of the axis */
+    DS_Decimal value;     /**< The value (between -1 and 1) of the axis */
     GM_Joystick joystick; /**< The joystick that the axis belongs to */
 };
 
@@ -59,7 +59,7 @@ struct GM_Axis {
  * Represents the state of a joystick button and provides some data about it
  */
 struct GM_Button {
-    int id;               /**< The raw ID of the button */
+    DS_Char id;           /**< The raw ID of the button */
     bool pressed;         /**< The current state of the button */
     GM_Joystick joystick; /**< The joystick that the button belongs to */
 };

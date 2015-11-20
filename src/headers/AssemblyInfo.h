@@ -37,9 +37,8 @@
  * the application, such as its name ('QDriverStation' is not so brilliant)
  * and its version information.
  */
-class AssemblyInfo
-{
-public:
+class AssemblyInfo {
+  public:
     static QString name();
     static QString major();
     static QString minor();

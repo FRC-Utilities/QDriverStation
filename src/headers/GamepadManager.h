@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
+ * Copyright (c) 2015 WinT 3794 <http://wDS_Char3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,44 +30,41 @@
 
 #include "JoystickCommon.h"
 
-class DriverStation;
-
 /**
  * @class GamepadManager
  * @brief Implements an abstraction layer between SDL and Qt
  *
  * The \c GamepadManager class was created in order to simplify the reading
  * and management of joysticks by using the SDL library. The class automatically
- * parses SDL events into Qt signals to easily have access to joystick data and
+ * parses SDL events DS_Charo Qt signals to easily have access to joystick data and
  * implement methods to react to joystick input.
  */
-class GamepadManager : public QObject
-{
+class GamepadManager : public QObject {
     Q_OBJECT
 
-public:
+  public:
     static GamepadManager* getInstance();
 
-public slots:
+  public slots:
     /**
      * Returns the number of hats that the selected \a joystick has
      */
-    int getNumHats (int js);
+    DS_Char getNumHats (DS_Char js);
 
     /**
      * Returns the number of axes that the selected \a joystick has
      */
-    int getNumAxes (int js);
+    DS_Char getNumAxes (DS_Char js);
 
     /**
      * Returns the number of buttons that the selected \a joystick has
      */
-    int getNumButtons (int js);
+    DS_Char getNumButtons (DS_Char js);
 
     /**
      * Returns the display name of the joystick
      */
-    QString getJoystickName (int js);
+    QString getJoystickName (DS_Char js);
 
     /**
      * Returns an ordered \c QStringList with the names and IDs of the
@@ -79,14 +76,14 @@ public slots:
      * Initializes the event loop system.
      *
      * This function is not called in the constructor to give the application
-     * time to initialize its user interface before sending signals.
+     * time to initialize its user DS_Charerface before sending signals.
      */
     void init();
 
     /**
-     * Changes the time interval between the SDL Event reader calls
+     * Changes the time DS_Charerval between the SDL Event reader calls
      */
-    void setUpdateInterval (int time);
+    void setUpdateInterval (DS_Char time);
 
     /**
      * Instructs the haptic device in \a joystick to rumble for the specified
@@ -95,13 +92,13 @@ public slots:
      * @param joystick The joystick to rumble
      * @param time The time in milliseconds to enable the haptic device
      */
-    void rumble (int js, int time);
+    void rumble (DS_Char js, DS_Char time);
 
-signals:
+  signals:
     /**
      * Emitted when a joystick is attached or removed
      */
-    void countChanged (int);
+    void countChanged (DS_Char);
 
     /**
      * Emitted when a joystick is attached or removed
@@ -126,27 +123,27 @@ signals:
      */
     void buttonEvent (GM_Button);
 
-private:
+  private:
     /**
-     * Represents the update/refresh interval of the application.
+     * Represents the update/refresh DS_Charerval of the application.
      * Note that we use a continous loop to read joystick data, and
-     * this loop will be called at the specified interval described above
+     * this loop will be called at the specified DS_Charerval described above
      *
-     * This variable can be changed using the \c setInterval() function.
+     * This variable can be changed using the \c setDS_Charerval() function.
      */
-    int m_time;
+    DS_Char m_time;
 
     /**
      * Used to ensure that the joystick index is dynamic.
      * SDL only increases the joystick index, but we are inderested in
      * getting a index that can be used with a list
      */
-    int m_tracker;
+    DS_Char m_tracker;
 
     /**
      * Used to keep the dynamic IDs in sync with the SDL index IDs
      */
-    QList<int> idList;
+    QList<DS_Char> idList;
 
     /**
      * Returns a \c GM_Hat structure filled with the information
@@ -155,44 +152,44 @@ private:
     GM_Hat getHat (const SDL_Event* event);
 
     /**
-     * @internal
+     * @DS_Charernal
      * Returns a \c GM_Axis structure filled with the information
      * provided by the \a event
      */
     GM_Axis getAxis (const SDL_Event* event);
 
     /**
-     * @internal
+     * @DS_Charernal
      * Returns a \c GM_Button structure filled with the information
      * provided by the \a event
      */
     GM_Button getButton (const SDL_Event* event);
 
     /**
-     * @internal
+     * @DS_Charernal
      * Returns a \c GM_Joystick structure filled with the information
      * provided by the \a event
      */
     GM_Joystick getJoystick (const SDL_Event* event);
 
     /**
-     * @internal
+     * @DS_Charernal
      * Calculates a dynamic ID that changes if a joystick was added or removed
      * This is used to be able to use the joystick ID in the \c GM_Joystick
      * struct with normal \c QList objects and to send a FRC-like joystick ID
      * to the robot
      */
-    int getDynamicId (int js);
+    DS_Char getDynamicId (DS_Char js);
 
-protected:
+  protected:
     explicit GamepadManager();
     ~GamepadManager();
 
     static GamepadManager* s_instance;
 
-private slots:
+  private slots:
     /**
-     * @internal
+     * @DS_Charernal
      * Polls the SDL events and calls the appropriate handler functions.
      * When the function finishes reading SDL events, it waits some time and
      * calls itself again to continue the game loop.
@@ -200,19 +197,19 @@ private slots:
     void readSdlEvents();
 
     /**
-     * @internal
+     * @DS_Charernal
      * Gets joystick and hat information and emits the appropiate signal
      */
     void onHatEvent (const SDL_Event* event);
 
     /**
-     * @internal
+     * @DS_Charernal
      * Gets joystick and axis information and emits the appropriate signal
      */
     void onAxisEvent (const SDL_Event* event);
 
     /**
-     * @internal
+     * @DS_Charernal
      * Gets joystick and button information and emits the appropriate signal
      */
     void onButtonEvent (const SDL_Event* event);
