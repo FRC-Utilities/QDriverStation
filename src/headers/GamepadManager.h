@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 WinT 3794 <http://wDS_Char3794.org>
+ * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,13 +30,15 @@
 
 #include "JoystickCommon.h"
 
+class DriverStation;
+
 /**
  * @class GamepadManager
  * @brief Implements an abstraction layer between SDL and Qt
  *
  * The \c GamepadManager class was created in order to simplify the reading
  * and management of joysticks by using the SDL library. The class automatically
- * parses SDL events DS_Charo Qt signals to easily have access to joystick data and
+ * parses SDL events into Qt signals to easily have access to joystick data and
  * implement methods to react to joystick input.
  */
 class GamepadManager : public QObject {
@@ -49,22 +51,22 @@ class GamepadManager : public QObject {
     /**
      * Returns the number of hats that the selected \a joystick has
      */
-    DS_Char getNumHats (DS_Char js);
+    int getNumHats (int js);
 
     /**
      * Returns the number of axes that the selected \a joystick has
      */
-    DS_Char getNumAxes (DS_Char js);
+    int getNumAxes (int js);
 
     /**
      * Returns the number of buttons that the selected \a joystick has
      */
-    DS_Char getNumButtons (DS_Char js);
+    int getNumButtons (int js);
 
     /**
      * Returns the display name of the joystick
      */
-    QString getJoystickName (DS_Char js);
+    QString getJoystickName (int js);
 
     /**
      * Returns an ordered \c QStringList with the names and IDs of the
@@ -76,14 +78,14 @@ class GamepadManager : public QObject {
      * Initializes the event loop system.
      *
      * This function is not called in the constructor to give the application
-     * time to initialize its user DS_Charerface before sending signals.
+     * time to initialize its user interface before sending signals.
      */
     void init();
 
     /**
-     * Changes the time DS_Charerval between the SDL Event reader calls
+     * Changes the time interval between the SDL Event reader calls
      */
-    void setUpdateInterval (DS_Char time);
+    void setUpdateInterval (int time);
 
     /**
      * Instructs the haptic device in \a joystick to rumble for the specified
@@ -92,13 +94,13 @@ class GamepadManager : public QObject {
      * @param joystick The joystick to rumble
      * @param time The time in milliseconds to enable the haptic device
      */
-    void rumble (DS_Char js, DS_Char time);
+    void rumble (int js, int time);
 
   signals:
     /**
      * Emitted when a joystick is attached or removed
      */
-    void countChanged (DS_Char);
+    void countChanged (int);
 
     /**
      * Emitted when a joystick is attached or removed
@@ -125,25 +127,25 @@ class GamepadManager : public QObject {
 
   private:
     /**
-     * Represents the update/refresh DS_Charerval of the application.
+     * Represents the update/refresh interval of the application.
      * Note that we use a continous loop to read joystick data, and
-     * this loop will be called at the specified DS_Charerval described above
+     * this loop will be called at the specified interval described above
      *
-     * This variable can be changed using the \c setDS_Charerval() function.
+     * This variable can be changed using the \c setInterval() function.
      */
-    DS_Char m_time;
+    int m_time;
 
     /**
      * Used to ensure that the joystick index is dynamic.
      * SDL only increases the joystick index, but we are inderested in
      * getting a index that can be used with a list
      */
-    DS_Char m_tracker;
+    int m_tracker;
 
     /**
      * Used to keep the dynamic IDs in sync with the SDL index IDs
      */
-    QList<DS_Char> idList;
+    QList<int> idList;
 
     /**
      * Returns a \c GM_Hat structure filled with the information
@@ -152,34 +154,34 @@ class GamepadManager : public QObject {
     GM_Hat getHat (const SDL_Event* event);
 
     /**
-     * @DS_Charernal
+     * @internal
      * Returns a \c GM_Axis structure filled with the information
      * provided by the \a event
      */
     GM_Axis getAxis (const SDL_Event* event);
 
     /**
-     * @DS_Charernal
+     * @internal
      * Returns a \c GM_Button structure filled with the information
      * provided by the \a event
      */
     GM_Button getButton (const SDL_Event* event);
 
     /**
-     * @DS_Charernal
+     * @internal
      * Returns a \c GM_Joystick structure filled with the information
      * provided by the \a event
      */
     GM_Joystick getJoystick (const SDL_Event* event);
 
     /**
-     * @DS_Charernal
+     * @internal
      * Calculates a dynamic ID that changes if a joystick was added or removed
      * This is used to be able to use the joystick ID in the \c GM_Joystick
      * struct with normal \c QList objects and to send a FRC-like joystick ID
      * to the robot
      */
-    DS_Char getDynamicId (DS_Char js);
+    int getDynamicId (int js);
 
   protected:
     explicit GamepadManager();
@@ -189,7 +191,7 @@ class GamepadManager : public QObject {
 
   private slots:
     /**
-     * @DS_Charernal
+     * @internal
      * Polls the SDL events and calls the appropriate handler functions.
      * When the function finishes reading SDL events, it waits some time and
      * calls itself again to continue the game loop.
@@ -197,19 +199,19 @@ class GamepadManager : public QObject {
     void readSdlEvents();
 
     /**
-     * @DS_Charernal
+     * @internal
      * Gets joystick and hat information and emits the appropiate signal
      */
     void onHatEvent (const SDL_Event* event);
 
     /**
-     * @DS_Charernal
+     * @internal
      * Gets joystick and axis information and emits the appropriate signal
      */
     void onAxisEvent (const SDL_Event* event);
 
     /**
-     * @DS_Charernal
+     * @internal
      * Gets joystick and button information and emits the appropriate signal
      */
     void onButtonEvent (const SDL_Event* event);

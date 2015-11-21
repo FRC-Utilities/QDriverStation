@@ -42,7 +42,7 @@ class InitTasks {
      * If this is the first launch, it will ask the user to input his/her team
      * number using a \c QInputDialog
      */
-    static DS_Short getTeamNumber();
+    static int getTeamNumber();
 
     /**
      * Initializes the CPU querying process and prompts the user to download

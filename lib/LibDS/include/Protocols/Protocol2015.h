@@ -41,8 +41,8 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_ProtocolBase {
   public slots:
     void reboot();
     void restartCode();
-    DS_Short robotPort();
-    DS_Short clientPort();
+    int robotPort();
+    int clientPort();
     QByteArray getClientPacket();
 
   private slots:
@@ -56,10 +56,10 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_ProtocolBase {
     QString defaultRobotAddress();
     QByteArray generateJoystickData();
     QByteArray generateTimezoneData();
-    DS_Char getControlCode (DS_ControlMode mode);
-    DS_ControlMode getControlMode (DS_Char byte);
-    DS_Char getAllianceCode (DS_Alliance alliance);
-    DS_Char getJoystickSize (DS_Joystick* joystick);
+    int getControlCode (DS_ControlMode mode);
+    DS_ControlMode getControlMode (int byte);
+    int getAllianceCode (DS_Alliance alliance);
+    int getJoystickSize (DS_Joystick* joystick);
 
     QNetworkAccessManager m_manager;
 };

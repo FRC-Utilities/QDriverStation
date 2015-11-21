@@ -68,7 +68,7 @@ bool Battery::isPlugged() {
 #endif
 }
 
-DS_Char Battery::currentLevel() {
+int Battery::currentLevel() {
 #if defined Q_OS_WIN
     GetSystemPowerStatus (&power);
     return static_cast<int> (power.BatteryLifePercent);

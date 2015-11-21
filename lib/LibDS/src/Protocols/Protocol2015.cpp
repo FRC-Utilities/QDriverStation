@@ -83,11 +83,11 @@ void DS_Protocol2015::restartCode() {
     p_status = pStatusRestartCode;
 }
 
-DS_Short DS_Protocol2015::robotPort() {
+int DS_Protocol2015::robotPort() {
     return 1110;
 }
 
-DS_Short DS_Protocol2015::clientPort() {
+int DS_Protocol2015::clientPort() {
     return 1150;
 }
 
@@ -295,7 +295,7 @@ QByteArray DS_Protocol2015::generateTimezoneData() {
     return data;
 }
 
-DS_Char DS_Protocol2015::getControlCode (DS_ControlMode mode) {
+int DS_Protocol2015::getControlCode (DS_ControlMode mode) {
     switch (mode) {
     case kControlTest:
         return pControlTest;
@@ -320,7 +320,7 @@ DS_Char DS_Protocol2015::getControlCode (DS_ControlMode mode) {
     return pControlDisabled;
 }
 
-DS_ControlMode DS_Protocol2015::getControlMode (DS_Char byte) {
+DS_ControlMode DS_Protocol2015::getControlMode (int byte) {
     switch (byte) {
     case pControlDisabled:
         return kControlDisabled;
@@ -342,7 +342,7 @@ DS_ControlMode DS_Protocol2015::getControlMode (DS_Char byte) {
     return kControlEmergencyStop;
 }
 
-DS_Char DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
+int DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
     switch (alliance) {
     case kAllianceRed1:
         return pRed1;
@@ -367,7 +367,7 @@ DS_Char DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
     return pRed1;
 }
 
-DS_Char DS_Protocol2015::getJoystickSize (DS_Joystick* joystick) {
+int DS_Protocol2015::getJoystickSize (DS_Joystick* joystick) {
     return  5
             + (joystick->numAxes > 0 ? joystick->numAxes : 0)
             + (joystick->numButtons / 8)

@@ -41,8 +41,8 @@ void CpuUsage::init() {
 #endif
 }
 
-DS_Char CpuUsage::getUsage() {
-    DS_Char usage = 0;
+int CpuUsage::getUsage() {
+    int usage = 0;
 
 #if defined Q_OS_WIN
     PDH_FMT_COUNTERVALUE counterVal;

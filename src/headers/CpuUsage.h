@@ -53,7 +53,7 @@ class CpuUsage {
      *
      * @return an \c int between 0 and 100 that represents the CPU usage
      */
-    static DS_Char getUsage();
+    static int getUsage();
 };
 
 #endif

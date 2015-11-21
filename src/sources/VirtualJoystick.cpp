@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 WinT 3794 <http://wDS_Char3794.org>
+ * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,8 @@
 #include "GamepadManager.h"
 #include "VirtualJoystick.h"
 
+#include <DriverStation.h>
+
 VirtualJoystick::VirtualJoystick() {
     ui.setupUi (this);
 
@@ -39,8 +41,8 @@ VirtualJoystick::VirtualJoystick() {
              this,                          SIGNAL (axisEvent   (GM_Axis)));
     connect (GamepadManager::getInstance(), SIGNAL (buttonEvent (GM_Button)),
              this,                          SIGNAL (buttonEvent (GM_Button)));
-    connect (GamepadManager::getInstance(), SIGNAL (countChanged   (DS_Char)),
-             this,                          SLOT   (onCountChanged (DS_Char)));
+    connect (GamepadManager::getInstance(), SIGNAL (countChanged   (int)),
+             this,                          SLOT   (onCountChanged (int)));
     connect (GamepadManager::getInstance(), SIGNAL (countChanged   (QStringList)),
              this,                          SLOT   (onCountChanged (QStringList)));
 
@@ -66,8 +68,8 @@ void VirtualJoystick::readSettings() {
 // 'MERGE' THE VIRTUAL JOYSTICK AND THE SDL (REAL) JOYSTICKS
 //------------------------------------------------------------------------------
 
-DS_Char VirtualJoystick::getNumAxes (DS_Char js) {
-    DS_Char count = GamepadManager::getInstance()->joystickList().count();
+int VirtualJoystick::getNumAxes (int js) {
+    int count = GamepadManager::getInstance()->joystickList().count();
 
     if (js >= count && m_enabled)
         return m_joystick.numAxes;
@@ -78,8 +80,8 @@ DS_Char VirtualJoystick::getNumAxes (DS_Char js) {
     return 0;
 }
 
-DS_Char VirtualJoystick::getNumButtons (DS_Char js) {
-    DS_Char count = GamepadManager::getInstance()->joystickList().count();
+int VirtualJoystick::getNumButtons (int js) {
+    int count = GamepadManager::getInstance()->joystickList().count();
 
     if (js >= count && m_enabled)
         return m_joystick.numButtons;
@@ -90,10 +92,10 @@ DS_Char VirtualJoystick::getNumButtons (DS_Char js) {
     return 0;
 }
 
-void VirtualJoystick::onCountChanged (DS_Char count) {
+void VirtualJoystick::onCountChanged (int count) {
     DriverStation::getInstance()->clearJoysticks();
 
-    for (DS_Char i = 0; i <= count - 1; ++i)
+    for (int i = 0; i <= count - 1; ++i)
         DriverStation::getInstance()->addJoystick (
             GamepadManager::getInstance()->getNumAxes (i),
             GamepadManager::getInstance()->getNumButtons (i), 0);
@@ -120,7 +122,7 @@ void VirtualJoystick::onCountChanged (QStringList input) {
 //------------------------------------------------------------------------------
 
 void VirtualJoystick::registerKeyPress (QKeyEvent* event) {
-    if (event->key() == Qt::Key_Shift)
+    if (event->key() == Qt::Key_Shift || event->key() == Qt::Key_Space)
         DriverStation::getInstance()->setControlMode (kControlEmergencyStop);
 
     readButtons (event->key(), true);
@@ -144,7 +146,7 @@ void VirtualJoystick::keyReleaseEvent (QKeyEvent* e) {
     registerKeyRelease (e);
 }
 
-void VirtualJoystick::readAxes (int key, DS_Decimal value) {
+void VirtualJoystick::readAxes (int key, double value) {
     int axis = -1;
 
     /* Horizontal axis on thumb 1 */

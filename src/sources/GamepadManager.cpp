@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 WinT 3794 <http://wDS_Char3794.org>
+ * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,6 +40,8 @@ GamepadManager* GamepadManager::s_instance = Q_NULLPTR;
 
 GamepadManager::GamepadManager() {
     SDL_JoystickEventState (SDL_ENABLE);
+    SDL_SetHint (SDL_HINT_XINPUT_ENABLED, "0");
+    SDL_SetHint (SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
 
     if (SDL_Init (SDL_INIT_JOYSTICK) != 0) {
         QMessageBox::critical (Q_NULLPTR, tr ("Fatal Error!"),
@@ -50,7 +52,7 @@ GamepadManager::GamepadManager() {
 }
 
 GamepadManager::~GamepadManager() {
-    for (DS_Char i = 0; i < SDL_NumJoysticks(); ++i)
+    for (int i = 0; i < SDL_NumJoysticks(); ++i)
         SDL_GameControllerClose (SDL_GameControllerOpen (i));
 
     SDL_Quit();
@@ -67,26 +69,26 @@ GamepadManager* GamepadManager::getInstance() {
 // PROVIDE INFORMATION ABOUT A JOYSTICK
 //------------------------------------------------------------------------------
 
-DS_Char GamepadManager::getNumHats (DS_Char js) {
+int GamepadManager::getNumHats (int js) {
     return SDL_JoystickNumHats (SDL_JoystickOpen (js));
 }
 
-DS_Char GamepadManager::getNumAxes (DS_Char js) {
+int GamepadManager::getNumAxes (int js) {
     return SDL_JoystickNumAxes (SDL_JoystickOpen (js));
 }
 
-DS_Char GamepadManager::getNumButtons (DS_Char js) {
+int GamepadManager::getNumButtons (int js) {
     return SDL_JoystickNumButtons (SDL_JoystickOpen (js));
 }
 
-QString GamepadManager::getJoystickName (DS_Char js) {
+QString GamepadManager::getJoystickName (int js) {
     return SDL_JoystickNameForIndex (js);
 }
 
 QStringList GamepadManager::joystickList() {
     QStringList list;
 
-    for (DS_Char i = 0; i < SDL_NumJoysticks(); ++i)
+    for (int i = 0; i < SDL_NumJoysticks(); ++i)
         list.append (getJoystickName (i));
 
     return list;
@@ -103,15 +105,16 @@ void GamepadManager::init() {
     QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (readSdlEvents()));
 }
 
-void GamepadManager::setUpdateInterval (DS_Char time) {
-    m_time = time;
+void GamepadManager::setUpdateInterval (int time) {
+    if (time >= 0)
+        m_time = time;
 }
 
 //------------------------------------------------------------------------------
 // FUNCTIONS THAT CHANGE SOMETHING ON THE JOYSTICK
 //------------------------------------------------------------------------------
 
-void GamepadManager::rumble (DS_Char js, DS_Char time) {
+void GamepadManager::rumble (int js, int time) {
     SDL_InitSubSystem (SDL_INIT_HAPTIC);
     SDL_Haptic* haptic = SDL_HapticOpen (js);
 
@@ -170,8 +173,9 @@ GM_Joystick GamepadManager::getJoystick (const SDL_Event* event) {
 // UGLY HACKS
 //------------------------------------------------------------------------------
 
-DS_Char GamepadManager::getDynamicId (DS_Char id) {
+int GamepadManager::getDynamicId (int id) {
     id = m_tracker - (id + 1);
+    if (id < 0) id = abs (id);
     if (id >= SDL_NumJoysticks()) id -= 1;
 
     return id;
@@ -181,6 +185,7 @@ DS_Char GamepadManager::getDynamicId (DS_Char id) {
 // SDL LOOP
 //------------------------------------------------------------------------------
 
+#include <qdebug.h>
 void GamepadManager::readSdlEvents() {
     SDL_Event event;
     while (SDL_PollEvent (&event)) {

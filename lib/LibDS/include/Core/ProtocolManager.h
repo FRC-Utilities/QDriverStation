@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 WinT 3794 <http://wDS_Char3794.org>
+ * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -69,22 +69,22 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
     /**
      * Registers a new joystick and its characteristics to the Driver Station
      */
-    void addJoystick (DS_Char axes, DS_Char buttons, DS_Char povHats);
+    void addJoystick (int axes, int buttons, int povHats);
 
     /**
      * Updates the state of the POV hats in the selected joystick
      */
-    void updateJoystickPovHat (DS_Char js, DS_Char hat, DS_Char angle);
+    void updateJoystickPovHat (int js, int hat, int angle);
 
     /**
      * Updates the state of the axes in the selected joystick
      */
-    void updateJoystickAxis (DS_Char js, DS_Char axis, DS_Decimal value);
+    void updateJoystickAxis (int js, int axis, double value);
 
     /**
      * Updates the state of the buttons in the selected joystick
      */
-    void updateJoystickButton (DS_Char js, DS_Char button, bool status);
+    void updateJoystickButton (int js, int button, bool status);
 
     /**
      * Sends the input \a data to the current protocol to decode
@@ -173,7 +173,7 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
     /**
      * Returns \c true if the \a js is registered with the joystick list
      */
-    bool joystickIsValid (DS_Char js) const;
+    bool joystickIsValid (int js) const;
 };
 
 #endif

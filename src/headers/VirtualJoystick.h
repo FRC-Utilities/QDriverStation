@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 WinT 3794 <http://wDS_Char3794.org>
+ * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,19 +57,19 @@ class VirtualJoystick : public QDialog {
      * Returns the number of axes for the selected joystick
      * @note The joystick can be either the 'real' one or the virtual one
      */
-    DS_Char getNumAxes (DS_Char js);
+    int getNumAxes (int js);
 
     /**
      * Returns the number of buttons for the selected joystick
      * @note The joystick can be either the 'real' one or the virtual one
      */
-    DS_Char getNumButtons (DS_Char js);
+    int getNumButtons (int js);
 
     /**
      * Returns the total number of joysticks, including the SDL joysticks and
      * the virtual joystick
      */
-    void onCountChanged (DS_Char count);
+    void onCountChanged (int count);
 
     /**
      * Returns a list with the names of all joysticks, including the SDL
@@ -102,7 +102,7 @@ class VirtualJoystick : public QDialog {
     /**
      * Emitted when the joystick count is adjusted and updated
      */
-    void countChanged (DS_Char);
+    void countChanged (int);
 
     /**
      * Emitted when the joystick count is adjusted and updated
@@ -143,7 +143,7 @@ class VirtualJoystick : public QDialog {
      * Filters the \a key to update the \a value of the axis assigned to a
      * specific key
      */
-    void readAxes (int key, DS_Decimal value);
+    void readAxes (int key, double value);
 
     /**
      * Filters the \a key to update the \a pressed state of the button assigned
@@ -163,7 +163,7 @@ class VirtualJoystick : public QDialog {
 
     /**
      * Changes the \a enabled state of the virtual joystick and updates the
-     * required DS_Charernal values
+     * required internal values
      */
     void setVirtualJoystickEnabled (bool enabled);
 

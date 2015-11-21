@@ -76,7 +76,7 @@ class Dashboard : public QObject {
     /**
      * Returns the currently selected Dashboard
      */
-    DS_Char getCurrentDashboard();
+    int getCurrentDashboard();
 
     /**
      * Returns an ordered list with the matching Dashboards
@@ -95,7 +95,7 @@ class Dashboard : public QObject {
      * Represents the current dashboard index.
      * This variable can be read with \c getCurrentDashboard()
      */
-    DS_Char m_current;
+    int m_current;
 
     /**
      * Used for starting - and quiting - the dashboards

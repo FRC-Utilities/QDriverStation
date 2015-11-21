@@ -36,19 +36,6 @@
 #define DS_FAST_TYPES
 
 /**
- * Changes the types used by the library to increase performance
- */
-#ifdef DS_FAST_TYPES
-typedef float         DS_Decimal;
-typedef uint_fast8_t  DS_Char;
-typedef uint_fast16_t DS_Short;
-#else
-typedef double   DS_Decimal;
-typedef uint8_t  DS_Char;
-typedef uint16_t DS_Short;
-#endif
-
-/**
  * Represents the available operation modes of the robot.
  * If you have ever participated in a FRC team, you will understand the
  * importance of defining how the robot will behave.
@@ -80,13 +67,13 @@ enum DS_Alliance {
  * @brief The DS_Joystick struct
  */
 struct LIB_DS_DECL DS_Joystick {
-    DS_Char numAxes;
-    DS_Char numButtons;
-    DS_Char numPovHats;
+    int numAxes;
+    int numButtons;
+    int numPovHats;
 
     bool* buttons;
-    DS_Char* povHats;
-    DS_Decimal* axes;
+    int* povHats;
+    double* axes;
 };
 
 /**
@@ -117,7 +104,7 @@ QString LIB_DS_DECL DS_GetTimezoneCode();
  *     - \c DS_GetStaticIp( 118, 3) would return \c 10.01.18.3
  *     - And so on...
  */
-QString LIB_DS_DECL DS_GetStaticIp (DS_Char team, DS_Char host);
+QString LIB_DS_DECL DS_GetStaticIp (int team, int host);
 
 /**
  * Returns an user-friendly string given the inputed robot control mode

@@ -130,11 +130,11 @@ class LIB_DS_DECL DriverStation : public QObject {
     /**
      * Simulates a timed match with the input time values (in seconds)
      */
-    Q_INVOKABLE void startPractice (DS_Char countdown,
-                                    DS_Char autonomous,
-                                    DS_Char delay,
-                                    DS_Char teleop,
-                                    DS_Char endgame);
+    Q_INVOKABLE void startPractice (int countdown,
+                                    int autonomous,
+                                    int delay,
+                                    int teleop,
+                                    int endgame);
 
     /**
      * Changes the protocol that we use to control the robot
@@ -149,7 +149,7 @@ class LIB_DS_DECL DriverStation : public QObject {
     /**
      * Changes the team number used by the protocol and network diagnostics
      */
-    Q_INVOKABLE void setTeamNumber (DS_Short team);
+    Q_INVOKABLE void setTeamNumber (int team);
 
     /**
      * Changes the alliance of the robot using the specified protocol
@@ -179,30 +179,30 @@ class LIB_DS_DECL DriverStation : public QObject {
     /**
      * Updates the \a angle of the selected \a hat in the specified \a josytick
      */
-    Q_INVOKABLE void updateJoystickPovHat (DS_Char js,
-                                           DS_Char hat,
-                                           DS_Char angle);
+    Q_INVOKABLE void updateJoystickPovHat (int js,
+                                           int hat,
+                                           int angle);
 
     /**
      * Registers a new joystick to the Driver Station with the specified number
      * of \a axes, \a buttons and \a povHats
      */
-    Q_INVOKABLE void addJoystick (DS_Char axes,
-                                  DS_Char buttons,
-                                  DS_Char povHats);
+    Q_INVOKABLE void addJoystick (int axes,
+                                  int buttons,
+                                  int povHats);
 
     /**
      * Updates the \a value of the selected \a axis in the specified \a josytick
      */
-    Q_INVOKABLE void updateJoystickAxis (DS_Char js,
-                                         DS_Char axis,
+    Q_INVOKABLE void updateJoystickAxis (int js,
+                                         int axis,
                                          double value);
 
     /**
      * Updates the \a state of the selected \a button in the specified \a josytick
      */
-    Q_INVOKABLE void updateJoystickButton (DS_Char js,
-                                           DS_Char button,
+    Q_INVOKABLE void updateJoystickButton (int js,
+                                           int button,
                                            bool state);
 
   signals:

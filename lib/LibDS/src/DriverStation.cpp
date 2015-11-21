@@ -193,11 +193,11 @@ void DriverStation::restartCode() {
         m_manager->protocol()->restartCode();
 }
 
-void DriverStation::startPractice (DS_Char countdown,
-                                   DS_Char autonomous,
-                                   DS_Char delay,
-                                   DS_Char teleop,
-                                   DS_Char endgame) {
+void DriverStation::startPractice (int countdown,
+                                   int autonomous,
+                                   int delay,
+                                   int teleop,
+                                   int endgame) {
     Q_UNUSED (countdown);
     Q_UNUSED (autonomous);
     Q_UNUSED (delay);
@@ -220,7 +220,7 @@ void DriverStation::setProtocol (ProtocolType protocol) {
     }
 }
 
-void DriverStation::setTeamNumber (DS_Short team) {
+void DriverStation::setTeamNumber (int team) {
     if (m_manager->protocolIsValid())
         m_manager->protocol()->setTeamNumber (team);
 }
@@ -244,29 +244,29 @@ void DriverStation::clearJoysticks() {
     m_manager->clearJoysticks();
 }
 
-void DriverStation::updateJoystickPovHat (DS_Char js,
-        DS_Char hat,
-        DS_Char angle) {
+void DriverStation::updateJoystickPovHat (int js,
+        int hat,
+        int angle) {
     if (m_manager->protocolIsValid())
         m_manager->updateJoystickPovHat (js, hat, angle);
 }
 
-void DriverStation::addJoystick (DS_Char axes,
-                                 DS_Char buttons,
-                                 DS_Char povHats) {
+void DriverStation::addJoystick (int axes,
+                                 int buttons,
+                                 int povHats) {
     if (m_manager->protocolIsValid())
         m_manager->addJoystick (axes, buttons, povHats);
 }
 
-void DriverStation::updateJoystickAxis (DS_Char js,
-                                        DS_Char axis,
+void DriverStation::updateJoystickAxis (int js,
+                                        int axis,
                                         double value) {
     if (m_manager->protocolIsValid())
         m_manager->updateJoystickAxis (js, axis, value);
 }
 
-void DriverStation::updateJoystickButton (DS_Char js,
-        DS_Char button,
+void DriverStation::updateJoystickButton (int js,
+        int button,
         bool state) {
     if (m_manager->protocolIsValid())
         m_manager->updateJoystickButton (js, button, state);

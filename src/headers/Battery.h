@@ -59,9 +59,9 @@ class Battery {
      * If the target operating system is Mac or Linux, reads the output of a
      * command line utility to determine the battery level of the laptop.
      *
-     * @return an \c DS_Char between 0 and 100 that represents the battery level
+     * @return an \c int between 0 and 100 that represents the battery level
      */
-    static DS_Char currentLevel();
+    static int currentLevel();
 };
 
 #endif

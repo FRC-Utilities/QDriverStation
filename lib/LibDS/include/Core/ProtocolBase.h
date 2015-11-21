@@ -87,7 +87,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * Changes the team number of the robot, this can be used to generate
      * the robot and radio address.
      */
-    void setTeamNumber (DS_Short team);
+    void setTeamNumber (int team);
 
     /**
      * Changes the robot address to \a address
@@ -133,14 +133,14 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      *
      * \note This function must be implemented by each protocol
      */
-    virtual DS_Short robotPort() = 0;
+    virtual int robotPort() = 0;
 
     /**
      * Returns the port in which we receive robot data
      *
      * \note This function must be implemented by each protocol
      */
-    virtual DS_Short clientPort() = 0;
+    virtual int clientPort() = 0;
 
     /**
      * Generates a control packet to be sent to the robot
@@ -155,7 +155,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      *
      * \note This function must be implemented by each protocol
      */
-    virtual DS_ControlMode getControlMode (DS_Char mode) = 0;
+    virtual DS_ControlMode getControlMode (int mode) = 0;
 
   signals:
     /**
@@ -289,7 +289,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      *
      * \note This function must be implemented by each protocol
      */
-    virtual DS_Char getControlCode (DS_ControlMode mode) = 0;
+    virtual int getControlCode (DS_ControlMode mode) = 0;
 
     /**
      * Returns the code used by the protocol to represent the selected
@@ -297,7 +297,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      *
      * \note This function must be implemented by each protocol
      */
-    virtual DS_Char getAllianceCode (DS_Alliance alliance) = 0;
+    virtual int getAllianceCode (DS_Alliance alliance) = 0;
 
     /**
      * Calculates the size of the \a joystick.
@@ -306,7 +306,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      *
      * \note This function must be implemented by each protocol
      */
-    virtual DS_Char getJoystickSize (DS_Joystick* joystick) = 0;
+    virtual int getJoystickSize (DS_Joystick* joystick) = 0;
 
     /**
      * Converts the input \a bits to bytes
@@ -318,7 +318,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * This is the team number, you may use it for a variety of purposes
      * This variable is changed with the \c setTeamNumber() function.
      */
-    DS_Short p_team;
+    int p_team;
 
     /**
      * Represents the operation status of the robot.
@@ -326,17 +326,17 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * such as rebooting the main controller (e.g. roboRIO or cRIO) or restarting
      * the user code
      */
-    DS_Char p_status;
+    int p_status;
 
     /**
      * Represents the number of packets sent to the robot
      */
-    DS_Short p_sentPackets;
+    int p_sentPackets;
 
     /**
      * Represents the minimum length of a robot packet of a protocol
      */
-    DS_Short p_minPacketLength;
+    int p_minPacketLength;
 
     /**
      * This variable should be set to \c true when the user code is loaded

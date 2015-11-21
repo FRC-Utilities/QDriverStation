@@ -117,7 +117,7 @@ void Dashboard::reloadDashboard() {
 // SEND INFORMATION TO OTHER OBJECTS
 //------------------------------------------------------------------------------
 
-DS_Char Dashboard::getCurrentDashboard() {
+int Dashboard::getCurrentDashboard() {
     return m_current;
 }
 
