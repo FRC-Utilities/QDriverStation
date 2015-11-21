@@ -81,7 +81,7 @@ void DS_ProtocolBase::reset() {
     resetProtocol();
 }
 
-void DS_ProtocolBase::setTeamNumber (DS_Short team) {
+void DS_ProtocolBase::setTeamNumber (int team) {
     p_team = team;
     emit robotAddressChanged (robotAddress());
 }
