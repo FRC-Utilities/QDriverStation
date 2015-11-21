@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,29 +20,34 @@
  * THE SOFTWARE.
  */
 
-#include "LibDS/Core/Client.h"
+#pragma once
+#ifndef _QDRIVER_STATION_GLOBAL_ASSEMBLY_INFO_H
+#define _QDRIVER_STATION_GLOBAL_ASSEMBLY_INFO_H
 
-DS_Client::DS_Client() {
-    connect (&m_clientSocket, SIGNAL (readyRead()),
-             this,            SLOT   (onDataReceived()));
-}
+#include <QObject>
 
-void DS_Client::sendToRobot (QByteArray data) {
-    m_robotSocket.writeDatagram (data, QHostAddress (m_address), m_robotPort);
-}
+/**
+ * @class AssemblyInfo
+ * @brief Provides application details
+ *
+ * The \c AssemblyInfo class provides details about the application.
+ * For example, it provides its name and version.
+ *
+ * The class was implemented to ease the process of changing the details of
+ * the application, such as its name ('QDriverStation' is not so brilliant)
+ * and its version information.
+ */
+class AssemblyInfo {
+  public:
+    static QString name();
+    static QString major();
+    static QString minor();
+    static QString build();
+    static QString state();
+    static QString version();
+    static QString organization();
+    static QString organizationDomain();
+    static QString buildDateTime();
+};
 
-void DS_Client::setRobotPort (int port) {
-    m_robotPort = port;
-}
-
-void DS_Client::setClientPort (int port) {
-    m_clientSocket.bind (port, QUdpSocket::ShareAddress);
-}
-
-void DS_Client::setRobotAddress (QString address) {
-    m_address = address;
-}
-
-void DS_Client::onDataReceived() {
-    emit dataReceived (DS_GetSocketData (&m_clientSocket));
-}
+#endif

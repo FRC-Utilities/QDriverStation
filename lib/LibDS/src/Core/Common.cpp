@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-#include "Core/Common.h"
+#include "LibDS/Core/Common.h"
 
 QString DS_GetTimezoneCode() {
     switch (QDateTime::currentDateTime().offsetFromUtc() / 3600) {

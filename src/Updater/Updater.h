@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,29 +20,44 @@
  * THE SOFTWARE.
  */
 
-#include "LibDS/Core/Client.h"
+#pragma once
+#ifndef _QDRIVER_STATION_UPDATER_UPDATER_H
+#define _QDRIVER_STATION_UPDATER_UPDATER_H
 
-DS_Client::DS_Client() {
-    connect (&m_clientSocket, SIGNAL (readyRead()),
-             this,            SLOT   (onDataReceived()));
-}
+#include <QObject>
+#include <QMessageBox>
+#include <QApplication>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QNetworkAccessManager>
 
-void DS_Client::sendToRobot (QByteArray data) {
-    m_robotSocket.writeDatagram (data, QHostAddress (m_address), m_robotPort);
-}
+/**
+ * \class Updater
+ * \brief Implements a very simple auto-updater.
+ */
+class Updater : public QObject {
+    Q_OBJECT
 
-void DS_Client::setRobotPort (int port) {
-    m_robotPort = port;
-}
+  public:
+    explicit Updater();
 
-void DS_Client::setClientPort (int port) {
-    m_clientSocket.bind (port, QUdpSocket::ShareAddress);
-}
+  private slots:
+    void showUpdateMessages();
+    void checkForUpdates (QString url);
+    void onFinished (QNetworkReply* reply);
+    void readDownloadLink (QByteArray data);
+    void readApplicationVersion (QByteArray data);
 
-void DS_Client::setRobotAddress (QString address) {
-    m_address = address;
-}
+    QString readKey (QString data, QString key);
 
-void DS_Client::onDataReceived() {
-    emit dataReceived (DS_GetSocketData (&m_clientSocket));
-}
+  private:
+    bool m_updateAvailable;
+
+    QString m_version;
+    QString m_platform;
+    QString m_downloadLink;
+
+    QNetworkAccessManager m_accessManager;
+};
+
+#endif

@@ -20,8 +20,8 @@
  * THE SOFTWARE.
  */
 
-#include "Core/Timers.h"
-#include "Core/ElapsedTimer.h"
+#include "LibDS/Core/Timers.h"
+#include "LibDS/Core/ElapsedTimer.h"
 
 DS_ElapsedTime::DS_ElapsedTime() {
     stop();

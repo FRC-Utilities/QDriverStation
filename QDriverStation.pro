@@ -122,47 +122,47 @@ include ($$PWD/lib/LibDS/LibDS.pri)
 # Import headers, forms and sources
 #-------------------------------------------------------------------------------
 
-INCLUDEPATH += $$PWD/src/headers/
+INCLUDEPATH += src
 
 HEADERS += \
-    $$PWD/src/headers/AdvancedSettings.h \
-    $$PWD/src/headers/AssemblyInfo.h \
-    $$PWD/src/headers/Battery.h \
-    $$PWD/src/headers/SmartProgressbar.h \
-    $$PWD/src/headers/CpuUsage.h \
-    $$PWD/src/headers/Dashboard.h \
-    $$PWD/src/headers/GamepadManager.h \
-    $$PWD/src/headers/InitTasks.h \
-    $$PWD/src/headers/JoysticksWidget.h \
-    $$PWD/src/headers/MainWindow.h \
-    $$PWD/src/headers/Settings.h \
-    $$PWD/src/headers/SmartWindow.h \
-    $$PWD/src/headers/VirtualJoystick.h \
-    $$PWD/src/headers/JoystickCommon.h \
-    $$PWD/src/headers/Updater.h
+    $$PWD/src/Global/AssemblyInfo.h \
+    $$PWD/src/Global/Settings.h \
+    $$PWD/src/Joysticks/Joysticks.h \
+    $$PWD/src/Joysticks/JoysticksTab.h \
+    $$PWD/src/Joysticks/SDL_Layer.h \
+    $$PWD/src/Joysticks/VirtualJoystick.h \
+    $$PWD/src/MainWindow/Utilities/Battery.h \
+    $$PWD/src/MainWindow/Utilities/CPU.h \
+    $$PWD/src/MainWindow/Utilities/Dashboards.h \
+    $$PWD/src/MainWindow/Utilities/FirstRun.h \
+    $$PWD/src/MainWindow/Utilities/SmartProgressbar.h \
+    $$PWD/src/MainWindow/Utilities/SmartWindow.h \
+    $$PWD/src/MainWindow/MainWindow.h \
+    $$PWD/src/SettingsDialog/SettingsDialog.h \
+    $$PWD/src/Updater/Updater.h
 
 SOURCES += \
-    $$PWD/src/sources/AdvancedSettings.cpp \
-    $$PWD/src/sources/AssemblyInfo.cpp \
-    $$PWD/src/sources/Battery.cpp \
-    $$PWD/src/sources/SmartProgressbar.cpp \
-    $$PWD/src/sources/CpuUsage.cpp \
-    $$PWD/src/sources/Dashboard.cpp \
-    $$PWD/src/sources/GamepadManager.cpp \
-    $$PWD/src/sources/InitTasks.cpp \
-    $$PWD/src/sources/JoysticksWidget.cpp \
-    $$PWD/src/sources/MainWindow.cpp \
-    $$PWD/src/sources/Settings.cpp \
-    $$PWD/src/sources/SmartWindow.cpp \
-    $$PWD/src/sources/VirtualJoystick.cpp \
     $$PWD/src/main.cpp \
-    $$PWD/src/sources/Updater.cpp
+    $$PWD/src/Global/AssemblyInfo.cpp \
+    $$PWD/src/Global/Settings.cpp \
+    $$PWD/src/Joysticks/JoysticksTab.cpp \
+    $$PWD/src/Joysticks/SDL_Layer.cpp \
+    $$PWD/src/Joysticks/VirtualJoystick.cpp \
+    $$PWD/src/MainWindow/MainWindow.cpp \
+    $$PWD/src/MainWindow/Utilities/Battery.cpp \
+    $$PWD/src/MainWindow/Utilities/CPU.cpp \
+    $$PWD/src/MainWindow/Utilities/Dashboards.cpp \
+    $$PWD/src/MainWindow/Utilities/FirstRun.cpp \
+    $$PWD/src/MainWindow/Utilities/SmartProgressbar.cpp \
+    $$PWD/src/MainWindow/Utilities/SmartWindow.cpp \
+    $$PWD/src/SettingsDialog/SettingsDialog.cpp \
+    $$PWD/src/Updater/Updater.cpp
 
 FORMS += \
-    $$PWD/src/forms/AdvancedSettings.ui \
-    $$PWD/src/forms/JoysticksWidget.ui \
-    $$PWD/src/forms/MainWindow.ui \
-    $$PWD/src/forms/VirtualJoystick.ui
+    $$PWD/src/Joysticks/JoysticksTab.ui \
+    $$PWD/src/Joysticks/VirtualJoystick.ui \
+    $$PWD/src/MainWindow/MainWindow.ui \
+    $$PWD/src/SettingsDialog/SettingsDialog.ui
 
 #-------------------------------------------------------------------------------
 # Import resources

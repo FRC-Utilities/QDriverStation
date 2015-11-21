@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,29 +20,31 @@
  * THE SOFTWARE.
  */
 
-#include "LibDS/Core/Client.h"
+#pragma once
+#ifndef _QDRIVER_STATION_MAINWINDOW_SMART_PROGRESSBAR_H
+#define _QDRIVER_STATION_MAINWINDOW_SMART_PROGRESSBAR_H
 
-DS_Client::DS_Client() {
-    connect (&m_clientSocket, SIGNAL (readyRead()),
-             this,            SLOT   (onDataReceived()));
-}
+#include <QProgressBar>
 
-void DS_Client::sendToRobot (QByteArray data) {
-    m_robotSocket.writeDatagram (data, QHostAddress (m_address), m_robotPort);
-}
+/**
+ * \class SmartProgressbar
+ *
+ * Implements a progress bar that can change its color based
+ * on the current value that it holds
+ */
+class SmartProgressbar : public QProgressBar {
+    Q_OBJECT
 
-void DS_Client::setRobotPort (int port) {
-    m_robotPort = port;
-}
+  public:
+    explicit SmartProgressbar (QWidget* parent = 0);
+    enum Type { kBatteryProgressbar, kCpuUsageProgressbar };
 
-void DS_Client::setClientPort (int port) {
-    m_clientSocket.bind (port, QUdpSocket::ShareAddress);
-}
+  public slots:
+    void setType (Type type);
+    void onValueChanged (int value);
 
-void DS_Client::setRobotAddress (QString address) {
-    m_address = address;
-}
+  private:
+    Type m_type;
+};
 
-void DS_Client::onDataReceived() {
-    emit dataReceived (DS_GetSocketData (&m_clientSocket));
-}
+#endif

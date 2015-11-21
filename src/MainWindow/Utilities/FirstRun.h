@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,29 +20,34 @@
  * THE SOFTWARE.
  */
 
-#include "LibDS/Core/Client.h"
+#pragma once
+#ifndef _QDRIVER_STATION_MAINWINDOW_FIRST_RUN_H
+#define _QDRIVER_STATION_MAINWINDOW_FIRST_RUN_H
 
-DS_Client::DS_Client() {
-    connect (&m_clientSocket, SIGNAL (readyRead()),
-             this,            SLOT   (onDataReceived()));
-}
+/**
+ * @class InitTasks
+ * @brief Isolates complex first run tasks from the MainWindow
+ *
+ * The purpose of this class is to isolate the tasks that the application must
+ * perform during initalization and - specifically - during the first run,
+ * such as asking the user for his/her team number of downloading additional
+ * drivers required by the Open DriverStation.
+ */
+class InitTasks {
+  public:
+    /**
+     * Returns the team number to be used to control the robot.
+     * If this is the first launch, it will ask the user to input his/her team
+     * number using a \c QInputDialog
+     */
+    static int getTeamNumber();
 
-void DS_Client::sendToRobot (QByteArray data) {
-    m_robotSocket.writeDatagram (data, QHostAddress (m_address), m_robotPort);
-}
+    /**
+     * Initializes the CPU querying process and prompts the user to download
+     * additional software required for the correct functionality of the
+     * Open DriverStation
+     */
+    static void executeFirstRunTasks();
+};
 
-void DS_Client::setRobotPort (int port) {
-    m_robotPort = port;
-}
-
-void DS_Client::setClientPort (int port) {
-    m_clientSocket.bind (port, QUdpSocket::ShareAddress);
-}
-
-void DS_Client::setRobotAddress (QString address) {
-    m_address = address;
-}
-
-void DS_Client::onDataReceived() {
-    emit dataReceived (DS_GetSocketData (&m_clientSocket));
-}
+#endif

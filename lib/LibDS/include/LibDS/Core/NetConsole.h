@@ -20,29 +20,44 @@
  * THE SOFTWARE.
  */
 
-#include "LibDS/Core/Client.h"
+#pragma once
+#ifndef _LIB_DS_NET_CONSOLE_H
+#define _LIB_DS_NET_CONSOLE_H
 
-DS_Client::DS_Client() {
-    connect (&m_clientSocket, SIGNAL (readyRead()),
-             this,            SLOT   (onDataReceived()));
-}
+#include "LibDS/Core/Common.h"
 
-void DS_Client::sendToRobot (QByteArray data) {
-    m_robotSocket.writeDatagram (data, QHostAddress (m_address), m_robotPort);
-}
+/**
+ * \class DS_NetConsole
+ *
+ * The DS_NetConsole class receives and decodes messages broadcasted
+ * by the robot over the local area network.
+ */
+class LIB_DS_DECL DS_NetConsole : public QObject {
+    Q_OBJECT
 
-void DS_Client::setRobotPort (int port) {
-    m_robotPort = port;
-}
+  public:
+    explicit DS_NetConsole();
 
-void DS_Client::setClientPort (int port) {
-    m_clientSocket.bind (port, QUdpSocket::ShareAddress);
-}
+  signals:
+    /**
+     * Emitted when a message is received from the robot or the
+     * internal Driver Station system
+     */
+    void newMessage (QString);
 
-void DS_Client::setRobotAddress (QString address) {
-    m_address = address;
-}
+  private:
+    /**
+     * The network socket in which we receive data from the robot
+     */
+    QUdpSocket m_socket;
 
-void DS_Client::onDataReceived() {
-    emit dataReceived (DS_GetSocketData (&m_clientSocket));
-}
+  private slots:
+    /**
+     * @internal
+     * Called when we receive data in the network socket.
+     * Used to read the input data and process it.
+     */
+    void onDataReceived();
+};
+
+#endif

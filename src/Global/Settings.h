@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,29 +20,38 @@
  * THE SOFTWARE.
  */
 
-#include "LibDS/Core/Client.h"
+#pragma once
+#ifndef _QDRIVER_STATION_GLOBAL_SETTINGS_H
+#define _QDRIVER_STATION_GLOBAL_SETTINGS_H
 
-DS_Client::DS_Client() {
-    connect (&m_clientSocket, SIGNAL (readyRead()),
-             this,            SLOT   (onDataReceived()));
-}
+#include <QVariant>
 
-void DS_Client::sendToRobot (QByteArray data) {
-    m_robotSocket.writeDatagram (data, QHostAddress (m_address), m_robotPort);
-}
+/**
+ * @class Settings
+ * @brief Provides a single instance of QSettings to use around the application
+ *
+ * The \c Settings class was implemented to provide a simple way of reading
+ * and writting application settings. Another reason for its implementation
+ * was to avoid the initialization of multiple QSettings objects, when in
+ * fact we only need one.
+ */
+class Settings {
+  public:
+    /**
+     * Resets the user settings of the application
+     */
+    static void clear();
 
-void DS_Client::setRobotPort (int port) {
-    m_robotPort = port;
-}
+    /**
+     * Saves the specified \a value to the specified \a key
+     */
+    static void set (QString key, const QVariant& value);
 
-void DS_Client::setClientPort (int port) {
-    m_clientSocket.bind (port, QUdpSocket::ShareAddress);
-}
+    /**
+     * Reads the stored value of the \a key.
+     * If the key is not found, returns the \a defaultValue
+     */
+    static QVariant get (QString key, const QVariant& defaultValue);
+};
 
-void DS_Client::setRobotAddress (QString address) {
-    m_address = address;
-}
-
-void DS_Client::onDataReceived() {
-    emit dataReceived (DS_GetSocketData (&m_clientSocket));
-}
+#endif

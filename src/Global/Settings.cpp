@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,29 +20,22 @@
  * THE SOFTWARE.
  */
 
-#include "LibDS/Core/Client.h"
+#include "Settings.h"
+#include "AssemblyInfo.h"
 
-DS_Client::DS_Client() {
-    connect (&m_clientSocket, SIGNAL (readyRead()),
-             this,            SLOT   (onDataReceived()));
+#include <QSettings>
+
+static QSettings* settings =
+    new QSettings (AssemblyInfo::organization(), AssemblyInfo::name());
+
+void Settings::clear() {
+    settings->clear();
 }
 
-void DS_Client::sendToRobot (QByteArray data) {
-    m_robotSocket.writeDatagram (data, QHostAddress (m_address), m_robotPort);
+void Settings::set (QString key, const QVariant& value) {
+    settings->setValue (key, value);
 }
 
-void DS_Client::setRobotPort (int port) {
-    m_robotPort = port;
-}
-
-void DS_Client::setClientPort (int port) {
-    m_clientSocket.bind (port, QUdpSocket::ShareAddress);
-}
-
-void DS_Client::setRobotAddress (QString address) {
-    m_address = address;
-}
-
-void DS_Client::onDataReceived() {
-    emit dataReceived (DS_GetSocketData (&m_clientSocket));
+QVariant Settings::get (QString key, const QVariant& defaultValue) {
+    return settings->value (key, defaultValue);
 }

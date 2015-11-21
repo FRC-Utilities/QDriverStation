@@ -20,8 +20,8 @@
  * THE SOFTWARE.
  */
 
-#include "Core/Common.h"
-#include "Core/Discovery/MDNSResponder.h"
+#include "LibDS/Core/Common.h"
+#include "LibDS/Core/Discovery/MDNSResponder.h"
 
 #define dPort        5335
 #define dIPv6Address "FF02::FB"

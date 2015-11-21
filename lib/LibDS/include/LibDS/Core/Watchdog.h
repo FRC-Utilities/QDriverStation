@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,29 +20,50 @@
  * THE SOFTWARE.
  */
 
-#include "LibDS/Core/Client.h"
+#pragma once
+#ifndef _LIB_DS_WATCHDOG_H
+#define _LIB_DS_WATCHDOG_H
 
-DS_Client::DS_Client() {
-    connect (&m_clientSocket, SIGNAL (readyRead()),
-             this,            SLOT   (onDataReceived()));
-}
+#include <QTimer>
+#include "LibDS/Core/Common.h"
 
-void DS_Client::sendToRobot (QByteArray data) {
-    m_robotSocket.writeDatagram (data, QHostAddress (m_address), m_robotPort);
-}
+/**
+ * \class DS_Watchdog
+ *
+ * Implements a simple software watchdog with the help of the \c QTimer class.
+ *
+ * During normal operation, the program regularly restarts the watchdog timer
+ * to prevent it from elapsing, or "timing out".
+ * If, due to a hardware fault or program error, the program fails to restart the
+ * watchdog, the timer will elapse and generate a timeout signal.
+ *
+ * The timeout signal is used to initiate corrective action or actions.
+ * The corrective actions typically include placing the computer system in a
+ * safe state and restoring normal system operation.
+ */
+class LIB_DS_DECL DS_Watchdog : public QObject {
+    Q_OBJECT
 
-void DS_Client::setRobotPort (int port) {
-    m_robotPort = port;
-}
+  public:
+    explicit DS_Watchdog();
 
-void DS_Client::setClientPort (int port) {
-    m_clientSocket.bind (port, QUdpSocket::ShareAddress);
-}
+  public slots:
+    /**
+     * Kicks the dog so that it doesn't bite us
+     */
+    void restart();
 
-void DS_Client::setRobotAddress (QString address) {
-    m_address = address;
-}
+  signals:
+    /**
+     * Emitted when the dog gets angry and wants to bite you
+     */
+    void timeout();
 
-void DS_Client::onDataReceived() {
-    emit dataReceived (DS_GetSocketData (&m_clientSocket));
-}
+  private:
+    /**
+     * Defines how patient our dear dog is
+     */
+    QTimer m_timer;
+};
+
+#endif

@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-#include "Core/ProtocolBase.h"
+#include "LibDS/Core/ProtocolBase.h"
 
 DS_ProtocolBase::DS_ProtocolBase() {
     p_team = 0;

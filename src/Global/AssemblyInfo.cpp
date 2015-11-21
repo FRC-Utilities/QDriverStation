@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,29 +20,51 @@
  * THE SOFTWARE.
  */
 
-#include "LibDS/Core/Client.h"
+#include "AssemblyInfo.h"
 
-DS_Client::DS_Client() {
-    connect (&m_clientSocket, SIGNAL (readyRead()),
-             this,            SLOT   (onDataReceived()));
+#define dName    "QDriverStation"
+#define dMajor   "0"
+#define dMinor   "1"
+#define dBuild   "3"
+#define dState   "Beta"
+#define dCompany "WinT 3794"
+#define dDomain  "wint3794.org"
+
+QString AssemblyInfo::name() {
+    return dName;
 }
 
-void DS_Client::sendToRobot (QByteArray data) {
-    m_robotSocket.writeDatagram (data, QHostAddress (m_address), m_robotPort);
+QString AssemblyInfo::major() {
+    return dMajor;
 }
 
-void DS_Client::setRobotPort (int port) {
-    m_robotPort = port;
+QString AssemblyInfo::minor() {
+    return dMinor;
 }
 
-void DS_Client::setClientPort (int port) {
-    m_clientSocket.bind (port, QUdpSocket::ShareAddress);
+QString AssemblyInfo::build() {
+    return dBuild;
 }
 
-void DS_Client::setRobotAddress (QString address) {
-    m_address = address;
+QString AssemblyInfo::state() {
+    return dState;
 }
 
-void DS_Client::onDataReceived() {
-    emit dataReceived (DS_GetSocketData (&m_clientSocket));
+QString AssemblyInfo::version() {
+    return QString ("%1.%2%3 %4").arg (major(),
+                                       minor(),
+                                       build(),
+                                       state());
+}
+
+QString AssemblyInfo::organization() {
+    return dCompany;
+}
+
+QString AssemblyInfo::organizationDomain() {
+    return dDomain;
+}
+
+QString AssemblyInfo::buildDateTime() {
+    return QObject::tr ("Built on %1 at %2").arg (__DATE__, __TIME__);
 }

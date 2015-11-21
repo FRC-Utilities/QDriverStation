@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,29 +20,47 @@
  * THE SOFTWARE.
  */
 
-#include "LibDS/Core/Client.h"
+#pragma once
+#ifndef _LIB_DS_TIMERS_H
+#define _LIB_DS_TIMERS_H
 
-DS_Client::DS_Client() {
-    connect (&m_clientSocket, SIGNAL (readyRead()),
-             this,            SLOT   (onDataReceived()));
-}
+#include "LibDS/Core/Common.h"
 
-void DS_Client::sendToRobot (QByteArray data) {
-    m_robotSocket.writeDatagram (data, QHostAddress (m_address), m_robotPort);
-}
+class QTimer;
+class QThread;
 
-void DS_Client::setRobotPort (int port) {
-    m_robotPort = port;
-}
+/**
+ * \class DS_Timer
+ *
+ * Implements a set of timers that are separeted from the main thread to
+ * guarantee that they are updated in a more timely manner.
+ * The timers can be used by objects and classes that are not related to
+ * the library for different functions.
+ */
+class LIB_DS_DECL DS_Timers : public QObject {
+    Q_OBJECT
 
-void DS_Client::setClientPort (int port) {
-    m_clientSocket.bind (port, QUdpSocket::ShareAddress);
-}
+  public:
+    static DS_Timers* getInstance();
+    ~DS_Timers();
 
-void DS_Client::setRobotAddress (QString address) {
-    m_address = address;
-}
+  public slots:
+    void start();
 
-void DS_Client::onDataReceived() {
-    emit dataReceived (DS_GetSocketData (&m_clientSocket));
-}
+  signals:
+    void timeout20();
+    void timeout100();
+    void timeout1000();
+
+  protected:
+    DS_Timers();
+    static DS_Timers* s_instance;
+
+  private:
+    QTimer* t20;
+    QTimer* t100;
+    QTimer* t1000;
+    QThread* m_thread;
+};
+
+#endif

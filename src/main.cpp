@@ -23,8 +23,8 @@
 #include <QIcon>
 #include <QFontDatabase>
 
-#include "MainWindow.h"
-#include "AssemblyInfo.h"
+#include "Global/AssemblyInfo.h"
+#include "MainWindow/MainWindow.h"
 
 /* Custom appearance options for each operating system */
 #if defined Q_OS_MAC

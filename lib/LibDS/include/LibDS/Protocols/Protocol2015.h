@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,29 +20,48 @@
  * THE SOFTWARE.
  */
 
-#include "LibDS/Core/Client.h"
+#pragma once
+#ifndef _LIB_DS_PROTOCOL_2015_H
+#define _LIB_DS_PROTOCOL_2015_H
 
-DS_Client::DS_Client() {
-    connect (&m_clientSocket, SIGNAL (readyRead()),
-             this,            SLOT   (onDataReceived()));
-}
+#include "LibDS/Core/ProtocolBase.h"
 
-void DS_Client::sendToRobot (QByteArray data) {
-    m_robotSocket.writeDatagram (data, QHostAddress (m_address), m_robotPort);
-}
+/**
+ * \class DS_Protocol2015
+ * \brief Implements the 2015 communication protocol
+ * \note  the virtual functions are already documented in the
+ *        \c DS_ProtocolBase class
+ */
+class LIB_DS_DECL DS_Protocol2015 : public DS_ProtocolBase {
+    Q_OBJECT
 
-void DS_Client::setRobotPort (int port) {
-    m_robotPort = port;
-}
+  public:
+    explicit DS_Protocol2015();
 
-void DS_Client::setClientPort (int port) {
-    m_clientSocket.bind (port, QUdpSocket::ShareAddress);
-}
+  public slots:
+    void reboot();
+    void restartCode();
+    int robotPort();
+    int clientPort();
+    QByteArray getClientPacket();
 
-void DS_Client::setRobotAddress (QString address) {
-    m_address = address;
-}
+  private slots:
+    void resetProtocol();
+    void downloadRobotInformation();
+    void readRobotData (QByteArray data);
+    void onDownloadFinished (QNetworkReply* reply);
 
-void DS_Client::onDataReceived() {
-    emit dataReceived (DS_GetSocketData (&m_clientSocket));
-}
+  private:
+    QString defaultRadioAddress();
+    QString defaultRobotAddress();
+    QByteArray generateJoystickData();
+    QByteArray generateTimezoneData();
+    int getControlCode (DS_ControlMode mode);
+    DS_ControlMode getControlMode (int byte);
+    int getAllianceCode (DS_Alliance alliance);
+    int getJoystickSize (DS_Joystick* joystick);
+
+    QNetworkAccessManager m_manager;
+};
+
+#endif

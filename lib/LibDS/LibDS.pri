@@ -40,19 +40,19 @@ CONFIG += c++11
 INCLUDEPATH += $$PWD/include
 
 HEADERS += \
-    $$PWD/include/DriverStation.h \
-    $$PWD/include/Protocols/Protocol2015.h \
-    $$PWD/include/Core/Client.h \
-    $$PWD/include/Core/Common.h \
-    $$PWD/include/Core/ElapsedTimer.h \
-    $$PWD/include/Core/Library.h \
-    $$PWD/include/Core/NetConsole.h \
-    $$PWD/include/Core/ProtocolBase.h \
-    $$PWD/include/Core/ProtocolManager.h \
-    $$PWD/include/Core/Timers.h \
-    $$PWD/include/Core/Watchdog.h \
-    $$PWD/include/Core/Discovery/Discovery.h \
-    $$PWD/include/Core/Discovery/MDNSResponder.h
+    $$PWD/include/LibDS/DriverStation.h \
+    $$PWD/include/LibDS/Protocols/Protocol2015.h \
+    $$PWD/include/LibDS/Core/Client.h \
+    $$PWD/include/LibDS/Core/Common.h \
+    $$PWD/include/LibDS/Core/ElapsedTimer.h \
+    $$PWD/include/LibDS/Core/Library.h \
+    $$PWD/include/LibDS/Core/NetConsole.h \
+    $$PWD/include/LibDS/Core/ProtocolBase.h \
+    $$PWD/include/LibDS/Core/ProtocolManager.h \
+    $$PWD/include/LibDS/Core/Timers.h \
+    $$PWD/include/LibDS/Core/Watchdog.h \
+    $$PWD/include/LibDS/Core/Discovery/Discovery.h \
+    $$PWD/include/LibDS/Core/Discovery/MDNSResponder.h
 
 SOURCES += \
     $$PWD/src/DriverStation.cpp \
