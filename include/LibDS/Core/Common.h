@@ -24,16 +24,13 @@
 #ifndef _LIB_DS_COMMON_H
 #define _LIB_DS_COMMON_H
 
-#include "Core/Library.h"
-
 #include <QDebug>
 #include <QString>
 #include <QDateTime>
 #include <QUdpSocket>
 #include <QStringList>
 
-/* Comment this line to use slower, but smaller types */
-#define DS_FAST_TYPES
+#include "LibDS/Core/Library.h"
 
 /**
  * Represents the available operation modes of the robot.

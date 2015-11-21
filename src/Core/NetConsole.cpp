@@ -20,8 +20,8 @@
  * THE SOFTWARE.
  */
 
-#include "Core/Common.h"
-#include "Core/NetConsole.h"
+#include "LibDS/Core/Common.h"
+#include "LibDS/Core/NetConsole.h"
 
 DS_NetConsole::DS_NetConsole() {
     m_socket.bind (6666, QUdpSocket::ShareAddress);

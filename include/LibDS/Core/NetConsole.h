@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,47 +21,43 @@
  */
 
 #pragma once
-#ifndef _LIB_DS_PROTOCOL_2015_H
-#define _LIB_DS_PROTOCOL_2015_H
+#ifndef _LIB_DS_NET_CONSOLE_H
+#define _LIB_DS_NET_CONSOLE_H
 
-#include "Core/ProtocolBase.h"
+#include "LibDS/Core/Common.h"
 
 /**
- * \class DS_Protocol2015
- * \brief Implements the 2015 communication protocol
- * \note  the virtual functions are already documented in the
- *        \c DS_ProtocolBase class
+ * \class DS_NetConsole
+ *
+ * The DS_NetConsole class receives and decodes messages broadcasted
+ * by the robot over the local area network.
  */
-class LIB_DS_DECL DS_Protocol2015 : public DS_ProtocolBase {
+class LIB_DS_DECL DS_NetConsole : public QObject {
     Q_OBJECT
 
   public:
-    explicit DS_Protocol2015();
+    explicit DS_NetConsole();
 
-  public slots:
-    void reboot();
-    void restartCode();
-    int robotPort();
-    int clientPort();
-    QByteArray getClientPacket();
-
-  private slots:
-    void resetProtocol();
-    void downloadRobotInformation();
-    void readRobotData (QByteArray data);
-    void onDownloadFinished (QNetworkReply* reply);
+  signals:
+    /**
+     * Emitted when a message is received from the robot or the
+     * internal Driver Station system
+     */
+    void newMessage (QString);
 
   private:
-    QString defaultRadioAddress();
-    QString defaultRobotAddress();
-    QByteArray generateJoystickData();
-    QByteArray generateTimezoneData();
-    int getControlCode (DS_ControlMode mode);
-    DS_ControlMode getControlMode (int byte);
-    int getAllianceCode (DS_Alliance alliance);
-    int getJoystickSize (DS_Joystick* joystick);
+    /**
+     * The network socket in which we receive data from the robot
+     */
+    QUdpSocket m_socket;
 
-    QNetworkAccessManager m_manager;
+  private slots:
+    /**
+     * @internal
+     * Called when we receive data in the network socket.
+     * Used to read the input data and process it.
+     */
+    void onDataReceived();
 };
 
 #endif

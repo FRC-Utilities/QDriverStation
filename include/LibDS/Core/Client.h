@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) 2015 WinT 3794 <http://wint3794.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,78 +21,77 @@
  */
 
 #pragma once
-#ifndef _LIB_DS_MDNS_RESPONDER_H
-#define _LIB_DS_MDNS_RESPONDER_H
+#ifndef _LIB_DS_CLIENT_H
+#define _LIB_DS_CLIENT_H
 
-#include "Core/Common.h"
+#include "LibDS/Core/Common.h"
 
 /**
- * \class MDNSResponder
+ * \class DS_Client
  *
- * Implements a rundimentary mDNS lookup process that
- * allows us to get the IP of any mDNS device in the
- * local network.
+ * Sends and receives data between the robot and the Driver Station.
+ * The class "redirects" the received data from the robot to the current
+ * protocol that is in use by the Driver Station and vice-versa.
  */
-class LIB_DS_DECL MDNSResponder : public QObject {
+class LIB_DS_DECL DS_Client : public QObject {
     Q_OBJECT
 
   public:
-    explicit MDNSResponder();
+    explicit DS_Client();
 
   public slots:
     /**
-     * Looks for the given \a domain, the class will emit
-     * the \c ipFound() \c SIGNAL when the domain is resolved
+     * Sends a the input \a data to the robot
      */
-    void query (QString domain);
+    void sendToRobot (QByteArray data);
+
+    /**
+     * Changes the port in which we send the packets to
+     */
+    void setRobotPort (int port);
+
+    /**
+     * Changes the port in where we receive robot packets
+     */
+    void setClientPort (int port);
+
+    /**
+     * Changes the address where we send the packets to
+     */
+    void setRobotAddress (QString address);
 
   signals:
     /**
-     * Emitted when the \a ip of the \a address is resolved
+     * Emitted when the client receives a packet from the robot
      */
-    void ipFound (QString address, QString ip);
+    void dataReceived (QByteArray);
 
   private slots:
     /**
-     * Reads the data received on the IPv4 socket
+     * Reads the received data and sends it to the \c DriverStation
      */
-    void readIPv4Socket();
-
-    /**
-     * Reads the data received on the IPv6 socket
-     */
-    void readIPv6Socket();
-
-    /**
-     * Sends the input \a data to the mDNS the appropiate IP4 and IP6 addresses
-     */
-    void sendPacket (QByteArray data);
-
-    /**
-     * Interprets and decodes the \a response
-     */
-    void processResponse (QByteArray response);
+    void onDataReceived();
 
   private:
     /**
-     * Used to multicast data to the reserved IPv4 address
+     * The port in which we send data to the robot
      */
-    QUdpSocket m_IPv4_sender;
+    int m_robotPort;
 
     /**
-     * Used to multicast data to the reserved IPv6 address
+     * The address of the robot
      */
-    QUdpSocket m_IPv6_sender;
+    QString m_address;
 
     /**
-     * Used to read mDNS responses from the IPv4 multicast address
+     * We send data to the robot through this socket
      */
-    QUdpSocket m_IPv4_receiver;
+    QUdpSocket m_robotSocket;
 
     /**
-     * Used to read mDNS responses from the IPv6 multicast address
+     * We receive data from the robot through this socket
      */
-    QUdpSocket m_IPv6_receiver;
+    QUdpSocket m_clientSocket;
 };
 
 #endif

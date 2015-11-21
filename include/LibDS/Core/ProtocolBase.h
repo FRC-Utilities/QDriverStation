@@ -28,7 +28,7 @@
 #include <QHostInfo>
 #include <QNetworkReply>
 
-#include "Core/Common.h"
+#include "LibDS/Core/Common.h"
 #include "Watchdog.h"
 
 #include "Discovery/Discovery.h"

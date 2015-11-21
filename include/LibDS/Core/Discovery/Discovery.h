@@ -25,7 +25,7 @@
 #define _LIB_DS_NETWORK_RESOLVER_H
 
 #include <QHostInfo>
-#include "Core/Discovery/MDNSResponder.h"
+#include "LibDS/Core/Discovery/MDNSResponder.h"
 
 /**
  * Allows the library to get the robot IP from a DNS or

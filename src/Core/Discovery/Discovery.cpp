@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-#include "Core/Discovery/Discovery.h"
+#include "LibDS/Core/Discovery/Discovery.h"
 
 NetworkDiscovery::NetworkDiscovery() {
     connect (&m_responder, SIGNAL (ipFound (QString, QString)),

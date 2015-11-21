@@ -24,7 +24,7 @@
 #ifndef _LIB_DS_TIMERS_H
 #define _LIB_DS_TIMERS_H
 
-#include "Core/Common.h"
+#include "LibDS/Core/Common.h"
 
 class QTimer;
 class QThread;

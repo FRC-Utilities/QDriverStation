@@ -21,63 +21,49 @@
  */
 
 #pragma once
-#ifndef _LIB_DS_ELAPSED_TIME_H
-#define _LIB_DS_ELAPSED_TIME_H
+#ifndef _LIB_DS_WATCHDOG_H
+#define _LIB_DS_WATCHDOG_H
 
-#include "Core/Common.h"
-#include <QElapsedTimer>
+#include <QTimer>
+#include "LibDS/Core/Common.h"
 
 /**
- * \class DS_ElapsedTime
+ * \class DS_Watchdog
  *
- * The DS_ElapsedTime class calculates the elapsed time since a specified
- * time in the execution of the application and presents it in human-readable
- * format (mm::ss.ms).
+ * Implements a simple software watchdog with the help of the \c QTimer class.
+ *
+ * During normal operation, the program regularly restarts the watchdog timer
+ * to prevent it from elapsing, or "timing out".
+ * If, due to a hardware fault or program error, the program fails to restart the
+ * watchdog, the timer will elapse and generate a timeout signal.
+ *
+ * The timeout signal is used to initiate corrective action or actions.
+ * The corrective actions typically include placing the computer system in a
+ * safe state and restoring normal system operation.
  */
-class LIB_DS_DECL DS_ElapsedTime : public QObject {
+class LIB_DS_DECL DS_Watchdog : public QObject {
     Q_OBJECT
 
   public:
-    explicit DS_ElapsedTime();
+    explicit DS_Watchdog();
 
   public slots:
     /**
-     * Pauses the elapsed time refresh process
+     * Kicks the dog so that it doesn't bite us
      */
-    void stop();
-
-    /**
-     * Resets the elapsed timer and starts the refresh process again
-     */
-    void reset();
+    void restart();
 
   signals:
     /**
-     * Emitted when the elapsed time is calculated and processed
-     * in a human-readable format
+     * Emitted when the dog gets angry and wants to bite you
      */
-    void elapsedTimeChanged (QString);
+    void timeout();
 
   private:
     /**
-     * If set to \c true, the timer will be enabled and the class
-     * will emit the \a elapsedTimeChanged() signal periodically
+     * Defines how patient our dear dog is
      */
-    bool m_enabled;
-
-    /**
-     * The timer that is used to calculate the elapsed time and
-     * provide it in a more human-friendly format
-     */
-    QElapsedTimer m_time;
-
-  private slots:
-    /**
-     * Uses the value given by the internal timer and processes its
-     * information into a human-readable format (mm::ss.ms)
-     */
-    void calculateElapsedTime();
+    QTimer m_timer;
 };
 
 #endif
-

@@ -24,7 +24,7 @@
 #ifndef _LIB_DS_PROTOCOL_MANAGER_H
 #define _LIB_DS_PROTOCOL_MANAGER_H
 
-#include "Core/Common.h"
+#include "LibDS/Core/Common.h"
 
 class DS_ProtocolBase;
 

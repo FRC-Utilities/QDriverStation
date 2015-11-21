@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-#include "Core/Timers.h"
+#include "LibDS/Core/Timers.h"
 
 #include <QTimer>
 #include <QThread>

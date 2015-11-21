@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-#include "Core/Watchdog.h"
+#include "LibDS/Core/Watchdog.h"
 
 DS_Watchdog::DS_Watchdog() {
     connect (&m_timer, SIGNAL (timeout()), this, SIGNAL (timeout()));

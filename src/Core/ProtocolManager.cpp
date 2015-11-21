@@ -22,8 +22,8 @@
 
 #include <QList>
 
-#include "Core/ProtocolBase.h"
-#include "Core/ProtocolManager.h"
+#include "LibDS/Core/ProtocolBase.h"
+#include "LibDS/Core/ProtocolManager.h"
 
 DS_ProtocolManager::DS_ProtocolManager() {
     m_protocol = Q_NULLPTR;

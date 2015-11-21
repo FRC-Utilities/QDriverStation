@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-#include "Core/Client.h"
+#include "LibDS/Core/Client.h"
 
 DS_Client::DS_Client() {
     connect (&m_clientSocket, SIGNAL (readyRead()),

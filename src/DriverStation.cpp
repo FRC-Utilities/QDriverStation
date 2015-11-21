@@ -20,14 +20,14 @@
  * THE SOFTWARE.
  */
 
-#include "DriverStation.h"
+#include "LibDS/Core/Timers.h"
+#include "LibDS/Core/Client.h"
+#include "LibDS/Core/NetConsole.h"
+#include "LibDS/Core/ElapsedTimer.h"
+#include "LibDS/Core/ProtocolManager.h"
+#include "LibDS/Protocols/Protocol2015.h"
 
-#include "Core/Timers.h"
-#include "Core/Client.h"
-#include "Core/NetConsole.h"
-#include "Core/ElapsedTimer.h"
-#include "Core/ProtocolManager.h"
-#include "Protocols/Protocol2015.h"
+#include "LibDS/DriverStation.h"
 
 DriverStation* DriverStation::s_instance = Q_NULLPTR;
 

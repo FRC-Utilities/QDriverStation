@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-#include "Protocols/Protocol2015.h"
+#include "LibDS/Protocols/Protocol2015.h"
 
 #define dPcmPath "/tmp/frc_versions/PCM-0-versions.ini"
 #define dPdpPath "/tmp/frc_versions/PDP-0-versions.ini"
