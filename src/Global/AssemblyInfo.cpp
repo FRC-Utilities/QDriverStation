@@ -25,8 +25,8 @@
 #define d_Name    "QDriverStation"
 #define d_Major   "0"
 #define d_Minor   "1"
-#define d_Build   "3"
-#define d_State   "Beta"
+#define d_Build   "4"
+#define d_State   "RC"
 #define d_Company "WinT 3794"
 #define d_Domain  "wint3794.org"
 

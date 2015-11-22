@@ -156,7 +156,13 @@ class MainWindow : public SmartWindow {
 
     /**
      * @internal
-     * Opens the Open DriverStation website in a web browser
+     * Opens a website that lists the changes for each application version
+     */
+    void onChangesClicked();
+
+    /**
+     * @internal
+     * Opens the QDriverStation website in a web browser
      */
     void onWebsiteClicked();
 

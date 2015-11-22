@@ -1880,6 +1880,13 @@ QPushButton:checked {
             </spacer>
            </item>
            <item>
+            <widget class="QPushButton" name="Changes">
+             <property name="text">
+              <string>Changes...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QPushButton" name="Website">
              <property name="text">
               <string>Visit Website...</string>
@@ -2037,7 +2044,7 @@ QPushButton:checked {
  </connections>
  <buttongroups>
   <buttongroup name="RobotStatusGroup"/>
-  <buttongroup name="WindowModeGroup"/>
   <buttongroup name="RobotModeGroup"/>
+  <buttongroup name="WindowModeGroup"/>
  </buttongroups>
 </ui>

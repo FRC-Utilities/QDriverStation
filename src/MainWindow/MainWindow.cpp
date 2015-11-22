@@ -144,6 +144,8 @@ void MainWindow::connectSlots() {
              this,               SLOT   (scrollNetConsole()));
 
     /* UI to window logic */
+    connect (ui->Changes,            SIGNAL (clicked()),
+             this,                   SLOT   (onChangesClicked()));
     connect (ui->Website,            SIGNAL (clicked()),
              this,                   SLOT   (onWebsiteClicked()));
     connect (ui->EnableButton,       SIGNAL (clicked()),
@@ -420,6 +422,11 @@ void MainWindow::onRebootClicked() {
 
 void MainWindow::onRestartClicked() {
     m_ds->canBeEnabled() ? m_ds->restartCode() : statusLabelAnimation();
+}
+
+void MainWindow::onChangesClicked() {
+    QDesktopServices::openUrl (QUrl ("https://github.com/WinT-3794/"
+                                     "QDriverStation/blob/master/CHANGES.md"));
 }
 
 void MainWindow::onWebsiteClicked() {
