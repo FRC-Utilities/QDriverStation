@@ -32,20 +32,22 @@ VirtualJoystick::VirtualJoystick() {
 
     connect (ui.Close, SIGNAL (clicked()),
              this,     SLOT   (hide()));
-
     connect (ui.Range, SIGNAL (valueChanged   (double)),
              this,     SLOT   (onRangeChanged (double)));
     connect (ui.UseKeyboardCheckbox, SIGNAL (clicked (bool)),
              this,                   SLOT   (setVirtualJoystickEnabled (bool)));
 
     connect (SDL_Layer::getInstance(), SIGNAL (axisEvent   (GM_Axis)),
-             this,                          SIGNAL (axisEvent   (GM_Axis)));
+             this,                     SIGNAL (axisEvent   (GM_Axis)));
     connect (SDL_Layer::getInstance(), SIGNAL (buttonEvent (GM_Button)),
-             this,                          SIGNAL (buttonEvent (GM_Button)));
+             this,                     SIGNAL (buttonEvent (GM_Button)));
     connect (SDL_Layer::getInstance(), SIGNAL (countChanged   (int)),
-             this,                          SLOT   (onCountChanged (int)));
+             this,                     SLOT   (onCountChanged (int)));
     connect (SDL_Layer::getInstance(), SIGNAL (countChanged   (QStringList)),
-             this,                          SLOT   (onCountChanged (QStringList)));
+             this,                     SLOT   (onCountChanged (QStringList)));
+
+    connect (&m_filter, SIGNAL (keyPress    (QKeyEvent*, bool)),
+             this,      SLOT   (registerKey (QKeyEvent*, bool)));
 
     connect (this, SIGNAL (axisEvent     (GM_Axis)),
              this, SLOT   (onAxisEvent   (GM_Axis)));
@@ -55,6 +57,8 @@ VirtualJoystick::VirtualJoystick() {
     m_joystick.numAxes = 6;
     m_joystick.numButtons = 10;
     m_joystick.displayName = tr ("Virtual Joystick");
+
+    qApp->installEventFilter (&m_filter);
 
     resizeToFit();
     SDL_Layer::getInstance()->init();
@@ -122,33 +126,19 @@ void VirtualJoystick::onCountChanged (QStringList input) {
 // READ AND PROCESS KEYBOARD INPUT
 //------------------------------------------------------------------------------
 
-void VirtualJoystick::registerKeyPress (QKeyEvent* event) {
+void VirtualJoystick::registerKey (QKeyEvent* event, bool pressed) {
     if (event->key() == Qt::Key_Shift || event->key() == Qt::Key_Space)
-        DriverStation::getInstance()->setControlMode (kControlEmergencyStop);
+        DriverStation::getInstance()->startEmergencyStop();
 
-    readButtons (event->key(), true);
-    readAxes (event->key(), ui.Range->value());
-
-    event->ignore();
-}
-
-void VirtualJoystick::registerKeyRelease (QKeyEvent* event) {
-    readAxes (event->key(), 0.0);
-    readButtons (event->key(), false);
+    readButtons (event->key(), pressed);
+    readAxes (event->key(), ui.Range->value(), pressed);
 
     event->ignore();
 }
 
-void VirtualJoystick::keyPressEvent (QKeyEvent* e) {
-    registerKeyPress (e);
-}
-
-void VirtualJoystick::keyReleaseEvent (QKeyEvent* e) {
-    registerKeyRelease (e);
-}
-
-void VirtualJoystick::readAxes (int key, double value) {
+void VirtualJoystick::readAxes (int key, double value, bool pressed) {
     int axis = -1;
+    value *= pressed ? 1 : 0;
 
     /* Horizontal axis on thumb 1 */
     if (key == Qt::Key_D)

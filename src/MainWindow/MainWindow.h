@@ -350,17 +350,6 @@ class MainWindow : public SmartWindow {
      * there is a problem with the robot and it cannot be enabled.
      */
     void statusLabelAnimation();
-
-  protected:
-    /**
-     * Reacts when the user presses a key
-     */
-    void keyPressEvent (QKeyEvent* e);
-
-    /**
-     * Reacts when the user releases a key
-     */
-    void keyReleaseEvent (QKeyEvent* e);
 };
 
 /**

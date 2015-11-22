@@ -53,8 +53,6 @@ class JoysticksTab : public QWidget {
   public slots:
     void readSettings();
     void showKeyboardWindow();
-    void registerKeyPress (QKeyEvent* event);
-    void registerKeyRelease (QKeyEvent* event);
 
   signals:
     /**

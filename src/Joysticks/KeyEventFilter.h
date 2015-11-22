@@ -20,51 +20,22 @@
  * THE SOFTWARE.
  */
 
-#include "AssemblyInfo.h"
+#pragma once
+#ifndef _QDRIVER_STATION_JOYSTICKS_KEY_EVENT_FILTER_H
+#define _QDRIVER_STATION_JOYSTICKS_KEY_EVENT_FILTER_H
 
-#define d_Name    "QDriverStation"
-#define d_Major   "0"
-#define d_Minor   "1"
-#define d_Build   "3"
-#define d_State   "Beta"
-#define d_Company "WinT 3794"
-#define d_Domain  "wint3794.org"
+#include <QEvent>
+#include <QObject>
+#include <QKeyEvent>
 
-QString AssemblyInfo::name() {
-    return d_Name;
-}
+class KeyEventFilter : public QObject {
+    Q_OBJECT
 
-QString AssemblyInfo::major() {
-    return d_Major;
-}
+  protected:
+    bool eventFilter (QObject* object, QEvent* event);
 
-QString AssemblyInfo::minor() {
-    return d_Minor;
-}
+  signals:
+    void keyPress (QKeyEvent* event, bool pressed);
+};
 
-QString AssemblyInfo::build() {
-    return d_Build;
-}
-
-QString AssemblyInfo::state() {
-    return d_State;
-}
-
-QString AssemblyInfo::version() {
-    return QString ("%1.%2%3 %4").arg (major(),
-                                       minor(),
-                                       build(),
-                                       state());
-}
-
-QString AssemblyInfo::organization() {
-    return d_Company;
-}
-
-QString AssemblyInfo::organizationDomain() {
-    return d_Domain;
-}
-
-QString AssemblyInfo::buildDateTime() {
-    return QObject::tr ("Built on %1 at %2").arg (__DATE__, __TIME__);
-}
+#endif

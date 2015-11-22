@@ -143,6 +143,11 @@ class SDL_Layer : public QObject {
     int m_tracker;
 
     /**
+     * Used for eliminating some joystick deadband
+     */
+    double m_cutOff;
+
+    /**
      * Used to keep the dynamic IDs in sync with the SDL index IDs
      */
     QList<int> idList;
@@ -182,6 +187,11 @@ class SDL_Layer : public QObject {
      * to the robot
      */
     int getDynamicId (int js);
+
+    /**
+     * Scales the axis output to match FRC 'standards'
+     */
+    double scaleOutput (double input);
 
   protected:
     explicit SDL_Layer();

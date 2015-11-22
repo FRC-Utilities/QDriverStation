@@ -29,7 +29,7 @@
 #include "FirstRun.h"
 #include "Global/Settings.h"
 
-#define dXboxDriverUrl "http://files.tattiebogle.net/360/360ControllerInstall.dmg"
+#define d_XboxDriverUrl "http://files.tattiebogle.net/360/360ControllerInstall.dmg"
 
 int InitTasks::getTeamNumber() {
     /* First launch, ask for team number */

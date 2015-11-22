@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1202</width>
+    <width>1172</width>
     <height>285</height>
    </rect>
   </property>
@@ -32,6 +32,12 @@
     </property>
     <item>
      <widget class="QTabWidget" name="LeftTab">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="tabPosition">
        <enum>QTabWidget::West</enum>
       </property>
@@ -61,7 +67,7 @@ QPushButton:checked {
         </property>
         <item>
          <widget class="QWidget" name="RobotModeWidget" native="true">
-          <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0">
+          <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,1,2">
            <property name="spacing">
             <number>0</number>
            </property>
@@ -83,7 +89,7 @@ QPushButton:checked {
               <string notr="true">padding: 6px;
 text-align: left;</string>
              </property>
-             <layout class="QVBoxLayout" name="verticalLayout_3">
+             <layout class="QVBoxLayout" name="verticalLayout_2">
               <property name="spacing">
                <number>0</number>
               </property>
@@ -163,30 +169,32 @@ text-align: left;</string>
                 </attribute>
                </widget>
               </item>
-              <item>
-               <spacer name="verticalSpacer_2">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeType">
-                 <enum>QSizePolicy::Expanding</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>0</width>
-                  <height>0</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
              </layout>
             </widget>
            </item>
            <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
             <widget class="QWidget" name="RobotPowerWidget" native="true">
-             <property name="styleSheet">
-              <string notr="true">font-weight: bold;
-padding: 12px;</string>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_9">
               <property name="spacing">
@@ -206,8 +214,17 @@ padding: 12px;</string>
               </property>
               <item>
                <widget class="QPushButton" name="EnableButton">
-                <property name="styleSheet">
-                 <string notr="true"/>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
                 </property>
                 <property name="text">
                  <string>Enable</string>
@@ -228,8 +245,17 @@ padding: 12px;</string>
               </item>
               <item>
                <widget class="QPushButton" name="DisableButton">
-                <property name="styleSheet">
-                 <string notr="true"/>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
                 </property>
                 <property name="text">
                  <string>Disable</string>
@@ -253,22 +279,6 @@ padding: 12px;</string>
            </item>
           </layout>
          </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_6">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item>
          <widget class="QWidget" name="OpStatusWidget" native="true">
@@ -426,6 +436,12 @@ padding: 12px;</string>
            </item>
            <item row="0" column="3">
             <widget class="QLabel" name="ElapsedTime">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
              <property name="text">
               <string>--.--</string>
              </property>
@@ -555,22 +571,6 @@ padding: 12px;</string>
            </item>
           </layout>
          </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_7">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-         </spacer>
         </item>
        </layout>
       </widget>
@@ -1231,23 +1231,13 @@ padding: 12px;</string>
     </item>
     <item>
      <widget class="QFrame" name="InfoFrame">
-      <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1,0,1">
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0,1">
        <property name="topMargin">
         <number>0</number>
        </property>
        <item>
-        <widget class="QWidget" name="StatusWidget" native="true">
-         <property name="styleSheet">
-          <string notr="true">QPushButton {
-    background-color: rgb(255, 37, 43);
-	border: 0px;
-    padding: 4px;
-}
-QPushButton:checked {
-	background-color:  rgb(33, 255, 43);
-}</string>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_14">
+        <widget class="QWidget" name="TeamAndVoltage" native="true">
+         <layout class="QGridLayout" name="gridLayout_2">
           <property name="leftMargin">
            <number>0</number>
           </property>
@@ -1260,7 +1250,17 @@ QPushButton:checked {
           <property name="bottomMargin">
            <number>0</number>
           </property>
-          <item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="TeamNumber">
+            <property name="text">
+             <string>xxyy</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
            <widget class="QLabel" name="TeamLabel">
             <property name="text">
              <string>Team #</string>
@@ -1270,38 +1270,17 @@ QPushButton:checked {
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QLabel" name="TeamNumber">
+          <item row="2" column="1">
+           <widget class="QLabel" name="VoltageLabel">
             <property name="text">
-             <string/>
+             <string>--.--</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="widget_2" native="true">
-         <layout class="QHBoxLayout" name="horizontalLayout_13">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
+          <item row="2" column="0">
            <widget class="QLabel" name="VoltageIcon">
             <property name="text">
              <string></string>
@@ -1311,15 +1290,21 @@ QPushButton:checked {
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QLabel" name="VoltageLabel">
-            <property name="text">
-             <string>--.--</string>
+          <item row="1" column="0">
+           <spacer name="TeamSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
             </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
+            <property name="sizeType">
+             <enum>QSizePolicy::MinimumExpanding</enum>
             </property>
-           </widget>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>
@@ -1608,8 +1593,14 @@ QPushButton:checked {
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
          <property name="text">
-          <string>--.--</string>
+          <string>No Robot Communication</string>
          </property>
          <property name="scaledContents">
           <bool>false</bool>
@@ -1627,6 +1618,12 @@ QPushButton:checked {
     </item>
     <item>
      <widget class="QTabWidget" name="RightTab">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="tabPosition">
        <enum>QTabWidget::East</enum>
       </property>
@@ -1899,7 +1896,7 @@ QPushButton:checked {
     <item>
      <widget class="QWidget" name="UtilsWidget" native="true">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>

@@ -139,7 +139,8 @@ HEADERS += \
     $$PWD/src/MainWindow/Utilities/SmartWindow.h \
     $$PWD/src/MainWindow/MainWindow.h \
     $$PWD/src/SettingsDialog/SettingsDialog.h \
-    $$PWD/src/Updater/Updater.h
+    $$PWD/src/Updater/Updater.h \
+    src/Joysticks/KeyEventFilter.h
 
 SOURCES += \
     $$PWD/src/main.cpp \
@@ -156,7 +157,8 @@ SOURCES += \
     $$PWD/src/MainWindow/Utilities/SmartProgressbar.cpp \
     $$PWD/src/MainWindow/Utilities/SmartWindow.cpp \
     $$PWD/src/SettingsDialog/SettingsDialog.cpp \
-    $$PWD/src/Updater/Updater.cpp
+    $$PWD/src/Updater/Updater.cpp \
+    src/Joysticks/KeyEventFilter.cpp
 
 FORMS += \
     $$PWD/src/Joysticks/JoysticksTab.ui \

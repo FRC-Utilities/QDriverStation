@@ -26,16 +26,6 @@
 
 #include "SDL_Layer.h"
 
-//------------------------------------------------------------------------------
-// SDL DEFINITIONS
-//------------------------------------------------------------------------------
-
-#define SDL_MAIN_HANDLED
-
-//------------------------------------------------------------------------------
-// CONSTRUCTOR/DESTRUCTOR CODE
-//------------------------------------------------------------------------------
-
 SDL_Layer* SDL_Layer::s_instance = Q_NULLPTR;
 
 SDL_Layer::SDL_Layer() {
@@ -100,6 +90,7 @@ QStringList SDL_Layer::joystickList() {
 
 void SDL_Layer::init() {
     m_time = 50;
+    m_cutOff = 0.2;
     m_tracker = -1;
 
     QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (readSdlEvents()));
@@ -143,7 +134,7 @@ GM_Axis SDL_Layer::getAxis (const SDL_Event* event) {
 
     axis.id = event->jaxis.axis;
     axis.joystick = getJoystick (event);
-    axis.value = (double) (event->jaxis.value) / 32767;
+    axis.value = scaleOutput (event->jaxis.value);
 
     return axis;
 }
@@ -181,11 +172,14 @@ int SDL_Layer::getDynamicId (int id) {
     return id;
 }
 
+double SDL_Layer::scaleOutput (double input) {
+    return input /= 32767;
+}
+
 //------------------------------------------------------------------------------
 // SDL LOOP
 //------------------------------------------------------------------------------
 
-#include <qdebug.h>
 void SDL_Layer::readSdlEvents() {
     SDL_Event event;
     while (SDL_PollEvent (&event)) {

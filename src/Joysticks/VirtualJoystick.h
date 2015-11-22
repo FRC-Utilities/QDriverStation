@@ -28,6 +28,7 @@
 #include <QCloseEvent>
 
 #include "Joysticks.h"
+#include "KeyEventFilter.h"
 #include "ui_VirtualJoystick.h"
 
 /**
@@ -47,7 +48,6 @@ class VirtualJoystick : public QDialog {
   public:
     VirtualJoystick();
 
-  public slots:
     /**
      * Loads the saved settings on the UI
      */
@@ -64,39 +64,6 @@ class VirtualJoystick : public QDialog {
      * @note The joystick can be either the 'real' one or the virtual one
      */
     int getNumButtons (int js);
-
-    /**
-     * Returns the total number of joysticks, including the SDL joysticks and
-     * the virtual joystick
-     */
-    void onCountChanged (int count);
-
-    /**
-     * Returns a list with the names of all joysticks, including the SDL
-     * joysticks and the virtual joystick
-     */
-    void onCountChanged (QStringList input);
-
-    /**
-     * Parses the key event and updates the axes of the virtual joystick
-     */
-    void registerKeyPress (QKeyEvent* event);
-
-    /**
-     * Parses the key event and updates the buttons of the virtual joystick
-     */
-    void registerKeyRelease (QKeyEvent* event);
-
-  protected:
-    /**
-     * Reacts when the user presses a key
-     */
-    void keyPressEvent (QKeyEvent* e);
-
-    /**
-     * Reacts when the user releases a key
-     */
-    void keyReleaseEvent (QKeyEvent* e);
 
   signals:
     /**
@@ -121,29 +88,29 @@ class VirtualJoystick : public QDialog {
      */
     void buttonEvent (GM_Button);
 
-  private:
-    /**
-     * If set to \c true, the application will use some keys of the keyboard to
-     * simulate a virtual joystick
-     */
-    bool m_enabled;
-
-    /**
-     * Contains the UI components and widgets
-     */
-    Ui::VirtualJoystick ui;
-
-    /**
-     * Represents the virtual joystick
-     */
-    GM_Joystick m_joystick;
-
   private slots:
+    /**
+     * Returns the total number of joysticks, including the SDL joysticks and
+     * the virtual joystick
+     */
+    void onCountChanged (int count);
+
+    /**
+     * Returns a list with the names of all joysticks, including the SDL
+     * joysticks and the virtual joystick
+     */
+    void onCountChanged (QStringList input);
+
+    /**
+     * Parses the key event and updates the axes of the virtual joystick
+     */
+    void registerKey (QKeyEvent* event, bool pressed);
+
     /**
      * Filters the \a key to update the \a value of the axis assigned to a
      * specific key
      */
-    void readAxes (int key, double value);
+    void readAxes (int key, double value, bool pressed);
 
     /**
      * Filters the \a key to update the \a pressed state of the button assigned
@@ -176,6 +143,29 @@ class VirtualJoystick : public QDialog {
      * Sends the button data to the Driver Station
      */
     void onButtonEvent (GM_Button button);
+
+
+  private:
+    /**
+     * If set to \c true, the application will use some keys of the keyboard to
+     * simulate a virtual joystick
+     */
+    bool m_enabled;
+
+    /**
+     * Contains the UI components and widgets
+     */
+    Ui::VirtualJoystick ui;
+
+    /**
+     * Represents the virtual joystick
+     */
+    GM_Joystick m_joystick;
+
+    /**
+     * Allows us to get access to every key event in the application
+     */
+    KeyEventFilter m_filter;
 };
 
 #endif

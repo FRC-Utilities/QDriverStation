@@ -28,7 +28,7 @@
 #include <windows.h>
 static PDH_HQUERY cpuQuery;
 static PDH_HCOUNTER cpuTotal;
-#define dCounterPath L"\\Processor(_Total)\\% Processor Time"
+#define d_CounterPath L"\\Processor(_Total)\\% Processor Time"
 #else
 #include <QProcess>
 #endif
@@ -36,7 +36,7 @@ static PDH_HCOUNTER cpuTotal;
 void CPU::init() {
 #if defined Q_OS_WIN
     PdhOpenQuery (0, 0, &cpuQuery);
-    PdhAddCounter (cpuQuery, dCounterPath, 0, &cpuTotal);
+    PdhAddCounter (cpuQuery, d_CounterPath, 0, &cpuTotal);
     PdhCollectQueryData (cpuQuery);
 #endif
 }

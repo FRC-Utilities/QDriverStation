@@ -36,7 +36,7 @@ class DS_ProtocolManager;
  * \class DriverStation
  *
  * Implements all the functions and features of the LibDS library into a single,
- * compact and simple-to-use class.
+ * compact and simple to use class.
  *
  * The \c DriverStation class also provides all the methods necessary to
  * manage the user input, protocol versions and operate the robot in a
@@ -44,9 +44,7 @@ class DS_ProtocolManager;
  */
 class LIB_DS_DECL DriverStation : public QObject {
     Q_OBJECT
-    Q_ENUMS (ControlMode)
     Q_ENUMS (ProtocolType)
-    Q_ENUMS (AllianceType)
 
   public:
     explicit DriverStation();
@@ -107,9 +105,34 @@ class LIB_DS_DECL DriverStation : public QObject {
     Q_INVOKABLE bool robotHasCode();
 
     /**
+     * Returns \c true if the robot mode is \c kControlTest
+     */
+    Q_INVOKABLE bool isTest();
+
+    /**
+     * Returns \c true if the robot mode is \c kControlDisabled
+     */
+    Q_INVOKABLE bool isDisabled();
+
+    /**
+     * Returns \c true if the robot mode is \c kControlAutonomous
+     */
+    Q_INVOKABLE bool isAutonomous();
+
+    /**
+     * Returns \c true if the robot mode is \c kControlTeleoperated
+     */
+    Q_INVOKABLE bool isTeleoperated();
+
+    /**
+     * Returns \c true if the robot mode is \c kControlEmergencyStop
+     */
+    Q_INVOKABLE bool isEmergencyStop();
+
+    /**
      * Returns \c true if the DS is connected to the robot
      */
-    Q_INVOKABLE bool networkAvailable();
+    Q_INVOKABLE bool isConnected();
 
   public slots:
     /**
@@ -135,6 +158,31 @@ class LIB_DS_DECL DriverStation : public QObject {
                                     int delay,
                                     int teleop,
                                     int endgame);
+
+    /**
+     * Changes the robot mode to \c kControlTest
+     */
+    Q_INVOKABLE void startTest();
+
+    /**
+     * Changes the robot mode to \c kControlDisabled
+     */
+    Q_INVOKABLE void startDisabled();
+
+    /**
+     * Changes the robot mode to \c kControlAutonomous
+     */
+    Q_INVOKABLE void startAutonomous();
+
+    /**
+     * Changes the robot mode to \c kControlTeleoperated
+     */
+    Q_INVOKABLE void startTeleoperated();
+
+    /**
+     * Changes the robot mode to \c kControlEmergencyStop
+     */
+    Q_INVOKABLE void startEmergencyStop();
 
     /**
      * Changes the protocol that we use to control the robot
@@ -341,27 +389,7 @@ class LIB_DS_DECL DriverStation : public QObject {
      */
     DS_ElapsedTime* m_elapsedTime;
 
-  private slots:
     /**
-     * @brief sendRobotPackets
-     */
-    void sendRobotPackets();
-
-    /**
-     * @internal
-     * Resets the internal values of the library when we disconnect from the
-     * robot.
-     */
-    void resetInternalValues();
-
-    /**
-     * @internal
-     * Sends the received data to the current protocol
-     */
-    void readRobotPackets (QByteArray robotResponse);
-
-    /**
-     * @internal
      * Changes the status string when:
      *     - The communications status has changed
      *     - The robot code status has changed
@@ -369,8 +397,24 @@ class LIB_DS_DECL DriverStation : public QObject {
      */
     QString getStatus();
 
+  private slots:
     /**
-     * @internal
+     * Sends a generated client packet to the robot
+     */
+    void sendRobotPackets();
+
+    /**
+     * Resets the internal values of the library when we disconnect from the
+     * robot.
+     */
+    void resetInternalValues();
+
+    /**
+     * Sends the received data to the current protocol
+     */
+    void readRobotPackets (QByteArray robotResponse);
+
+    /**
      * Notifies other object when the status of the user code or the robot
      * communications changed. The \a ignore_me variable is ignored because
      * we use the \c getStatus() function to construct the status string
@@ -379,10 +423,29 @@ class LIB_DS_DECL DriverStation : public QObject {
     void updateStatus (bool ignored);
 
     /**
-     * @internal
      * Updates the elapsed time when the control mode is changed
      */
     void onControlModeChanged (DS_ControlMode mode);
+
+    /**
+     * Plays a sound that indicates the upcomming end of a match
+     */
+    void playEndGame();
+
+    /**
+     * Plays a sound that indicates the end of a match
+     */
+    void playMatchEnd();
+
+    /**
+     * Plays a sound that indicates the start of the operator control
+     */
+    void playTeleopStart();
+
+    /**
+     * Plays a sound that indicates the start of the autonomous period
+     */
+    void playAutonomousStart();
 };
 
 #endif

@@ -57,18 +57,6 @@ void JoysticksTab::showKeyboardWindow() {
 }
 
 //------------------------------------------------------------------------------
-// SEND KEYBOARD INPUT TO VIRTUAL JOSYTICK
-//------------------------------------------------------------------------------
-
-void JoysticksTab::registerKeyPress (QKeyEvent* event) {
-    m_keyboardDrive->registerKeyPress (event);
-}
-
-void JoysticksTab::registerKeyRelease (QKeyEvent* event) {
-    m_keyboardDrive->registerKeyRelease (event);
-}
-
-//------------------------------------------------------------------------------
 // REACT TO UI EVENTS
 //------------------------------------------------------------------------------
 
