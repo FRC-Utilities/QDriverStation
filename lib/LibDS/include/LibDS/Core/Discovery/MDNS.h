@@ -33,11 +33,11 @@
  * allows us to get the IP of any mDNS device in the
  * local network.
  */
-class LIB_DS_DECL MDNSResponder : public QObject {
+class LIB_DS_DECL MDNS : public QObject {
     Q_OBJECT
 
   public:
-    explicit MDNSResponder();
+    explicit MDNS();
 
   public slots:
     /**
@@ -64,9 +64,9 @@ class LIB_DS_DECL MDNSResponder : public QObject {
     void readIPv6Socket();
 
     /**
-     * Sends the input \a data to the mDNS the appropiate IP4 and IP6 addresses
+     * Sends the \a data to the local network
      */
-    void sendPacket (QByteArray data);
+    void send (QByteArray data);
 
     /**
      * Interprets and decodes the \a response

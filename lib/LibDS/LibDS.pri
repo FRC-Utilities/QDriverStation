@@ -53,7 +53,7 @@ HEADERS += \
     $$PWD/include/LibDS/Core/Timers.h \
     $$PWD/include/LibDS/Core/Watchdog.h \
     $$PWD/include/LibDS/Core/Discovery/Discovery.h \
-    $$PWD/include/LibDS/Core/Discovery/MDNSResponder.h
+    $$PWD/include/LibDS/Core/Discovery/MDNS.h
 
 SOURCES += \
     $$PWD/src/DriverStation.cpp \
@@ -66,7 +66,7 @@ SOURCES += \
     $$PWD/src/Core/Timers.cpp \
     $$PWD/src/Core/Watchdog.cpp \
     $$PWD/src/Core/Discovery/Discovery.cpp \
-    $$PWD/src/Core/Discovery/MDNSResponder.cpp \
-    $$PWD/src/Protocols/Protocol2015.cpp
+    $$PWD/src/Protocols/Protocol2015.cpp \
+    $$PWD/src/Core/Discovery/MDNS.cpp
 
 RESOURCES += $$PWD/sounds/libds-sounds.qrc

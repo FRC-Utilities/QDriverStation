@@ -25,7 +25,7 @@
 #define _LIB_DS_NETWORK_RESOLVER_H
 
 #include <QHostInfo>
-#include "LibDS/Core/Discovery/MDNSResponder.h"
+#include "LibDS/Core/Discovery/MDNS.h"
 
 /**
  * Allows the library to get the robot IP from a DNS or
@@ -92,7 +92,7 @@ class LIB_DS_DECL NetworkDiscovery : public QObject {
     /**
      * Figures out the IP address of a mDNS domain
      */
-    MDNSResponder m_responder;
+    MDNS m_responder;
 };
 
 #endif

@@ -144,7 +144,7 @@ void DS_Protocol2015::readRobotData (QByteArray data) {
 
     /* Get robot program status */
     if (p_robotCommunication) {
-        /* Reset status bit */
+        /* Reset status bit if needed */
         if (p_status == pStatusInvalid)
             p_status = pStatusNormal;
 
