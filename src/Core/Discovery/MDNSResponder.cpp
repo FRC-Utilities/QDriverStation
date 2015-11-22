@@ -23,17 +23,17 @@
 #include "LibDS/Core/Common.h"
 #include "LibDS/Core/Discovery/MDNSResponder.h"
 
-#define dPort        5335
-#define dIPv6Address "FF02::FB"
-#define dIPv4Address "224.0.0.251"
+#define d_Port        5335
+#define d_IPv6Address "FF02::FB"
+#define d_IPv4Address "224.0.0.251"
 
 MDNSResponder::MDNSResponder() {
     connect (&m_IPv4_receiver, SIGNAL (readyRead()), this, SLOT (readIPv4Socket()));
     connect (&m_IPv6_receiver, SIGNAL (readyRead()), this, SLOT (readIPv6Socket()));
 
-    m_IPv4_receiver.bind (QHostAddress (dIPv4Address), dPort,
+    m_IPv4_receiver.bind (QHostAddress (d_IPv4Address), d_Port,
                           QUdpSocket::ShareAddress);
-    m_IPv6_receiver.bind (QHostAddress (dIPv6Address), dPort,
+    m_IPv6_receiver.bind (QHostAddress (d_IPv6Address), d_Port,
                           QUdpSocket::ShareAddress);
 }
 
@@ -52,8 +52,8 @@ void MDNSResponder::readIPv6Socket() {
 }
 
 void MDNSResponder::sendPacket (QByteArray data) {
-    m_IPv4_sender.writeDatagram (data, QHostAddress (dIPv4Address), dPort);
-    m_IPv6_sender.writeDatagram (data, QHostAddress (dIPv6Address), dPort);
+    m_IPv4_sender.writeDatagram (data, QHostAddress (d_IPv4Address), d_Port);
+    m_IPv6_sender.writeDatagram (data, QHostAddress (d_IPv6Address), d_Port);
 }
 
 void MDNSResponder::processResponse (QByteArray response) {

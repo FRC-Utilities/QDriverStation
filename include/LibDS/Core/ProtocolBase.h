@@ -54,7 +54,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     /**
      * Returns \c true if the robot communications are working
      */
-    bool robotCommunication() const;
+    bool isConnected() const;
 
     /**
      * Returns the current alliance of the robot

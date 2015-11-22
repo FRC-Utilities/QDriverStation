@@ -46,7 +46,7 @@ bool DS_ProtocolBase::robotCode() const {
     return p_robotCode;
 }
 
-bool DS_ProtocolBase::robotCommunication() const {
+bool DS_ProtocolBase::isConnected() const {
     return p_robotCommunication;
 }
 

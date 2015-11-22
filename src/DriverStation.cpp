@@ -20,6 +20,8 @@
  * THE SOFTWARE.
  */
 
+#include <QSound>
+
 #include "LibDS/Core/Timers.h"
 #include "LibDS/Core/Client.h"
 #include "LibDS/Core/NetConsole.h"
@@ -112,13 +114,7 @@ DriverStation* DriverStation::getInstance() {
 }
 
 bool DriverStation::canBeEnabled() {
-    if (m_manager->protocolIsValid()) {
-        return m_manager->protocol()->robotCode() &&
-               m_manager->protocol()->robotCommunication() &&
-               m_manager->protocol()->controlMode() != kControlEmergencyStop;
-    }
-
-    return false;
+    return robotHasCode() && isConnected() && !isEmergencyStop();
 }
 
 QStringList DriverStation::alliances() {
@@ -168,9 +164,29 @@ bool DriverStation::robotHasCode() {
     return false;
 }
 
-bool DriverStation::networkAvailable() {
+bool DriverStation::isTest() {
+    return controlMode() == kControlTest;
+}
+
+bool DriverStation::isDisabled() {
+    return controlMode() == kControlDisabled;
+}
+
+bool DriverStation::isAutonomous() {
+    return controlMode() == kControlAutonomous;
+}
+
+bool DriverStation::isTeleoperated() {
+    return controlMode() == kControlTeleoperated;
+}
+
+bool DriverStation::isEmergencyStop() {
+    return controlMode() == kControlEmergencyStop;
+}
+
+bool DriverStation::isConnected() {
     if (m_manager->protocolIsValid())
-        return m_manager->protocol()->robotCommunication();
+        return m_manager->protocol()->isConnected();
 
     return false;
 }
@@ -178,6 +194,7 @@ bool DriverStation::networkAvailable() {
 void DriverStation::init() {
     if (!m_init) {
         m_init = true;
+
         QTimer::singleShot (1500, this, SLOT (resetInternalValues()));
         QTimer::singleShot (1500, DS_Timers::getInstance(), SLOT (start()));
     }
@@ -198,11 +215,57 @@ void DriverStation::startPractice (int countdown,
                                    int delay,
                                    int teleop,
                                    int endgame) {
-    Q_UNUSED (countdown);
-    Q_UNUSED (autonomous);
-    Q_UNUSED (delay);
-    Q_UNUSED (teleop);
-    Q_UNUSED (endgame);
+    /* Transform the times from seconds to milliseconds */
+    delay *= 1000;
+    teleop *= 1000;
+    endgame *= 1000;
+    countdown *= 1000;
+    autonomous *= 1000;
+
+    /* Calculate the time frames */
+    int _startAutonomous = countdown;
+    int _startTeleoperated = _startAutonomous + delay + autonomous;
+    int _startEndGame = _startTeleoperated + delay + teleop - endgame;
+    int _stop = _startEndGame + endgame;
+
+    /* Configure the sound/media timers */
+    QTimer::singleShot (_startAutonomous, Qt::PreciseTimer,
+                        this, SLOT (playAutonomousStart()));
+    QTimer::singleShot (_startTeleoperated, Qt::PreciseTimer,
+                        this, SLOT (playTeleopStart()));
+    QTimer::singleShot (_stop, Qt::PreciseTimer,
+                        this, SLOT (playMatchEnd()));
+    QTimer::singleShot (_startEndGame, Qt::PreciseTimer,
+                        this,
+                        SLOT (playEndGame()));
+
+    /* Configure the control mode timers */
+    QTimer::singleShot (_startTeleoperated, Qt::PreciseTimer,
+                        this, SLOT (startTeleoperated()));
+    QTimer::singleShot (_startAutonomous, Qt::PreciseTimer,
+                        this, SLOT (startAutonomous()));
+    QTimer::singleShot (_stop, Qt::PreciseTimer,
+                        this, SLOT (startDisabled()));
+}
+
+void DriverStation::startTest() {
+    setControlMode (kControlTest);
+}
+
+void DriverStation::startDisabled() {
+    setControlMode (kControlDisabled);
+}
+
+void DriverStation::startAutonomous() {
+    setControlMode (kControlAutonomous);
+}
+
+void DriverStation::startTeleoperated() {
+    setControlMode (kControlTeleoperated);
+}
+
+void DriverStation::startEmergencyStop() {
+    setControlMode (kControlEmergencyStop);
 }
 
 void DriverStation::setProtocol (DS_ProtocolBase* protocol) {
@@ -231,8 +294,10 @@ void DriverStation::setAlliance (DS_Alliance alliance) {
 }
 
 void DriverStation::setControlMode (DS_ControlMode mode) {
-    if (m_manager->protocolIsValid())
+    if (m_manager->protocolIsValid()) {
+        emit controlModeChanged (mode);
         m_manager->protocol()->setControlMode (mode);
+    }
 }
 
 void DriverStation::setCustomAddress (QString address) {
@@ -272,6 +337,18 @@ void DriverStation::updateJoystickButton (int js,
         m_manager->updateJoystickButton (js, button, state);
 }
 
+QString DriverStation::getStatus() {
+    if (m_manager->protocolIsValid()) {
+        if (m_manager->protocol()->isConnected()
+                && !m_manager->protocol()->robotCode())
+            return "No Robot Code";
+
+        return DS_GetControlModeString (m_manager->protocol()->controlMode());
+    }
+
+    return DS_GetControlModeString (kControlNoCommunication);
+}
+
 void DriverStation::sendRobotPackets() {
     if (m_manager->protocolIsValid())
         m_client->sendToRobot (m_manager->protocol()->getClientPacket());
@@ -292,29 +369,35 @@ void DriverStation::readRobotPackets (QByteArray robotResponse) {
         m_manager->protocol()->readRobotPacket (robotResponse);
 }
 
-QString DriverStation::getStatus() {
-    if (m_manager->protocolIsValid()) {
-        if (m_manager->protocol()->robotCommunication()
-                && !m_manager->protocol()->robotCode())
-            return "No Robot Code";
-
-        return DS_GetControlModeString (m_manager->protocol()->controlMode());
-    }
-
-    return DS_GetControlModeString (kControlNoCommunication);
-}
-
 void DriverStation::updateStatus (bool ignored) {
     Q_UNUSED (ignored);
     emit robotStatusChanged (getStatus());
 }
 
 void DriverStation::onControlModeChanged (DS_ControlMode mode) {
-    if (!canBeEnabled() || mode == kControlDisabled)
+    if (mode == kControlEmergencyStop
+            || mode == kControlDisabled
+            || mode == kControlNoCommunication)
         m_elapsedTime->stop();
 
     else
         m_elapsedTime->reset();
 
     emit robotStatusChanged (getStatus());
+}
+
+void DriverStation::playEndGame() {
+    QSound::play (":/LibDS/Start of End Game_normalized.wav");
+}
+
+void DriverStation::playMatchEnd() {
+    QSound::play (":/LibDS/Match End_normalized.wav");
+}
+
+void DriverStation::playTeleopStart() {
+    QSound::play (":/LibDS/Start Teleop_normalized.wav");
+}
+
+void DriverStation::playAutonomousStart() {
+    QSound::play (":/LibDS/Start Auto_normalized.wav");
 }

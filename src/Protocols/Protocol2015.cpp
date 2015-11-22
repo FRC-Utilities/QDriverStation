@@ -22,9 +22,9 @@
 
 #include "LibDS/Protocols/Protocol2015.h"
 
-#define dPcmPath "/tmp/frc_versions/PCM-0-versions.ini"
-#define dPdpPath "/tmp/frc_versions/PDP-0-versions.ini"
-#define dLibPath "/tmp/frc_versions/FRC_Lib_Version.ini"
+#define d_PcmPath "/tmp/frc_versions/PCM-0-versions.ini"
+#define d_PdpPath "/tmp/frc_versions/PDP-0-versions.ini"
+#define d_LibPath "/tmp/frc_versions/FRC_Lib_Version.ini"
 
 enum ControlModes {
     pControlTest = 0x05,
@@ -127,9 +127,9 @@ void DS_Protocol2015::resetProtocol() {
 
 void DS_Protocol2015::downloadRobotInformation() {
     QString host = "FTP_://" + robotAddress();
-    m_manager.get (QNetworkRequest (host + dLibPath));
-    m_manager.get (QNetworkRequest (host + dPcmPath));
-    m_manager.get (QNetworkRequest (host + dPdpPath));
+    m_manager.get (QNetworkRequest (host + d_LibPath));
+    m_manager.get (QNetworkRequest (host + d_PcmPath));
+    m_manager.get (QNetworkRequest (host + d_PdpPath));
 }
 
 void DS_Protocol2015::readRobotData (QByteArray data) {
@@ -182,7 +182,7 @@ void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply) {
     if (data.isEmpty() || url.isEmpty())
         return;
 
-    else if (url.contains (dPcmPath, Qt::CaseInsensitive)) {
+    else if (url.contains (d_PcmPath, Qt::CaseInsensitive)) {
         QString version;
         QString key = "currentVersion";
 
@@ -194,7 +194,7 @@ void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply) {
         emit pcmVersionChanged (version);
     }
 
-    else if (url.contains (dPdpPath, Qt::CaseInsensitive)) {
+    else if (url.contains (d_PdpPath, Qt::CaseInsensitive)) {
         QString version;
         QString key = "currentVersion";
 
@@ -206,7 +206,7 @@ void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply) {
         emit pdpVersionChanged (version);
     }
 
-    else if (url.contains (dLibPath, Qt::CaseInsensitive))
+    else if (url.contains (d_LibPath, Qt::CaseInsensitive))
         emit libVersionChanged (data);
 
     delete reply;

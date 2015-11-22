@@ -30,6 +30,7 @@ QT += qml
 QT += core
 QT += network
 QT += widgets
+QT += multimedia
 
 CONFIG += c++11
 
@@ -67,3 +68,5 @@ SOURCES += \
     $$PWD/src/Core/Discovery/Discovery.cpp \
     $$PWD/src/Core/Discovery/MDNSResponder.cpp \
     $$PWD/src/Protocols/Protocol2015.cpp
+
+RESOURCES += $$PWD/sounds/libds-sounds.qrc
