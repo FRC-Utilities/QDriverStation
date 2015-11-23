@@ -49,14 +49,14 @@ class SDL_Layer : public QObject {
 
   public slots:
     /**
-     * Returns the number of hats that the selected \a joystick has
-     */
-    int getNumHats (int js);
-
-    /**
      * Returns the number of axes that the selected \a joystick has
      */
     int getNumAxes (int js);
+
+    /**
+     * Returns the number of hats that the selected \a joystick has
+     */
+    int getNumHats (int js);
 
     /**
      * Returns the number of buttons that the selected \a joystick has

@@ -73,13 +73,13 @@ MainWindow::MainWindow() {
 
     connectSlots();
     configureWidgetAppearance();
-    setTeamNumber (InitTasks::getTeamNumber());
-
-    InitTasks::executeFirstRunTasks();
-    DriverStation::getInstance()->init();
 
     readSettings();
     redrawWidgets();
+
+    setTeamNumber (InitTasks::getTeamNumber());
+    InitTasks::executeFirstRunTasks();
+    DriverStation::getInstance()->init();
 
     ui->WindowDocked->setChecked (Settings::get ("Docked", false).toBool());
     setWindowMode (ui->WindowDocked->isChecked() ? kDocked : kNormal);

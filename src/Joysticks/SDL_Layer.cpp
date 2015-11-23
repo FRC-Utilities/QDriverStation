@@ -59,12 +59,12 @@ SDL_Layer* SDL_Layer::getInstance() {
 // PROVIDE INFORMATION ABOUT A JOYSTICK
 //------------------------------------------------------------------------------
 
-int SDL_Layer::getNumHats (int js) {
-    return SDL_JoystickNumHats (SDL_JoystickOpen (js));
-}
-
 int SDL_Layer::getNumAxes (int js) {
     return SDL_JoystickNumAxes (SDL_JoystickOpen (js));
+}
+
+int SDL_Layer::getNumHats (int js) {
+    return SDL_JoystickNumHats (SDL_JoystickOpen (js));
 }
 
 int SDL_Layer::getNumButtons (int js) {
