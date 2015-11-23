@@ -214,6 +214,7 @@ void MainWindow::configureWidgetAppearance() {
     smallIconFont.setPointSize  (centralWidget()->font().pointSize() * 1.2);
     largeIconFont.setPointSize  (centralWidget()->font().pointSize() * 3.5);
     ui->PlugIcon->setFont       (smallIconFont);
+    ui->AppIcon->setFont        (largeIconFont);
     ui->CanIcon->setFont        (largeIconFont);
     ui->VoltageIcon->setFont    (largeIconFont);
     ui->NoJoystickIcon->setFont (largeIconFont);
@@ -234,7 +235,6 @@ void MainWindow::configureWidgetAppearance() {
     QFont boldFont;
     boldFont.setBold          (true);
     boldFont.setPointSize     (boldFont.pointSize() * 1.4);
-    ui->AppName->setFont      (boldFont);
     ui->VoltageLabel->setFont (boldFont);
 
     /* Configure the status label font */
@@ -249,24 +249,23 @@ void MainWindow::configureWidgetAppearance() {
     ui->DisableButton->setFont (statusFont);
 
     /* Configure the 'About' tab */
-    ui->AppName->setText (AssemblyInfo::name());
     ui->DsVersion->setText (AssemblyInfo::version());
-    ui->AppVersion->setText (QString ("%1 (%2)")
-                             .arg (AssemblyInfo::version())
-                             .arg (AssemblyInfo::buildDateTime()));
-
-    /* Configure the NetConsole */
-    ui->NetConsoleEdit->setFont (d_NetConsoleFont);
+    ui->AppName->setText (QString ("<h2>%1</h2>").arg (AssemblyInfo::name()));
+    ui->AppVersion->setText (QString ("Version %1").arg (AssemblyInfo::version()));
 
     /* We use this to resize the UI based on text size */
     QFontMetrics metrics (boldFont);
     QSize utilSize = QSize (metrics.height() * 2, metrics.height() * 2);
 
+    /* Configure the NetConsole */
+    ui->NetConsoleEdit->setFont (d_NetConsoleFont);
+    ui->RightTab->setMinimumWidth (utilSize.height() * 12);
+
     /* Configure the enable/disable buttons */
     ui->DisableButton->setStyleSheet (d_DisabledCheck);
     ui->EnableButton->setStyleSheet  (d_EnabledUncheck);
-    ui->DisableButton->setFixedWidth (utilSize.width() * 2.4);
-    ui->EnableButton->setFixedWidth  (utilSize.width() * 2.4);
+    ui->DisableButton->setFixedWidth (utilSize.width() * 2.2);
+    ui->EnableButton->setFixedWidth  (utilSize.width() * 2.2);
 
     /* Configure the application buttons */
     ui->KeysButton->setFixedSize     (utilSize);
@@ -294,11 +293,22 @@ void MainWindow::configureWidgetAppearance() {
 
     /* Configure spacing */
     int spacing = utilSize.height() * 0.10;
+    ui->PowerSpacer->setFixedHeight (spacing * 6.1);
     ui->UtilsWidget->layout()->setSpacing (spacing);
     ui->InfoFrame->layout()->setSpacing   (spacing * 1.5);
     ui->TeamSpacer->changeSize (1, spacing * 2,
                                 QSizePolicy::Minimum,
                                 QSizePolicy::MinimumExpanding);
+
+    /* Load license */
+    QFile license (":/texts/License.txt");
+    if (license.open (QFile::ReadOnly))
+        ui->License->setPlainText (QString::fromUtf8 (license.readAll()));
+
+    /* Load authors */
+    QFile authors (":/texts/Authors.html");
+    if (authors.open (QFile::ReadOnly))
+        ui->Authors->setText (QString::fromUtf8 (authors.readAll()));
 }
 
 void MainWindow::readSettings() {

@@ -1,10 +1,11 @@
 <RCC>
     <qresource prefix="/">
-        <file>icon.ico</file>
         <file>icons/Network.png</file>
         <file>fonts/Quicksand-Bold.otf</file>
         <file>fonts/Quicksand-Regular.otf</file>
         <file>fonts/Inconsolata.otf</file>
         <file>fonts/FontAwesome.otf</file>
+        <file>texts/Authors.html</file>
+        <file>texts/License.txt</file>
     </qresource>
 </RCC>

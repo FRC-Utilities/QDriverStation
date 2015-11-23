@@ -28,7 +28,7 @@
 #define d_Build   "4"
 #define d_State   "RC"
 #define d_Company "WinT 3794"
-#define d_Domain  "wint3794.org"
+#define d_Domain  "http://wint3794.org"
 
 QString AssemblyInfo::name() {
     return d_Name;
