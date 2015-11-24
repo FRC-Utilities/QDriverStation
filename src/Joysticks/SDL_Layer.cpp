@@ -29,6 +29,9 @@
 SDL_Layer* SDL_Layer::s_instance = Q_NULLPTR;
 
 SDL_Layer::SDL_Layer() {
+    m_time = 50;
+    m_tracker = -1;
+
     SDL_JoystickEventState (SDL_ENABLE);
     SDL_SetHint (SDL_HINT_XINPUT_ENABLED, "0");
     SDL_SetHint (SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
@@ -89,10 +92,6 @@ QStringList SDL_Layer::joystickList() {
 //------------------------------------------------------------------------------
 
 void SDL_Layer::init() {
-    m_time = 50;
-    m_cutOff = 0.2;
-    m_tracker = -1;
-
     QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (readSdlEvents()));
 }
 
