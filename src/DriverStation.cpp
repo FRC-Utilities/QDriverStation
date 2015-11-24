@@ -294,10 +294,8 @@ void DriverStation::setAlliance (DS_Alliance alliance) {
 }
 
 void DriverStation::setControlMode (DS_ControlMode mode) {
-    if (m_manager->protocolIsValid()) {
-        emit controlModeChanged (mode);
+    if (m_manager->protocolIsValid())
         m_manager->protocol()->setControlMode (mode);
-    }
 }
 
 void DriverStation::setCustomAddress (QString address) {

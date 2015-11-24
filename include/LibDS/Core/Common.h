@@ -74,19 +74,6 @@ struct LIB_DS_DECL DS_Joystick {
 };
 
 /**
- * Generates a byte array from the \a input data
- */
-template <class t>
-QByteArray  LIB_DS_DECL DS_ToBytes (t input) {
-    QByteArray data;
-
-    for (int i = sizeof (input); i != 0; --i)
-        data.append ((char) (input >> ((i - 1) * 8)) & 0xff);
-
-    return data;
-}
-
-/**
  * Returns the current timezone code by calculating the difference between
  * the system timezone and the UTC timezone
  */
