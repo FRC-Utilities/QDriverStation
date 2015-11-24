@@ -112,7 +112,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     /**
      * Reads the robot data and calls the appropiate functions to interpret it
      */
-    void readRobotPacket (QByteArray& data);
+    void readRobotPacket (QByteArray data);
 
     /**
      * Reboots the robot
@@ -289,7 +289,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      *
      * \note This function must be implemented by each protocol
      */
-    virtual int getControlCode (DS_ControlMode mode) = 0;
+    virtual char getControlCode (DS_ControlMode mode) = 0;
 
     /**
      * Returns the code used by the protocol to represent the selected
@@ -297,7 +297,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      *
      * \note This function must be implemented by each protocol
      */
-    virtual int getAllianceCode (DS_Alliance alliance) = 0;
+    virtual char getAllianceCode (DS_Alliance alliance) = 0;
 
     /**
      * Calculates the size of the \a joystick.
@@ -306,7 +306,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      *
      * \note This function must be implemented by each protocol
      */
-    virtual int getJoystickSize (DS_Joystick* joystick) = 0;
+    virtual char getJoystickSize (DS_Joystick* joystick) = 0;
 
     /**
      * Converts the input \a bits to bytes
@@ -332,11 +332,6 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * Represents the number of packets sent to the robot
      */
     int p_sentPackets;
-
-    /**
-     * Represents the minimum length of a robot packet of a protocol
-     */
-    int p_minPacketLength;
 
     /**
      * This variable should be set to \c true when the user code is loaded

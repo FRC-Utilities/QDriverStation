@@ -27,49 +27,47 @@
 #define d_LibPath "/tmp/frc_versions/FRC_Lib_Version.ini"
 
 enum ControlModes {
-    pControlTest = 0x05,
-    pControlDisabled = 0x01,
-    pControlAutonomous = 0x06,
-    pControlTeleoperated = 0x04,
-    pControlEmmergencyStop = 0x80,
-    pControlNoCommunication = 0x02
+    pControlTest            = 0x05u,
+    pControlDisabled        = 0x01u,
+    pControlAutonomous      = 0x06u,
+    pControlTeleoperated    = 0x04u,
+    pControlEmmergencyStop  = 0x80u,
+    pControlNoCommunication = 0x02u
 };
 
 enum Headers {
-    pHeaderTime = 0x0f,
-    pHeaderGeneral = 0x01,
-    pHeaderJoystick = 0x0c,
-    pHeaderTimezone = 0x10
+    pHeaderTime     = 0x0Fu,
+    pHeaderGeneral  = 0x01u,
+    pHeaderJoystick = 0x0Cu,
+    pHeaderTimezone = 0x10u
 };
 
 enum RobotStatus {
-    pStatusNormal = 0x10,
-    pStatusInvalid = 0x00,
-    pStatusRebootRio = 0x18,
-    pStatusRestartCode = 0x14
+    pStatusNormal      = 0x10u,
+    pStatusInvalid     = 0x00u,
+    pStatusRebootRio   = 0x18u,
+    pStatusRestartCode = 0x14u
 };
 
 enum ProgramStatus {
-    pProgramTest = 0x38,
-    pProgramNoCode = 0x00,
-    pProgramDisabled = 0x31,
-    pProgramAutonomous = 0x30,
-    pProgramRequestTime = 0x01,
-    pProgramTeleoperated = 0x32
+    pProgramTest         = 0x38u,
+    pProgramNoCode       = 0x00u,
+    pProgramDisabled     = 0x31u,
+    pProgramAutonomous   = 0x30u,
+    pProgramRequestTime  = 0x01u,
+    pProgramTeleoperated = 0x32u
 };
 
 enum Alliances {
-    pRed1 = 0x00,
-    pRed2 = 0x01,
-    pRed3 = 0x03,
-    pBlue1 = 0x04,
-    pBlue2 = 0x05,
-    pBlue3 = 0x06
+    pRed1  = 0x00u,
+    pRed2  = 0x01u,
+    pRed3  = 0x03u,
+    pBlue1 = 0x04u,
+    pBlue2 = 0x05u,
+    pBlue3 = 0x06u
 };
 
 DS_Protocol2015::DS_Protocol2015() {
-    p_minPacketLength = 8;
-
     reset();
     connect (&m_manager, SIGNAL (finished           (QNetworkReply*)),
              this,       SLOT   (onDownloadFinished (QNetworkReply*)));
@@ -96,7 +94,8 @@ QByteArray DS_Protocol2015::getClientPacket() {
 
     /* Add ping data */
     p_sentPackets += 1;
-    data.append (DS_ToBytes (p_sentPackets));
+    data.append (p_sentPackets / 0xFF);
+    data.append (p_sentPackets - (p_sentPackets / 0xFF));
 
     /* Add the client header */
     data.append (pHeaderGeneral);
@@ -105,7 +104,7 @@ QByteArray DS_Protocol2015::getClientPacket() {
     data.append (getControlCode (controlMode()));
 
     /* Add the current status (normal, reboot, etc) */
-    data.append (p_robotCommunication ? p_status : (char) pStatusInvalid);
+    data.append (p_robotCommunication ? p_status : pStatusInvalid);
 
     /* Add the current alliance */
     data.append (getAllianceCode (alliance()));
@@ -279,7 +278,8 @@ QByteArray DS_Protocol2015::generateTimezoneData() {
 
     /* Add current date/time */
     data.append (pHeaderTime);
-    data.append (DS_ToBytes (time.msec()));
+    data.append (time.msec() / 0xFF);
+    data.append (time.msec() - (time.msec() / 0xFF));
     data.append (time.second());
     data.append (time.minute());
     data.append (time.hour());
@@ -293,31 +293,6 @@ QByteArray DS_Protocol2015::generateTimezoneData() {
     data.append (DS_GetTimezoneCode());
 
     return data;
-}
-
-int DS_Protocol2015::getControlCode (DS_ControlMode mode) {
-    switch (mode) {
-    case kControlTest:
-        return pControlTest;
-        break;
-    case kControlTeleoperated:
-        return pControlTeleoperated;
-        break;
-    case kControlDisabled:
-        return pControlDisabled;
-        break;
-    case kControlAutonomous:
-        return pControlAutonomous;
-        break;
-    case kControlEmergencyStop:
-        return pControlEmmergencyStop;
-        break;
-    case kControlNoCommunication:
-        return pControlNoCommunication;
-        break;
-    }
-
-    return pControlDisabled;
 }
 
 DS_ControlMode DS_Protocol2015::getControlMode (int byte) {
@@ -342,7 +317,32 @@ DS_ControlMode DS_Protocol2015::getControlMode (int byte) {
     return kControlEmergencyStop;
 }
 
-int DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
+char DS_Protocol2015::getControlCode (DS_ControlMode mode) {
+    switch (mode) {
+    case kControlTest:
+        return pControlTest;
+        break;
+    case kControlTeleoperated:
+        return pControlTeleoperated;
+        break;
+    case kControlDisabled:
+        return pControlDisabled;
+        break;
+    case kControlAutonomous:
+        return pControlAutonomous;
+        break;
+    case kControlEmergencyStop:
+        return pControlEmmergencyStop;
+        break;
+    case kControlNoCommunication:
+        return pControlNoCommunication;
+        break;
+    }
+
+    return pControlDisabled;
+}
+
+char DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
     switch (alliance) {
     case kAllianceRed1:
         return pRed1;
@@ -367,7 +367,7 @@ int DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
     return pRed1;
 }
 
-int DS_Protocol2015::getJoystickSize (DS_Joystick* joystick) {
+char DS_Protocol2015::getJoystickSize (DS_Joystick* joystick) {
     return  5
             + (joystick->numAxes > 0 ? joystick->numAxes : 0)
             + (joystick->numButtons / 8)

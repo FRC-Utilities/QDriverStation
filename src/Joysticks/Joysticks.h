@@ -42,7 +42,7 @@ struct GM_Joystick {
  */
 struct GM_Hat {
     int id;               /**< The raw ID of the hat */
-    short angle;          /**< The pressed angle of the hat */
+    int angle;            /**< The pressed angle of the hat */
     GM_Joystick joystick; /**< The joystick that the hat belongs to */
 };
 
