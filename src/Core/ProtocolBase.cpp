@@ -23,86 +23,109 @@
 #include "LibDS/Core/ProtocolBase.h"
 
 DS_ProtocolBase::DS_ProtocolBase() {
-    p_team = 0;
-    p_sentPackets = 0;
-    p_robotCode = false;
-    p_alliance = kAllianceRed1;
-    p_robotCommunication = false;
-    p_robotAddress = QString ("");
-    p_controlMode = kControlNoCommunication;
+    m_team = 0;
+    m_sentPackets = 0;
+    m_robotCode = false;
+    m_alliance = kAllianceRed1;
+    m_robotCommunication = false;
+    m_robotAddress = QString ("");
+    m_controlMode = kControlNoCommunication;
 
-    p_joysticks = new QList<DS_Joystick*>;
+    m_joysticks = new QList<DS_Joystick*>;
 
-    connect (&p_watchdog, SIGNAL (timeout()), this, SLOT (reset()));
-    connect (this, SIGNAL (packetReceived()), &p_watchdog, SLOT (restart()));
+    connect (&m_watchdog, SIGNAL (timeout()), this, SLOT (reset()));
+    connect (this, SIGNAL (packetReceived()), &m_watchdog, SLOT (restart()));
 }
 
 DS_ProtocolBase::~DS_ProtocolBase() {
-    delete p_joysticks;
+    delete m_joysticks;
+}
+
+int DS_ProtocolBase::team() const {
+    return m_team;
+}
+
+int DS_ProtocolBase::status() const {
+    return m_status;
 }
 
 bool DS_ProtocolBase::robotCode() const {
-    return p_robotCode;
+    return m_robotCode;
+}
+
+int DS_ProtocolBase::sentPackets() const {
+    return m_sentPackets;
 }
 
 bool DS_ProtocolBase::isConnected() const {
-    return p_robotCommunication;
+    return m_robotCommunication;
+}
+
+bool DS_ProtocolBase::sendDateTime() const {
+    return m_sendDateTime;
 }
 
 DS_Alliance DS_ProtocolBase::alliance() const {
-    return p_alliance;
+    return m_alliance;
 }
 
 DS_ControlMode DS_ProtocolBase::controlMode() const {
-    return p_controlMode;
+    return m_controlMode;
+}
+
+QList<DS_Joystick*>* DS_ProtocolBase::joysticks() const {
+    return m_joysticks;
 }
 
 QString DS_ProtocolBase::radioAddress() {
-    return p_radioAddress.isEmpty() ? defaultRadioAddress() : p_radioAddress;
+    return m_radioAddress.isEmpty() ? defaultRadioAddress() : m_radioAddress;
 }
 
 QString DS_ProtocolBase::robotAddress() {
-    return p_robotAddress.isEmpty() ? defaultRobotAddress() : p_robotAddress;
+    return m_robotAddress.isEmpty() ? defaultRobotAddress() : m_robotAddress;
+}
+
+QByteArray DS_ProtocolBase::getClientPacket() {
+    m_sentPackets += 1;
+    return generateClientPacket();
 }
 
 void DS_ProtocolBase::reset() {
-    p_robotCode = false;
-    p_sendDateTime = false;
-    p_robotCommunication = false;
+    updateRobotCode (false);
+    updateSendDateTime (false);
+    updateCommunications (false);
 
-    emit codeChanged (p_robotCode);
     emit voltageChanged (QString (""));
-    emit communicationsChanged (p_robotCommunication);
 
-    p_discovery.getIp (robotAddress(),
+    m_discovery.getIp (robotAddress(),
                        this, SLOT (onAddressResolved (QString, QString)));
 
     resetProtocol();
 }
 
 void DS_ProtocolBase::setTeamNumber (int team) {
-    p_team = team;
+    m_team = team;
     emit robotAddressChanged (robotAddress());
 }
 
 void DS_ProtocolBase::setRobotAddress (QString address) {
-    p_robotAddress = address;
+    m_robotAddress = address;
     emit robotAddressChanged (robotAddress());
 }
 
 void DS_ProtocolBase::setAlliance (DS_Alliance alliance) {
-    p_alliance = alliance;
+    m_alliance = alliance;
 }
 
 void DS_ProtocolBase::setControlMode (DS_ControlMode mode) {
-    if (p_controlMode != kControlEmergencyStop) {
-        p_controlMode = p_robotCommunication ? mode : kControlNoCommunication;
+    if (m_controlMode != kControlEmergencyStop) {
+        m_controlMode = isConnected() ? mode : kControlNoCommunication;
         emit controlModeChanged (controlMode());
     }
 }
 
 void DS_ProtocolBase::setJoysticks (QList<DS_Joystick*>* joysticks) {
-    p_joysticks = joysticks;
+    m_joysticks = joysticks;
 }
 
 void DS_ProtocolBase::readRobotPacket (QByteArray data) {
@@ -122,4 +145,38 @@ QByteArray DS_ProtocolBase::bitsToBytes (QBitArray bits) {
         bytes [i / 8] = (bytes.at (i / 8) | ((bits [i] ? 1 : 0) << (i % 8)));
 
     return bytes;
+}
+
+void DS_ProtocolBase::updateStatus (int status) {
+    m_status = status;
+}
+
+void DS_ProtocolBase::updateRobotCode (bool available) {
+    m_robotCode = available;
+    emit codeChanged (m_robotCode);
+}
+
+void DS_ProtocolBase::updateSendDateTime (bool sendDT) {
+    m_sendDateTime = sendDT;
+}
+
+void DS_ProtocolBase::updateCommunications (bool available) {
+    m_robotCommunication = available;
+    emit communicationsChanged (m_robotCommunication);
+}
+
+void DS_ProtocolBase::updateVoltage (char major, char minor) {
+    QString maj = QString::number (major);
+    QString min = QString::number (minor);
+
+    maj = maj.replace ("-", "");
+    min = min.replace ("-", "");
+
+    if (min.length() == 1)
+        min = QString ("0%1").arg (min);
+
+    else if (min.length() > 2)
+        min = QString (min.at (0)) + QString (min.at (1));
+
+    emit voltageChanged (QString ("%1.%2").arg (maj, min));
 }

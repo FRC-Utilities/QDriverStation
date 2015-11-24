@@ -38,12 +38,12 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_ProtocolBase {
   public:
     explicit DS_Protocol2015();
 
+    int robotPort();
+    int clientPort();
+
   public slots:
     void reboot();
     void restartCode();
-    int robotPort();
-    int clientPort();
-    QByteArray getClientPacket();
 
   private slots:
     void resetProtocol();
@@ -54,6 +54,7 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_ProtocolBase {
   private:
     QString defaultRadioAddress();
     QString defaultRobotAddress();
+    QByteArray generateClientPacket();
     QByteArray generateJoystickData();
     QByteArray generateTimezoneData();
     DS_ControlMode getControlMode (int byte);
