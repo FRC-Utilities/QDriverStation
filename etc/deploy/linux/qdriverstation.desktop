@@ -5,5 +5,5 @@ Exec=qdriverstation
 Terminal=false
 Type=Application
 StartupNotify=true
-Categories=Utility;Network;Joystick;Game;Robots;FRC;
+Categories=Development;Education;Qt;Robotics;Utility;
 Icon=qdriverstation
