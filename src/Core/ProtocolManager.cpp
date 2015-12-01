@@ -52,8 +52,8 @@ void DS_ProtocolManager::setProtocol (DS_ProtocolBase* protocol) {
 
         connect (m_protocol, SIGNAL (codeChanged           (bool)),
                  this,       SIGNAL (codeChanged           (bool)));
-        connect (m_protocol, SIGNAL (communicationsChanged (bool)),
-                 this,       SIGNAL (communicationsChanged (bool)));
+        connect (m_protocol, SIGNAL (communicationsChanged (DS_CommunicationStatus)),
+                 this,       SIGNAL (communicationsChanged (DS_CommunicationStatus)));
         connect (m_protocol, SIGNAL (robotAddressChanged   (QString)),
                  this,       SIGNAL (robotAddressChanged   (QString)));
         connect (m_protocol, SIGNAL (controlModeChanged    (DS_ControlMode)),
@@ -71,8 +71,7 @@ void DS_ProtocolManager::clearJoysticks() {
     m_joysticks->clear();
 }
 
-void DS_ProtocolManager::addJoystick (int axes, int buttons,
-                                      int povHats) {
+void DS_ProtocolManager::addJoystick (int axes, int buttons, int povHats) {
 
     DS_Joystick* js = new DS_Joystick;
 
@@ -96,14 +95,12 @@ void DS_ProtocolManager::addJoystick (int axes, int buttons,
     m_joysticks->append (js);
 }
 
-void DS_ProtocolManager::updateJoystickPovHat (int js, int hat,
-        int angle) {
+void DS_ProtocolManager::updateJoystickPovHat (int js, int hat, int angle) {
     if (joystickIsValid (js))
         m_joysticks->at (js)->povHats [hat] = angle;
 }
 
-void DS_ProtocolManager::updateJoystickAxis (int js, int axis,
-        double value) {
+void DS_ProtocolManager::updateJoystickAxis (int js, int axis, double value) {
     if (joystickIsValid (js))
         m_joysticks->at (js)->axes [axis] = value;
 }

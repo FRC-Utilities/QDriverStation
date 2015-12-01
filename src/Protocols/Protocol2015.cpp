@@ -34,7 +34,7 @@ enum ControlModes {
     pControlDisabled        = 0x01u, /**< Robot is idle */
     pControlAutonomous      = 0x06u, /**< Robot takes over the world */
     pControlTeleoperated    = 0x04u, /**< User moves the robot */
-    pControlEmmergencyStop  = 0x80u, /**< Forced robot stop */
+    pControlEmergencyStop   = 0x80u, /**< Forced robot stop */
     pControlNoCommunication = 0x02u  /**< Trying to connect with robot... */
 };
 
@@ -61,7 +61,7 @@ enum RobotStatus {
 /**
  * Echo codes from the robot and (probably) software status
  */
-enum ProgramStatus {
+enum ProgramTrace {
     pProgramTest            = 0x38u, /**< Control mode confirmation code */
     pProgramNoCode          = 0x00u, /**< Not sure if this is correct */
     pProgramDisabled        = 0x31u, /**< Control mode confirmation code */
@@ -97,6 +97,14 @@ int DS_Protocol2015::clientPort() {
     return 1150;
 }
 
+QString DS_Protocol2015::defaultRadioAddress() {
+    return DS_GetStaticIp (team(), 1);
+}
+
+QString DS_Protocol2015::defaultRobotAddress() {
+    return QString ("roboRIO-%1.local").arg (team());
+}
+
 void DS_Protocol2015::reboot() {
     updateStatus (pStatusRebootRio);
 }
@@ -120,7 +128,7 @@ void DS_Protocol2015::readRobotData (QByteArray data) {
     /* We just have connected to the robot */
     if (!isConnected()) {
         downloadRobotInformation();
-        updateCommunications (true);
+        updateCommunications (kFull);
         setControlMode (kControlDisabled);
     }
 
@@ -181,14 +189,6 @@ void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply) {
         emit libVersionChanged (data);
 
     delete reply;
-}
-
-QString DS_Protocol2015::defaultRadioAddress() {
-    return DS_GetStaticIp (team(), 1);
-}
-
-QString DS_Protocol2015::defaultRobotAddress() {
-    return QString ("roboRIO-%1.local").arg (team());
 }
 
 QByteArray DS_Protocol2015::generateClientPacket() {
@@ -271,7 +271,7 @@ QByteArray DS_Protocol2015::generateTimezoneData() {
     QByteArray data;
 
     /* Add size (always 11) */
-    data.append (0x0B);
+    data.append ((char) 0x0B);
 
     /* Get current date/time */
     QDateTime dt = QDateTime::currentDateTime();
@@ -280,14 +280,14 @@ QByteArray DS_Protocol2015::generateTimezoneData() {
 
     /* Add current date/time */
     data.append (pHeaderTime);
-    data.append (time.msec() / 0xFF);
-    data.append (time.msec() - (time.msec() / 0xFF));
+    data.append (time.msec() / 255);
+    data.append (time.msec() - (time.msec() / 255));
     data.append (time.second());
     data.append (time.minute());
     data.append (time.hour());
     data.append (date.day());
     data.append (date.month());
-    data.append (date.year() - 0x76C);
+    data.append (date.year() - 1900);
 
     /* Add timezone data */
     data.append (DS_GetTimezoneCode().length() + 1);
@@ -334,7 +334,7 @@ char DS_Protocol2015::getControlCode (DS_ControlMode mode) {
         return pControlAutonomous;
         break;
     case kControlEmergencyStop:
-        return pControlEmmergencyStop;
+        return pControlEmergencyStop;
         break;
     case kControlNoCommunication:
         return pControlNoCommunication;

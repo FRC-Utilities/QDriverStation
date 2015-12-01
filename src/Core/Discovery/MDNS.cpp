@@ -42,7 +42,7 @@ void MDNS::query (QString domain) {
     domain = domain.replace (".local",  "");
 
     /* Check that domain length is valid */
-    if (domain.length() > 0xff)
+    if (domain.length() > 0xFF)
         return;
 
     /* Create header */

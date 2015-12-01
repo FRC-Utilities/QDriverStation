@@ -26,8 +26,8 @@ DS_ProtocolBase::DS_ProtocolBase() {
     m_team = 0;
     m_sentPackets = 0;
     m_robotCode = false;
+    m_commStatus = kFailing;
     m_alliance = kAllianceRed1;
-    m_robotCommunication = false;
     m_robotAddress = QString ("");
     m_controlMode = kControlNoCommunication;
 
@@ -58,7 +58,7 @@ int DS_ProtocolBase::sentPackets() const {
 }
 
 bool DS_ProtocolBase::isConnected() const {
-    return m_robotCommunication;
+    return m_commStatus == kFull;
 }
 
 bool DS_ProtocolBase::sendDateTime() const {
@@ -93,7 +93,7 @@ QByteArray DS_ProtocolBase::getClientPacket() {
 void DS_ProtocolBase::reset() {
     updateRobotCode (false);
     updateSendDateTime (false);
-    updateCommunications (false);
+    updateCommunications (kFailing);
 
     emit voltageChanged (QString (""));
 
@@ -134,8 +134,10 @@ void DS_ProtocolBase::readRobotPacket (QByteArray data) {
 }
 
 void DS_ProtocolBase::onAddressResolved (QString address, QString ip) {
-    if (address.toLower() == robotAddress().toLower())
+    if (address.toLower() == robotAddress().toLower()) {
         setRobotAddress (ip);
+        updateCommunications (kPartial);
+    }
 }
 
 QByteArray DS_ProtocolBase::bitsToBytes (QBitArray bits) {
@@ -160,9 +162,9 @@ void DS_ProtocolBase::updateSendDateTime (bool sendDT) {
     m_sendDateTime = sendDT;
 }
 
-void DS_ProtocolBase::updateCommunications (bool available) {
-    m_robotCommunication = available;
-    emit communicationsChanged (m_robotCommunication);
+void DS_ProtocolBase::updateCommunications (DS_CommunicationStatus status) {
+    m_commStatus = status;
+    emit communicationsChanged (m_commStatus);
 }
 
 void DS_ProtocolBase::updateVoltage (char major, char minor) {

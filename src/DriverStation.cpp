@@ -46,14 +46,14 @@ DriverStation::DriverStation() {
     /* Update internal values and notify object on robot status events */
     connect (m_manager, SIGNAL (codeChanged           (bool)),
              this,      SLOT   (updateStatus          (bool)));
-    connect (m_manager, SIGNAL (communicationsChanged (bool)),
-             this,      SLOT   (updateStatus          (bool)));
+    connect (m_manager, SIGNAL (communicationsChanged (DS_CommunicationStatus)),
+             this,      SLOT   (updateStatus          (DS_CommunicationStatus)));
     connect (m_manager, SIGNAL (controlModeChanged    (DS_ControlMode)),
              this,      SLOT   (onControlModeChanged  (DS_ControlMode)));
     connect (m_manager, SIGNAL (codeChanged           (bool)),
              this,      SIGNAL (codeChanged           (bool)));
-    connect (m_manager, SIGNAL (communicationsChanged (bool)),
-             this,      SIGNAL (communicationsChanged (bool)));
+    connect (m_manager, SIGNAL (communicationsChanged (DS_CommunicationStatus)),
+             this,      SIGNAL (communicationsChanged (DS_CommunicationStatus)));
     connect (m_manager, SIGNAL (controlModeChanged    (DS_ControlMode)),
              this,      SIGNAL (controlModeChanged    (DS_ControlMode)));
     connect (m_manager, SIGNAL (diskUsageChanged      (int)),
@@ -64,7 +64,7 @@ DriverStation::DriverStation() {
              this,      SIGNAL (voltageChanged        (QString)));
 
     /* Stop timer when the communications status changes */
-    connect (m_manager,     SIGNAL (communicationsChanged (bool)),
+    connect (m_manager,     SIGNAL (communicationsChanged (DS_CommunicationStatus)),
              m_elapsedTime, SLOT   (stop()));
 
     /* Robot information has changed */
@@ -92,8 +92,8 @@ DriverStation::DriverStation() {
     /* Send and read robot packets */
     connect (m_client,  SIGNAL (dataReceived     (QByteArray)),
              this,      SLOT   (readRobotPackets (QByteArray)));
-    connect (DS_Timers::getInstance(), SIGNAL (timeout20()),
-             this,                     SLOT   (sendRobotPackets()));
+    connect (DS_Timers::getInstance(), SIGNAL    (timeout20()),
+             this,                     SLOT      (sendRobotPackets()));
 }
 
 DriverStation::~DriverStation() {
@@ -146,6 +146,13 @@ QString DriverStation::radioAddress() {
 QString DriverStation::robotAddress() {
     if (m_manager->protocolIsValid())
         return m_manager->protocol()->robotAddress();
+
+    return "";
+}
+
+QString DriverStation::defaultRobotAddress() {
+    if (m_manager->protocolIsValid())
+        return m_manager->protocol()->defaultRobotAddress();
 
     return "";
 }
@@ -357,9 +364,9 @@ void DriverStation::resetInternalValues() {
     m_elapsedTime->stop();
 
     emit codeChanged (false);
-    emit communicationsChanged (false);
     emit voltageChanged (QString (""));
     emit elapsedTimeChanged ("00:00.0");
+    emit communicationsChanged (kFailing);
 }
 
 void DriverStation::readRobotPackets (QByteArray robotResponse) {
@@ -368,6 +375,11 @@ void DriverStation::readRobotPackets (QByteArray robotResponse) {
 }
 
 void DriverStation::updateStatus (bool ignored) {
+    Q_UNUSED (ignored);
+    emit robotStatusChanged (getStatus());
+}
+
+void DriverStation::updateStatus (DS_CommunicationStatus ignored) {
     Q_UNUSED (ignored);
     emit robotStatusChanged (getStatus());
 }

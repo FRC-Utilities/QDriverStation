@@ -40,6 +40,8 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_ProtocolBase {
 
     int robotPort();
     int clientPort();
+    QString defaultRadioAddress();
+    QString defaultRobotAddress();
 
   public slots:
     void reboot();
@@ -52,8 +54,6 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_ProtocolBase {
     void onDownloadFinished (QNetworkReply* reply);
 
   private:
-    QString defaultRadioAddress();
-    QString defaultRobotAddress();
     QByteArray generateClientPacket();
     QByteArray generateJoystickData();
     QByteArray generateTimezoneData();

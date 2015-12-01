@@ -95,6 +95,11 @@ class LIB_DS_DECL DriverStation : public QObject {
     Q_INVOKABLE QString robotAddress();
 
     /**
+     * Returns the default network address of the robot
+     */
+    Q_INVOKABLE QString defaultRobotAddress();
+
+    /**
      * Returns the current control mode of the robot
      */
     Q_INVOKABLE DS_ControlMode controlMode();
@@ -267,10 +272,15 @@ class LIB_DS_DECL DriverStation : public QObject {
     void cpuUsageChanged (int percent);
 
     /**
-     * Emitted when the client detects that the availability of the robot
-     * has changed (eg. when the robot is powered off with the breaker)
+     * Emitted when the state of the network communications with the robot
+     * has been changed. Unlike the other signals with a \c bool value, this
+     * signal contains more information about the communication status, such
+     * as:
+     *     - The robot responds ping requests, but does not respond to DS
+     *     - The robot responds to ping requests and DS
+     *     - The robot does not respond to ping requests nor the DS
      */
-    void communicationsChanged (bool available);
+    void communicationsChanged (DS_CommunicationStatus);
 
     /**
      * Emitted when the client detects that the availability of the robot radio
@@ -421,6 +431,14 @@ class LIB_DS_DECL DriverStation : public QObject {
      * of the robot.
      */
     void updateStatus (bool ignored);
+
+    /**
+     * Notifies other object when the status of the user code or the robot
+     * communications changed. The \a ignore_me variable is ignored because
+     * we use the \c getStatus() function to construct the status string
+     * of the robot.
+     */
+    void updateStatus (DS_CommunicationStatus ignored);
 
     /**
      * Updates the elapsed time when the control mode is changed
