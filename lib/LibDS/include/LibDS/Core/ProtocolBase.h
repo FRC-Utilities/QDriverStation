@@ -29,9 +29,8 @@
 #include <QNetworkReply>
 
 #include "LibDS/Core/Common.h"
-#include "Watchdog.h"
-
-#include "Discovery/Discovery.h"
+#include "LibDS/Core/Watchdog.h"
+#include "LibDS/Core/Discovery/Discovery.h"
 
 /**
  * \class DS_Protocol
@@ -121,6 +120,20 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      */
     virtual int clientPort() = 0;
 
+    /**
+     * Returns the default radio address
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual QString defaultRadioAddress() = 0;
+
+    /**
+     * Returns the default robot address
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual QString defaultRobotAddress() = 0;
+
   public slots:
     /**
      * Resets the internal values of the protocol and emits the appropiate
@@ -182,9 +195,14 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
 
     /**
      * Emitted when the state of the network communications with the robot
-     * has been changed
+     * has been changed. Unlike the other signals with a \c bool value, this
+     * signal contains more information about the communication status, such
+     * as:
+     *     - The robot responds ping requests, but does not respond to DS
+     *     - The robot responds to ping requests and DS
+     *     - The robot does not respond to ping requests nor the DS
      */
-    void communicationsChanged (bool);
+    void communicationsChanged (DS_CommunicationStatus);
 
     /**
      * Emitted when the protocol detects that the robot voltage has changed
@@ -270,20 +288,6 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
 
   protected:
     /**
-     * Returns the default radio address
-     *
-     * \note This function must be implemented by each protocol
-     */
-    virtual QString defaultRadioAddress() = 0;
-
-    /**
-     * Returns the default robot address
-     *
-     * \note This function must be implemented by each protocol
-     */
-    virtual QString defaultRobotAddress() = 0;
-
-    /**
      * Uses the joystick input information to generate a data array to be
      * sent along the client packet
      *
@@ -362,7 +366,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     /**
      * Changes the state of the communications and emits the appropiate signals
      */
-    void updateCommunications (bool available);
+    void updateCommunications (DS_CommunicationStatus status);
 
     /**
      * 'Calculcates' the voltage from the values of the \a major and \a minor
@@ -396,10 +400,9 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     bool m_robotCode;
 
     /**
-     * This variable should be set to \c true when the robot responds to
-     * the packets that we send to the robot
+     * Holds the communication status of the robot
      */
-    bool m_robotCommunication;
+    DS_CommunicationStatus m_commStatus;
 
     /**
      * If set to \c true, you should send the current date time data

@@ -265,7 +265,7 @@ class MainWindow : public SmartWindow {
      * Changes the appearance of the 'Communications' LED based on the value of
      * the \a available parameter
      */
-    void onCommunicationsChanged (bool available);
+    void onCommunicationsChanged (DS_CommunicationStatus status);
 
     /**
      * @internal

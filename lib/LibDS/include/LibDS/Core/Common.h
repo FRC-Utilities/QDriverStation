@@ -38,12 +38,12 @@
  * importance of defining how the robot will behave.
  */
 enum DS_ControlMode {
-    kControlTest,
-    kControlTeleoperated,
-    kControlDisabled,
-    kControlAutonomous,
-    kControlEmergencyStop,
-    kControlNoCommunication,
+    kControlTest,           /**< Individual actuators can be moved */
+    kControlDisabled,       /**< Robot is idle */
+    kControlAutonomous,     /**< Robot takes over the world */
+    kControlTeleoperated,   /**< User moves the robot */
+    kControlEmergencyStop,  /**< Forced robot stop */
+    kControlNoCommunication /**< Trying to connect with robot... */
 };
 
 /**
@@ -52,12 +52,21 @@ enum DS_ControlMode {
  * the robot program 'where it is' and communicate with the FMS correctly
  */
 enum DS_Alliance {
-    kAllianceRed1  = 0x00,
-    kAllianceRed2  = 0x01,
-    kAllianceRed3  = 0x02,
-    kAllianceBlue1 = 0x03,
-    kAllianceBlue2 = 0x04,
-    kAllianceBlue3 = 0x05
+    kAllianceRed1  = 0x00,  /** Red alliance, position 1 */
+    kAllianceRed2  = 0x01,  /** Red alliance, position 2 */
+    kAllianceRed3  = 0x02,  /** Red alliance, position 3 */
+    kAllianceBlue1 = 0x03,  /** Blue alliance, position 1 */
+    kAllianceBlue2 = 0x04,  /** Blue alliance, position 2 */
+    kAllianceBlue3 = 0x05   /** Blue alliance, position 3 */
+};
+
+/**
+ * Represents the current status of the communications
+ */
+enum DS_CommunicationStatus {
+    kFull    = 0x00,        /** The DS is communicating with the robot */
+    kPartial = 0x01,        /** The robot responds ping requests, but does not respond to DS */
+    kFailing = 0x02         /** The robot does not respond to ping requests */
 };
 
 /**

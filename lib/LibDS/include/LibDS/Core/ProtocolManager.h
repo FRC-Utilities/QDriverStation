@@ -107,9 +107,14 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
 
     /**
      * Emitted when the state of the network communications with the robot
-     * has been changed
+     * has been changed. Unlike the other signals with a \c bool value, this
+     * signal contains more information about the communication status, such
+     * as:
+     *     - The robot responds ping requests, but does not respond to DS
+     *     - The robot responds to ping requests and DS
+     *     - The robot does not respond to ping requests nor the DS
      */
-    void communicationsChanged (bool);
+    void communicationsChanged (DS_CommunicationStatus);
 
     /**
      * Emitted when the protocol detects that the robot voltage has changed

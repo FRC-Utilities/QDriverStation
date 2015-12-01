@@ -44,8 +44,8 @@
 /*
  * Much code, very mess, wow
  * -------------------------
- * This file is so long because it must deal with very specific UI components,
- * if you want to understand  something, I recommend you to go to the header
+ * This file is so long because it must deal with very specific UI components.
+ * If you want to understand  something, I recommend you to go to the header
  * file  and CTLR + Click a function/method that you are interested in.
  */
 
@@ -53,6 +53,14 @@
 #define d_DisabledCheck   "color: rgb(255, 8,  21); border-left: 0px;"
 #define d_EnabledUncheck  "color: rgb(0, 47, 2);"
 #define d_DisabledUncheck "color: rgb(43, 0, 0); border-left: 0px;"
+
+#define d_NormalStatusLED  \
+    "QPushButton { background-color: rgb(255, 37, 43); border: 0px; padding: 4px; }" \
+    "QPushButton:checked { background-color: rgb(33, 255, 43); }"
+
+#define d_PartialStatusLED  \
+    "QPushButton { background-color: rgb(255, 37, 43); border: 0px; padding: 4px; }" \
+    "QPushButton:checked { background-color: rgb(244, 255, 43); }"
 
 /*
  * The font used in the NetConsole text edit
@@ -114,8 +122,8 @@ void MainWindow::connectSlots() {
     m_ds = DriverStation::getInstance();
     connect (m_ds, SIGNAL (codeChanged (bool)),
              this, SLOT   (onCodeChanged (bool)));
-    connect (m_ds, SIGNAL (communicationsChanged (bool)),
-             this, SLOT   (onCommunicationsChanged (bool)));
+    connect (m_ds, SIGNAL (communicationsChanged (DS_CommunicationStatus)),
+             this, SLOT   (onCommunicationsChanged (DS_CommunicationStatus)));
     connect (m_ds, SIGNAL (radioChanged (bool)),
              this, SLOT   (onRadioChanged (bool)));
     connect (m_ds, SIGNAL (voltageChanged (QString)),
@@ -247,6 +255,11 @@ void MainWindow::configureWidgetAppearance() {
     ui->ElapsedTime->setFont   (statusFont);
     ui->EnableButton->setFont  (statusFont);
     ui->DisableButton->setFont (statusFont);
+
+    /* Configure status LEDs */
+    ui->Joysticks->setStyleSheet      (d_NormalStatusLED);
+    ui->RobotCode->setStyleSheet      (d_NormalStatusLED);
+    ui->Communications->setStyleSheet (d_NormalStatusLED);
 
     /* Configure the 'About' tab */
     ui->DsVersion->setText (AssemblyInfo::version());
@@ -544,9 +557,21 @@ void MainWindow::onCodeChanged (bool available) {
     ui->RobotCode->setChecked (available);
 }
 
-void MainWindow::onCommunicationsChanged (bool available) {
-    ui->RobotCheck->setChecked (available);
-    ui->Communications->setChecked (available);
+void MainWindow::onCommunicationsChanged (DS_CommunicationStatus status) {
+    ui->RobotCheck->setChecked (status == kFull);
+    ui->Communications->setChecked (status != kFailing);
+
+    /* Decide if we should use a green LED or a yellow LED */
+    switch (status) {
+    case kPartial:
+        ui->Communications->setStyleSheet (d_PartialStatusLED);
+        ui->Communications->setToolTip (tr ("Partial communication with robot"));
+        break;
+    case kFull:
+        ui->Communications->setStyleSheet (d_NormalStatusLED);
+        ui->Communications->setToolTip (tr ("Full communication with robot"));
+        break;
+    }
 
     onDisabledClicked();
 }

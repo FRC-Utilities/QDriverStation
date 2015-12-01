@@ -63,7 +63,7 @@ SettingsDialog::SettingsDialog() {
 
 void SettingsDialog::updatePlaceholder() {
     ui.CustomAddressEdit->setPlaceholderText (
-        DriverStation::getInstance()->robotAddress());
+        DriverStation::getInstance()->defaultRobotAddress());
 }
 
 //------------------------------------------------------------------------------
