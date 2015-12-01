@@ -280,7 +280,7 @@ class LIB_DS_DECL DriverStation : public QObject {
      *     - The robot responds to ping requests and DS
      *     - The robot does not respond to ping requests nor the DS
      */
-    void communicationsChanged (DS_CommunicationStatus);
+    void communicationsChanged (DS_CommunicationStatus status);
 
     /**
      * Emitted when the client detects that the availability of the robot radio
