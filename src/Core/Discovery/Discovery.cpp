@@ -55,10 +55,10 @@ void NetworkDiscovery::getIp (QString address, AddressType type,
         m_responder.query (address);
         break;
     case kIPv4:
-        emit ipFound (address, address);
+        disconnect (this, SIGNAL (ipFound (QString, QString)), receiver, member);
         break;
     case kIPv6:
-        emit ipFound (address, address);
+        disconnect (this, SIGNAL (ipFound (QString, QString)), receiver, member);
         break;
     default:
         QHostInfo::lookupHost (address, this, SLOT (onLookupFinished (QHostInfo)));
