@@ -26,18 +26,22 @@ DS_ProtocolBase::DS_ProtocolBase() {
     m_team = 0;
     m_sentPackets = 0;
     m_robotCode = false;
-    m_commStatus = kFailing;
+    m_communicationStatus = kFailing;
     m_alliance = kAllianceRed1;
     m_robotAddress = QString ("");
     m_controlMode = kControlNoCommunication;
 
     m_joysticks = new QList<DS_Joystick*>;
 
-    connect (&m_watchdog, SIGNAL (timeout()), this, SLOT (reset()));
-    connect (this, SIGNAL (packetReceived()), &m_watchdog, SLOT (restart()));
+    connect (&m_watchdog,   SIGNAL (timeout()),        this,        SLOT (reset()));
+    connect (this,          SIGNAL (packetReceived()), &m_watchdog,
+             SLOT (restart()));
+    connect (&m_pingSocket, SIGNAL (stateChanged   (QAbstractSocket::SocketState)),
+             this,          SLOT   (onStateChanged (QAbstractSocket::SocketState)));
 }
 
 DS_ProtocolBase::~DS_ProtocolBase() {
+    m_pingSocket.abort();
     delete m_joysticks;
 }
 
@@ -58,7 +62,7 @@ int DS_ProtocolBase::sentPackets() const {
 }
 
 bool DS_ProtocolBase::isConnected() const {
-    return m_commStatus == kFull;
+    return communicationStatus() == kFull;
 }
 
 bool DS_ProtocolBase::sendDateTime() const {
@@ -71,6 +75,10 @@ DS_Alliance DS_ProtocolBase::alliance() const {
 
 DS_ControlMode DS_ProtocolBase::controlMode() const {
     return m_controlMode;
+}
+
+DS_CommunicationStatus DS_ProtocolBase::communicationStatus() const {
+    return m_communicationStatus;
 }
 
 QList<DS_Joystick*>* DS_ProtocolBase::joysticks() const {
@@ -97,8 +105,7 @@ void DS_ProtocolBase::reset() {
 
     emit voltageChanged (QString (""));
 
-    m_discovery.getIp (robotAddress(),
-                       this, SLOT (onAddressResolved (QString, QString)));
+    m_discovery.getIp (robotAddress(), this, SLOT (onIpFound (QString, QString)));
 
     resetProtocol();
 }
@@ -133,13 +140,6 @@ void DS_ProtocolBase::readRobotPacket (QByteArray data) {
         readRobotData (data);
 }
 
-void DS_ProtocolBase::onAddressResolved (QString address, QString ip) {
-    if (address.toLower() == robotAddress().toLower()) {
-        setRobotAddress (ip);
-        updateCommunications (kPartial);
-    }
-}
-
 QByteArray DS_ProtocolBase::bitsToBytes (QBitArray bits) {
     QByteArray bytes (bits.count() / 8, 0);
 
@@ -163,8 +163,8 @@ void DS_ProtocolBase::updateSendDateTime (bool sendDT) {
 }
 
 void DS_ProtocolBase::updateCommunications (DS_CommunicationStatus status) {
-    m_commStatus = status;
-    emit communicationsChanged (m_commStatus);
+    m_communicationStatus = status;
+    emit communicationsChanged (m_communicationStatus);
 }
 
 void DS_ProtocolBase::updateVoltage (char major, char minor) {
@@ -181,4 +181,22 @@ void DS_ProtocolBase::updateVoltage (char major, char minor) {
         min = QString (min.at (0)) + QString (min.at (1));
 
     emit voltageChanged (QString ("%1.%2").arg (maj, min));
+}
+
+void DS_ProtocolBase::pingRobot() {
+    m_pingSocket.abort();
+    m_pingSocket.connectToHost (robotAddress(), 80, QTcpSocket::ReadOnly);
+}
+
+void DS_ProtocolBase::onIpFound (QString address, QString ip) {
+    if (address.toLower() == robotAddress().toLower()) {
+        setRobotAddress (ip);
+        pingRobot();
+    }
+}
+
+void DS_ProtocolBase::onStateChanged (QAbstractSocket::SocketState state) {
+    if (communicationStatus() == kFailing
+            && state == QAbstractSocket::ConnectedState)
+        updateCommunications (kPartial);
 }
