@@ -24,8 +24,10 @@
 
 DS_ProtocolBase::DS_ProtocolBase() {
     m_team = 0;
+    m_resetCount = 0;
     m_sentPackets = 0;
     m_robotCode = false;
+    m_useFallbackAddress = false;
     m_communicationStatus = kFailing;
     m_alliance = kAllianceRed1;
     m_robotAddress = QString ("");
@@ -33,9 +35,8 @@ DS_ProtocolBase::DS_ProtocolBase() {
 
     m_joysticks = new QList<DS_Joystick*>;
 
-    connect (&m_watchdog,   SIGNAL (timeout()),        this,        SLOT (reset()));
-    connect (this,          SIGNAL (packetReceived()), &m_watchdog,
-             SLOT (restart()));
+    connect (&m_watchdog, SIGNAL (timeout()), this, SLOT (reset()));
+    connect (this, SIGNAL (packetReceived()), &m_watchdog, SLOT (restart()));
     connect (&m_pingSocket, SIGNAL (stateChanged   (QAbstractSocket::SocketState)),
              this,          SLOT   (onStateChanged (QAbstractSocket::SocketState)));
 }
@@ -90,7 +91,11 @@ QString DS_ProtocolBase::radioAddress() {
 }
 
 QString DS_ProtocolBase::robotAddress() {
-    return m_robotAddress.isEmpty() ? defaultRobotAddress() : m_robotAddress;
+    if (m_robotAddress.isEmpty())
+        return m_useFallbackAddress ? DS_GetStaticIp (team(),
+                2) : defaultRobotAddress();
+
+    return m_robotAddress;
 }
 
 QByteArray DS_ProtocolBase::getClientPacket() {
@@ -99,15 +104,23 @@ QByteArray DS_ProtocolBase::getClientPacket() {
 }
 
 void DS_ProtocolBase::reset() {
+    resetProtocol();
+
+    updateVoltage (0, 0);
     updateRobotCode (false);
     updateSendDateTime (false);
     updateCommunications (kFailing);
 
-    emit voltageChanged (QString (""));
+    /* Toggle the usage of the fallback robot address every 5 resets */
+    m_resetCount += 1;
+    if (m_resetCount >= 5) {
+        m_resetCount = 0;
+        m_useFallbackAddress = !m_useFallbackAddress;
+    }
 
+    /* Figure out the robot address and ping the robot */
+    emit robotAddressChanged (robotAddress());
     m_discovery.getIp (robotAddress(), this, SLOT (onIpFound (QString, QString)));
-
-    resetProtocol();
 }
 
 void DS_ProtocolBase::setTeamNumber (int team) {
@@ -189,10 +202,10 @@ void DS_ProtocolBase::pingRobot() {
 }
 
 void DS_ProtocolBase::onIpFound (QString address, QString ip) {
-    if (address.toLower() == robotAddress().toLower()) {
-        setRobotAddress (ip);
-        pingRobot();
-    }
+    if (address.toLower() == robotAddress().toLower())
+        emit robotAddressChanged (ip);
+
+    pingRobot();
 }
 
 void DS_ProtocolBase::onStateChanged (QAbstractSocket::SocketState state) {

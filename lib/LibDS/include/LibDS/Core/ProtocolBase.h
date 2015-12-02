@@ -103,7 +103,10 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     QString radioAddress();
 
     /**
-     * Returns the default robot address or the custom robot address
+     * Returns the default robot address or the custom robot address.
+     *
+     * If there is no custom address set, the function may return the robot
+     * address or the fallback address (10.XX.YY.2)
      */
     QString robotAddress();
 
@@ -143,7 +146,9 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
   public slots:
     /**
      * Resets the internal values of the protocol and emits the appropiate
-     * signals when the robot communication is lost
+     * signals when the robot communication is lost.
+     *
+     * After doing that, the function will try to ping the robot again
      */
     void reset();
 
@@ -396,6 +401,13 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     int m_status;
 
     /**
+     * Holds the number of times the \c reset() function was called.
+     * We use it to toggle the usage of the fallback robot address every certain
+     * number of protocol resets.
+     */
+    int m_resetCount;
+
+    /**
      * Represents the number of packets sent to the robot
      */
     int m_sentPackets;
@@ -404,6 +416,14 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * This variable should be set to \c true when the user code is loaded
      */
     bool m_robotCode;
+
+    /**
+     * If set to \c true, the protocol will send data to the robot radio
+     * instead of the robot address.
+     *
+     * This value is toggled automatically on each robot reset
+     */
+    bool m_useFallbackAddress;
 
     /**
      * Holds the communication status of the robot

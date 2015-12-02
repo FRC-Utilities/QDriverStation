@@ -34,7 +34,7 @@ enum ControlModes {
     pControlDisabled        = 0x01u, /**< Robot is idle */
     pControlAutonomous      = 0x06u, /**< Robot takes over the world */
     pControlTeleoperated    = 0x04u, /**< User moves the robot */
-    pControlEmergencyStop   = 0x80u, /**< Forced robot stop */
+    pControlEmergencyStop   = 0x00u, /**< Forced robot stop */
     pControlNoCommunication = 0x02u  /**< Trying to connect with robot... */
 };
 
