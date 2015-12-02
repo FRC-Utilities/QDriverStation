@@ -91,9 +91,12 @@ QString DS_ProtocolBase::radioAddress() {
 }
 
 QString DS_ProtocolBase::robotAddress() {
-    if (m_robotAddress.isEmpty())
-        return m_useFallbackAddress ? DS_GetStaticIp (team(),
-                2) : defaultRobotAddress();
+    if (m_robotAddress.isEmpty()) {
+        if (m_useFallbackAddress)
+            return DS_GetStaticIp (team(), 2);
+        else
+            return defaultRobotAddress();
+    }
 
     return m_robotAddress;
 }
