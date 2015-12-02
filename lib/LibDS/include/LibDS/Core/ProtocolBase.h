@@ -26,6 +26,7 @@
 
 #include <QBitArray>
 #include <QHostInfo>
+#include <QTcpSocket>
 #include <QNetworkReply>
 
 #include "LibDS/Core/Common.h"
@@ -84,6 +85,11 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * Returns the current control mode of the robot
      */
     DS_ControlMode controlMode() const;
+
+    /**
+     * Returns the current communication status
+     */
+    DS_CommunicationStatus communicationStatus() const;
 
     /**
      * A list with the input data of the joysticks. This is just a reference
@@ -402,7 +408,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     /**
      * Holds the communication status of the robot
      */
-    DS_CommunicationStatus m_commStatus;
+    DS_CommunicationStatus m_communicationStatus;
 
     /**
      * If set to \c true, you should send the current date time data
@@ -455,11 +461,28 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      */
     QList<DS_Joystick*>* m_joysticks;
 
+    /**
+     * Used for pinging the robot
+     */
+    QTcpSocket m_pingSocket;
+
   private slots:
     /**
-     * Changes the address of the robot to the robot's IP
+     * Pings the robot using a TCP socket
      */
-    void onAddressResolved (QString address, QString ip);
+    void pingRobot();
+
+    /**
+     * Changes the address of the robot to the robot's IP and then tries to
+     * ping the robot to get the connection status
+     */
+    void onIpFound (QString address, QString ip);
+
+    /**
+     * Called when the connection state between the robot TCP connection and
+     * the client is changed
+     */
+    void onStateChanged (QAbstractSocket::SocketState state);
 };
 
 #endif

@@ -84,8 +84,6 @@ void Updater::onFinished (QNetworkReply* reply) {
     readDownloadLink (data);
     readApplicationVersion (data);
     showUpdateMessages();
-
-    delete reply;
 }
 
 void Updater::readDownloadLink (QByteArray data) {

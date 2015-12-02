@@ -28,6 +28,10 @@ DS_NetConsole::DS_NetConsole() {
     connect (&m_socket, SIGNAL (readyRead()), this, SLOT (onDataReceived()));
 }
 
+DS_NetConsole::~DS_NetConsole() {
+    m_socket.abort();
+}
+
 void DS_NetConsole::onDataReceived() {
     emit newMessage (QString::fromUtf8 (DS_GetSocketData (&m_socket)));
 }

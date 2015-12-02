@@ -38,6 +38,7 @@ class LIB_DS_DECL MDNS : public QObject {
 
   public:
     explicit MDNS();
+    ~MDNS();
 
   public slots:
     /**

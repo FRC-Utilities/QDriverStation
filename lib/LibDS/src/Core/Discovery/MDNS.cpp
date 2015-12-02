@@ -31,6 +31,13 @@ MDNS::MDNS() {
     m_IPv6_receiver.bind (5353, QUdpSocket::ShareAddress);
 }
 
+MDNS::~MDNS() {
+    m_IPv4_sender.abort();
+    m_IPv6_sender.abort();
+    m_IPv4_receiver.abort();
+    m_IPv6_receiver.abort();
+}
+
 void MDNS::query (QString domain) {
     QByteArray data;
     QByteArray header;

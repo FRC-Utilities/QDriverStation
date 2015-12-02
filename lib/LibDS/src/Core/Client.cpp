@@ -27,6 +27,11 @@ DS_Client::DS_Client() {
              this,            SLOT   (onDataReceived()));
 }
 
+DS_Client::~DS_Client() {
+    m_robotSocket.abort();
+    m_clientSocket.abort();
+}
+
 void DS_Client::sendToRobot (QByteArray data) {
     m_robotSocket.writeDatagram (data, QHostAddress (m_address), m_robotPort);
 }
