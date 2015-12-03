@@ -110,5 +110,6 @@ void MDNS::send (QByteArray data) {
 }
 
 void MDNS::processResponse (QByteArray response) {
+    /* TODO */
     qDebug() << response.toHex();
 }
