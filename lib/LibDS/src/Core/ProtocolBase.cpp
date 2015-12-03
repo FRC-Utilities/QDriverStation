@@ -170,6 +170,11 @@ void DS_ProtocolBase::updateStatus (quint8 status) {
 }
 
 void DS_ProtocolBase::updateRobotCode (bool available) {
+    /* Robot code just crashed/failed */
+    if (m_robotCode && !available)
+        setControlMode (kControlDisabled);
+
+    /* Update DS information */
     m_robotCode = available;
     emit codeChanged (m_robotCode);
 }
