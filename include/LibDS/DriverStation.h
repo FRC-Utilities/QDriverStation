@@ -158,11 +158,11 @@ class LIB_DS_DECL DriverStation : public QObject {
     /**
      * Simulates a timed match with the input time values (in seconds)
      */
-    Q_INVOKABLE void startPractice (int countdown,
-                                    int autonomous,
-                                    int delay,
-                                    int teleop,
-                                    int endgame);
+    Q_INVOKABLE void startPractice (quint16 countdown,
+                                    quint16 autonomous,
+                                    quint16 delay,
+                                    quint16 teleop,
+                                    quint16 endgame);
 
     /**
      * Changes the robot mode to \c kControlTest
@@ -202,7 +202,7 @@ class LIB_DS_DECL DriverStation : public QObject {
     /**
      * Changes the team number used by the protocol and network diagnostics
      */
-    Q_INVOKABLE void setTeamNumber (int team);
+    Q_INVOKABLE void setTeamNumber (quint16 team);
 
     /**
      * Changes the alliance of the robot using the specified protocol
@@ -232,30 +232,30 @@ class LIB_DS_DECL DriverStation : public QObject {
     /**
      * Updates the \a angle of the selected \a hat in the specified \a josytick
      */
-    Q_INVOKABLE void updateJoystickPovHat (int js,
-                                           int hat,
-                                           int angle);
+    Q_INVOKABLE void updateJoystickPovHat (quint8 js,
+                                           quint8 hat,
+                                           quint8 angle);
 
     /**
      * Registers a new joystick to the Driver Station with the specified number
      * of \a axes, \a buttons and \a povHats
      */
-    Q_INVOKABLE void addJoystick (int axes,
-                                  int buttons,
-                                  int povHats);
+    Q_INVOKABLE void addJoystick (quint8 axes,
+                                  quint8 buttons,
+                                  quint8 povHats);
 
     /**
      * Updates the \a value of the selected \a axis in the specified \a josytick
      */
-    Q_INVOKABLE void updateJoystickAxis (int js,
-                                         int axis,
+    Q_INVOKABLE void updateJoystickAxis (quint8 js,
+                                         quint8 axis,
                                          double value);
 
     /**
      * Updates the \a state of the selected \a button in the specified \a josytick
      */
-    Q_INVOKABLE void updateJoystickButton (int js,
-                                           int button,
+    Q_INVOKABLE void updateJoystickButton (quint8 js,
+                                           quint8 button,
                                            bool state);
 
   signals:
@@ -269,7 +269,7 @@ class LIB_DS_DECL DriverStation : public QObject {
      * Emitted when the library detects that the CPU usage of the robot has
      * changed
      */
-    void cpuUsageChanged (int percent);
+    void cpuUsageChanged (quint8 percent);
 
     /**
      * Emitted when the state of the network communications with the robot
@@ -341,13 +341,13 @@ class LIB_DS_DECL DriverStation : public QObject {
      * Emitted when the libary detects that the RAM usage of the robot has
      * changed since the last update.
      */
-    void ramUsageChanged (int percent);
+    void ramUsageChanged (quint8 percent);
 
     /**
      * Emitted when the libary detects that the disk usage of the robot has
      * changed since the last update.
      */
-    void diskUsageChanged (int percent);
+    void diskUsageChanged (quint8 percent);
 
     /**
      * Emitted when the robot is enabled and the elapsed time

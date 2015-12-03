@@ -46,11 +46,11 @@ DS_ProtocolBase::~DS_ProtocolBase() {
     delete m_joysticks;
 }
 
-int DS_ProtocolBase::team() const {
+quint16 DS_ProtocolBase::team() const {
     return m_team;
 }
 
-int DS_ProtocolBase::status() const {
+quint16 DS_ProtocolBase::status() const {
     return m_status;
 }
 
@@ -58,7 +58,7 @@ bool DS_ProtocolBase::robotCode() const {
     return m_robotCode;
 }
 
-int DS_ProtocolBase::sentPackets() const {
+quint16 DS_ProtocolBase::sentPackets() const {
     return m_sentPackets;
 }
 
@@ -126,7 +126,7 @@ void DS_ProtocolBase::reset() {
     m_discovery.getIp (robotAddress(), this, SLOT (onIpFound (QString, QString)));
 }
 
-void DS_ProtocolBase::setTeamNumber (int team) {
+void DS_ProtocolBase::setTeamNumber (quint16 team) {
     m_team = team;
     emit robotAddressChanged (robotAddress());
 }
@@ -165,7 +165,7 @@ QByteArray DS_ProtocolBase::bitsToBytes (QBitArray bits) {
     return bytes;
 }
 
-void DS_ProtocolBase::updateStatus (int status) {
+void DS_ProtocolBase::updateStatus (quint8 status) {
     m_status = status;
 }
 
@@ -183,7 +183,7 @@ void DS_ProtocolBase::updateCommunications (DS_CommunicationStatus status) {
     emit communicationsChanged (m_communicationStatus);
 }
 
-void DS_ProtocolBase::updateVoltage (char major, char minor) {
+void DS_ProtocolBase::updateVoltage (quint8 major, quint8 minor) {
     QString maj = QString::number (major);
     QString min = QString::number (minor);
 
@@ -205,7 +205,7 @@ void DS_ProtocolBase::pingRobot() {
 }
 
 void DS_ProtocolBase::onIpFound (QString address, QString ip) {
-    if (address.toLower() == robotAddress().toLower())
+    if (address.toLower() == robotAddress().toLower() && address != ip)
         emit robotAddressChanged (ip);
 
     pingRobot();

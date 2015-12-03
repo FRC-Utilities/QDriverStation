@@ -36,11 +36,11 @@ void DS_Client::sendToRobot (QByteArray data) {
     m_robotSocket.writeDatagram (data, QHostAddress (m_address), m_robotPort);
 }
 
-void DS_Client::setRobotPort (int port) {
+void DS_Client::setRobotPort (quint16 port) {
     m_robotPort = port;
 }
 
-void DS_Client::setClientPort (int port) {
+void DS_Client::setClientPort (quint16 port) {
     m_clientSocket.bind (port, QUdpSocket::ShareAddress);
 }
 

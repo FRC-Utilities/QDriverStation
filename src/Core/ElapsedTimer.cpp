@@ -42,9 +42,9 @@ void DS_ElapsedTime::reset() {
 
 void DS_ElapsedTime::calculateElapsedTime() {
     if (m_enabled) {
-        int msec = m_time.elapsed();
-        int secs = (msec / 1000);
-        int mins = (secs / 60) % 60;
+        quint32 msec = m_time.elapsed();
+        quint32 secs = (msec / 1000);
+        quint32 mins = (secs / 60) % 60;
 
         secs = secs % 60;
         msec = msec % 1000;

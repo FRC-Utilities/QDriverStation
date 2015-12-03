@@ -89,11 +89,11 @@ DS_Protocol2015::DS_Protocol2015() {
              this,       SLOT   (onDownloadFinished (QNetworkReply*)));
 }
 
-int DS_Protocol2015::robotPort() {
+quint16 DS_Protocol2015::robotPort() {
     return 1110;
 }
 
-int DS_Protocol2015::clientPort() {
+quint16 DS_Protocol2015::clientPort() {
     return 1150;
 }
 
@@ -225,10 +225,10 @@ QByteArray DS_Protocol2015::generateJoystickData() {
     QByteArray data;
 
     /* Generate data for each joystick */
-    for (int i = 0; i < joysticks()->count(); ++i) {
-        int numAxes = joysticks()->at (i)->numAxes;
-        int numButtons = joysticks()->at (i)->numButtons;
-        int numPovHats = joysticks()->at (i)->numPovHats;
+    for (quint8 i = 0; i < joysticks()->count(); ++i) {
+        quint8 numAxes = joysticks()->at (i)->numAxes;
+        quint8 numButtons = joysticks()->at (i)->numButtons;
+        quint8 numPovHats = joysticks()->at (i)->numPovHats;
 
         /* Add joystick information and put the section header */
         data.append (getJoystickSize (joysticks()->at (i)) + 1);
@@ -237,15 +237,15 @@ QByteArray DS_Protocol2015::generateJoystickData() {
         /* Add axis data */
         if (numAxes > 0) {
             data.append (numAxes);
-            for (int axis = 0; axis < numAxes; ++axis)
+            for (quint8 axis = 0; axis < numAxes; ++axis)
                 data.append (joysticks()->at (i)->axes [axis] * 0x80);
         }
 
         /* Add button data */
         if (numButtons > 0) {
             QBitArray buttons (numButtons);
-            for (int button = 0; button < numButtons; ++button)
-                buttons [button] = (char) joysticks()->at (i)->buttons [button];
+            for (quint8 button = 0; button < numButtons; ++button)
+                buttons [button] = (quint8) joysticks()->at (i)->buttons [button];
 
             data.append (joysticks()->at (i)->numButtons);
             data.append (bitsToBytes (buttons));
@@ -254,8 +254,8 @@ QByteArray DS_Protocol2015::generateJoystickData() {
         /* Add hat/pov data */
         if (numPovHats > 0) {
             data.append (numPovHats);
-            for (int hat = 0; hat < numPovHats; ++hat) {
-                int value = joysticks()->at (i)->povHats [hat];
+            for (quint8 hat = 0; hat < numPovHats; ++hat) {
+                quint8 value = joysticks()->at (i)->povHats [hat];
                 if (value <= 0) value = -1;
 
                 data.append (value);
@@ -271,7 +271,7 @@ QByteArray DS_Protocol2015::generateTimezoneData() {
     QByteArray data;
 
     /* Add size (always 11) */
-    data.append ((char) 0x0B);
+    data.append ((quint8) 0x0B);
 
     /* Get current date/time */
     QDateTime dt = QDateTime::currentDateTime();
@@ -297,7 +297,7 @@ QByteArray DS_Protocol2015::generateTimezoneData() {
     return data;
 }
 
-DS_ControlMode DS_Protocol2015::getControlMode (int byte) {
+DS_ControlMode DS_Protocol2015::getControlMode (quint8 byte) {
     switch (byte) {
     case pControlDisabled:
         return kControlDisabled;
@@ -319,7 +319,7 @@ DS_ControlMode DS_Protocol2015::getControlMode (int byte) {
     return kControlEmergencyStop;
 }
 
-char DS_Protocol2015::getControlCode (DS_ControlMode mode) {
+quint8 DS_Protocol2015::getControlCode (DS_ControlMode mode) {
     switch (mode) {
     case kControlTest:
         return pControlTest;
@@ -344,7 +344,7 @@ char DS_Protocol2015::getControlCode (DS_ControlMode mode) {
     return pControlDisabled;
 }
 
-char DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
+quint8 DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
     switch (alliance) {
     case kAllianceRed1:
         return pRed1;
@@ -369,7 +369,7 @@ char DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
     return pRed1;
 }
 
-char DS_Protocol2015::getJoystickSize (DS_Joystick* joystick) {
+quint8 DS_Protocol2015::getJoystickSize (DS_Joystick* joystick) {
     return  5
             + (joystick->numAxes > 0 ? joystick->numAxes : 0)
             + (joystick->numButtons / 8)
