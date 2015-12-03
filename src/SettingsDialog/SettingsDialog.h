@@ -141,13 +141,13 @@ class SettingsDialog : public QDialog {
      * @internal
      * Returns the current color on the line edit that matches the \a type
      */
-    QColor getColor (int type);
+    QColor getColor (Colors type);
 
     /**
      * @internal
      * Returns the emitter of a signal based on its object name
      */
-    int getEmitter (const QObject* object);
+    Colors getEmitter (const QObject* object);
 };
 
 #endif

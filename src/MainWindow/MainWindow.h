@@ -324,7 +324,7 @@ class MainWindow : public SmartWindow {
      *
      * @note The text will be set to '--.--' if there are are no communications
      */
-    void onRamUsageChanged (int percent);
+    void onRamUsageChanged (quint8 percent);
 
     /**
      * @internal
@@ -333,7 +333,7 @@ class MainWindow : public SmartWindow {
      *
      * @note The text will be set to '--.--' if there are are no communications
      */
-    void onDiskUsageChanged (int percent);
+    void onDiskUsageChanged (quint8 percent);
 
     /**
      * @internal

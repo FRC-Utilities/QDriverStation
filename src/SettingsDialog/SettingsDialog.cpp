@@ -184,7 +184,7 @@ void SettingsDialog::onCancelClicked() {
 }
 
 void SettingsDialog::onSelectorClicked() {
-    int emitter = getEmitter (QObject::sender());
+    Colors emitter = getEmitter (QObject::sender());
 
     /* Configure the color dialog */
     QString color;
@@ -218,7 +218,7 @@ void SettingsDialog::onSelectorClicked() {
 }
 
 void SettingsDialog::onColorChanged (QString color) {
-    int emitter = getEmitter (QObject::sender());
+    Colors emitter = getEmitter (QObject::sender());
 
     /* The color is empty, use the previous value */
     if (color.isEmpty())
@@ -256,7 +256,7 @@ void SettingsDialog::onColorChanged (QString color) {
 // GET COLOR TYPE BASED ON EXTERNAL VALUES
 //------------------------------------------------------------------------------
 
-QColor SettingsDialog::getColor (int type) {
+QColor SettingsDialog::getColor (Colors type) {
     QColor color;
     switch (type) {
     case Base:
@@ -276,8 +276,8 @@ QColor SettingsDialog::getColor (int type) {
     return color;
 }
 
-int SettingsDialog::getEmitter (const QObject* object) {
-    int emitter = Base;
+SettingsDialog::Colors SettingsDialog::getEmitter (const QObject* object) {
+    Colors emitter = Base;
     QString name = object->objectName();
 
     if (name.contains ("Base"))

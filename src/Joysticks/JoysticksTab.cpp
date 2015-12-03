@@ -75,14 +75,14 @@ void JoysticksTab::onRowChanged (int row) {
     if (row < 0)  return;
 
     /* Get joystick information */
-    int axisCount = m_keyboardDrive->getNumAxes (row);
-    int buttonCount = m_keyboardDrive->getNumButtons (row);
+    quint8 axisCount = m_keyboardDrive->getNumAxes (row);
+    quint8 buttonCount = m_keyboardDrive->getNumButtons (row);
 
     ui.Axes->setVisible (axisCount > 0);
     ui.Buttons->setVisible (buttonCount > 0);
 
     /* Create a progress bar for each axis */
-    for (int i = 0; i < axisCount; ++i) {
+    for (quint8 i = 0; i < axisCount; ++i) {
         QPointer<QProgressBar> bar = new QProgressBar (this);
 
         bar->setMaximumHeight (19);
@@ -98,7 +98,7 @@ void JoysticksTab::onRowChanged (int row) {
     }
 
     /* Create a button for each joystick button */
-    for (int i = 0; i < buttonCount; ++i) {
+    for (quint8 i = 0; i < buttonCount; ++i) {
         QPointer<QPushButton> button = new QPushButton (this);
 
         button->setEnabled (false);
@@ -108,8 +108,8 @@ void JoysticksTab::onRowChanged (int row) {
         button->setToolTip     (tr ("Button %1").arg (i));
 
         /* Distribute the button items in a nice layout */
-        int row = (i <= 7) ? i : i - 8;
-        int column = (i <= 7) ? 0 : (i / 8);
+        quint8 row = (i <= 7) ? i : i - 8;
+        quint8 column = (i <= 7) ? 0 : (i / 8);
 
         m_buttons.append (button);
         ui.ButtonLayout->addWidget (button, row, column);

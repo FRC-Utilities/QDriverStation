@@ -68,7 +68,7 @@ Dashboard* Dashboard::getInstance() {
 
 void Dashboard::loadDashboard() {
     QString path;
-    m_current = Settings::get ("Dashboard", kNone).toInt();
+    m_current = (Dashboards) Settings::get ("Dashboard", kNone).toInt();
 
     /* Open the SFX Dashboard */
     if (m_current == kSfxDashboard) {
@@ -117,7 +117,7 @@ void Dashboard::reloadDashboard() {
 // SEND INFORMATION TO OTHER OBJECTS
 //------------------------------------------------------------------------------
 
-int Dashboard::getCurrentDashboard() {
+Dashboard::Dashboards Dashboard::getCurrentDashboard() {
     return m_current;
 }
 

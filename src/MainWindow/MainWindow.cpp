@@ -120,34 +120,34 @@ void MainWindow::connectSlots() {
 
     /* DriverStation to MainWindow */
     m_ds = DriverStation::getInstance();
-    connect (m_ds, SIGNAL (codeChanged (bool)),
-             this, SLOT   (onCodeChanged (bool)));
-    connect (m_ds, SIGNAL (communicationsChanged (DS_CommunicationStatus)),
+    connect (m_ds, SIGNAL (codeChanged             (bool)),
+             this, SLOT   (onCodeChanged           (bool)));
+    connect (m_ds, SIGNAL (communicationsChanged   (DS_CommunicationStatus)),
              this, SLOT   (onCommunicationsChanged (DS_CommunicationStatus)));
-    connect (m_ds, SIGNAL (radioChanged (bool)),
-             this, SLOT   (onRadioChanged (bool)));
-    connect (m_ds, SIGNAL (voltageChanged (QString)),
-             this, SLOT   (onVoltageChanged (QString)));
-    connect (m_ds, SIGNAL (libVersionChanged (QString)),
-             this, SLOT   (onLibVersionChanged (QString)));
-    connect (m_ds, SIGNAL (rioVersionChanged (QString)),
-             this, SLOT   (onRioVersionChanged (QString)));
-    connect (m_ds, SIGNAL (robotStatusChanged (QString)),
-             this, SLOT   (onRobotStatusChanged (QString)));
-    connect (m_ds, SIGNAL (ramUsageChanged (int)),
-             this, SLOT   (onRamUsageChanged (int)));
-    connect (m_ds, SIGNAL (diskUsageChanged (int)),
-             this, SLOT   (onDiskUsageChanged (int)));
-    connect (m_ds, SIGNAL (controlModeChanged (DS_ControlMode)),
-             this, SLOT   (onControlModeChanged (DS_ControlMode)));
+    connect (m_ds, SIGNAL (radioChanged            (bool)),
+             this, SLOT   (onRadioChanged          (bool)));
+    connect (m_ds, SIGNAL (voltageChanged          (QString)),
+             this, SLOT   (onVoltageChanged        (QString)));
+    connect (m_ds, SIGNAL (libVersionChanged       (QString)),
+             this, SLOT   (onLibVersionChanged     (QString)));
+    connect (m_ds, SIGNAL (rioVersionChanged       (QString)),
+             this, SLOT   (onRioVersionChanged     (QString)));
+    connect (m_ds, SIGNAL (robotStatusChanged      (QString)),
+             this, SLOT   (onRobotStatusChanged    (QString)));
+    connect (m_ds, SIGNAL (ramUsageChanged         (quint8)),
+             this, SLOT   (onRamUsageChanged       (quint8)));
+    connect (m_ds, SIGNAL (diskUsageChanged        (quint8)),
+             this, SLOT   (onDiskUsageChanged      (quint8)));
+    connect (m_ds, SIGNAL (controlModeChanged      (DS_ControlMode)),
+             this, SLOT   (onControlModeChanged    (DS_ControlMode)));
     connect (DS_Timers::getInstance(), SIGNAL (timeout1000()),
              this,                     SLOT   (updatePcStatusWidgets()));
 
     /* DriverStation to MainWindow UI */
-    connect (m_ds,               SIGNAL (newMessage (QString)),
-             ui->NetConsoleEdit, SLOT   (append               (QString)));
-    connect (m_ds,               SIGNAL (elapsedTimeChanged   (QString)),
-             ui->ElapsedTime,    SLOT   (setText              (QString)));
+    connect (m_ds,               SIGNAL (newMessage         (QString)),
+             ui->NetConsoleEdit, SLOT   (append             (QString)));
+    connect (m_ds,               SIGNAL (elapsedTimeChanged (QString)),
+             ui->ElapsedTime,    SLOT   (setText            (QString)));
     connect (ui->NetConsoleEdit, SIGNAL (textChanged()),
              this,               SLOT   (scrollNetConsole()));
 
@@ -639,11 +639,11 @@ void MainWindow::onRobotStatusChanged (QString status) {
         ui->StatusLabel->setText (status);
 }
 
-void MainWindow::onRamUsageChanged (int percent) {
+void MainWindow::onRamUsageChanged (quint8 percent) {
     updateLabelText (ui->RamUsage, tr ("%1 %").arg (percent));
 }
 
-void MainWindow::onDiskUsageChanged (int percent) {
+void MainWindow::onDiskUsageChanged (quint8 percent) {
     updateLabelText (ui->DiskUsage, tr ("%1 %").arg (percent));
 }
 

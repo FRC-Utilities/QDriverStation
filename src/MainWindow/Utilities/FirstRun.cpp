@@ -31,7 +31,7 @@
 
 #define d_XboxDriverUrl "http://files.tattiebogle.net/360/360ControllerInstall.dmg"
 
-int InitTasks::getTeamNumber() {
+quint16 InitTasks::getTeamNumber() {
     /* First launch, ask for team number */
     if (Settings::get ("First Launch", true).toBool())
         return QInputDialog::getInt (0, 0,
