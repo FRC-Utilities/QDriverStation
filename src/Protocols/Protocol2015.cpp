@@ -48,9 +48,9 @@ enum Headers {
 };
 
 /**
- * 'Special' operation codes, we should dig more in this section...
+ * 'Special' operation codes that we send to robot
  */
-enum RobotStatus {
+enum RequestBytes {
     pStatusNormal           = 0x10u, /**< Normal operation */
     pStatusInvalid          = 0x00u, /**< No communication */
     pStatusRebootRio        = 0x18u, /**< Reboot the roboRIO */
@@ -60,13 +60,19 @@ enum RobotStatus {
 /**
  * Echo codes from the robot and (probably) software status
  */
-enum ProgramTrace {
-    pProgramTest            = 0x38u, /**< Control mode confirmation code */
-    pProgramNoCode          = 0x00u, /**< Not sure if this is correct */
-    pProgramDisabled        = 0x31u, /**< Control mode confirmation code */
-    pProgramAutonomous      = 0x30u, /**< Control mode confirmation code */
+enum ProgramStatus {
+    pProgramTest            = 0x08u, /**< Control mode confirmation code */
+    pProgramDisabled        = 0x01u, /**< Control mode confirmation code */
+    pProgramAutonomous      = 0x04u, /**< Control mode confirmation code */
+    pProgramCodePresent     = 0x20u, /**< Not sure if this is correct */
+    pProgramTeleoperated    = 0x02u  /**< Control mode confirmation code */
+};
+
+/**
+ * Operations that the robot wants us to perform
+ */
+enum RobotRequestBytes {
     pProgramRequestTime     = 0x01u, /**< Robot wants to get the date/time */
-    pProgramTeleoperated    = 0x32u  /**< Control mode confirmation code */
 };
 
 /**
@@ -124,33 +130,33 @@ void DS_Protocol2015::downloadRobotInformation() {
 }
 
 void DS_Protocol2015::readRobotData (QByteArray data) {
-    /* We just have connected to the robot */
+    /* Packet length is invalid */
+    if (data.length() < 8)
+        return;
+
+    /* We just have connected to the robot, update internal values */
     if (!isConnected()) {
         downloadRobotInformation();
         updateCommunications (kFull);
         setControlMode (kControlDisabled);
-    }
 
-    /* Get robot program status */
-    else if (isConnected()) {
-        /* Reset status bit if needed */
         if (status() == pStatusInvalid)
             updateStatus (pStatusNormal);
-
-        /* Get robot code value */
-        bool code = (data.at (4) != pProgramNoCode);
-        if (robotCode() != code)
-            updateRobotCode (code);
-
-        /* Know if robot requests timezone to be sent */
-        updateSendDateTime (data.at (7) == pProgramRequestTime);
-
-        /* Reset the watchdog and update the DS */
-        emit packetReceived();
     }
 
-    /* Get robot voltage */
-    updateVoltage (data.at (6), data.at (7));
+    /* Read robot packet */
+    quint8 status       = data.at (4);
+    quint8 request      = data.at (7);
+    quint8 majorVoltage = data.at (5);
+    quint8 minorVoltage = data.at (6);
+
+    /* Update client information */
+    updateVoltage (majorVoltage, minorVoltage);
+    updateSendDateTime (request == pProgramRequestTime);
+    updateRobotCode ((status & pProgramCodePresent) != 0);
+
+    /* Reset watchdog */
+    emit packetReceived();
 }
 
 void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply) {
