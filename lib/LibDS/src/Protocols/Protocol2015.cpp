@@ -31,11 +31,10 @@
  */
 enum ControlModes {
     pControlTest            = 0x05u, /**< Individual actuators can be moved */
-    pControlDisabled        = 0x01u, /**< Robot is idle */
+    pControlDisabled        = 0x00u, /**< Robot is idle */
     pControlAutonomous      = 0x06u, /**< Robot takes over the world */
     pControlTeleoperated    = 0x04u, /**< User moves the robot */
-    pControlEmergencyStop   = 0x00u, /**< Forced robot stop */
-    pControlNoCommunication = 0x02u  /**< Trying to connect with robot... */
+    pControlEmergencyStop   = 0x80u, /**< Forced robot stop */
 };
 
 /**
@@ -311,9 +310,6 @@ DS_ControlMode DS_Protocol2015::getControlMode (quint8 byte) {
     case pControlAutonomous:
         return kControlAutonomous;
         break;
-    case pControlNoCommunication:
-        return kControlNoCommunication;
-        break;
     }
 
     return kControlEmergencyStop;
@@ -335,9 +331,6 @@ quint8 DS_Protocol2015::getControlCode (DS_ControlMode mode) {
         break;
     case kControlEmergencyStop:
         return pControlEmergencyStop;
-        break;
-    case kControlNoCommunication:
-        return pControlNoCommunication;
         break;
     }
 

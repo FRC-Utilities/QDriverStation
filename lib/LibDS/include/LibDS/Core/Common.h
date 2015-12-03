@@ -43,7 +43,6 @@ enum DS_ControlMode {
     kControlAutonomous,     /**< Robot takes over the world */
     kControlTeleoperated,   /**< User moves the robot */
     kControlEmergencyStop,  /**< Forced robot stop */
-    kControlNoCommunication /**< Trying to connect with robot... */
 };
 
 /**

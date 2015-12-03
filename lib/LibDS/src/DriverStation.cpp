@@ -161,7 +161,7 @@ DS_ControlMode DriverStation::controlMode() {
     if (m_manager->protocolIsValid())
         return m_manager->protocol()->controlMode();
 
-    return kControlNoCommunication;
+    return kControlDisabled;
 }
 
 bool DriverStation::robotHasCode() {
@@ -343,15 +343,14 @@ void DriverStation::updateJoystickButton (quint8 js,
 }
 
 QString DriverStation::getStatus() {
-    if (m_manager->protocolIsValid()) {
-        if (m_manager->protocol()->isConnected()
-                && !m_manager->protocol()->robotCode())
+    if (m_manager->protocolIsValid() && m_manager->protocol()->isConnected()) {
+        if (!m_manager->protocol()->robotCode())
             return "No Robot Code";
 
         return DS_GetControlModeString (m_manager->protocol()->controlMode());
     }
 
-    return DS_GetControlModeString (kControlNoCommunication);
+    return QString ("No Robot Communication");
 }
 
 void DriverStation::sendRobotPackets() {
@@ -385,9 +384,7 @@ void DriverStation::updateStatus (DS_CommunicationStatus ignored) {
 }
 
 void DriverStation::onControlModeChanged (DS_ControlMode mode) {
-    if (mode == kControlEmergencyStop
-            || mode == kControlDisabled
-            || mode == kControlNoCommunication)
+    if (mode == kControlEmergencyStop || mode == kControlDisabled)
         m_elapsedTime->stop();
 
     else
