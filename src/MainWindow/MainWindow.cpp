@@ -571,6 +571,9 @@ void MainWindow::onCommunicationsChanged (DS_CommunicationStatus status) {
         ui->Communications->setStyleSheet (d_NormalStatusLED);
         ui->Communications->setToolTip (tr ("Full communication with robot"));
         break;
+    case kFailing:
+        ui->Communications->setToolTip (tr ("No communication with robot"));
+        break;
     }
 
     onDisabledClicked();
