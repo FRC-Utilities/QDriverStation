@@ -210,7 +210,7 @@ QByteArray DS_Protocol2015::generateClientPacket() {
     data.append (getControlCode (controlMode()));
 
     /* Add the current robot status (e.g. normal, reboot, etc) */
-    data.append (isConnected() ? status() : pStatusInvalid);
+    data.append (isConnected() ? status() : (quint16) pStatusInvalid);
 
     /* Add the current alliance and position */
     data.append (getAllianceCode (alliance()));
