@@ -65,11 +65,6 @@ void InitTasks::executeFirstRunTasks() {
         QDesktopServices::openUrl (QUrl (dXboxDriverUrl));
 #endif
 
-    QMessageBox::information (Q_NULLPTR,
-                              QObject::tr ("Notice"),
-                              QObject::tr ("You can trigger the emergency stop function by "
-                                           "pressing the SHIFT key on your keyboard"));
-
     /* Ensure that this code does not run again */
     Settings::set ("First Launch", false);
 }
