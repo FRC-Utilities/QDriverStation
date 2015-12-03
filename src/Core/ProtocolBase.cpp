@@ -31,7 +31,7 @@ DS_ProtocolBase::DS_ProtocolBase() {
     m_communicationStatus = kFailing;
     m_alliance = kAllianceRed1;
     m_robotAddress = QString ("");
-    m_controlMode = kControlNoCommunication;
+    m_controlMode = kControlDisabled;
 
     m_joysticks = new QList<DS_Joystick*>;
 
@@ -114,9 +114,9 @@ void DS_ProtocolBase::reset() {
     updateSendDateTime (false);
     updateCommunications (kFailing);
 
-    /* Toggle the usage of the fallback robot address every 5 resets */
+    /* Toggle the usage of the fallback robot address every 10 resets */
     m_resetCount += 1;
-    if (m_resetCount >= 5) {
+    if (m_resetCount >= 10) {
         m_resetCount = 0;
         m_useFallbackAddress = !m_useFallbackAddress;
     }
@@ -142,7 +142,7 @@ void DS_ProtocolBase::setAlliance (DS_Alliance alliance) {
 
 void DS_ProtocolBase::setControlMode (DS_ControlMode mode) {
     if (m_controlMode != kControlEmergencyStop) {
-        m_controlMode = isConnected() ? mode : kControlNoCommunication;
+        m_controlMode = isConnected() ? mode : kControlDisabled;
         emit controlModeChanged (controlMode());
     }
 }

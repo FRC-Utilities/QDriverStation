@@ -144,9 +144,6 @@ QString DS_GetControlModeString (DS_ControlMode mode) {
     case kControlEmergencyStop:
         return QString ("Emergency Stopped");
         break;
-    case kControlNoCommunication:
-        return QString ("No Robot Communication");
-        break;
     }
 
     return QString ("");
