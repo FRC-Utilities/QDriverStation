@@ -56,10 +56,10 @@ DriverStation::DriverStation() {
              this,      SIGNAL (communicationsChanged (DS_CommunicationStatus)));
     connect (m_manager, SIGNAL (controlModeChanged    (DS_ControlMode)),
              this,      SIGNAL (controlModeChanged    (DS_ControlMode)));
-    connect (m_manager, SIGNAL (diskUsageChanged      (quint8)),
-             this,      SIGNAL (diskUsageChanged      (quint8)));
-    connect (m_manager, SIGNAL (ramUsageChanged       (quint8)),
-             this,      SIGNAL (ramUsageChanged       (quint8)));
+    connect (m_manager, SIGNAL (diskUsageChanged      (int)),
+             this,      SIGNAL (diskUsageChanged      (int)));
+    connect (m_manager, SIGNAL (ramUsageChanged       (int)),
+             this,      SIGNAL (ramUsageChanged       (int)));
     connect (m_manager, SIGNAL (voltageChanged        (QString)),
              this,      SIGNAL (voltageChanged        (QString)));
 
@@ -217,11 +217,11 @@ void DriverStation::restartCode() {
         m_manager->protocol()->restartCode();
 }
 
-void DriverStation::startPractice (quint16 countdown,
-                                   quint16 autonomous,
-                                   quint16 delay,
-                                   quint16 teleop,
-                                   quint16 endgame) {
+void DriverStation::startPractice (int countdown,
+                                   int autonomous,
+                                   int delay,
+                                   int teleop,
+                                   int endgame) {
     /* Transform the times from seconds to milliseconds */
     delay *= 1000;
     teleop *= 1000;
@@ -290,7 +290,7 @@ void DriverStation::setProtocol (ProtocolType protocol) {
     }
 }
 
-void DriverStation::setTeamNumber (quint16 team) {
+void DriverStation::setTeamNumber (int team) {
     if (m_manager->protocolIsValid())
         m_manager->protocol()->setTeamNumber (team);
 }
@@ -314,29 +314,29 @@ void DriverStation::clearJoysticks() {
     m_manager->clearJoysticks();
 }
 
-void DriverStation::updateJoystickPovHat (quint8 js,
-        quint8 hat,
-        quint8 angle) {
+void DriverStation::updateJoystickPovHat (int js,
+        int hat,
+        int angle) {
     if (m_manager->protocolIsValid())
         m_manager->updateJoystickPovHat (js, hat, angle);
 }
 
-void DriverStation::addJoystick (quint8 axes,
-                                 quint8 buttons,
-                                 quint8 povHats) {
+void DriverStation::addJoystick (int axes,
+                                 int buttons,
+                                 int povHats) {
     if (m_manager->protocolIsValid())
         m_manager->addJoystick (axes, buttons, povHats);
 }
 
-void DriverStation::updateJoystickAxis (quint8 js,
-                                        quint8 axis,
+void DriverStation::updateJoystickAxis (int js,
+                                        int axis,
                                         double value) {
     if (m_manager->protocolIsValid())
         m_manager->updateJoystickAxis (js, axis, value);
 }
 
-void DriverStation::updateJoystickButton (quint8 js,
-        quint8 button,
+void DriverStation::updateJoystickButton (int js,
+        int button,
         bool state) {
     if (m_manager->protocolIsValid())
         m_manager->updateJoystickButton (js, button, state);

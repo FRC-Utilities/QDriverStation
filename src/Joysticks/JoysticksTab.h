@@ -29,6 +29,7 @@
 
 #include <QKeyEvent>
 
+class QSpinBox;
 class QPushButton;
 class QProgressBar;
 class VirtualJoystick;
@@ -77,6 +78,11 @@ class JoysticksTab : public QWidget {
     QList<QProgressBar*> m_axes;
 
     /**
+     * Represents the hats of the selected joystick
+     */
+    QList<QSpinBox*> m_hats;
+
+    /**
      * Represents the buttons of the selected joystick
      */
     QList<QPushButton*> m_buttons;
@@ -99,6 +105,13 @@ class JoysticksTab : public QWidget {
      * the user attached or removed a joystick
      */
     void onCountChanged (QStringList list);
+
+    /**
+     * @internal
+     * Sends the axis event information to the DriverStation and updates the
+     * state of one of the axis indicators.
+     */
+    void onHatEvent (const GM_Hat& hat);
 
     /**
      * @internal

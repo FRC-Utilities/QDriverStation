@@ -16,4 +16,3 @@
 - Implement built-in mDNS support for cross-platform operation
 - Do not use XInput for joystick reading, it only makes everything worse
 - Implement the practice mode with official sounds from the FRC Driver Station
-- Use Gamepad API only for supported joysticks, non-supported joystick will use the 'fallback' joystick API from SDL [TODO]

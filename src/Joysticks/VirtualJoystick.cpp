@@ -37,6 +37,8 @@ VirtualJoystick::VirtualJoystick() {
     connect (ui.UseKeyboardCheckbox, SIGNAL (clicked (bool)),
              this,                   SLOT   (setVirtualJoystickEnabled (bool)));
 
+    connect (SDL_Layer::getInstance(), SIGNAL (hatEvent    (GM_Hat)),
+             this,                     SIGNAL (hatEvent    (GM_Hat)));
     connect (SDL_Layer::getInstance(), SIGNAL (axisEvent   (GM_Axis)),
              this,                     SIGNAL (axisEvent   (GM_Axis)));
     connect (SDL_Layer::getInstance(), SIGNAL (buttonEvent (GM_Button)),
@@ -55,6 +57,7 @@ VirtualJoystick::VirtualJoystick() {
              this, SLOT   (onButtonEvent (GM_Button)));
 
     m_joystick.numAxes = 6;
+    m_joystick.numHats = 0;
     m_joystick.numButtons = 10;
     m_joystick.displayName = tr ("Virtual Joystick");
 
@@ -85,6 +88,18 @@ int VirtualJoystick::getNumAxes (int js) {
     return 0;
 }
 
+int VirtualJoystick::getNumHats (int js) {
+    int count = SDL_Layer::getInstance()->joystickList().count();
+
+    if (js >= count && m_enabled)
+        return m_joystick.numHats;
+
+    else if (js < count)
+        return SDL_Layer::getInstance()->getNumHats (js);
+
+    return 0;
+}
+
 int VirtualJoystick::getNumButtons (int js) {
     int count = SDL_Layer::getInstance()->joystickList().count();
 
@@ -102,14 +117,16 @@ void VirtualJoystick::onCountChanged (int count) {
 
     for (int i = 0; i <= count - 1; ++i)
         DriverStation::getInstance()->addJoystick (
-            SDL_Layer::getInstance()->getNumAxes (i),
-            SDL_Layer::getInstance()->getNumButtons (i), 0);
+            SDL_Layer::getInstance()->getNumAxes    (i),
+            SDL_Layer::getInstance()->getNumButtons (i),
+            SDL_Layer::getInstance()->getNumHats    (i));
 
     if (m_enabled) {
         m_joystick.id = count;
-        DriverStation::getInstance()->addJoystick (m_joystick.numAxes,
-                m_joystick.numButtons,
-                0);
+        DriverStation::getInstance()->addJoystick (
+            m_joystick.numAxes,
+            m_joystick.numButtons,
+            m_joystick.numHats);
     }
 
     emit countChanged (count + (m_enabled ? 1 : 0));
@@ -260,6 +277,11 @@ void VirtualJoystick::setVirtualJoystickEnabled (bool enabled) {
 //------------------------------------------------------------------------------
 // REACT TO EVENTS AND SEND THEM TO THE DRIVER STATION
 //------------------------------------------------------------------------------
+
+void VirtualJoystick::onHatEvent (GM_Hat hat) {
+    DriverStation::getInstance()->updateJoystickPovHat (hat.joystick.id,
+            hat.id, hat.value);
+}
 
 void VirtualJoystick::onAxisEvent (GM_Axis axis) {
     DriverStation::getInstance()->updateJoystickAxis (axis.joystick.id,

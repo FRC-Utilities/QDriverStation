@@ -21,8 +21,11 @@
  */
 
 #include <QPointer>
+#include <QSpinBox>
 #include <QPushButton>
 #include <QProgressBar>
+
+#include <QDebug>
 
 #include "JoysticksTab.h"
 #include "VirtualJoystick.h"
@@ -34,6 +37,8 @@ JoysticksTab::JoysticksTab (QWidget* parent) : QWidget (parent) {
 
     m_keyboardDrive = new VirtualJoystick;
 
+    connect (m_keyboardDrive, SIGNAL (hatEvent       (GM_Hat)),
+             this,            SLOT   (onHatEvent     (GM_Hat)));
     connect (m_keyboardDrive, SIGNAL (axisEvent      (GM_Axis)),
              this,            SLOT   (onAxisEvent    (GM_Axis)));
     connect (m_keyboardDrive, SIGNAL (buttonEvent    (GM_Button)),
@@ -61,28 +66,30 @@ void JoysticksTab::showKeyboardWindow() {
 //------------------------------------------------------------------------------
 
 void JoysticksTab::onRowChanged (int row) {
-    /* Remove all buttons and progress bars in the widget */
+    /* Remove all buttons, dials and progress bars in the widget */
+    foreach (QSpinBox *     b, findChildren<QSpinBox*>())     delete b;
     foreach (QPushButton *  c, findChildren<QPushButton*>())  delete c;
     foreach (QProgressBar * p, findChildren<QProgressBar*>()) delete p;
 
     /* Clear joystick data */
     m_axes.clear();
+    m_hats.clear();
     m_buttons.clear();
-    ui.Axes->setVisible (false);
-    ui.Buttons->setVisible (false);
 
     /* Avoid crashing the application when there are no joysticks */
     if (row < 0)  return;
 
     /* Get joystick information */
-    quint8 axisCount = m_keyboardDrive->getNumAxes (row);
-    quint8 buttonCount = m_keyboardDrive->getNumButtons (row);
+    int hatCount = m_keyboardDrive->getNumHats (row);
+    int axisCount = m_keyboardDrive->getNumAxes (row);
+    int buttonCount = m_keyboardDrive->getNumButtons (row);
 
+    ui.Hats->setVisible (hatCount > 0);
     ui.Axes->setVisible (axisCount > 0);
     ui.Buttons->setVisible (buttonCount > 0);
 
     /* Create a progress bar for each axis */
-    for (quint8 i = 0; i < axisCount; ++i) {
+    for (int i = 0; i < axisCount; ++i) {
         QPointer<QProgressBar> bar = new QProgressBar (this);
 
         bar->setMaximumHeight (19);
@@ -98,7 +105,7 @@ void JoysticksTab::onRowChanged (int row) {
     }
 
     /* Create a button for each joystick button */
-    for (quint8 i = 0; i < buttonCount; ++i) {
+    for (int i = 0; i < buttonCount; ++i) {
         QPointer<QPushButton> button = new QPushButton (this);
 
         button->setEnabled (false);
@@ -108,11 +115,22 @@ void JoysticksTab::onRowChanged (int row) {
         button->setToolTip     (tr ("Button %1").arg (i));
 
         /* Distribute the button items in a nice layout */
-        quint8 row = (i <= 7) ? i : i - 8;
-        quint8 column = (i <= 7) ? 0 : (i / 8);
+        int row = (i <= 7) ? i : i - 8;
+        int column = (i <= 7) ? 0 : (i / 8);
 
         m_buttons.append (button);
         ui.ButtonLayout->addWidget (button, row, column);
+    }
+
+    /* Create a spinbox for each joystick hat */
+    for (int i = 0; i < hatCount; ++i) {
+        QPointer<QSpinBox> box = new QSpinBox (this);
+
+        box->setRange (0, 360);
+        box->setEnabled (false);
+
+        m_hats.append (box);
+        ui.HatsWidget->layout()->addWidget (box);
     }
 }
 
@@ -134,6 +152,14 @@ void JoysticksTab::onCountChanged (QStringList list) {
     }
 
     emit statusChanged (list.count() > 0);
+}
+
+void JoysticksTab::onHatEvent (const GM_Hat& hat) {
+    if (ui.JoystickList->currentRow() != hat.joystick.id)
+        return;
+
+    if (hat.id < m_hats.count() && hat.angle >= 0)
+        m_hats.at (hat.id)->setValue (hat.angle);
 }
 
 void JoysticksTab::onAxisEvent (const GM_Axis& axis) {

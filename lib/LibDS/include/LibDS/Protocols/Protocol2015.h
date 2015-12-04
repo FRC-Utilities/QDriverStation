@@ -38,8 +38,8 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_ProtocolBase {
   public:
     explicit DS_Protocol2015();
 
-    quint16 robotPort();
-    quint16 clientPort();
+    int robotPort();
+    int clientPort();
     QString defaultRadioAddress();
     QString defaultRobotAddress();
 
@@ -57,11 +57,11 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_ProtocolBase {
     QByteArray generateClientPacket();
     QByteArray generateJoystickData();
     QByteArray generateTimezoneData();
-    DS_ControlMode getControlMode (quint8 byte);
+    DS_ControlMode getControlMode (int byte);
 
-    quint8 getControlCode (DS_ControlMode mode);
-    quint8 getAllianceCode (DS_Alliance alliance);
-    quint8 getJoystickSize (DS_Joystick* joystick);
+    int getControlCode (DS_ControlMode mode);
+    int getAllianceCode (DS_Alliance alliance);
+    int getJoystickSize (DS_Joystick* joystick);
 
     QNetworkAccessManager m_manager;
 };

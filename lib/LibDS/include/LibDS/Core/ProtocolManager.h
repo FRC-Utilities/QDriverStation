@@ -69,22 +69,22 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
     /**
      * Registers a new joystick and its characteristics to the Driver Station
      */
-    void addJoystick (quint8 axes, quint8 buttons, quint8 povHats);
+    void addJoystick (int axes, int buttons, int povHats);
 
     /**
      * Updates the state of the POV hats in the selected joystick
      */
-    void updateJoystickPovHat (quint8 js, quint8 hat, quint8 angle);
+    void updateJoystickPovHat (int js, int hat, int angle);
 
     /**
      * Updates the state of the axes in the selected joystick
      */
-    void updateJoystickAxis (quint8 js, quint8 axis, double value);
+    void updateJoystickAxis (int js, int axis, double value);
 
     /**
      * Updates the state of the buttons in the selected joystick
      */
-    void updateJoystickButton (quint8 js, quint8 button, bool status);
+    void updateJoystickButton (int js, int button, bool status);
 
     /**
      * Sends the input \a data to the current protocol to decode
@@ -125,13 +125,13 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
      * Emitted when the protocol detects that the RAM usage of the robot
      * has changed
      */
-    void ramUsageChanged (quint8);
+    void ramUsageChanged (int);
 
     /**
      * Emitted when the protocol detects that the disk usage of the robot
      * has changed
      */
-    void diskUsageChanged (quint8);
+    void diskUsageChanged (int);
 
     /**
      * Emitted when the protocol detects that the control mode has changed.
@@ -178,7 +178,7 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
     /**
      * Returns \c true if the \a js is registered with the joystick list
      */
-    bool joystickIsValid (quint8 js) const;
+    bool joystickIsValid (int js) const;
 };
 
 #endif

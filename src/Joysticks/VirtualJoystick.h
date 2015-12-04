@@ -60,6 +60,12 @@ class VirtualJoystick : public QDialog {
     int getNumAxes (int js);
 
     /**
+     * Returns the number of hats for the selected joystick
+     * @note The joystick can be either the 'real' one or the virtual one
+     */
+    int getNumHats (int js);
+
+    /**
      * Returns the number of buttons for the selected joystick
      * @note The joystick can be either the 'real' one or the virtual one
      */
@@ -75,6 +81,12 @@ class VirtualJoystick : public QDialog {
      * Emitted when the joystick count is adjusted and updated
      */
     void countChanged (QStringList);
+
+    /**
+     * Emitted when the system detects a change in the state of the hats of
+     * one of the connected joysticks
+     */
+    void hatEvent (GM_Hat);
 
     /**
      * Emitted when the system detects a change in the state of the axes of
@@ -133,6 +145,11 @@ class VirtualJoystick : public QDialog {
      * required internal values
      */
     void setVirtualJoystickEnabled (bool enabled);
+
+    /**
+     * Sends the hat data to the Driver Station
+     */
+    void onHatEvent (GM_Hat hat);
 
     /**
      * Sends the axis data to the Driver Station

@@ -30,9 +30,10 @@
  * Represents a joystick and provides some information about it
  */
 struct GM_Joystick {
-    quint8 id;           /**< The raw ID of the joystick */
-    quint8 numAxes;      /**< The number of axes that the joystick has */
-    quint8 numButtons;   /**< The number of buttons that the joystick has */
+    int id;              /**< The raw ID of the joystick */
+    int numHats;         /**< The number of hats that the joystick has */
+    int numAxes;         /**< The number of axes that the joystick has */
+    int numButtons;      /**< The number of buttons that the joystick has */
     QString displayName; /**< The user-friendly name of the joystick*/
 };
 
@@ -41,8 +42,9 @@ struct GM_Joystick {
  * Represents the state of a joystick hat and provides some data about it
  */
 struct GM_Hat {
-    quint8 id;            /**< The raw ID of the hat */
-    quint8 angle;         /**< The pressed angle of the hat */
+    int id;               /**< The raw ID of the hat */
+    int angle;            /**< The calculated angle of the hat */
+    int value;            /**< The raw value of the hat */
     GM_Joystick joystick; /**< The joystick that the hat belongs to */
 };
 
@@ -50,7 +52,7 @@ struct GM_Hat {
  * Represents the state of a joystick axis and provides some data about it
  */
 struct GM_Axis {
-    quint8 id;            /**< The raw ID of the axis */
+    int id;               /**< The raw ID of the axis */
     double value;         /**< The value (between -1 and 1) of the axis */
     GM_Joystick joystick; /**< The joystick that the axis belongs to */
 };
@@ -59,7 +61,7 @@ struct GM_Axis {
  * Represents the state of a joystick button and provides some data about it
  */
 struct GM_Button {
-    quint8 id;            /**< The raw ID of the button */
+    int id;               /**< The raw ID of the button */
     bool pressed;         /**< The current state of the button */
     GM_Joystick joystick; /**< The joystick that the button belongs to */
 };

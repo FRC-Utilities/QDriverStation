@@ -134,10 +134,10 @@ void MainWindow::connectSlots() {
              this, SLOT   (onRioVersionChanged     (QString)));
     connect (m_ds, SIGNAL (robotStatusChanged      (QString)),
              this, SLOT   (onRobotStatusChanged    (QString)));
-    connect (m_ds, SIGNAL (ramUsageChanged         (quint8)),
-             this, SLOT   (onRamUsageChanged       (quint8)));
-    connect (m_ds, SIGNAL (diskUsageChanged        (quint8)),
-             this, SLOT   (onDiskUsageChanged      (quint8)));
+    connect (m_ds, SIGNAL (ramUsageChanged         (int)),
+             this, SLOT   (onRamUsageChanged       (int)));
+    connect (m_ds, SIGNAL (diskUsageChanged        (int)),
+             this, SLOT   (onDiskUsageChanged      (int)));
     connect (m_ds, SIGNAL (controlModeChanged      (DS_ControlMode)),
              this, SLOT   (onControlModeChanged    (DS_ControlMode)));
     connect (DS_Timers::getInstance(), SIGNAL (timeout1000()),
@@ -642,11 +642,11 @@ void MainWindow::onRobotStatusChanged (QString status) {
         ui->StatusLabel->setText (status);
 }
 
-void MainWindow::onRamUsageChanged (quint8 percent) {
+void MainWindow::onRamUsageChanged (int percent) {
     updateLabelText (ui->RamUsage, tr ("%1 %").arg (percent));
 }
 
-void MainWindow::onDiskUsageChanged (quint8 percent) {
+void MainWindow::onDiskUsageChanged (int percent) {
     updateLabelText (ui->DiskUsage, tr ("%1 %").arg (percent));
 }
 

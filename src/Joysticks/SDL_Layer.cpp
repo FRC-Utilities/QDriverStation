@@ -122,8 +122,38 @@ GM_Hat SDL_Layer::getHat (const SDL_Event* event) {
     GM_Hat hat;
 
     hat.id = event->jhat.hat;
-    hat.angle = event->jhat.value;
+    hat.value = event->jhat.value;
     hat.joystick = getJoystick (event);
+
+    switch (hat.value) {
+    case SDL_HAT_RIGHTUP:
+        hat.angle = 45;
+        break;
+    case SDL_HAT_RIGHTDOWN:
+        hat.angle = 135;
+        break;
+    case SDL_HAT_LEFTDOWN:
+        hat.angle = 225;
+        break;
+    case SDL_HAT_LEFTUP:
+        hat.angle = 315;
+        break;
+    case SDL_HAT_UP:
+        hat.angle = 360;
+        break;
+    case SDL_HAT_RIGHT:
+        hat.angle = 90;
+        break;
+    case SDL_HAT_DOWN:
+        hat.angle = 180;
+        break;
+    case SDL_HAT_LEFT:
+        hat.angle = 270;
+        break;
+    default:
+        hat.angle = 0;
+        break;
+    }
 
     return hat;
 }

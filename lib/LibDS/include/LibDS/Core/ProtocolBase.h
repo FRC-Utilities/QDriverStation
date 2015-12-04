@@ -49,12 +49,12 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     /**
      * Returns the current team number
      */
-    quint16 team() const;
+    int team() const;
 
     /**
      * The current status code of the robot
      */
-    quint16 status() const;
+    int status() const;
 
     /**
      * Returns \c true if the user code is loaded on the robot
@@ -64,7 +64,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     /**
      * The number of packets that we sent
      */
-    quint16 sentPackets() const;
+    int sentPackets() const;
 
     /**
      * Returns \c true if the robot communications are working
@@ -120,14 +120,14 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      *
      * \note This function must be implemented by each protocol
      */
-    virtual quint16 robotPort() = 0;
+    virtual int robotPort() = 0;
 
     /**
      * Returns the port in which we receive robot data
      *
      * \note This function must be implemented by each protocol
      */
-    virtual quint16 clientPort() = 0;
+    virtual int clientPort() = 0;
 
     /**
      * Returns the default radio address
@@ -156,7 +156,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * Changes the team number of the robot, this can be used to generate
      * the robot and radio address.
      */
-    void setTeamNumber (quint16 team);
+    void setTeamNumber (int team);
 
     /**
      * Changes the robot address to \a address
@@ -224,13 +224,13 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * Emitted when the protocol detects that the RAM usage of the robot
      * has changed
      */
-    void ramUsageChanged (quint8);
+    void ramUsageChanged (int);
 
     /**
      * Emitted when the protocol detects that the disk usage of the robot
      * has changed
      */
-    void diskUsageChanged (quint8);
+    void diskUsageChanged (int);
 
     /**
      * Emitted when the protocol detects that the control mode has changed.
@@ -327,7 +327,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      *
      * \note This function must be implemented by each protocol
      */
-    virtual DS_ControlMode getControlMode (quint8 mode) = 0;
+    virtual DS_ControlMode getControlMode (int mode) = 0;
 
     /**
      * Returns the control code used by the protocol to represent the selected
@@ -335,7 +335,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      *
      * \note This function must be implemented by each protocol
      */
-    virtual quint8 getControlCode (DS_ControlMode mode) = 0;
+    virtual int getControlCode (DS_ControlMode mode) = 0;
 
     /**
      * Returns the code used by the protocol to represent the selected
@@ -343,7 +343,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      *
      * \note This function must be implemented by each protocol
      */
-    virtual quint8 getAllianceCode (DS_Alliance alliance) = 0;
+    virtual int getAllianceCode (DS_Alliance alliance) = 0;
 
     /**
      * Calculates the size of the \a joystick.
@@ -352,7 +352,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      *
      * \note This function must be implemented by each protocol
      */
-    virtual quint8 getJoystickSize (DS_Joystick* joystick) = 0;
+    virtual int getJoystickSize (DS_Joystick* joystick) = 0;
 
     /**
      * Converts the input \a bits to bytes
@@ -362,7 +362,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     /**
      * Changes the current robot \a status
      */
-    void updateStatus (quint8 status);
+    void updateStatus (int status);
 
     /**
      * Changes the state of the robot code and emits the appropiate signals
@@ -383,14 +383,14 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * 'Calculcates' the voltage from the values of the \a major and \a minor
      * parameters and emits the appropiate signals
      */
-    void updateVoltage (quint8 major, quint8 minor);
+    void updateVoltage (int major, int minor);
 
   private:
     /**
      * This is the team number, you may use it for a variety of purposes
      * This variable is changed with the \c setTeamNumber() function.
      */
-    quint16 m_team;
+    int m_team;
 
     /**
      * Represents the operation status of the robot.
@@ -398,19 +398,19 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * such as rebooting the main controller (e.g. roboRIO or cRIO) or restarting
      * the user code
      */
-    quint8 m_status;
+    int m_status;
 
     /**
      * Holds the number of times the \c reset() function was called.
      * We use it to toggle the usage of the fallback robot address every certain
      * number of protocol resets.
      */
-    quint8 m_resetCount;
+    int m_resetCount;
 
     /**
      * Represents the number of packets sent to the robot
      */
-    quint16 m_sentPackets;
+    int m_sentPackets;
 
     /**
      * This variable should be set to \c true when the user code is loaded
