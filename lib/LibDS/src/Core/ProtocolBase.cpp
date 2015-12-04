@@ -158,10 +158,14 @@ void DS_ProtocolBase::readRobotPacket (QByteArray data) {
 
 QByteArray DS_ProtocolBase::bitsToBytes (QBitArray bits) {
     QByteArray bytes;
-    bytes.resize (bits.count());
+    bytes.fill ((char) 0, (bits.count() + 7) / 8);
 
-    for (int b = 0; b < bits.count(); ++b)
-        bytes [b / 8] = (bytes.at (b / 8) | ((bits [b] ? 1 : 0) << (7 - (b % 8))));
+    for (int i = 0; i < bits.count(); i++) {
+        if (bits.at (i)) {
+            int value = bytes.count() - i / 8 - 1;
+            bytes [value] = value | (1 << (i % 8));
+        }
+    }
 
     return bytes;
 }
