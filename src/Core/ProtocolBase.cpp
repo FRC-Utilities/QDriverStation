@@ -46,11 +46,11 @@ DS_ProtocolBase::~DS_ProtocolBase() {
     delete m_joysticks;
 }
 
-quint16 DS_ProtocolBase::team() const {
+int DS_ProtocolBase::team() const {
     return m_team;
 }
 
-quint16 DS_ProtocolBase::status() const {
+int DS_ProtocolBase::status() const {
     return m_status;
 }
 
@@ -58,7 +58,7 @@ bool DS_ProtocolBase::robotCode() const {
     return m_robotCode;
 }
 
-quint16 DS_ProtocolBase::sentPackets() const {
+int DS_ProtocolBase::sentPackets() const {
     return m_sentPackets;
 }
 
@@ -126,7 +126,7 @@ void DS_ProtocolBase::reset() {
     m_discovery.getIp (robotAddress(), this, SLOT (onIpFound (QString, QString)));
 }
 
-void DS_ProtocolBase::setTeamNumber (quint16 team) {
+void DS_ProtocolBase::setTeamNumber (int team) {
     m_team = team;
     emit robotAddressChanged (robotAddress());
 }
@@ -157,15 +157,16 @@ void DS_ProtocolBase::readRobotPacket (QByteArray data) {
 }
 
 QByteArray DS_ProtocolBase::bitsToBytes (QBitArray bits) {
-    QByteArray bytes (bits.count() / 8, 0);
+    QByteArray bytes;
+    bytes.resize (bits.count());
 
-    for (int i = 0; i < bits.count(); ++i)
-        bytes [i / 8] = (bytes.at (i / 8) | ((bits [i] ? 1 : 0) << (i % 8)));
+    for (int b = 0; b < bits.count(); ++b)
+        bytes [b / 8] = (bytes.at (b / 8) | ((bits [b] ? 1 : 0) << (7 - (b % 8))));
 
     return bytes;
 }
 
-void DS_ProtocolBase::updateStatus (quint8 status) {
+void DS_ProtocolBase::updateStatus (int status) {
     m_status = status;
 }
 
@@ -188,7 +189,7 @@ void DS_ProtocolBase::updateCommunications (DS_CommunicationStatus status) {
     emit communicationsChanged (m_communicationStatus);
 }
 
-void DS_ProtocolBase::updateVoltage (quint8 major, quint8 minor) {
+void DS_ProtocolBase::updateVoltage (int major, int minor) {
     QString maj = QString::number (major);
     QString min = QString::number (minor);
 

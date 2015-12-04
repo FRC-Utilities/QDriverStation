@@ -101,7 +101,7 @@ QString DS_GetTimezoneCode() {
     return "GMT0BST";
 }
 
-QString DS_GetStaticIp (quint16 team, quint16 host) {
+QString DS_GetStaticIp (int team, int host) {
     QString string = QString ("%1").arg (team);
 
     switch (string.length()) {

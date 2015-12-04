@@ -67,7 +67,7 @@ void NetworkDiscovery::getIp (QString address, AddressType type,
 }
 
 void NetworkDiscovery::onLookupFinished (QHostInfo info) {
-    for (quint8 i = 0; i < info.addresses().count(); ++i) {
+    for (int i = 0; i < info.addresses().count(); ++i) {
         QString ip = info.addresses().at (i).toString();
 
         if (getAddressType (ip) == kIPv4 || getAddressType (ip) == kIPv6) {

@@ -49,12 +49,12 @@ class LIB_DS_DECL DS_Client : public QObject {
     /**
      * Changes the port in which we send the packets to
      */
-    void setRobotPort (quint16 port);
+    void setRobotPort (int port);
 
     /**
      * Changes the port in where we receive robot packets
      */
-    void setClientPort (quint16 port);
+    void setClientPort (int port);
 
     /**
      * Changes the address where we send the packets to
@@ -77,7 +77,7 @@ class LIB_DS_DECL DS_Client : public QObject {
     /**
      * The port in which we send data to the robot
      */
-    quint16 m_robotPort;
+    int m_robotPort;
 
     /**
      * The address of the robot

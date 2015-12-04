@@ -58,10 +58,10 @@ void DS_ProtocolManager::setProtocol (DS_ProtocolBase* protocol) {
                  this,       SIGNAL (robotAddressChanged   (QString)));
         connect (m_protocol, SIGNAL (controlModeChanged    (DS_ControlMode)),
                  this,       SIGNAL (controlModeChanged    (DS_ControlMode)));
-        connect (m_protocol, SIGNAL (diskUsageChanged      (quint8)),
-                 this,       SIGNAL (diskUsageChanged      (quint8)));
-        connect (m_protocol, SIGNAL (ramUsageChanged       (quint8)),
-                 this,       SIGNAL (ramUsageChanged       (quint8)));
+        connect (m_protocol, SIGNAL (diskUsageChanged      (int)),
+                 this,       SIGNAL (diskUsageChanged      (int)));
+        connect (m_protocol, SIGNAL (ramUsageChanged       (int)),
+                 this,       SIGNAL (ramUsageChanged       (int)));
         connect (m_protocol, SIGNAL (voltageChanged        (QString)),
                  this,       SIGNAL (voltageChanged        (QString)));
     }
@@ -71,8 +71,8 @@ void DS_ProtocolManager::clearJoysticks() {
     m_joysticks->clear();
 }
 
-void DS_ProtocolManager::addJoystick (quint8 axes, quint8 buttons,
-                                      quint8 povHats) {
+void DS_ProtocolManager::addJoystick (int axes, int buttons,
+                                      int povHats) {
 
     DS_Joystick* js = new DS_Joystick;
 
@@ -80,35 +80,33 @@ void DS_ProtocolManager::addJoystick (quint8 axes, quint8 buttons,
     js->numButtons = buttons;
     js->numPovHats = povHats;
 
-    js->axes = new double [axes];
-    js->povHats = new quint8 [povHats];
-    js->buttons = new bool    [buttons];
+    js->axes = new double  [axes];
+    js->povHats = new int  [povHats];
+    js->buttons = new bool [buttons];
 
-    for (quint8 i = 0; i < js->numAxes; i++)
+    for (int i = 0; i < js->numAxes; i++)
         js->axes [i] = 0;
 
-    for (quint8 i = 0; i < js->numPovHats; i++)
+    for (int i = 0; i < js->numPovHats; i++)
         js->povHats [i] = -1;
 
-    for (quint8 i = 0; i < js->numButtons; i++)
+    for (int i = 0; i < js->numButtons; i++)
         js->buttons [i] = false;
 
     m_joysticks->append (js);
 }
 
-void DS_ProtocolManager::updateJoystickPovHat (quint8 js, quint8 hat,
-        quint8 angle) {
+void DS_ProtocolManager::updateJoystickPovHat (int js, int hat, int angle) {
     if (joystickIsValid (js))
         m_joysticks->at (js)->povHats [hat] = angle;
 }
 
-void DS_ProtocolManager::updateJoystickAxis (quint8 js, quint8 axis,
-        double value) {
+void DS_ProtocolManager::updateJoystickAxis (int js, int axis, double value) {
     if (joystickIsValid (js))
         m_joysticks->at (js)->axes [axis] = value;
 }
 
-void DS_ProtocolManager::updateJoystickButton (quint8 js, quint8 button,
+void DS_ProtocolManager::updateJoystickButton (int js, int button,
         bool status) {
     if (joystickIsValid (js))
         m_joysticks->at (js)->buttons [button] = status;
@@ -119,6 +117,6 @@ void DS_ProtocolManager::readRobotData (QByteArray data) {
         protocol()->readRobotPacket (data);
 }
 
-bool DS_ProtocolManager::joystickIsValid (quint8 js) const {
+bool DS_ProtocolManager::joystickIsValid (int js) const {
     return (js < m_joysticks->count());
 }

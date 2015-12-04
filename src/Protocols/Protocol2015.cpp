@@ -94,11 +94,11 @@ DS_Protocol2015::DS_Protocol2015() {
              this,       SLOT   (onDownloadFinished (QNetworkReply*)));
 }
 
-quint16 DS_Protocol2015::robotPort() {
+int DS_Protocol2015::robotPort() {
     return 1110;
 }
 
-quint16 DS_Protocol2015::clientPort() {
+int DS_Protocol2015::clientPort() {
     return 1150;
 }
 
@@ -145,10 +145,10 @@ void DS_Protocol2015::readRobotData (QByteArray data) {
     }
 
     /* Read robot packet */
-    quint8 status       = data.at (4);
-    quint8 request      = data.at (7);
-    quint8 majorVoltage = data.at (5);
-    quint8 minorVoltage = data.at (6);
+    int status       = data.at (4);
+    int request      = data.at (7);
+    int majorVoltage = data.at (5);
+    int minorVoltage = data.at (6);
 
     /* Update client information */
     updateVoltage (majorVoltage, minorVoltage);
@@ -204,24 +204,19 @@ QByteArray DS_Protocol2015::generateClientPacket() {
     data.append (sentPackets() - (sentPackets() / 0xFF));
 
     /* Add general header data, without it, we are worthless */
-    data.append (pHeaderGeneral);
+    data.append ((quint8) pHeaderGeneral);
 
     /* Add the current control mode (e.g TeleOp, Auto, etc) */
     data.append (getControlCode (controlMode()));
 
     /* Add the current robot status (e.g. normal, reboot, etc) */
-    data.append (isConnected() ? status() : (quint16) pStatusInvalid);
+    data.append (isConnected() ? status() : (int) pStatusInvalid);
 
     /* Add the current alliance and position */
     data.append (getAllianceCode (alliance()));
 
-    /* Send joystick data if possible */
-    if (isConnected() && !sendDateTime())
-        data.append (generateJoystickData());
-
-    /* Robot wants to know what time is it */
-    else if (sendDateTime())
-        data.append (generateTimezoneData());
+    /* Send joystick data or timezone code */
+    data.append (sendDateTime() ? generateTimezoneData() : generateJoystickData());
 
     return data;
 }
@@ -229,28 +224,32 @@ QByteArray DS_Protocol2015::generateClientPacket() {
 QByteArray DS_Protocol2015::generateJoystickData() {
     QByteArray data;
 
+    /* Do not send JS data on DS init */
+    if (sentPackets() <= 5)
+        return data;
+
     /* Generate data for each joystick */
-    for (quint8 i = 0; i < joysticks()->count(); ++i) {
-        quint8 numAxes = joysticks()->at (i)->numAxes;
-        quint8 numButtons = joysticks()->at (i)->numButtons;
-        quint8 numPovHats = joysticks()->at (i)->numPovHats;
+    for (int i = 0; i < joysticks()->count(); ++i) {
+        int numAxes    = joysticks()->at (i)->numAxes;
+        int numButtons = joysticks()->at (i)->numButtons;
+        int numPovHats = joysticks()->at (i)->numPovHats;
 
         /* Add joystick information and put the section header */
         data.append (getJoystickSize (joysticks()->at (i)) + 1);
-        data.append (pHeaderJoystick);
+        data.append ((quint8) pHeaderJoystick);
 
         /* Add axis data */
         if (numAxes > 0) {
             data.append (numAxes);
-            for (quint8 axis = 0; axis < numAxes; ++axis)
+            for (int axis = 0; axis < numAxes; ++axis)
                 data.append (joysticks()->at (i)->axes [axis] * 0x80);
         }
 
         /* Add button data */
         if (numButtons > 0) {
             QBitArray buttons (numButtons);
-            for (quint8 button = 0; button < numButtons; ++button)
-                buttons [button] = (quint8) joysticks()->at (i)->buttons [button];
+            for (int button = 0; button < numButtons; ++button)
+                buttons.setBit (button, joysticks()->at (i)->buttons [button]);
 
             data.append (joysticks()->at (i)->numButtons);
             data.append (bitsToBytes (buttons));
@@ -259,8 +258,8 @@ QByteArray DS_Protocol2015::generateJoystickData() {
         /* Add hat/pov data */
         if (numPovHats > 0) {
             data.append (numPovHats);
-            for (quint8 hat = 0; hat < numPovHats; ++hat) {
-                quint8 value = joysticks()->at (i)->povHats [hat];
+            for (int hat = 0; hat < numPovHats; ++hat) {
+                int value = joysticks()->at (i)->povHats [hat];
                 if (value <= 0) value = -1;
 
                 data.append (value);
@@ -302,7 +301,7 @@ QByteArray DS_Protocol2015::generateTimezoneData() {
     return data;
 }
 
-DS_ControlMode DS_Protocol2015::getControlMode (quint8 byte) {
+DS_ControlMode DS_Protocol2015::getControlMode (int byte) {
     switch (byte) {
     case pControlDisabled:
         return kControlDisabled;
@@ -321,7 +320,7 @@ DS_ControlMode DS_Protocol2015::getControlMode (quint8 byte) {
     return kControlEmergencyStop;
 }
 
-quint8 DS_Protocol2015::getControlCode (DS_ControlMode mode) {
+int DS_Protocol2015::getControlCode (DS_ControlMode mode) {
     switch (mode) {
     case kControlTest:
         return pControlTest;
@@ -343,7 +342,7 @@ quint8 DS_Protocol2015::getControlCode (DS_ControlMode mode) {
     return pControlDisabled;
 }
 
-quint8 DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
+int DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
     switch (alliance) {
     case kAllianceRed1:
         return pRed1;
@@ -368,7 +367,7 @@ quint8 DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
     return pRed1;
 }
 
-quint8 DS_Protocol2015::getJoystickSize (DS_Joystick* joystick) {
+int DS_Protocol2015::getJoystickSize (DS_Joystick* joystick) {
     return  5
             + (joystick->numAxes > 0 ? joystick->numAxes : 0)
             + (joystick->numButtons / 8)

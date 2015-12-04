@@ -72,12 +72,12 @@ enum DS_CommunicationStatus {
  * @brief The DS_Joystick struct
  */
 struct LIB_DS_DECL DS_Joystick {
-    quint8 numAxes;
-    quint8 numButtons;
-    quint8 numPovHats;
+    int numAxes;
+    int numButtons;
+    int numPovHats;
 
     bool* buttons;
-    quint8* povHats;
+    int* povHats;
     double* axes;
 };
 
@@ -96,7 +96,7 @@ QString LIB_DS_DECL DS_GetTimezoneCode();
  *     - \c DS_GetStaticIp( 118, 3) would return \c 10.01.18.3
  *     - And so on...
  */
-QString LIB_DS_DECL DS_GetStaticIp (quint16 team, quint16 host);
+QString LIB_DS_DECL DS_GetStaticIp (int team, int host);
 
 /**
  * Returns an user-friendly string given the inputed robot control mode
