@@ -25,17 +25,17 @@
 
 #include <QSettings>
 
-static QSettings* settings =
-    new QSettings (AssemblyInfo::organization(), AssemblyInfo::name());
+QSettings* Settings::m_settings = new QSettings (AssemblyInfo::organization(),
+        AssemblyInfo::name());
 
 void Settings::clear() {
-    settings->clear();
+    m_settings->clear();
 }
 
 void Settings::set (QString key, const QVariant& value) {
-    settings->setValue (key, value);
+    m_settings->setValue (key, value);
 }
 
 QVariant Settings::get (QString key, const QVariant& defaultValue) {
-    return settings->value (key, defaultValue);
+    return m_settings->value (key, defaultValue);
 }

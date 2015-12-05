@@ -139,7 +139,7 @@ GM_Hat SDL_Layer::getHat (const SDL_Event* event) {
         hat.angle = 315;
         break;
     case SDL_HAT_UP:
-        hat.angle = 360;
+        hat.angle = 0;
         break;
     case SDL_HAT_RIGHT:
         hat.angle = 90;
@@ -151,7 +151,7 @@ GM_Hat SDL_Layer::getHat (const SDL_Event* event) {
         hat.angle = 270;
         break;
     default:
-        hat.angle = 0;
+        hat.angle = -1;
         break;
     }
 

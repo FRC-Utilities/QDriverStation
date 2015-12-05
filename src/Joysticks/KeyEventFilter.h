@@ -28,6 +28,17 @@
 #include <QObject>
 #include <QKeyEvent>
 
+/**
+ * Allows us to get key presses and key releases from any object in
+ * the application.
+ *
+ * We install this filter in the application itself, so that we can send
+ * keyboard information to the virutal joystick, even if the MainWindow
+ * is not selected.
+ *
+ * This filter is also used to detect when the user presses the
+ * SHIFT or SPACE keys to trigger the Emergency Stop in the robot.
+ */
 class KeyEventFilter : public QObject {
     Q_OBJECT
 

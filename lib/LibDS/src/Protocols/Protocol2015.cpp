@@ -200,8 +200,10 @@ QByteArray DS_Protocol2015::generateClientPacket() {
     QByteArray data;
 
     /* Add packet index data */
-    data.append (sentPackets() / 0xFF);
-    data.append (sentPackets() - (sentPackets() / 0xFF));
+    ShortToBytes pingData;
+    pingData.setData (sentPackets());
+    data.append (pingData.byte1);
+    data.append (pingData.byte2);
 
     /* Add general header data, without it, we are worthless */
     data.append ((quint8) pHeaderGeneral);
@@ -241,28 +243,37 @@ QByteArray DS_Protocol2015::generateJoystickData() {
         /* Add axis data */
         if (numAxes > 0) {
             data.append (numAxes);
-            for (int axis = 0; axis < numAxes; ++axis)
-                data.append ((char) (joysticks()->at (i)->axes [axis] * 127));
+            for (int axis = 0; axis < numAxes; ++axis) {
+                double value = joysticks()->at (i)->axes [axis];
+                value *= value > 0 ? 128 : 127;
+                data.append ((char) value);
+            }
         }
 
         /* Add button data */
         if (numButtons > 0) {
-            QBitArray bitSet (numButtons);
-            for (int button = 0; button < numButtons; ++button)
-                bitSet [button] = joysticks()->at (i)->buttons [button];
+            int buttons = 0;
+            for (int button = 0; button < numButtons; ++button) {
+                bool pressed = joysticks()->at (i)->buttons [button];
+                buttons += pressed ? qPow (2, button) : 0;
+            }
 
             data.append (numButtons);
-            data.append (bitsToBytes (bitSet));
+
+            ShortToBytes buttonData;
+            buttonData.setData (buttons);
+            data.append (buttonData.byte1);
+            data.append (buttonData.byte2);
         }
 
         /* Add hat/pov data */
         if (numPovHats > 0) {
             data.append (numPovHats);
             for (int hat = 0; hat < numPovHats; ++hat) {
-                int value = joysticks()->at (i)->povHats [hat];
-
-                data.append (value / 0xFF);
-                data.append (value - (value / 0xFF));
+                ShortToBytes povData;
+                povData.setData (joysticks()->at (i)->povHats [hat]);
+                data.append (povData.byte1);
+                data.append (povData.byte2);
             }
         }
     }

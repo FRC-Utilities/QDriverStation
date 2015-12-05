@@ -22,32 +22,24 @@
 
 #include "AssemblyInfo.h"
 
-#define d_Name    "QDriverStation"
-#define d_Major   "0"
-#define d_Minor   "1"
-#define d_Build   "4"
-#define d_State   "RC"
-#define d_Company "WinT 3794"
-#define d_Domain  "http://wint3794.org"
-
 QString AssemblyInfo::name() {
-    return d_Name;
+    return "QDriverStation";
 }
 
 QString AssemblyInfo::major() {
-    return d_Major;
+    return "0";
 }
 
 QString AssemblyInfo::minor() {
-    return d_Minor;
+    return "1";
 }
 
 QString AssemblyInfo::build() {
-    return d_Build;
+    return "4";
 }
 
 QString AssemblyInfo::state() {
-    return d_State;
+    return "RC";
 }
 
 QString AssemblyInfo::version() {
@@ -58,11 +50,11 @@ QString AssemblyInfo::version() {
 }
 
 QString AssemblyInfo::organization() {
-    return d_Company;
+    return "WinT 3794";
 }
 
 QString AssemblyInfo::organizationDomain() {
-    return d_Domain;
+    return "http://wint3794.org";
 }
 
 QString AssemblyInfo::buildDateTime() {

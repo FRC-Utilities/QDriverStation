@@ -35,6 +35,7 @@
  * was to avoid the initialization of multiple QSettings objects, when in
  * fact we only need one.
  */
+class QSettings;
 class Settings {
   public:
     /**
@@ -52,6 +53,9 @@ class Settings {
      * If the key is not found, returns the \a defaultValue
      */
     static QVariant get (QString key, const QVariant& defaultValue);
+
+  private:
+    static QSettings* m_settings;
 };
 
 #endif

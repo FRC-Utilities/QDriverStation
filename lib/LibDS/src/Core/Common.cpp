@@ -161,3 +161,20 @@ QByteArray DS_GetSocketData (QUdpSocket* socket) {
 
     return data;
 }
+
+void ShortToBytes::setData (int data) {
+    if (data == -1) {
+        byte1 = 0xFF;
+        byte2 = 0xFF;
+    }
+
+    else if (data <= 0xFF) {
+        byte1 = 0;
+        byte2 = data;
+    }
+
+    else if (data > 0xFF) {
+        byte1 = data / 0xFF;
+        byte2 = (data - ((byte1) * 0xFF)) - byte1;
+    }
+}

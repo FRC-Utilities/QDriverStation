@@ -71,8 +71,7 @@ void DS_ProtocolManager::clearJoysticks() {
     m_joysticks->clear();
 }
 
-void DS_ProtocolManager::addJoystick (int axes, int buttons,
-                                      int povHats) {
+void DS_ProtocolManager::addJoystick (int axes, int buttons, int povHats) {
 
     DS_Joystick* js = new DS_Joystick;
 

@@ -58,7 +58,7 @@ bool DS_ProtocolBase::robotCode() const {
     return m_robotCode;
 }
 
-int DS_ProtocolBase::sentPackets() const {
+int DS_ProtocolBase::   sentPackets() const {
     return m_sentPackets;
 }
 
@@ -154,20 +154,6 @@ void DS_ProtocolBase::setJoysticks (QList<DS_Joystick*>* joysticks) {
 void DS_ProtocolBase::readRobotPacket (QByteArray data) {
     if (!data.isEmpty())
         readRobotData (data);
-}
-
-QByteArray DS_ProtocolBase::bitsToBytes (QBitArray bits) {
-    QByteArray bytes;
-    bytes.fill ((char) 0, (bits.count() + 7) / 8);
-
-    for (int i = 0; i < bits.count(); i++) {
-        if (bits.at (i)) {
-            int value = bytes.count() - i / 8 - 1;
-            bytes [value] = value | (1 << (i % 8));
-        }
-    }
-
-    return bytes;
 }
 
 void DS_ProtocolBase::updateStatus (int status) {
