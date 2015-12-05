@@ -14,17 +14,9 @@ Buy them a beer if you feel that this library or the [QDriverStation](http://git
 
 ### Wiki
 
-We are also in the process of creating a [wiki](https://github.com/WinT-3794/QDriverStation/wiki) for this project. The idea behind this is for programmers and users alike to understand how our application and the FRC Communication protocol work.
+We are also in the process of creating a [wiki](https://github.com/WinT-3794/QDriverStation/wiki) for this project. The idea behind this is for programmers and users alike to understand how our application and the FRC Communication protocols work.
 
 To visit the wiki, please [click here](https://github.com/WinT-3794/QDriverStation/wiki).
-
-### Progress
-
-- [x] Implement generic communication protocol
-- [x] Implement 2015 communication protocol
-- [ ] Implement 2014 communication protocol
-- [ ] Create unit tests
-- [ ] Analyze source code statically and squash possible bugs
 
 ### Credits
 
