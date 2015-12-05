@@ -22,9 +22,9 @@
 
 #include "LibDS/Protocols/Protocol2015.h"
 
-#define d_PcmPath "/tmp/frc_versions/PCM-0-versions.ini"
-#define d_PdpPath "/tmp/frc_versions/PDP-0-versions.ini"
-#define d_LibPath "/tmp/frc_versions/FRC_Lib_Version.ini"
+const QString PCM_PATH = "/tmp/frc_versions/PCM-0-versions.ini";
+const QString PDP_PATH = "/tmp/frc_versions/PDP-0-versions.ini";
+const QString LIB_PATH = "/tmp/frc_versions/FRC_Lib_Version.ini";
 
 /**
  * The values used by the protocol to represent the different operation modes
@@ -124,9 +124,9 @@ void DS_Protocol2015::resetProtocol() {
 
 void DS_Protocol2015::downloadRobotInformation() {
     QString host = "FTP_://" + robotAddress();
-    m_manager.get (QNetworkRequest (host + d_LibPath));
-    m_manager.get (QNetworkRequest (host + d_PcmPath));
-    m_manager.get (QNetworkRequest (host + d_PdpPath));
+    m_manager.get (QNetworkRequest (host + LIB_PATH));
+    m_manager.get (QNetworkRequest (host + PCM_PATH));
+    m_manager.get (QNetworkRequest (host + PDP_PATH));
 }
 
 void DS_Protocol2015::readRobotData (QByteArray data) {
@@ -166,7 +166,7 @@ void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply) {
     if (data.isEmpty() || url.isEmpty())
         return;
 
-    else if (url.contains (d_PcmPath, Qt::CaseInsensitive)) {
+    else if (url.contains (PCM_PATH, Qt::CaseInsensitive)) {
         QString version;
         QString key = "currentVersion";
 
@@ -178,7 +178,7 @@ void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply) {
         emit pcmVersionChanged (version);
     }
 
-    else if (url.contains (d_PdpPath, Qt::CaseInsensitive)) {
+    else if (url.contains (PDP_PATH, Qt::CaseInsensitive)) {
         QString version;
         QString key = "currentVersion";
 
@@ -190,7 +190,7 @@ void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply) {
         emit pdpVersionChanged (version);
     }
 
-    else if (url.contains (d_LibPath, Qt::CaseInsensitive))
+    else if (url.contains (LIB_PATH, Qt::CaseInsensitive))
         emit libVersionChanged (data);
 
     delete reply;
@@ -301,69 +301,75 @@ QByteArray DS_Protocol2015::generateTimezoneData() {
 }
 
 DS_ControlMode DS_Protocol2015::getControlMode (int byte) {
+    DS_ControlMode mode = kControlEmergencyStop;
+
     switch (byte) {
     case pControlDisabled:
-        return kControlDisabled;
+        mode = kControlDisabled;
         break;
     case pControlTeleoperated:
-        return kControlTeleoperated;
+        mode = kControlTeleoperated;
         break;
     case pControlTest:
-        return kControlTest;
+        mode = kControlTest;
         break;
     case pControlAutonomous:
-        return kControlAutonomous;
+        mode = kControlAutonomous;
         break;
     }
 
-    return kControlEmergencyStop;
+    return mode;
 }
 
 int DS_Protocol2015::getControlCode (DS_ControlMode mode) {
+    quint8 byte = pControlDisabled;
+
     switch (mode) {
     case kControlTest:
-        return pControlTest;
+        byte = pControlTest;
         break;
     case kControlTeleoperated:
-        return pControlTeleoperated;
+        byte = pControlTeleoperated;
         break;
     case kControlDisabled:
-        return pControlDisabled;
+        byte = pControlDisabled;
         break;
     case kControlAutonomous:
-        return pControlAutonomous;
+        byte = pControlAutonomous;
         break;
     case kControlEmergencyStop:
-        return pControlEmergencyStop;
+        byte = pControlEmergencyStop;
         break;
     }
 
-    return pControlDisabled;
+    return byte;
 }
 
 int DS_Protocol2015::getAllianceCode (DS_Alliance alliance) {
+    quint8 byte = pRed1;
+
     switch (alliance) {
     case kAllianceRed1:
-        return pRed1;
+        byte = pRed1;
         break;
     case kAllianceRed2:
-        return pRed2;
+        byte = pRed2;
         break;
     case kAllianceRed3:
-        return pRed3;
+        byte = pRed3;
         break;
     case kAllianceBlue1:
-        return pBlue1;
+        byte = pBlue1;
         break;
     case kAllianceBlue2:
-        return pBlue2;
+        byte = pBlue2;
         break;
     case kAllianceBlue3:
-        return pBlue3;
+        byte = pBlue3;
         break;
     }
 
-    return pRed1;
+    return byte;
 }
 
 int DS_Protocol2015::getJoystickSize (DS_Joystick* joystick) {

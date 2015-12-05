@@ -63,6 +63,9 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_ProtocolBase {
     int getAllianceCode (DS_Alliance alliance);
     int getJoystickSize (DS_Joystick* joystick);
 
+    /**
+     * Used for downloading robot information over a FTP connection.
+     */
     QNetworkAccessManager m_manager;
 };
 
