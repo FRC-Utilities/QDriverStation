@@ -1,10 +1,11 @@
 language: cpp
 
+sudo: required
+dist: trusty
+
 before_install:
     - sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
     - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
-    - sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu trusty universe"
-    - sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu trusty main"
     - sudo apt-get update -qq
 
 install:
@@ -13,7 +14,6 @@ install:
     - sudo apt-get install -y libopenal-dev libogg-dev libvorbis-dev libaudiofile-dev libpng12-dev libfreetype6-dev -y
     - sudo apt-get install -y libusb-dev libdbus-1-dev zlib1g-dev libdirectfb-dev -y
     - sudo apt-get install -y qtbase5-dev qtdeclarative5-dev libqt5webkit5-dev libqt5gui5 qttools5-dev-tools qttools5-dev qtmultimedia5-dev
-    - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50
     
 script:
     - mkdir sdl2 && cd sdl2
