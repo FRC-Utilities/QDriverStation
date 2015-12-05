@@ -14,7 +14,7 @@ The application looks and behaves almost identically to the FRC Driver Station, 
 
 Joystick input is achieved with SDL 2.0, which is a cross-platform library for C/C++.
 
-The actual code that moves and manages a FRC robot is found in a [separate repository](https://github.com/WinT-3794/LibDS), which you can use in your own Qt projects or change it to support older (and future) communication protocols. Please check the [progress](https://github.com/WinT-3794/LibDS#progress) section for more info.
+The actual code that moves and manages a FRC robot is found in a [separate repository](https://github.com/WinT-3794/LibDS), which you can use in your own Qt projects or change it to support older (and future) communication protocols.
 
 We are also developing a **mobile version** of the QDriverStation. [Check it here](https://github.com/wint-3794/ds-mobile)!
 
@@ -22,9 +22,7 @@ We are also developing a **mobile version** of the QDriverStation. [Check it her
 
 Once you finish installing the software, you can launch it and begin driving your robot. Just be sure to input your team number and to verify that the joysticks are working correctly. 
 
-Notes:
-- Mac users will be prompted to download an additional driver for Xbox 360 controllers to work.
-- Windows users will be prompted to download Bonjour to get mDNS working, this is not necesary if you have the official FRC Driver Station already installed or if you use a static IP.
+Mac users will be prompted to download an additional driver for Xbox 360 controllers to work.
 
 If your team uses a custom IP address for your roboRIO (or mDNS is not working, try 10.XX.YY.26), navigate to the 'Preferences' tab and click the 'Advanced Settings...' button to configure the driver station.
 
