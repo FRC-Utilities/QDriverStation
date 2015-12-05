@@ -355,11 +355,6 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     virtual int getJoystickSize (DS_Joystick* joystick) = 0;
 
     /**
-     * Converts the input \a bits to bytes
-     */
-    QByteArray bitsToBytes (QBitArray bits);
-
-    /**
      * Changes the current robot \a status
      */
     void updateStatus (int status);

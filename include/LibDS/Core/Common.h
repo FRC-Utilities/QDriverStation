@@ -24,6 +24,7 @@
 #ifndef _LIB_DS_COMMON_H
 #define _LIB_DS_COMMON_H
 
+#include <QtMath>
 #include <QDebug>
 #include <QString>
 #include <QDateTime>
@@ -79,6 +80,22 @@ struct LIB_DS_DECL DS_Joystick {
     bool* buttons;
     int* povHats;
     double* axes;
+};
+
+/**
+ * Converts an \c int to two \c bytes, this
+ * is used by the protocols to send numbers that
+ * are greater than 255 (the maximum value of a byte)
+ */
+struct LIB_DS_DECL ShortToBytes {
+    quint8 byte1 = 0;
+    quint8 byte2 = 0;
+
+    /**
+     * Calculates the respective values for \c byte1 and
+     * \c byte2 using the input \a data
+     */
+    void setData (int data);
 };
 
 /**

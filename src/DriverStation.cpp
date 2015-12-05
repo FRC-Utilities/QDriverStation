@@ -314,30 +314,22 @@ void DriverStation::clearJoysticks() {
     m_manager->clearJoysticks();
 }
 
-void DriverStation::updateJoystickPovHat (int js,
-        int hat,
-        int angle) {
+void DriverStation::updateJoystickPovHat (int js, int hat, int angle) {
     if (m_manager->protocolIsValid())
         m_manager->updateJoystickPovHat (js, hat, angle);
 }
 
-void DriverStation::addJoystick (int axes,
-                                 int buttons,
-                                 int povHats) {
+void DriverStation::addJoystick (int axes, int buttons, int povHats) {
     if (m_manager->protocolIsValid())
         m_manager->addJoystick (axes, buttons, povHats);
 }
 
-void DriverStation::updateJoystickAxis (int js,
-                                        int axis,
-                                        double value) {
+void DriverStation::updateJoystickAxis (int js, int axis, double value) {
     if (m_manager->protocolIsValid())
         m_manager->updateJoystickAxis (js, axis, value);
 }
 
-void DriverStation::updateJoystickButton (int js,
-        int button,
-        bool state) {
+void DriverStation::updateJoystickButton (int js, int button, bool state) {
     if (m_manager->protocolIsValid())
         m_manager->updateJoystickButton (js, button, state);
 }
