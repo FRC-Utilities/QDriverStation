@@ -49,26 +49,31 @@
  * file  and CTLR + Click a function/method that you are interested in.
  */
 
-#define d_EnabledCheck    "color: rgb(33, 255, 43);"
-#define d_DisabledCheck   "color: rgb(255, 8,  21); border-left: 0px;"
-#define d_EnabledUncheck  "color: rgb(0, 47, 2);"
-#define d_DisabledUncheck "color: rgb(43, 0, 0); border-left: 0px;"
+/* Enable/Disable buttons stylesheets */
+const QString ENABLED_UNCHECK  = "color: rgb(0, 47, 2);";
+const QString ENABLED_CHECK    = "color: rgb(33, 255, 43);";
+const QString DISABLED_UNCHECK = "color: rgb(43, 0, 0); border-left: 0px;";
+const QString DISABLED_CHECK   = "color: rgb(255, 8,  21); border-left: 0px;";
 
-#define d_NormalStatusLED  \
-    "QPushButton { background-color: rgb(255, 37, 43); border: 0px; padding: 4px; }" \
-    "QPushButton:checked { background-color: rgb(33, 255, 43); }"
+/* Status LED, red when uncheked, green when checked */
+const QString NORMAL_STATUS_LED = "QPushButton {"
+                                  "background-color: rgb(255, 37, 43);"
+                                  "border: 0px; padding: 4px; }"
+                                  "QPushButton:checked {"
+                                  "background-color: rgb(33, 255, 43); }";
 
-#define d_PartialStatusLED  \
-    "QPushButton { background-color: rgb(255, 37, 43); border: 0px; padding: 4px; }" \
-    "QPushButton:checked { background-color: rgb(244, 255, 43); }"
+/* Status LED, red when uncheked, yellow when checked */
+const QString PARTIAL_STATUS_LED = "QPushButton {"
+                                   "background-color: rgb(255, 37, 43);" ""
+                                   "border: 0px; padding: 4px; }"
+                                   "QPushButton:checked {"
+                                   "background-color: rgb(244, 255, 43); }";
 
-/*
- * The font used in the NetConsole text edit
- */
+/* The font used in the NetConsole text edit */
 #if defined Q_OS_WIN
-#  define d_NetConsoleFont QFont ("Consolas", 10)
+const QFont NETCONSOLE_FONT = QFont ("Consolas", 10);
 #else
-#  define d_NetConsoleFont QFont ("Inconsolata", 13)
+const QFont NETCONSOLE_FONT = QFont ("Inconsolata", 13);
 #endif
 
 MainWindow::MainWindow() {
@@ -257,9 +262,9 @@ void MainWindow::configureWidgetAppearance() {
     ui->DisableButton->setFont (statusFont);
 
     /* Configure status LEDs */
-    ui->Joysticks->setStyleSheet      (d_NormalStatusLED);
-    ui->RobotCode->setStyleSheet      (d_NormalStatusLED);
-    ui->Communications->setStyleSheet (d_NormalStatusLED);
+    ui->Joysticks->setStyleSheet      (NORMAL_STATUS_LED);
+    ui->RobotCode->setStyleSheet      (NORMAL_STATUS_LED);
+    ui->Communications->setStyleSheet (NORMAL_STATUS_LED);
 
     /* Configure the 'About' tab */
     ui->DsVersion->setText (AssemblyInfo::version());
@@ -271,12 +276,12 @@ void MainWindow::configureWidgetAppearance() {
     QSize utilSize = QSize (metrics.height() * 2, metrics.height() * 2);
 
     /* Configure the NetConsole */
-    ui->NetConsoleEdit->setFont (d_NetConsoleFont);
+    ui->NetConsoleEdit->setFont (NETCONSOLE_FONT);
     ui->RightTab->setMinimumWidth (utilSize.height() * 12);
 
     /* Configure the enable/disable buttons */
-    ui->DisableButton->setStyleSheet (d_DisabledCheck);
-    ui->EnableButton->setStyleSheet  (d_EnabledUncheck);
+    ui->DisableButton->setStyleSheet (DISABLED_CHECK);
+    ui->EnableButton->setStyleSheet  (ENABLED_UNCHECK);
     ui->DisableButton->setFixedWidth (utilSize.width() * 2.2);
     ui->EnableButton->setFixedWidth  (utilSize.width() * 2.2);
 
@@ -467,8 +472,8 @@ void MainWindow::onEnabledClicked() {
     /* Enable robot and update application style */
     setRobotEnabled (true);
     ui->EnableButton->setChecked (true);
-    ui->EnableButton->setStyleSheet  (d_EnabledCheck);
-    ui->DisableButton->setStyleSheet (d_DisabledUncheck);
+    ui->EnableButton->setStyleSheet  (ENABLED_CHECK);
+    ui->DisableButton->setStyleSheet (DISABLED_UNCHECK);
 }
 
 void MainWindow::onDisabledClicked() {
@@ -478,8 +483,8 @@ void MainWindow::onDisabledClicked() {
 
     /* Update the application style */
     ui->DisableButton->setChecked (true);
-    ui->DisableButton->setStyleSheet (d_DisabledCheck);
-    ui->EnableButton->setStyleSheet  (d_EnabledUncheck);
+    ui->DisableButton->setStyleSheet (DISABLED_CHECK);
+    ui->EnableButton->setStyleSheet  (ENABLED_UNCHECK);
 }
 
 void MainWindow::onJoystickRemoved() {
@@ -564,11 +569,11 @@ void MainWindow::onCommunicationsChanged (DS_CommunicationStatus status) {
     /* Decide if we should use a green LED or a yellow LED */
     switch (status) {
     case kPartial:
-        ui->Communications->setStyleSheet (d_PartialStatusLED);
+        ui->Communications->setStyleSheet (PARTIAL_STATUS_LED);
         ui->Communications->setToolTip (tr ("Partial communication with robot"));
         break;
     case kFull:
-        ui->Communications->setStyleSheet (d_NormalStatusLED);
+        ui->Communications->setStyleSheet (NORMAL_STATUS_LED);
         ui->Communications->setToolTip (tr ("Full communication with robot"));
         break;
     case kFailing:

@@ -29,7 +29,8 @@
 #include "FirstRun.h"
 #include "Global/Settings.h"
 
-#define d_XboxDriverUrl "http://files.tattiebogle.net/360/360ControllerInstall.dmg"
+const QString XBOX_URL =
+    "http://files.tattiebogle.net/360/360ControllerInstall.dmg";
 
 int InitTasks::getTeamNumber() {
     /* First launch, ask for team number */
@@ -62,7 +63,7 @@ void InitTasks::executeFirstRunTasks() {
                                          "for Xbox 360 joysticks?"));
 
     if (box.exec() == QMessageBox::Yes)
-        QDesktopServices::openUrl (QUrl (dXboxDriverUrl));
+        QDesktopServices::openUrl (QUrl (XBOX_URL));
 #endif
 
     /* Ensure that this code does not run again */

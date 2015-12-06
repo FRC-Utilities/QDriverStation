@@ -295,7 +295,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      *
      * \note This function must be implemented by each protocol
      */
-    virtual void readRobotData (QByteArray data) = 0;
+    virtual bool readRobotData (QByteArray data) = 0;
 
   protected:
     /**

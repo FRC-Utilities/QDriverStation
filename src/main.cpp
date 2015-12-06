@@ -28,14 +28,14 @@
 
 /* Custom appearance options for each operating system */
 #if defined Q_OS_MAC
-#  define d_PointSize       0x0C
-#  define d_ApplicationIcon QIcon ("")
+const int POINT_SIZE = 12;
+const QIcon APP_ICON = QIcon ("");
 #elif defined Q_OS_LINUX
-#  define d_PointSize       0x08
-#  define d_ApplicationIcon QIcon (":/icon.ico")
+const int POINT_SIZE = 12;
+const QIcon APP_ICON = QIcon (":/icon.ico");
 #else
-#  define d_PointSize       qApp->font().pointSize()
-#  define d_ApplicationIcon QIcon (":/icon.ico")
+const int POINT_SIZE = 8;
+const QIcon APP_ICON = QIcon (":/icon.ico");
 #endif
 
 /**
@@ -51,13 +51,15 @@ int main (int argc, char* argv[]) {
     QFontDatabase::addApplicationFont (":/fonts/Quicksand-Regular.ttf");
 
     /* Configure application options */
-    app.setWindowIcon (d_ApplicationIcon);
-    app.setApplicationName (AssemblyInfo::name());
-    app.setStyle (QStyleFactory::create ("fusion"));
+    app.setWindowIcon (APP_ICON);
+    app.setStyle      (QStyleFactory::create ("fusion"));
+    app.setFont       (QFont ("Quicksand", POINT_SIZE, -1, false));
+
+    /* Configure application information */
+    app.setApplicationName    (AssemblyInfo::name());
     app.setApplicationVersion (AssemblyInfo::version());
-    app.setOrganizationName (AssemblyInfo::organization());
+    app.setOrganizationName   (AssemblyInfo::organization());
     app.setOrganizationDomain (AssemblyInfo::organizationDomain());
-    app.setFont (QFont ("Quicksand", d_PointSize, -1, false));
 
     /* The window will show itself when initialized */
     MainWindow window;

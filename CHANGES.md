@@ -16,3 +16,5 @@
 - Implement built-in mDNS support for cross-platform operation
 - Do not use XInput for joystick reading, it only makes everything worse
 - Implement the practice mode with official sounds from the FRC Driver Station
+- POV/Hat support for joysticks
+- Fully-working joysticks in 2015 protocol

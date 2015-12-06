@@ -181,7 +181,7 @@ void JoysticksTab::onHatEvent (const GM_Hat& hat) {
 
     /* Update the UI */
     if (hat.id < m_hats.count())
-        m_hats.at (hat.id)->setValue (hat.angle);
+        m_hats.at (hat.id)->setValue ((hat.angle == 0) ? 360 : hat.angle);
 }
 
 void JoysticksTab::onAxisEvent (const GM_Axis& axis) {

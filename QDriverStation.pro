@@ -47,7 +47,7 @@ linux:!android {
 }
 
 #-------------------------------------------------------------------------------
-# C++ build options
+# Make options
 #-------------------------------------------------------------------------------
 
 CODECFORTR = UTF-8
@@ -59,6 +59,22 @@ UI_DIR = uic
 MOC_DIR = moc
 RCC_DIR = qrc
 OBJECTS_DIR = obj
+
+#-------------------------------------------------------------------------------
+# Optimization flags
+#-------------------------------------------------------------------------------
+
+QMAKE_CXXFLAGS_RELEASE -= -O
+QMAKE_CXXFLAGS_RELEASE -= -O1
+QMAKE_CXXFLAGS_RELEASE -= -O2
+
+!win32* {
+    QMAKE_CXXFLAGS_RELEASE *= -Ofast
+}
+
+win32* {
+    QMAKE_CXXFLAGS_RELEASE *= -Ot
+}
 
 #-------------------------------------------------------------------------------
 # SDL configuration code
