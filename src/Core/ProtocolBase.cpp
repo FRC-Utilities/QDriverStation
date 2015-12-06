@@ -152,8 +152,18 @@ void DS_ProtocolBase::setJoysticks (QList<DS_Joystick*>* joysticks) {
 }
 
 void DS_ProtocolBase::readRobotPacket (QByteArray data) {
-    if (!data.isEmpty())
-        readRobotData (data);
+    if (!data.isEmpty()) {
+        /* We just have connected to the robot, update internal values */
+        if (!isConnected()) {
+            downloadRobotInformation();
+            updateCommunications (kFull);
+            setControlMode (kControlDisabled);
+        }
+
+        /* Let the protocol implementation read the rest of the data */
+        if (readRobotData (data))
+            emit packetReceived();
+    }
 }
 
 void DS_ProtocolBase::updateStatus (int status) {

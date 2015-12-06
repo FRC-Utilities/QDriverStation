@@ -129,20 +129,14 @@ void DS_Protocol2015::downloadRobotInformation() {
     m_manager.get (QNetworkRequest (host + PDP_PATH));
 }
 
-void DS_Protocol2015::readRobotData (QByteArray data) {
-    /* Packet length is invalid */
+bool DS_Protocol2015::readRobotData (QByteArray data) {
+    /* Packet length is invalid, watchdog will not be reset */
     if (data.length() < 8)
-        return;
+        return false;
 
-    /* We just have connected to the robot, update internal values */
-    if (!isConnected()) {
-        downloadRobotInformation();
-        updateCommunications (kFull);
-        setControlMode (kControlDisabled);
-
-        if (status() == pStatusInvalid)
-            updateStatus (pStatusNormal);
-    }
+    /* Be sure to reset status bit */
+    if (status() == pStatusInvalid)
+        updateStatus (pStatusNormal);
 
     /* Read robot packet */
     int status       = data.at (4);
@@ -151,12 +145,12 @@ void DS_Protocol2015::readRobotData (QByteArray data) {
     int minorVoltage = data.at (6);
 
     /* Update client information */
-    updateVoltage (majorVoltage, minorVoltage);
+    updateVoltage      (majorVoltage, minorVoltage);
     updateSendDateTime (request == pProgramRequestTime);
-    updateRobotCode ((status & pProgramCodePresent) != 0);
+    updateRobotCode    ((status & pProgramCodePresent) != 0);
 
-    /* Reset watchdog */
-    emit packetReceived();
+    /* Packet was successfully read, reset watchdog */
+    return true;
 }
 
 void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply) {
