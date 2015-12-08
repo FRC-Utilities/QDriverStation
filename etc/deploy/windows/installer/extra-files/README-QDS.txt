@@ -12,13 +12,6 @@ What should I do next?
 If you just want to drive your robot, you should be able to 
 do so by running the  QDriverStation from the Start menu.
 
-If you want to drive a 2015 robot, we recommend you to download a 
-mDNS service installer for your system. 
-The recommended way to do that is by downloading the 
-Bonjour Print Services from Apple: 
-
-    https://support.apple.com/downloads/Bonjour_for_Windows
-
 If you are running a version of Windows prior to Windows 8, we recommend you 
 to download the Xbox joystick drivers from Microsoft:  
     
