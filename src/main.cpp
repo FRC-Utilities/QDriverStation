@@ -26,21 +26,6 @@
 #include "Global/AssemblyInfo.h"
 #include "MainWindow/MainWindow.h"
 
-/* Custom appearance options for each operating system */
-#if defined Q_OS_MAC
-const int POINT_SIZE = 12;
-const QIcon APP_ICON = QIcon ("");
-#elif defined Q_OS_LINUX
-const int POINT_SIZE = 12;
-const QIcon APP_ICON = QIcon (":/icon.ico");
-#else
-const int POINT_SIZE = 8;
-const QIcon APP_ICON = QIcon (":/icon.ico");
-#endif
-
-/**
- * Configures and runs the application
- */
 int main (int argc, char* argv[]) {
     QApplication app (argc, argv);
 
@@ -50,10 +35,15 @@ int main (int argc, char* argv[]) {
     QFontDatabase::addApplicationFont (":/fonts/Quicksand-Bold.ttf");
     QFontDatabase::addApplicationFont (":/fonts/Quicksand-Regular.ttf");
 
-    /* Configure application options */
-    app.setWindowIcon (APP_ICON);
-    app.setStyle      (QStyleFactory::create ("fusion"));
-    app.setFont       (QFont ("Quicksand", POINT_SIZE, -1, false));
+    /* Configure appearance options */
+    app.setStyle (QStyleFactory::create ("fusion"));
+#if defined Q_OS_MAC
+    app.setWindowIcon (QIcon (""));
+    app.setFont (QFont ("Quicksand", 12, -1, false));
+#else
+    app.setWindowIcon (QIcon (":/icon.ico"));
+    app.setFont (QFont ("Quicksand", 8, -1, false));
+#endif
 
     /* Configure application information */
     app.setApplicationName    (AssemblyInfo::name());
