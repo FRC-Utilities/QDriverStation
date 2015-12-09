@@ -37,7 +37,7 @@ DS_Timers::DS_Timers() {
     t100->moveToThread  (m_thread);
     t1000->moveToThread (m_thread);
 
-    t20->setInterval   (20);
+    t20->setInterval   (16);
     t100->setInterval  (100);
     t1000->setInterval (1000);
 

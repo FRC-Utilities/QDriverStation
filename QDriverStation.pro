@@ -72,7 +72,11 @@ QMAKE_CXXFLAGS_RELEASE -= -O2
     QMAKE_CXXFLAGS_RELEASE *= -Ofast
 }
 
-win32* {
+win32-gcc* {
+    QMAKE_CXXFLAGS_RELEASE *= -Ofast
+}
+
+win32-msvc* {
     QMAKE_CXXFLAGS_RELEASE *= -Ot
 }
 
