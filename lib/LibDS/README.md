@@ -10,9 +10,9 @@ The DriverStation library allows you to connect and manage a robot easily by pro
 
 This library consists of three basic sections:
 
-- [Core](#Core section) Section
-- [Protocols](#Protocols section) Section
-- [DriverStation](#DriverStation section) Section
+- [Core](#core-section) Section
+- [Protocols](#protocols-section) Section
+- [DriverStation](#driverstation-section) Section
 
 #### Core section
 
