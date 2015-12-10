@@ -5,7 +5,7 @@
         <file>fonts/Quicksand-Regular.otf</file>
         <file>fonts/Inconsolata.otf</file>
         <file>fonts/FontAwesome.otf</file>
-        <file>texts/Authors.html</file>
-        <file>texts/License.txt</file>
+        <file>headers/LibDS.png</file>
+        <file>headers/QDriverStation.png</file>
     </qresource>
 </RCC>

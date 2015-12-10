@@ -227,8 +227,6 @@ void MainWindow::configureWidgetAppearance() {
     smallIconFont.setPointSize  (centralWidget()->font().pointSize() * 1.2);
     largeIconFont.setPointSize  (centralWidget()->font().pointSize() * 3.5);
     ui->PlugIcon->setFont       (smallIconFont);
-    ui->AppIcon->setFont        (largeIconFont);
-    ui->CanIcon->setFont        (largeIconFont);
     ui->VoltageIcon->setFont    (largeIconFont);
     ui->NoJoystickIcon->setFont (largeIconFont);
 
@@ -268,7 +266,6 @@ void MainWindow::configureWidgetAppearance() {
 
     /* Configure the 'About' tab */
     ui->DsVersion->setText (AssemblyInfo::version());
-    ui->AppName->setText (QString ("<h2>%1</h2>").arg (AssemblyInfo::name()));
     ui->AppVersion->setText (QString ("Version %1").arg (AssemblyInfo::version()));
 
     /* We use this to resize the UI based on text size */
@@ -317,16 +314,6 @@ void MainWindow::configureWidgetAppearance() {
     ui->TeamSpacer->changeSize (1, spacing * 2,
                                 QSizePolicy::Minimum,
                                 QSizePolicy::MinimumExpanding);
-
-    /* Load license */
-    QFile license (":/texts/License.txt");
-    if (license.open (QFile::ReadOnly))
-        ui->License->setPlainText (QString::fromUtf8 (license.readAll()));
-
-    /* Load authors */
-    QFile authors (":/texts/Authors.html");
-    if (authors.open (QFile::ReadOnly))
-        ui->Authors->setText (QString::fromUtf8 (authors.readAll()));
 }
 
 void MainWindow::readSettings() {
