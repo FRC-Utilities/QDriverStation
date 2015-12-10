@@ -1,12 +1,8 @@
-# QDriverStation
+![Header](/etc/logo.png)
 
 [![Build Status](https://travis-ci.org/WinT-3794/QDriverStation.svg?branch=master)](https://travis-ci.org/WinT-3794/QDriverStation)
 [![BitCoin donate button](https://img.shields.io/badge/bitcoin-donate-yellow.svg)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
 [![Download QDriverStation](https://img.shields.io/sourceforge/dt/qdriverstation.svg)](https://sourceforge.net/projects/qdriverstation/files/latest/download)
-
-[![Screenshot](/etc/screenshots/LabVIEW Simulation.png)](/etc/screenshots)
-
-### Introduction
 
 QDriverStation is an open-source, cross-platform alternative to the FRC Driver Station.
 
