@@ -1,22 +1,46 @@
-# DriverStation Library
+![Logo](/extra/logo.png)
 
 [![BitCoin donate button](https://img.shields.io/badge/bitcoin-donate-yellow.svg)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
 
-The DriverStation library allows any Qt-based project to manage an FRC robot easily and without getting involved in the application loops and network operations needed to manage the roboRIO.
+# DriverStation Library
 
-The library has been written by analyzing the following sites and projects:
+The DriverStation library allows you to connect and manage a robot easily by providing an abstraction layer between your application and the network commununications between the robot and the host computer.
 
-- [https://github.com/raystubbs/RobotDS](https://github.com/raystubbs/RobotDS)
-- [https://github.com/gluxon/node-driverstation15](https://github.com/gluxon/node-driverstation15)
-- [https://github.com/gluxon/node-driverstation15/wiki/2015-Protocol](https://github.com/gluxon/node-driverstation15/wiki/2015-Protocol)
+### Project sections
 
-Buy them a beer if you feel that this library or the [QDriverStation](http://github.com/wint-3794/qdriverstation) helped you. Of course, you are welcome to buy us a beer too! (the situation in Mexico for FRC teams is not very good...)
+This library consists of three basic sections:
 
-### Wiki
+- [Core](#Core section) Section
+- [Protocols](#Protocols section) Section
+- [DriverStation](#DriverStation section) Section
 
-We are also in the process of creating a [wiki](https://github.com/WinT-3794/QDriverStation/wiki) for this project. The idea behind this is for programmers and users alike to understand how our application and the FRC Communication protocols work.
+#### Core section
 
-To visit the wiki, please [click here](https://github.com/WinT-3794/QDriverStation/wiki).
+The core section is in charge of implementing the 'generic' networking side and defining the common operations regardless of the protocol that we are using.
+
+This section includes:
+
+- A configurable UDP server/client
+- A configurable NetConsole client
+- A system for registering and managing joysticks
+- An one-second watchdog that resets the current protocol if it expires
+- A network discovery service, which also includes an integrated mDNS responder service
+- A 'base' protocol, which implements all the functions except interpreting robot packets and generating client packets
+- A threaded timer system, which regulates different processes in the library, your applicaiton can access this system too
+
+#### Protocols section
+
+This section contains the different protocols used for communicating with any FRC robot.
+
+This section includes:
+
+- The 2015 communication protocol
+
+The 2009-2014 may be implemented soon.
+
+#### DriverStation section
+
+This section provides an application access to the rest of the library. Think of this section as the 'public' side of the library, while the rest can be considered as the 'internal' side.
 
 ### Credits
 
