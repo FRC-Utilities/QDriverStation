@@ -193,26 +193,15 @@ void DS_Protocol2015::onDownloadFinished (QNetworkReply* reply) {
 QByteArray DS_Protocol2015::generateClientPacket() {
     QByteArray data;
 
-    /* Add packet index data */
-    ShortToBytes pingData;
-    pingData.setData (sentPackets());
-    data.append (pingData.byte1);
-    data.append (pingData.byte2);
-
-    /* Add general header data, without it, we are worthless */
-    data.append ((quint8) pHeaderGeneral);
-
-    /* Add the current control mode (e.g TeleOp, Auto, etc) */
-    data.append (getControlCode (controlMode()));
-
-    /* Add the current robot status (e.g. normal, reboot, etc) */
-    data.append (isConnected() ? status() : (int) pStatusInvalid);
-
-    /* Add the current alliance and position */
-    data.append (getAllianceCode (alliance()));
-
-    /* Send joystick data or timezone code */
-    data.append (sendDateTime() ? generateTimezoneData() : generateJoystickData());
+    data.append (DS_ToBytes (sentPackets()));              // Ping data
+    data.append ((quint8) pHeaderGeneral);                 // Protocol version code
+    data.append (getControlCode (
+                     controlMode()));          // Operation mode (e.g. Teleop)
+    data.append (isConnected() ? status() :                // Special instructions
+                 (quint8) pStatusInvalid); // No connection status
+    data.append (getAllianceCode (alliance()));            // Alliance & position
+    data.append (sendDateTime() ? generateTimezoneData() : // System time data
+                 generateJoystickData()); // Joystick data
 
     return data;
 }
@@ -253,22 +242,15 @@ QByteArray DS_Protocol2015::generateJoystickData() {
             }
 
             data.append (numButtons);
-
-            ShortToBytes buttonData;
-            buttonData.setData (buttons);
-            data.append (buttonData.byte1);
-            data.append (buttonData.byte2);
+            data.append (DS_ToBytes (buttons));
         }
 
         /* Add hat/pov data */
         if (numPovHats > 0) {
             data.append (numPovHats);
-            for (int hat = 0; hat < numPovHats; ++hat) {
-                ShortToBytes povData;
-                povData.setData (joysticks()->at (i)->povHats [hat]);
-                data.append (povData.byte1);
-                data.append (povData.byte2);
-            }
+
+            for (int hat = 0; hat < numPovHats; ++hat)
+                data.append (DS_ToBytes (joysticks()->at (i)->povHats [hat]));
         }
     }
 
