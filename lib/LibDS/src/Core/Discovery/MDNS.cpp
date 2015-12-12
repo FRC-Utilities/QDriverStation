@@ -27,9 +27,11 @@ MDNS::MDNS() {
     connect (&m_IPv4_receiver, SIGNAL (readyRead()), this, SLOT (readIPv4Socket()));
     connect (&m_IPv6_receiver, SIGNAL (readyRead()), this, SLOT (readIPv6Socket()));
 
-    QUdpSocket::BindFlag flag = QUdpSocket::ShareAddress;
-    m_IPv6_receiver.bind (QHostAddress ("FF02::FB"),    5353, flag);
-    m_IPv4_receiver.bind (QHostAddress ("224.0.0.251"), 5353, flag);
+    m_IPv6_receiver.bind (QHostAddress::AnyIPv6, 5353, QUdpSocket::ShareAddress);
+    m_IPv4_receiver.bind (QHostAddress::AnyIPv4, 5353, QUdpSocket::ShareAddress);
+
+    m_IPv6_receiver.joinMulticastGroup (QHostAddress ("FF02::FB"));
+    m_IPv4_receiver.joinMulticastGroup (QHostAddress ("224.0.0.251"));
 }
 
 MDNS::~MDNS() {
@@ -110,6 +112,10 @@ void MDNS::send (QByteArray data) {
 }
 
 void MDNS::processResponse (QByteArray response) {
-    /* TODO */
-    qDebug() << response.toHex();
+    /* TODO:
+     *     - Ignore query packets (only allow response packets)
+     *     - Figure out how to extract IP address from mDNS responses
+     *     - Differentiate between IPv4 and IPv6 responses
+     */
+    qDebug() << "Received mDNS packet" << response;
 }
