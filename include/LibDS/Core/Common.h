@@ -83,22 +83,6 @@ struct LIB_DS_DECL DS_Joystick {
 };
 
 /**
- * Converts an \c int to two \c bytes, this
- * is used by the protocols to send numbers that
- * are greater than 255 (the maximum value of a byte)
- */
-struct LIB_DS_DECL ShortToBytes {
-    quint8 byte1 = 0;
-    quint8 byte2 = 0;
-
-    /**
-     * Calculates the respective values for \c byte1 and
-     * \c byte2 using the input \a data
-     */
-    void setData (int data);
-};
-
-/**
  * Returns the current timezone code by calculating the difference between
  * the system timezone and the UTC timezone
  */
@@ -124,5 +108,10 @@ QString LIB_DS_DECL DS_GetControlModeString (DS_ControlMode mode);
  * Reads the contents of the \a socket and returns its data
  */
 QByteArray LIB_DS_DECL DS_GetSocketData (QUdpSocket* socket);
+
+/**
+ * Parses the input \a data into two bytes
+ */
+QByteArray LIB_DS_DECL DS_ToBytes (int data);
 
 #endif
