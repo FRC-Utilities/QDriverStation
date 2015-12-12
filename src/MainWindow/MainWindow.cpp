@@ -432,11 +432,11 @@ void MainWindow::onProtocolChanged (int protocol) {
 }
 
 void MainWindow::onRebootClicked() {
-    m_ds->canBeEnabled() ? m_ds->reboot() : statusLabelAnimation();
+    m_ds->isConnected() ? m_ds->reboot() : statusLabelAnimation();
 }
 
 void MainWindow::onRestartClicked() {
-    m_ds->canBeEnabled() ? m_ds->restartCode() : statusLabelAnimation();
+    m_ds->isConnected() ? m_ds->restartCode() : statusLabelAnimation();
 }
 
 void MainWindow::onChangesClicked() {
