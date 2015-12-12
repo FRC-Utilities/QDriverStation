@@ -24,7 +24,7 @@
 #include "LibDS/Core/NetConsole.h"
 
 DS_NetConsole::DS_NetConsole() {
-    m_socket.bind (6666, QUdpSocket::ShareAddress);
+    m_socket.bind (QHostAddress::Any, 6666, QUdpSocket::ShareAddress);
     connect (&m_socket, SIGNAL (readyRead()), this, SLOT (onDataReceived()));
 }
 

@@ -41,7 +41,7 @@ void DS_Client::setRobotPort (int port) {
 }
 
 void DS_Client::setClientPort (int port) {
-    m_clientSocket.bind (port, QUdpSocket::ShareAddress);
+    m_clientSocket.bind (QHostAddress::Any, port, QUdpSocket::ShareAddress);
 }
 
 void DS_Client::setRobotAddress (QString address) {
