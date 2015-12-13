@@ -27,7 +27,7 @@
 //=============================================================================
 
 SmartProgressbar::SmartProgressbar (QWidget* parent) : QProgressBar (parent) {
-    connect (SIGNAL (valueChanged (int)), this, SLOT (UpdateColor (int)));
+    connect (this, SIGNAL (valueChanged (int)), this, SLOT (UpdateColor (int)));
 }
 
 //=============================================================================
@@ -46,7 +46,6 @@ void SmartProgressbar::UpdateColor (int value) {
     QPalette palette;
 
     switch (m_type) {
-
     case kCpuUsageProgressbar:
         palette.setColor (QPalette::Highlight, QColor ("#dcae00"));
         break;

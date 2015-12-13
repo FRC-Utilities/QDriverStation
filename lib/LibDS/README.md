@@ -1,4 +1,5 @@
 ![Logo](extra/logo.png)
+[![Build Status](https://travis-ci.org/WinT-3794/LibDS.svg?branch=master)](https://travis-ci.org/WinT-3794/LibDS)
 
 The DriverStation library allows you to connect and manage a robot easily by providing an abstraction layer between an application and the network commununications between the robot and the host computer.
 

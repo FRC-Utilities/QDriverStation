@@ -174,10 +174,10 @@ void DS_Protocol2015::GetRobotInformation() {
 }
 
 //=============================================================================
-// DS_Protocol2015::ReadRobotPacket
+// DS_Protocol2015::ReadPacket
 //=============================================================================
 
-bool DS_Protocol2015::ReadRobotPacket (QByteArray data) {
+bool DS_Protocol2015::ReadPacket (QByteArray data) {
     /* Packet length is invalid, watchdog will not be reset */
     if (data.length() < 8)
         return false;

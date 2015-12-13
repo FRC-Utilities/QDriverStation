@@ -50,7 +50,7 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_ProtocolBase {
   private slots:
     void ResetProtocol();
     void GetRobotInformation();
-    bool ReadRobotPacket (QByteArray data);
+    bool ReadPacket (QByteArray data);
     void ProcessRobotInformation (QNetworkReply* reply);
 
   private:
