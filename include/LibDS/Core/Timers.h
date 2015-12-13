@@ -41,16 +41,16 @@ class LIB_DS_DECL DS_Timers : public QObject {
     Q_OBJECT
 
   public:
-    static DS_Timers* getInstance();
+    static DS_Timers* GetInstance();
     ~DS_Timers();
 
   public slots:
-    void start();
+    void Start();
 
   signals:
-    void timeout20();
-    void timeout100();
-    void timeout1000();
+    void Timeout20();
+    void Timeout100();
+    void Timeout1000();
 
   protected:
     DS_Timers();

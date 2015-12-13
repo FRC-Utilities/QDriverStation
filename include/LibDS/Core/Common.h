@@ -63,10 +63,10 @@ enum DS_Alliance {
 /**
  * Represents the current status of the communications
  */
-enum DS_CommunicationStatus {
-    kFull    = 0x00,        /** The DS is communicating with the robot */
-    kPartial = 0x01,        /** The robot responds ping requests, but does not respond to DS */
-    kFailing = 0x02         /** The robot does not respond to ping requests */
+enum DS_CommStatus {
+    kFull    = 0x00, /** The DS is communicating with the robot */
+    kPartial = 0x01, /** The robot responds ping requests, but does not respond to DS */
+    kFailing = 0x02  /** The robot does not respond to ping requests */
 };
 
 /**

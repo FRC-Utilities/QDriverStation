@@ -22,32 +22,60 @@
 
 #include "LibDS/Core/Client.h"
 
+//=============================================================================
+// DS_Client::DS_Client
+//=============================================================================
+
 DS_Client::DS_Client() {
     connect (&m_clientSocket, SIGNAL (readyRead()),
-             this,            SLOT   (onDataReceived()));
+             this,            SLOT   (OnDataReceived()));
 }
+
+//=============================================================================
+// DS_Client::~DS_Client
+//=============================================================================
 
 DS_Client::~DS_Client() {
     m_robotSocket.abort();
     m_clientSocket.abort();
 }
 
-void DS_Client::sendToRobot (QByteArray data) {
+//=============================================================================
+// DS_Client::SendToRobot
+//=============================================================================
+
+void DS_Client::SendToRobot (QByteArray data) {
     m_robotSocket.writeDatagram (data, QHostAddress (m_address), m_robotPort);
 }
 
-void DS_Client::setRobotPort (int port) {
+//=============================================================================
+// DS_Client::SetRobotPort
+//=============================================================================
+
+void DS_Client::SetRobotPort (int port) {
     m_robotPort = port;
 }
 
-void DS_Client::setClientPort (int port) {
+//=============================================================================
+// DS_Client::SetClientPort
+//=============================================================================
+
+void DS_Client::SetClientPort (int port) {
     m_clientSocket.bind (QHostAddress::Any, port, QUdpSocket::ShareAddress);
 }
 
-void DS_Client::setRobotAddress (QString address) {
+//=============================================================================
+// DS_Client::SetRobotAddress
+//=============================================================================
+
+void DS_Client::SetRobotAddress (QString address) {
     m_address = address;
 }
 
-void DS_Client::onDataReceived() {
-    emit dataReceived (DS_GetSocketData (&m_clientSocket));
+//=============================================================================
+// DS_Client::OnDataReceived
+//=============================================================================
+
+void DS_Client::OnDataReceived() {
+    emit DataReceived (DS_GetSocketData (&m_clientSocket));
 }

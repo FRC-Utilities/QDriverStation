@@ -51,13 +51,13 @@ class LIB_DS_DECL DS_Watchdog : public QObject {
     /**
      * Kicks the dog so that it doesn't bite us
      */
-    void restart();
+    void Restart();
 
   signals:
     /**
      * Emitted when the dog gets angry and wants to bite you
      */
-    void timeout();
+    void Timeout();
 
   private:
     /**

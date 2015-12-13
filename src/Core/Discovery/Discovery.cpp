@@ -22,12 +22,20 @@
 
 #include "LibDS/Core/Discovery/Discovery.h"
 
+//=============================================================================
+// NetworkDiscovery::NetworkDiscovery
+//=============================================================================
+
 NetworkDiscovery::NetworkDiscovery() {
-    connect (&m_responder, SIGNAL (ipFound (QString, QString)),
-             this,         SIGNAL (ipFound (QString, QString)));
+    connect (&m_responder, SIGNAL (IpFound (QString, QString)),
+             this,         SIGNAL (IpFound (QString, QString)));
 }
 
-NetworkDiscovery::AddressType NetworkDiscovery::getAddressType (
+//=============================================================================
+// NetworkDiscovery::GetAddressType
+//=============================================================================
+
+NetworkDiscovery::AddressType NetworkDiscovery::GetAddressType (
     QString address) {
     if (address.endsWith (".local", Qt::CaseInsensitive))
         return kMDNS;
@@ -41,37 +49,52 @@ NetworkDiscovery::AddressType NetworkDiscovery::getAddressType (
     return kUnknown;
 }
 
-void NetworkDiscovery::getIp (QString address, QObject* receiver,
+//=============================================================================
+// NetworkDiscovery::GetIP
+//=============================================================================
+
+void NetworkDiscovery::GetIP (QString address, QObject* receiver,
                               const char* member) {
-    getIp (address, getAddressType (address), receiver, member);
+    GetIP (address, GetAddressType (address), receiver, member);
 }
 
-void NetworkDiscovery::getIp (QString address, AddressType type,
+//=============================================================================
+// NetworkDiscovery::GetIP
+//=============================================================================
+
+void NetworkDiscovery::GetIP (QString address, AddressType type,
                               QObject* receiver, const char* member) {
-    QObject::connect (this, SIGNAL (ipFound (QString, QString)), receiver, member);
+
+    QObject::connect (this, SIGNAL (IpFound (QString, QString)),
+                      receiver, member);
 
     switch (type) {
     case kMDNS:
-        m_responder.query (address);
+        m_responder.Query (address);
         break;
     case kIPv4:
-        emit ipFound (address, address);
+        emit IpFound (address, address);
         break;
     case kIPv6:
-        emit ipFound (address, address);
+        emit IpFound (address, address);
         break;
     default:
-        QHostInfo::lookupHost (address, this, SLOT (onLookupFinished (QHostInfo)));
+        QHostInfo::lookupHost (address, this,
+                               SLOT (OnLookupFinished (QHostInfo)));
         break;
     }
 }
 
-void NetworkDiscovery::onLookupFinished (QHostInfo info) {
+//=============================================================================
+// NetworkDiscovery::OnLookupFinished
+//=============================================================================
+
+void NetworkDiscovery::OnLookupFinished (QHostInfo info) {
     for (int i = 0; i < info.addresses().count(); ++i) {
         QString ip = info.addresses().at (i).toString();
 
-        if (getAddressType (ip) == kIPv4 || getAddressType (ip) == kIPv6) {
-            emit ipFound (info.hostName(), ip);
+        if (GetAddressType (ip) == kIPv4 || GetAddressType (ip) == kIPv6) {
+            emit IpFound (info.hostName(), ip);
             return;
         }
     }

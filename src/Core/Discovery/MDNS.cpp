@@ -23,9 +23,13 @@
 #include "LibDS/Core/Common.h"
 #include "LibDS/Core/Discovery/MDNS.h"
 
+//=============================================================================
+// MDNS::MDNS
+//=============================================================================
+
 MDNS::MDNS() {
-    connect (&m_IPv4_receiver, SIGNAL (readyRead()), this, SLOT (readIPv4Socket()));
-    connect (&m_IPv6_receiver, SIGNAL (readyRead()), this, SLOT (readIPv6Socket()));
+    connect (&m_IPv4_receiver, SIGNAL (readyRead()), this, SLOT (ReadIPv4Socket()));
+    connect (&m_IPv6_receiver, SIGNAL (readyRead()), this, SLOT (ReadIPv6Socket()));
 
     m_IPv6_receiver.bind (QHostAddress::AnyIPv6, 5353, QUdpSocket::ShareAddress);
     m_IPv4_receiver.bind (QHostAddress::AnyIPv4, 5353, QUdpSocket::ShareAddress);
@@ -34,6 +38,10 @@ MDNS::MDNS() {
     m_IPv4_receiver.joinMulticastGroup (QHostAddress ("224.0.0.251"));
 }
 
+//=============================================================================
+// MDNS::~MDNS
+//=============================================================================
+
 MDNS::~MDNS() {
     m_IPv4_sender.abort();
     m_IPv6_sender.abort();
@@ -41,7 +49,11 @@ MDNS::~MDNS() {
     m_IPv6_receiver.abort();
 }
 
-void MDNS::query (QString domain) {
+//=============================================================================
+// MDNS::Query
+//=============================================================================
+
+void MDNS::Query (QString domain) {
     QByteArray data;
     QByteArray header;
     QByteArray packet;
@@ -93,29 +105,46 @@ void MDNS::query (QString domain) {
     packet.append (data);
 
     /* Send the generated packet */
-    send (packet);
+    Send (packet);
 }
 
-void MDNS::readIPv4Socket() {
-    processResponse (DS_GetSocketData (&m_IPv4_receiver));
+//=============================================================================
+// MDNS::ReadIPv4Socket
+//=============================================================================
+
+void MDNS::ReadIPv4Socket() {
+    ProcessResponse (DS_GetSocketData (&m_IPv4_receiver));
 }
 
-void MDNS::readIPv6Socket() {
-    processResponse (DS_GetSocketData (&m_IPv6_receiver));
+//=============================================================================
+// MDNS::ReadIPv6Socket
+//=============================================================================
+
+void MDNS::ReadIPv6Socket() {
+    ProcessResponse (DS_GetSocketData (&m_IPv6_receiver));
 }
 
-void MDNS::send (QByteArray data) {
+//=============================================================================
+// MDNS::Send
+//=============================================================================
+
+void MDNS::Send (QByteArray data) {
     if (!data.isEmpty()) {
         m_IPv6_sender.writeDatagram (data, QHostAddress ("FF02::FB"),    5353);
         m_IPv4_sender.writeDatagram (data, QHostAddress ("224.0.0.251"), 5353);
     }
 }
 
-void MDNS::processResponse (QByteArray response) {
+//=============================================================================
+// MDNS::ProcessResponse
+//=============================================================================
+
+void MDNS::ProcessResponse (QByteArray response) {
     /* TODO:
      *     - Ignore query packets (only allow response packets)
      *     - Figure out how to extract IP address from mDNS responses
      *     - Differentiate between IPv4 and IPv6 responses
      */
-    qDebug() << "Received mDNS packet" << response;
+
+    Q_UNUSED (response);
 }

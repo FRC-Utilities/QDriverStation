@@ -44,7 +44,7 @@ class LIB_DS_DECL DS_NetConsole : public QObject {
      * Emitted when a message is received from the robot or the
      * internal Driver Station system
      */
-    void newMessage (QString);
+    void NewMessage (QString);
 
   private:
     /**
@@ -58,7 +58,7 @@ class LIB_DS_DECL DS_NetConsole : public QObject {
      * Called when we receive data in the network socket.
      * Used to read the input data and process it.
      */
-    void onDataReceived();
+    void ReadSocketData();
 };
 
 #endif

@@ -38,30 +38,30 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_ProtocolBase {
   public:
     explicit DS_Protocol2015();
 
-    int robotPort();
-    int clientPort();
-    QString defaultRadioAddress();
-    QString defaultRobotAddress();
+    int RobotPort();
+    int ClientPort();
+    QString DefaultRadioAddress();
+    QString DefaultRobotAddress();
 
   public slots:
-    void reboot();
-    void restartCode();
+    void Reboot();
+    void RestartCode();
 
   private slots:
-    void resetProtocol();
-    void downloadRobotInformation();
-    bool readRobotData (QByteArray data);
-    void onDownloadFinished (QNetworkReply* reply);
+    void ResetProtocol();
+    void GetRobotInformation();
+    bool ReadRobotPacket (QByteArray data);
+    void ProcessRobotInformation (QNetworkReply* reply);
 
   private:
-    QByteArray generateClientPacket();
-    QByteArray generateJoystickData();
-    QByteArray generateTimezoneData();
-    DS_ControlMode getControlMode (int byte);
+    QByteArray GetClientPacket();
+    QByteArray GetJoystickData();
+    QByteArray GetTimezoneData();
+    DS_ControlMode GetControlMode (int byte);
 
-    int getControlCode (DS_ControlMode mode);
-    int getAllianceCode (DS_Alliance alliance);
-    int getJoystickSize (DS_Joystick* joystick);
+    int GetControlCode (DS_ControlMode mode);
+    int GetAllianceCode (DS_Alliance Alliance);
+    int GetJoystickSize (DS_Joystick* joystick);
 
     /**
      * Used for downloading robot information over a FTP connection.

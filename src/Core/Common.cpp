@@ -22,6 +22,10 @@
 
 #include "LibDS/Core/Common.h"
 
+//=============================================================================
+// DS_GetTimezoneCode
+//=============================================================================
+
 QString DS_GetTimezoneCode() {
     switch (QDateTime::currentDateTime().offsetFromUtc() / 3600) {
     case -11:
@@ -101,6 +105,10 @@ QString DS_GetTimezoneCode() {
     return "GMT0BST";
 }
 
+//=============================================================================
+// DS_GetStaticIp
+//=============================================================================
+
 QString DS_GetStaticIp (int team, int host) {
     QString string = QString ("%1").arg (team);
 
@@ -127,6 +135,10 @@ QString DS_GetStaticIp (int team, int host) {
     return QString ("10.%1.%2").arg (string, QString::number (host));
 }
 
+//=============================================================================
+// DS_GetControlModeString
+//=============================================================================
+
 QString DS_GetControlModeString (DS_ControlMode mode) {
     QString string;
 
@@ -151,6 +163,10 @@ QString DS_GetControlModeString (DS_ControlMode mode) {
     return string;
 }
 
+//=============================================================================
+// DS_GetSocketData
+//=============================================================================
+
 QByteArray DS_GetSocketData (QUdpSocket* socket) {
     QByteArray data;
 
@@ -161,6 +177,10 @@ QByteArray DS_GetSocketData (QUdpSocket* socket) {
 
     return data;
 }
+
+//=============================================================================
+// DS_ToBytes
+//=============================================================================
 
 QByteArray DS_ToBytes (int data) {
     QByteArray array;
