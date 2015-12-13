@@ -1,5 +1,7 @@
 ![Logo](extra/logo.png)
+
 [![Build Status](https://travis-ci.org/WinT-3794/LibDS.svg?branch=master)](https://travis-ci.org/WinT-3794/LibDS)
+[![BitCoin donate button](https://img.shields.io/badge/bitcoin-donate-yellow.svg)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
 
 The DriverStation library allows you to connect and manage a robot easily by providing an abstraction layer between an application and the network commununications between the robot and the host computer.
 
