@@ -251,7 +251,7 @@ void DS_ProtocolBase::ReadRobotPacket (QByteArray data) {
         }
 
         /* Let the protocol implementation read the rest of the data */
-        if (ReadRobotPacket (data))
+        if (ReadPacket (data))
             emit PacketReceived();
     }
 }
