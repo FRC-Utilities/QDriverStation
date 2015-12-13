@@ -25,31 +25,35 @@
 #include <QInputDialog>
 #include <QDesktopServices>
 
-#include "CPU.h"
 #include "FirstRun.h"
 #include "Global/Settings.h"
 
 const QString XBOX_URL =
     "http://files.tattiebogle.net/360/360ControllerInstall.dmg";
 
-int InitTasks::getTeamNumber() {
+//=============================================================================
+// InitTasks::GetTeamNumber
+//=============================================================================
+
+int InitTasks::GetTeamNumber() {
     /* First launch, ask for team number */
-    if (Settings::get ("First Launch", true).toBool())
+    if (Settings::Get ("First Launch", true).toBool())
         return QInputDialog::getInt (0, 0,
                                      QObject::tr ("Input team number:"), 0, 0,
                                      9999);
 
     /* Retrieve team number from settings */
     else
-        return Settings::get ("Team ID", 0).toInt();
+        return Settings::Get ("Team ID", 0).toInt();
 }
 
-void InitTasks::executeFirstRunTasks() {
-    /* Initialize the CPU querying process */
-    CPU::init();
+//=============================================================================
+// InitTasks::FirstRunTasks
+//=============================================================================
 
+void InitTasks::FirstRunTasks() {
     /* Not first run, nothing to do here *flies away* */
-    if (!Settings::get ("First Launch", true).toBool())
+    if (!Settings::Get ("First Launch", true).toBool())
         return;
 
     /* Download Xbox 360 controller drivers for Mac OS X*/
@@ -67,5 +71,5 @@ void InitTasks::executeFirstRunTasks() {
 #endif
 
     /* Ensure that this code does not run again */
-    Settings::set ("First Launch", false);
+    Settings::Set ("First Launch", false);
 }

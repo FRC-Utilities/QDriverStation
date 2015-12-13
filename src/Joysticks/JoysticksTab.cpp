@@ -30,9 +30,9 @@
 #include "JoysticksTab.h"
 #include "VirtualJoystick.h"
 
-//------------------------------------------------------------------------------
-// CONSTRUCTOR/DESTRUCTOR PROCEDURES
-//------------------------------------------------------------------------------
+//=============================================================================
+// JoysticksTab::JoysticksTab
+//=============================================================================
 
 JoysticksTab::JoysticksTab (QWidget* parent) : QWidget (parent) {
     ui.setupUi (this);
@@ -44,41 +44,49 @@ JoysticksTab::JoysticksTab (QWidget* parent) : QWidget (parent) {
 
     /* Send SDL and virtual joystick data to this widget */
     m_keyboardDrive = new VirtualJoystick;
-    connect (m_keyboardDrive, SIGNAL (hatEvent       (GM_Hat)),
-             this,            SLOT   (onHatEvent     (GM_Hat)));
-    connect (m_keyboardDrive, SIGNAL (axisEvent      (GM_Axis)),
-             this,            SLOT   (onAxisEvent    (GM_Axis)));
-    connect (m_keyboardDrive, SIGNAL (buttonEvent    (GM_Button)),
-             this,            SLOT   (onButtonEvent  (GM_Button)));
-    connect (m_keyboardDrive, SIGNAL (countChanged   (QStringList)),
-             this,            SLOT   (onCountChanged (QStringList)));
+    connect (m_keyboardDrive, SIGNAL (HatEvent       (GM_Hat)),
+             this,            SLOT   (OnHatEvent     (GM_Hat)));
+    connect (m_keyboardDrive, SIGNAL (AxisEvent      (GM_Axis)),
+             this,            SLOT   (OnAxisEvent    (GM_Axis)));
+    connect (m_keyboardDrive, SIGNAL (ButtonEvent    (GM_Button)),
+             this,            SLOT   (OnButtonEvent  (GM_Button)));
+    connect (m_keyboardDrive, SIGNAL (CountChanged   (QStringList)),
+             this,            SLOT   (OnCountChanged (QStringList)));
 
     /* Re-generate indicators when user selects another joystick */
     connect (ui.JoystickList, SIGNAL (currentRowChanged (int)),
-             this,            SLOT   (onRowChanged      (int)));
+             this,            SLOT   (GenerateIndicators      (int)));
 }
+
+//=============================================================================
+// JoysticksTab::~JoysticksTab
+//=============================================================================
 
 JoysticksTab::~JoysticksTab() {
     delete m_keyboardDrive;
 }
 
-//------------------------------------------------------------------------------
-// GIVE LIMITED ACCESS TO THE VIRTUAL JOYSTICK DIALOG
-//------------------------------------------------------------------------------
+//=============================================================================
+// JoysticksTab::ReadSettings
+//=============================================================================
 
-void JoysticksTab::readSettings() {
-    m_keyboardDrive->readSettings();
+void JoysticksTab::ReadSettings() {
+    m_keyboardDrive->ReadSettings();
 }
 
-void JoysticksTab::showKeyboardWindow() {
+//=============================================================================
+// JoysticksTab::ShowKeyboardWindow
+//=============================================================================
+
+void JoysticksTab::ShowKeyboardWindow() {
     m_keyboardDrive->show();
 }
 
-//------------------------------------------------------------------------------
-// REACT TO UI EVENTS
-//------------------------------------------------------------------------------
+//=============================================================================
+// JoysticksTab::GenerateIndicators
+//=============================================================================
 
-void JoysticksTab::onRowChanged (int row) {
+void JoysticksTab::GenerateIndicators (int row) {
     /* Remove all joystick indicators in the widget */
     foreach (QSpinBox *     b, findChildren<QSpinBox*>())     delete b;
     foreach (QPushButton *  c, findChildren<QPushButton*>())  delete c;
@@ -94,9 +102,9 @@ void JoysticksTab::onRowChanged (int row) {
         return;
 
     /* Get joystick information */
-    int hatCount = m_keyboardDrive->getNumHats (row);
-    int axisCount = m_keyboardDrive->getNumAxes (row);
-    int buttonCount = m_keyboardDrive->getNumButtons (row);
+    int hatCount = m_keyboardDrive->GetNumHats (row);
+    int axisCount = m_keyboardDrive->GetNumAxes (row);
+    int buttonCount = m_keyboardDrive->GetNumButtons (row);
 
     /* Make the indicator containers visible */
     ui.Hats->setVisible (hatCount > 0);
@@ -149,14 +157,14 @@ void JoysticksTab::onRowChanged (int row) {
     }
 }
 
-//------------------------------------------------------------------------------
-// REACT TO JOYSTICK EVENTS
-//------------------------------------------------------------------------------
+//=============================================================================
+// JoysticksTab::OnCountChanged
+//=============================================================================
 
-void JoysticksTab::onCountChanged (QStringList list) {
+void JoysticksTab::OnCountChanged (QStringList list) {
     /* A joystick was removed */
     if (list.count() < ui.JoystickList->count())
-        emit joystickRemoved();
+        emit JoystickRemoved();
 
     /* Clear the joystick list (we will re-generate it later) */
     ui.JoystickList->clear();
@@ -171,35 +179,41 @@ void JoysticksTab::onCountChanged (QStringList list) {
     }
 
     /* Notify other objects that JS count has changed */
-    emit statusChanged (list.count() > 0);
+    emit StatusChanged (list.count() > 0);
 }
 
-void JoysticksTab::onHatEvent (const GM_Hat& hat) {
-    /* The event is from a joystick that is not selected */
+//=============================================================================
+// JoysticksTab::OnHatEvent
+//=============================================================================
+
+void JoysticksTab::OnHatEvent (const GM_Hat& hat) {
     if (ui.JoystickList->currentRow() != hat.joystick.id)
         return;
 
-    /* Update the UI */
     if (hat.id < m_hats.count())
         m_hats.at (hat.id)->setValue ((hat.angle == 0) ? 360 : hat.angle);
 }
 
-void JoysticksTab::onAxisEvent (const GM_Axis& axis) {
-    /* The event is from a joystick that is not selected */
+//=============================================================================
+// JoysticksTab::OnAxisEvent
+//=============================================================================
+
+void JoysticksTab::OnAxisEvent (const GM_Axis& axis) {
     if (ui.JoystickList->currentRow() != axis.joystick.id)
         return;
 
-    /* Update the UI */
     if (axis.id < m_axes.count())
         m_axes.at (axis.id)->setValue (axis.value * 100);
 }
 
-void JoysticksTab::onButtonEvent (const GM_Button& button) {
-    /* The event is from a joystick that is not selected */
+//=============================================================================
+// JoysticksTab::OnButtonEvent
+//=============================================================================
+
+void JoysticksTab::OnButtonEvent (const GM_Button& button) {
     if (ui.JoystickList->currentRow() != button.joystick.id)
         return;
 
-    /* Update the UI */
     if (button.id < m_buttons.count())
         m_buttons.at (button.id)->setChecked (button.pressed);
 }

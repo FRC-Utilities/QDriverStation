@@ -44,34 +44,34 @@ class LIB_DS_DECL DS_Client : public QObject {
     /**
      * Sends a the input \a data to the robot
      */
-    void sendToRobot (QByteArray data);
+    void SendToRobot (QByteArray data);
 
     /**
      * Changes the port in which we send the packets to
      */
-    void setRobotPort (int port);
+    void SetRobotPort (int port);
 
     /**
      * Changes the port in where we receive robot packets
      */
-    void setClientPort (int port);
+    void SetClientPort (int port);
 
     /**
      * Changes the address where we send the packets to
      */
-    void setRobotAddress (QString address);
+    void SetRobotAddress (QString address);
 
   signals:
     /**
      * Emitted when the client receives a packet from the robot
      */
-    void dataReceived (QByteArray);
+    void DataReceived (QByteArray);
 
   private slots:
     /**
      * Reads the received data and sends it to the \c DriverStation
      */
-    void onDataReceived();
+    void OnDataReceived();
 
   private:
     /**

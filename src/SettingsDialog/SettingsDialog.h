@@ -61,27 +61,27 @@ class SettingsDialog : public QDialog {
      * Updates the placeholder text of the custom address to match current
      * team number
      */
-    void updatePlaceholder();
+    void UpdateRobotAddressPlaceholder();
 
     /**
      * Reads settings and updates dialog UI accordingly
      */
-    void readSettings();
+    void ReadSettings();
 
     /**
      * Changes settings based on the values of the UI elements
      */
-    void applySettings();
+    void ApplySettings();
 
     /**
      * Resets all the settings that are managed by this dialog to their default
      * values
      */
-    void resetSettings();
+    void ResetSettings();
 
   signals:
-    void updateColors();
-    void settingsChanged();
+    void UpdateColors();
+    void SettingsChanged();
 
   private:
     /**
@@ -104,50 +104,50 @@ class SettingsDialog : public QDialog {
      * @internal
      * Changes the palette of the application based on current settings
      */
-    void loadApplicationColors();
+    void LoadApplicationColors();
 
     /**
      * @internal
      * Clears the settings and re-loads them
      */
-    void onResetClicked();
+    void OnResetClicked();
 
     /**
      * @internal
      * Applies the settings, updates the UI and closes the dialog
      */
-    void onApplyClicked();
+    void OnApplyClicked();
 
     /**
      * @internal
      * Resets the UI elements to match previous settings and closes the dialog
      */
-    void onCancelClicked();
+    void OnCancelClicked();
 
     /**
      * @internal
      * Shows a color dialog that allows the user to change a color of the UI
      */
-    void onSelectorClicked();
+    void OnSelectorClicked();
 
     /**
      * @internal
      * Changes the color of the color box assigned to the line edit
      * that emited the signal that called this function
      */
-    void onColorChanged (QString color);
+    void OnColorChanged (QString color);
 
     /**
      * @internal
      * Returns the current color on the line edit that matches the \a type
      */
-    QColor getColor (Colors type);
+    QColor GetColorValue (Colors type);
 
     /**
      * @internal
      * Returns the emitter of a signal based on its object name
      */
-    Colors getEmitter (const QObject* object);
+    Colors GetColorType (const QObject* object);
 };
 
 #endif

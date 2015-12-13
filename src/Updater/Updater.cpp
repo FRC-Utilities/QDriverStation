@@ -22,6 +22,10 @@
 
 #include "Updater.h"
 
+//=============================================================================
+// Updater::Updater
+//=============================================================================
+
 Updater::Updater() {
     m_version = "";
     m_platform = "";
@@ -41,13 +45,17 @@ Updater::Updater() {
 #endif
 
     connect (&m_accessManager, SIGNAL (finished   (QNetworkReply*)),
-             this,             SLOT   (onFinished (QNetworkReply*)));
+             this,             SLOT   (OnServerReply (QNetworkReply*)));
 
-    checkForUpdates ("https://raw.githubusercontent.com/"
+    CheckForUpdates ("https://raw.githubusercontent.com/"
                      "WinT-3794/QDriverStation/updater/current");
 }
 
-void Updater::showUpdateMessages() {
+//=============================================================================
+// Updater::ShowUpdateMessages
+//=============================================================================
+
+void Updater::ShowUpdateMessages() {
     if (m_updateAvailable) {
         QMessageBox box;
         box.setTextFormat (Qt::RichText);
@@ -74,26 +82,42 @@ void Updater::showUpdateMessages() {
     }
 }
 
-void Updater::checkForUpdates (QString url) {
+//=============================================================================
+// Updater::CheckForUpdates
+//=============================================================================
+
+void Updater::CheckForUpdates (QString url) {
     m_accessManager.get (QNetworkRequest (QUrl (url)));
 }
 
-void Updater::onFinished (QNetworkReply* reply) {
+//=============================================================================
+// Updater::OnServerReply
+//=============================================================================
+
+void Updater::OnServerReply (QNetworkReply* reply) {
     QByteArray data = reply->readAll();
 
-    readDownloadLink (data);
-    readApplicationVersion (data);
-    showUpdateMessages();
+    GetDownloadLink (data);
+    GetApplicationVersion (data);
+    ShowUpdateMessages();
 }
 
-void Updater::readDownloadLink (QByteArray data) {
-    m_downloadLink = readKey (QString::fromUtf8 (data),
+//=============================================================================
+// Updater::GetDownloadLink
+//=============================================================================
+
+void Updater::GetDownloadLink (QByteArray data) {
+    m_downloadLink = ReadKey (QString::fromUtf8 (data),
                               QString ("download-%1").arg (m_platform));
 }
 
-void Updater::readApplicationVersion (QByteArray data) {
+//=============================================================================
+// Updater::GetApplicationVersion
+//=============================================================================
+
+void Updater::GetApplicationVersion (QByteArray data) {
     m_updateAvailable = false;
-    m_version = readKey (QString::fromUtf8 (data),
+    m_version = ReadKey (QString::fromUtf8 (data),
                          QString ("latest-%1").arg (m_platform));
 
     QStringList online = m_version.split (".");
@@ -120,7 +144,11 @@ void Updater::readApplicationVersion (QByteArray data) {
     }
 }
 
-QString Updater::readKey (QString data, QString key) {
+//=============================================================================
+// Updater::ReadKey
+//=============================================================================
+
+QString Updater::ReadKey (QString data, QString key) {
     QString value;
     int startIndex = -1;
     int finishIndex = -1;

@@ -54,7 +54,7 @@ class LIB_DS_DECL NetworkDiscovery : public QObject {
      * Looks for patterns in the \a address to determine the
      * address type
      */
-    AddressType getAddressType (QString address);
+    AddressType GetAddressType (QString address);
 
   public slots:
     /**
@@ -64,7 +64,7 @@ class LIB_DS_DECL NetworkDiscovery : public QObject {
      * When the address is resolved, this function will automatically
      * call the \a member function in the \a receiver object
      */
-    void getIp (QString address, QObject* receiver, const char* member);
+    void GetIP (QString address, QObject* receiver, const char* member);
 
     /**
      * Resolves the given \a address based on the address \a type.
@@ -72,21 +72,21 @@ class LIB_DS_DECL NetworkDiscovery : public QObject {
      * When the address is resolved, this function will automatically
      * call the \a member function in the \a receiver object
      */
-    void getIp (QString address, AddressType type, QObject* receiver,
+    void GetIP (QString address, AddressType type, QObject* receiver,
                 const char* member);
 
   signals:
     /**
      * Emitted when the \a ip of the \a address is resolved
      */
-    void ipFound (QString address, QString ip);
+    void IpFound (QString address, QString ip);
 
   private slots:
     /**
      * Gets the available addresses from the \a info object and
      * emits the \c ipFound() signal with the appropiate data
      */
-    void onLookupFinished (QHostInfo info);
+    void OnLookupFinished (QHostInfo info);
 
   private:
     /**

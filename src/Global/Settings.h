@@ -41,18 +41,18 @@ class Settings {
     /**
      * Resets the user settings of the application
      */
-    static void clear();
+    static void Clear();
 
     /**
      * Saves the specified \a value to the specified \a key
      */
-    static void set (QString key, const QVariant& value);
+    static void Set (QString key, const QVariant& value);
 
     /**
      * Reads the stored value of the \a key.
      * If the key is not found, returns the \a defaultValue
      */
-    static QVariant get (QString key, const QVariant& defaultValue);
+    static QVariant Get (QString key, const QVariant& defaultValue);
 
   private:
     static QSettings* m_settings;

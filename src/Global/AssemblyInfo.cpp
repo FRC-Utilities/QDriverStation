@@ -22,41 +22,77 @@
 
 #include "AssemblyInfo.h"
 
-QString AssemblyInfo::name() {
+//=============================================================================
+// AssemblyInfo::Name
+//=============================================================================
+
+QString AssemblyInfo::Name() {
     return "QDriverStation";
 }
 
-QString AssemblyInfo::major() {
+//=============================================================================
+// AssemblyInfo::Major
+//=============================================================================
+
+QString AssemblyInfo::Major() {
     return "0";
 }
 
-QString AssemblyInfo::minor() {
+//=============================================================================
+// AssemblyInfo::Minor
+//=============================================================================
+
+QString AssemblyInfo::Minor() {
     return "1";
 }
 
-QString AssemblyInfo::build() {
+//=============================================================================
+// AssemblyInfo::Build
+//=============================================================================
+
+QString AssemblyInfo::Build() {
     return "4";
 }
 
-QString AssemblyInfo::state() {
+//=============================================================================
+// AssemblyInfo::Channel
+//=============================================================================
+
+QString AssemblyInfo::Channel() {
     return "RC";
 }
 
-QString AssemblyInfo::version() {
-    return QString ("%1.%2%3 %4").arg (major(),
-                                       minor(),
-                                       build(),
-                                       state());
+//=============================================================================
+// AssemblyInfo::Version
+//=============================================================================
+
+QString AssemblyInfo::Version() {
+    return QString ("%1.%2%3 %4").arg (Major(),
+                                       Minor(),
+                                       Build(),
+                                       Channel());
 }
 
-QString AssemblyInfo::organization() {
+//=============================================================================
+// AssemblyInfo::Organization
+//=============================================================================
+
+QString AssemblyInfo::Organization() {
     return "WinT 3794";
 }
 
-QString AssemblyInfo::organizationDomain() {
+//=============================================================================
+// AssemblyInfo::OrganizationDomain
+//=============================================================================
+
+QString AssemblyInfo::OrganizationDomain() {
     return "http://wint3794.org";
 }
 
-QString AssemblyInfo::buildDateTime() {
+//=============================================================================
+// AssemblyInfo::BuildDateTime
+//=============================================================================
+
+QString AssemblyInfo::BuildDateTime() {
     return QObject::tr ("Built on %1 at %2").arg (__DATE__, __TIME__);
 }

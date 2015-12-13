@@ -42,13 +42,13 @@ class Updater : public QObject {
     explicit Updater();
 
   private slots:
-    void showUpdateMessages();
-    void checkForUpdates (QString url);
-    void onFinished (QNetworkReply* reply);
-    void readDownloadLink (QByteArray data);
-    void readApplicationVersion (QByteArray data);
+    void ShowUpdateMessages();
+    void CheckForUpdates (QString url);
+    void OnServerReply (QNetworkReply* reply);
+    void GetDownloadLink (QByteArray data);
+    void GetApplicationVersion (QByteArray data);
 
-    QString readKey (QString data, QString key);
+    QString ReadKey (QString data, QString key);
 
   private:
     bool m_updateAvailable;

@@ -53,17 +53,17 @@ class SmartWindow : public QMainWindow {
     /**
      * Returns \c true if the window mode is 'Docked'
      */
-    bool isDocked();
+    bool IsDocked();
 
     /**
      * Returns \c true if the window is set to have the smallest size possible
      */
-    bool isFixedSize();
+    bool UsesFixedSize();
 
     /**
      * Returns \c true if the window is set to ask the user to confirm close
      */
-    bool isPromptOnQuit();
+    bool PromptOnQuit();
 
   protected:
     /**
@@ -84,13 +84,13 @@ class SmartWindow : public QMainWindow {
      * If \a fixed is set to \c true, the window will resize itself to the
      * smallest size possible and will inhibit the system from resizing it
      */
-    void setUseFixedSize (bool fixed);
+    void UseFixedSize (bool fixed);
 
     /**
      * If \a prompt is set to \c true, the window will ask the user for
      * confirmation when a close event is detected
      */
-    void setPromptOnQuit (bool prompt);
+    void EnablePromptOnQuit (bool prompt);
 
     /**
      * Changes the display mode of the window.
@@ -99,7 +99,7 @@ class SmartWindow : public QMainWindow {
      *     - \c Docked, the window will be frameless and will be docked to
      *          to the bottom of the screen to emulate the FRC DriverStation
      */
-    void setWindowMode (const WindowMode& mode);
+    void SetWindowMode (const WindowMode& mode);
 
   private slots:
     /**
@@ -109,7 +109,7 @@ class SmartWindow : public QMainWindow {
      *
      * This function is called periodically by the window
      */
-    void resizeToFit();
+    void ResizeToFit();
 
   private:
     /**

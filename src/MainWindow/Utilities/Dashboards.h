@@ -54,34 +54,34 @@ class Dashboard : public QObject {
     /**
      * Returns the only instance of this class
      */
-    static Dashboard* getInstance();
+    static Dashboard* GetInstance();
 
   public slots:
     /**
      * Opens a Dashboard using \c QProcess based on the saved settings
      */
-    void loadDashboard();
+    void LoadDashboard();
 
     /**
      * Quits the current dashboard by using the \c QProcess library
      */
-    void quitDashboard();
+    void QuitDashboard();
 
     /**
      * Quits the current dashboard and opens a new one
      */
-    void reloadDashboard();
+    void ReloadDashboard();
 
     /**
      * Returns the currently selected Dashboard
      */
-    Dashboards getCurrentDashboard();
+    Dashboards GetCurrentDashboard();
 
     /**
      * Returns an ordered list with the matching Dashboards
      * Modify as needed!
      */
-    QStringList getAvailableDashboards();
+    QStringList GetAvailableDashboards();
 
   protected:
     explicit Dashboard();

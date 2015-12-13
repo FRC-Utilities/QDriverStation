@@ -52,19 +52,19 @@ class JoysticksTab : public QWidget {
     ~JoysticksTab();
 
   public slots:
-    void readSettings();
-    void showKeyboardWindow();
+    void ReadSettings();
+    void ShowKeyboardWindow();
 
   signals:
     /**
      * Emitted when a joystick is removed from the computer
      */
-    void joystickRemoved();
+    void JoystickRemoved();
 
     /**
      * Emitted when a joystick is attached or removed from the computer
      */
-    void statusChanged (bool);
+    void StatusChanged (bool);
 
   private:
     /**
@@ -97,35 +97,35 @@ class JoysticksTab : public QWidget {
      * @internal
      * Re-creates the indicator widgets for the currently selected joystick
      */
-    void onRowChanged (int row);
+    void GenerateIndicators (int row);
 
     /**
      * @internal
      * Re-populates the joystick list when the QJoystickManager detects that
      * the user attached or removed a joystick
      */
-    void onCountChanged (QStringList list);
+    void OnCountChanged (QStringList list);
 
     /**
      * @internal
      * Sends the axis event information to the DriverStation and updates the
      * state of one of the axis indicators.
      */
-    void onHatEvent (const GM_Hat& hat);
+    void OnHatEvent (const GM_Hat& hat);
 
     /**
      * @internal
      * Sends the axis event information to the DriverStation and updates the
      * state of one of the axis indicators.
      */
-    void onAxisEvent (const GM_Axis& axis);
+    void OnAxisEvent (const GM_Axis& axis);
 
     /**
      * @internal
      * Sends the button event information to the DriverStation and updates the
      * state of one of the button indicators.
      */
-    void onButtonEvent (const GM_Button& button);
+    void OnButtonEvent (const GM_Button& button);
 };
 
 #endif

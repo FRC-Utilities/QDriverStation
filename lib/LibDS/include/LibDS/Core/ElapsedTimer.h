@@ -44,19 +44,19 @@ class LIB_DS_DECL DS_ElapsedTime : public QObject {
     /**
      * Pauses the elapsed time refresh process
      */
-    void stop();
+    void Stop();
 
     /**
      * Resets the elapsed timer and starts the refresh process again
      */
-    void reset();
+    void Reset();
 
   signals:
     /**
      * Emitted when the elapsed time is calculated and processed
      * in a human-readable format
      */
-    void elapsedTimeChanged (QString);
+    void ElapsedTimeChanged (QString);
 
   private:
     /**
@@ -76,7 +76,7 @@ class LIB_DS_DECL DS_ElapsedTime : public QObject {
      * Uses the value given by the internal timer and processes its
      * information into a human-readable format (mm::ss.ms)
      */
-    void calculateElapsedTime();
+    void GetElapsedTime();
 };
 
 #endif

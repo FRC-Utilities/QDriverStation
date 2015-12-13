@@ -27,9 +27,9 @@
 
 #include <LibDS/DriverStation.h>
 
-//------------------------------------------------------------------------------
-// CONSTRUCTOR AND INIT PROCEDURES
-//------------------------------------------------------------------------------
+//=============================================================================
+// VirtualJoystick::VirtualJoystick
+//=============================================================================
 
 VirtualJoystick::VirtualJoystick() {
     ui.setupUi (this);
@@ -38,33 +38,33 @@ VirtualJoystick::VirtualJoystick() {
     connect (ui.Close, SIGNAL (clicked()),
              this,     SLOT   (hide()));
     connect (ui.Range, SIGNAL (valueChanged   (double)),
-             this,     SLOT   (onRangeChanged (double)));
+             this,     SLOT   (OnRangeChanged (double)));
     connect (ui.UseKeyboardCheckbox, SIGNAL (clicked (bool)),
-             this,                   SLOT   (setVirtualJoystickEnabled (bool)));
+             this,                   SLOT   (SetVirtualJoystickEnabled (bool)));
 
     /* React to SDL events */
-    connect (SDL_Layer::getInstance(), SIGNAL (hatEvent    (GM_Hat)),
-             this,                     SIGNAL (hatEvent    (GM_Hat)));
-    connect (SDL_Layer::getInstance(), SIGNAL (axisEvent   (GM_Axis)),
-             this,                     SIGNAL (axisEvent   (GM_Axis)));
-    connect (SDL_Layer::getInstance(), SIGNAL (buttonEvent (GM_Button)),
-             this,                     SIGNAL (buttonEvent (GM_Button)));
-    connect (SDL_Layer::getInstance(), SIGNAL (countChanged   (int)),
-             this,                     SLOT   (onCountChanged (int)));
-    connect (SDL_Layer::getInstance(), SIGNAL (countChanged   (QStringList)),
-             this,                     SLOT   (onCountChanged (QStringList)));
+    connect (SDL_Layer::GetInstance(), SIGNAL (HatEvent       (GM_Hat)),
+             this,                     SIGNAL (HatEvent       (GM_Hat)));
+    connect (SDL_Layer::GetInstance(), SIGNAL (AxisEvent      (GM_Axis)),
+             this,                     SIGNAL (AxisEvent      (GM_Axis)));
+    connect (SDL_Layer::GetInstance(), SIGNAL (ButtonEvent    (GM_Button)),
+             this,                     SIGNAL (ButtonEvent    (GM_Button)));
+    connect (SDL_Layer::GetInstance(), SIGNAL (CountChanged   (int)),
+             this,                     SLOT   (OnCountChanged (int)));
+    connect (SDL_Layer::GetInstance(), SIGNAL (CountChanged   (QStringList)),
+             this,                     SLOT   (OnCountChanged (QStringList)));
 
     /* React to key presses/releases */
-    connect (&m_filter, SIGNAL (keyPress    (QKeyEvent*, bool)),
-             this,      SLOT   (registerKey (QKeyEvent*, bool)));
+    connect (&m_filter, SIGNAL (KeyEvent    (QKeyEvent*, bool)),
+             this,      SLOT   (RegisterKey (QKeyEvent*, bool)));
 
     /* React to my own events */
-    connect (this, SIGNAL (hatEvent      (GM_Hat)),
-             this, SLOT   (onHatEvent    (GM_Hat)));
-    connect (this, SIGNAL (axisEvent     (GM_Axis)),
-             this, SLOT   (onAxisEvent   (GM_Axis)));
-    connect (this, SIGNAL (buttonEvent   (GM_Button)),
-             this, SLOT   (onButtonEvent (GM_Button)));
+    connect (this, SIGNAL (HatEvent      (GM_Hat)),
+             this, SLOT   (OnHatEvent    (GM_Hat)));
+    connect (this, SIGNAL (AxisEvent     (GM_Axis)),
+             this, SLOT   (OnAxisEvent   (GM_Axis)));
+    connect (this, SIGNAL (ButtonEvent   (GM_Button)),
+             this, SLOT   (OnButtonEvent (GM_Button)));
 
     /* Configure the virtual joystick */
     m_joystick.numAxes = 6;
@@ -76,23 +76,27 @@ VirtualJoystick::VirtualJoystick() {
     qApp->installEventFilter (&m_filter);
 
     /* Resize the window to the smallest size */
-    resizeToFit();
+    ResizeToFit();
 
     /* Initialize the SDL loop */
-    SDL_Layer::getInstance()->init();
+    SDL_Layer::GetInstance()->Init();
 }
 
-void VirtualJoystick::readSettings() {
-    ui.Range->setValue (Settings::get ("Axis Range", 0.80).toDouble());
-    setVirtualJoystickEnabled (Settings::get ("Virtual Joystick", false).toBool());
+//=============================================================================
+// VirtualJoystick::ReadSettings
+//=============================================================================
+
+void VirtualJoystick::ReadSettings() {
+    ui.Range->setValue (Settings::Get ("Axis Range", 0.80).toDouble());
+    SetVirtualJoystickEnabled (Settings::Get ("Virtual Joystick", false).toBool());
 }
 
-//------------------------------------------------------------------------------
-// 'MERGE' THE VIRTUAL JOYSTICK AND THE SDL (REAL) JOYSTICKS
-//------------------------------------------------------------------------------
+//=============================================================================
+// VirtualJoystick::GetNumAxes
+//=============================================================================
 
-int VirtualJoystick::getNumAxes (int js) {
-    int count = SDL_Layer::getInstance()->joystickList().count();
+int VirtualJoystick::GetNumAxes (int js) {
+    int count = SDL_Layer::GetInstance()->JoystickList().count();
 
     /* Application wants to get virtual joystick data */
     if (js >= count && m_enabled)
@@ -100,14 +104,18 @@ int VirtualJoystick::getNumAxes (int js) {
 
     /* Application wants to get SDL joystick data */
     else if (js < count)
-        return SDL_Layer::getInstance()->getNumAxes (js);
+        return SDL_Layer::GetInstance()->GetNumAxes (js);
 
     /* Joystick does not exist */
     return 0;
 }
 
-int VirtualJoystick::getNumHats (int js) {
-    int count = SDL_Layer::getInstance()->joystickList().count();
+//=============================================================================
+// VirtualJoystick::GetNumHats
+//=============================================================================
+
+int VirtualJoystick::GetNumHats (int js) {
+    int count = SDL_Layer::GetInstance()->JoystickList().count();
 
     /* Application wants to get virtual joystick data */
     if (js >= count && m_enabled)
@@ -115,14 +123,18 @@ int VirtualJoystick::getNumHats (int js) {
 
     /* Application wants to get SDL joystick data */
     else if (js < count)
-        return SDL_Layer::getInstance()->getNumHats (js);
+        return SDL_Layer::GetInstance()->GetNumHats (js);
 
     /* Joystick does not exist */
     return 0;
 }
 
-int VirtualJoystick::getNumButtons (int js) {
-    int count = SDL_Layer::getInstance()->joystickList().count();
+//=============================================================================
+// VirtualJoystick::GetNumButtons
+//=============================================================================
+
+int VirtualJoystick::GetNumButtons (int js) {
+    int count = SDL_Layer::GetInstance()->JoystickList().count();
 
     /* Application wants to get virtual joystick data */
     if (js >= count && m_enabled)
@@ -130,65 +142,73 @@ int VirtualJoystick::getNumButtons (int js) {
 
     /* Application wants to get SDL joystick data */
     else if (js < count)
-        return SDL_Layer::getInstance()->getNumButtons (js);
+        return SDL_Layer::GetInstance()->GetNumButtons (js);
 
     /* Joystick does not exist */
     return 0;
 }
 
-//------------------------------------------------------------------------------
-// REACT TO JOYSTICK ATTACH/DETACH EVENTS
-//------------------------------------------------------------------------------
+//=============================================================================
+// VirtualJoystick::OnCountChanged
+//=============================================================================
 
-void VirtualJoystick::onCountChanged (int count) {
-    DriverStation::getInstance()->clearJoysticks();
+void VirtualJoystick::OnCountChanged (int count) {
+    DriverStation::GetInstance()->ClearJoysticks();
 
     /* Register each joystick with the DS */
     for (int i = 0; i <= count - 1; ++i)
-        DriverStation::getInstance()->addJoystick (
-            SDL_Layer::getInstance()->getNumAxes    (i),
-            SDL_Layer::getInstance()->getNumButtons (i),
-            SDL_Layer::getInstance()->getNumHats    (i));
+        DriverStation::GetInstance()->AddJoystick (
+            SDL_Layer::GetInstance()->GetNumAxes    (i),
+            SDL_Layer::GetInstance()->GetNumButtons (i),
+            SDL_Layer::GetInstance()->GetNumHats    (i));
 
     /* Register the virtual joystick with the DS */
     if (m_enabled) {
         m_joystick.id = count;
-        DriverStation::getInstance()->addJoystick (
+        DriverStation::GetInstance()->AddJoystick (
             m_joystick.numAxes,
             m_joystick.numButtons,
             m_joystick.numHats);
     }
 
     /* Notify other objects that JS count changed */
-    emit countChanged (count + (m_enabled ? 1 : 0));
+    emit CountChanged (count + (m_enabled ? 1 : 0));
 }
 
-void VirtualJoystick::onCountChanged (QStringList input) {
+//=============================================================================
+// VirtualJoystick::OnCountChanged
+//=============================================================================
+
+void VirtualJoystick::OnCountChanged (QStringList input) {
     /* Append the virtual joystick to the joystick list */
     if (m_enabled)
         input.append (m_joystick.displayName);
 
     /* Notify other objects that JS count changed */
-    emit countChanged (input);
+    emit CountChanged (input);
 }
 
-//------------------------------------------------------------------------------
-// READ AND PROCESS KEYBOARD INPUT
-//------------------------------------------------------------------------------
+//=============================================================================
+// VirtualJoystick::RegisterKey
+//=============================================================================
 
-void VirtualJoystick::registerKey (QKeyEvent* event, bool pressed) {
+void VirtualJoystick::RegisterKey (QKeyEvent* event, bool pressed) {
     /* User pressed SPACE or SHIFT, trigger E-STOP */
     if (event->key() == Qt::Key_Shift || event->key() == Qt::Key_Space)
-        DriverStation::getInstance()->startEmergencyStop();
+        DriverStation::GetInstance()->StartEmergencyStop();
 
     /* Parse keyboard data for the virtual joystick */
-    readButtons (event->key(), pressed);
-    readAxes    (event->key(), ui.Range->value(), pressed);
+    ReadButtons (event->key(), pressed);
+    ReadAxes    (event->key(), ui.Range->value(), pressed);
 
     event->ignore();
 }
 
-void VirtualJoystick::readAxes (int key, double value, bool pressed) {
+//=============================================================================
+// VirtualJoystick::ReadAxes
+//=============================================================================
+
+void VirtualJoystick::ReadAxes (int key, double value, bool pressed) {
     int axis = -1;
     value *= pressed ? 1 : 0;
 
@@ -246,11 +266,15 @@ void VirtualJoystick::readAxes (int key, double value, bool pressed) {
         data.value = value;
         data.joystick = m_joystick;
 
-        emit axisEvent (data);
+        emit AxisEvent (data);
     }
 }
 
-void VirtualJoystick::readButtons (int key, bool pressed) {
+//=============================================================================
+// VirtualJoystick::ReadButtons
+//=============================================================================
+
+void VirtualJoystick::ReadButtons (int key, bool pressed) {
     int button = -1;
 
     if (key == Qt::Key_0)
@@ -280,53 +304,69 @@ void VirtualJoystick::readButtons (int key, bool pressed) {
         data.pressed = pressed;
         data.joystick = m_joystick;
 
-        emit buttonEvent (data);
+        emit ButtonEvent (data);
     }
 }
 
-//------------------------------------------------------------------------------
-// MISC. FUNCTIONS
-//------------------------------------------------------------------------------
+//=============================================================================
+// VirtualJoystick::ResizeToFit
+//=============================================================================
 
-void VirtualJoystick::resizeToFit() {
+void VirtualJoystick::ResizeToFit() {
     resize (0, 0);
     setFixedSize (size());
 }
 
-void VirtualJoystick::onRangeChanged (double value) {
-    Settings::set ("Axis Range", value);
+//=============================================================================
+// VirtualJoystick::OnRangeChanged
+//=============================================================================
+
+void VirtualJoystick::OnRangeChanged (double value) {
+    Settings::Set ("Axis Range", value);
 }
 
-void VirtualJoystick::setVirtualJoystickEnabled (bool enabled) {
+//=============================================================================
+// VirtualJoystick::SetVirtualJoystickEnabled
+//=============================================================================
+
+void VirtualJoystick::SetVirtualJoystickEnabled (bool enabled) {
     m_enabled = enabled;
 
-    Settings::set ("Virtual Joystick", m_enabled);
+    Settings::Set ("Virtual Joystick", m_enabled);
     ui.UseKeyboardCheckbox->setChecked (m_enabled);
 
-    QStringList list = SDL_Layer::getInstance()->joystickList();
+    QStringList list = SDL_Layer::GetInstance()->JoystickList();
 
-    onCountChanged (list);
-    onCountChanged (list.count());
+    CountChanged (list);
+    CountChanged (list.count());
 }
 
-//------------------------------------------------------------------------------
-// REACT TO JOYSTICK EVENTS AND SEND THEM TO THE DRIVER STATION
-//------------------------------------------------------------------------------
+//=============================================================================
+// VirtualJoystick::OnHatEvent
+//=============================================================================
 
-void VirtualJoystick::onHatEvent (GM_Hat hat) {
-    DriverStation::getInstance()->updateJoystickPovHat (hat.joystick.id,
+void VirtualJoystick::OnHatEvent (GM_Hat hat) {
+    DriverStation::GetInstance()->UpdateJoystickPOV (hat.joystick.id,
             hat.id,
             hat.angle);
 }
 
-void VirtualJoystick::onAxisEvent (GM_Axis axis) {
-    DriverStation::getInstance()->updateJoystickAxis   (axis.joystick.id,
+//=============================================================================
+// VirtualJoystick::OnAxisEvent
+//=============================================================================
+
+void VirtualJoystick::OnAxisEvent (GM_Axis axis) {
+    DriverStation::GetInstance()->UpdateJoystickAxis   (axis.joystick.id,
             axis.id,
             axis.value);
 }
 
-void VirtualJoystick::onButtonEvent (GM_Button button) {
-    DriverStation::getInstance()->updateJoystickButton (button.joystick.id,
+//=============================================================================
+// VirtualJoystick::OnButtonEvent
+//=============================================================================
+
+void VirtualJoystick::OnButtonEvent (GM_Button button) {
+    DriverStation::GetInstance()->UpdateJoystickButton (button.joystick.id,
             button.id,
             button.pressed);
 }

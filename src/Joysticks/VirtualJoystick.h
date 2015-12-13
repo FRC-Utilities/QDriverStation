@@ -51,115 +51,115 @@ class VirtualJoystick : public QDialog {
     /**
      * Loads the saved settings on the UI
      */
-    void readSettings();
+    void ReadSettings();
 
     /**
      * Returns the number of axes for the selected joystick
      * @note The joystick can be either the 'real' one or the virtual one
      */
-    int getNumAxes (int js);
+    int GetNumAxes (int js);
 
     /**
      * Returns the number of hats for the selected joystick
      * @note The joystick can be either the 'real' one or the virtual one
      */
-    int getNumHats (int js);
+    int GetNumHats (int js);
 
     /**
      * Returns the number of buttons for the selected joystick
      * @note The joystick can be either the 'real' one or the virtual one
      */
-    int getNumButtons (int js);
+    int GetNumButtons (int js);
 
   signals:
     /**
      * Emitted when the joystick count is adjusted and updated
      */
-    void countChanged (int);
+    void CountChanged (int);
 
     /**
      * Emitted when the joystick count is adjusted and updated
      */
-    void countChanged (QStringList);
+    void CountChanged (QStringList);
 
     /**
      * Emitted when the system detects a change in the state of the hats of
      * one of the connected joysticks
      */
-    void hatEvent (GM_Hat);
+    void HatEvent (GM_Hat);
 
     /**
      * Emitted when the system detects a change in the state of the axes of
      * one of the connected joysticks
      */
-    void axisEvent (GM_Axis);
+    void AxisEvent (GM_Axis);
 
     /**
      * Emitted when the system detects a change in the state of the buttons of
      * one of the connected joysticks
      */
-    void buttonEvent (GM_Button);
+    void ButtonEvent (GM_Button);
 
   private slots:
     /**
      * Returns the total number of joysticks, including the SDL joysticks and
      * the virtual joystick
      */
-    void onCountChanged (int count);
+    void OnCountChanged (int count);
 
     /**
      * Returns a list with the names of all joysticks, including the SDL
      * joysticks and the virtual joystick
      */
-    void onCountChanged (QStringList input);
+    void OnCountChanged (QStringList input);
 
     /**
      * Parses the key event and updates the axes of the virtual joystick
      */
-    void registerKey (QKeyEvent* event, bool pressed);
+    void RegisterKey (QKeyEvent* event, bool pressed);
 
     /**
      * Filters the \a key to update the \a value of the axis assigned to a
      * specific key
      */
-    void readAxes (int key, double value, bool pressed);
+    void ReadAxes (int key, double value, bool pressed);
 
     /**
      * Filters the \a key to update the \a pressed state of the button assigned
      * to a specific key
      */
-    void readButtons (int key, bool pressed);
+    void ReadButtons (int key, bool pressed);
 
     /**
      * Resizes the window to a minimum size
      */
-    void resizeToFit();
+    void ResizeToFit();
 
     /**
      * Saves the new range value on the settings registry
      */
-    void onRangeChanged (double value);
+    void OnRangeChanged (double value);
 
     /**
      * Changes the \a enabled state of the virtual joystick and updates the
      * required internal values
      */
-    void setVirtualJoystickEnabled (bool enabled);
+    void SetVirtualJoystickEnabled (bool enabled);
 
     /**
      * Sends the hat data to the Driver Station
      */
-    void onHatEvent (GM_Hat hat);
+    void OnHatEvent (GM_Hat hat);
 
     /**
      * Sends the axis data to the Driver Station
      */
-    void onAxisEvent (GM_Axis axis);
+    void OnAxisEvent (GM_Axis axis);
 
     /**
      * Sends the button data to the Driver Station
      */
-    void onButtonEvent (GM_Button button);
+    void OnButtonEvent (GM_Button button);
 
 
   private:

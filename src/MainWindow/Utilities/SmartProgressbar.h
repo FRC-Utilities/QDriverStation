@@ -40,8 +40,8 @@ class SmartProgressbar : public QProgressBar {
     enum Type { kBatteryProgressbar, kCpuUsageProgressbar };
 
   public slots:
-    void setType (Type type);
-    void onValueChanged (int value);
+    void SetType (Type type);
+    void UpdateColor (int value);
 
   private:
     Type m_type;

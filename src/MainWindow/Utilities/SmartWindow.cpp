@@ -29,36 +29,60 @@
 #include "SmartWindow.h"
 #include "Global/Settings.h"
 
+//=============================================================================
+// SmartWindow::SmartWindow
+//=============================================================================
+
 SmartWindow::SmartWindow() {
     m_closingDown = false;
     m_useFixedSize = true;
     m_promptOnQuit = true;
 
-    resizeToFit();
-    connect (DS_Timers::getInstance(), SIGNAL (timeout20()),
-             this,                     SLOT   (resizeToFit()));
+    ResizeToFit();
+    connect (DS_Timers::GetInstance(), SIGNAL (Timeout20()),
+             this,                     SLOT   (ResizeToFit()));
 }
 
-bool SmartWindow::isDocked() {
+//=============================================================================
+// SmartWindow::IsDocked
+//=============================================================================
+
+bool SmartWindow::IsDocked() {
     return m_windowMode == kDocked;
 }
 
-bool SmartWindow::isFixedSize() {
+//=============================================================================
+// SmartWindow::UsesFixedSize
+//=============================================================================
+
+bool SmartWindow::UsesFixedSize() {
     return m_useFixedSize;
 }
 
-bool SmartWindow::isPromptOnQuit() {
+//=============================================================================
+// SmartWindow::PromptOnQuit
+//=============================================================================
+
+bool SmartWindow::PromptOnQuit() {
     return m_promptOnQuit;
 }
+
+//=============================================================================
+// SmartWindow::moveEvent
+//=============================================================================
 
 void SmartWindow::moveEvent (QMoveEvent* e) {
     e->accept();
 
-    if (!isDocked()) {
-        Settings::set ("x", x());
-        Settings::set ("y", y());
+    if (!IsDocked()) {
+        Settings::Set ("x", x());
+        Settings::Set ("y", y());
     }
 }
+
+//=============================================================================
+// SmartWindow::closeEvent
+//=============================================================================
 
 void SmartWindow::closeEvent (QCloseEvent* e) {
     /* User already confirmed his/her choice */
@@ -91,18 +115,30 @@ void SmartWindow::closeEvent (QCloseEvent* e) {
     qApp->quit();
 }
 
-void SmartWindow::setUseFixedSize (bool fixed) {
+//=============================================================================
+// SmartWindow::UseFixedSize
+//=============================================================================
+
+void SmartWindow::UseFixedSize (bool fixed) {
     m_useFixedSize = fixed;
 }
 
-void SmartWindow::setPromptOnQuit (bool prompt) {
+//=============================================================================
+// SmartWindow::EnablePromptOnQuit
+//=============================================================================
+
+void SmartWindow::EnablePromptOnQuit (bool prompt) {
     m_promptOnQuit = prompt;
 }
 
-void SmartWindow::setWindowMode (const WindowMode& mode) {
+//=============================================================================
+// SmartWindow::SetWindowMode
+//=============================================================================
+
+void SmartWindow::SetWindowMode (const WindowMode& mode) {
     hide();
     m_windowMode = mode;
-    Settings::set ("Docked", isDocked());
+    Settings::Set ("Docked", IsDocked());
 
     /* Enable window borders and resize to minimum size */
     if (mode == kNormal) {
@@ -110,8 +146,8 @@ void SmartWindow::setWindowMode (const WindowMode& mode) {
         int dx = w.width() / 9;
         int dy = w.height() / 2;
 
-        move (Settings::get ("x", dx).toInt(),
-              Settings::get ("y", dy).toInt());
+        move (Settings::Get ("x", dx).toInt(),
+              Settings::Get ("y", dy).toInt());
 
         setMinimumSize (0, 0);
         setMaximumSize (0, 0);
@@ -126,12 +162,16 @@ void SmartWindow::setWindowMode (const WindowMode& mode) {
         setWindowFlags (Qt::FramelessWindowHint);
 
     showNormal();
-    resizeToFit();
+    ResizeToFit();
 }
 
-void SmartWindow::resizeToFit() {
+//=============================================================================
+// SmartWindow::ResizeToFit
+//=============================================================================
+
+void SmartWindow::ResizeToFit() {
     /* 'Dock' the window at the bottom and extend it to the sides */
-    if (isDocked()) {
+    if (IsDocked()) {
         QDesktopWidget w;
         setFixedHeight (size().height());
         setFixedWidth (w.availableGeometry().width());

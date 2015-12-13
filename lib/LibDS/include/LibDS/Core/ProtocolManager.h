@@ -48,62 +48,62 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
     /**
      * Returns the current protocol in use
      */
-    DS_ProtocolBase* protocol() const;
+    DS_ProtocolBase* CurrentProtocol() const;
 
     /**
      * Returns \c true if the current protocol is initialized
      */
-    bool protocolIsValid() const;
+    bool ProtocolIsValid() const;
 
   public slots:
     /**
      * Changes the protocol that we use to communicate with the robot
      */
-    void setProtocol (DS_ProtocolBase* protocol);
+    void SetProtocol (DS_ProtocolBase* CurrentProtocol);
 
     /**
      * Un-registeres all the joysticks from the Driver Station
      */
-    void clearJoysticks();
+    void ClearJoysticks();
 
     /**
      * Registers a new joystick and its characteristics to the Driver Station
      */
-    void addJoystick (int axes, int buttons, int povHats);
+    void AddJoystick (int axes, int buttons, int povHats);
 
     /**
      * Updates the state of the POV hats in the selected joystick
      */
-    void updateJoystickPovHat (int js, int hat, int angle);
+    void UpdateJoystickPOV (int js, int hat, int angle);
 
     /**
      * Updates the state of the axes in the selected joystick
      */
-    void updateJoystickAxis (int js, int axis, double value);
+    void UpdateJoystickAxis (int js, int axis, double value);
 
     /**
      * Updates the state of the buttons in the selected joystick
      */
-    void updateJoystickButton (int js, int button, bool status);
+    void UpdateJoystickButton (int js, int button, bool status);
 
     /**
      * Sends the input \a data to the current protocol to decode
      */
-    void readRobotData (QByteArray data);
+    void ReadRobotPacket (QByteArray data);
 
   signals:
     /**
      * Emitted when the protocol detects that the status of the
      * user code has changed
      */
-    void codeChanged (bool);
+    void CodeChanged (bool);
 
     /**
      * Emitted when the protocol changes its address.
      * This can be triggered by the user (or programmer) or the protocol
      * itself, when it figures out the IP address of the robot.
      */
-    void robotAddressChanged (QString);
+    void RobotAddressChanged (QString);
 
     /**
      * Emitted when the state of the network communications with the robot
@@ -114,55 +114,55 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
      *     - The robot responds to ping requests and DS
      *     - The robot does not respond to ping requests nor the DS
      */
-    void communicationsChanged (DS_CommunicationStatus);
+    void CommunicationsChanged (DS_CommStatus);
 
     /**
      * Emitted when the protocol detects that the robot voltage has changed
      */
-    void voltageChanged (QString);
+    void VoltageChanged (QString);
 
     /**
      * Emitted when the protocol detects that the RAM usage of the robot
      * has changed
      */
-    void ramUsageChanged (int);
+    void RAMUsageChanged (int);
 
     /**
      * Emitted when the protocol detects that the disk usage of the robot
      * has changed
      */
-    void diskUsageChanged (int);
+    void DiskUsageChanged (int);
 
     /**
      * Emitted when the protocol detects that the control mode has changed.
      * Note: this signal can be emitted when the user changes the control mode
      * or when the robot itself changes its mode (e.g. e-stop)
      */
-    void controlModeChanged (DS_ControlMode);
+    void ControlModeChanged (DS_ControlMode);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * its library INI files and analyzed them
      */
-    void libVersionChanged (QString);
+    void LibVersionChanged (QString);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * its PCM INI files and analyzed them
      */
-    void rioVersionChanged (QString);
+    void RIOVersionChanged (QString);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * its PDP information and analyzed them
      */
-    void pdpVersionChanged (QString);
+    void PDPVersionChanged (QString);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * the PCM information files and analyzed them
      */
-    void pcmVersionChanged (QString);
+    void PCMVersionChanged (QString);
 
   private:
     /**
@@ -178,7 +178,7 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
     /**
      * Returns \c true if the \a js is registered with the joystick list
      */
-    bool joystickIsValid (int js) const;
+    bool JoystickIsValid (int js) const;
 };
 
 #endif

@@ -92,79 +92,79 @@ class MainWindow : public SmartWindow {
      * Configures the window so that it reacts to various events throughout the
      * application
      */
-    void connectSlots();
+    void ConnectSlots();
 
     /**
      * @internal
      * Ensures that the widgets are configured correctly and that their
      * appearance is updated according to the current state of the application
      */
-    void configureWidgetAppearance();
+    void ConfigureAppearance();
 
     /**
      * @internal
      * Reads settings to get the time frames to use when using the practice
      * feature of the DriverStation
      */
-    void readSettings();
+    void ReadSettings();
 
     /**
      * @internal
      * Updates the colors of some labels which use a custom font or are under
      * the influence of a stylesheet
      */
-    void redrawWidgets();
+    void RedrawControls();
 
     /**
      * @internal
      * Updates the values of the battery and CPU progress bars only if the
      * main tab is currently selected.
      */
-    void updatePcStatusWidgets();
+    void UpdatePCStatusControls();
 
     /**
      * @internal
      * Changes the robot alliance and position when the user changes the
      * alliance from the combobox
      */
-    void onStationChanged (int station);
+    void ChangeAlliance (int station);
 
     /**
      * @internal
      * Changes the Driver Station protocol when the user changes the
      * protocol from the combobox
      */
-    void onProtocolChanged (int protocol);
+    void ChangeProtocol (int protocol);
 
     /**
      * @internal
      * Copies the output of the NetConsole to the system clipboard
      */
-    void onCopyClicked();
+    void CopyNetconsoleText();
 
     /**
      * @internal
      * Instructs the DriverStation library to reboot the robot
      */
-    void onRebootClicked();
+    void RebootRobot();
 
     /**
      * @internal
      * Instructs the DriverStation library to restart the robot code
      */
-    void onRestartClicked();
+    void RestartRobotCode();
 
     /**
      * @internal
      * Opens a website that lists the changes for each application version
      */
-    void onChangesClicked();
+    void ViewChanges();
 
     /**
      * @internal
      * Opens the QDriverStation website in a web browser
      */
-    void onWebsiteClicked();
+    void OpenProjectWebsite();
 
     /**
      * @internal
@@ -175,47 +175,47 @@ class MainWindow : public SmartWindow {
      * If the robot cannot be enabled, it calls a function that creates a
      * 'flashing' effect in the status label to get user attention.
      */
-    void onEnabledClicked();
+    void EnableRobot();
 
     /**
      * @internal
      * Disables the robot and updates the appearance of the 'Enable' and
      * 'Disable' buttons
      */
-    void onDisabledClicked();
+    void DisableRobot();
 
     /**
      * @internal
-     * Called when SDL detects a joystick removal. If the DriverStation reports
+     * Called when the joystick count changes, if the DriverStation reports
      * that the robot is currently in Operator Control (TeleOp), it disables
      * the robot for safety reasons.
      */
-    void onJoystickRemoved();
+    void OnJoystickRemoved();
 
     /**
      * @internal
      * Shows or hides the "No Joysticks Found" widget when the joystick status
      * changes
      */
-    void updateJoysticksTab (bool available);
+    void UpdateJoysticksTab (bool available);
 
     /**
      * @internal
      * Changes the display mode of the window based on which button is checked
      */
-    void onWindowModeChanged();
+    void UpdateWindowDisplayMode();
 
     /**
      * @internal
      * Disables the robot when the user changes the robot operation mode
      */
-    void onRobotModeChanged (int mode);
+    void DisableRobotWhenSwitchingModes (int mode);
 
     /**
      * @internal
      * Saves the settings when a value of the practice times is changed
      */
-    void onPracticeValuesChanged();
+    void SavePracticeTimings();
 
     /**
      * @internal
@@ -225,13 +225,13 @@ class MainWindow : public SmartWindow {
      *
      * @param db
      */
-    void setDashboard (int dashboard);
+    void ChangeDashboard (int dashboard);
 
     /**
      * @internal
      * Changes the team number used by the DriverStation and updates the UI
      */
-    void setTeamNumber (int team);
+    void SetTeamNumber (int team);
 
     /**
      * @internal
@@ -241,7 +241,7 @@ class MainWindow : public SmartWindow {
      *
      * @param enabled
      */
-    void setRobotEnabled (bool enabled);
+    void EnableRobot (bool enabled);
 
     /**
      * @internal
@@ -251,21 +251,21 @@ class MainWindow : public SmartWindow {
      * If the robot communication fails, the function will change the text of
      * the label to '--.--'
      */
-    void updateLabelText (QLabel* label, QString text);
+    void UpdateIndicator (QLabel* label, QString text);
 
     /**
      * @internal
      * Changes the appearance of the 'Robot Code' LED based on the value of the
      * \a available parameter
      */
-    void onCodeChanged (bool available);
+    void UpdateRobotCodeLED (bool available);
 
     /**
      * @internal
      * Changes the appearance of the 'Communications' LED based on the value of
      * the \a available parameter
      */
-    void onCommunicationsChanged (DS_CommunicationStatus status);
+    void UpdateCommunicationsLED (DS_CommStatus status);
 
     /**
      * @internal
@@ -273,14 +273,14 @@ class MainWindow : public SmartWindow {
      * detects that the control mode was not changed by the user (e.g. when
      * the robot is disconnected or powered off)
      */
-    void onControlModeChanged (DS_ControlMode mode);
+    void UpdateRobotModeControls (DS_ControlMode mode);
 
     /**
      * @internal
      * Changes the checked state of the radio checkbox in the diagnostics tab
      * based on the value of the \a available parameter
      */
-    void onRadioChanged (bool available);
+    void UpdateRadioCheckbox (bool available);
 
     /**
      * @internal
@@ -288,7 +288,7 @@ class MainWindow : public SmartWindow {
      *
      * @note The text will be set to '--.--' if there are are no communications
      */
-    void onVoltageChanged (QString voltage);
+    void UpdateVoltageLabel (QString voltage);
 
     /**
      * @internal
@@ -297,7 +297,7 @@ class MainWindow : public SmartWindow {
      *
      * @note The text will be set to '--.--' if there are are no communications
      */
-    void onLibVersionChanged (QString version);
+    void UpdateLibVersionLabel (QString version);
 
     /**
      * @internal
@@ -306,7 +306,7 @@ class MainWindow : public SmartWindow {
      *
      * @note The text will be set to '--.--' if there are are no communications
      */
-    void onRioVersionChanged (QString version);
+    void UpdateRIOVersionLabel (QString version);
 
     /**
      * @internal
@@ -315,7 +315,7 @@ class MainWindow : public SmartWindow {
      * append 'Enabled' or 'Disabled' depending on the operation mode and status
      * of the robot.
      */
-    void onRobotStatusChanged (QString status);
+    void UpdateClientStatus (QString status);
 
     /**
      * @internal
@@ -324,7 +324,7 @@ class MainWindow : public SmartWindow {
      *
      * @note The text will be set to '--.--' if there are are no communications
      */
-    void onRamUsageChanged (int percent);
+    void UpdateRAMUsage (int percent);
 
     /**
      * @internal
@@ -333,13 +333,13 @@ class MainWindow : public SmartWindow {
      *
      * @note The text will be set to '--.--' if there are are no communications
      */
-    void onDiskUsageChanged (int percent);
+    void UpdateDiskUsage (int percent);
 
     /**
      * @internal
      * Scrolls the NetConsole widget automatically when a message is added
      */
-    void scrollNetConsole();
+    void AutoscrollNetConsole();
 
     /**
      * @internal
@@ -347,7 +347,7 @@ class MainWindow : public SmartWindow {
      * Used for displaying an animation that draws the attention of the user
      * to the status label.
      */
-    void toggleStatusColor();
+    void ToggleStatusColors();
 
     /**
      * @internal
@@ -355,7 +355,7 @@ class MainWindow : public SmartWindow {
      * a limited amount of time. Used to draw the attention of the user when
      * there is a problem with the robot and it cannot be enabled.
      */
-    void statusLabelAnimation();
+    void ErrorAnimation();
 };
 
 /**

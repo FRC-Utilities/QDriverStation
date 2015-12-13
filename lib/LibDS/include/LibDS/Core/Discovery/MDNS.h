@@ -45,34 +45,34 @@ class LIB_DS_DECL MDNS : public QObject {
      * Looks for the given \a domain, the class will emit
      * the \c ipFound() \c SIGNAL when the domain is resolved
      */
-    void query (QString domain);
+    void Query (QString domain);
 
   signals:
     /**
      * Emitted when the \a ip of the \a address is resolved
      */
-    void ipFound (QString address, QString ip);
+    void IpFound (QString address, QString ip);
 
   private slots:
     /**
      * Reads the data received on the IPv4 socket
      */
-    void readIPv4Socket();
+    void ReadIPv4Socket();
 
     /**
      * Reads the data received on the IPv6 socket
      */
-    void readIPv6Socket();
+    void ReadIPv6Socket();
 
     /**
      * Sends the \a data to the local network
      */
-    void send (QByteArray data);
+    void Send (QByteArray data);
 
     /**
      * Interprets and decodes the \a response
      */
-    void processResponse (QByteArray response);
+    void ProcessResponse (QByteArray response);
 
   private:
     /**

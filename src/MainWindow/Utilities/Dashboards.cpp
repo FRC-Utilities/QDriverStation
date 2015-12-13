@@ -26,9 +26,9 @@
 #include "Dashboards.h"
 #include "Global/Settings.h"
 
-//------------------------------------------------------------------------------
-// DECIDE IF WE SHOULD USE 'Program Files' or 'Program Files (x86)'
-//------------------------------------------------------------------------------
+//=============================================================================
+// Use "Program Files" or "Program Files (x86)"?
+//=============================================================================
 
 #if defined Q_OS_WIN
 #include <windows.h>
@@ -39,35 +39,43 @@
 #endif
 #endif
 
-//------------------------------------------------------------------------------
-// INITIALIZATION FUNCTIONS
-//------------------------------------------------------------------------------
-
 Dashboard* Dashboard::s_instance = Q_NULLPTR;
 
+//=============================================================================
+// Dashboard::Dashboard
+//=============================================================================
+
 Dashboard::Dashboard() {
-    connect (qApp, SIGNAL (aboutToQuit()), this, SLOT (quitDashboard()));
-    loadDashboard();
+    connect (qApp, SIGNAL (aboutToQuit()), this, SLOT (QuitDashboard()));
+    LoadDashboard();
 }
+
+//=============================================================================
+// Dashboard::~Dashboard
+//=============================================================================
 
 Dashboard::~Dashboard() {
     delete s_instance;
 }
 
-Dashboard* Dashboard::getInstance() {
+//=============================================================================
+// Dashboard::GetInstance
+//=============================================================================
+
+Dashboard* Dashboard::GetInstance() {
     if (s_instance == Q_NULLPTR)
         s_instance = new Dashboard();
 
     return s_instance;
 }
 
-//------------------------------------------------------------------------------
-// PROCESS-RELATED STUFF
-//------------------------------------------------------------------------------
+//=============================================================================
+// Dashboard::LoadDashboard
+//=============================================================================
 
-void Dashboard::loadDashboard() {
+void Dashboard::LoadDashboard() {
     QString path;
-    m_current = (Dashboards) Settings::get ("Dashboard", kNone).toInt();
+    m_current = (Dashboards) Settings::Get ("Dashboard", kNone).toInt();
 
     /* Open the SFX Dashboard */
     if (m_current == kSfxDashboard) {
@@ -103,24 +111,36 @@ void Dashboard::loadDashboard() {
     m_process.start (path);
 }
 
-void Dashboard::quitDashboard() {
+//=============================================================================
+// Dashboard::QuitDashboard
+//=============================================================================
+
+void Dashboard::QuitDashboard() {
     m_process.close();
 }
 
-void Dashboard::reloadDashboard() {
-    quitDashboard();
-    loadDashboard();
+//=============================================================================
+// Dashboard::ReloadDashboard
+//=============================================================================
+
+void Dashboard::ReloadDashboard() {
+    QuitDashboard();
+    LoadDashboard();
 }
 
-//------------------------------------------------------------------------------
-// SEND INFORMATION TO OTHER OBJECTS
-//------------------------------------------------------------------------------
+//=============================================================================
+// Dashboard::GetCurrentDashboard
+//=============================================================================
 
-Dashboard::Dashboards Dashboard::getCurrentDashboard() {
+Dashboard::Dashboards Dashboard::GetCurrentDashboard() {
     return m_current;
 }
 
-QStringList Dashboard::getAvailableDashboards() {
+//=============================================================================
+// Dashboard::GetAvailableDashboards
+//=============================================================================
+
+QStringList Dashboard::GetAvailableDashboards() {
     QStringList list;
     list.append ("None");
     list.append ("SFX Dashboard");

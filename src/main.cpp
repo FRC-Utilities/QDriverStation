@@ -46,10 +46,10 @@ int main (int argc, char* argv[]) {
 #endif
 
     /* Configure application information */
-    app.setApplicationName    (AssemblyInfo::name());
-    app.setApplicationVersion (AssemblyInfo::version());
-    app.setOrganizationName   (AssemblyInfo::organization());
-    app.setOrganizationDomain (AssemblyInfo::organizationDomain());
+    app.setApplicationName    (AssemblyInfo::Name());
+    app.setApplicationVersion (AssemblyInfo::Version());
+    app.setOrganizationName   (AssemblyInfo::Organization());
+    app.setOrganizationDomain (AssemblyInfo::OrganizationDomain());
 
     /* The window will show itself when initialized */
     MainWindow window;

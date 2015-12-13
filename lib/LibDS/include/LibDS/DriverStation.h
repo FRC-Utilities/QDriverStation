@@ -50,7 +50,7 @@ class LIB_DS_DECL DriverStation : public QObject {
     explicit DriverStation();
     ~DriverStation();
 
-    static DriverStation* getInstance();
+    static DriverStation* GetInstance();
 
     /**
      * The available protocols for the user
@@ -67,7 +67,7 @@ class LIB_DS_DECL DriverStation : public QObject {
      * This function is useful in the case that you want to warn the user
      * when he/she clicks the 'Enable' button and something is not working
      */
-    Q_INVOKABLE bool canBeEnabled();
+    Q_INVOKABLE bool CanBeEnabled();
 
     /**
      * Returns a list with the available alliances and positions that the robot
@@ -76,89 +76,89 @@ class LIB_DS_DECL DriverStation : public QObject {
      * This is used by the robot program to change its behaviour depending on
      * the alliance (Blue or Red) and position (1, 2 & 3) of the robot.
      */
-    Q_INVOKABLE QStringList alliances();
+    Q_INVOKABLE QStringList Alliances();
 
     /**
      * Returns a list with the available protocols that we can use to drive
      * a FRC robot.
      */
-    Q_INVOKABLE QStringList protocols();
+    Q_INVOKABLE QStringList Protocols();
 
     /**
      * Returns the IP address of the robot radio
      */
-    Q_INVOKABLE QString radioAddress();
+    Q_INVOKABLE QString RadioAddress();
 
     /**
      * Returns the network address of the robot
      */
-    Q_INVOKABLE QString robotAddress();
+    Q_INVOKABLE QString RobotAddress();
 
     /**
      * Returns the default network address of the robot
      */
-    Q_INVOKABLE QString defaultRobotAddress();
+    Q_INVOKABLE QString DefaultRobotAddress();
 
     /**
      * Returns the current control mode of the robot
      */
-    Q_INVOKABLE DS_ControlMode controlMode();
+    Q_INVOKABLE DS_ControlMode ControlMode();
 
     /**
      * Returns \c true if the robot reports that the user code is loaded
      */
-    Q_INVOKABLE bool robotHasCode();
+    Q_INVOKABLE bool RobotHasCode();
 
     /**
      * Returns \c true if the robot mode is \c kControlTest
      */
-    Q_INVOKABLE bool isTest();
+    Q_INVOKABLE bool IsTest();
 
     /**
      * Returns \c true if the robot mode is \c kControlDisabled
      */
-    Q_INVOKABLE bool isDisabled();
+    Q_INVOKABLE bool IsDisabled();
 
     /**
      * Returns \c true if the robot mode is \c kControlAutonomous
      */
-    Q_INVOKABLE bool isAutonomous();
+    Q_INVOKABLE bool IsAutonomous();
 
     /**
      * Returns \c true if the robot mode is \c kControlTeleoperated
      */
-    Q_INVOKABLE bool isTeleoperated();
+    Q_INVOKABLE bool IsTeleoperated();
 
     /**
      * Returns \c true if the robot mode is \c kControlEmergencyStop
      */
-    Q_INVOKABLE bool isEmergencyStop();
+    Q_INVOKABLE bool IsEmergencyStopped();
 
     /**
      * Returns \c true if the DS is connected to the robot
      */
-    Q_INVOKABLE bool isConnected();
+    Q_INVOKABLE bool IsConnected();
 
   public slots:
     /**
      * Initializes the class and the interlal loop/refresh system
      */
-    Q_INVOKABLE void init();
+    Q_INVOKABLE void Init();
 
     /**
      * Reboots the robot using the specified protocol
      */
-    Q_INVOKABLE void reboot();
+    Q_INVOKABLE void RebootRobot();
 
     /**
      * Restarts the robot code using the specified protocol
      */
-    Q_INVOKABLE void restartCode();
+    Q_INVOKABLE void RestartCode();
 
     /**
      * Simulates a timed match with the input time values (in seconds)
      */
-    Q_INVOKABLE void startPractice (int countdown,
+    Q_INVOKABLE void StartPractice (int countdown,
                                     int autonomous,
                                     int delay,
                                     int teleop,
@@ -167,47 +167,47 @@ class LIB_DS_DECL DriverStation : public QObject {
     /**
      * Changes the robot mode to \c kControlTest
      */
-    Q_INVOKABLE void startTest();
+    Q_INVOKABLE void StartTest();
 
     /**
      * Changes the robot mode to \c kControlDisabled
      */
-    Q_INVOKABLE void startDisabled();
+    Q_INVOKABLE void StartDisabled();
 
     /**
      * Changes the robot mode to \c kControlAutonomous
      */
-    Q_INVOKABLE void startAutonomous();
+    Q_INVOKABLE void StartAutonomous();
 
     /**
      * Changes the robot mode to \c kControlTeleoperated
      */
-    Q_INVOKABLE void startTeleoperated();
+    Q_INVOKABLE void StartTeleoperated();
 
     /**
      * Changes the robot mode to \c kControlEmergencyStop
      */
-    Q_INVOKABLE void startEmergencyStop();
+    Q_INVOKABLE void StartEmergencyStop();
 
     /**
      * Changes the protocol that we use to control the robot
      */
-    Q_INVOKABLE void setProtocol (DS_ProtocolBase* protocol);
+    Q_INVOKABLE void SetProtocol (DS_ProtocolBase* protocol);
 
     /**
      * Changes the protocol that we use to control the robot
      */
-    Q_INVOKABLE void setProtocol (ProtocolType protocol);
+    Q_INVOKABLE void SetProtocol (ProtocolType protocol);
 
     /**
      * Changes the team number used by the protocol and network diagnostics
      */
-    Q_INVOKABLE void setTeamNumber (int team);
+    Q_INVOKABLE void SetTeamNumber (int team);
 
     /**
      * Changes the alliance of the robot using the specified protocol
      */
-    Q_INVOKABLE void setAlliance (DS_Alliance alliance);
+    Q_INVOKABLE void SetAlliance (DS_Alliance alliance);
 
     /**
      * Changes the control mode of the robot, available options are:
@@ -217,59 +217,51 @@ class LIB_DS_DECL DriverStation : public QObject {
      *     - \c kTest
      *     - \c kEmergencyStop
      */
-    Q_INVOKABLE void setControlMode (DS_ControlMode mode);
+    Q_INVOKABLE void SetControlMode (DS_ControlMode mode);
 
     /**
      * Changes the network address of the robot
      */
-    Q_INVOKABLE void setCustomAddress (QString address);
+    Q_INVOKABLE void SetCustomAddress (QString address);
 
     /**
      * Un-registers all the joysticks from the Driver Station
      */
-    Q_INVOKABLE void clearJoysticks();
+    Q_INVOKABLE void ClearJoysticks();
 
     /**
      * Updates the \a angle of the selected \a hat in the specified \a josytick
      */
-    Q_INVOKABLE void updateJoystickPovHat (int js,
-                                           int hat,
-                                           int angle);
+    Q_INVOKABLE void UpdateJoystickPOV (int js, int hat, int angle);
 
     /**
      * Registers a new joystick to the Driver Station with the specified number
      * of \a axes, \a buttons and \a povHats
      */
-    Q_INVOKABLE void addJoystick (int axes,
-                                  int buttons,
-                                  int povHats);
+    Q_INVOKABLE void AddJoystick (int axes, int buttons, int povHats);
 
     /**
      * Updates the \a value of the selected \a axis in the specified \a josytick
      */
-    Q_INVOKABLE void updateJoystickAxis (int js,
-                                         int axis,
-                                         double value);
+    Q_INVOKABLE void UpdateJoystickAxis (int js, int axis, double value);
 
     /**
      * Updates the \a state of the selected \a button in the specified \a josytick
      */
-    Q_INVOKABLE void updateJoystickButton (int js,
-                                           int button,
-                                           bool state);
+    Q_INVOKABLE void UpdateJoystickButton (int js, int button, bool pressed);
 
   signals:
     /**
      * Emitted when the client detects that the availability of the robot
      * software/code has changed
      */
-    void codeChanged (bool available);
+    void CodeChanged (bool available);
 
     /**
      * Emitted when the library detects that the CPU usage of the robot has
      * changed
      */
-    void cpuUsageChanged (int percent);
+    void CpuUsageChanged (int percent);
 
     /**
      * Emitted when the state of the network communications with the robot
@@ -280,49 +272,49 @@ class LIB_DS_DECL DriverStation : public QObject {
      *     - The robot responds to ping requests and DS
      *     - The robot does not respond to ping requests nor the DS
      */
-    void communicationsChanged (DS_CommunicationStatus status);
+    void CommunicationsChanged (DS_CommStatus status);
 
     /**
      * Emitted when the client detects that the availability of the robot radio
      * has changed (eg. when the robot is powered off with the breaker)
      */
-    void radioChanged (bool available);
+    void RadioChanged (bool available);
 
     /**
      * Emitted when the client analyzes a packet from the robot and extracts
      * the battery voltage of the robot.
      */
-    void voltageChanged (QString voltage);
+    void VoltageChanged (QString voltage);
 
     /**
      * Emitted when the NetConsole receives and decodes a message from the
      * robot
      */
-    void newMessage (QString message);
+    void NewMessage (QString message);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * its library INI files and analyzed them
      */
-    void libVersionChanged (QString version);
+    void LibVersionChanged (QString version);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * its PCM INI files and analyzed them
      */
-    void rioVersionChanged (QString version);
+    void RIOVersionChanged (QString version);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * its PDP information and analyzed them
      */
-    void pdpVersionChanged (QString version);
+    void PDPVersionChanged (QString version);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * the PCM information files and analyzed them
      */
-    void pcmVersionChanged (QString version);
+    void PCMVersionChanged (QString version);
 
     /**
      * Emitted when one of the following happens:
@@ -330,30 +322,30 @@ class LIB_DS_DECL DriverStation : public QObject {
      *     - The communication status changes
      *     - The control mode of the robot is changed
      */
-    void robotStatusChanged (QString status);
+    void RobotStatusChanged (QString status);
 
     /**
      * Emitted when the control mode is changed
      */
-    void controlModeChanged (DS_ControlMode mode);
+    void ControlModeChanged (DS_ControlMode mode);
 
     /**
      * Emitted when the libary detects that the RAM usage of the robot has
      * changed since the last update.
      */
-    void ramUsageChanged (int percent);
+    void RAMUsageChanged (int percent);
 
     /**
      * Emitted when the libary detects that the disk usage of the robot has
      * changed since the last update.
      */
-    void diskUsageChanged (int percent);
+    void DiskUsageChanged (int percent);
 
     /**
      * Emitted when the robot is enabled and the elapsed time
      * has been updated by the library.
      */
-    void elapsedTimeChanged (QString time);
+    void ElapsedTimeChanged (QString time);
 
   protected:
     static DriverStation* s_instance;
@@ -405,24 +397,24 @@ class LIB_DS_DECL DriverStation : public QObject {
      *     - The robot code status has changed
      *     - The control mode of the robot has changed
      */
-    QString getStatus();
+    QString GetClientStatus();
 
   private slots:
     /**
      * Sends a generated client packet to the robot
      */
-    void sendRobotPackets();
+    void SendToRobot();
 
     /**
      * Resets the internal values of the library when we disconnect from the
      * robot.
      */
-    void resetInternalValues();
+    void ResetInternalValues();
 
     /**
      * Sends the received data to the current protocol
      */
-    void readRobotPackets (QByteArray robotResponse);
+    void ReadRobotPacket (QByteArray robotResponse);
 
     /**
      * Notifies other object when the status of the user code or the robot
@@ -430,7 +422,7 @@ class LIB_DS_DECL DriverStation : public QObject {
      * we use the \c getStatus() function to construct the status string
      * of the robot.
      */
-    void updateStatus (bool ignored);
+    void UpdateStatus (bool ignored);
 
     /**
      * Notifies other object when the status of the user code or the robot
@@ -438,32 +430,32 @@ class LIB_DS_DECL DriverStation : public QObject {
      * we use the \c getStatus() function to construct the status string
      * of the robot.
      */
-    void updateStatus (DS_CommunicationStatus ignored);
+    void UpdateStatus (DS_CommStatus ignored);
 
     /**
      * Updates the elapsed time when the control mode is changed
      */
-    void onControlModeChanged (DS_ControlMode mode);
+    void OnControlModeChanged (DS_ControlMode mode);
 
     /**
      * Plays a sound that indicates the upcomming end of a match
      */
-    void playEndGame();
+    void EndGameSoundEffect();
 
     /**
      * Plays a sound that indicates the end of a match
      */
-    void playMatchEnd();
+    void MatchEndSoundEffect();
 
     /**
      * Plays a sound that indicates the start of the operator control
      */
-    void playTeleopStart();
+    void TeleopStartSoundEffect();
 
     /**
      * Plays a sound that indicates the start of the autonomous period
      */
-    void playAutonomousStart();
+    void AutonomousStartSoundEffect();
 };
 
 #endif

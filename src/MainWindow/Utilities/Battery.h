@@ -49,7 +49,7 @@ class Battery {
      *
      * @return \c true if the computer is connected to an AC power supply
      */
-    static bool isPlugged();
+    static bool IsConenctedToPowerSupply();
 
     /**
      * Uses the native API calls of the target operating system to obtain the
@@ -61,7 +61,7 @@ class Battery {
      *
      * @return an \c int between 0 and 100 that represents the battery level
      */
-    static int currentLevel();
+    static int CurrentLevel();
 };
 
 #endif

@@ -46,7 +46,7 @@ class KeyEventFilter : public QObject {
     bool eventFilter (QObject* object, QEvent* event);
 
   signals:
-    void keyPress (QKeyEvent* event, bool pressed);
+    void KeyEvent (QKeyEvent* event, bool pressed);
 };
 
 #endif

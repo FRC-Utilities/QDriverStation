@@ -45,34 +45,34 @@ class SDL_Layer : public QObject {
     Q_OBJECT
 
   public:
-    static SDL_Layer* getInstance();
+    static SDL_Layer* GetInstance();
 
   public slots:
     /**
      * Returns the number of axes that the selected \a joystick has
      */
-    int getNumAxes (int js);
+    int GetNumAxes (int js);
 
     /**
      * Returns the number of hats that the selected \a joystick has
      */
-    int getNumHats (int js);
+    int GetNumHats (int js);
 
     /**
      * Returns the number of buttons that the selected \a joystick has
      */
-    int getNumButtons (int js);
+    int GetNumButtons (int js);
 
     /**
      * Returns the display name of the joystick
      */
-    QString getJoystickName (int js);
+    QString GetJoystickName (int js);
 
     /**
      * Returns an ordered \c QStringList with the names and IDs of the
      * attached joysticks
      */
-    QStringList joystickList();
+    QStringList JoystickList();
 
     /**
      * Initializes the event loop system.
@@ -80,12 +80,12 @@ class SDL_Layer : public QObject {
      * This function is not called in the constructor to give the application
      * time to initialize its user interface before sending signals.
      */
-    void init();
+    void Init();
 
     /**
      * Changes the time interval between the SDL Event reader calls
      */
-    void setUpdateInterval (int time);
+    void SetUpdateInterval (int time);
 
     /**
      * Instructs the haptic device in \a joystick to rumble for the specified
@@ -94,36 +94,36 @@ class SDL_Layer : public QObject {
      * @param joystick The joystick to rumble
      * @param time The time in milliseconds to enable the haptic device
      */
-    void rumble (int js, int time);
+    void Rumble (int js, int time);
 
   signals:
     /**
      * Emitted when a joystick is attached or removed
      */
-    void countChanged (int);
+    void CountChanged (int);
 
     /**
      * Emitted when a joystick is attached or removed
      */
-    void countChanged (QStringList);
+    void CountChanged (QStringList);
 
     /**
      * Emitted when the system detects a change in the state of the hats of
      * one of the connected joysticks
      */
-    void hatEvent (GM_Hat);
+    void HatEvent (GM_Hat);
 
     /**
      * Emitted when the system detects a change in the state of the axes of
      * one of the connected joysticks
      */
-    void axisEvent (GM_Axis);
+    void AxisEvent (GM_Axis);
 
     /**
      * Emitted when the system detects a change in the state of the buttons of
      * one of the connected joysticks
      */
-    void buttonEvent (GM_Button);
+    void ButtonEvent (GM_Button);
 
   private:
     /**
@@ -156,28 +156,28 @@ class SDL_Layer : public QObject {
      * Returns a \c GM_Hat structure filled with the information
      * provided by the \a event
      */
-    GM_Hat getHat (const SDL_Event* event);
+    GM_Hat GetHat (const SDL_Event* event);
 
     /**
      * @internal
      * Returns a \c GM_Axis structure filled with the information
      * provided by the \a event
      */
-    GM_Axis getAxis (const SDL_Event* event);
+    GM_Axis GetAxis (const SDL_Event* event);
 
     /**
      * @internal
      * Returns a \c GM_Button structure filled with the information
      * provided by the \a event
      */
-    GM_Button getButton (const SDL_Event* event);
+    GM_Button GetButton (const SDL_Event* event);
 
     /**
      * @internal
      * Returns a \c GM_Joystick structure filled with the information
      * provided by the \a event
      */
-    GM_Joystick getJoystick (const SDL_Event* event);
+    GM_Joystick GetJoystick (const SDL_Event* event);
 
     /**
      * @internal
@@ -186,12 +186,12 @@ class SDL_Layer : public QObject {
      * struct with normal \c QList objects and to send a FRC-like joystick ID
      * to the robot
      */
-    int getDynamicId (int js);
+    int GetDynamicID (int js);
 
     /**
      * Scales the axis output to match FRC 'standards'
      */
-    double scaleOutput (double input);
+    double ScaleAxisOutput (double input);
 
   protected:
     explicit SDL_Layer();
@@ -206,25 +206,25 @@ class SDL_Layer : public QObject {
      * When the function finishes reading SDL events, it waits some time and
      * calls itself again to continue the game loop.
      */
-    void readSdlEvents();
+    void ReadSdlEvents();
 
     /**
      * @internal
      * Gets joystick and hat information and emits the appropiate signal
      */
-    void onHatEvent (const SDL_Event* event);
+    void OnHatEvent (const SDL_Event* event);
 
     /**
      * @internal
      * Gets joystick and axis information and emits the appropriate signal
      */
-    void onAxisEvent (const SDL_Event* event);
+    void OnAxisEvent (const SDL_Event* event);
 
     /**
      * @internal
      * Gets joystick and button information and emits the appropriate signal
      */
-    void onButtonEvent (const SDL_Event* event);
+    void OnButtonEvent (const SDL_Event* event);
 };
 
 #endif

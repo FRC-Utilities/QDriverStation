@@ -23,24 +23,40 @@
 #include "LibDS/Core/Timers.h"
 #include "LibDS/Core/ElapsedTimer.h"
 
-DS_ElapsedTime::DS_ElapsedTime() {
-    stop();
-    calculateElapsedTime();
+//=============================================================================
+// DS_ElapsedTime::DS_ElapsedTime
+//=============================================================================
 
-    connect (DS_Timers::getInstance(), SIGNAL (timeout100()),
-             this,                     SLOT   (calculateElapsedTime()));
+DS_ElapsedTime::DS_ElapsedTime() {
+    Stop();
+    GetElapsedTime();
+
+    connect (DS_Timers::GetInstance(), SIGNAL (Timeout100()),
+             this,                     SLOT   (GetElapsedTime()));
 }
 
-void DS_ElapsedTime::stop() {
+//=============================================================================
+// DS_ElapsedTime::Stop
+//=============================================================================
+
+void DS_ElapsedTime::Stop() {
     m_enabled = false;
 }
 
-void DS_ElapsedTime::reset() {
+//=============================================================================
+// DS_ElapsedTime:Reset
+//=============================================================================
+
+void DS_ElapsedTime::Reset() {
     m_enabled = true;
     m_time.restart();
 }
 
-void DS_ElapsedTime::calculateElapsedTime() {
+//=============================================================================
+// DS_ElapsedTime::GetElapsedTime
+//=============================================================================
+
+void DS_ElapsedTime::GetElapsedTime() {
     if (m_enabled) {
         quint32 msec = m_time.elapsed();
         quint32 secs = (msec / 1000);
@@ -49,7 +65,7 @@ void DS_ElapsedTime::calculateElapsedTime() {
         secs = secs % 60;
         msec = msec % 1000;
 
-        emit elapsedTimeChanged (QString ("%1:%2.%3")
+        emit ElapsedTimeChanged (QString ("%1:%2.%3")
                                  .arg (mins, 2, 10, QLatin1Char ('0'))
                                  .arg (secs, 2, 10, QLatin1Char ('0'))
                                  .arg (QString::number (msec).at (0)));

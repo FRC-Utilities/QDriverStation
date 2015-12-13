@@ -34,54 +34,59 @@ const QString HIGHLIGHT  = "#2edc00";
 const QString BACKGROUND = "#313131";
 const QString FOREGROUND = "#dedede";
 
+//=============================================================================
+// SettingsDialog::SettingsDialog
+//=============================================================================
+
 SettingsDialog::SettingsDialog() {
     ui.setupUi (this);
     resize (0, 0);
 
     /* Main dialog buttons */
-    connect (ui.ApplyButton,  SIGNAL (clicked()), this, SLOT (onApplyClicked()));
-    connect (ui.ResetButton,  SIGNAL (clicked()), this, SLOT (onResetClicked()));
-    connect (ui.CancelButton, SIGNAL (clicked()), this, SLOT (onCancelClicked()));
+    connect (ui.ApplyButton,  SIGNAL (clicked()), this, SLOT (OnApplyClicked()));
+    connect (ui.ResetButton,  SIGNAL (clicked()), this, SLOT (OnResetClicked()));
+    connect (ui.CancelButton, SIGNAL (clicked()), this, SLOT (OnCancelClicked()));
 
     /* Appearance tab */
     connect (ui.BaseButton,       SIGNAL (clicked()),
-             this,                SLOT   (onSelectorClicked()));
+             this,                SLOT   (OnSelectorClicked()));
     connect (ui.HighlightButton,  SIGNAL (clicked()),
-             this,                SLOT   (onSelectorClicked()));
+             this,                SLOT   (OnSelectorClicked()));
     connect (ui.BackgroundButton, SIGNAL (clicked()),
-             this,                SLOT   (onSelectorClicked()));
+             this,                SLOT   (OnSelectorClicked()));
     connect (ui.ForegroundButton, SIGNAL (clicked()),
-             this,                SLOT   (onSelectorClicked()));
+             this,                SLOT   (OnSelectorClicked()));
     connect (ui.BaseEdit,         SIGNAL (textChanged (QString)),
-             this,                SLOT   (onColorChanged (QString)));
+             this,                SLOT   (OnColorChanged (QString)));
     connect (ui.HighlightEdit,    SIGNAL (textChanged (QString)),
-             this,                SLOT   (onColorChanged (QString)));
+             this,                SLOT   (OnColorChanged (QString)));
     connect (ui.BackgroundEdit,   SIGNAL (textChanged (QString)),
-             this,                SLOT   (onColorChanged (QString)));
+             this,                SLOT   (OnColorChanged (QString)));
     connect (ui.ForegroundEdit,   SIGNAL (textChanged (QString)),
-             this,                SLOT   (onColorChanged (QString)));
+             this,                SLOT   (OnColorChanged (QString)));
 }
 
-void SettingsDialog::updatePlaceholder() {
+//=============================================================================
+// SettingsDialog::UpdateRobotAddressPlaceholder
+//=============================================================================
+
+void SettingsDialog::UpdateRobotAddressPlaceholder() {
     ui.CustomAddressEdit->setPlaceholderText (
-        DriverStation::getInstance()->defaultRobotAddress());
+        DriverStation::GetInstance()->DefaultRobotAddress());
 }
 
-//------------------------------------------------------------------------------
-// READ, APPLY AND RESET SAVED SETTINGS
-//------------------------------------------------------------------------------
+//=============================================================================
+// SettingsDialog::ReadSettings
+//=============================================================================
 
-void SettingsDialog::readSettings() {
-    loadApplicationColors();
+void SettingsDialog::ReadSettings() {
+    LoadApplicationColors();
 
     /* Get saved colors */
-    QString base       = Settings::get ("Base", BASE).toString();
-    QString highlight  = Settings::get ("Highlight",
-                                        HIGHLIGHT).toString();
-    QString background = Settings::get ("Background",
-                                        BACKGROUND).toString();
-    QString foreground = Settings::get ("Foreground",
-                                        FOREGROUND).toString();
+    QString base  = Settings::Get ("Base", BASE).toString();
+    QString highlight = Settings::Get ("Highlight", HIGHLIGHT).toString();
+    QString background = Settings::Get ("Background", BACKGROUND).toString();
+    QString foreground = Settings::Get ("Foreground", FOREGROUND).toString();
 
     /* Publish the saved colors in the UI */
     ui.BaseEdit->setText (base);
@@ -90,54 +95,66 @@ void SettingsDialog::readSettings() {
     ui.ForegroundEdit->setText (foreground);
 
     /* Get the custom robot address */
-    QString customAddress = Settings::get ("Custom Address", "").toString();
+    QString customAddress = Settings::Get ("Custom Address", "").toString();
     ui.CustomAddressEdit->setText (customAddress);
     ui.CustomAddressCheck->setChecked (!customAddress.isEmpty());
-    DriverStation::getInstance()->setCustomAddress (customAddress);
+    DriverStation::GetInstance()->SetCustomAddress (customAddress);
 
     /* Now, redraw the UI */
-    emit updateColors();
+    emit UpdateColors();
 }
 
-void SettingsDialog::applySettings() {
+//=============================================================================
+// SettingsDialog::ApplySettings
+//=============================================================================
+
+void SettingsDialog::ApplySettings() {
     /* Save colors */
-    Settings::set ("Base", ui.BaseEdit->text());
-    Settings::set ("Highlight", ui.HighlightEdit->text());
-    Settings::set ("Background", ui.BackgroundEdit->text());
-    Settings::set ("Foreground", ui.ForegroundEdit->text());
+    Settings::Set ("Base", ui.BaseEdit->text());
+    Settings::Set ("Highlight", ui.HighlightEdit->text());
+    Settings::Set ("Background", ui.BackgroundEdit->text());
+    Settings::Set ("Foreground", ui.ForegroundEdit->text());
 
     /* Save custom address */
     QString address = ui.CustomAddressCheck->isChecked() ?
                       ui.CustomAddressEdit->text() : "";
-    Settings::set ("Custom Address", address);
-    DriverStation::getInstance()->setCustomAddress (address);
+    Settings::Set ("Custom Address", address);
+    DriverStation::GetInstance()->SetCustomAddress (address);
 
     /* Load the application colors */
-    loadApplicationColors();
+    LoadApplicationColors();
 
     /* Tell the big brother to redraw its widgets */
-    emit updateColors();
-    emit settingsChanged();
+    emit UpdateColors();
+    emit SettingsChanged();
 }
 
-void SettingsDialog::resetSettings() {
-    Settings::set ("Base", BASE);
-    Settings::set ("Highlight", HIGHLIGHT);
-    Settings::set ("Background", BACKGROUND);
-    Settings::set ("Foreground", FOREGROUND);
+//=============================================================================
+// SettingsDialog::ResetSettings
+//=============================================================================
 
-    readSettings();
+void SettingsDialog::ResetSettings() {
+    Settings::Set ("Base", BASE);
+    Settings::Set ("Highlight", HIGHLIGHT);
+    Settings::Set ("Background", BACKGROUND);
+    Settings::Set ("Foreground", FOREGROUND);
+
+    ReadSettings();
 }
 
-void SettingsDialog::loadApplicationColors() {
+//=============================================================================
+// SettingsDialog::LoadApplicationColors
+//=============================================================================
+
+void SettingsDialog::LoadApplicationColors() {
     /* Get the saved colors */
-    QColor base       = QColor (Settings::get ("Base",
+    QColor base       = QColor (Settings::Get ("Base",
                                 BASE).toString());
-    QColor highlight  = QColor (Settings::get ("Highlight",
+    QColor highlight  = QColor (Settings::Get ("Highlight",
                                 HIGHLIGHT).toString());
-    QColor background = QColor (Settings::get ("Background",
+    QColor background = QColor (Settings::Get ("Background",
                                 BACKGROUND).toString());
-    QColor foreground = QColor (Settings::get ("Foreground",
+    QColor foreground = QColor (Settings::Get ("Foreground",
                                 FOREGROUND).toString());
 
     /* Modify the application palette */
@@ -160,37 +177,49 @@ void SettingsDialog::loadApplicationColors() {
     qApp->setPalette (palette);
 }
 
-//------------------------------------------------------------------------------
-// REACT TO UI EVENTS
-//------------------------------------------------------------------------------
+//=============================================================================
+// SettingsDialog::OnResetClicked
+//=============================================================================
 
-void SettingsDialog::onResetClicked() {
+void SettingsDialog::OnResetClicked() {
     int ret = QMessageBox::question (this,
                                      tr ("Clear Settings"),
                                      tr ("Are you sure you want to clear the "
                                          "application settings?"));
 
     if (ret == QMessageBox::Yes)
-        resetSettings();
+        ResetSettings();
 }
 
-void SettingsDialog::onApplyClicked() {
+//=============================================================================
+// SettingsDialog::OnApplyClicked
+//=============================================================================
+
+void SettingsDialog::OnApplyClicked() {
     hide();
-    applySettings();
+    ApplySettings();
 }
 
-void SettingsDialog::onCancelClicked() {
+//=============================================================================
+// SettingsDialog::OnCancelClicked
+//=============================================================================
+
+void SettingsDialog::OnCancelClicked() {
     hide();
-    readSettings();
+    ReadSettings();
 }
 
-void SettingsDialog::onSelectorClicked() {
-    Colors emitter = getEmitter (QObject::sender());
+//=============================================================================
+// SettingsDialog::OnSelectorClicked
+//=============================================================================
+
+void SettingsDialog::OnSelectorClicked() {
+    Colors emitter = GetColorType (QObject::sender());
 
     /* Configure the color dialog */
     QString color;
     QColorDialog dialog;
-    dialog.setCurrentColor (getColor (emitter));
+    dialog.setCurrentColor (GetColorValue (emitter));
     dialog.setOption (QColorDialog::DontUseNativeDialog);
 
     /* Get new color */
@@ -218,12 +247,16 @@ void SettingsDialog::onSelectorClicked() {
     }
 }
 
-void SettingsDialog::onColorChanged (QString color) {
-    Colors emitter = getEmitter (QObject::sender());
+//=============================================================================
+// SettingsDialog::OnColorChanged
+//=============================================================================
+
+void SettingsDialog::OnColorChanged (QString color) {
+    Colors emitter = GetColorType (QObject::sender());
 
     /* The color is empty, use the previous value */
     if (color.isEmpty())
-        color = QVariant (getColor (emitter)).toString();
+        color = QVariant (GetColorValue (emitter)).toString();
 
     /* Make sure that the color is formatted as a HEX color */
     if (!color.contains ("#"))
@@ -253,11 +286,11 @@ void SettingsDialog::onColorChanged (QString color) {
     }
 }
 
-//------------------------------------------------------------------------------
-// GET COLOR TYPE BASED ON EXTERNAL VALUES
-//------------------------------------------------------------------------------
+//=============================================================================
+// SettingsDialog::GetColorValue
+//=============================================================================
 
-QColor SettingsDialog::getColor (Colors type) {
+QColor SettingsDialog::GetColorValue (Colors type) {
     QColor color;
     switch (type) {
     case Base:
@@ -277,7 +310,11 @@ QColor SettingsDialog::getColor (Colors type) {
     return color;
 }
 
-SettingsDialog::Colors SettingsDialog::getEmitter (const QObject* object) {
+//=============================================================================
+// SettingsDialog::GetColorType
+//=============================================================================
+
+SettingsDialog::Colors SettingsDialog::GetColorType (const QObject* object) {
     Colors emitter = Base;
     QString name = object->objectName();
 
