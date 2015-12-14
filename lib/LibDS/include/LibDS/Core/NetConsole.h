@@ -37,7 +37,6 @@ class LIB_DS_DECL DS_NetConsole : public QObject {
 
   public:
     explicit DS_NetConsole();
-    ~DS_NetConsole();
 
   signals:
     /**

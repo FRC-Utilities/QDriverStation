@@ -28,16 +28,8 @@
 //=============================================================================
 
 DS_NetConsole::DS_NetConsole() {
-    m_socket.bind (QHostAddress::Any, 6666, QUdpSocket::ShareAddress);
+    m_socket.bind (6666, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
     connect (&m_socket, SIGNAL (readyRead()), this, SLOT (ReadSocketData()));
-}
-
-//=============================================================================
-// DS_NetConsole::~DS_NetConsole
-//=============================================================================
-
-DS_NetConsole::~DS_NetConsole() {
-    m_socket.abort();
 }
 
 //=============================================================================
