@@ -38,7 +38,6 @@ class LIB_DS_DECL MDNS : public QObject {
 
   public:
     explicit MDNS();
-    ~MDNS();
 
   public slots:
     /**
@@ -55,24 +54,15 @@ class LIB_DS_DECL MDNS : public QObject {
 
   private slots:
     /**
-     * Reads the data received on the IPv4 socket
-     */
-    void ReadIPv4Socket();
-
-    /**
-     * Reads the data received on the IPv6 socket
-     */
-    void ReadIPv6Socket();
-
-    /**
      * Sends the \a data to the local network
      */
     void Send (QByteArray data);
 
     /**
-     * Interprets and decodes the \a response
+     * Interprets and decodes a response when one of our
+     * sockets recieves data
      */
-    void ProcessResponse (QByteArray response);
+    void ReadData();
 
   private:
     /**

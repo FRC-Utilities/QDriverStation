@@ -106,6 +106,17 @@ QString DS_GetTimezoneCode() {
 }
 
 //=============================================================================
+// DS_SendMessage
+//=============================================================================
+
+void DS_SendMessage (QString message) {
+    QUdpSocket* socket = new QUdpSocket;
+    socket->writeDatagram (message.toUtf8(), QHostAddress::LocalHost, 6666);
+
+    free (socket);
+}
+
+//=============================================================================
 // DS_GetStaticIp
 //=============================================================================
 

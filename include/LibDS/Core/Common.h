@@ -38,7 +38,7 @@
  * If you have ever participated in a FRC team, you will understand the
  * importance of defining how the robot will behave.
  */
-enum DS_ControlMode {
+enum LIB_DS_DECL DS_ControlMode {
     kControlTest,           /**< Individual actuators can be moved */
     kControlDisabled,       /**< Robot is idle */
     kControlAutonomous,     /**< Robot takes over the world */
@@ -51,7 +51,7 @@ enum DS_ControlMode {
  * Its important to specify which alliance we use in order to tell
  * the robot program 'where it is' and communicate with the FMS correctly
  */
-enum DS_Alliance {
+enum LIB_DS_DECL DS_Alliance {
     kAllianceRed1  = 0x00,  /** Red alliance, position 1 */
     kAllianceRed2  = 0x01,  /** Red alliance, position 2 */
     kAllianceRed3  = 0x02,  /** Red alliance, position 3 */
@@ -63,14 +63,14 @@ enum DS_Alliance {
 /**
  * Represents the current status of the communications
  */
-enum DS_CommStatus {
+enum LIB_DS_DECL DS_CommStatus {
     kFull    = 0x00, /** The DS is communicating with the robot */
     kPartial = 0x01, /** The robot responds ping requests, but does not respond to DS */
     kFailing = 0x02  /** The robot does not respond to ping requests */
 };
 
 /**
- * @brief The DS_Joystick struct
+ * Represents a joystick in the DS
  */
 struct LIB_DS_DECL DS_Joystick {
     int numAxes;
@@ -82,11 +82,22 @@ struct LIB_DS_DECL DS_Joystick {
     double* axes;
 };
 
+/* Color codes */
+const QString LIB_DS_DECL DS_Red       = "#f00";
+const QString LIB_DS_DECL DS_Green     = "#0f0";
+const QString LIB_DS_DECL DS_Blue      = "#00f";
+const QString LIB_DS_DECL DS_BlueGreen = "#0ff";
+
 /**
  * Returns the current timezone code by calculating the difference between
  * the system timezone and the UTC timezone
  */
 QString LIB_DS_DECL DS_GetTimezoneCode();
+
+/**
+ * Sends a message, which will be interpreted by the NetConsole
+ */
+void LIB_DS_DECL DS_SendMessage (QString message);
 
 /**
  * Returns a calculated IP address based on the team address.

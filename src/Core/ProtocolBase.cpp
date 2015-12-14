@@ -22,6 +22,19 @@
 
 #include "LibDS/Core/ProtocolBase.h"
 
+/* NetConsole codes */
+const QString CHECK_FIREWALL = "<p>"
+                               "<font color=#FE755C>ERROR: </font>"
+                               "<font color=#FFFFFF>Cannot connect to robot</font><br/>"
+                               "<font color=#20C9FF>FRC: The robot is slow to respond. "
+                               "Check firewall settings.</font>"
+                               "</p>";
+const QString PARTIAL_COMM   = "<p>"
+                               "<font color=#FFF959>WARNING: </font>"
+                               "<font color=#FFFFFF>%1 responds to ping requests, "
+                               "but does not respond to DS packets.</font>"
+                               "</p>";
+
 //=============================================================================
 // DS_ProtocolBase::DS_ProtocolBase
 //=============================================================================
@@ -171,6 +184,19 @@ QByteArray DS_ProtocolBase::CreateClientPacket() {
 //=============================================================================
 
 void DS_ProtocolBase::Reset() {
+    m_resetCount += 1;
+
+    /* Notify user that communication is partial */
+    if (m_resetCount == 3 && CommunicationStatus() == kPartial)
+        DS_SendMessage (PARTIAL_COMM.arg (RobotAddress()));
+
+    /* Warn user that we cannot communicate with robot */
+    if (m_resetCount >= 5) {
+        m_resetCount = 0;
+        DS_SendMessage (CHECK_FIREWALL);
+        m_useFallbackAddress = !m_useFallbackAddress;
+    }
+
     /* Custom reset procedures for each protocol */
     ResetProtocol();
 
@@ -179,13 +205,6 @@ void DS_ProtocolBase::Reset() {
     UpdateRobotCode (false);
     UpdateSendDateTime (false);
     UpdateCommStatus (kFailing);
-
-    /* Toggle the usage of the fallback robot address every 10 resets */
-    m_resetCount += 1;
-    if (m_resetCount >= 10) {
-        m_resetCount = 0;
-        m_useFallbackAddress = !m_useFallbackAddress;
-    }
 
     /* Figure out the robot address and ping the robot */
     emit RobotAddressChanged (RobotAddress());
