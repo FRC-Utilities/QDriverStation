@@ -54,8 +54,8 @@ JoysticksTab::JoysticksTab (QWidget* parent) : QWidget (parent) {
              this,            SLOT   (OnCountChanged (QStringList)));
 
     /* Re-generate indicators when user selects another joystick */
-    connect (ui.JoystickList, SIGNAL (currentRowChanged (int)),
-             this,            SLOT   (GenerateIndicators      (int)));
+    connect (ui.JoystickList, SIGNAL (currentRowChanged  (int)),
+             this,            SLOT   (GenerateIndicators (int)));
 }
 
 //=============================================================================
