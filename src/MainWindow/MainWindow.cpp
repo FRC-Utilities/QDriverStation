@@ -137,9 +137,9 @@ void MainWindow::ConnectSlots() {
     /* DriverStation to MainWindow */
     m_ds = DriverStation::GetInstance();
     connect (m_ds, SIGNAL (CodeChanged             (bool)),
-             this, SLOT   (UpdateRobotCodeLED           (bool)));
+             this, SLOT   (UpdateRobotCodeLED      (bool)));
     connect (m_ds, SIGNAL (CommunicationsChanged   (DS_CommStatus)),
-             this, SLOT   (UpdateCommunicationsLED           (DS_CommStatus)));
+             this, SLOT   (UpdateCommunicationsLED (DS_CommStatus)));
     connect (m_ds, SIGNAL (RadioChanged            (bool)),
              this, SLOT   (UpdateRadioCheckbox     (bool)));
     connect (m_ds, SIGNAL (VoltageChanged          (QString)),
