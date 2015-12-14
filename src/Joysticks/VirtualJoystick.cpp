@@ -337,8 +337,8 @@ void VirtualJoystick::SetVirtualJoystickEnabled (bool enabled) {
 
     QStringList list = SDL_Layer::GetInstance()->JoystickList();
 
-    CountChanged (list);
-    CountChanged (list.count());
+    OnCountChanged (list);
+    OnCountChanged (list.count());
 }
 
 //=============================================================================
