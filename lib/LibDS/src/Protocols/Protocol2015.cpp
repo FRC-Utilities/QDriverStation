@@ -286,11 +286,8 @@ QByteArray DS_Protocol2015::GetJoystickData() {
         /* Add axis data */
         if (numAxes > 0) {
             data.append (numAxes);
-            for (int axis = 0; axis < numAxes; ++axis) {
-                double value = Joysticks()->at (i)->axes [axis];
-                value *= value > 0 ? 128 : 127;
-                data.append ((char) value);
-            }
+            for (int axis = 0; axis < numAxes; ++axis)
+                data.append (Joysticks()->at (i)->axes [axis] * 127);
         }
 
         /* Add button data */
