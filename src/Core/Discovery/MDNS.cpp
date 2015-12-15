@@ -150,18 +150,27 @@ QString MDNS::GetHostName (QByteArray data) {
     QString rawData;
     QString address;
 
+    /* The host name starts when the packet flags end (byte #12) and ends
+     * with a (obligatory) null character */
     while (data.at (i) != (char) 0x00) {
         ++i;
         rawData.append (data.at (i));
     }
 
+    /* The '.local' section cannot be used when obtained directly from the
+     * packet, since it contains additional characters. 
+     * For the moment, we will only extract the host name.
+     * In other words, from roboRIO.local we will obtain only 'roboRIO' */
     for (int i = 0; i < rawData.length() - 7; ++i)
         address.append (rawData.at (i));
 
+    /* If the obtained host name is not empty, it deserves to have the
+     * '.local' section preprended */
     if (!address.isEmpty())
         return address + ".local";
 
-    return address;
+    /* The address is invalid */
+    return QString ("");
 }
 
 //=============================================================================
@@ -176,18 +185,18 @@ QString MDNS::GetIPv4Address (QByteArray data, QString hostName) {
     if (hostName.isEmpty() || !hostName.endsWith (".local"))
         return QString ("");
 
-    /* 00 01 represents the start of IPv4 information */
+    /* The IPv4 section will start with 00 01 as a 'header' */
     if (data.at (ip4_section_start + 2) == (char) 0x00 &&
             data.at (ip4_section_start + 3) == (char) 0x01) {
 
         /* Skip IPv4 information until we get to a place
-         * with the bytes 00 04, which give us the size
-         * of the IP address (which should be 4) */
+         * with the bytes '00 04', which give us the size
+         * of the IP address (which should be always 4) */
         while ((data.at (iterator) != (char) 0x00) ||
                 (data.at (iterator + 1) != (char) 0x04))
             ++iterator;
 
-        /* IP address begins after 00 04, therefore, skip those bytes */
+        /* IP address begins AFTER 00 04, therefore, skip those bytes too */
         iterator += 2;
 
         /* Get the IP address values */
@@ -204,7 +213,7 @@ QString MDNS::GetIPv4Address (QByteArray data, QString hostName) {
                .arg (QString::number (d));
     }
 
-    /* No IPv4 addresses for us today... */
+    /* No IPv4 addresses for us today :( */
     return QString ("");
 }
 
@@ -230,12 +239,15 @@ QString MDNS::GetIPv6Address (QByteArray data, QString hostName) {
 
 QByteArray MDNS::GetSocketData (QObject* caller) {
     if (caller != Q_NULLPTR) {
+        /* The IPv4 socket recieved data */
         if (caller->objectName() == m_IPv4_receiver.objectName())
             return DS_GetSocketData (&m_IPv4_receiver);
 
+        /* The IPv6 socket recieved data */
         else if (caller->objectName() == m_IPv6_receiver.objectName())
             return DS_GetSocketData (&m_IPv6_receiver);
     }
 
+    /* The computer wants to kill us, not today */
     return QByteArray ("");
 }
