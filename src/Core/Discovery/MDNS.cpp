@@ -119,21 +119,123 @@ void MDNS::Send (QByteArray data) {
 //=============================================================================
 
 void MDNS::ReadData() {
-    /* Get caller name */
-    QByteArray response = "";
-    QString name = QObject::sender()->objectName();
+    /* Read socket data */
+    QByteArray data = GetSocketData (QObject::sender());
 
-    /* Read data from IPv4 socket */
-    if (name == m_IPv4_receiver.objectName())
-        response = DS_GetSocketData (&m_IPv4_receiver);
-
-    /* Read data from IPv6 socket */
-    else if (name == m_IPv6_receiver.objectName())
-        response = DS_GetSocketData (&m_IPv6_receiver);
-
-    /* Response is invalid */
-    if (response.isEmpty())
+    /* The packet is not valid or is not a mDNS response */
+    if (data.length() < 12 || data.at (2) != (char) 0x84u)
         return;
 
-    qDebug() << name << response.toHex();
+    /* Extract information from packet */
+    QString host = GetHostName (data);
+    QString ipv4 = GetIPv4Address (data, host);
+    QString ipv6 = GetIPv6Address (data, host);
+
+    /* Emit signals, prefer IPv4 over IPv6 */
+    if (!host.isEmpty()) {
+        if (!ipv4.isEmpty())
+            emit IpFound (host, ipv4);
+
+        else if (!ipv6.isEmpty())
+            emit IpFound (host, ipv6);
+    }
+}
+
+//=============================================================================
+// MDNS::GetHostName
+//=============================================================================
+
+QString MDNS::GetHostName (QByteArray data) {
+    int i = 12;
+    QString rawData;
+    QString address;
+
+    while (data.at (i) != (char) 0x00) {
+        ++i;
+        rawData.append (data.at (i));
+    }
+
+    for (int i = 0; i < rawData.length() - 7; ++i)
+        address.append (rawData.at (i));
+
+    if (!address.isEmpty())
+        return address + ".local";
+
+    return address;
+}
+
+//=============================================================================
+// MDNS::GetIPv4Address
+//=============================================================================
+
+QString MDNS::GetIPv4Address (QByteArray data, QString hostName) {
+    int ip4_section_start = 12 + hostName.length() + 4;
+    int iterator = ip4_section_start + 4;
+
+    /* We cannot obtain IP of non-existent host */
+    if (hostName.isEmpty() || !hostName.endsWith (".local"))
+        return QString ("");
+
+    /* 00 01 represents the start of IPv4 information */
+    if (data.at (ip4_section_start + 2) == (char) 0x00 &&
+            data.at (ip4_section_start + 3) == (char) 0x01) {
+
+        /* Skip IPv4 information until we get to a place
+         * with the bytes 00 04, which give us the size
+         * of the IP address (which should be 4) */
+        while ((data.at (iterator) != (char) 0x00) ||
+                (data.at (iterator + 1) != (char) 0x04))
+            ++iterator;
+
+        /* IP address begins after 00 04, therefore, skip those bytes */
+        iterator += 2;
+
+        /* Get the IP address values */
+        quint8 a = data.at (iterator);
+        quint8 b = data.at (iterator + 1);
+        quint8 c = data.at (iterator + 2);
+        quint8 d = data.at (iterator + 3);
+
+        /* Construct a string with the obtained values */
+        return QString ("%1.%2.%3.%4")
+               .arg (QString::number (a))
+               .arg (QString::number (b))
+               .arg (QString::number (c))
+               .arg (QString::number (d));
+    }
+
+    /* No IPv4 addresses for us today... */
+    return QString ("");
+}
+
+//=============================================================================
+// MDNS::GetIPv6Address
+//=============================================================================
+
+QString MDNS::GetIPv6Address (QByteArray data, QString hostName) {
+    Q_UNUSED (data);
+    Q_UNUSED (hostName);
+
+    /* We cannot obtain IP of non-existent host */
+    if (hostName.isEmpty() || !hostName.endsWith (".local"))
+        return QString ("");
+
+    /* TODO */
+    return QString ("");
+}
+
+//=============================================================================
+// MDNS::GetSocketData
+//=============================================================================
+
+QByteArray MDNS::GetSocketData (QObject* caller) {
+    if (caller != Q_NULLPTR) {
+        if (caller->objectName() == m_IPv4_receiver.objectName())
+            return DS_GetSocketData (&m_IPv4_receiver);
+
+        else if (caller->objectName() == m_IPv6_receiver.objectName())
+            return DS_GetSocketData (&m_IPv6_receiver);
+    }
+
+    return QByteArray ("");
 }

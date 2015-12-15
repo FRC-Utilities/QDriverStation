@@ -84,6 +84,12 @@ class LIB_DS_DECL MDNS : public QObject {
      * Used to read mDNS responses from the IPv6 multicast address
      */
     QUdpSocket m_IPv6_receiver;
+
+    QString GetHostName (QByteArray data);
+    QString GetIPv4Address (QByteArray data, QString hostName);
+    QString GetIPv6Address (QByteArray data, QString hostName);
+
+    QByteArray GetSocketData (QObject* caller);
 };
 
 #endif
