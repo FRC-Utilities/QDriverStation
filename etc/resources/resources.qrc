@@ -7,5 +7,6 @@
         <file>fonts/FontAwesome.otf</file>
         <file>headers/LibDS.png</file>
         <file>headers/QDriverStation.png</file>
+        <file>qt/etc/qt.conf</file>
     </qresource>
 </RCC>
