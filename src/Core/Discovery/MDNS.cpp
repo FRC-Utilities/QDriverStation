@@ -139,6 +139,9 @@ void MDNS::ReadData() {
         else if (!ipv6.isEmpty())
             emit IpFound (host, ipv6);
     }
+
+    qDebug() << host;
+    qDebug() << ipv4;
 }
 
 //=============================================================================
@@ -178,44 +181,27 @@ QString MDNS::GetHostName (QByteArray data) {
 //=============================================================================
 
 QString MDNS::GetIPv4Address (QByteArray data, QString hostName) {
-    int ip4_section_start = 12 + hostName.length();
-    int iterator = ip4_section_start + 4;
+    int iterator = 12 + hostName.length();
 
     /* We cannot obtain IP of non-existent host */
-    if (hostName.isEmpty() || !hostName.endsWith (".local"))
+    if (hostName.isEmpty())
         return QString ("");
 
-    /* The IPv4 section will start with 00 01 as a 'header' */
-    bool hasHeader = data.at (ip4_section_start + 2) == (char) 0x00 &&
-                     data.at (ip4_section_start + 3) == (char) 0x01;
+    /* Skip IPv4 information until we get to a place with the bytes '00 04',
+     * which give us the size of the IP address (which should be always 4) */
+    while ((data.at (iterator + 0) != (char) 0x00) ||
+            (data.at (iterator + 1) != (char) 0x04))
+        ++iterator;
 
-    if (hasHeader) {
-        /* Skip IPv4 information until we get to a place
-         * with the bytes '00 04', which give us the size
-         * of the IP address (which should be always 4) */
-        while ((data.at (iterator) != (char) 0x00) ||
-                (data.at (iterator + 1) != (char) 0x04))
-            ++iterator;
+    /* IP address begins AFTER 00 04, therefore, skip those bytes too */
+    iterator += 2;
 
-        /* IP address begins AFTER 00 04, therefore, skip those bytes too */
-        iterator += 2;
-
-        /* Get the IP address values */
-        quint8 a = data.at (iterator);
-        quint8 b = data.at (iterator + 1);
-        quint8 c = data.at (iterator + 2);
-        quint8 d = data.at (iterator + 3);
-
-        /* Construct a string with the obtained values */
-        return QString ("%1.%2.%3.%4")
-               .arg (QString::number (a))
-               .arg (QString::number (b))
-               .arg (QString::number (c))
-               .arg (QString::number (d));
-    }
-
-    /* No IPv4 addresses for us today :( */
-    return QString ("");
+    /* Construct a string with the obtained values */
+    return QString ("%1.%2.%3.%4")
+           .arg (QString::number (iterator))
+           .arg (QString::number (iterator + 1))
+           .arg (QString::number (iterator + 2))
+           .arg (QString::number (iterator + 3));
 }
 
 //=============================================================================
