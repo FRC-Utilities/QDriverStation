@@ -85,10 +85,28 @@ class LIB_DS_DECL MDNS : public QObject {
      */
     QUdpSocket m_IPv6_receiver;
 
+    /**
+     * Extracts the host name from the \a data of a response packet
+     */
     QString GetHostName (QByteArray data);
-    QString GetIPv4Address (QByteArray data, QString hostName);
-    QString GetIPv6Address (QByteArray data, QString hostName);
 
+    /**
+     * Extracts the IPv4 address of a mDNS packet and emits the appropiate
+     * signals. When finished, this function will call \c GetIPv6Address()
+     * if the IPv4 address cannot be obtained.
+     */
+    void GetIPv4Address (QByteArray data, QString host);
+
+    /**
+     * Extracts the IPv6 address of a mDNS packet and emits the appropiate
+     * signals.s
+     */
+    void GetIPv6Address (QByteArray data, QString host, int iterator);
+
+    /**
+     * Reads the data of the IPv4 or IPv6 receiver socket based on the
+     * object name of the \a caller object.
+     */
     QByteArray GetSocketData (QObject* caller);
 };
 

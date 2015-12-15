@@ -126,22 +126,9 @@ void MDNS::ReadData() {
     if (data.length() < 12 || data.at (2) != (char) 0x84u)
         return;
 
-    /* Extract information from packet */
-    QString host = GetHostName (data);
-    QString ipv4 = GetIPv4Address (data, host);
-    QString ipv6 = GetIPv6Address (data, host);
-
-    /* Emit signals, prefer IPv4 over IPv6 */
-    if (!host.isEmpty()) {
-        if (!ipv4.isEmpty())
-            emit IpFound (host, ipv4);
-
-        else if (!ipv6.isEmpty())
-            emit IpFound (host, ipv6);
-    }
-
-    qDebug() << host;
-    qDebug() << ipv4;
+    /* Try to obtain the IPv4 address, if it fails, this function will
+     * call \c GetIPv6Address() to obtain the IPv6 address */
+    GetIPv4Address (data, GetHostName (data));
 }
 
 //=============================================================================
@@ -180,12 +167,12 @@ QString MDNS::GetHostName (QByteArray data) {
 // MDNS::GetIPv4Address
 //=============================================================================
 
-QString MDNS::GetIPv4Address (QByteArray data, QString hostName) {
-    int iterator = 12 + hostName.length();
+void MDNS::GetIPv4Address (QByteArray data, QString host) {
+    int iterator = 12 + host.length();
 
     /* We cannot obtain IP of non-existent host */
-    if (hostName.isEmpty())
-        return QString ("");
+    if (host.isEmpty())
+        return;
 
     /* Skip IPv4 information until we get to a place with the bytes '00 04',
      * which give us the size of the IP address (which should be always 4) */
@@ -196,28 +183,65 @@ QString MDNS::GetIPv4Address (QByteArray data, QString hostName) {
     /* IP address begins AFTER 00 04, therefore, skip those bytes too */
     iterator += 2;
 
-    /* Construct a string with the obtained values */
-    return QString ("%1.%2.%3.%4")
-           .arg (QString::number (iterator))
-           .arg (QString::number (iterator + 1))
-           .arg (QString::number (iterator + 2))
-           .arg (QString::number (iterator + 3));
+    /* Construct a string with the IP bytes */
+    QString ip = QString ("%1.%2.%3.%4")
+                 .arg (QString::number ((quint8) data.at (iterator)))
+                 .arg (QString::number ((quint8) data.at (iterator + 1)))
+                 .arg (QString::number ((quint8) data.at (iterator + 2)))
+                 .arg (QString::number ((quint8) data.at (iterator + 3)));
+
+    /* If the obtained IP is valid, notify other objects */
+    if (QHostAddress (ip).protocol() == QAbstractSocket::IPv4Protocol)
+        emit IpFound (host, ip);
+
+    /* If the obtained IP is not good enough for us, try to get the IPv6 */
+    else
+        GetIPv6Address (data, host, iterator + 4);
 }
 
 //=============================================================================
 // MDNS::GetIPv6Address
 //=============================================================================
 
-QString MDNS::GetIPv6Address (QByteArray data, QString hostName) {
-    Q_UNUSED (data);
-    Q_UNUSED (hostName);
-
+void MDNS::GetIPv6Address (QByteArray data, QString host, int iterator) {
     /* We cannot obtain IP of non-existent host */
-    if (hostName.isEmpty() || !hostName.endsWith (".local"))
-        return QString ("");
+    if (host.isEmpty())
+        return;
 
-    /* TODO */
-    return QString ("");
+    /* Skip IPv6 information until we get to a place with the bytes '00 10',
+     * which give us the size of the IP address (which should be always 32) */
+    while ((data.at (iterator + 0) != (char) 0x00) ||
+            (data.at (iterator + 1) != (char) 0x10))
+        ++iterator;
+
+    /* IP address begins AFTER 00 10, therefore, skip those bytes too */
+    iterator += 2;
+
+    /* Construct the IPv6 string with the IP bytes */
+    QString ip;
+    QByteArray* hexNumber = new QByteArray;
+    for (int i = 0; i < 16; i += 2) {
+        /* Get a 16-bit number from two 8-bit numbers */
+        quint8 upper = data.at (iterator + i);
+        quint8 lower = data.at (iterator + i + 1);
+        quint16 nmbr = (upper << 8) | lower;
+
+        /* Get hexadecimal representation of the number */
+        hexNumber->clear();
+        hexNumber->append (nmbr);
+
+        /* Append hex number to string */
+        ip.append (QString::fromUtf8 (hexNumber->toHex()));
+        ip.append (":");
+    }
+
+    /* Remove the last colon and delete hexNumber */
+    ip.chop (1);
+    free (hexNumber);
+
+    /* If the obtained IP is valid, notify other objects */
+    if (QHostAddress (ip).protocol() == QAbstractSocket::IPv6Protocol)
+        emit IpFound (host, ip);
 }
 
 //=============================================================================
@@ -226,15 +250,12 @@ QString MDNS::GetIPv6Address (QByteArray data, QString hostName) {
 
 QByteArray MDNS::GetSocketData (QObject* caller) {
     if (caller != Q_NULLPTR) {
-        /* The IPv4 socket recieved data */
         if (caller->objectName() == m_IPv4_receiver.objectName())
             return DS_GetSocketData (&m_IPv4_receiver);
 
-        /* The IPv6 socket recieved data */
         else if (caller->objectName() == m_IPv6_receiver.objectName())
             return DS_GetSocketData (&m_IPv6_receiver);
     }
 
-    /* The computer wants to kill us, not today */
     return QByteArray ("");
 }
