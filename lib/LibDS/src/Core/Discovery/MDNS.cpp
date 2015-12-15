@@ -158,7 +158,7 @@ QString MDNS::GetHostName (QByteArray data) {
     }
 
     /* The '.local' section cannot be used when obtained directly from the
-     * packet, since it contains additional characters. 
+     * packet, since it contains additional characters.
      * For the moment, we will only extract the host name.
      * In other words, from roboRIO.local we will obtain only 'roboRIO' */
     for (int i = 0; i < rawData.length() - 7; ++i)
@@ -178,7 +178,7 @@ QString MDNS::GetHostName (QByteArray data) {
 //=============================================================================
 
 QString MDNS::GetIPv4Address (QByteArray data, QString hostName) {
-    int ip4_section_start = 12 + hostName.length() + 4;
+    int ip4_section_start = 12 + hostName.length();
     int iterator = ip4_section_start + 4;
 
     /* We cannot obtain IP of non-existent host */
@@ -186,9 +186,10 @@ QString MDNS::GetIPv4Address (QByteArray data, QString hostName) {
         return QString ("");
 
     /* The IPv4 section will start with 00 01 as a 'header' */
-    if (data.at (ip4_section_start + 2) == (char) 0x00 &&
-            data.at (ip4_section_start + 3) == (char) 0x01) {
+    bool hasHeader = data.at (ip4_section_start + 2) == (char) 0x00 &&
+                     data.at (ip4_section_start + 3) == (char) 0x01;
 
+    if (hasHeader) {
         /* Skip IPv4 information until we get to a place
          * with the bytes '00 04', which give us the size
          * of the IP address (which should be always 4) */
