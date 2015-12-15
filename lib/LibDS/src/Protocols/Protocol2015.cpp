@@ -284,31 +284,25 @@ QByteArray DS_Protocol2015::GetJoystickData() {
         data.append ((quint8) pHeaderJoystick);
 
         /* Add axis data */
-        if (numAxes > 0) {
-            data.append (numAxes);
-            for (int axis = 0; axis < numAxes; ++axis)
-                data.append (Joysticks()->at (i)->axes [axis] * 127);
+        data.append (numAxes);
+        for (int axis = 0; axis < numAxes; ++axis)
+            data.append (Joysticks()->at (i)->axes [axis] * 127);
+
+        /* Generate button data */
+        int buttons = 0;
+        for (int button = 0; button < numButtons; ++button) {
+            bool pressed = Joysticks()->at (i)->buttons [button];
+            buttons += pressed ? qPow (2, button) : 0;
         }
 
         /* Add button data */
-        if (numButtons > 0) {
-            int buttons = 0;
-            for (int button = 0; button < numButtons; ++button) {
-                bool pressed = Joysticks()->at (i)->buttons [button];
-                buttons += pressed ? qPow (2, button) : 0;
-            }
-
-            data.append (numButtons);
-            data.append (DS_ToBytes (buttons));
-        }
+        data.append (numButtons);
+        data.append (DS_ToBytes (buttons));
 
         /* Add hat/pov data */
-        if (numPovHats > 0) {
-            data.append (numPovHats);
-
-            for (int hat = 0; hat < numPovHats; ++hat)
-                data.append (DS_ToBytes (Joysticks()->at (i)->povHats [hat]));
-        }
+        data.append (numPovHats);
+        for (int hat = 0; hat < numPovHats; ++hat)
+            data.append (DS_ToBytes (Joysticks()->at (i)->povHats [hat]));
     }
 
     return data;
