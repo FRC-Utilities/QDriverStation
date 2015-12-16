@@ -155,7 +155,7 @@ QString MDNS::GetHostName (QByteArray data) {
         address.append (rawData.at (i));
 
     /* If the obtained host name is not empty, it deserves to have the
-     * '.local' section preprended */
+     * '.local' section appended */
     if (!address.isEmpty())
         return address + ".local";
 
