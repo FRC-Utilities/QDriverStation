@@ -53,21 +53,15 @@ NetworkDiscovery::AddressType NetworkDiscovery::GetAddressType (
 // NetworkDiscovery::GetIP
 //=============================================================================
 
-void NetworkDiscovery::GetIP (QString address, QObject* receiver,
-                              const char* member) {
-    GetIP (address, GetAddressType (address), receiver, member);
+void NetworkDiscovery::GetIP (QString address) {
+    GetIP (address, GetAddressType (address));
 }
 
 //=============================================================================
 // NetworkDiscovery::GetIP
 //=============================================================================
 
-void NetworkDiscovery::GetIP (QString address, AddressType type,
-                              QObject* receiver, const char* member) {
-
-    QObject::connect (this, SIGNAL (IpFound (QString, QString)),
-                      receiver, member);
-
+void NetworkDiscovery::GetIP (QString address, AddressType type) {
     switch (type) {
     case kMDNS:
         m_responder.Query (address);

@@ -67,7 +67,7 @@ void MDNS::Query (QString domain) {
     header.append ((char) 0x00);
     header.append ((char) 0x00);
     header.append ((char) 0x00);
-    header.append ((char) 0x02);
+    header.append ((char) 0x01);
     header.append ((char) 0x00);
     header.append ((char) 0x00);
     header.append ((char) 0x00);
@@ -191,12 +191,12 @@ void MDNS::GetIPv4Address (QByteArray data, QString host) {
                  .arg (QString::number ((quint8) data.at (iterator + 3)));
 
     /* If the obtained IP is valid, notify other objects */
-    if (QHostAddress (ip).protocol() == QAbstractSocket::IPv4Protocol)
-        emit IpFound (host, ip);
+    //if (QHostAddress (ip).protocol() == QAbstractSocket::IPv4Protocol)
+    //  emit IpFound (host, ip);
 
     /* If the obtained IP is not good enough for us, try to get the IPv6 */
-    else
-        GetIPv6Address (data, host, iterator + 4);
+    //else
+    GetIPv6Address (data, host, iterator + 4);
 }
 
 //=============================================================================
@@ -211,8 +211,12 @@ void MDNS::GetIPv6Address (QByteArray data, QString host, int iterator) {
     /* Skip IPv6 information until we get to a place with the bytes '00 10',
      * which give us the size of the IP address (which should be always 32) */
     while ((data.at (iterator + 0) != (char) 0x00) ||
-            (data.at (iterator + 1) != (char) 0x10))
+            (data.at (iterator + 1) != (char) 0x10)) {
         ++iterator;
+
+        QByteArray ba;
+        ba.append (data.at (iterator));
+    }
 
     /* IP address begins AFTER 00 10, therefore, skip those bytes too */
     iterator += 2;
@@ -220,7 +224,7 @@ void MDNS::GetIPv6Address (QByteArray data, QString host, int iterator) {
     /* Construct the IPv6 string with the IP bytes */
     QString ip;
     QByteArray* hexNumber = new QByteArray;
-    for (int i = 0; i < 16; i += 2) {
+    for (int i = 0; i < 0x10; i += 2) {
         /* Get a 16-bit number from two 8-bit numbers */
         quint8 upper = data.at (iterator + i);
         quint8 lower = data.at (iterator + i + 1);

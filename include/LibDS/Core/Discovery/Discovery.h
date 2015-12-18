@@ -60,20 +60,13 @@ class LIB_DS_DECL NetworkDiscovery : public QObject {
     /**
      * Uses the \c getAddressType() function to 'guess' the \a address
      * type and the steps that we need to take to resolve it.
-     *
-     * When the address is resolved, this function will automatically
-     * call the \a member function in the \a receiver object
      */
-    void GetIP (QString address, QObject* receiver, const char* member);
+    void GetIP (QString address);
 
     /**
      * Resolves the given \a address based on the address \a type.
-     *
-     * When the address is resolved, this function will automatically
-     * call the \a member function in the \a receiver object
      */
-    void GetIP (QString address, AddressType type, QObject* receiver,
-                const char* member);
+    void GetIP (QString address, AddressType type);
 
   signals:
     /**
