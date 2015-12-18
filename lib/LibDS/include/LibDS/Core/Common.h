@@ -25,7 +25,6 @@
 #define _LIB_DS_COMMON_H
 
 #include <QtMath>
-#include <QDebug>
 #include <QString>
 #include <QDateTime>
 #include <QUdpSocket>

@@ -56,6 +56,8 @@ DS_ProtocolBase::DS_ProtocolBase() {
     connect (this, SIGNAL (PacketReceived()), &m_watchdog, SLOT (Restart()));
     connect (&m_pingSocket, SIGNAL (stateChanged   (QAbstractSocket::SocketState)),
              this,          SLOT   (OnStateChanged (QAbstractSocket::SocketState)));
+    connect (&m_discovery,  SIGNAL (IpFound        (QString, QString)),
+             this,          SLOT   (OnIpFound      (QString, QString)));
 }
 
 //=============================================================================
@@ -207,8 +209,8 @@ void DS_ProtocolBase::Reset() {
     UpdateCommStatus (kFailing);
 
     /* Figure out the robot address and ping the robot */
+    m_discovery.GetIP (RobotAddress());
     emit RobotAddressChanged (RobotAddress());
-    m_discovery.GetIP (RobotAddress(), this, SLOT (OnIpFound (QString, QString)));
 }
 
 //=============================================================================

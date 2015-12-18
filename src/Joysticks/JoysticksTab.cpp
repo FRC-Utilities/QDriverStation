@@ -25,8 +25,6 @@
 #include <QPushButton>
 #include <QProgressBar>
 
-#include <QDebug>
-
 #include "JoysticksTab.h"
 #include "VirtualJoystick.h"
 
