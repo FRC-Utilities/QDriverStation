@@ -1,9 +1,0 @@
-<RCC>
-    <qresource prefix="/LibDS">
-        <file>Match End_normalized.wav</file>
-        <file>Match Pause_normalized.wav</file>
-        <file>Start Auto_normalized.wav</file>
-        <file>Start of End Game_normalized.wav</file>
-        <file>Start Teleop_normalized.wav</file>
-    </qresource>
-</RCC>
