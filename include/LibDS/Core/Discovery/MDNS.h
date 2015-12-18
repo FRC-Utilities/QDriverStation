@@ -41,10 +41,10 @@ class LIB_DS_DECL MDNS : public QObject {
 
   public slots:
     /**
-     * Looks for the given \a domain, the class will emit
+     * Looks for the given \a host, the class will emit
      * the \c ipFound() \c SIGNAL when the domain is resolved
      */
-    void Query (QString domain);
+    void Query (QString host);
 
   signals:
     /**
@@ -84,6 +84,11 @@ class LIB_DS_DECL MDNS : public QObject {
      * Used to read mDNS responses from the IPv6 multicast address
      */
     QUdpSocket m_IPv6_receiver;
+
+    /**
+     * Used to store the host names and IP information of the received mDNS packets
+     */
+    QStringList m_hosts;
 
     /**
      * Extracts the host name from the \a data of a response packet

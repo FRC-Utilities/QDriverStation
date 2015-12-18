@@ -1,4 +1,4 @@
-![Logo](extra/logo.png)
+![Logo](etc/logo.png)
 
 [![Build Status](https://travis-ci.org/WinT-3794/LibDS.svg?branch=master)](https://travis-ci.org/WinT-3794/LibDS)
 [![BitCoin donate button](https://img.shields.io/badge/bitcoin-donate-yellow.svg)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")

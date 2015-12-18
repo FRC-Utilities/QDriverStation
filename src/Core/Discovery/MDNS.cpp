@@ -48,17 +48,17 @@ MDNS::MDNS() {
 // MDNS::Query
 //=============================================================================
 
-void MDNS::Query (QString domain) {
+void MDNS::Query (QString host) {
     QByteArray data;
     QByteArray header;
     QByteArray packet;
 
     /* Ensure that the domain is valid */
-    domain = domain.replace (".local.", "");
-    domain = domain.replace (".local",  "");
+    host = host.replace (".local.", "");
+    host = host.replace (".local",  "");
 
     /* Check that domain length is valid */
-    if (domain.length() > 0xFF)
+    if (host.length() > 0xFF)
         return;
 
     /* Create header & flags */
@@ -76,8 +76,8 @@ void MDNS::Query (QString domain) {
     header.append ((char) 0x00);
 
     /* Add domain data */
-    data.append (domain.length());
-    data.append (domain.toUtf8());
+    data.append (host.length());
+    data.append (host.toUtf8());
 
     /* Add '.local' section */
     QString local = "local";
@@ -191,12 +191,12 @@ void MDNS::GetIPv4Address (QByteArray data, QString host) {
                  .arg (QString::number ((quint8) data.at (iterator + 3)));
 
     /* If the obtained IP is valid, notify other objects */
-    //if (QHostAddress (ip).protocol() == QAbstractSocket::IPv4Protocol)
-    //  emit IpFound (host, ip);
+    if (QHostAddress (ip).protocol() == QAbstractSocket::IPv4Protocol)
+        emit IpFound (host, ip);
 
     /* If the obtained IP is not good enough for us, try to get the IPv6 */
-    //else
-    GetIPv6Address (data, host, iterator + 4);
+    else
+        GetIPv6Address (data, host, iterator + 4);
 }
 
 //=============================================================================

@@ -69,4 +69,4 @@ SOURCES += \
     $$PWD/src/Protocols/Protocol2015.cpp \
     $$PWD/src/Core/Discovery/MDNS.cpp
 
-RESOURCES += $$PWD/sounds/libds-sounds.qrc
+RESOURCES += $$PWD/etc/sounds/libds-sounds.qrc
