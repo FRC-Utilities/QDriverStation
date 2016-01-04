@@ -39,10 +39,11 @@
  * Implements an abstract class to be used as a base for any protocol that
  * will be used to drive an FRC robot.
  */
-class LIB_DS_DECL DS_ProtocolBase : public QObject {
+class LIB_DS_DECL DS_ProtocolBase : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     explicit DS_ProtocolBase();
     ~DS_ProtocolBase();
 
@@ -59,7 +60,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     /**
      * Returns \c true if the user code is loaded on the robot
      */
-    bool RobotCode() const;
+    bool RobotHasCode() const;
 
     /**
      * The number of packets that we sent
@@ -67,14 +68,34 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     int SentPackets() const;
 
     /**
+     * Returns \c true if the robot is enabled
+     */
+    bool IsEnabled() const;
+
+    /**
      * Returns \c true if the robot communications are working
      */
-    bool IsConnected() const;
+    bool IsConnectedToRobot() const;
+
+    /**
+     * Returns \c true if the computer is connected to the robot radio
+     */
+    bool IsConnectedToRadio() const;
 
     /**
      * Returns \c true if we are sending the date/time to the robot
      */
     bool SendDateTime() const;
+
+    /**
+     * Returns \c true if the robot reports a voltage brownout
+     */
+    bool IsVoltageBrownout() const;
+
+    /**
+     * Returns \c true if the robot is in e-stop state
+     */
+    bool IsEmergencyStopped() const;
 
     /**
      * Returns the current alliance of the robot
@@ -130,20 +151,34 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     virtual int ClientPort() = 0;
 
     /**
+     * Returns the port used for communicating data through the net console
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual int NetConsolePort() = 0;
+
+    /**
+     * Returns \c true if robot accepts commands through the netconsole
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual bool NetConsoleAcceptsInput() = 0;
+
+    /**
      * Returns the default radio address
      *
      * \note This function must be implemented by each protocol
      */
-    virtual QString DefaultRadioAddress() = 0;
+    virtual QStringList DefaultRadioAddresses() = 0;
 
     /**
      * Returns the default robot address
      *
      * \note This function must be implemented by each protocol
      */
-    virtual QString DefaultRobotAddress() = 0;
+    virtual QStringList DefaultRobotAddresses() = 0;
 
-  public slots:
+public slots:
     /**
      * Resets the internal values of the protocol and emits the appropiate
      * signals when the robot communication is lost.
@@ -156,7 +191,17 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * Changes the team number of the robot, this can be used to generate
      * the robot and radio address.
      */
-    void SetTeamNumber (int Team);
+    void SetTeamNumber (int team);
+
+    /**
+     * Attempts to change the enabled state of the robot
+     */
+    void SetEnabled (bool enabled);
+
+    /**
+     * Attempts to change the e-stop state of the robot
+     */
+    void SetEmergencyStopped (bool emergency_stop);
 
     /**
      * Changes the robot address to \a address
@@ -197,12 +242,18 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      */
     virtual void RestartCode() = 0;
 
-  signals:
+signals:
     /**
      * Emitted when the protocol detects that the status of the
      * user code has changed
      */
     void CodeChanged (bool);
+
+    /**
+     * Emitted when the connection state between the computer and the
+     * robot radio is changed
+     */
+    void RadioCommChanged (bool);
 
     /**
      * Emitted when the state of the network communications with the robot
@@ -216,9 +267,20 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     void CommunicationsChanged (DS_CommStatus);
 
     /**
+     * Emitted when the robot detects a possible voltage brownout
+     */
+    void VoltageBrownoutChanged (bool);
+
+    /**
      * Emitted when the protocol detects that the robot voltage has changed
      */
     void VoltageChanged (QString);
+
+    /**
+     * Emitted when the protocol detects that the CPU usage of the robot
+     * has changed
+     */
+    void CPUUsageChanged (int);
 
     /**
      * Emitted when the protocol detects that the RAM usage of the robot
@@ -231,6 +293,23 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * has changed
      */
     void DiskUsageChanged (int);
+
+    /**
+     * Emitted when the protocol receives and decodes a CAN data structure
+     */
+    void CANInfoReceived (DS_CAN);
+
+    /**
+     * Emitted when the protocol detects that the enabled state of the robot
+     * is changed
+     */
+    void EnabledChanged (bool);
+
+    /**
+     * Emitted when the protocol detects that the e-stop state of the robot
+     * changes
+     */
+    void EmergencyStoppedChanged (bool);
 
     /**
      * Emitted when the protocol detects that the control mode has changed.
@@ -275,7 +354,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      */
     void PacketReceived();
 
-  protected slots:
+protected slots:
     /**
      * Implements the necessary steps to reset the internal values of a protocol
      *
@@ -290,6 +369,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      */
     virtual void GetRobotInformation() = 0;
 
+protected:
     /**
      * Interprets the received robot \a data and emits the appropiate signals
      *
@@ -297,7 +377,6 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      */
     virtual bool ReadPacket (QByteArray data) = 0;
 
-  protected:
     /**
      * Uses the joystick input information to generate a data array to be
      * sent along the client packet
@@ -322,39 +401,6 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     virtual QByteArray GetClientPacket() = 0;
 
     /**
-     * Returns a 'generic' \c DS_ControlMode \c enum by reading
-     * the 'raw' value of the given \a mode.
-     *
-     * \note This function must be implemented by each protocol
-     */
-    virtual DS_ControlMode GetControlMode (int mode) = 0;
-
-    /**
-     * Returns the control code used by the protocol to represent the selected
-     * control \a mode
-     *
-     * \note This function must be implemented by each protocol
-     */
-    virtual int GetControlCode (DS_ControlMode mode) = 0;
-
-    /**
-     * Returns the code used by the protocol to represent the selected
-     * \a alliance
-     *
-     * \note This function must be implemented by each protocol
-     */
-    virtual int GetAllianceCode (DS_Alliance Alliance) = 0;
-
-    /**
-     * Calculates the size of the \a joystick.
-     * This function is implemented for each protocol to meet the
-     * specific requirements of the protocol in question.
-     *
-     * \note This function must be implemented by each protocol
-     */
-    virtual int GetJoystickSize (DS_Joystick* joystick) = 0;
-
-    /**
      * Changes the current robot \a status
      */
     void UpdateStatus (int Status);
@@ -370,9 +416,19 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     void UpdateSendDateTime (bool sendDT);
 
     /**
+     * Changes the state of the radio comm. and emits the appropiate signals
+     */
+    void UpdateRadioStatus (bool connected);
+
+    /**
      * Changes the state of the communications and emits the appropiate signals
      */
     void UpdateCommStatus (DS_CommStatus Status);
+
+    /**
+     * Changes the voltage brownout state and emits the appropiate signals
+     */
+    void UpdateVoltageBrownout (bool brownout);
 
     /**
      * 'Calculcates' the voltage from the values of the \a major and \a minor
@@ -380,7 +436,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      */
     void UpdateVoltage (int major, int minor);
 
-  private:
+private:
     /**
      * This is the team number, you may use it for a variety of purposes
      * This variable is changed with the \c setTeamNumber() function.
@@ -408,17 +464,26 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     int m_sentPackets;
 
     /**
+     * We use this to switch between the radio addresses specified by the
+     * protocol (in the case that radio does not respond to pings)
+     */
+    int m_radioIterator;
+
+    /**
+     * We use this to switch between the robot addresses specified by the
+     * protocol (in the case that robot does not respond to the DS)
+     */
+    int m_robotIterator;
+
+    /**
      * This variable should be set to \c true when the user code is loaded
      */
     bool m_robotCode;
 
     /**
-     * If set to \c true, the protocol will send data to the robot radio
-     * instead of the robot address.
-     *
-     * This value is toggled automatically on each robot reset
+     * Represents the connection status between the computer and the radio
      */
-    bool m_useFallbackAddress;
+    bool m_radioConnected;
 
     /**
      * Holds the communication status of the robot
@@ -426,8 +491,23 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     DS_CommStatus m_communicationStatus;
 
     /**
+     * If set to \c true, robot is emergency stopped
+     */
+    bool m_emergencyStop;
+
+    /**
+     * If set to \c true, robot is experiencing a voltage brownout
+     */
+    bool m_voltageBrownout;
+
+    /**
+     * Represents the enabled state of the robot
+     */
+    bool m_enabled;
+
+    /**
      * If set to \c true, you should send the current date time data
-     * with the \c generateTimezoneData() function
+     * with the \c GenerateTimezoneData() function
      */
     bool m_sendDateTime;
 
@@ -479,13 +559,29 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     /**
      * Used for pinging the robot
      */
-    QTcpSocket m_pingSocket;
+    QTcpSocket m_robotPing;
 
-  private slots:
+    /**
+     * Used for pinging the radio
+     */
+    QTcpSocket m_radioPing;
+
+private slots:
     /**
      * Pings the robot using a TCP socket
      */
     void PingRobot();
+
+    /**
+     * Pings the radio using a TCP socket
+     */
+    void PingRadio();
+
+    /**
+     * Tells the client to stop sending E-Stop packets after
+     * certain ammount of time.
+     */
+    void DisableEmergencyStopped();
 
     /**
      * Changes the address of the robot to the robot's IP and then tries to

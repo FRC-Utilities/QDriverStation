@@ -26,7 +26,8 @@
 // DS_Watchdog::DS_Watchdog
 //=============================================================================
 
-DS_Watchdog::DS_Watchdog() {
+DS_Watchdog::DS_Watchdog()
+{
     connect (&m_timer, SIGNAL (timeout()), this, SIGNAL (Timeout()));
 
     m_timer.setInterval (1000);
@@ -37,7 +38,8 @@ DS_Watchdog::DS_Watchdog() {
 // DS_Watchdog::Restart
 //=============================================================================
 
-void DS_Watchdog::Restart() {
+void DS_Watchdog::Restart()
+{
     m_timer.stop();
     m_timer.start();
 }

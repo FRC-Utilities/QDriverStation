@@ -24,6 +24,9 @@
 #ifndef _LIB_DS_MDNS_RESPONDER_H
 #define _LIB_DS_MDNS_RESPONDER_H
 
+#include <QTimer>
+#include <QCache>
+
 #include "LibDS/Core/Common.h"
 
 /**
@@ -33,26 +36,27 @@
  * allows us to get the IP of any mDNS device in the
  * local network.
  */
-class LIB_DS_DECL MDNS : public QObject {
+class LIB_DS_DECL MDNS : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     explicit MDNS();
 
-  public slots:
+public slots:
     /**
      * Looks for the given \a host, the class will emit
      * the \c ipFound() \c SIGNAL when the domain is resolved
      */
     void Query (QString host);
 
-  signals:
+signals:
     /**
      * Emitted when the \a ip of the \a address is resolved
      */
     void IpFound (QString address, QString ip);
 
-  private slots:
+private slots:
     /**
      * Sends the \a data to the local network
      */
@@ -64,7 +68,19 @@ class LIB_DS_DECL MDNS : public QObject {
      */
     void ReadData();
 
-  private:
+    /**
+     * Called periodically to clear the mDNS Address/IP cache
+     */
+    void ClearCache();
+
+    /**
+     * Registers the \a address and the \a ip in a list, which
+     * will be used to make mDNS lookups faster if the program
+     * requests the same \a address again
+     */
+    void AddToCache (QString address, QString ip);
+
+private:
     /**
      * Used to multicast data to the reserved IPv4 address
      */
@@ -88,7 +104,12 @@ class LIB_DS_DECL MDNS : public QObject {
     /**
      * Used to store the host names and IP information of the received mDNS packets
      */
-    QStringList m_hosts;
+    QCache<QString, QString> m_cache;
+
+    /**
+     * Clears the cache periodically
+     */
+    QTimer m_cacheTimer;
 
     /**
      * Extracts the host name from the \a data of a response packet

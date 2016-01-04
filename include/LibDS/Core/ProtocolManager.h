@@ -38,10 +38,11 @@ class DS_ProtocolBase;
  * automatically. Please note that you should implement a way to read joystick
  * input by yourself (be it a software-based or hardware based).
  */
-class LIB_DS_DECL DS_ProtocolManager : public QObject {
+class LIB_DS_DECL DS_ProtocolManager : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     explicit DS_ProtocolManager();
     ~DS_ProtocolManager();
 
@@ -55,7 +56,7 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
      */
     bool ProtocolIsValid() const;
 
-  public slots:
+public slots:
     /**
      * Changes the protocol that we use to communicate with the robot
      */
@@ -84,14 +85,14 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
     /**
      * Updates the state of the buttons in the selected joystick
      */
-    void UpdateJoystickButton (int js, int button, bool status);
+    void UpdateJoystickButton (int js, int bt, bool status);
 
     /**
      * Sends the input \a data to the current protocol to decode
      */
     void ReadRobotPacket (QByteArray data);
 
-  signals:
+signals:
     /**
      * Emitted when the protocol detects that the status of the
      * user code has changed
@@ -104,6 +105,12 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
      * itself, when it figures out the IP address of the robot.
      */
     void RobotAddressChanged (QString);
+
+    /**
+     * Emitted when the connection state between the computer and the
+     * robot radio is changed
+     */
+    void RadioCommChanged (bool);
 
     /**
      * Emitted when the state of the network communications with the robot
@@ -125,6 +132,12 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
      * Emitted when the protocol detects that the RAM usage of the robot
      * has changed
      */
+    void CPUUsageChanged (int);
+
+    /**
+     * Emitted when the protocol detects that the RAM usage of the robot
+     * has changed
+     */
     void RAMUsageChanged (int);
 
     /**
@@ -139,6 +152,16 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
      * or when the robot itself changes its mode (e.g. e-stop)
      */
     void ControlModeChanged (DS_ControlMode);
+
+    /**
+     * Emitted when the robot detects a possible voltage brownout
+     */
+    void VoltageBrownoutChanged (bool);
+
+    /**
+     * Emitted when the protocol receives and decodes a CAN data structure
+     */
+    void CANInfoReceived (DS_CAN);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
@@ -164,7 +187,7 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
      */
     void PCMVersionChanged (QString);
 
-  private:
+private:
     /**
      * The current protocol being used
      */

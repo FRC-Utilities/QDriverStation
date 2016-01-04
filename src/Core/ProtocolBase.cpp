@@ -39,22 +39,36 @@ const QString PARTIAL_COMM   = "<p>"
 // DS_ProtocolBase::DS_ProtocolBase
 //=============================================================================
 
-DS_ProtocolBase::DS_ProtocolBase() {
+DS_ProtocolBase::DS_ProtocolBase()
+{
     m_team = 0;
     m_resetCount = 0;
     m_sentPackets = 0;
-    m_robotCode = false;
-    m_useFallbackAddress = false;
-    m_communicationStatus = kFailing;
-    m_alliance = kAllianceRed1;
+    m_radioIterator = 0;
+    m_robotIterator = 0;
+
     m_robotAddress = QString ("");
-    m_controlMode = kControlDisabled;
+
+    m_alliance = kAllianceRed1;
+    m_controlMode = kControlInvalid;
+    m_communicationStatus = kFailing;
+
+    m_enabled = false;
+    m_robotCode = false;
+    m_emergencyStop = false;
+    m_radioConnected = false;
 
     m_joysticks = new QList<DS_Joystick*>;
 
+    m_radioPing.setObjectName ("Radio Ping");
+    m_robotPing.setObjectName ("Robot Ping");
+
     connect (&m_watchdog, SIGNAL (Timeout()), this, SLOT (Reset()));
     connect (this, SIGNAL (PacketReceived()), &m_watchdog, SLOT (Restart()));
-    connect (&m_pingSocket, SIGNAL (stateChanged   (QAbstractSocket::SocketState)),
+
+    connect (&m_robotPing,  SIGNAL (stateChanged   (QAbstractSocket::SocketState)),
+             this,          SLOT   (OnStateChanged (QAbstractSocket::SocketState)));
+    connect (&m_radioPing,  SIGNAL (stateChanged   (QAbstractSocket::SocketState)),
              this,          SLOT   (OnStateChanged (QAbstractSocket::SocketState)));
     connect (&m_discovery,  SIGNAL (IpFound        (QString, QString)),
              this,          SLOT   (OnIpFound      (QString, QString)));
@@ -64,8 +78,9 @@ DS_ProtocolBase::DS_ProtocolBase() {
 // DS_ProtocolBase::~DS_ProtocolBase
 //=============================================================================
 
-DS_ProtocolBase::~DS_ProtocolBase() {
-    m_pingSocket.abort();
+DS_ProtocolBase::~DS_ProtocolBase()
+{
+    m_robotPing.abort();
     delete m_joysticks;
 }
 
@@ -73,7 +88,8 @@ DS_ProtocolBase::~DS_ProtocolBase() {
 // DS_ProtocolBase::Team
 //=============================================================================
 
-int DS_ProtocolBase::Team() const {
+int DS_ProtocolBase::Team() const
+{
     return m_team;
 }
 
@@ -81,15 +97,17 @@ int DS_ProtocolBase::Team() const {
 // DS_ProtocolBase::Status
 //=============================================================================
 
-int DS_ProtocolBase::Status() const {
+int DS_ProtocolBase::Status() const
+{
     return m_status;
 }
 
 //=============================================================================
-// DS_ProtocolBase::RobotCode
+// DS_ProtocolBase::RobotHasCode
 //=============================================================================
 
-bool DS_ProtocolBase::RobotCode() const {
+bool DS_ProtocolBase::RobotHasCode() const
+{
     return m_robotCode;
 }
 
@@ -97,31 +115,71 @@ bool DS_ProtocolBase::RobotCode() const {
 // DS_ProtocolBase::SentPackets
 //=============================================================================
 
-int DS_ProtocolBase::SentPackets() const {
+int DS_ProtocolBase::SentPackets() const
+{
     return m_sentPackets;
 }
 
 //=============================================================================
-// DS_ProtocolBase::IsConnected
+// DS_ProtocolBase::IsEnabled
 //=============================================================================
 
-bool DS_ProtocolBase::IsConnected() const {
+bool DS_ProtocolBase::IsEnabled() const
+{
+    return m_enabled;
+}
+
+//=============================================================================
+// DS_ProtocolBase::IsConnectedToRobot
+//=============================================================================
+
+bool DS_ProtocolBase::IsConnectedToRobot() const
+{
     return CommunicationStatus() == kFull;
+}
+
+//=============================================================================
+// DS_ProtocolBase::IsConnectedToRadio
+//=============================================================================
+
+bool DS_ProtocolBase::IsConnectedToRadio() const
+{
+    return m_radioConnected;
 }
 
 //=============================================================================
 // DS_ProtocolBase::SendDateTime
 //=============================================================================
 
-bool DS_ProtocolBase::SendDateTime() const {
+bool DS_ProtocolBase::SendDateTime() const
+{
     return m_sendDateTime;
+}
+
+//=============================================================================
+// DS_ProtocolBase::IsVoltageBrownout
+//=============================================================================
+
+bool DS_ProtocolBase::IsVoltageBrownout() const
+{
+    return m_voltageBrownout;
+}
+
+//=============================================================================
+// DS_ProtocolBase::IsEmergencyStopped
+//=============================================================================
+
+bool DS_ProtocolBase::IsEmergencyStopped() const
+{
+    return m_emergencyStop;
 }
 
 //=============================================================================
 // DS_ProtocolBase::Alliance
 //=============================================================================
 
-DS_Alliance DS_ProtocolBase::Alliance() const {
+DS_Alliance DS_ProtocolBase::Alliance() const
+{
     return m_alliance;
 }
 
@@ -129,7 +187,8 @@ DS_Alliance DS_ProtocolBase::Alliance() const {
 // DS_ProtocolBase::ControlMode
 //=============================================================================
 
-DS_ControlMode DS_ProtocolBase::ControlMode() const {
+DS_ControlMode DS_ProtocolBase::ControlMode() const
+{
     return m_controlMode;
 }
 
@@ -137,7 +196,8 @@ DS_ControlMode DS_ProtocolBase::ControlMode() const {
 // DS_ProtocolBase::CommunicationStatus
 //=============================================================================
 
-DS_CommStatus DS_ProtocolBase::CommunicationStatus() const {
+DS_CommStatus DS_ProtocolBase::CommunicationStatus() const
+{
     return m_communicationStatus;
 }
 
@@ -145,7 +205,8 @@ DS_CommStatus DS_ProtocolBase::CommunicationStatus() const {
 // DS_ProtocolBase::Joysticks
 //=============================================================================
 
-QList<DS_Joystick*>* DS_ProtocolBase::Joysticks() const {
+QList<DS_Joystick*>* DS_ProtocolBase::Joysticks() const
+{
     return m_joysticks;
 }
 
@@ -153,21 +214,22 @@ QList<DS_Joystick*>* DS_ProtocolBase::Joysticks() const {
 // DS_ProtocolBase::RadioAddress
 //=============================================================================
 
-QString DS_ProtocolBase::RadioAddress() {
-    return m_radioAddress.isEmpty() ? DefaultRadioAddress() : m_radioAddress;
+QString DS_ProtocolBase::RadioAddress()
+{
+    if (m_radioAddress.isEmpty())
+        return DefaultRadioAddresses().at (m_radioIterator);
+
+    return m_radioAddress;
 }
 
 //=============================================================================
 // DS_ProtocolBase::RobotAddress
 //=============================================================================
 
-QString DS_ProtocolBase::RobotAddress() {
-    if (m_robotAddress.isEmpty()) {
-        if (m_useFallbackAddress)
-            return DS_GetStaticIp (Team(), 2);
-        else
-            return DefaultRobotAddress();
-    }
+QString DS_ProtocolBase::RobotAddress()
+{
+    if (m_robotAddress.isEmpty())
+        return DefaultRobotAddresses().at (m_robotIterator);
 
     return m_robotAddress;
 }
@@ -176,7 +238,8 @@ QString DS_ProtocolBase::RobotAddress() {
 // DS_ProtocolBase::CreateClientPacket
 //=============================================================================
 
-QByteArray DS_ProtocolBase::CreateClientPacket() {
+QByteArray DS_ProtocolBase::CreateClientPacket()
+{
     m_sentPackets += 1;
     return GetClientPacket();
 }
@@ -185,7 +248,8 @@ QByteArray DS_ProtocolBase::CreateClientPacket() {
 // DS_ProtocolBase::Reset
 //=============================================================================
 
-void DS_ProtocolBase::Reset() {
+void DS_ProtocolBase::Reset()
+{
     m_resetCount += 1;
 
     /* Notify user that communication is partial */
@@ -193,11 +257,23 @@ void DS_ProtocolBase::Reset() {
         DS_SendMessage (PARTIAL_COMM.arg (RobotAddress()));
 
     /* Warn user that we cannot communicate with robot */
-    if (m_resetCount >= 5) {
-        m_resetCount = 0;
-        DS_SendMessage (CHECK_FIREWALL);
-        m_useFallbackAddress = !m_useFallbackAddress;
-    }
+    if (m_resetCount >= 5)
+        {
+            m_resetCount = 0;
+            DS_SendMessage (CHECK_FIREWALL);
+
+            /* Try another robot address */
+            if (m_robotIterator >= DefaultRobotAddresses().count() - 1)
+                m_robotIterator = 0;
+            else
+                m_robotIterator += 1;
+
+            /* Try another radio address */
+            if (m_radioIterator >= DefaultRadioAddresses().count() - 1)
+                m_radioIterator = 0;
+            else
+                m_radioIterator += 1;
+        }
 
     /* Custom reset procedures for each protocol */
     ResetProtocol();
@@ -205,28 +281,59 @@ void DS_ProtocolBase::Reset() {
     /* Emit appropiate signals */
     UpdateVoltage (0, 0);
     UpdateRobotCode (false);
+    UpdateRadioStatus (false);
     UpdateSendDateTime (false);
     UpdateCommStatus (kFailing);
 
     /* Figure out the robot address and ping the robot */
     m_discovery.GetIP (RobotAddress());
     emit RobotAddressChanged (RobotAddress());
+
+    /* Ping robot & radio */
+    PingRadio();
+    PingRobot();
 }
 
 //=============================================================================
 // DS_ProtocolBase::SetTeamNumber
 //=============================================================================
 
-void DS_ProtocolBase::SetTeamNumber (int team) {
+void DS_ProtocolBase::SetTeamNumber (int team)
+{
     m_team = team;
     emit RobotAddressChanged (RobotAddress());
+}
+
+//=============================================================================
+// DS_ProtocolBase::SetEnabled
+//=============================================================================
+
+void DS_ProtocolBase::SetEnabled (bool enabled)
+{
+    m_enabled = enabled;
+    emit EnabledChanged (IsEnabled());
+}
+
+//=============================================================================
+// DS_ProtocolBase::SetEmergencyStopped
+//=============================================================================
+
+void DS_ProtocolBase::SetEmergencyStopped (bool emergency_stop)
+{
+    m_emergencyStop = emergency_stop;
+    emit EmergencyStoppedChanged (IsEmergencyStopped());
+
+    /* Stop sending e-stop packets after 1 second */
+    if (m_emergencyStop)
+        QTimer::singleShot (1000, this, SLOT (DisableEmergencyStopped()));
 }
 
 //=============================================================================
 // DS_ProtocolBase::SetRobotAddress
 //=============================================================================
 
-void DS_ProtocolBase::SetRobotAddress (QString address) {
+void DS_ProtocolBase::SetRobotAddress (QString address)
+{
     m_robotAddress = address;
     emit RobotAddressChanged (RobotAddress());
 }
@@ -235,7 +342,8 @@ void DS_ProtocolBase::SetRobotAddress (QString address) {
 // DS_ProtocolBase::SetAlliance
 //=============================================================================
 
-void DS_ProtocolBase::SetAlliance (DS_Alliance alliance) {
+void DS_ProtocolBase::SetAlliance (DS_Alliance alliance)
+{
     m_alliance = alliance;
 }
 
@@ -243,18 +351,21 @@ void DS_ProtocolBase::SetAlliance (DS_Alliance alliance) {
 // DS_ProtocolBase::SetControlMode
 //=============================================================================
 
-void DS_ProtocolBase::SetControlMode (DS_ControlMode mode) {
-    if (m_controlMode != kControlEmergencyStop) {
-        m_controlMode = IsConnected() ? mode : kControlDisabled;
-        emit ControlModeChanged (ControlMode());
-    }
+void DS_ProtocolBase::SetControlMode (DS_ControlMode mode)
+{
+    if (!IsEmergencyStopped())
+        {
+            m_controlMode = mode;
+            emit ControlModeChanged (ControlMode());
+        }
 }
 
 //=============================================================================
 // DS_ProtocolBase::SetJoysticks
 //=============================================================================
 
-void DS_ProtocolBase::SetJoysticks (QList<DS_Joystick*>* joysticks) {
+void DS_ProtocolBase::SetJoysticks (QList<DS_Joystick*>* joysticks)
+{
     m_joysticks = joysticks;
 }
 
@@ -262,26 +373,32 @@ void DS_ProtocolBase::SetJoysticks (QList<DS_Joystick*>* joysticks) {
 // DS_ProtocolBase::ReadRobotPacket
 //=============================================================================
 
-void DS_ProtocolBase::ReadRobotPacket (QByteArray data) {
-    if (!data.isEmpty()) {
-        /* We just have connected to the robot, update internal values */
-        if (!IsConnected()) {
-            GetRobotInformation();
-            UpdateCommStatus (kFull);
-            SetControlMode (kControlDisabled);
-        }
+void DS_ProtocolBase::ReadRobotPacket (QByteArray data)
+{
+    if (!data.isEmpty())
+        {
+            /* We just have connected to the robot, update internal values */
+            if (!IsConnectedToRobot())
+                {
+                    GetRobotInformation();
 
-        /* Let the protocol implementation read the rest of the data */
-        if (ReadPacket (data))
-            emit PacketReceived();
-    }
+                    SetEnabled (false);
+                    UpdateCommStatus (kFull);
+                    SetControlMode (kControlTeleoperated);
+                }
+
+            /* Let the protocol implementation read the rest of the data */
+            if (ReadPacket (data))
+                emit PacketReceived();
+        }
 }
 
 //=============================================================================
 // DS_ProtocolBase::UpdateStatus
 //=============================================================================
 
-void DS_ProtocolBase::UpdateStatus (int status) {
+void DS_ProtocolBase::UpdateStatus (int status)
+{
     m_status = status;
 }
 
@@ -289,10 +406,11 @@ void DS_ProtocolBase::UpdateStatus (int status) {
 // DS_ProtocolBase::UpdateRobotCode
 //=============================================================================
 
-void DS_ProtocolBase::UpdateRobotCode (bool available) {
+void DS_ProtocolBase::UpdateRobotCode (bool available)
+{
     /* Robot code just crashed/failed */
     if (m_robotCode && !available)
-        SetControlMode (kControlDisabled);
+        SetEnabled (false);
 
     /* Update DS information */
     m_robotCode = available;
@@ -303,24 +421,47 @@ void DS_ProtocolBase::UpdateRobotCode (bool available) {
 // DS_ProtocolBase::UpdateSendDateTime
 //=============================================================================
 
-void DS_ProtocolBase::UpdateSendDateTime (bool sendDT) {
+void DS_ProtocolBase::UpdateSendDateTime (bool sendDT)
+{
     m_sendDateTime = sendDT;
+}
+
+//=============================================================================
+// DS_ProtocolBase::UpdateRadiotatus
+//=============================================================================
+
+void DS_ProtocolBase::UpdateRadioStatus (bool connected)
+{
+    m_radioConnected = connected;
+    emit RadioCommChanged (m_radioConnected);
 }
 
 //=============================================================================
 // DS_ProtocolBase::UpdateCommStatus
 //=============================================================================
 
-void DS_ProtocolBase::UpdateCommStatus (DS_CommStatus status) {
+void DS_ProtocolBase::UpdateCommStatus (DS_CommStatus status)
+{
     m_communicationStatus = status;
     emit CommunicationsChanged (m_communicationStatus);
+}
+
+//=============================================================================
+// DS_ProtocolBase::UpdateVoltageBrownout
+//=============================================================================
+
+void DS_ProtocolBase::UpdateVoltageBrownout (bool brownout)
+{
+    m_voltageBrownout = brownout;
+    emit VoltageBrownoutChanged (m_voltageBrownout);
 }
 
 //=============================================================================
 // DS_ProtocolBase::UpdateVoltage
 //=============================================================================
 
-void DS_ProtocolBase::UpdateVoltage (int major, int minor) {
+void DS_ProtocolBase::UpdateVoltage (int major, int minor)
+{
     QString maj = QString::number (major);
     QString min = QString::number (minor);
 
@@ -340,16 +481,37 @@ void DS_ProtocolBase::UpdateVoltage (int major, int minor) {
 // DS_ProtocolBase::PingRobot
 //=============================================================================
 
-void DS_ProtocolBase::PingRobot() {
-    m_pingSocket.abort();
-    m_pingSocket.connectToHost (RobotAddress(), 80, QTcpSocket::ReadOnly);
+void DS_ProtocolBase::PingRobot()
+{
+    m_robotPing.abort();
+    m_robotPing.connectToHost (RobotAddress(), 80, QTcpSocket::ReadOnly);
+}
+
+//=============================================================================
+// DS_ProtocolBase::PingRadio
+//=============================================================================
+
+void DS_ProtocolBase::PingRadio()
+{
+    m_radioPing.abort();
+    m_radioPing.connectToHost (RadioAddress(), 80, QTcpSocket::ReadOnly);
+}
+
+//=============================================================================
+// DS_ProtocolBase::DisableEmergencyStopped
+//=============================================================================
+
+void DS_ProtocolBase::DisableEmergencyStopped()
+{
+    SetEmergencyStopped (false);
 }
 
 //=============================================================================
 // DS_ProtocolBase::OnIpFound
 //=============================================================================
 
-void DS_ProtocolBase::OnIpFound (QString address, QString ip) {
+void DS_ProtocolBase::OnIpFound (QString address, QString ip)
+{
     if (address.toLower() == RobotAddress().toLower() && address != ip)
         emit RobotAddressChanged (ip);
 
@@ -360,8 +522,18 @@ void DS_ProtocolBase::OnIpFound (QString address, QString ip) {
 // DS_ProtocolBase::OnStateChanged
 //=============================================================================
 
-void DS_ProtocolBase::OnStateChanged (QAbstractSocket::SocketState state) {
-    if (CommunicationStatus() == kFailing
-            && state == QAbstractSocket::ConnectedState)
-        UpdateCommStatus (kPartial);
+void DS_ProtocolBase::OnStateChanged (QAbstractSocket::SocketState state)
+{
+    bool isAlive = (state == QAbstractSocket::ConnectedState);
+
+    /* Emitter is robot socket */
+    if (sender()->objectName() == m_robotPing.objectName())
+        {
+            if (CommunicationStatus() == kFailing && isAlive)
+                UpdateCommStatus (kPartial);
+        }
+
+    /* Emitter is radio socket */
+    else if (sender()->objectName() == m_radioPing.objectName())
+        UpdateRadioStatus (isAlive);
 }

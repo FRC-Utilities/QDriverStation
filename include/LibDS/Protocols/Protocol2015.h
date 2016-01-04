@@ -32,35 +32,37 @@
  * \note  the virtual functions are already documented in the
  *        \c DS_ProtocolBase class
  */
-class LIB_DS_DECL DS_Protocol2015 : public DS_ProtocolBase {
+class LIB_DS_DECL DS_Protocol2015 : public DS_ProtocolBase
+{
     Q_OBJECT
 
-  public:
+public:
     explicit DS_Protocol2015();
 
     int RobotPort();
     int ClientPort();
-    QString DefaultRadioAddress();
-    QString DefaultRobotAddress();
+    int NetConsolePort();
+    bool NetConsoleAcceptsInput();
+    QStringList DefaultRadioAddresses();
+    QStringList DefaultRobotAddresses();
 
-  public slots:
+public slots:
     void Reboot();
     void RestartCode();
 
-  private slots:
+private slots:
     void ResetProtocol();
     void GetRobotInformation();
-    bool ReadPacket (QByteArray data);
     void ProcessRobotInformation (QNetworkReply* reply);
 
-  private:
+private:
+    bool ReadPacket (QByteArray data);
     QByteArray GetClientPacket();
     QByteArray GetJoystickData();
     QByteArray GetTimezoneData();
-    DS_ControlMode GetControlMode (int byte);
 
-    int GetControlCode (DS_ControlMode mode);
-    int GetAllianceCode (DS_Alliance Alliance);
+    int GetControlCode();
+    int GetAllianceCode();
     int GetJoystickSize (DS_Joystick* joystick);
 
     /**
