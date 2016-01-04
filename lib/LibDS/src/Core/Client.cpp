@@ -26,7 +26,8 @@
 // DS_Client::DS_Client
 //=============================================================================
 
-DS_Client::DS_Client() {
+DS_Client::DS_Client()
+{
     connect (&m_clientSocket, SIGNAL (readyRead()),
              this,            SLOT   (OnDataReceived()));
 }
@@ -35,7 +36,8 @@ DS_Client::DS_Client() {
 // DS_Client::SendToRobot
 //=============================================================================
 
-void DS_Client::SendToRobot (QByteArray data) {
+void DS_Client::SendToRobot (QByteArray data)
+{
     m_robotSocket.writeDatagram (data, QHostAddress (m_address), m_robotPort);
 }
 
@@ -43,7 +45,8 @@ void DS_Client::SendToRobot (QByteArray data) {
 // DS_Client::SetRobotPort
 //=============================================================================
 
-void DS_Client::SetRobotPort (int port) {
+void DS_Client::SetRobotPort (int port)
+{
     m_robotPort = port;
 }
 
@@ -51,7 +54,8 @@ void DS_Client::SetRobotPort (int port) {
 // DS_Client::SetClientPort
 //=============================================================================
 
-void DS_Client::SetClientPort (int port) {
+void DS_Client::SetClientPort (int port)
+{
     m_clientSocket.bind (QHostAddress::Any, port, QUdpSocket::ShareAddress);
 }
 
@@ -59,7 +63,8 @@ void DS_Client::SetClientPort (int port) {
 // DS_Client::SetRobotAddress
 //=============================================================================
 
-void DS_Client::SetRobotAddress (QString address) {
+void DS_Client::SetRobotAddress (QString address)
+{
     m_address = address;
 }
 
@@ -67,6 +72,7 @@ void DS_Client::SetRobotAddress (QString address) {
 // DS_Client::OnDataReceived
 //=============================================================================
 
-void DS_Client::OnDataReceived() {
+void DS_Client::OnDataReceived()
+{
     emit DataReceived (DS_GetSocketData (&m_clientSocket));
 }

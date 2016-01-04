@@ -32,7 +32,8 @@ SDL_Layer* SDL_Layer::s_instance = Q_NULLPTR;
 // SDL_Layer::SDL_Layer
 //=============================================================================
 
-SDL_Layer::SDL_Layer() {
+SDL_Layer::SDL_Layer()
+{
     m_time = 50;
     m_tracker = -1;
 
@@ -40,19 +41,21 @@ SDL_Layer::SDL_Layer() {
     SDL_SetHint (SDL_HINT_XINPUT_ENABLED, "0");
     SDL_SetHint (SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
 
-    if (SDL_Init (SDL_INIT_JOYSTICK) != 0) {
-        QMessageBox::critical (Q_NULLPTR, tr ("Fatal Error!"),
-                               tr ("SDL Init Error: %1").arg (SDL_GetError()));
+    if (SDL_Init (SDL_INIT_JOYSTICK) != 0)
+        {
+            QMessageBox::critical (Q_NULLPTR, tr ("Fatal Error!"),
+                                   tr ("SDL Init Error: %1").arg (SDL_GetError()));
 
-        exit (EXIT_FAILURE);
-    }
+            exit (EXIT_FAILURE);
+        }
 }
 
 //=============================================================================
 // SDL_Layer::~SDL_Layer
 //=============================================================================
 
-SDL_Layer::~SDL_Layer() {
+SDL_Layer::~SDL_Layer()
+{
     for (int i = 0; i < SDL_NumJoysticks(); ++i)
         SDL_GameControllerClose (SDL_GameControllerOpen (i));
 
@@ -63,7 +66,8 @@ SDL_Layer::~SDL_Layer() {
 // SDL_Layer::GetInstance
 //=============================================================================
 
-SDL_Layer* SDL_Layer::GetInstance() {
+SDL_Layer* SDL_Layer::GetInstance()
+{
     if (s_instance == Q_NULLPTR)
         s_instance = new SDL_Layer;
 
@@ -74,7 +78,8 @@ SDL_Layer* SDL_Layer::GetInstance() {
 // SDL_Layer::GetNumAxes
 //=============================================================================
 
-int SDL_Layer::GetNumAxes (int js) {
+int SDL_Layer::GetNumAxes (int js)
+{
     return SDL_JoystickNumAxes (SDL_JoystickOpen (js));
 }
 
@@ -82,7 +87,8 @@ int SDL_Layer::GetNumAxes (int js) {
 // SDL_Layer::GetNumHats
 //=============================================================================
 
-int SDL_Layer::GetNumHats (int js) {
+int SDL_Layer::GetNumHats (int js)
+{
     return SDL_JoystickNumHats (SDL_JoystickOpen (js));
 }
 
@@ -90,7 +96,8 @@ int SDL_Layer::GetNumHats (int js) {
 // SDL_Layer::GetNumButtons
 //=============================================================================
 
-int SDL_Layer::GetNumButtons (int js) {
+int SDL_Layer::GetNumButtons (int js)
+{
     return SDL_JoystickNumButtons (SDL_JoystickOpen (js));
 }
 
@@ -98,7 +105,8 @@ int SDL_Layer::GetNumButtons (int js) {
 // SDL_Layer::GetJoystickName
 //=============================================================================
 
-QString SDL_Layer::GetJoystickName (int js) {
+QString SDL_Layer::GetJoystickName (int js)
+{
     return SDL_JoystickNameForIndex (js);
 }
 
@@ -106,7 +114,8 @@ QString SDL_Layer::GetJoystickName (int js) {
 // SDL_Layer::JoystickList
 //=============================================================================
 
-QStringList SDL_Layer::JoystickList() {
+QStringList SDL_Layer::JoystickList()
+{
     QStringList list;
 
     for (int i = 0; i < SDL_NumJoysticks(); ++i)
@@ -119,7 +128,8 @@ QStringList SDL_Layer::JoystickList() {
 // SDL_Layer::Init
 //=============================================================================
 
-void SDL_Layer::Init() {
+void SDL_Layer::Init()
+{
     QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (ReadSdlEvents()));
 }
 
@@ -127,7 +137,8 @@ void SDL_Layer::Init() {
 // SDL_Layer::SetUpdateInterval
 //=============================================================================
 
-void SDL_Layer::SetUpdateInterval (int time) {
+void SDL_Layer::SetUpdateInterval (int time)
+{
     if (time >= 0)
         m_time = time;
 }
@@ -136,56 +147,60 @@ void SDL_Layer::SetUpdateInterval (int time) {
 // SDL_Layer::Rumble
 //=============================================================================
 
-void SDL_Layer::Rumble (int js, int time) {
+void SDL_Layer::Rumble (int js, int time)
+{
     SDL_InitSubSystem (SDL_INIT_HAPTIC);
     SDL_Haptic* haptic = SDL_HapticOpen (js);
 
-    if (haptic != Q_NULLPTR) {
-        SDL_HapticRumbleInit (haptic);
-        SDL_HapticRumblePlay (haptic, 1, time);
-    }
+    if (haptic != Q_NULLPTR)
+        {
+            SDL_HapticRumbleInit (haptic);
+            SDL_HapticRumblePlay (haptic, 1, time);
+        }
 }
 
 //=============================================================================
 // SDL_Layer::GetHat
 //=============================================================================
 
-GM_Hat SDL_Layer::GetHat (const SDL_Event* event) {
+GM_Hat SDL_Layer::GetHat (const SDL_Event* event)
+{
     GM_Hat hat;
 
     hat.id = event->jhat.hat;
     hat.value = event->jhat.value;
     hat.joystick = GetJoystick (event);
 
-    switch (hat.value) {
-    case SDL_HAT_RIGHTUP:
-        hat.angle = 45;
-        break;
-    case SDL_HAT_RIGHTDOWN:
-        hat.angle = 135;
-        break;
-    case SDL_HAT_LEFTDOWN:
-        hat.angle = 225;
-        break;
-    case SDL_HAT_LEFTUP:
-        hat.angle = 315;
-        break;
-    case SDL_HAT_UP:
-        hat.angle = 0;
-        break;
-    case SDL_HAT_RIGHT:
-        hat.angle = 90;
-        break;
-    case SDL_HAT_DOWN:
-        hat.angle = 180;
-        break;
-    case SDL_HAT_LEFT:
-        hat.angle = 270;
-        break;
-    default:
-        hat.angle = -1;
-        break;
-    }
+    switch (hat.value)
+        {
+        case SDL_HAT_RIGHTUP:
+            hat.angle = 45;
+            break;
+        case SDL_HAT_RIGHTDOWN:
+            hat.angle = 135;
+            break;
+        case SDL_HAT_LEFTDOWN:
+            hat.angle = 225;
+            break;
+        case SDL_HAT_LEFTUP:
+            hat.angle = 315;
+            break;
+        case SDL_HAT_UP:
+            hat.angle = 0;
+            break;
+        case SDL_HAT_RIGHT:
+            hat.angle = 90;
+            break;
+        case SDL_HAT_DOWN:
+            hat.angle = 180;
+            break;
+        case SDL_HAT_LEFT:
+            hat.angle = 270;
+            break;
+        default:
+            hat.angle = -1;
+            break;
+        }
 
     return hat;
 }
@@ -194,7 +209,8 @@ GM_Hat SDL_Layer::GetHat (const SDL_Event* event) {
 // SDL_Layer::GetAxis
 //=============================================================================
 
-GM_Axis SDL_Layer::GetAxis (const SDL_Event* event) {
+GM_Axis SDL_Layer::GetAxis (const SDL_Event* event)
+{
     GM_Axis axis;
 
     axis.id = event->jaxis.axis;
@@ -208,7 +224,8 @@ GM_Axis SDL_Layer::GetAxis (const SDL_Event* event) {
 // SDL_Layer::GetButton
 //=============================================================================
 
-GM_Button SDL_Layer::GetButton (const SDL_Event* event) {
+GM_Button SDL_Layer::GetButton (const SDL_Event* event)
+{
     GM_Button button;
 
     button.id = event->jbutton.button;
@@ -222,7 +239,8 @@ GM_Button SDL_Layer::GetButton (const SDL_Event* event) {
 // SDL_Layer::GetJoystick
 //=============================================================================
 
-GM_Joystick SDL_Layer::GetJoystick (const SDL_Event* event) {
+GM_Joystick SDL_Layer::GetJoystick (const SDL_Event* event)
+{
     GM_Joystick stick;
 
     stick.id = GetDynamicID (event->jdevice.which);
@@ -237,7 +255,8 @@ GM_Joystick SDL_Layer::GetJoystick (const SDL_Event* event) {
 // SDL_Layer::GetDynamicID
 //=============================================================================
 
-int SDL_Layer::GetDynamicID (int id) {
+int SDL_Layer::GetDynamicID (int id)
+{
     id = m_tracker - (id + 1);
     if (id < 0) id = abs (id);
     if (id >= SDL_NumJoysticks()) id -= 1;
@@ -249,7 +268,8 @@ int SDL_Layer::GetDynamicID (int id) {
 // SDL_Layer::ScaleAxisOutput
 //=============================================================================
 
-double SDL_Layer::ScaleAxisOutput (double input) {
+double SDL_Layer::ScaleAxisOutput (double input)
+{
     return input /= 32767;
 }
 
@@ -257,33 +277,36 @@ double SDL_Layer::ScaleAxisOutput (double input) {
 // SDL_Layer::ReadSdlEvents
 //=============================================================================
 
-void SDL_Layer::ReadSdlEvents() {
+void SDL_Layer::ReadSdlEvents()
+{
     SDL_Event event;
-    while (SDL_PollEvent (&event)) {
-        switch (event.type) {
-        case SDL_JOYDEVICEADDED:
-            ++m_tracker;
-            emit CountChanged (JoystickList());
-            emit CountChanged (SDL_NumJoysticks());
-            break;
-        case SDL_JOYDEVICEREMOVED:
-            emit CountChanged (JoystickList());
-            emit CountChanged (SDL_NumJoysticks());
-            break;
-        case SDL_JOYAXISMOTION:
-            OnAxisEvent (&event);
-            break;
-        case SDL_JOYBUTTONUP:
-            OnButtonEvent (&event);
-            break;
-        case SDL_JOYBUTTONDOWN:
-            OnButtonEvent (&event);
-            break;
-        case SDL_JOYHATMOTION:
-            OnHatEvent (&event);
-            break;
+    while (SDL_PollEvent (&event))
+        {
+            switch (event.type)
+                {
+                case SDL_JOYDEVICEADDED:
+                    ++m_tracker;
+                    emit CountChanged (JoystickList());
+                    emit CountChanged (SDL_NumJoysticks());
+                    break;
+                case SDL_JOYDEVICEREMOVED:
+                    emit CountChanged (JoystickList());
+                    emit CountChanged (SDL_NumJoysticks());
+                    break;
+                case SDL_JOYAXISMOTION:
+                    OnAxisEvent (&event);
+                    break;
+                case SDL_JOYBUTTONUP:
+                    OnButtonEvent (&event);
+                    break;
+                case SDL_JOYBUTTONDOWN:
+                    OnButtonEvent (&event);
+                    break;
+                case SDL_JOYHATMOTION:
+                    OnHatEvent (&event);
+                    break;
+                }
         }
-    }
 
     QTimer::singleShot (m_time, this, SLOT (ReadSdlEvents()));
 }
@@ -292,7 +315,8 @@ void SDL_Layer::ReadSdlEvents() {
 // SDL_Layer::OnHatEvent
 //=============================================================================
 
-void SDL_Layer::OnHatEvent (const SDL_Event* event) {
+void SDL_Layer::OnHatEvent (const SDL_Event* event)
+{
     emit HatEvent (GetHat (event));
 }
 
@@ -300,7 +324,8 @@ void SDL_Layer::OnHatEvent (const SDL_Event* event) {
 // SDL_Layer::OnAxisEvent
 //=============================================================================
 
-void SDL_Layer::OnAxisEvent (const SDL_Event* event) {
+void SDL_Layer::OnAxisEvent (const SDL_Event* event)
+{
     emit AxisEvent (GetAxis (event));
 }
 
@@ -308,6 +333,7 @@ void SDL_Layer::OnAxisEvent (const SDL_Event* event) {
 // SDL_Layer::OnButtonEvent
 //=============================================================================
 
-void SDL_Layer::OnButtonEvent (const SDL_Event* event) {
+void SDL_Layer::OnButtonEvent (const SDL_Event* event)
+{
     emit ButtonEvent (GetButton (event));
 }

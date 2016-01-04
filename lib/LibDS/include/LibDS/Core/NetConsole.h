@@ -32,26 +32,33 @@
  * The DS_NetConsole class receives and decodes messages broadcasted
  * by the robot over the local area network.
  */
-class LIB_DS_DECL DS_NetConsole : public QObject {
+class LIB_DS_DECL DS_NetConsole : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     explicit DS_NetConsole();
 
-  signals:
+public slots:
+    /**
+     * Changes the port used by the net console to get robot data
+     */
+    void SetPort (int port);
+
+signals:
     /**
      * Emitted when a message is received from the robot or the
      * internal Driver Station system
      */
     void NewMessage (QString);
 
-  private:
+private:
     /**
      * The network socket in which we receive data from the robot
      */
     QUdpSocket m_socket;
 
-  private slots:
+private slots:
     /**
      * @internal
      * Called when we receive data in the network socket.

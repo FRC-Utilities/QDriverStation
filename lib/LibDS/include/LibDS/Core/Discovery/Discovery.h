@@ -32,10 +32,11 @@
  * mDNS address without relying on third-party applications
  * or libraries.
  */
-class LIB_DS_DECL NetworkDiscovery : public QObject {
+class LIB_DS_DECL NetworkDiscovery : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     explicit NetworkDiscovery();
 
     /**
@@ -43,7 +44,8 @@ class LIB_DS_DECL NetworkDiscovery : public QObject {
      * can use to communicate with the robot through a direct
      * connection
      */
-    enum AddressType {
+    enum AddressType
+    {
         kMDNS,
         kIPv4,
         kIPv6,
@@ -56,7 +58,7 @@ class LIB_DS_DECL NetworkDiscovery : public QObject {
      */
     AddressType GetAddressType (QString address);
 
-  public slots:
+public slots:
     /**
      * Uses the \c getAddressType() function to 'guess' the \a address
      * type and the steps that we need to take to resolve it.
@@ -68,20 +70,20 @@ class LIB_DS_DECL NetworkDiscovery : public QObject {
      */
     void GetIP (QString address, AddressType type);
 
-  signals:
+signals:
     /**
      * Emitted when the \a ip of the \a address is resolved
      */
     void IpFound (QString address, QString ip);
 
-  private slots:
+private slots:
     /**
      * Gets the available addresses from the \a info object and
      * emits the \c ipFound() signal with the appropiate data
      */
     void OnLookupFinished (QHostInfo info);
 
-  private:
+private:
     /**
      * Figures out the IP address of a mDNS domain
      */

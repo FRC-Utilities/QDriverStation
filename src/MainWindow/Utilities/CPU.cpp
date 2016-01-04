@@ -36,7 +36,8 @@ static PDH_HCOUNTER cpuTotal;
 // CPU::InitQueryProcess
 //=============================================================================
 
-void CPU::InitQueryProcess() {
+void CPU::InitQueryProcess()
+{
 #if defined Q_OS_WIN
     PdhOpenQuery (0, 0, &cpuQuery);
     PdhAddCounter (cpuQuery, L"\\Processor(_Total)\\% Processor Time", 0,
@@ -49,7 +50,8 @@ void CPU::InitQueryProcess() {
 // CPU::GetUsage
 //=============================================================================
 
-int CPU::GetUsage() {
+int CPU::GetUsage()
+{
     int usage = 0;
 
 #if defined Q_OS_WIN

@@ -41,25 +41,26 @@
  * The corrective actions typically include placing the computer system in a
  * safe state and restoring normal system operation.
  */
-class LIB_DS_DECL DS_Watchdog : public QObject {
+class LIB_DS_DECL DS_Watchdog : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     explicit DS_Watchdog();
 
-  public slots:
+public slots:
     /**
      * Kicks the dog so that it doesn't bite us
      */
     void Restart();
 
-  signals:
+signals:
     /**
      * Emitted when the dog gets angry and wants to bite you
      */
     void Timeout();
 
-  private:
+private:
     /**
      * Defines how patient our dear dog is
      */

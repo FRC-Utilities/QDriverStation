@@ -34,15 +34,13 @@
 
 /**
  * Represents the available operation modes of the robot.
- * If you have ever participated in a FRC team, you will understand the
- * importance of defining how the robot will behave.
  */
-enum LIB_DS_DECL DS_ControlMode {
-    kControlTest,           /**< Individual actuators can be moved */
-    kControlDisabled,       /**< Robot is idle */
-    kControlAutonomous,     /**< Robot takes over the world */
-    kControlTeleoperated,   /**< User moves the robot */
-    kControlEmergencyStop,  /**< Forced robot stop */
+enum LIB_DS_DECL DS_ControlMode
+{
+    kControlTest         =  1, /**< Individual actuators can be moved */
+    kControlAutonomous   =  2, /**< Robot takes over the world */
+    kControlTeleoperated =  3, /**< User moves the robot */
+    kControlInvalid      = -1, /**< Blame the programmers if this is used */
 };
 
 /**
@@ -50,42 +48,51 @@ enum LIB_DS_DECL DS_ControlMode {
  * Its important to specify which alliance we use in order to tell
  * the robot program 'where it is' and communicate with the FMS correctly
  */
-enum LIB_DS_DECL DS_Alliance {
-    kAllianceRed1  = 0x00,  /** Red alliance, position 1 */
-    kAllianceRed2  = 0x01,  /** Red alliance, position 2 */
-    kAllianceRed3  = 0x02,  /** Red alliance, position 3 */
-    kAllianceBlue1 = 0x03,  /** Blue alliance, position 1 */
-    kAllianceBlue2 = 0x04,  /** Blue alliance, position 2 */
-    kAllianceBlue3 = 0x05   /** Blue alliance, position 3 */
+enum LIB_DS_DECL DS_Alliance
+{
+    kAllianceRed1  = 0,  /** Red alliance, position 1 */
+    kAllianceRed2  = 1,  /** Red alliance, position 2 */
+    kAllianceRed3  = 2,  /** Red alliance, position 3 */
+    kAllianceBlue1 = 3,  /** Blue alliance, position 1 */
+    kAllianceBlue2 = 4,  /** Blue alliance, position 2 */
+    kAllianceBlue3 = 5,  /** Blue alliance, position 3 */
 };
 
 /**
  * Represents the current status of the communications
  */
-enum LIB_DS_DECL DS_CommStatus {
-    kFull    = 0x00, /** The DS is communicating with the robot */
-    kPartial = 0x01, /** The robot responds ping requests, but does not respond to DS */
-    kFailing = 0x02  /** The robot does not respond to ping requests */
+enum LIB_DS_DECL DS_CommStatus
+{
+    kFull    = 0, /** The DS is communicating with the robot */
+    kPartial = 1, /** The robot responds ping requests, but does not respond to DS */
+    kFailing = 2, /** The robot does not respond to ping requests */
 };
 
 /**
  * Represents a joystick in the DS
  */
-struct LIB_DS_DECL DS_Joystick {
+struct LIB_DS_DECL DS_Joystick
+{
     int numAxes;
+    int numHats;
     int numButtons;
-    int numPovHats;
 
-    bool* buttons;
-    int* povHats;
+    int* hats;
     double* axes;
+    bool* buttons;
 };
 
-/* Color codes */
-const QString LIB_DS_DECL DS_Red       = "#f00";
-const QString LIB_DS_DECL DS_Green     = "#0f0";
-const QString LIB_DS_DECL DS_Blue      = "#00f";
-const QString LIB_DS_DECL DS_BlueGreen = "#0ff";
+/**
+ * Represents a set of CAN information
+ */
+struct LIB_DS_DECL DS_CAN
+{
+    quint8 util;
+    quint8 busOff;
+    quint8 txFull;
+    quint8 receive;
+    quint8 transmit;
+};
 
 /**
  * Returns the current timezone code by calculating the difference between
@@ -108,6 +115,17 @@ void LIB_DS_DECL DS_SendMessage (QString message);
  *     - And so on...
  */
 QString LIB_DS_DECL DS_GetStaticIp (int team, int host);
+
+/**
+ * Returns a calculated IP address based on the team address.
+ *
+ * For example:
+ *     - \c DS_GetStaticIp(10, 3794, 1) would return \c 10.37.94.1
+ *     - \c DS_GetStaticIp(177, 3794, 2) would return \c 177.37.94.2
+ *     - \c DS_GetStaticIp(10m 118, 3) would return \c 10.01.18.3
+ *     - And so on...
+ */
+QString LIB_DS_DECL DS_GetStaticIp (int net, int team, int host);
 
 /**
  * Returns an user-friendly string given the inputed robot control mode

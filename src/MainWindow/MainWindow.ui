@@ -39,6 +39,9 @@
 	background-color: rgba(200,200,200,10);
 	padding: 8px;
 }
+QPushButton:disabled {
+	color:#888;
+}
 QPushButton:checked {
 	background-color: rgba(0,0,0,80);
 }</string>
@@ -2039,8 +2042,8 @@ text-align: left;</string>
   </connection>
  </connections>
  <buttongroups>
+  <buttongroup name="WindowModeGroup"/>
   <buttongroup name="RobotStatusGroup"/>
   <buttongroup name="RobotModeGroup"/>
-  <buttongroup name="WindowModeGroup"/>
  </buttongroups>
 </ui>

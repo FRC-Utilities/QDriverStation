@@ -41,13 +41,14 @@ class DriverStation;
  * parses SDL events into Qt signals to easily have access to joystick data and
  * implement methods to react to joystick input.
  */
-class SDL_Layer : public QObject {
+class SDL_Layer : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     static SDL_Layer* GetInstance();
 
-  public slots:
+public slots:
     /**
      * Returns the number of axes that the selected \a joystick has
      */
@@ -96,7 +97,7 @@ class SDL_Layer : public QObject {
      */
     void Rumble (int js, int time);
 
-  signals:
+signals:
     /**
      * Emitted when a joystick is attached or removed
      */
@@ -125,7 +126,7 @@ class SDL_Layer : public QObject {
      */
     void ButtonEvent (GM_Button);
 
-  private:
+private:
     /**
      * Represents the update/refresh interval of the application.
      * Note that we use a continous loop to read joystick data, and
@@ -193,13 +194,13 @@ class SDL_Layer : public QObject {
      */
     double ScaleAxisOutput (double input);
 
-  protected:
+protected:
     explicit SDL_Layer();
     ~SDL_Layer();
 
     static SDL_Layer* s_instance;
 
-  private slots:
+private slots:
     /**
      * @internal
      * Polls the SDL events and calls the appropriate handler functions.

@@ -41,7 +41,8 @@ extern "C" {
 typedef Sint64 SDL_TouchID;
 typedef Sint64 SDL_FingerID;
 
-typedef struct SDL_Finger {
+typedef struct SDL_Finger
+{
     SDL_FingerID id;
     float x;
     float y;

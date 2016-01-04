@@ -1,4 +1,4 @@
-s2#!/bin/bash
+#!/bin/bash
 
 # Description: This script changes the style format of
 #              all the source code of the project.
@@ -7,7 +7,7 @@ s2#!/bin/bash
 cd "$(dirname ${BASH_SOURCE[0]})"
 
 # Style and format recursively
-astyle --pad-oper --pad-first-paren-out --align-pointer=type --remove-brackets --convert-tabs --max-code-length=80 --style=google --lineend=windows --suffix=none --recursive ../*.h ../*.cpp
+astyle --pad-oper --pad-first-paren-out --align-pointer=type --remove-brackets --convert-tabs --max-code-length=80 --style=gnu --lineend=windows --suffix=none --recursive ../../*.h ../../*.cpp
 
 # Notify the user that we are done
 echo

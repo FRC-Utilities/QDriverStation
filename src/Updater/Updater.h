@@ -35,13 +35,14 @@
  * \class Updater
  * \brief Implements a very simple auto-updater.
  */
-class Updater : public QObject {
+class Updater : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     explicit Updater();
 
-  private slots:
+private slots:
     void ShowUpdateMessages();
     void CheckForUpdates (QString url);
     void OnServerReply (QNetworkReply* reply);
@@ -50,7 +51,7 @@ class Updater : public QObject {
 
     QString ReadKey (QString data, QString key);
 
-  private:
+private:
     bool m_updateAvailable;
 
     QString m_version;

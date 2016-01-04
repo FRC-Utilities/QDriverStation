@@ -83,7 +83,8 @@ extern DECLSPEC SDL_bool SDLCALL SDL_IsShapedWindow (const SDL_Window* window);
 
 /** \brief An enum denoting the specific type of contents present in an
  * SDL_WindowShapeParams union. */
-typedef enum {
+typedef enum
+{
     /** \brief The default mode, a binarized alpha cutoff of 1. */
     ShapeModeDefault,
     /** \brief A binarized alpha cutoff with a given integer value. */
@@ -100,7 +101,8 @@ typedef enum {
    mode == ShapeModeReverseBinarizeAlpha)
 
 /** \brief A union containing parameters for shaped windows. */
-typedef union {
+typedef union
+{
     /** \brief a cutoff alpha value for binarization of the window shape's alpha
     * channel. */
     Uint8 binarizationCutoff;
@@ -109,7 +111,8 @@ typedef union {
 
 /** \brief A struct that tags the SDL_WindowShapeParams union with an enum
  * describing the type of its contents. */
-typedef struct SDL_WindowShapeMode {
+typedef struct SDL_WindowShapeMode
+{
     /** \brief The mode of these window-shape parameters. */
     WindowShapeMode mode;
     /** \brief Window-shape parameters. */

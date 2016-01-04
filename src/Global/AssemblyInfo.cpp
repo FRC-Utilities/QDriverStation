@@ -26,7 +26,8 @@
 // AssemblyInfo::Name
 //=============================================================================
 
-QString AssemblyInfo::Name() {
+QString AssemblyInfo::Name()
+{
     return "QDriverStation";
 }
 
@@ -34,7 +35,8 @@ QString AssemblyInfo::Name() {
 // AssemblyInfo::Major
 //=============================================================================
 
-QString AssemblyInfo::Major() {
+QString AssemblyInfo::Major()
+{
     return "0";
 }
 
@@ -42,7 +44,8 @@ QString AssemblyInfo::Major() {
 // AssemblyInfo::Minor
 //=============================================================================
 
-QString AssemblyInfo::Minor() {
+QString AssemblyInfo::Minor()
+{
     return "1";
 }
 
@@ -50,7 +53,8 @@ QString AssemblyInfo::Minor() {
 // AssemblyInfo::Build
 //=============================================================================
 
-QString AssemblyInfo::Build() {
+QString AssemblyInfo::Build()
+{
     return "4";
 }
 
@@ -58,7 +62,8 @@ QString AssemblyInfo::Build() {
 // AssemblyInfo::Channel
 //=============================================================================
 
-QString AssemblyInfo::Channel() {
+QString AssemblyInfo::Channel()
+{
     return "RC";
 }
 
@@ -66,7 +71,8 @@ QString AssemblyInfo::Channel() {
 // AssemblyInfo::Version
 //=============================================================================
 
-QString AssemblyInfo::Version() {
+QString AssemblyInfo::Version()
+{
     return QString ("%1.%2%3 %4").arg (Major(),
                                        Minor(),
                                        Build(),
@@ -77,7 +83,8 @@ QString AssemblyInfo::Version() {
 // AssemblyInfo::Organization
 //=============================================================================
 
-QString AssemblyInfo::Organization() {
+QString AssemblyInfo::Organization()
+{
     return "WinT 3794";
 }
 
@@ -85,7 +92,8 @@ QString AssemblyInfo::Organization() {
 // AssemblyInfo::OrganizationDomain
 //=============================================================================
 
-QString AssemblyInfo::OrganizationDomain() {
+QString AssemblyInfo::OrganizationDomain()
+{
     return "http://wint3794.org";
 }
 
@@ -93,6 +101,7 @@ QString AssemblyInfo::OrganizationDomain() {
 // AssemblyInfo::BuildDateTime
 //=============================================================================
 
-QString AssemblyInfo::BuildDateTime() {
+QString AssemblyInfo::BuildDateTime()
+{
     return QObject::tr ("Built on %1 at %2").arg (__DATE__, __TIME__);
 }

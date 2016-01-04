@@ -36,8 +36,9 @@
  * fact we only need one.
  */
 class QSettings;
-class Settings {
-  public:
+class Settings
+{
+public:
     /**
      * Resets the user settings of the application
      */
@@ -54,7 +55,7 @@ class Settings {
      */
     static QVariant Get (QString key, const QVariant& defaultValue);
 
-  private:
+private:
     static QSettings* m_settings;
 };
 

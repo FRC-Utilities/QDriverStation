@@ -26,7 +26,8 @@
 #include "Global/AssemblyInfo.h"
 #include "MainWindow/MainWindow.h"
 
-int main (int argc, char* argv[]) {
+int main (int argc, char* argv[])
+{
     QApplication app (argc, argv);
 
     /* Load the application fonts */

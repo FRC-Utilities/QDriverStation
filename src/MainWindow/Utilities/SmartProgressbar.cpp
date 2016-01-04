@@ -26,7 +26,8 @@
 // SmartProgressbar::SmartProgressbar
 //=============================================================================
 
-SmartProgressbar::SmartProgressbar (QWidget* parent) : QProgressBar (parent) {
+SmartProgressbar::SmartProgressbar (QWidget* parent) : QProgressBar (parent)
+{
     connect (this, SIGNAL (valueChanged (int)), this, SLOT (UpdateColor (int)));
 }
 
@@ -34,7 +35,8 @@ SmartProgressbar::SmartProgressbar (QWidget* parent) : QProgressBar (parent) {
 // SmartProgressbar::SetType
 //=============================================================================
 
-void SmartProgressbar::SetType (Type type) {
+void SmartProgressbar::SetType (Type type)
+{
     m_type = type;
 }
 
@@ -42,23 +44,25 @@ void SmartProgressbar::SetType (Type type) {
 // SmartProgressbar::UpdateColor
 //=============================================================================
 
-void SmartProgressbar::UpdateColor (int value) {
+void SmartProgressbar::UpdateColor (int value)
+{
     QPalette palette;
 
-    switch (m_type) {
-    case kCpuUsageProgressbar:
-        palette.setColor (QPalette::Highlight, QColor ("#dcae00"));
-        break;
+    switch (m_type)
+        {
+        case kCpuUsageProgressbar:
+            palette.setColor (QPalette::Highlight, QColor ("#dcae00"));
+            break;
 
-    case kBatteryProgressbar:
-        if (value <= 25)
-            palette.setColor (QPalette::Highlight, QColor ("#ee141a"));
+        case kBatteryProgressbar:
+            if (value <= 25)
+                palette.setColor (QPalette::Highlight, QColor ("#ee141a"));
 
-        else if (value <= 75)
-            palette.setColor (QPalette::Highlight, QColor ("#deae00"));
+            else if (value <= 75)
+                palette.setColor (QPalette::Highlight, QColor ("#deae00"));
 
-        break;
-    }
+            break;
+        }
 
     setPalette (palette);
 }

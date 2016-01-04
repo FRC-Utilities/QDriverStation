@@ -45,7 +45,8 @@ Dashboard* Dashboard::s_instance = Q_NULLPTR;
 // Dashboard::Dashboard
 //=============================================================================
 
-Dashboard::Dashboard() {
+Dashboard::Dashboard()
+{
     connect (qApp, SIGNAL (aboutToQuit()), this, SLOT (QuitDashboard()));
     LoadDashboard();
 }
@@ -54,7 +55,8 @@ Dashboard::Dashboard() {
 // Dashboard::~Dashboard
 //=============================================================================
 
-Dashboard::~Dashboard() {
+Dashboard::~Dashboard()
+{
     delete s_instance;
 }
 
@@ -62,7 +64,8 @@ Dashboard::~Dashboard() {
 // Dashboard::GetInstance
 //=============================================================================
 
-Dashboard* Dashboard::GetInstance() {
+Dashboard* Dashboard::GetInstance()
+{
     if (s_instance == Q_NULLPTR)
         s_instance = new Dashboard();
 
@@ -73,39 +76,43 @@ Dashboard* Dashboard::GetInstance() {
 // Dashboard::LoadDashboard
 //=============================================================================
 
-void Dashboard::LoadDashboard() {
+void Dashboard::LoadDashboard()
+{
     QString path;
     m_current = (Dashboards) Settings::Get ("Dashboard", kNone).toInt();
 
     /* Open the SFX Dashboard */
-    if (m_current == kSfxDashboard) {
-        QDir dir;
-        QStringList files;
+    if (m_current == kSfxDashboard)
+        {
+            QDir dir;
+            QStringList files;
 
-        /* Go to the WPILib directory and get the available folders */
-        dir.cd (QString ("%1/wpilib/tools/").arg (QDir::homePath()));
-        files = dir.entryList (QDir::Dirs);
+            /* Go to the WPILib directory and get the available folders */
+            dir.cd (QString ("%1/wpilib/tools/").arg (QDir::homePath()));
+            files = dir.entryList (QDir::Dirs);
 
-        /* In theory, the only folder should contain the SFX DB, open it */
-        if (files.count() >= 3)
-            path = QString ("java -jar \"%1/%2/sfx.jar\"")
-                   .arg (dir.absolutePath())
-                   .arg (files.at (2));
-    }
+            /* In theory, the only folder should contain the SFX DB, open it */
+            if (files.count() >= 3)
+                path = QString ("java -jar \"%1/%2/sfx.jar\"")
+                       .arg (dir.absolutePath())
+                       .arg (files.at (2));
+        }
 
     /* Open the SmartDashboard, easy as cake */
-    else if (m_current == kSmartDashboard) {
-        path = QString ("java -jar \"%1/wpilib/tools/SmartDashboard.jar\"")
-               .arg (QDir::homePath());
-    }
+    else if (m_current == kSmartDashboard)
+        {
+            path = QString ("java -jar \"%1/wpilib/tools/SmartDashboard.jar\"")
+                   .arg (QDir::homePath());
+        }
 
     /* Open the LabVIEW Dashboard */
 #if defined _WIN32 || defined _WIN64
-    else if (m_current == kLabVIEW) {
-        QString pF = IS_64_BIT ? "C:/Program Files (x86)" : "C:/Program Files";
-        path = QString ("%1/FRC Dashboard/Dashboard.exe").arg (pF);
-        path = "\"" + path + "\"";
-    }
+    else if (m_current == kLabVIEW)
+        {
+            QString pF = IS_64_BIT ? "C:/Program Files (x86)" : "C:/Program Files";
+            path = QString ("%1/FRC Dashboard/Dashboard.exe").arg (pF);
+            path = "\"" + path + "\"";
+        }
 #endif
 
     m_process.start (path);
@@ -115,7 +122,8 @@ void Dashboard::LoadDashboard() {
 // Dashboard::QuitDashboard
 //=============================================================================
 
-void Dashboard::QuitDashboard() {
+void Dashboard::QuitDashboard()
+{
     m_process.close();
 }
 
@@ -123,7 +131,8 @@ void Dashboard::QuitDashboard() {
 // Dashboard::ReloadDashboard
 //=============================================================================
 
-void Dashboard::ReloadDashboard() {
+void Dashboard::ReloadDashboard()
+{
     QuitDashboard();
     LoadDashboard();
 }
@@ -132,7 +141,8 @@ void Dashboard::ReloadDashboard() {
 // Dashboard::GetCurrentDashboard
 //=============================================================================
 
-Dashboard::Dashboards Dashboard::GetCurrentDashboard() {
+Dashboard::Dashboards Dashboard::GetCurrentDashboard()
+{
     return m_current;
 }
 
@@ -140,7 +150,8 @@ Dashboard::Dashboards Dashboard::GetCurrentDashboard() {
 // Dashboard::GetAvailableDashboards
 //=============================================================================
 
-QStringList Dashboard::GetAvailableDashboards() {
+QStringList Dashboard::GetAvailableDashboards()
+{
     QStringList list;
     list.append ("None");
     list.append ("SFX Dashboard");

@@ -42,10 +42,11 @@
  * and the joystick input. The generated data is then sent to the \a JoystickTab
  * and the Driver Station
  */
-class VirtualJoystick : public QDialog {
+class VirtualJoystick : public QDialog
+{
     Q_OBJECT
 
-  public:
+public:
     VirtualJoystick();
 
     /**
@@ -71,7 +72,7 @@ class VirtualJoystick : public QDialog {
      */
     int GetNumButtons (int js);
 
-  signals:
+signals:
     /**
      * Emitted when the joystick count is adjusted and updated
      */
@@ -100,7 +101,7 @@ class VirtualJoystick : public QDialog {
      */
     void ButtonEvent (GM_Button);
 
-  private slots:
+private slots:
     /**
      * Returns the total number of joysticks, including the SDL joysticks and
      * the virtual joystick
@@ -162,7 +163,7 @@ class VirtualJoystick : public QDialog {
     void OnButtonEvent (GM_Button button);
 
 
-  private:
+private:
     /**
      * If set to \c true, the application will use some keys of the keyboard to
      * simulate a virtual joystick

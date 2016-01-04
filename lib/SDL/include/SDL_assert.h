@@ -98,7 +98,8 @@ disable assertions.
     (void)sizeof((condition));                                                 \
   } while (SDL_NULL_WHILE_LOOP_CONDITION)
 
-typedef enum {
+typedef enum
+{
     SDL_ASSERTION_RETRY,        /**< Retry the assert immediately. */
     SDL_ASSERTION_BREAK,        /**< Make the debugger trigger a breakpoint. */
     SDL_ASSERTION_ABORT,        /**< Terminate the program. */
@@ -106,7 +107,8 @@ typedef enum {
     SDL_ASSERTION_ALWAYS_IGNORE /**< Ignore the assert from now on. */
 } SDL_assert_state;
 
-typedef struct SDL_assert_data {
+typedef struct SDL_assert_data
+{
     int always_ignore;
     unsigned int trigger_count;
     const char* condition;

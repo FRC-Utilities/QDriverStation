@@ -32,7 +32,8 @@
 // JoysticksTab::JoysticksTab
 //=============================================================================
 
-JoysticksTab::JoysticksTab (QWidget* parent) : QWidget (parent) {
+JoysticksTab::JoysticksTab (QWidget* parent) : QWidget (parent)
+{
     ui.setupUi (this);
 
     /* Hide the indicator containers */
@@ -60,7 +61,8 @@ JoysticksTab::JoysticksTab (QWidget* parent) : QWidget (parent) {
 // JoysticksTab::~JoysticksTab
 //=============================================================================
 
-JoysticksTab::~JoysticksTab() {
+JoysticksTab::~JoysticksTab()
+{
     delete m_keyboardDrive;
 }
 
@@ -68,7 +70,8 @@ JoysticksTab::~JoysticksTab() {
 // JoysticksTab::ReadSettings
 //=============================================================================
 
-void JoysticksTab::ReadSettings() {
+void JoysticksTab::ReadSettings()
+{
     m_keyboardDrive->ReadSettings();
 }
 
@@ -76,7 +79,8 @@ void JoysticksTab::ReadSettings() {
 // JoysticksTab::ShowKeyboardWindow
 //=============================================================================
 
-void JoysticksTab::ShowKeyboardWindow() {
+void JoysticksTab::ShowKeyboardWindow()
+{
     m_keyboardDrive->show();
 }
 
@@ -84,7 +88,8 @@ void JoysticksTab::ShowKeyboardWindow() {
 // JoysticksTab::GenerateIndicators
 //=============================================================================
 
-void JoysticksTab::GenerateIndicators (int row) {
+void JoysticksTab::GenerateIndicators (int row)
+{
     /* Remove all joystick indicators in the widget */
     foreach (QSpinBox *     b, findChildren<QSpinBox*>())     delete b;
     foreach (QPushButton *  c, findChildren<QPushButton*>())  delete c;
@@ -110,56 +115,60 @@ void JoysticksTab::GenerateIndicators (int row) {
     ui.Buttons->setVisible (buttonCount > 0);
 
     /* Create a progress bar for each axis */
-    for (int i = 0; i < axisCount; ++i) {
-        QPointer<QProgressBar> bar = new QProgressBar (this);
+    for (int i = 0; i < axisCount; ++i)
+        {
+            QPointer<QProgressBar> bar = new QProgressBar (this);
 
-        bar->setMaximumHeight (19);
-        bar->setMinimumHeight (19);
+            bar->setMaximumHeight (19);
+            bar->setMinimumHeight (19);
 
-        bar->setValue (0);
-        bar->setMaximum (100);
-        bar->setMinimum (-100);
-        bar->setFormat  (tr ("Axis %1").arg (i));
+            bar->setValue (0);
+            bar->setMaximum (100);
+            bar->setMinimum (-100);
+            bar->setFormat  (tr ("Axis %1").arg (i));
 
-        m_axes.append (bar);
-        ui.AxesWidget->layout()->addWidget (bar);
-    }
+            m_axes.append (bar);
+            ui.AxesWidget->layout()->addWidget (bar);
+        }
 
     /* Create a button for each joystick button */
-    for (int i = 0; i < buttonCount; ++i) {
-        QPointer<QPushButton> button = new QPushButton (this);
+    for (int i = 0; i < buttonCount; ++i)
+        {
+            QPointer<QPushButton> button = new QPushButton (this);
 
-        button->setEnabled (false);
-        button->setCheckable (true);
-        button->setMaximumSize (18, 12);
-        button->setMinimumSize (18, 12);
-        button->setToolTip     (tr ("Button %1").arg (i));
+            button->setEnabled (false);
+            button->setCheckable (true);
+            button->setMaximumSize (18, 12);
+            button->setMinimumSize (18, 12);
+            button->setToolTip     (tr ("Button %1").arg (i));
 
-        /* Distribute the button items in a nice layout */
-        int row = (i <= 7) ? i : i - 8;
-        int column = (i <= 7) ? 0 : (i / 8);
+            /* Distribute the button items in a nice layout */
+            int row = (i <= 7) ? i : i - 8;
+            int column = (i <= 7) ? 0 : (i / 8);
 
-        m_buttons.append (button);
-        ui.ButtonLayout->addWidget (button, row, column);
-    }
+            m_buttons.append (button);
+            ui.ButtonLayout->addWidget (button, row, column);
+        }
 
     /* Create a spinbox for each joystick hat */
-    for (int i = 0; i < hatCount; ++i) {
-        QPointer<QSpinBox> box = new QSpinBox (this);
+    for (int i = 0; i < hatCount; ++i)
+        {
+            QPointer<QSpinBox> box = new QSpinBox (this);
 
-        box->setRange (0, 360);
-        box->setEnabled (false);
+            box->setRange (0, 360);
+            box->setEnabled (false);
 
-        m_hats.append (box);
-        ui.HatsWidget->layout()->addWidget (box);
-    }
+            m_hats.append (box);
+            ui.HatsWidget->layout()->addWidget (box);
+        }
 }
 
 //=============================================================================
 // JoysticksTab::OnCountChanged
 //=============================================================================
 
-void JoysticksTab::OnCountChanged (QStringList list) {
+void JoysticksTab::OnCountChanged (QStringList list)
+{
     /* A joystick was removed */
     if (list.count() < ui.JoystickList->count())
         emit JoystickRemoved();
@@ -168,13 +177,14 @@ void JoysticksTab::OnCountChanged (QStringList list) {
     ui.JoystickList->clear();
 
     /* Put the current joysticks in the joystick list */
-    if (list.count() > 0) {
-        for (int i = 1; i <= list.count(); ++i)
-            ui.JoystickList->addItem (QString ("%1: ").arg (i) + list.at (i - 1));
+    if (list.count() > 0)
+        {
+            for (int i = 1; i <= list.count(); ++i)
+                ui.JoystickList->addItem (QString ("%1: ").arg (i) + list.at (i - 1));
 
-        /* Select the first item in the joystick selector */
-        ui.JoystickList->setCurrentRow (0);
-    }
+            /* Select the first item in the joystick selector */
+            ui.JoystickList->setCurrentRow (0);
+        }
 
     /* Notify other objects that JS count has changed */
     emit StatusChanged (list.count() > 0);
@@ -184,7 +194,8 @@ void JoysticksTab::OnCountChanged (QStringList list) {
 // JoysticksTab::OnHatEvent
 //=============================================================================
 
-void JoysticksTab::OnHatEvent (const GM_Hat& hat) {
+void JoysticksTab::OnHatEvent (const GM_Hat& hat)
+{
     if (ui.JoystickList->currentRow() != hat.joystick.id)
         return;
 
@@ -196,7 +207,8 @@ void JoysticksTab::OnHatEvent (const GM_Hat& hat) {
 // JoysticksTab::OnAxisEvent
 //=============================================================================
 
-void JoysticksTab::OnAxisEvent (const GM_Axis& axis) {
+void JoysticksTab::OnAxisEvent (const GM_Axis& axis)
+{
     if (ui.JoystickList->currentRow() != axis.joystick.id)
         return;
 
@@ -208,7 +220,8 @@ void JoysticksTab::OnAxisEvent (const GM_Axis& axis) {
 // JoysticksTab::OnButtonEvent
 //=============================================================================
 
-void JoysticksTab::OnButtonEvent (const GM_Button& button) {
+void JoysticksTab::OnButtonEvent (const GM_Button& button)
+{
     if (ui.JoystickList->currentRow() != button.joystick.id)
         return;
 

@@ -32,7 +32,8 @@ QSettings* Settings::m_settings = new QSettings (AssemblyInfo::Organization(),
 // Settings::Clear
 //=============================================================================
 
-void Settings::Clear() {
+void Settings::Clear()
+{
     m_settings->clear();
 }
 
@@ -40,7 +41,8 @@ void Settings::Clear() {
 // Settings::Set
 //=============================================================================
 
-void Settings::Set (QString key, const QVariant& value) {
+void Settings::Set (QString key, const QVariant& value)
+{
     m_settings->setValue (key, value);
 }
 
@@ -48,6 +50,7 @@ void Settings::Set (QString key, const QVariant& value) {
 // Settings::Get
 //=============================================================================
 
-QVariant Settings::Get (QString key, const QVariant& defaultValue) {
+QVariant Settings::Get (QString key, const QVariant& defaultValue)
+{
     return m_settings->value (key, defaultValue);
 }

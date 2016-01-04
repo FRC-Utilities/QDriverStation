@@ -34,10 +34,11 @@
  * of the DriverStation and to change the palette of the application
  * (ex: to match the colors of the user's team)
  */
-class SettingsDialog : public QDialog {
+class SettingsDialog : public QDialog
+{
     Q_OBJECT
 
-  public:
+public:
     /**
      * @internal
      * Configures the user interface and the dialog and loads the saved
@@ -50,7 +51,8 @@ class SettingsDialog : public QDialog {
      * of the application. The colors in this structure will be adapted
      * automatically by the application to change the look of the widgets
      */
-    enum Colors {
+    enum Colors
+    {
         Base,       /**< Used for the base color of the window */
         Highlight,  /**< Used for highlighted elements */
         Background, /**< Used to fill the background of most widgets */
@@ -79,11 +81,11 @@ class SettingsDialog : public QDialog {
      */
     void ResetSettings();
 
-  signals:
+signals:
     void UpdateColors();
     void SettingsChanged();
 
-  private:
+private:
     /**
      * The user-interface components
      */
@@ -99,7 +101,7 @@ class SettingsDialog : public QDialog {
      */
     QList<QLineEdit*> m_colorTexts;
 
-  private slots:
+private slots:
     /**
      * @internal
      * Changes the palette of the application based on current settings

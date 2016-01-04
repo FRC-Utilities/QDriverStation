@@ -33,7 +33,8 @@ static SYSTEM_POWER_STATUS power;
 // Battery::IsConnectedToPowerSupply
 //=============================================================================
 
-bool Battery::IsConenctedToPowerSupply() {
+bool Battery::IsConenctedToPowerSupply()
+{
 #if defined Q_OS_WIN
     GetSystemPowerStatus (&power);
     return power.ACLineStatus != 0;
@@ -75,7 +76,8 @@ bool Battery::IsConenctedToPowerSupply() {
 // Battery::CurrentLevel
 //=============================================================================
 
-int Battery::CurrentLevel() {
+int Battery::CurrentLevel()
+{
 #if defined Q_OS_WIN
     GetSystemPowerStatus (&power);
     return static_cast<int> (power.BatteryLifePercent);

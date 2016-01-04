@@ -38,7 +38,8 @@ const QString FOREGROUND = "#dedede";
 // SettingsDialog::SettingsDialog
 //=============================================================================
 
-SettingsDialog::SettingsDialog() {
+SettingsDialog::SettingsDialog()
+{
     ui.setupUi (this);
     resize (0, 0);
 
@@ -70,7 +71,8 @@ SettingsDialog::SettingsDialog() {
 // SettingsDialog::UpdateRobotAddressPlaceholder
 //=============================================================================
 
-void SettingsDialog::UpdateRobotAddressPlaceholder() {
+void SettingsDialog::UpdateRobotAddressPlaceholder()
+{
     ui.CustomAddressEdit->setPlaceholderText (
         DriverStation::GetInstance()->DefaultRobotAddress());
 }
@@ -79,7 +81,8 @@ void SettingsDialog::UpdateRobotAddressPlaceholder() {
 // SettingsDialog::ReadSettings
 //=============================================================================
 
-void SettingsDialog::ReadSettings() {
+void SettingsDialog::ReadSettings()
+{
     LoadApplicationColors();
 
     /* Get saved colors */
@@ -108,7 +111,8 @@ void SettingsDialog::ReadSettings() {
 // SettingsDialog::ApplySettings
 //=============================================================================
 
-void SettingsDialog::ApplySettings() {
+void SettingsDialog::ApplySettings()
+{
     /* Save colors */
     Settings::Set ("Base", ui.BaseEdit->text());
     Settings::Set ("Highlight", ui.HighlightEdit->text());
@@ -133,7 +137,8 @@ void SettingsDialog::ApplySettings() {
 // SettingsDialog::ResetSettings
 //=============================================================================
 
-void SettingsDialog::ResetSettings() {
+void SettingsDialog::ResetSettings()
+{
     Settings::Set ("Base", BASE);
     Settings::Set ("Highlight", HIGHLIGHT);
     Settings::Set ("Background", BACKGROUND);
@@ -146,7 +151,8 @@ void SettingsDialog::ResetSettings() {
 // SettingsDialog::LoadApplicationColors
 //=============================================================================
 
-void SettingsDialog::LoadApplicationColors() {
+void SettingsDialog::LoadApplicationColors()
+{
     /* Get the saved colors */
     QColor base       = QColor (Settings::Get ("Base",
                                 BASE).toString());
@@ -181,7 +187,8 @@ void SettingsDialog::LoadApplicationColors() {
 // SettingsDialog::OnResetClicked
 //=============================================================================
 
-void SettingsDialog::OnResetClicked() {
+void SettingsDialog::OnResetClicked()
+{
     int ret = QMessageBox::question (this,
                                      tr ("Clear Settings"),
                                      tr ("Are you sure you want to clear the "
@@ -195,7 +202,8 @@ void SettingsDialog::OnResetClicked() {
 // SettingsDialog::OnApplyClicked
 //=============================================================================
 
-void SettingsDialog::OnApplyClicked() {
+void SettingsDialog::OnApplyClicked()
+{
     hide();
     ApplySettings();
 }
@@ -204,7 +212,8 @@ void SettingsDialog::OnApplyClicked() {
 // SettingsDialog::OnCancelClicked
 //=============================================================================
 
-void SettingsDialog::OnCancelClicked() {
+void SettingsDialog::OnCancelClicked()
+{
     hide();
     ReadSettings();
 }
@@ -213,7 +222,8 @@ void SettingsDialog::OnCancelClicked() {
 // SettingsDialog::OnSelectorClicked
 //=============================================================================
 
-void SettingsDialog::OnSelectorClicked() {
+void SettingsDialog::OnSelectorClicked()
+{
     Colors emitter = GetColorType (QObject::sender());
 
     /* Configure the color dialog */
@@ -231,27 +241,29 @@ void SettingsDialog::OnSelectorClicked() {
         return;
 
     /* Update the line edit that matches the button that called this function */
-    switch (emitter) {
-    case Base:
-        ui.BaseEdit->setText (color);
-        break;
-    case Highlight:
-        ui.HighlightEdit->setText (color);
-        break;
-    case Background:
-        ui.BackgroundEdit->setText (color);
-        break;
-    case Foreground:
-        ui.ForegroundEdit->setText (color);
-        break;
-    }
+    switch (emitter)
+        {
+        case Base:
+            ui.BaseEdit->setText (color);
+            break;
+        case Highlight:
+            ui.HighlightEdit->setText (color);
+            break;
+        case Background:
+            ui.BackgroundEdit->setText (color);
+            break;
+        case Foreground:
+            ui.ForegroundEdit->setText (color);
+            break;
+        }
 }
 
 //=============================================================================
 // SettingsDialog::OnColorChanged
 //=============================================================================
 
-void SettingsDialog::OnColorChanged (QString color) {
+void SettingsDialog::OnColorChanged (QString color)
+{
     Colors emitter = GetColorType (QObject::sender());
 
     /* The color is empty, use the previous value */
@@ -266,46 +278,49 @@ void SettingsDialog::OnColorChanged (QString color) {
     QString style = QString ("background-color: %1;").arg (color);
 
     /* Update the preview box that matches the line edit that was changed */
-    switch (emitter) {
-    case Base:
-        ui.BaseEdit->setText (color);
-        ui.BaseBox->setStyleSheet (style);
-        break;
-    case Highlight:
-        ui.HighlightEdit->setText (color);
-        ui.HighlightBox->setStyleSheet (style);
-        break;
-    case Background:
-        ui.BackgroundEdit->setText (color);
-        ui.BackgroundBox->setStyleSheet (style);
-        break;
-    case Foreground:
-        ui.ForegroundEdit->setText (color);
-        ui.ForegroundBox->setStyleSheet (style);
-        break;
-    }
+    switch (emitter)
+        {
+        case Base:
+            ui.BaseEdit->setText (color);
+            ui.BaseBox->setStyleSheet (style);
+            break;
+        case Highlight:
+            ui.HighlightEdit->setText (color);
+            ui.HighlightBox->setStyleSheet (style);
+            break;
+        case Background:
+            ui.BackgroundEdit->setText (color);
+            ui.BackgroundBox->setStyleSheet (style);
+            break;
+        case Foreground:
+            ui.ForegroundEdit->setText (color);
+            ui.ForegroundBox->setStyleSheet (style);
+            break;
+        }
 }
 
 //=============================================================================
 // SettingsDialog::GetColorValue
 //=============================================================================
 
-QColor SettingsDialog::GetColorValue (Colors type) {
+QColor SettingsDialog::GetColorValue (Colors type)
+{
     QColor color;
-    switch (type) {
-    case Base:
-        color = (QColor) ui.BaseEdit->text();
-        break;
-    case Highlight:
-        color = (QColor) ui.HighlightEdit->text();
-        break;
-    case Background:
-        color = (QColor) ui.BackgroundEdit->text();
-        break;
-    case Foreground:
-        color = (QColor) ui.ForegroundEdit->text();
-        break;
-    }
+    switch (type)
+        {
+        case Base:
+            color = (QColor) ui.BaseEdit->text();
+            break;
+        case Highlight:
+            color = (QColor) ui.HighlightEdit->text();
+            break;
+        case Background:
+            color = (QColor) ui.BackgroundEdit->text();
+            break;
+        case Foreground:
+            color = (QColor) ui.ForegroundEdit->text();
+            break;
+        }
 
     return color;
 }
@@ -314,7 +329,8 @@ QColor SettingsDialog::GetColorValue (Colors type) {
 // SettingsDialog::GetColorType
 //=============================================================================
 
-SettingsDialog::Colors SettingsDialog::GetColorType (const QObject* object) {
+SettingsDialog::Colors SettingsDialog::GetColorType (const QObject* object)
+{
     Colors emitter = Base;
     QString name = object->objectName();
 

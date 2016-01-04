@@ -39,13 +39,14 @@
  * This filter is also used to detect when the user presses the
  * SHIFT or SPACE keys to trigger the Emergency Stop in the robot.
  */
-class KeyEventFilter : public QObject {
+class KeyEventFilter : public QObject
+{
     Q_OBJECT
 
-  protected:
+protected:
     bool eventFilter (QObject* object, QEvent* event);
 
-  signals:
+signals:
     void KeyEvent (QKeyEvent* event, bool pressed);
 };
 

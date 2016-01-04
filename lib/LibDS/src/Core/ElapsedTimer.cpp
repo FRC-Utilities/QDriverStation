@@ -27,7 +27,8 @@
 // DS_ElapsedTime::DS_ElapsedTime
 //=============================================================================
 
-DS_ElapsedTime::DS_ElapsedTime() {
+DS_ElapsedTime::DS_ElapsedTime()
+{
     Stop();
     GetElapsedTime();
 
@@ -39,7 +40,8 @@ DS_ElapsedTime::DS_ElapsedTime() {
 // DS_ElapsedTime::Stop
 //=============================================================================
 
-void DS_ElapsedTime::Stop() {
+void DS_ElapsedTime::Stop()
+{
     m_enabled = false;
 }
 
@@ -47,7 +49,8 @@ void DS_ElapsedTime::Stop() {
 // DS_ElapsedTime:Reset
 //=============================================================================
 
-void DS_ElapsedTime::Reset() {
+void DS_ElapsedTime::Reset()
+{
     m_enabled = true;
     m_time.restart();
 }
@@ -56,18 +59,20 @@ void DS_ElapsedTime::Reset() {
 // DS_ElapsedTime::GetElapsedTime
 //=============================================================================
 
-void DS_ElapsedTime::GetElapsedTime() {
-    if (m_enabled) {
-        quint32 msec = m_time.elapsed();
-        quint32 secs = (msec / 1000);
-        quint32 mins = (secs / 60) % 60;
+void DS_ElapsedTime::GetElapsedTime()
+{
+    if (m_enabled)
+        {
+            quint32 msec = m_time.elapsed();
+            quint32 secs = (msec / 1000);
+            quint32 mins = (secs / 60) % 60;
 
-        secs = secs % 60;
-        msec = msec % 1000;
+            secs = secs % 60;
+            msec = msec % 1000;
 
-        emit ElapsedTimeChanged (QString ("%1:%2.%3")
-                                 .arg (mins, 2, 10, QLatin1Char ('0'))
-                                 .arg (secs, 2, 10, QLatin1Char ('0'))
-                                 .arg (QString::number (msec).at (0)));
-    }
+            emit ElapsedTimeChanged (QString ("%1:%2.%3")
+                                     .arg (mins, 2, 10, QLatin1Char ('0'))
+                                     .arg (secs, 2, 10, QLatin1Char ('0'))
+                                     .arg (QString::number (msec).at (0)));
+        }
 }

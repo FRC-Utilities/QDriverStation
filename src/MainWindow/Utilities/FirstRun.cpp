@@ -35,7 +35,8 @@ const QString XBOX_URL =
 // InitTasks::GetTeamNumber
 //=============================================================================
 
-int InitTasks::GetTeamNumber() {
+int InitTasks::GetTeamNumber()
+{
     /* First launch, ask for team number */
     if (Settings::Get ("First Launch", true).toBool())
         return QInputDialog::getInt (0, 0,
@@ -51,7 +52,8 @@ int InitTasks::GetTeamNumber() {
 // InitTasks::FirstRunTasks
 //=============================================================================
 
-void InitTasks::FirstRunTasks() {
+void InitTasks::FirstRunTasks()
+{
     /* Not first run, nothing to do here *flies away* */
     if (!Settings::Get ("First Launch", true).toBool())
         return;

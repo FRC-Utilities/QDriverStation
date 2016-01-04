@@ -36,10 +36,11 @@
  * at the bottom of the screen (as the FRC DriverStation does) and resizing
  * itself to fit the contents of the widgets that contains
  */
-class SmartWindow : public QMainWindow {
+class SmartWindow : public QMainWindow
+{
     Q_OBJECT
 
-  public:
+public:
     /**
      * Initializes the window and moves it to its previous position
      */
@@ -65,7 +66,7 @@ class SmartWindow : public QMainWindow {
      */
     bool PromptOnQuit();
 
-  protected:
+protected:
     /**
      * @internal
      * Saves the window location when its moved
@@ -79,7 +80,7 @@ class SmartWindow : public QMainWindow {
      */
     void closeEvent (QCloseEvent* e);
 
-  public slots:
+public slots:
     /**
      * If \a fixed is set to \c true, the window will resize itself to the
      * smallest size possible and will inhibit the system from resizing it
@@ -101,7 +102,7 @@ class SmartWindow : public QMainWindow {
      */
     void SetWindowMode (const WindowMode& mode);
 
-  private slots:
+private slots:
     /**
      * If the window is not docked and the window is configured to use a fixed
      * size, the function will resize the window to the smallest size possible
@@ -111,7 +112,7 @@ class SmartWindow : public QMainWindow {
      */
     void ResizeToFit();
 
-  private:
+private:
     /**
      * Used to avoid showing a "Do you want to quit?" message twice when
      * closing the applicaiton or closing the window.

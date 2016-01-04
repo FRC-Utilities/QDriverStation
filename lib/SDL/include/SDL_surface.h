@@ -66,7 +66,8 @@ extern "C" {
  * \note  This structure should be treated as read-only, except for \c pixels,
  *        which, if not NULL, contains the raw pixel data for the surface.
  */
-typedef struct SDL_Surface {
+typedef struct SDL_Surface
+{
     Uint32 flags;            /**< Read-only */
     SDL_PixelFormat* format; /**< Read-only */
     int w, h;                /**< Read-only */

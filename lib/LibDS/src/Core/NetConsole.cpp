@@ -27,15 +27,27 @@
 // DS_NetConsole::DS_NetConsole
 //=============================================================================
 
-DS_NetConsole::DS_NetConsole() {
-    m_socket.bind (6666, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
+DS_NetConsole::DS_NetConsole()
+{
     connect (&m_socket, SIGNAL (readyRead()), this, SLOT (ReadSocketData()));
+}
+
+//=============================================================================
+// DS_NetConsole::DS_SetPort
+//=============================================================================
+
+void DS_NetConsole::SetPort (int port)
+{
+    m_socket.bind (QHostAddress::Any, port,
+                   QUdpSocket::ShareAddress |
+                   QUdpSocket::ReuseAddressHint);
 }
 
 //=============================================================================
 // DS_NetConsole::ReadSocketData
 //=============================================================================
 
-void DS_NetConsole::ReadSocketData() {
+void DS_NetConsole::ReadSocketData()
+{
     emit NewMessage (QString::fromUtf8 (DS_GetSocketData (&m_socket)));
 }

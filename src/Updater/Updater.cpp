@@ -26,7 +26,8 @@
 // Updater::Updater
 //=============================================================================
 
-Updater::Updater() {
+Updater::Updater()
+{
     m_version = "";
     m_platform = "";
     m_downloadLink = "";
@@ -55,38 +56,41 @@ Updater::Updater() {
 // Updater::ShowUpdateMessages
 //=============================================================================
 
-void Updater::ShowUpdateMessages() {
-    if (m_updateAvailable) {
-        QMessageBox box;
-        box.setTextFormat (Qt::RichText);
-        box.setIcon (QMessageBox::Information);
-        box.setStandardButtons (QMessageBox::Ok);
-        box.setWindowTitle (tr ("Update Available"));
+void Updater::ShowUpdateMessages()
+{
+    if (m_updateAvailable)
+        {
+            QMessageBox box;
+            box.setTextFormat (Qt::RichText);
+            box.setIcon (QMessageBox::Information);
+            box.setStandardButtons (QMessageBox::Ok);
+            box.setWindowTitle (tr ("Update Available"));
 
-        box.setText ("<h3>"
-                     + tr ("New update available!")
-                     + "</h3>");
+            box.setText ("<h3>"
+                         + tr ("New update available!")
+                         + "</h3>");
 
-        box.setInformativeText (tr ("A new version of %1 has been released! "
-                                    "Version %2 is now available to download."
-                                    "<br/><br/>"
-                                    "You can download this version using the link:"
-                                    "<br/><br/>"
-                                    "%3")
-                                .arg (qApp->applicationName())
-                                .arg (QString ("<strong>%1</strong>").arg (m_version))
-                                .arg (QString ("<a href=%1>%2</a>").arg (m_downloadLink,
-                                        m_downloadLink)));
+            box.setInformativeText (tr ("A new version of %1 has been released! "
+                                        "Version %2 is now available to download."
+                                        "<br/><br/>"
+                                        "You can download this version using the link:"
+                                        "<br/><br/>"
+                                        "%3")
+                                    .arg (qApp->applicationName())
+                                    .arg (QString ("<strong>%1</strong>").arg (m_version))
+                                    .arg (QString ("<a href=%1>%2</a>").arg (m_downloadLink,
+                                            m_downloadLink)));
 
-        box.exec();
-    }
+            box.exec();
+        }
 }
 
 //=============================================================================
 // Updater::CheckForUpdates
 //=============================================================================
 
-void Updater::CheckForUpdates (QString url) {
+void Updater::CheckForUpdates (QString url)
+{
     m_accessManager.get (QNetworkRequest (QUrl (url)));
 }
 
@@ -94,7 +98,8 @@ void Updater::CheckForUpdates (QString url) {
 // Updater::OnServerReply
 //=============================================================================
 
-void Updater::OnServerReply (QNetworkReply* reply) {
+void Updater::OnServerReply (QNetworkReply* reply)
+{
     QByteArray data = reply->readAll();
 
     GetDownloadLink (data);
@@ -106,7 +111,8 @@ void Updater::OnServerReply (QNetworkReply* reply) {
 // Updater::GetDownloadLink
 //=============================================================================
 
-void Updater::GetDownloadLink (QByteArray data) {
+void Updater::GetDownloadLink (QByteArray data)
+{
     m_downloadLink = ReadKey (QString::fromUtf8 (data),
                               QString ("download-%1").arg (m_platform));
 }
@@ -115,7 +121,8 @@ void Updater::GetDownloadLink (QByteArray data) {
 // Updater::GetApplicationVersion
 //=============================================================================
 
-void Updater::GetApplicationVersion (QByteArray data) {
+void Updater::GetApplicationVersion (QByteArray data)
+{
     m_updateAvailable = false;
     m_version = ReadKey (QString::fromUtf8 (data),
                          QString ("latest-%1").arg (m_platform));
@@ -124,31 +131,37 @@ void Updater::GetApplicationVersion (QByteArray data) {
     QStringList local  = qApp->applicationVersion().split (".");
 
     /* Figure out if local version is smaller than online version */
-    for (int i = 0; i <= online.count() - 1; ++i) {
-        if (online.count() - 1 >= i && local.count() - 1 >= i) {
-            if (online.at (i) > local.at (i)) {
-                m_updateAvailable = true;
-                return;
-            }
-        }
+    for (int i = 0; i <= online.count() - 1; ++i)
+        {
+            if (online.count() - 1 >= i && local.count() - 1 >= i)
+                {
+                    if (online.at (i) > local.at (i))
+                        {
+                            m_updateAvailable = true;
+                            return;
+                        }
+                }
 
-        else if (local.count() < online.count()) {
-            if (local.at (i - 1) == online.at (i - 1))
-                break;
+            else if (local.count() < online.count())
+                {
+                    if (local.at (i - 1) == online.at (i - 1))
+                        break;
 
-            else {
-                m_updateAvailable = true;
-                return;
-            }
+                    else
+                        {
+                            m_updateAvailable = true;
+                            return;
+                        }
+                }
         }
-    }
 }
 
 //=============================================================================
 // Updater::ReadKey
 //=============================================================================
 
-QString Updater::ReadKey (QString data, QString key) {
+QString Updater::ReadKey (QString data, QString key)
+{
     QString value;
     int startIndex = -1;
     int finishIndex = -1;
@@ -159,10 +172,11 @@ QString Updater::ReadKey (QString data, QString key) {
     startIndex = data.indexOf (QString ("<%1>").arg (key));
     finishIndex = data.indexOf (QString ("</%1>").arg (key));
 
-    if (startIndex != -1 && finishIndex != -1) {
-        for (int i = startIndex + key.length() + 2; i < finishIndex; ++i)
-            value.append (data.at (i));
-    }
+    if (startIndex != -1 && finishIndex != -1)
+        {
+            for (int i = startIndex + key.length() + 2; i < finishIndex; ++i)
+                value.append (data.at (i));
+        }
 
     return value;
 }

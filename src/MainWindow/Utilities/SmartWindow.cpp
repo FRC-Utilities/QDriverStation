@@ -33,7 +33,8 @@
 // SmartWindow::SmartWindow
 //=============================================================================
 
-SmartWindow::SmartWindow() {
+SmartWindow::SmartWindow()
+{
     m_closingDown = false;
     m_useFixedSize = true;
     m_promptOnQuit = true;
@@ -47,7 +48,8 @@ SmartWindow::SmartWindow() {
 // SmartWindow::IsDocked
 //=============================================================================
 
-bool SmartWindow::IsDocked() {
+bool SmartWindow::IsDocked()
+{
     return m_windowMode == kDocked;
 }
 
@@ -55,7 +57,8 @@ bool SmartWindow::IsDocked() {
 // SmartWindow::UsesFixedSize
 //=============================================================================
 
-bool SmartWindow::UsesFixedSize() {
+bool SmartWindow::UsesFixedSize()
+{
     return m_useFixedSize;
 }
 
@@ -63,7 +66,8 @@ bool SmartWindow::UsesFixedSize() {
 // SmartWindow::PromptOnQuit
 //=============================================================================
 
-bool SmartWindow::PromptOnQuit() {
+bool SmartWindow::PromptOnQuit()
+{
     return m_promptOnQuit;
 }
 
@@ -71,44 +75,49 @@ bool SmartWindow::PromptOnQuit() {
 // SmartWindow::moveEvent
 //=============================================================================
 
-void SmartWindow::moveEvent (QMoveEvent* e) {
+void SmartWindow::moveEvent (QMoveEvent* e)
+{
     e->accept();
 
-    if (!IsDocked()) {
-        Settings::Set ("x", x());
-        Settings::Set ("y", y());
-    }
+    if (!IsDocked())
+        {
+            Settings::Set ("x", x());
+            Settings::Set ("y", y());
+        }
 }
 
 //=============================================================================
 // SmartWindow::closeEvent
 //=============================================================================
 
-void SmartWindow::closeEvent (QCloseEvent* e) {
+void SmartWindow::closeEvent (QCloseEvent* e)
+{
     /* User already confirmed his/her choice */
     if (m_closingDown)
         return;
 
     /* Ask user for confirmation on quit */
-    if (m_promptOnQuit) {
-        QString name = qApp->applicationName();
+    if (m_promptOnQuit)
+        {
+            QString name = qApp->applicationName();
 
-        QMessageBox box;
-        box.setIcon (QMessageBox::Question);
-        box.setStandardButtons (QMessageBox::Yes | QMessageBox::No);
-        box.setDefaultButton (QMessageBox::Yes);
-        box.setText (tr ("Are you sure you want to quit the %1?").arg (name));
+            QMessageBox box;
+            box.setIcon (QMessageBox::Question);
+            box.setStandardButtons (QMessageBox::Yes | QMessageBox::No);
+            box.setDefaultButton (QMessageBox::Yes);
+            box.setText (tr ("Are you sure you want to quit the %1?").arg (name));
 
-        /* User changed his/her mind */
-        if (box.exec() != QMessageBox::Yes) {
-            e->ignore();
-            return;
+            /* User changed his/her mind */
+            if (box.exec() != QMessageBox::Yes)
+                {
+                    e->ignore();
+                    return;
+                }
+
+            /* Ensure that this message is not shown twice in a row */
+            else
+                m_closingDown = true;
         }
-
-        /* Ensure that this message is not shown twice in a row */
-        else
-            m_closingDown = true;
-    }
 
     /* Close MainWindow and any other window that is open */
     e->accept();
@@ -119,7 +128,8 @@ void SmartWindow::closeEvent (QCloseEvent* e) {
 // SmartWindow::UseFixedSize
 //=============================================================================
 
-void SmartWindow::UseFixedSize (bool fixed) {
+void SmartWindow::UseFixedSize (bool fixed)
+{
     m_useFixedSize = fixed;
 }
 
@@ -127,7 +137,8 @@ void SmartWindow::UseFixedSize (bool fixed) {
 // SmartWindow::EnablePromptOnQuit
 //=============================================================================
 
-void SmartWindow::EnablePromptOnQuit (bool prompt) {
+void SmartWindow::EnablePromptOnQuit (bool prompt)
+{
     m_promptOnQuit = prompt;
 }
 
@@ -135,27 +146,29 @@ void SmartWindow::EnablePromptOnQuit (bool prompt) {
 // SmartWindow::SetWindowMode
 //=============================================================================
 
-void SmartWindow::SetWindowMode (const WindowMode& mode) {
+void SmartWindow::SetWindowMode (const WindowMode& mode)
+{
     hide();
     m_windowMode = mode;
     Settings::Set ("Docked", IsDocked());
 
     /* Enable window borders and resize to minimum size */
-    if (mode == kNormal) {
-        QDesktopWidget w;
-        int dx = w.width() / 9;
-        int dy = w.height() / 2;
+    if (mode == kNormal)
+        {
+            QDesktopWidget w;
+            int dx = w.width() / 9;
+            int dy = w.height() / 2;
 
-        move (Settings::Get ("x", dx).toInt(),
-              Settings::Get ("y", dy).toInt());
+            move (Settings::Get ("x", dx).toInt(),
+                  Settings::Get ("y", dy).toInt());
 
-        setMinimumSize (0, 0);
-        setMaximumSize (0, 0);
+            setMinimumSize (0, 0);
+            setMaximumSize (0, 0);
 
-        setWindowFlags (Qt::WindowTitleHint
-                        | Qt::WindowCloseButtonHint
-                        | Qt::WindowMinimizeButtonHint);
-    }
+            setWindowFlags (Qt::WindowTitleHint
+                            | Qt::WindowCloseButtonHint
+                            | Qt::WindowMinimizeButtonHint);
+        }
 
     /* Disable window borders */
     else if (mode == kDocked)
@@ -169,20 +182,23 @@ void SmartWindow::SetWindowMode (const WindowMode& mode) {
 // SmartWindow::ResizeToFit
 //=============================================================================
 
-void SmartWindow::ResizeToFit() {
+void SmartWindow::ResizeToFit()
+{
     /* 'Dock' the window at the bottom and extend it to the sides */
-    if (IsDocked()) {
-        QDesktopWidget w;
-        setFixedHeight (size().height());
-        setFixedWidth (w.availableGeometry().width());
-        move (0, w.availableGeometry().height() - height());
-        layout()->setSizeConstraint (QLayout::SetNoConstraint);
-    }
+    if (IsDocked())
+        {
+            QDesktopWidget w;
+            setFixedHeight (size().height());
+            setFixedWidth (w.availableGeometry().width());
+            move (0, w.availableGeometry().height() - height());
+            layout()->setSizeConstraint (QLayout::SetNoConstraint);
+        }
 
     /* Show the window normally */
-    else {
-        resize (0, 0);
-        setFixedSize (size());
-        layout()->setSizeConstraint (QLayout::SetMinimumSize);
-    }
+    else
+        {
+            resize (0, 0);
+            setFixedSize (size());
+            layout()->setSizeConstraint (QLayout::SetMinimumSize);
+        }
 }

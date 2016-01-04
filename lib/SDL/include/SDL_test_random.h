@@ -56,7 +56,8 @@ extern "C" {
 /*
  * Context structure for the random number generator state.
  */
-typedef struct {
+typedef struct
+{
     unsigned int a;
     unsigned int x;
     unsigned int c;
