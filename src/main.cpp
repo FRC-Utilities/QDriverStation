@@ -36,16 +36,6 @@ int main (int argc, char* argv[])
     QFontDatabase::addApplicationFont (":/fonts/Quicksand-Bold.ttf");
     QFontDatabase::addApplicationFont (":/fonts/Quicksand-Regular.ttf");
 
-    /* Configure appearance options */
-    app.setStyle (QStyleFactory::create ("fusion"));
-#if defined Q_OS_MAC
-    app.setWindowIcon (QIcon (""));
-    app.setFont (QFont ("Quicksand", 12, -1, false));
-#else
-    app.setWindowIcon (QIcon (":/icon.ico"));
-    app.setFont (QFont ("Quicksand", 8, -1, false));
-#endif
-
     /* Configure application information */
     app.setApplicationName    (AssemblyInfo::Name());
     app.setApplicationVersion (AssemblyInfo::Version());
@@ -55,6 +45,16 @@ int main (int argc, char* argv[])
     /* The window will show itself when initialized */
     MainWindow window;
     Q_UNUSED (window);
+
+    /* Configure appearance options */
+    app.setStyle (QStyleFactory::create ("fusion"));
+#if defined Q_OS_MAC
+    app.setWindowIcon (QIcon (""));
+    app.setFont (QFont ("Quicksand", 12, -1, false));
+#else
+    app.setWindowIcon (QIcon (":/icon.ico"));
+    app.setFont (QFont ("Quicksand", 8, -1, false));
+#endif
 
     return app.exec();
 }

@@ -56,6 +56,9 @@ MDNS::MDNS()
 
 void MDNS::Query (QString host)
 {
+    /* Try to use the system mDNS service (if available) */
+    QHostInfo::lookupHost (host, this, SLOT (OnLookupFinished (QHostInfo)));
+
     /* Host is already in the cache, use the IP from there */
     if (m_cache.contains (host))
         emit IpFound (host, m_cache.object (host)->toLower());
@@ -169,6 +172,27 @@ void MDNS::AddToCache (QString address, QString ip)
 
     m_cache.insert (address, new QString (ip));
 }
+
+
+//=============================================================================
+// MDNS::OnLookupFinished
+//=============================================================================
+
+void MDNS::OnLookupFinished (QHostInfo info)
+{
+    for (int i = 0; i < info.addresses().count(); ++i)
+        {
+            QString ip = info.addresses().at (i).toString();
+
+            if (QHostAddress (ip).protocol() == QAbstractSocket::AnyIPProtocol)
+                {
+                    AddToCache (info.hostName(), ip);
+                    emit IpFound (info.hostName(), ip);
+                    return;
+                }
+        }
+}
+
 
 //=============================================================================
 // MDNS::GetHostName

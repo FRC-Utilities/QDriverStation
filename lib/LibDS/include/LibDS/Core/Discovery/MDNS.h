@@ -26,6 +26,7 @@
 
 #include <QTimer>
 #include <QCache>
+#include <QHostInfo>
 
 #include "LibDS/Core/Common.h"
 
@@ -79,6 +80,15 @@ private slots:
      * requests the same \a address again
      */
     void AddToCache (QString address, QString ip);
+
+    /**
+     * Gets the available addresses from the \a info object and
+     * emits the \c ipFound() signal with the appropiate data.
+     *
+     * This is only called if the system already has a mDNS
+     * service installed
+     */
+    void OnLookupFinished (QHostInfo info);
 
 private:
     /**
