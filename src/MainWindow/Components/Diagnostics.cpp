@@ -217,7 +217,7 @@ void Diagnostics::connectSlots()
     connect (DS(),       SIGNAL (cpuUsageChanged       (int)),
              this,         SLOT (updateCpuUsage        (int)));
     connect (DS(),       SIGNAL (ramUsageChanged       (int)),
-             this,         SLOT (updateRamuUsage       (int)));
+             this,         SLOT (updateRamUsage        (int)));
     connect (DS(),       SIGNAL (diskUsageChanged      (int)),
              this,         SLOT (updateDiskUsage       (int)));
     connect (m_reboot,   SIGNAL (clicked               (void)),

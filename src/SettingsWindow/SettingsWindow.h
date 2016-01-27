@@ -44,6 +44,14 @@ public:
     explicit SettingsWindow();
     ~SettingsWindow();
 
+    enum Colors
+    {
+        Base,
+        Highlight,
+        Background,
+        Foreground
+    };
+
 private slots:
     void createWidgets();
     void createLayouts();
@@ -54,6 +62,11 @@ private slots:
     void cancel();
     void readSettings();
     void applySettings();
+
+    void onSelectorClicked();
+    void onColorChanged (QString color);
+    QColor getColorValue (Colors type);
+    Colors getColorType (const QObject* object);
 
 private:
     QLabel* m_networkingIcon;
@@ -71,7 +84,7 @@ private:
     QCheckBox* m_promptOnQuit;
     QLabel* m_otherSettingsIcon;
     QGroupBox* m_otherSettingsBox;
-    QWidget* m_otherSettingsContainer;
+    QWidget* m_othersContainer;
 
     QLabel* m_baseLabel;
     QLabel* m_highlightLabel;

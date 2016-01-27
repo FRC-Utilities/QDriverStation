@@ -54,8 +54,8 @@ LeftTab::LeftTab (QWidget* parent) : QTabWidget (parent)
 
     connect (m_operator, SIGNAL (showDocked()),
              this,       SIGNAL (showDocked()));
-    connect (m_operator, SIGNAL (showNormal()),
-             this,       SIGNAL (showNormal()));
+    connect (m_operator, SIGNAL (showNormally()),
+             this,       SIGNAL (showNormally()));
     connect (m_operator, SIGNAL (requestErrorAnimation()),
              this,       SIGNAL (requestErrorAnimation()));
 }

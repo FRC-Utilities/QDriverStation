@@ -314,7 +314,7 @@ void Operator::connectSlots()
     connect (m_windowDocked,           SIGNAL (clicked             ()),
              this,                     SIGNAL (showDocked          ()));
     connect (m_windowNormal,           SIGNAL (clicked             ()),
-             this,                     SIGNAL (showNormal          ()));
+             this,                     SIGNAL (showNormally        ()));
     connect (DS(),                     SIGNAL (elapsedTimeChanged  (QString)),
              m_elapsedTime,              SLOT (setText             (QString)));
     connect (m_modesGroup,             SIGNAL (buttonClicked       (int)),

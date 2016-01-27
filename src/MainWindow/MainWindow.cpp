@@ -74,7 +74,7 @@ MainWindow::MainWindow()
              this,        SLOT   (displayWindow()));
     connect (m_leftTab, SIGNAL   (showDocked()),
              this,        SLOT   (showDocked()));
-    connect (m_leftTab, SIGNAL   (showNormal()),
+    connect (m_leftTab, SIGNAL   (showNormally()),
              this,        SLOT   (showUnDocked()));
     connect (m_leftTab, SIGNAL   (requestErrorAnimation()),
              m_status,    SLOT   (doErrorAnimation()));

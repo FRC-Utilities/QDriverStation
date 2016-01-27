@@ -39,7 +39,7 @@ public:
 
 signals:
     void showDocked();
-    void showNormal();
+    void showNormally();
     void requestErrorAnimation();
 
 private:
