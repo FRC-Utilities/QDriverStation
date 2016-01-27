@@ -120,8 +120,8 @@ Joysticks::Joysticks (QWidget* parent) : QWidget (parent)
     m_joystickBox->addWidget             (m_joystickNames);
 
     /* Connect slots */
-    connect (JOYSTICK_MANAGER(), SIGNAL  (countChanged      ()),
-             this,                 SLOT  (onCountChanged    ()));
+    connect (JOYSTICK_MANAGER(), SIGNAL  (countChanged      (void)),
+             this,                 SLOT  (onCountChanged    (void)));
     connect (JOYSTICK_MANAGER(), SIGNAL  (POVEvent          (QDS_POVEvent)),
              this,                 SLOT  (onPOVEvent        (QDS_POVEvent)));
     connect (JOYSTICK_MANAGER(), SIGNAL  (axisEvent         (QDS_AxisEvent)),

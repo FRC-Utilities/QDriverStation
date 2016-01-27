@@ -307,22 +307,22 @@ void Operator::configureStyles()
 
 void Operator::connectSlots()
 {
-    connect (m_enable,                 SIGNAL (clicked             ()),
-             this,                       SLOT (updateEnableState   ()));
-    connect (m_dsable,                 SIGNAL (clicked             ()),
-             this,                       SLOT (updateEnableState   ()));
-    connect (m_windowDocked,           SIGNAL (clicked             ()),
-             this,                     SIGNAL (showDocked          ()));
-    connect (m_windowNormal,           SIGNAL (clicked             ()),
-             this,                     SIGNAL (showNormally        ()));
+    connect (m_enable,                 SIGNAL (clicked             (void)),
+             this,                       SLOT (updateEnableState   (void)));
+    connect (m_dsable,                 SIGNAL (clicked             (void)),
+             this,                       SLOT (updateEnableState   (void)));
+    connect (m_windowDocked,           SIGNAL (clicked             (void)),
+             this,                     SIGNAL (showDocked          (void)));
+    connect (m_windowNormal,           SIGNAL (clicked             (void)),
+             this,                     SIGNAL (showNormally        (void)));
     connect (DS(),                     SIGNAL (elapsedTimeChanged  (QString)),
              m_elapsedTime,              SLOT (setText             (QString)));
     connect (m_modesGroup,             SIGNAL (buttonClicked       (int)),
              this,                       SLOT (updateControlMode   (int)));
     connect (m_teamStation,            SIGNAL (currentIndexChanged (int)),
              DS(),                       SLOT (setAlliance         (int)));
-    connect (DS_Timers::getInstance(), SIGNAL (timeout1000         ()),
-             this,                       SLOT (updateProgressbars  ()));
+    connect (DS_Timers::getInstance(), SIGNAL (timeout1000         (void)),
+             this,                       SLOT (updateProgressbars  (void)));
 }
 
 //=============================================================================

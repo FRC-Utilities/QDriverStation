@@ -286,6 +286,7 @@ void SettingsWindow::connectSlots()
     connect (m_ok,     SIGNAL (clicked()),         this, SLOT (apply()));
     connect (m_reset,  SIGNAL (clicked()),         this, SLOT (reset()));
     connect (m_cancel, SIGNAL (clicked()),         this, SLOT (cancel()));
+    connect (DS(),     SIGNAL (teamChanged (int)), this, SLOT (updateTeam (int)));
     connect (DS(),     SIGNAL (protocolChanged()), this, SLOT (readSettings()));
 
     connect (m_useCustomAddress, SIGNAL (toggled    (bool)),
@@ -298,13 +299,13 @@ void SettingsWindow::connectSlots()
              this,                SLOT  (onSelectorClicked()));
     connect (m_foregroundButton, SIGNAL (clicked()),
              this,                SLOT  (onSelectorClicked()));
-    connect (m_baseEdit,         SIGNAL (textChanged (QString)),
+    connect (m_baseEdit,         SIGNAL (textChanged    (QString)),
              this,                SLOT  (onColorChanged (QString)));
-    connect (m_highlightEdit,    SIGNAL (textChanged (QString)),
+    connect (m_highlightEdit,    SIGNAL (textChanged    (QString)),
              this,                SLOT  (onColorChanged (QString)));
-    connect (m_backgroundEdit,   SIGNAL (textChanged (QString)),
+    connect (m_backgroundEdit,   SIGNAL (textChanged    (QString)),
              this,                SLOT  (onColorChanged (QString)));
-    connect (m_foregroundEdit,   SIGNAL (textChanged (QString)),
+    connect (m_foregroundEdit,   SIGNAL (textChanged    (QString)),
              this,                SLOT  (onColorChanged (QString)));
 }
 
@@ -417,6 +418,16 @@ void SettingsWindow::applySettings()
     theme.background = m_backgroundEdit->text();
     theme.foreground = m_foregroundEdit->text();
     AppTheme::apply (theme);
+}
+
+//=============================================================================
+// SettingsDialog::updateTeamNumber
+//=============================================================================
+
+void SettingsWindow::updateTeam (int team)
+{
+    Q_UNUSED (team);
+    m_robotAddress->setPlaceholderText (DS()->defaultRobotAddress());
 }
 
 //=============================================================================

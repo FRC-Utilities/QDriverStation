@@ -40,16 +40,16 @@ JoystickManager::JoystickManager()
              this,              SIGNAL (axisEvent        (QDS_AxisEvent)));
     connect (sdlJoysticks(),    SIGNAL (buttonEvent      (QDS_ButtonEvent)),
              this,              SIGNAL (buttonEvent      (QDS_ButtonEvent)));
-    connect (sdlJoysticks(),    SIGNAL (countChanged     ()),
-             this,                SLOT (updateInterfaces ()));
+    connect (sdlJoysticks(),    SIGNAL (countChanged     (void)),
+             this,                SLOT (updateInterfaces (void)));
 
     /* Setup virtual joystick signals/slots */
     connect (virtualJoystick(), SIGNAL (axisEvent        (QDS_AxisEvent)),
              this,              SIGNAL (axisEvent        (QDS_AxisEvent)));
     connect (virtualJoystick(), SIGNAL (buttonEvent      (QDS_ButtonEvent)),
              this,              SIGNAL (buttonEvent      (QDS_ButtonEvent)));
-    connect (virtualJoystick(), SIGNAL (enabledChanged   ()),
-             this,                SLOT (updateInterfaces ()));
+    connect (virtualJoystick(), SIGNAL (enabledChanged   (void)),
+             this,                SLOT (updateInterfaces (void)));
 
     /* Send all joystick input to DS */
     connect (this,              SIGNAL (POVEvent         (QDS_POVEvent)),
@@ -58,8 +58,8 @@ JoystickManager::JoystickManager()
              this,                SLOT (onAxisEvent      (QDS_AxisEvent)));
     connect (this,              SIGNAL (buttonEvent      (QDS_ButtonEvent)),
              this,                SLOT (onButtonEvent    (QDS_ButtonEvent)));
-    connect (DS(),              SIGNAL (protocolChanged  ()),
-             this,                SLOT (updateInterfaces ()));
+    connect (DS(),              SIGNAL (protocolChanged  (void)),
+             this,                SLOT (updateInterfaces (void)));
 }
 
 //=============================================================================

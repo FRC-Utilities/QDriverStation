@@ -125,6 +125,6 @@ int main (int argc, char* argv[])
             Settings::set ("First launch", false);
         }
 
-    /* The force will be with you */
+    /* May the force be with you */
     return app.exec();
 }

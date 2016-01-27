@@ -63,6 +63,8 @@ private slots:
     void readSettings();
     void applySettings();
 
+    void updateTeam (int team);
+
     void onSelectorClicked();
     void onColorChanged (QString color);
     QColor getColorValue (Colors type);
