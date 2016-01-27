@@ -28,24 +28,23 @@
 
 DS_Client::DS_Client()
 {
-    connect (&m_clientSocket, SIGNAL (readyRead()),
-             this,            SLOT   (OnDataReceived()));
+    connect (&m_receiver, SIGNAL (readyRead()), this, SLOT (readPacket()));
 }
 
 //=============================================================================
 // DS_Client::SendToRobot
 //=============================================================================
 
-void DS_Client::SendToRobot (QByteArray data)
+void DS_Client::sendPacket (QByteArray data)
 {
-    m_robotSocket.writeDatagram (data, QHostAddress (m_address), m_robotPort);
+    m_sender.writeDatagram (data, QHostAddress (m_address), m_robotPort);
 }
 
 //=============================================================================
 // DS_Client::SetRobotPort
 //=============================================================================
 
-void DS_Client::SetRobotPort (int port)
+void DS_Client::setRobotPort (int port)
 {
     m_robotPort = port;
 }
@@ -54,16 +53,19 @@ void DS_Client::SetRobotPort (int port)
 // DS_Client::SetClientPort
 //=============================================================================
 
-void DS_Client::SetClientPort (int port)
+void DS_Client::setClientPort (int port)
 {
-    m_clientSocket.bind (QHostAddress::Any, port, QUdpSocket::ShareAddress);
+    m_receiver.disconnectFromHost();
+
+    m_receiver.bind (QHostAddress::Any, port, QUdpSocket::ShareAddress);
+    m_receiver.setSocketOption (QAbstractSocket::MulticastLoopbackOption, 0);
 }
 
 //=============================================================================
 // DS_Client::SetRobotAddress
 //=============================================================================
 
-void DS_Client::SetRobotAddress (QString address)
+void DS_Client::setRobotAddress (QString address)
 {
     m_address = address;
 }
@@ -72,7 +74,7 @@ void DS_Client::SetRobotAddress (QString address)
 // DS_Client::OnDataReceived
 //=============================================================================
 
-void DS_Client::OnDataReceived()
+void DS_Client::readPacket()
 {
-    emit DataReceived (DS_GetSocketData (&m_clientSocket));
+    emit dataReceived (DS_GetSocketData (&m_receiver));
 }

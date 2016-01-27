@@ -20,9 +20,8 @@
  * THE SOFTWARE.
  */
 
-#pragma once
-#ifndef _LIB_DS_GLOBAL_H
-#define _LIB_DS_GLOBAL_H
+#ifndef _LDS_GLOBAL_H
+#define _LDS_GLOBAL_H
 
 #include <QObject>
 #include <QtCore/QtGlobal>

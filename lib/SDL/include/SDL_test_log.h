@@ -43,16 +43,14 @@ extern "C" {
 #endif
 
 /**
- * \brief Prints given message with a timestamp in the TEST category and INFO
- *priority.
+ * \brief Prints given message with a timestamp in the TEST category and INFO priority.
  *
  * \param fmt Message to be logged
  */
 void SDLTest_Log (const char* fmt, ...);
 
 /**
- * \brief Prints given message with a timestamp in the TEST category and the
- *ERROR priority.
+ * \brief Prints given message with a timestamp in the TEST category and the ERROR priority.
  *
  * \param fmt Message to be logged
  */

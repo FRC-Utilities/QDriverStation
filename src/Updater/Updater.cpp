@@ -20,7 +20,20 @@
  * THE SOFTWARE.
  */
 
+//=============================================================================
+// System includes
+//=============================================================================
+
+#include <QMessageBox>
+#include <QApplication>
+#include <QNetworkRequest>
+
+//=============================================================================
+// Application includes
+//=============================================================================
+
 #include "Updater.h"
+#include "Utilities/Global.h"
 
 //=============================================================================
 // Updater::Updater
@@ -46,17 +59,20 @@ Updater::Updater()
 #endif
 
     connect (&m_accessManager, SIGNAL (finished   (QNetworkReply*)),
-             this,             SLOT   (OnServerReply (QNetworkReply*)));
+             this,               SLOT (onServerReply (QNetworkReply*)));
 
-    CheckForUpdates ("https://raw.githubusercontent.com/"
-                     "WinT-3794/QDriverStation/updater/current");
+    if (Settings::get ("Auto Updater", true).toBool())
+        {
+            checkForUpdates ("https://raw.githubusercontent.com/"
+                             "WinT-3794/QDriverStation/updater/current");
+        }
 }
 
 //=============================================================================
 // Updater::ShowUpdateMessages
 //=============================================================================
 
-void Updater::ShowUpdateMessages()
+void Updater::showUpdateMessages()
 {
     if (m_updateAvailable)
         {
@@ -89,7 +105,7 @@ void Updater::ShowUpdateMessages()
 // Updater::CheckForUpdates
 //=============================================================================
 
-void Updater::CheckForUpdates (QString url)
+void Updater::checkForUpdates (QString url)
 {
     m_accessManager.get (QNetworkRequest (QUrl (url)));
 }
@@ -98,22 +114,22 @@ void Updater::CheckForUpdates (QString url)
 // Updater::OnServerReply
 //=============================================================================
 
-void Updater::OnServerReply (QNetworkReply* reply)
+void Updater::onServerReply (QNetworkReply* reply)
 {
     QByteArray data = reply->readAll();
 
-    GetDownloadLink (data);
-    GetApplicationVersion (data);
-    ShowUpdateMessages();
+    getDownloadLink (data);
+    getApplicationVersion (data);
+    showUpdateMessages();
 }
 
 //=============================================================================
 // Updater::GetDownloadLink
 //=============================================================================
 
-void Updater::GetDownloadLink (QByteArray data)
+void Updater::getDownloadLink (QByteArray data)
 {
-    m_downloadLink = ReadKey (QString::fromUtf8 (data),
+    m_downloadLink = readKey (QString::fromUtf8 (data),
                               QString ("download-%1").arg (m_platform));
 }
 
@@ -121,17 +137,17 @@ void Updater::GetDownloadLink (QByteArray data)
 // Updater::GetApplicationVersion
 //=============================================================================
 
-void Updater::GetApplicationVersion (QByteArray data)
+void Updater::getApplicationVersion (QByteArray data)
 {
     m_updateAvailable = false;
-    m_version = ReadKey (QString::fromUtf8 (data),
+    m_version = readKey (QString::fromUtf8 (data),
                          QString ("latest-%1").arg (m_platform));
 
     QStringList online = m_version.split (".");
     QStringList local  = qApp->applicationVersion().split (".");
 
     /* Figure out if local version is smaller than online version */
-    for (int i = 0; i <= online.count() - 1; ++i)
+    for (int i = 0; i < online.count() - 1; ++i)
         {
             if (online.count() - 1 >= i && local.count() - 1 >= i)
                 {
@@ -160,7 +176,7 @@ void Updater::GetApplicationVersion (QByteArray data)
 // Updater::ReadKey
 //=============================================================================
 
-QString Updater::ReadKey (QString data, QString key)
+QString Updater::readKey (QString data, QString key)
 {
     QString value;
     int startIndex = -1;

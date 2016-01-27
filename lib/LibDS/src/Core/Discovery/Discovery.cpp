@@ -28,15 +28,15 @@
 
 NetworkDiscovery::NetworkDiscovery()
 {
-    connect (&m_responder, SIGNAL (IpFound (QString, QString)),
-             this,         SIGNAL (IpFound (QString, QString)));
+    connect (&m_responder, SIGNAL (ipFound (QString, QString)),
+             this,         SIGNAL (ipFound (QString, QString)));
 }
 
 //=============================================================================
 // NetworkDiscovery::GetAddressType
 //=============================================================================
 
-NetworkDiscovery::AddressType NetworkDiscovery::GetAddressType (
+NetworkDiscovery::AddressType NetworkDiscovery::getAddressType (
     QString address)
 {
     if (address.endsWith (".local", Qt::CaseInsensitive))
@@ -55,31 +55,31 @@ NetworkDiscovery::AddressType NetworkDiscovery::GetAddressType (
 // NetworkDiscovery::GetIP
 //=============================================================================
 
-void NetworkDiscovery::GetIP (QString address)
+void NetworkDiscovery::getIP (QString address)
 {
-    GetIP (address, GetAddressType (address));
+    getIP (address, getAddressType (address));
 }
 
 //=============================================================================
 // NetworkDiscovery::GetIP
 //=============================================================================
 
-void NetworkDiscovery::GetIP (QString address, AddressType type)
+void NetworkDiscovery::getIP (QString address, AddressType type)
 {
     switch (type)
         {
         case kMDNS:
-            m_responder.Query (address);
+            m_responder.query (address);
             break;
         case kIPv4:
-            emit IpFound (address, address);
+            emit ipFound (address, address);
             break;
         case kIPv6:
-            emit IpFound (address, address);
+            emit ipFound (address, address);
             break;
         default:
             QHostInfo::lookupHost (address, this,
-                                   SLOT (OnLookupFinished (QHostInfo)));
+                                   SLOT (lookupFinished (QHostInfo)));
             break;
         }
 }
@@ -88,15 +88,14 @@ void NetworkDiscovery::GetIP (QString address, AddressType type)
 // NetworkDiscovery::OnLookupFinished
 //=============================================================================
 
-void NetworkDiscovery::OnLookupFinished (QHostInfo info)
+void NetworkDiscovery::lookupFinished (QHostInfo info)
 {
-    for (int i = 0; i < info.addresses().count(); ++i)
+    foreach (QHostAddress address, info.addresses())
         {
-            QString ip = info.addresses().at (i).toString();
-
-            if (GetAddressType (ip) == kIPv4 || GetAddressType (ip) == kIPv6)
+            QString ip = address.toString();
+            if (getAddressType (ip) == kIPv4 || getAddressType (ip) == kIPv6)
                 {
-                    emit IpFound (info.hostName(), ip);
+                    emit ipFound (info.hostName(), ip);
                     return;
                 }
         }

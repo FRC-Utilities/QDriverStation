@@ -29,25 +29,25 @@
 
 DS_NetConsole::DS_NetConsole()
 {
-    connect (&m_socket, SIGNAL (readyRead()), this, SLOT (ReadSocketData()));
+    connect (&m_socket, SIGNAL (readyRead()), this, SLOT (readSocket()));
 }
 
 //=============================================================================
-// DS_NetConsole::DS_SetPort
+// DS_NetConsole::setPort
 //=============================================================================
 
-void DS_NetConsole::SetPort (int port)
+void DS_NetConsole::setPort (int port)
 {
+    m_socket.disconnectFromHost();
     m_socket.bind (QHostAddress::Any, port,
-                   QUdpSocket::ShareAddress |
-                   QUdpSocket::ReuseAddressHint);
+                   QUdpSocket::ShareAddress);
 }
 
 //=============================================================================
-// DS_NetConsole::ReadSocketData
+// DS_NetConsole::readSocket
 //=============================================================================
 
-void DS_NetConsole::ReadSocketData()
+void DS_NetConsole::readSocket()
 {
-    emit NewMessage (QString::fromUtf8 (DS_GetSocketData (&m_socket)));
+    emit newMessage (QString::fromUtf8 (DS_GetSocketData (&m_socket)));
 }

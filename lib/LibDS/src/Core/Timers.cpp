@@ -50,9 +50,9 @@ DS_Timers::DS_Timers()
     t100->setTimerType  (Qt::PreciseTimer);
     t1000->setTimerType (Qt::PreciseTimer);
 
-    connect (t20,   SIGNAL (timeout()), this, SIGNAL (Timeout20()));
-    connect (t100,  SIGNAL (timeout()), this, SIGNAL (Timeout100()));
-    connect (t1000, SIGNAL (timeout()), this, SIGNAL (Timeout1000()));
+    connect (t20,   SIGNAL (timeout()), this, SIGNAL (timeout20()));
+    connect (t100,  SIGNAL (timeout()), this, SIGNAL (timeout100()));
+    connect (t1000, SIGNAL (timeout()), this, SIGNAL (timeout1000()));
 }
 
 //=============================================================================
@@ -69,10 +69,10 @@ DS_Timers::~DS_Timers()
 }
 
 //=============================================================================
-// DS_Timers::GetInstance
+// DS_Timers::getInstance
 //=============================================================================
 
-DS_Timers* DS_Timers::GetInstance()
+DS_Timers* DS_Timers::getInstance()
 {
     if (s_instance == Q_NULLPTR)
         s_instance = new DS_Timers;
@@ -81,10 +81,10 @@ DS_Timers* DS_Timers::GetInstance()
 }
 
 //=============================================================================
-// DS_Timers::Start
+// DS_Timers::start
 //=============================================================================
 
-void DS_Timers::Start()
+void DS_Timers::start()
 {
     connect (m_thread, SIGNAL (started()), t20,   SLOT (start()));
     connect (m_thread, SIGNAL (started()), t100,  SLOT (start()));

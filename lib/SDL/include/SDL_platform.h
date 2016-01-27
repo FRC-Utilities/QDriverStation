@@ -30,36 +30,35 @@
 
 #if defined(_AIX)
 #undef __AIX__
-#define __AIX__ 1
+#define __AIX__     1
 #endif
 #if defined(__HAIKU__)
 #undef __HAIKU__
-#define __HAIKU__ 1
+#define __HAIKU__   1
 #endif
 #if defined(bsdi) || defined(__bsdi) || defined(__bsdi__)
 #undef __BSDI__
-#define __BSDI__ 1
+#define __BSDI__    1
 #endif
 #if defined(_arch_dreamcast)
 #undef __DREAMCAST__
-#define __DREAMCAST__ 1
+#define __DREAMCAST__   1
 #endif
-#if defined(__FreeBSD__) || defined(__FreeBSD_kernel__) ||                     \
-    defined(__DragonFly__)
+#if defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__DragonFly__)
 #undef __FREEBSD__
 #define __FREEBSD__ 1
 #endif
 #if defined(hpux) || defined(__hpux) || defined(__hpux__)
 #undef __HPUX__
-#define __HPUX__ 1
+#define __HPUX__    1
 #endif
 #if defined(sgi) || defined(__sgi) || defined(__sgi__) || defined(_SGI_SOURCE)
 #undef __IRIX__
-#define __IRIX__ 1
+#define __IRIX__    1
 #endif
 #if defined(linux) || defined(__linux) || defined(__linux__)
 #undef __LINUX__
-#define __LINUX__ 1
+#define __LINUX__   1
 #endif
 #if defined(ANDROID) || defined(__ANDROID__)
 #undef __ANDROID__
@@ -79,16 +78,16 @@
 #else
 /* if not compiling for iPhone */
 #undef __MACOSX__
-#define __MACOSX__ 1
+#define __MACOSX__  1
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 1050
-#error SDL for Mac OS X only supports deploying on 10.5 and above.
+# error SDL for Mac OS X only supports deploying on 10.5 and above.
 #endif /* MAC_OS_X_VERSION_MIN_REQUIRED < 1050 */
 #endif /* TARGET_OS_IPHONE */
 #endif /* defined(__APPLE__) */
 
 #if defined(__NetBSD__)
 #undef __NETBSD__
-#define __NETBSD__ 1
+#define __NETBSD__  1
 #endif
 #if defined(__OpenBSD__)
 #undef __OPENBSD__
@@ -96,19 +95,19 @@
 #endif
 #if defined(__OS2__)
 #undef __OS2__
-#define __OS2__ 1
+#define __OS2__     1
 #endif
 #if defined(osf) || defined(__osf) || defined(__osf__) || defined(_OSF_SOURCE)
 #undef __OSF__
-#define __OSF__ 1
+#define __OSF__     1
 #endif
 #if defined(__QNXNTO__)
 #undef __QNXNTO__
-#define __QNXNTO__ 1
+#define __QNXNTO__  1
 #endif
 #if defined(riscos) || defined(__riscos) || defined(__riscos__)
 #undef __RISCOS__
-#define __RISCOS__ 1
+#define __RISCOS__  1
 #endif
 #if defined(__SVR4)
 #undef __SOLARIS__
@@ -116,7 +115,7 @@
 #endif
 #if defined(WIN32) || defined(_WIN32) || defined(__CYGWIN__)
 #undef __WINDOWS__
-#define __WINDOWS__ 1
+#define __WINDOWS__   1
 #endif
 #if defined(__WINDOWS__)
 #undef __WIN32__

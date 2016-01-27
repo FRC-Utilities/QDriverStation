@@ -20,9 +20,8 @@
  * THE SOFTWARE.
  */
 
-#pragma once
-#ifndef _LIB_DS_ELAPSED_TIME_H
-#define _LIB_DS_ELAPSED_TIME_H
+#ifndef _LDS_ELAPSED_TIME_H
+#define _LDS_ELAPSED_TIME_H
 
 #include <QElapsedTimer>
 #include "LibDS/Core/Common.h"
@@ -45,19 +44,19 @@ public slots:
     /**
      * Pauses the elapsed time refresh process
      */
-    void Stop();
+    void stopTimer();
 
     /**
      * Resets the elapsed timer and starts the refresh process again
      */
-    void Reset();
+    void resetTimer();
 
 signals:
     /**
      * Emitted when the elapsed time is calculated and processed
      * in a human-readable format
      */
-    void ElapsedTimeChanged (QString);
+    void elapsedTimeChanged (QString);
 
 private:
     /**
@@ -77,7 +76,7 @@ private slots:
      * Uses the value given by the internal timer and processes its
      * information into a human-readable format (mm::ss.ms)
      */
-    void GetElapsedTime();
+    void getElapsedTime();
 };
 
 #endif

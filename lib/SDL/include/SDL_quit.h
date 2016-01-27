@@ -34,8 +34,7 @@
 /**
  *  \file SDL_quit.h
  *
- *  An ::SDL_QUIT event is generated when the user tries to close the
- *application
+ *  An ::SDL_QUIT event is generated when the user tries to close the application
  *  window.  If it is ignored or filtered out, the window will remain open.
  *  If it is not ignored or filtered, it is queued normally and the window
  *  is allowed to close.  When the window is closed, screen updates will
@@ -53,8 +52,7 @@
 
 /* There are no functions directly affecting the quit event */
 
-#define SDL_QuitRequested()                                                    \
-  (SDL_PumpEvents(),                                                           \
-   (SDL_PeepEvents(NULL, 0, SDL_PEEKEVENT, SDL_QUIT, SDL_QUIT) > 0))
+#define SDL_QuitRequested() \
+        (SDL_PumpEvents(), (SDL_PeepEvents(NULL,0,SDL_PEEKEVENT,SDL_QUIT,SDL_QUIT) > 0))
 
 #endif /* _SDL_quit_h */

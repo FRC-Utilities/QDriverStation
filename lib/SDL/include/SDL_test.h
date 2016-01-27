@@ -55,7 +55,7 @@ extern "C" {
  * Note: Maximum size of SDLTest log message is less than SDLs limit
  * to ensure we can fit additional information such as the timestamp.
  */
-#define SDLTEST_MAX_LOGMESSAGE_LENGTH 3584
+#define SDLTEST_MAX_LOGMESSAGE_LENGTH   3584
 
 /* Ends C function definitions when using C++ */
 #ifdef __cplusplus

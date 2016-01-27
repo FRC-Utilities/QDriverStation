@@ -42,15 +42,15 @@ extern "C" {
 /**
  *  \brief The SDL keysym structure, used in key events.
  *
- *  \note  If you are looking for translated character input, see the
- *::SDL_TEXTINPUT event.
+ *  \note  If you are looking for translated character input, see the ::SDL_TEXTINPUT event.
  */
 typedef struct SDL_Keysym
 {
     SDL_Scancode
-    scancode; /**< SDL physical key code - see ::SDL_Scancode for details */
-    SDL_Keycode sym; /**< SDL virtual key code - see ::SDL_Keycode for details */
-    Uint16 mod;      /**< current key modifiers */
+    scancode;      /**< SDL physical key code - see ::SDL_Scancode for details */
+    SDL_Keycode
+    sym;            /**< SDL virtual key code - see ::SDL_Keycode for details */
+    Uint16 mod;                 /**< current key modifiers */
     Uint32 unused;
 } SDL_Keysym;
 
@@ -66,8 +66,7 @@ extern DECLSPEC SDL_Window* SDLCALL SDL_GetKeyboardFocus (void);
  *
  *  \param numkeys if non-NULL, receives the length of the returned array.
  *
- *  \return An array of key states. Indexes into this array are obtained by
- *using ::SDL_Scancode values.
+ *  \return An array of key states. Indexes into this array are obtained by using ::SDL_Scancode values.
  *
  *  \b Example:
  *  \code
@@ -99,8 +98,8 @@ extern DECLSPEC void SDLCALL SDL_SetModState (SDL_Keymod modstate);
  *
  *  \sa SDL_GetKeyName()
  */
-extern DECLSPEC SDL_Keycode SDLCALL
-SDL_GetKeyFromScancode (SDL_Scancode scancode);
+extern DECLSPEC SDL_Keycode SDLCALL SDL_GetKeyFromScancode (
+    SDL_Scancode scancode);
 
 /**
  *  \brief Get the scancode corresponding to the given key code according to the

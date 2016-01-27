@@ -45,6 +45,7 @@
 extern "C" {
 #endif
 
+
 /**
  *  \brief The maximum size of a log message
  *
@@ -85,13 +86,13 @@ enum
     SDL_LOG_CATEGORY_RESERVED10,
 
     /* Beyond this point is reserved for application use, e.g.
-     enum {
-         MYAPP_CATEGORY_AWESOME1 = SDL_LOG_CATEGORY_CUSTOM,
-         MYAPP_CATEGORY_AWESOME2,
-         MYAPP_CATEGORY_AWESOME3,
-         ...
-     };
-    */
+       enum {
+           MYAPP_CATEGORY_AWESOME1 = SDL_LOG_CATEGORY_CUSTOM,
+           MYAPP_CATEGORY_AWESOME2,
+           MYAPP_CATEGORY_AWESOME3,
+           ...
+       };
+     */
     SDL_LOG_CATEGORY_CUSTOM
 };
 
@@ -109,6 +110,7 @@ typedef enum
     SDL_NUM_LOG_PRIORITIES
 } SDL_LogPriority;
 
+
 /**
  *  \brief Set the priority of all log categories
  */
@@ -117,8 +119,8 @@ extern DECLSPEC void SDLCALL SDL_LogSetAllPriority (SDL_LogPriority priority);
 /**
  *  \brief Set the priority of a particular log category
  */
-extern DECLSPEC void SDLCALL
-SDL_LogSetPriority (int category, SDL_LogPriority priority);
+extern DECLSPEC void SDLCALL SDL_LogSetPriority (int category,
+        SDL_LogPriority priority);
 
 /**
  *  \brief Get the priority of a particular log category
@@ -133,8 +135,7 @@ extern DECLSPEC SDL_LogPriority SDLCALL SDL_LogGetPriority (int category);
 extern DECLSPEC void SDLCALL SDL_LogResetPriorities (void);
 
 /**
- *  \brief Log a message with SDL_LOG_CATEGORY_APPLICATION and
- * SDL_LOG_PRIORITY_INFO
+ *  \brief Log a message with SDL_LOG_CATEGORY_APPLICATION and SDL_LOG_PRIORITY_INFO
  */
 extern DECLSPEC void SDLCALL SDL_Log (const char* fmt, ...);
 
@@ -167,14 +168,15 @@ extern DECLSPEC void SDLCALL SDL_LogError (int category, const char* fmt, ...);
 /**
  *  \brief Log a message with SDL_LOG_PRIORITY_CRITICAL
  */
-extern DECLSPEC void SDLCALL
-SDL_LogCritical (int category, const char* fmt, ...);
+extern DECLSPEC void SDLCALL SDL_LogCritical (int category, const char* fmt,
+        ...);
 
 /**
  *  \brief Log a message with the specified category and priority.
  */
-extern DECLSPEC void SDLCALL
-SDL_LogMessage (int category, SDL_LogPriority priority, const char* fmt, ...);
+extern DECLSPEC void SDLCALL SDL_LogMessage (int category,
+        SDL_LogPriority priority,
+        const char* fmt, ...);
 
 /**
  *  \brief Log a message with the specified category and priority.
@@ -187,21 +189,21 @@ extern DECLSPEC void SDLCALL SDL_LogMessageV (int category,
  *  \brief The prototype for the log output function
  */
 typedef void (*SDL_LogOutputFunction) (void* userdata, int category,
-                                       SDL_LogPriority priority,
-                                       const char* message);
+                                       SDL_LogPriority priority, const char* message);
 
 /**
  *  \brief Get the current log output function.
  */
-extern DECLSPEC void SDLCALL
-SDL_LogGetOutputFunction (SDL_LogOutputFunction* callback, void** userdata);
+extern DECLSPEC void SDLCALL SDL_LogGetOutputFunction (SDL_LogOutputFunction*
+        callback, void** userdata);
 
 /**
  *  \brief This function allows you to replace the default log output
  *         function with one of your own.
  */
-extern DECLSPEC void SDLCALL
-SDL_LogSetOutputFunction (SDL_LogOutputFunction callback, void* userdata);
+extern DECLSPEC void SDLCALL SDL_LogSetOutputFunction (SDL_LogOutputFunction
+        callback, void* userdata);
+
 
 /* Ends C function definitions when using C++ */
 #ifdef __cplusplus

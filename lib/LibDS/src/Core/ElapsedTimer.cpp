@@ -29,18 +29,18 @@
 
 DS_ElapsedTime::DS_ElapsedTime()
 {
-    Stop();
-    GetElapsedTime();
+    stopTimer();
+    getElapsedTime();
 
-    connect (DS_Timers::GetInstance(), SIGNAL (Timeout100()),
-             this,                     SLOT   (GetElapsedTime()));
+    connect (DS_Timers::getInstance(), SIGNAL (timeout100()),
+             this,                       SLOT (getElapsedTime()));
 }
 
 //=============================================================================
 // DS_ElapsedTime::Stop
 //=============================================================================
 
-void DS_ElapsedTime::Stop()
+void DS_ElapsedTime::stopTimer()
 {
     m_enabled = false;
 }
@@ -49,7 +49,7 @@ void DS_ElapsedTime::Stop()
 // DS_ElapsedTime:Reset
 //=============================================================================
 
-void DS_ElapsedTime::Reset()
+void DS_ElapsedTime::resetTimer()
 {
     m_enabled = true;
     m_time.restart();
@@ -59,7 +59,7 @@ void DS_ElapsedTime::Reset()
 // DS_ElapsedTime::GetElapsedTime
 //=============================================================================
 
-void DS_ElapsedTime::GetElapsedTime()
+void DS_ElapsedTime::getElapsedTime()
 {
     if (m_enabled)
         {
@@ -70,7 +70,7 @@ void DS_ElapsedTime::GetElapsedTime()
             secs = secs % 60;
             msec = msec % 1000;
 
-            emit ElapsedTimeChanged (QString ("%1:%2.%3")
+            emit elapsedTimeChanged (QString ("%1:%2.%3")
                                      .arg (mins, 2, 10, QLatin1Char ('0'))
                                      .arg (secs, 2, 10, QLatin1Char ('0'))
                                      .arg (QString::number (msec).at (0)));

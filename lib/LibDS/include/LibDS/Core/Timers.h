@@ -20,9 +20,8 @@
  * THE SOFTWARE.
  */
 
-#pragma once
-#ifndef _LIB_DS_TIMERS_H
-#define _LIB_DS_TIMERS_H
+#ifndef _LDS_TIMERS_H
+#define _LDS_TIMERS_H
 
 #include "LibDS/Core/Common.h"
 
@@ -42,16 +41,16 @@ class LIB_DS_DECL DS_Timers : public QObject
     Q_OBJECT
 
 public:
-    static DS_Timers* GetInstance();
+    static DS_Timers* getInstance();
     ~DS_Timers();
 
 public slots:
-    void Start();
+    void start();
 
 signals:
-    void Timeout20();
-    void Timeout100();
-    void Timeout1000();
+    void timeout20();
+    void timeout100();
+    void timeout1000();
 
 protected:
     DS_Timers();
@@ -61,6 +60,7 @@ private:
     QTimer* t20;
     QTimer* t100;
     QTimer* t1000;
+
     QThread* m_thread;
 };
 

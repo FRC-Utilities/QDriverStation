@@ -41,12 +41,13 @@ extern "C" {
  *  Synchronization functions which can time out return this value
  *  if they time out.
  */
-#define SDL_MUTEX_TIMEDOUT 1
+#define SDL_MUTEX_TIMEDOUT  1
 
 /**
  *  This is the timeout value which corresponds to never time out.
  */
-#define SDL_MUTEX_MAXWAIT (~(Uint32)0)
+#define SDL_MUTEX_MAXWAIT   (~(Uint32)0)
+
 
 /**
  *  \name Mutex functions
@@ -67,7 +68,7 @@ extern DECLSPEC SDL_mutex* SDLCALL SDL_CreateMutex (void);
  *
  *  \return 0, or -1 on error.
  */
-#define SDL_mutexP(m) SDL_LockMutex(m)
+#define SDL_mutexP(m)   SDL_LockMutex(m)
 extern DECLSPEC int SDLCALL SDL_LockMutex (SDL_mutex* mutex);
 
 /**
@@ -85,7 +86,7 @@ extern DECLSPEC int SDLCALL SDL_TryLockMutex (SDL_mutex* mutex);
  *  \warning It is an error to unlock a mutex that has not been locked by
  *           the current thread, and doing so results in undefined behavior.
  */
-#define SDL_mutexV(m) SDL_UnlockMutex(m)
+#define SDL_mutexV(m)   SDL_UnlockMutex(m)
 extern DECLSPEC int SDLCALL SDL_UnlockMutex (SDL_mutex* mutex);
 
 /**
@@ -93,7 +94,8 @@ extern DECLSPEC int SDLCALL SDL_UnlockMutex (SDL_mutex* mutex);
  */
 extern DECLSPEC void SDLCALL SDL_DestroyMutex (SDL_mutex* mutex);
 
-/* @} */ /* Mutex functions */
+/* @} *//* Mutex functions */
+
 
 /**
  *  \name Semaphore functions
@@ -152,7 +154,8 @@ extern DECLSPEC int SDLCALL SDL_SemPost (SDL_sem* sem);
  */
 extern DECLSPEC Uint32 SDLCALL SDL_SemValue (SDL_sem* sem);
 
-/* @} */ /* Semaphore functions */
+/* @} *//* Semaphore functions */
+
 
 /**
  *  \name Condition variable functions
@@ -231,10 +234,11 @@ extern DECLSPEC int SDLCALL SDL_CondWait (SDL_cond* cond, SDL_mutex* mutex);
  *  \warning On some platforms this function is implemented by looping with a
  *           delay of 1 ms, and so should be avoided if possible.
  */
-extern DECLSPEC int SDLCALL
-SDL_CondWaitTimeout (SDL_cond* cond, SDL_mutex* mutex, Uint32 ms);
+extern DECLSPEC int SDLCALL SDL_CondWaitTimeout (SDL_cond* cond,
+        SDL_mutex* mutex, Uint32 ms);
 
-/* @} */ /* Condition variable functions */
+/* @} *//* Condition variable functions */
+
 
 /* Ends C function definitions when using C++ */
 #ifdef __cplusplus

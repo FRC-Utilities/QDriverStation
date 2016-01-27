@@ -10,11 +10,16 @@
 
 ### QDriverStation 0.14:
 
-- Implement global event filter to avoid issues with virtual joystick or E-STOP trigger
-- Map E-STOP to SHIFT and SPACE keys
-- Minor UI changes
-- Implement built-in mDNS support for cross-platform operation
-- Do not use XInput for joystick reading, it only makes everything worse
-- Implement the practice mode with official sounds from the FRC Driver Station
+- Support for 2016 protocol
 - POV/Hat support for joysticks
-- Fully-working joysticks in 2015 protocol
+- Re-write of most of the code base
+- Map E-STOP to SHIFT and SPACE keys
+- 2015 protocol gets a lot of improvements
+- UI is written from ground-up in a more modular way
+- Implement global event filter to avoid issues with virtual joystick or E-STOP trigger
+- Implement built-in mDNS support for better cross-platform operation
+- Do not use XInput for joystick reading, it only makes everything worse
+- Improvements in socket programming for the LibDS
+- Scalable UI to any pixel density
+- Implement UI sound effects
+- More options in the preferences window

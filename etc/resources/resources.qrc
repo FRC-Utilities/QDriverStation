@@ -1,12 +1,11 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/Network.png</file>
         <file>fonts/Quicksand-Bold.otf</file>
         <file>fonts/Quicksand-Regular.otf</file>
         <file>fonts/Inconsolata.otf</file>
-        <file>fonts/FontAwesome.otf</file>
         <file>headers/LibDS.png</file>
         <file>headers/QDriverStation.png</file>
-        <file>qt/etc/qt.conf</file>
+        <file>icons/ethernet.png</file>
+        <file>icons/other_settings.png</file>
     </qresource>
 </RCC>

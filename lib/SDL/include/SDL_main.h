@@ -59,7 +59,7 @@
 #endif /* SDL_MAIN_HANDLED */
 
 #ifdef __cplusplus
-#define C_LINKAGE "C"
+#define C_LINKAGE   "C"
 #else
 #define C_LINKAGE
 #endif /* __cplusplus */
@@ -79,10 +79,15 @@
  *  \endcode
  */
 
+#if defined(SDL_MAIN_NEEDED) || defined(SDL_MAIN_AVAILABLE)
+#define main    SDL_main
+#endif
+
 /**
  *  The prototype for the application's main() function
  */
 extern C_LINKAGE int SDL_main (int argc, char* argv[]);
+
 
 #include "begin_code.h"
 #ifdef __cplusplus
@@ -103,11 +108,12 @@ extern DECLSPEC void SDLCALL SDL_SetMainReady (void);
 /**
  *  This can be called to set the application class at startup
  */
-extern DECLSPEC int SDLCALL
-SDL_RegisterApp (char* name, Uint32 style, void* hInst);
+extern DECLSPEC int SDLCALL SDL_RegisterApp (char* name, Uint32 style,
+        void* hInst);
 extern DECLSPEC void SDLCALL SDL_UnregisterApp (void);
 
 #endif /* __WIN32__ */
+
 
 #ifdef __cplusplus
 }

@@ -20,21 +20,12 @@
  * THE SOFTWARE.
  */
 
-#pragma once
-#ifndef _QDRIVER_STATION_UPDATER_UPDATER_H
-#define _QDRIVER_STATION_UPDATER_UPDATER_H
+#ifndef _QDS_UPDATER_H
+#define _QDS_UPDATER_H
 
-#include <QObject>
-#include <QMessageBox>
-#include <QApplication>
 #include <QNetworkReply>
-#include <QNetworkRequest>
 #include <QNetworkAccessManager>
 
-/**
- * \class Updater
- * \brief Implements a very simple auto-updater.
- */
 class Updater : public QObject
 {
     Q_OBJECT
@@ -43,13 +34,13 @@ public:
     explicit Updater();
 
 private slots:
-    void ShowUpdateMessages();
-    void CheckForUpdates (QString url);
-    void OnServerReply (QNetworkReply* reply);
-    void GetDownloadLink (QByteArray data);
-    void GetApplicationVersion (QByteArray data);
+    void showUpdateMessages();
+    void checkForUpdates (QString url);
+    void onServerReply (QNetworkReply* reply);
+    void getDownloadLink (QByteArray data);
+    void getApplicationVersion (QByteArray data);
 
-    QString ReadKey (QString data, QString key);
+    QString readKey (QString data, QString key);
 
 private:
     bool m_updateAvailable;

@@ -116,7 +116,7 @@ void DS_SendMessage (QString message)
     QUdpSocket* socket = new QUdpSocket;
     socket->writeDatagram (message.toUtf8(), QHostAddress::LocalHost, 6666);
 
-    free (socket);
+    delete socket;
 }
 
 //=============================================================================
@@ -195,15 +195,12 @@ QString DS_GetControlModeString (DS_ControlMode mode)
 
 QByteArray DS_GetSocketData (QUdpSocket* socket)
 {
-    QByteArray data;
+    QByteArray buffer;
 
-    while (socket->hasPendingDatagrams())
-        {
-            data.resize (socket->pendingDatagramSize());
-            socket->readDatagram (data.data(), data.size());
-        }
+    buffer.resize (socket->pendingDatagramSize());
+    socket->readDatagram (buffer.data(), buffer.size());
 
-    return data;
+    return buffer;
 }
 
 //=============================================================================

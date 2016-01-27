@@ -20,9 +20,8 @@
  * THE SOFTWARE.
  */
 
-#pragma once
-#ifndef _LIB_DS_COMMON_H
-#define _LIB_DS_COMMON_H
+#ifndef _LDS_COMMON_H
+#define _LDS_COMMON_H
 
 #include <QtMath>
 #include <QString>
@@ -35,20 +34,20 @@
 /**
  * Represents the available operation modes of the robot.
  */
-enum LIB_DS_DECL DS_ControlMode
+typedef enum
 {
     kControlTest         =  1, /**< Individual actuators can be moved */
     kControlAutonomous   =  2, /**< Robot takes over the world */
     kControlTeleoperated =  3, /**< User moves the robot */
     kControlInvalid      = -1, /**< Blame the programmers if this is used */
-};
+} DS_ControlMode;
 
 /**
  * Represents the available alliances that the robot can have.
  * Its important to specify which alliance we use in order to tell
  * the robot program 'where it is' and communicate with the FMS correctly
  */
-enum LIB_DS_DECL DS_Alliance
+typedef enum
 {
     kAllianceRed1  = 0,  /** Red alliance, position 1 */
     kAllianceRed2  = 1,  /** Red alliance, position 2 */
@@ -56,43 +55,55 @@ enum LIB_DS_DECL DS_Alliance
     kAllianceBlue1 = 3,  /** Blue alliance, position 1 */
     kAllianceBlue2 = 4,  /** Blue alliance, position 2 */
     kAllianceBlue3 = 5,  /** Blue alliance, position 3 */
-};
+} DS_Alliance;
 
 /**
  * Represents the current status of the communications
  */
-enum LIB_DS_DECL DS_CommStatus
+typedef enum
 {
     kFull    = 0, /** The DS is communicating with the robot */
     kPartial = 1, /** The robot responds ping requests, but does not respond to DS */
     kFailing = 2, /** The robot does not respond to ping requests */
-};
+} DS_CommStatus;
 
 /**
  * Represents a joystick in the DS
  */
-struct LIB_DS_DECL DS_Joystick
+typedef struct
 {
+    QString name;
+
     int numAxes;
-    int numHats;
+    int numPOVs;
     int numButtons;
 
-    int* hats;
+    int* POVs;
     double* axes;
     bool* buttons;
-};
+} DS_Joystick;
+
+/**
+ * Represents a rumble request event
+ */
+typedef struct
+{
+    int joystickID;
+    bool leftRumble;
+    bool rightRumble;
+} DS_RumbleRequest;
 
 /**
  * Represents a set of CAN information
  */
-struct LIB_DS_DECL DS_CAN
+typedef struct
 {
     quint8 util;
     quint8 busOff;
     quint8 txFull;
     quint8 receive;
     quint8 transmit;
-};
+} DS_CAN;
 
 /**
  * Returns the current timezone code by calculating the difference between

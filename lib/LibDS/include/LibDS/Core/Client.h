@@ -20,9 +20,8 @@
  * THE SOFTWARE.
  */
 
-#pragma once
-#ifndef _LIB_DS_CLIENT_H
-#define _LIB_DS_CLIENT_H
+#ifndef _LDS_CLIENT_H
+#define _LDS_CLIENT_H
 
 #include "LibDS/Core/Common.h"
 
@@ -44,34 +43,34 @@ public slots:
     /**
      * Sends a the input \a data to the robot
      */
-    void SendToRobot (QByteArray data);
+    void sendPacket (QByteArray data);
 
     /**
      * Changes the port in which we send the packets to
      */
-    void SetRobotPort (int port);
+    void setRobotPort (int port);
 
     /**
      * Changes the port in where we receive robot packets
      */
-    void SetClientPort (int port);
+    void setClientPort (int port);
 
     /**
      * Changes the address where we send the packets to
      */
-    void SetRobotAddress (QString address);
+    void setRobotAddress (QString address);
 
 signals:
     /**
      * Emitted when the client receives a packet from the robot
      */
-    void DataReceived (QByteArray);
+    void dataReceived (QByteArray);
 
 private slots:
     /**
      * Reads the received data and sends it to the \c DriverStation
      */
-    void OnDataReceived();
+    void readPacket();
 
 private:
     /**
@@ -87,12 +86,12 @@ private:
     /**
      * We send data to the robot through this socket
      */
-    QUdpSocket m_robotSocket;
+    QUdpSocket m_sender;
 
     /**
      * We receive data from the robot through this socket
      */
-    QUdpSocket m_clientSocket;
+    QUdpSocket m_receiver;
 };
 
 #endif

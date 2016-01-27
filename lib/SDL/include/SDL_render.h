@@ -63,16 +63,14 @@ extern "C" {
  */
 typedef enum
 {
-    SDL_RENDERER_SOFTWARE =
-        0x00000001, /**< The renderer is a software fallback */
-    SDL_RENDERER_ACCELERATED = 0x00000002,  /**< The renderer uses hardware
-                                                 acceleration */
-    SDL_RENDERER_PRESENTVSYNC = 0x00000004, /**< Present is synchronized
-                                               with the refresh rate */
-    SDL_RENDERER_TARGETTEXTURE = 0x00000008 /**< The renderer supports
-                                               rendering to texture */
-}
-SDL_RendererFlags;
+    SDL_RENDERER_SOFTWARE = 0x00000001,         /**< The renderer is a software fallback */
+    SDL_RENDERER_ACCELERATED = 0x00000002,      /**< The renderer uses hardware
+                                                     acceleration */
+    SDL_RENDERER_PRESENTVSYNC = 0x00000004,     /**< Present is synchronized
+                                                     with the refresh rate */
+    SDL_RENDERER_TARGETTEXTURE = 0x00000008     /**< The renderer supports
+                                                     rendering to texture */
+} SDL_RendererFlags;
 
 /**
  *  \brief Information on the capabilities of a render driver or context.
@@ -102,9 +100,9 @@ typedef enum
  */
 typedef enum
 {
-    SDL_TEXTUREMODULATE_NONE = 0x00000000,  /**< No modulation */
-    SDL_TEXTUREMODULATE_COLOR = 0x00000001, /**< srcC = srcC * color */
-    SDL_TEXTUREMODULATE_ALPHA = 0x00000002  /**< srcA = srcA * alpha */
+    SDL_TEXTUREMODULATE_NONE = 0x00000000,     /**< No modulation */
+    SDL_TEXTUREMODULATE_COLOR = 0x00000001,    /**< srcC = srcC * color */
+    SDL_TEXTUREMODULATE_ALPHA = 0x00000002     /**< srcA = srcA * alpha */
 } SDL_TextureModulate;
 
 /**
@@ -112,9 +110,9 @@ typedef enum
  */
 typedef enum
 {
-    SDL_FLIP_NONE = 0x00000000,       /**< Do not flip */
-    SDL_FLIP_HORIZONTAL = 0x00000001, /**< flip horizontally */
-    SDL_FLIP_VERTICAL = 0x00000002    /**< flip vertically */
+    SDL_FLIP_NONE = 0x00000000,     /**< Do not flip */
+    SDL_FLIP_HORIZONTAL = 0x00000001,    /**< flip horizontally */
+    SDL_FLIP_VERTICAL = 0x00000002     /**< flip vertically */
 } SDL_RendererFlip;
 
 /**
@@ -128,6 +126,7 @@ typedef struct SDL_Renderer SDL_Renderer;
  */
 struct SDL_Texture;
 typedef struct SDL_Texture SDL_Texture;
+
 
 /* Function prototypes */
 
@@ -156,8 +155,8 @@ extern DECLSPEC int SDLCALL SDL_GetNumRenderDrivers (void);
  *
  *  \sa SDL_CreateRenderer()
  */
-extern DECLSPEC int SDLCALL
-SDL_GetRenderDriverInfo (int index, SDL_RendererInfo* info);
+extern DECLSPEC int SDLCALL SDL_GetRenderDriverInfo (int index,
+        SDL_RendererInfo* info);
 
 /**
  *  \brief Create a window and default renderer
@@ -170,9 +169,10 @@ SDL_GetRenderDriverInfo (int index, SDL_RendererInfo* info);
  *
  *  \return 0 on success, or -1 on error
  */
-extern DECLSPEC int SDLCALL
-SDL_CreateWindowAndRenderer (int width, int height, Uint32 window_flags,
-                             SDL_Window** window, SDL_Renderer** renderer);
+extern DECLSPEC int SDLCALL SDL_CreateWindowAndRenderer (
+    int width, int height, Uint32 window_flags,
+    SDL_Window** window, SDL_Renderer** renderer);
+
 
 /**
  *  \brief Create a 2D rendering context for a window.
@@ -188,8 +188,8 @@ SDL_CreateWindowAndRenderer (int width, int height, Uint32 window_flags,
  *  \sa SDL_GetRendererInfo()
  *  \sa SDL_DestroyRenderer()
  */
-extern DECLSPEC SDL_Renderer* SDLCALL
-SDL_CreateRenderer (SDL_Window* window, int index, Uint32 flags);
+extern DECLSPEC SDL_Renderer* SDLCALL SDL_CreateRenderer (SDL_Window* window,
+        int index, Uint32 flags);
 
 /**
  *  \brief Create a 2D software rendering context for a surface.
@@ -201,8 +201,8 @@ SDL_CreateRenderer (SDL_Window* window, int index, Uint32 flags);
  *  \sa SDL_CreateRenderer()
  *  \sa SDL_DestroyRenderer()
  */
-extern DECLSPEC SDL_Renderer* SDLCALL
-SDL_CreateSoftwareRenderer (SDL_Surface* surface);
+extern DECLSPEC SDL_Renderer* SDLCALL SDL_CreateSoftwareRenderer (
+    SDL_Surface* surface);
 
 /**
  *  \brief Get the renderer associated with a window.
@@ -212,14 +212,14 @@ extern DECLSPEC SDL_Renderer* SDLCALL SDL_GetRenderer (SDL_Window* window);
 /**
  *  \brief Get information about a rendering context.
  */
-extern DECLSPEC int SDLCALL
-SDL_GetRendererInfo (SDL_Renderer* renderer, SDL_RendererInfo* info);
+extern DECLSPEC int SDLCALL SDL_GetRendererInfo (SDL_Renderer* renderer,
+        SDL_RendererInfo* info);
 
 /**
  *  \brief Get the output size of a rendering context.
  */
-extern DECLSPEC int SDLCALL
-SDL_GetRendererOutputSize (SDL_Renderer* renderer, int* w, int* h);
+extern DECLSPEC int SDLCALL SDL_GetRendererOutputSize (SDL_Renderer* renderer,
+        int* w, int* h);
 
 /**
  *  \brief Create a texture for a rendering context.
@@ -238,9 +238,10 @@ SDL_GetRendererOutputSize (SDL_Renderer* renderer, int* w, int* h);
  *  \sa SDL_UpdateTexture()
  *  \sa SDL_DestroyTexture()
  */
-extern DECLSPEC SDL_Texture* SDLCALL
-SDL_CreateTexture (SDL_Renderer* renderer, Uint32 format, int access, int w,
-                   int h);
+extern DECLSPEC SDL_Texture* SDLCALL SDL_CreateTexture (SDL_Renderer* renderer,
+        Uint32 format,
+        int access, int w,
+        int h);
 
 /**
  *  \brief Create a texture from an existing surface.
@@ -255,8 +256,8 @@ SDL_CreateTexture (SDL_Renderer* renderer, Uint32 format, int access, int w,
  *  \sa SDL_QueryTexture()
  *  \sa SDL_DestroyTexture()
  */
-extern DECLSPEC SDL_Texture* SDLCALL
-SDL_CreateTextureFromSurface (SDL_Renderer* renderer, SDL_Surface* surface);
+extern DECLSPEC SDL_Texture* SDLCALL SDL_CreateTextureFromSurface (
+    SDL_Renderer* renderer, SDL_Surface* surface);
 
 /**
  *  \brief Query the attributes of a texture
@@ -288,8 +289,9 @@ extern DECLSPEC int SDLCALL SDL_QueryTexture (SDL_Texture* texture,
  *
  *  \sa SDL_GetTextureColorMod()
  */
-extern DECLSPEC int SDLCALL
-SDL_SetTextureColorMod (SDL_Texture* texture, Uint8 r, Uint8 g, Uint8 b);
+extern DECLSPEC int SDLCALL SDL_SetTextureColorMod (SDL_Texture* texture,
+        Uint8 r, Uint8 g, Uint8 b);
+
 
 /**
  *  \brief Get the additional color value used in render copy operations.
@@ -303,8 +305,9 @@ SDL_SetTextureColorMod (SDL_Texture* texture, Uint8 r, Uint8 g, Uint8 b);
  *
  *  \sa SDL_SetTextureColorMod()
  */
-extern DECLSPEC int SDLCALL
-SDL_GetTextureColorMod (SDL_Texture* texture, Uint8* r, Uint8* g, Uint8* b);
+extern DECLSPEC int SDLCALL SDL_GetTextureColorMod (SDL_Texture* texture,
+        Uint8* r, Uint8* g,
+        Uint8* b);
 
 /**
  *  \brief Set an additional alpha value used in render copy operations.
@@ -317,8 +320,8 @@ SDL_GetTextureColorMod (SDL_Texture* texture, Uint8* r, Uint8* g, Uint8* b);
  *
  *  \sa SDL_GetTextureAlphaMod()
  */
-extern DECLSPEC int SDLCALL
-SDL_SetTextureAlphaMod (SDL_Texture* texture, Uint8 alpha);
+extern DECLSPEC int SDLCALL SDL_SetTextureAlphaMod (SDL_Texture* texture,
+        Uint8 alpha);
 
 /**
  *  \brief Get the additional alpha value used in render copy operations.
@@ -330,8 +333,8 @@ SDL_SetTextureAlphaMod (SDL_Texture* texture, Uint8 alpha);
  *
  *  \sa SDL_SetTextureAlphaMod()
  */
-extern DECLSPEC int SDLCALL
-SDL_GetTextureAlphaMod (SDL_Texture* texture, Uint8* alpha);
+extern DECLSPEC int SDLCALL SDL_GetTextureAlphaMod (SDL_Texture* texture,
+        Uint8* alpha);
 
 /**
  *  \brief Set the blend mode used for texture copy operations.
@@ -347,8 +350,8 @@ SDL_GetTextureAlphaMod (SDL_Texture* texture, Uint8* alpha);
  *
  *  \sa SDL_GetTextureBlendMode()
  */
-extern DECLSPEC int SDLCALL
-SDL_SetTextureBlendMode (SDL_Texture* texture, SDL_BlendMode blendMode);
+extern DECLSPEC int SDLCALL SDL_SetTextureBlendMode (SDL_Texture* texture,
+        SDL_BlendMode blendMode);
 
 /**
  *  \brief Get the blend mode used for texture copy operations.
@@ -360,8 +363,8 @@ SDL_SetTextureBlendMode (SDL_Texture* texture, SDL_BlendMode blendMode);
  *
  *  \sa SDL_SetTextureBlendMode()
  */
-extern DECLSPEC int SDLCALL
-SDL_GetTextureBlendMode (SDL_Texture* texture, SDL_BlendMode* blendMode);
+extern DECLSPEC int SDLCALL SDL_GetTextureBlendMode (SDL_Texture* texture,
+        SDL_BlendMode* blendMode);
 
 /**
  *  \brief Update the given texture rectangle with new pixel data.
@@ -381,21 +384,17 @@ extern DECLSPEC int SDLCALL SDL_UpdateTexture (SDL_Texture* texture,
         const void* pixels, int pitch);
 
 /**
- *  \brief Update a rectangle within a planar YV12 or IYUV texture with new
- *pixel data.
+ *  \brief Update a rectangle within a planar YV12 or IYUV texture with new pixel data.
  *
  *  \param texture   The texture to update
  *  \param rect      A pointer to the rectangle of pixels to update, or NULL to
  *                   update the entire texture.
  *  \param Yplane    The raw pixel data for the Y plane.
- *  \param Ypitch    The number of bytes between rows of pixel data for the Y
- *plane.
+ *  \param Ypitch    The number of bytes between rows of pixel data for the Y plane.
  *  \param Uplane    The raw pixel data for the U plane.
- *  \param Upitch    The number of bytes between rows of pixel data for the U
- *plane.
+ *  \param Upitch    The number of bytes between rows of pixel data for the U plane.
  *  \param Vplane    The raw pixel data for the V plane.
- *  \param Vpitch    The number of bytes between rows of pixel data for the V
- *plane.
+ *  \param Vpitch    The number of bytes between rows of pixel data for the V plane.
  *
  *  \return 0 on success, or -1 if the texture is not valid.
  *
@@ -403,10 +402,11 @@ extern DECLSPEC int SDLCALL SDL_UpdateTexture (SDL_Texture* texture,
  *        a contiguous block of Y and U/V planes in the proper order, but
  *        this function is available if your pixel data is not contiguous.
  */
-extern DECLSPEC int SDLCALL
-SDL_UpdateYUVTexture (SDL_Texture* texture, const SDL_Rect* rect,
-                      const Uint8* Yplane, int Ypitch, const Uint8* Uplane,
-                      int Upitch, const Uint8* Vplane, int Vpitch);
+extern DECLSPEC int SDLCALL SDL_UpdateYUVTexture (SDL_Texture* texture,
+        const SDL_Rect* rect,
+        const Uint8* Yplane, int Ypitch,
+        const Uint8* Uplane, int Upitch,
+        const Uint8* Vplane, int Vpitch);
 
 /**
  *  \brief Lock a portion of the texture for write-only pixel access.
@@ -419,14 +419,13 @@ SDL_UpdateYUVTexture (SDL_Texture* texture, const SDL_Rect* rect,
  *                   appropriately offset by the locked area.
  *  \param pitch     This is filled in with the pitch of the locked pixels.
  *
- *  \return 0 on success, or -1 if the texture is not valid or was not created
- *with ::SDL_TEXTUREACCESS_STREAMING.
+ *  \return 0 on success, or -1 if the texture is not valid or was not created with ::SDL_TEXTUREACCESS_STREAMING.
  *
  *  \sa SDL_UnlockTexture()
  */
 extern DECLSPEC int SDLCALL SDL_LockTexture (SDL_Texture* texture,
-        const SDL_Rect* rect, void** pixels,
-        int* pitch);
+        const SDL_Rect* rect,
+        void** pixels, int* pitch);
 
 /**
  *  \brief Unlock a texture, uploading the changes to video memory, if needed.
@@ -442,22 +441,21 @@ extern DECLSPEC void SDLCALL SDL_UnlockTexture (SDL_Texture* texture);
  *
  * \return SDL_TRUE if supported, SDL_FALSE if not.
  */
-extern DECLSPEC SDL_bool SDLCALL
-SDL_RenderTargetSupported (SDL_Renderer* renderer);
+extern DECLSPEC SDL_bool SDLCALL SDL_RenderTargetSupported (
+    SDL_Renderer* renderer);
 
 /**
  * \brief Set a texture as the current rendering target.
  *
  * \param renderer The renderer.
- * \param texture The targeted texture, which must be created with the
- *SDL_TEXTUREACCESS_TARGET flag, or NULL for the default render target
+ * \param texture The targeted texture, which must be created with the SDL_TEXTUREACCESS_TARGET flag, or NULL for the default render target
  *
  * \return 0 on success, or -1 on error
  *
  *  \sa SDL_GetRenderTarget()
  */
-extern DECLSPEC int SDLCALL
-SDL_SetRenderTarget (SDL_Renderer* renderer, SDL_Texture* texture);
+extern DECLSPEC int SDLCALL SDL_SetRenderTarget (SDL_Renderer* renderer,
+        SDL_Texture* texture);
 
 /**
  * \brief Get the current render target or NULL for the default render target.
@@ -466,8 +464,8 @@ SDL_SetRenderTarget (SDL_Renderer* renderer, SDL_Texture* texture);
  *
  *  \sa SDL_SetRenderTarget()
  */
-extern DECLSPEC SDL_Texture* SDLCALL
-SDL_GetRenderTarget (SDL_Renderer* renderer);
+extern DECLSPEC SDL_Texture* SDLCALL SDL_GetRenderTarget (
+    SDL_Renderer* renderer);
 
 /**
  *  \brief Set device independent resolution for rendering
@@ -476,16 +474,12 @@ SDL_GetRenderTarget (SDL_Renderer* renderer);
  *  \param w      The width of the logical resolution
  *  \param h      The height of the logical resolution
  *
- *  This function uses the viewport and scaling functionality to allow a fixed
- *logical
- *  resolution for rendering, regardless of the actual output resolution.  If
- *the actual
- *  output resolution doesn't have the same aspect ratio the output rendering
- *will be
+ *  This function uses the viewport and scaling functionality to allow a fixed logical
+ *  resolution for rendering, regardless of the actual output resolution.  If the actual
+ *  output resolution doesn't have the same aspect ratio the output rendering will be
  *  centered within the output display.
  *
- *  If the output display is a window, mouse events in the window will be
- *filtered
+ *  If the output display is a window, mouse events in the window will be filtered
  *  and scaled so they seem to arrive within the logical resolution.
  *
  *  \note If this function results in scaling or subpixel drawing by the
@@ -496,8 +490,8 @@ SDL_GetRenderTarget (SDL_Renderer* renderer);
  *  \sa SDL_RenderSetScale()
  *  \sa SDL_RenderSetViewport()
  */
-extern DECLSPEC int SDLCALL
-SDL_RenderSetLogicalSize (SDL_Renderer* renderer, int w, int h);
+extern DECLSPEC int SDLCALL SDL_RenderSetLogicalSize (SDL_Renderer* renderer,
+        int w, int h);
 
 /**
  *  \brief Get device independent resolution for rendering
@@ -508,36 +502,34 @@ SDL_RenderSetLogicalSize (SDL_Renderer* renderer, int w, int h);
  *
  *  \sa SDL_RenderSetLogicalSize()
  */
-extern DECLSPEC void SDLCALL
-SDL_RenderGetLogicalSize (SDL_Renderer* renderer, int* w, int* h);
+extern DECLSPEC void SDLCALL SDL_RenderGetLogicalSize (SDL_Renderer* renderer,
+        int* w, int* h);
 
 /**
  *  \brief Set the drawing area for rendering on the current target.
  *
  *  \param renderer The renderer for which the drawing area should be set.
- *  \param rect The rectangle representing the drawing area, or NULL to set the
- *viewport to the entire target.
+ *  \param rect The rectangle representing the drawing area, or NULL to set the viewport to the entire target.
  *
  *  The x,y of the viewport rect represents the origin for rendering.
  *
  *  \return 0 on success, or -1 on error
  *
- *  \note If the window associated with the renderer is resized, the viewport is
- *automatically reset.
+ *  \note If the window associated with the renderer is resized, the viewport is automatically reset.
  *
  *  \sa SDL_RenderGetViewport()
  *  \sa SDL_RenderSetLogicalSize()
  */
-extern DECLSPEC int SDLCALL
-SDL_RenderSetViewport (SDL_Renderer* renderer, const SDL_Rect* rect);
+extern DECLSPEC int SDLCALL SDL_RenderSetViewport (SDL_Renderer* renderer,
+        const SDL_Rect* rect);
 
 /**
  *  \brief Get the drawing area for the current target.
  *
  *  \sa SDL_RenderSetViewport()
  */
-extern DECLSPEC void SDLCALL
-SDL_RenderGetViewport (SDL_Renderer* renderer, SDL_Rect* rect);
+extern DECLSPEC void SDLCALL SDL_RenderGetViewport (SDL_Renderer* renderer,
+        SDL_Rect* rect);
 
 /**
  *  \brief Set the clip rectangle for the current target.
@@ -550,8 +542,8 @@ SDL_RenderGetViewport (SDL_Renderer* renderer, SDL_Rect* rect);
  *
  *  \sa SDL_RenderGetClipRect()
  */
-extern DECLSPEC int SDLCALL
-SDL_RenderSetClipRect (SDL_Renderer* renderer, const SDL_Rect* rect);
+extern DECLSPEC int SDLCALL SDL_RenderSetClipRect (SDL_Renderer* renderer,
+        const SDL_Rect* rect);
 
 /**
  *  \brief Get the clip rectangle for the current target.
@@ -562,8 +554,8 @@ SDL_RenderSetClipRect (SDL_Renderer* renderer, const SDL_Rect* rect);
  *
  *  \sa SDL_RenderSetClipRect()
  */
-extern DECLSPEC void SDLCALL
-SDL_RenderGetClipRect (SDL_Renderer* renderer, SDL_Rect* rect);
+extern DECLSPEC void SDLCALL SDL_RenderGetClipRect (SDL_Renderer* renderer,
+        SDL_Rect* rect);
 
 /**
  *  \brief Set the drawing scale for rendering on the current target.
@@ -583,8 +575,8 @@ SDL_RenderGetClipRect (SDL_Renderer* renderer, SDL_Rect* rect);
  *  \sa SDL_RenderGetScale()
  *  \sa SDL_RenderSetLogicalSize()
  */
-extern DECLSPEC int SDLCALL
-SDL_RenderSetScale (SDL_Renderer* renderer, float scaleX, float scaleY);
+extern DECLSPEC int SDLCALL SDL_RenderSetScale (SDL_Renderer* renderer,
+        float scaleX, float scaleY);
 
 /**
  *  \brief Get the drawing scale for the current target.
@@ -595,8 +587,8 @@ SDL_RenderSetScale (SDL_Renderer* renderer, float scaleX, float scaleY);
  *
  *  \sa SDL_RenderSetScale()
  */
-extern DECLSPEC void SDLCALL
-SDL_RenderGetScale (SDL_Renderer* renderer, float* scaleX, float* scaleY);
+extern DECLSPEC void SDLCALL SDL_RenderGetScale (SDL_Renderer* renderer,
+        float* scaleX, float* scaleY);
 
 /**
  *  \brief Set the color used for drawing operations (Rect, Line and Clear).
@@ -643,8 +635,8 @@ extern DECLSPEC int SDLCALL SDL_GetRenderDrawColor (SDL_Renderer* renderer,
  *
  *  \sa SDL_GetRenderDrawBlendMode()
  */
-extern DECLSPEC int SDLCALL
-SDL_SetRenderDrawBlendMode (SDL_Renderer* renderer, SDL_BlendMode blendMode);
+extern DECLSPEC int SDLCALL SDL_SetRenderDrawBlendMode (SDL_Renderer* renderer,
+        SDL_BlendMode blendMode);
 
 /**
  *  \brief Get the blend mode used for drawing operations.
@@ -656,8 +648,8 @@ SDL_SetRenderDrawBlendMode (SDL_Renderer* renderer, SDL_BlendMode blendMode);
  *
  *  \sa SDL_SetRenderDrawBlendMode()
  */
-extern DECLSPEC int SDLCALL
-SDL_GetRenderDrawBlendMode (SDL_Renderer* renderer, SDL_BlendMode* blendMode);
+extern DECLSPEC int SDLCALL SDL_GetRenderDrawBlendMode (SDL_Renderer* renderer,
+        SDL_BlendMode* blendMode);
 
 /**
  *  \brief Clear the current rendering target with the drawing color
@@ -677,8 +669,8 @@ extern DECLSPEC int SDLCALL SDL_RenderClear (SDL_Renderer* renderer);
  *
  *  \return 0 on success, or -1 on error
  */
-extern DECLSPEC int SDLCALL
-SDL_RenderDrawPoint (SDL_Renderer* renderer, int x, int y);
+extern DECLSPEC int SDLCALL SDL_RenderDrawPoint (SDL_Renderer* renderer,
+        int x, int y);
 
 /**
  *  \brief Draw multiple points on the current rendering target.
@@ -704,8 +696,8 @@ extern DECLSPEC int SDLCALL SDL_RenderDrawPoints (SDL_Renderer* renderer,
  *
  *  \return 0 on success, or -1 on error
  */
-extern DECLSPEC int SDLCALL
-SDL_RenderDrawLine (SDL_Renderer* renderer, int x1, int y1, int x2, int y2);
+extern DECLSPEC int SDLCALL SDL_RenderDrawLine (SDL_Renderer* renderer,
+        int x1, int y1, int x2, int y2);
 
 /**
  *  \brief Draw a series of connected lines on the current rendering target.
@@ -716,21 +708,20 @@ SDL_RenderDrawLine (SDL_Renderer* renderer, int x1, int y1, int x2, int y2);
  *
  *  \return 0 on success, or -1 on error
  */
-extern DECLSPEC int SDLCALL
-SDL_RenderDrawLines (SDL_Renderer* renderer, const SDL_Point* points,
-                     int count);
+extern DECLSPEC int SDLCALL SDL_RenderDrawLines (SDL_Renderer* renderer,
+        const SDL_Point* points,
+        int count);
 
 /**
  *  \brief Draw a rectangle on the current rendering target.
  *
  *  \param renderer The renderer which should draw a rectangle.
- *  \param rect A pointer to the destination rectangle, or NULL to outline the
- *entire rendering target.
+ *  \param rect A pointer to the destination rectangle, or NULL to outline the entire rendering target.
  *
  *  \return 0 on success, or -1 on error
  */
-extern DECLSPEC int SDLCALL
-SDL_RenderDrawRect (SDL_Renderer* renderer, const SDL_Rect* rect);
+extern DECLSPEC int SDLCALL SDL_RenderDrawRect (SDL_Renderer* renderer,
+        const SDL_Rect* rect);
 
 /**
  *  \brief Draw some number of rectangles on the current rendering target.
@@ -741,12 +732,12 @@ SDL_RenderDrawRect (SDL_Renderer* renderer, const SDL_Rect* rect);
  *
  *  \return 0 on success, or -1 on error
  */
-extern DECLSPEC int SDLCALL
-SDL_RenderDrawRects (SDL_Renderer* renderer, const SDL_Rect* rects, int count);
+extern DECLSPEC int SDLCALL SDL_RenderDrawRects (SDL_Renderer* renderer,
+        const SDL_Rect* rects,
+        int count);
 
 /**
- *  \brief Fill a rectangle on the current rendering target with the drawing
- *color.
+ *  \brief Fill a rectangle on the current rendering target with the drawing color.
  *
  *  \param renderer The renderer which should fill a rectangle.
  *  \param rect A pointer to the destination rectangle, or NULL for the entire
@@ -754,12 +745,11 @@ SDL_RenderDrawRects (SDL_Renderer* renderer, const SDL_Rect* rects, int count);
  *
  *  \return 0 on success, or -1 on error
  */
-extern DECLSPEC int SDLCALL
-SDL_RenderFillRect (SDL_Renderer* renderer, const SDL_Rect* rect);
+extern DECLSPEC int SDLCALL SDL_RenderFillRect (SDL_Renderer* renderer,
+        const SDL_Rect* rect);
 
 /**
- *  \brief Fill some number of rectangles on the current rendering target with
- *the drawing color.
+ *  \brief Fill some number of rectangles on the current rendering target with the drawing color.
  *
  *  \param renderer The renderer which should fill multiple rectangles.
  *  \param rects A pointer to an array of destination rectangles.
@@ -767,8 +757,9 @@ SDL_RenderFillRect (SDL_Renderer* renderer, const SDL_Rect* rect);
  *
  *  \return 0 on success, or -1 on error
  */
-extern DECLSPEC int SDLCALL
-SDL_RenderFillRects (SDL_Renderer* renderer, const SDL_Rect* rects, int count);
+extern DECLSPEC int SDLCALL SDL_RenderFillRects (SDL_Renderer* renderer,
+        const SDL_Rect* rects,
+        int count);
 
 /**
  *  \brief Copy a portion of the texture to the current rendering target.
@@ -782,13 +773,13 @@ SDL_RenderFillRects (SDL_Renderer* renderer, const SDL_Rect* rects, int count);
  *
  *  \return 0 on success, or -1 on error
  */
-extern DECLSPEC int SDLCALL
-SDL_RenderCopy (SDL_Renderer* renderer, SDL_Texture* texture,
-                const SDL_Rect* srcrect, const SDL_Rect* dstrect);
+extern DECLSPEC int SDLCALL SDL_RenderCopy (SDL_Renderer* renderer,
+        SDL_Texture* texture,
+        const SDL_Rect* srcrect,
+        const SDL_Rect* dstrect);
 
 /**
- *  \brief Copy a portion of the source texture to the current rendering target,
- *rotating it by angle around the given center
+ *  \brief Copy a portion of the source texture to the current rendering target, rotating it by angle around the given center
  *
  *  \param renderer The renderer which should copy parts of a texture.
  *  \param texture The source texture.
@@ -796,21 +787,19 @@ SDL_RenderCopy (SDL_Renderer* renderer, SDL_Texture* texture,
  *                   texture.
  *  \param dstrect   A pointer to the destination rectangle, or NULL for the
  *                   entire rendering target.
- *  \param angle    An angle in degrees that indicates the rotation that will be
- *applied to dstrect
- *  \param center   A pointer to a point indicating the point around which
- *dstrect will be rotated (if NULL, rotation will be done aroud dstrect.w/2,
- *dstrect.h/2)
- *  \param flip     An SDL_RendererFlip value stating which flipping actions
- *should be performed on the texture
+ *  \param angle    An angle in degrees that indicates the rotation that will be applied to dstrect
+ *  \param center   A pointer to a point indicating the point around which dstrect will be rotated (if NULL, rotation will be done aroud dstrect.w/2, dstrect.h/2)
+ *  \param flip     An SDL_RendererFlip value stating which flipping actions should be performed on the texture
  *
  *  \return 0 on success, or -1 on error
  */
-extern DECLSPEC int SDLCALL
-SDL_RenderCopyEx (SDL_Renderer* renderer, SDL_Texture* texture,
-                  const SDL_Rect* srcrect, const SDL_Rect* dstrect,
-                  const double angle, const SDL_Point* center,
-                  const SDL_RendererFlip flip);
+extern DECLSPEC int SDLCALL SDL_RenderCopyEx (SDL_Renderer* renderer,
+        SDL_Texture* texture,
+        const SDL_Rect* srcrect,
+        const SDL_Rect* dstrect,
+        const double angle,
+        const SDL_Point* center,
+        const SDL_RendererFlip flip);
 
 /**
  *  \brief Read pixels from the current rendering target.
@@ -827,9 +816,10 @@ SDL_RenderCopyEx (SDL_Renderer* renderer, SDL_Texture* texture,
  *
  *  \warning This is a very slow operation, and should not be used frequently.
  */
-extern DECLSPEC int SDLCALL
-SDL_RenderReadPixels (SDL_Renderer* renderer, const SDL_Rect* rect,
-                      Uint32 format, void* pixels, int pitch);
+extern DECLSPEC int SDLCALL SDL_RenderReadPixels (SDL_Renderer* renderer,
+        const SDL_Rect* rect,
+        Uint32 format,
+        void* pixels, int pitch);
 
 /**
  *  \brief Update the screen with rendering performed.
@@ -852,20 +842,19 @@ extern DECLSPEC void SDLCALL SDL_DestroyTexture (SDL_Texture* texture);
  */
 extern DECLSPEC void SDLCALL SDL_DestroyRenderer (SDL_Renderer* renderer);
 
+
 /**
  *  \brief Bind the texture to the current OpenGL/ES/ES2 context for use with
  *         OpenGL instructions.
  *
  *  \param texture  The SDL texture to bind
- *  \param texw     A pointer to a float that will be filled with the texture
- *width
- *  \param texh     A pointer to a float that will be filled with the texture
- *height
+ *  \param texw     A pointer to a float that will be filled with the texture width
+ *  \param texh     A pointer to a float that will be filled with the texture height
  *
  *  \return 0 on success, or -1 if the operation is not supported
  */
-extern DECLSPEC int SDLCALL
-SDL_GL_BindTexture (SDL_Texture* texture, float* texw, float* texh);
+extern DECLSPEC int SDLCALL SDL_GL_BindTexture (SDL_Texture* texture,
+        float* texw, float* texh);
 
 /**
  *  \brief Unbind a texture from the current OpenGL/ES/ES2 context.
@@ -875,6 +864,7 @@ SDL_GL_BindTexture (SDL_Texture* texture, float* texw, float* texh);
  *  \return 0 on success, or -1 if the operation is not supported
  */
 extern DECLSPEC int SDLCALL SDL_GL_UnbindTexture (SDL_Texture* texture);
+
 
 /* Ends C function definitions when using C++ */
 #ifdef __cplusplus

@@ -20,9 +20,8 @@
  * THE SOFTWARE.
  */
 
-#pragma once
-#ifndef _LIB_DS_PROTOCOL_H
-#define _LIB_DS_PROTOCOL_H
+#ifndef _LDS_PROTOCOL_H
+#define _LDS_PROTOCOL_H
 
 #include <QBitArray>
 #include <QHostInfo>
@@ -50,78 +49,78 @@ public:
     /**
      * Returns the current team number
      */
-    int Team() const;
+    int team() const;
 
     /**
      * The current status code of the robot
      */
-    int Status() const;
+    int statusCode() const;
 
     /**
      * Returns \c true if the user code is loaded on the robot
      */
-    bool RobotHasCode() const;
+    bool hasCode() const;
 
     /**
      * The number of packets that we sent
      */
-    int SentPackets() const;
+    int sentPackets() const;
 
     /**
      * Returns \c true if the robot is enabled
      */
-    bool IsEnabled() const;
+    bool isEnabled() const;
 
     /**
      * Returns \c true if the robot communications are working
      */
-    bool IsConnectedToRobot() const;
+    bool isConnectedToRobot() const;
 
     /**
      * Returns \c true if the computer is connected to the robot radio
      */
-    bool IsConnectedToRadio() const;
+    bool isConnectedToRadio() const;
 
     /**
      * Returns \c true if we are sending the date/time to the robot
      */
-    bool SendDateTime() const;
+    bool sendDateTime() const;
 
     /**
      * Returns \c true if the robot reports a voltage brownout
      */
-    bool IsVoltageBrownout() const;
+    bool hasVoltageBrownout() const;
 
     /**
      * Returns \c true if the robot is in e-stop state
      */
-    bool IsEmergencyStopped() const;
+    bool isEmergencyStopped() const;
 
     /**
      * Returns the current alliance of the robot
      */
-    DS_Alliance Alliance() const;
+    DS_Alliance alliance() const;
 
     /**
      * Returns the current control mode of the robot
      */
-    DS_ControlMode ControlMode() const;
+    DS_ControlMode controlMode() const;
 
     /**
      * Returns the current communication status
      */
-    DS_CommStatus CommunicationStatus() const;
+    DS_CommStatus communicationStatus() const;
 
     /**
      * A list with the input data of the joysticks. This is just a reference
      * to the joystick list in the protocol manager.
      */
-    QList<DS_Joystick*>* Joysticks() const;
+    QList<DS_Joystick*>* joysticks() const;
 
     /**
      * Returns the default radio address or the custom radio address
      */
-    QString RadioAddress();
+    QString radioAddress();
 
     /**
      * Returns the default robot address or the custom robot address.
@@ -129,54 +128,82 @@ public:
      * If there is no custom address set, the function may return the robot
      * address or the fallback address (10.XX.YY.2)
      */
-    QString RobotAddress();
+    QString robotAddress();
 
     /**
      * Constructs a client packet and updates the internal values
      */
-    QByteArray CreateClientPacket();
+    QByteArray createPacket();
 
     /**
      * Returns the port in which we send data to the robot
      *
      * \note This function must be implemented by each protocol
      */
-    virtual int RobotPort() = 0;
+    virtual int robotPort()
+    {
+        return 0;
+    }
 
     /**
      * Returns the port in which we receive robot data
      *
      * \note This function must be implemented by each protocol
      */
-    virtual int ClientPort() = 0;
+    virtual int clientPort()
+    {
+        return 0;
+    }
+
+    /**
+     * Returns a TCP port that the controller uses for other functions.
+     * This is used to check if we can communicate with the robot controller
+     * itself and obtain the 'partial' communication status
+     */
+    virtual int tcpProbePort()
+    {
+        return 0;
+    }
 
     /**
      * Returns the port used for communicating data through the net console
      *
      * \note This function must be implemented by each protocol
      */
-    virtual int NetConsolePort() = 0;
+    virtual int netConsolePort()
+    {
+        return 0;
+    }
 
     /**
      * Returns \c true if robot accepts commands through the netconsole
      *
      * \note This function must be implemented by each protocol
      */
-    virtual bool NetConsoleAcceptsInput() = 0;
+    virtual bool netConsoleAcceptsInput()
+    {
+        return false;
+    }
 
     /**
      * Returns the default radio address
      *
      * \note This function must be implemented by each protocol
      */
-    virtual QStringList DefaultRadioAddresses() = 0;
+    virtual QStringList defaultRadioAddress()
+    {
+        return QStringList ("");
+    }
 
     /**
      * Returns the default robot address
      *
      * \note This function must be implemented by each protocol
      */
-    virtual QStringList DefaultRobotAddresses() = 0;
+    virtual QStringList defaultRobotAddress()
+    {
+        return QStringList ("");
+    }
 
 public slots:
     /**
@@ -185,75 +212,96 @@ public slots:
      *
      * After doing that, the function will try to ping the robot again
      */
-    void Reset();
+    void reset();
 
     /**
      * Changes the team number of the robot, this can be used to generate
      * the robot and radio address.
      */
-    void SetTeamNumber (int team);
+    void setTeam (int team);
 
     /**
      * Attempts to change the enabled state of the robot
      */
-    void SetEnabled (bool enabled);
+    void setEnabled (bool enabled);
 
     /**
      * Attempts to change the e-stop state of the robot
      */
-    void SetEmergencyStopped (bool emergency_stop);
+    void setEmergencyStop (bool emergency_stop);
 
     /**
      * Changes the robot address to \a address
      */
-    void SetRobotAddress (QString address);
+    void setRobotAddress (QString address);
 
     /**
      * Updates the \a alliance of the robot
      */
-    void SetAlliance (DS_Alliance Alliance);
+    void setAlliance (DS_Alliance alliance);
 
     /**
      * Updates the control \a mode of the robot
      */
-    void SetControlMode (DS_ControlMode mode);
+    void setControlMode (DS_ControlMode mode);
 
     /**
      * Indicates the protocol from where to read input from the \a joysticks
      */
-    void SetJoysticks (QList<DS_Joystick*>* Joysticks);
+    void setJoysticks (QList<DS_Joystick*>* joysticks);
 
     /**
      * Reads the robot data and calls the appropiate functions to interpret it
      */
-    void ReadRobotPacket (QByteArray data);
+    void readRobotPacket (QByteArray data);
 
     /**
      * Reboots the robot
      *
      * \note This function must be implemented by each protocol
      */
-    virtual void Reboot() = 0;
+    virtual void reboot() {}
 
     /**
      * Restarts the robot code or the user program
      *
      * \note This function must be implemented by each protocol
      */
-    virtual void RestartCode() = 0;
+    virtual void restartCode() {}
+
+    /**
+     * Called when the state of the joysticks is changed
+     */
+    virtual void onJoysticksChanged() {}
 
 signals:
     /**
      * Emitted when the protocol detects that the status of the
      * user code has changed
      */
-    void CodeChanged (bool);
+    void codeChanged (bool);
+
+    /**
+     * Emitted when the robot is e-stopped
+     */
+    void emergencyStopped();
+
+    /**
+     * Emitted when the state of the FMS connection is changed
+     */
+    void fmsChanged (bool attached);
 
     /**
      * Emitted when the connection state between the computer and the
      * robot radio is changed
      */
-    void RadioCommChanged (bool);
+    void radioCommChanged (bool);
+
+    /**
+     * Emitted when the protocol figures out that we need to
+     * rumble one of the joysticks...
+     */
+    void rumbleRequest (DS_RumbleRequest request);
 
     /**
      * Emitted when the state of the network communications with the robot
@@ -264,35 +312,35 @@ signals:
      *     - The robot responds to ping requests and DS
      *     - The robot does not respond to ping requests nor the DS
      */
-    void CommunicationsChanged (DS_CommStatus);
+    void communicationsChanged (DS_CommStatus);
 
     /**
      * Emitted when the robot detects a possible voltage brownout
      */
-    void VoltageBrownoutChanged (bool);
+    void voltageBrownoutChanged (bool);
 
     /**
      * Emitted when the protocol detects that the robot voltage has changed
      */
-    void VoltageChanged (QString);
+    void voltageChanged (QString);
 
     /**
      * Emitted when the protocol detects that the CPU usage of the robot
      * has changed
      */
-    void CPUUsageChanged (int);
+    void cpuUsageChanged (int);
 
     /**
      * Emitted when the protocol detects that the RAM usage of the robot
      * has changed
      */
-    void RAMUsageChanged (int);
+    void ramUsageChanged (int);
 
     /**
      * Emitted when the protocol detects that the disk usage of the robot
      * has changed
      */
-    void DiskUsageChanged (int);
+    void diskUsageChanged (int);
 
     /**
      * Emitted when the protocol receives and decodes a CAN data structure
@@ -303,56 +351,56 @@ signals:
      * Emitted when the protocol detects that the enabled state of the robot
      * is changed
      */
-    void EnabledChanged (bool);
+    void enabledChanged (bool);
 
     /**
      * Emitted when the protocol detects that the e-stop state of the robot
      * changes
      */
-    void EmergencyStoppedChanged (bool);
+    void emergencyStoppedChanged (bool);
 
     /**
      * Emitted when the protocol detects that the control mode has changed.
      * Note: this signal can be emitted when the user changes the control mode
      * or when the robot itself changes its mode (e.g. e-stop)
      */
-    void ControlModeChanged (DS_ControlMode);
+    void controlModeChanged (DS_ControlMode);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * its library INI files and analyzed them
      */
-    void LibVersionChanged (QString);
+    void libVersionChanged (QString);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * its PCM INI files and analyzed them
      */
-    void RIOVersionChanged (QString);
+    void rioVersionChanged (QString);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * its PDP information and analyzed them
      */
-    void PDPVersionChanged (QString);
+    void pdpVersionChanged (QString);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * the PCM information files and analyzed them
      */
-    void PCMVersionChanged (QString);
+    void pcmVersionChanged (QString);
 
     /**
      * Emitted when the Driver Station changes the robot address or the team number
      * Can be used internally or externally to update network addresses.
      */
-    void RobotAddressChanged (QString);
+    void robotAddressChanged (QString);
 
     /**
      * Emitted when we receive a packet from the robot. Used by the library
      * to generate and send another control packet to the robot.
      */
-    void PacketReceived();
+    void packetReceived();
 
 protected slots:
     /**
@@ -360,14 +408,14 @@ protected slots:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual void ResetProtocol() = 0;
+    virtual void resetProtocol()  {}
 
     /**
      * Implements a method to get more information about the robot components
      *
      * \note This function must be implemented by each protocol
      */
-    virtual void GetRobotInformation() = 0;
+    virtual void getRobotInformation()  {}
 
 protected:
     /**
@@ -375,7 +423,11 @@ protected:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual bool ReadPacket (QByteArray data) = 0;
+    virtual bool readPacket (QByteArray data)
+    {
+        Q_UNUSED (data);
+        return false;
+    }
 
     /**
      * Uses the joystick input information to generate a data array to be
@@ -383,7 +435,10 @@ protected:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual QByteArray GetJoystickData() = 0;
+    virtual QByteArray getJoystickData()
+    {
+        return QByteArray ("");
+    }
 
     /**
      * Generates the neccesary data to send the robot the current timezone
@@ -391,50 +446,56 @@ protected:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual QByteArray GetTimezoneData() = 0;
+    virtual QByteArray getTimezoneData()
+    {
+        return QByteArray ("");
+    }
 
     /**
      * Generates a control packet to be sent to the robot
      *
      * \note This function must be implemented by each protocol
      */
-    virtual QByteArray GetClientPacket() = 0;
+    virtual QByteArray getClientPacket()
+    {
+        return QByteArray ("");
+    }
 
     /**
      * Changes the current robot \a status
      */
-    void UpdateStatus (int Status);
+    void updateStatus (int statusCode);
 
     /**
      * Changes the state of the robot code and emits the appropiate signals
      */
-    void UpdateRobotCode (bool available);
+    void updateRobotCode (bool available);
 
     /**
      * Changes the state of the send date/time variable
      */
-    void UpdateSendDateTime (bool sendDT);
+    void updateSendDateTime (bool sendDT);
 
     /**
      * Changes the state of the radio comm. and emits the appropiate signals
      */
-    void UpdateRadioStatus (bool connected);
+    void updateRadioStatus (bool connected);
 
     /**
      * Changes the state of the communications and emits the appropiate signals
      */
-    void UpdateCommStatus (DS_CommStatus Status);
+    void updateCommStatus (DS_CommStatus statusCode);
 
     /**
      * Changes the voltage brownout state and emits the appropiate signals
      */
-    void UpdateVoltageBrownout (bool brownout);
+    void updateVoltageBrownout (bool brownout);
 
     /**
      * 'Calculcates' the voltage from the values of the \a major and \a minor
      * parameters and emits the appropiate signals
      */
-    void UpdateVoltage (int major, int minor);
+    void updateVoltage (int major, int minor);
 
 private:
     /**
@@ -570,30 +631,30 @@ private slots:
     /**
      * Pings the robot using a TCP socket
      */
-    void PingRobot();
+    void pingRobot();
 
     /**
      * Pings the radio using a TCP socket
      */
-    void PingRadio();
+    void pingRadio();
 
     /**
      * Tells the client to stop sending E-Stop packets after
      * certain ammount of time.
      */
-    void DisableEmergencyStopped();
+    void disableEmergencyStop();
 
     /**
      * Changes the address of the robot to the robot's IP and then tries to
      * ping the robot to get the connection status
      */
-    void OnIpFound (QString address, QString ip);
+    void updateRobotIP (QString address, QString ip);
 
     /**
      * Called when the connection state between the robot TCP connection and
      * the client is changed
      */
-    void OnStateChanged (QAbstractSocket::SocketState state);
+    void onPingResponse (QAbstractSocket::SocketState state);
 };
 
 #endif

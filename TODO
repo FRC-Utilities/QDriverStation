@@ -1,6 +1,0 @@
-TODO:
-
-- Refactor the main window components to simplify the code base and get rid of the generated boiler-plate code.
-- Implement a layer over SDL in order to obtain the same joystick mappings as the ones used by the official FRC Driver Station.
-- Implement unit tests, at least in the DS library
-- Implement 2014 protocol

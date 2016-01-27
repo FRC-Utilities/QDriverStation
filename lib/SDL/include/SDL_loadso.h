@@ -62,7 +62,8 @@ extern DECLSPEC void* SDLCALL SDL_LoadObject (const char* sofile);
  *  named function in the shared object and returns it.  This address
  *  is no longer valid after calling SDL_UnloadObject().
  */
-extern DECLSPEC void* SDLCALL SDL_LoadFunction (void* handle, const char* name);
+extern DECLSPEC void* SDLCALL SDL_LoadFunction (void* handle,
+        const char* name);
 
 /**
  *  Unload a shared object from memory.

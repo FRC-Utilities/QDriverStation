@@ -34,85 +34,50 @@ const QString LIB_PATH = "/tmp/frc_versions/FRC_Lib_Version.ini";
 // Protocol codes/standards
 //=============================================================================
 
-/**
- * The values used by the protocol to represent the different operation modes
- */
-enum ControlModes
+enum ProtocolStandards
 {
-    pEmStopOn            = 128, /**< Emergency stop enabled */
-    pEmStopOff           =   0, /**< Emergency stop disabled */
-    pEnabled             =   4, /**< Robot Enabled */
-    pDisabled            =   0, /**< Robot Disabled */
-    pControlTest         =   1, /**< Individual actuators can be moved */
-    pControlAutonomous   =   2, /**< Robot takes over the world */
-    pControlTeleoperated =   0, /**< User moves the robot */
-};
+    /* Client -> RoboRIO operation modes/states */
+    pEmStopOn                 = 0x80, /**< Emergency stop enabled */
+    pEmStopOff                = 0x00, /**< Emergency stop disabled */
+    pEnabled                  = 0x04, /**< Robot Enabled */
+    pDisabled                 = 0x00, /**< Robot Disabled */
+    pControlTest              = 0x01, /**< Individual actuators can be moved */
+    pControlAutonomous        = 0x02, /**< Robot takes over the world */
+    pControlTeleoperated      = 0x00, /**< User moves the robot */
 
-/**
- * Used by the robot to identify the different sections of the client packets
- */
-enum Headers
-{
-    pHeaderTime     = 15, /**< Indicates start of current time data */
-    pHeaderGeneral  =  1, /**< Indicates a client packet */
-    pHeaderJoystick = 12, /**< Indicates start of JS section */
-    pHeaderTimezone = 16, /**< Indicates start of Timezone data */
-};
+    /* Client -> RoboRIO section codes */
+    pHeaderTime               = 0x0f, /**< Indicates start of current time data */
+    pHeaderGeneral            = 0x01, /**< Indicates a client packet */
+    pHeaderJoystick           = 0x0c, /**< Indicates start of JS section */
+    pHeaderTimezone           = 0x10, /**< Indicates start of Timezone data */
 
-/**
- * Used by the DS to identify extra data structures sent by the robot
- */
-enum RIOHeaders
-{
-    pRIOHeaderJoystickOutput  =  1, /**< Asks us to rumble joysticks */
-    pRIOHeaderDiskInformation =  4, /**< Gives us roboRIO disk metrics */
-    pRIOHeaderCPUInformation  =  5, /**< Gives us roboRIO CPU metrics */
-    pRIOHeaderRAMInformation  =  6, /**< Gives us roboRIO RAM metrics */
-    pRIOHeaderCANMetrics      = 14, /**< Gives us robot CAN net metrics */
-};
+    /* Client -> RoboRIO special instructions */
+    pStatusNormal             = 0x10, /**< Normal operation */
+    pStatusInvalid            = 0x00, /**< No communication */
+    pStatusRebootRio          = 0x14, /**< Reboot the roboRIO */
+    pStatusRestartCode        = 0x16, /**< Kill the user code */
 
-/**
- * 'Special' operation codes that we send to robot
- */
-enum RequestBytes
-{
-    pStatusNormal      = 16, /**< Normal operation */
-    pStatusInvalid     =  0, /**< No communication */
-    pStatusRebootRio   = 24, /**< Reboot the roboRIO */
-    pStatusRestartCode = 20  /**< Kill the user code */
-};
+    /* Client -> RoboRIO alliance & postion */
+    pRed1                     = 0x00, /**< Red alliance, position 1  */
+    pRed2                     = 0x01, /**< Red alliance, position 2  */
+    pRed3                     = 0x02, /**< Red alliance, position 3  */
+    pBlue1                    = 0x03, /**< Blue alliance, position 1 */
+    pBlue2                    = 0x04, /**< Blue alliance, position 2 */
+    pBlue3                    = 0x05, /**< Blue alliance, position 3 */
 
-/**
- * Echo codes from the robot and software status
- */
-enum ProgramStatus
-{
-    pProgramTest         =  pControlTest,         /**< Control mode confirmation code */
-    pProgramAutonomous   =  pControlAutonomous,   /**< Control mode confirmation code */
-    pProgramCodePresent  =  32,                   /**< Not very elegant, but it works */
-    pProgramTeleoperated =  pControlTeleoperated, /**< Control mode confirmation code */
-};
+    /* RoboRIO -> Client extra data */
+    pRIOHeaderJoystickOutput  = 0x01, /**< Asks us to rumble joysticks */
+    pRIOHeaderDiskInformation = 0x04, /**< Gives us roboRIO disk metrics */
+    pRIOHeaderCPUInformation  = 0x05, /**< Gives us roboRIO CPU metrics */
+    pRIOHeaderRAMInformation  = 0x06, /**< Gives us roboRIO RAM metrics */
+    pRIOHeaderCANMetrics      = 0x0e, /**< Gives us robot CAN net metrics */
 
-/**
- * Operations that the robot wants us to perform
- */
-enum RobotRequestBytes
-{
-    pProgramRequestTime = 1, /**< Robot wants to get the date/time */
-};
-
-/**
- * Used by the user code in some cases, defines the current alliance
- * and position held by the robot
- */
-enum Alliances
-{
-    pRed1  = 0, /**< Red alliance, position 1  */
-    pRed2  = 1, /**< Red alliance, position 2  */
-    pRed3  = 2, /**< Red alliance, position 3  */
-    pBlue1 = 3, /**< Blue alliance, position 1 */
-    pBlue2 = 4, /**< Blue alliance, position 2 */
-    pBlue3 = 5, /**< Blue alliance, position 3 */
+    /* RoboRIO -> Client echo codes */
+    pProgramTest              = 0x01, /**< Control mode confirmation code */
+    pProgramAutonomous        = 0x02, /**< Control mode confirmation code */
+    pProgramCodePresent       = 0x20, /**< Not very elegant, but it works */
+    pProgramTeleoperated      = 0x00, /**< Control mode confirmation code */
+    pProgramRequestTime       = 0x01, /**< Robot wants to get the date/time */
 };
 
 //=============================================================================
@@ -121,16 +86,15 @@ enum Alliances
 
 DS_Protocol2015::DS_Protocol2015()
 {
-    Reset();
     connect (&m_manager, SIGNAL (finished (QNetworkReply*)),
-             this,       SLOT   (ProcessRobotInformation (QNetworkReply*)));
+             this,       SLOT   (processRobotInformation (QNetworkReply*)));
 }
 
 //=============================================================================
 // DS_Protocol2015::RobotPort
 //=============================================================================
 
-int DS_Protocol2015::RobotPort()
+int DS_Protocol2015::robotPort()
 {
     return 1110;
 }
@@ -139,16 +103,25 @@ int DS_Protocol2015::RobotPort()
 // DS_Protocol2015::ClientPort
 //=============================================================================
 
-int DS_Protocol2015::ClientPort()
+int DS_Protocol2015::clientPort()
 {
     return 1150;
+}
+
+//=============================================================================
+// DS_Protocol2015::TcpProbePort
+//=============================================================================
+
+int DS_Protocol2015::tcpProbePort()
+{
+    return 80;
 }
 
 //=============================================================================
 // DS_Protocol2015::NetConsolePort
 //=============================================================================
 
-int DS_Protocol2015::NetConsolePort()
+int DS_Protocol2015::netConsolePort()
 {
     return 6666;
 }
@@ -157,7 +130,7 @@ int DS_Protocol2015::NetConsolePort()
 // DS_Protocol2015::NetConsoleAcceptsInput
 //=============================================================================
 
-bool DS_Protocol2015::NetConsoleAcceptsInput()
+bool DS_Protocol2015::netConsoleAcceptsInput()
 {
     return false;
 }
@@ -166,10 +139,10 @@ bool DS_Protocol2015::NetConsoleAcceptsInput()
 // DS_Protocol2015::DefaultRadioAddress
 //=============================================================================
 
-QStringList DS_Protocol2015::DefaultRadioAddresses()
+QStringList DS_Protocol2015::defaultRadioAddress()
 {
     QStringList list;
-    list.append (DS_GetStaticIp (Team(), 1));
+    list.append (DS_GetStaticIp (team(), 1));
     return list;
 }
 
@@ -177,12 +150,16 @@ QStringList DS_Protocol2015::DefaultRadioAddresses()
 // DS_Protocol2015::DefaultRobotAddress
 //=============================================================================
 
-QStringList DS_Protocol2015::DefaultRobotAddresses()
+QStringList DS_Protocol2015::defaultRobotAddress()
 {
     QStringList list;
-    list.append (QString ("roboRIO-%1.local").arg (Team())); // Dynamic mDNS
-    list.append (QString (DS_GetStaticIp (172, Team(), 2))); // Static USB
-    list.append (QString (DS_GetStaticIp (Team(), 2)));      // Static Ethernet
+
+    list.append (QString ("roboRIO-%1.local").arg (team()));
+    list.append (QString ("roboRIO-%1._ni._tcp.local").arg (team()));
+    list.append (QString (DS_GetStaticIp (172, team(), 2)));
+    list.append (QString (DS_GetStaticIp (team(), 2)));
+    list.append (QString ("127.0.0.1"));
+
     return list;
 }
 
@@ -190,36 +167,36 @@ QStringList DS_Protocol2015::DefaultRobotAddresses()
 // DS_Protocol2015::Reboot
 //=============================================================================
 
-void DS_Protocol2015::Reboot()
+void DS_Protocol2015::reboot()
 {
-    UpdateStatus (pStatusRebootRio);
+    updateStatus (pStatusRebootRio);
 }
 
 //=============================================================================
 // DS_Protocol2015::RestartCode
 //=============================================================================
 
-void DS_Protocol2015::RestartCode()
+void DS_Protocol2015::restartCode()
 {
-    UpdateStatus (pStatusRestartCode);
+    updateStatus (pStatusRestartCode);
 }
 
 //=============================================================================
 // DS_Protocol2015::ResetProtocol
 //=============================================================================
 
-void DS_Protocol2015::ResetProtocol()
+void DS_Protocol2015::resetProtocol()
 {
-    UpdateStatus (pStatusInvalid);
+    updateStatus (pStatusInvalid);
 }
 
 //=============================================================================
 // DS_Protocol2015::GetRobotInformation
 //=============================================================================
 
-void DS_Protocol2015::GetRobotInformation()
+void DS_Protocol2015::getRobotInformation()
 {
-    QString host = "FTP_://" + RobotAddress();
+    QString host = "ftp://" + robotAddress();
     m_manager.get (QNetworkRequest (host + LIB_PATH));
     m_manager.get (QNetworkRequest (host + PCM_PATH));
     m_manager.get (QNetworkRequest (host + PDP_PATH));
@@ -229,7 +206,7 @@ void DS_Protocol2015::GetRobotInformation()
 // DS_Protocol2015::ProcessRobotInformation
 //=============================================================================
 
-void DS_Protocol2015::ProcessRobotInformation (QNetworkReply* reply)
+void DS_Protocol2015::processRobotInformation (QNetworkReply* reply)
 {
     QString url = reply->url().toString();
     QString data = QString::fromUtf8 (reply->readAll());
@@ -247,7 +224,7 @@ void DS_Protocol2015::ProcessRobotInformation (QNetworkReply* reply)
             version.append (data.at (data.indexOf (key) + key.length() + 3));
             version.append (data.at (data.indexOf (key) + key.length() + 4));
 
-            emit PCMVersionChanged (version);
+            emit pcmVersionChanged (version);
         }
 
     else if (url.contains (PDP_PATH, Qt::CaseInsensitive))
@@ -260,11 +237,11 @@ void DS_Protocol2015::ProcessRobotInformation (QNetworkReply* reply)
             version.append (data.at (data.indexOf (key) + key.length() + 3));
             version.append (data.at (data.indexOf (key) + key.length() + 4));
 
-            emit PDPVersionChanged (version);
+            emit pdpVersionChanged (version);
         }
 
     else if (url.contains (LIB_PATH, Qt::CaseInsensitive))
-        emit LibVersionChanged (data);
+        emit libVersionChanged (data);
 
     delete reply;
 }
@@ -273,7 +250,7 @@ void DS_Protocol2015::ProcessRobotInformation (QNetworkReply* reply)
 // DS_Protocol2015::ReadPacket
 //=============================================================================
 
-bool DS_Protocol2015::ReadPacket (QByteArray data)
+bool DS_Protocol2015::readPacket (QByteArray data)
 {
     int offset = 8;
 
@@ -282,8 +259,8 @@ bool DS_Protocol2015::ReadPacket (QByteArray data)
         return false;
 
     /* Be sure to reset status bit */
-    if (Status() == pStatusInvalid)
-        UpdateStatus (pStatusNormal);
+    if (statusCode() == pStatusInvalid)
+        updateStatus (pStatusNormal);
 
     /* Read robot packet */
     quint8 opcode       = data.at (3);
@@ -293,18 +270,22 @@ bool DS_Protocol2015::ReadPacket (QByteArray data)
     quint8 minorVoltage = data.at (6);
 
     /* Update e-stop information */
-    SetEmergencyStopped (opcode == pEmStopOn);
+    setEmergencyStop (opcode == pEmStopOn);
 
     /* Update client information */
-    UpdateVoltageBrownout (false);
-    UpdateVoltage         (majorVoltage, minorVoltage);
-    UpdateSendDateTime    (request == pProgramRequestTime);
-    UpdateRobotCode       ((status & pProgramCodePresent) != 0);
+    updateVoltageBrownout (false);
+    updateVoltage         (majorVoltage, minorVoltage);
+    updateSendDateTime    (request == pProgramRequestTime);
+    updateRobotCode       ((status & pProgramCodePresent) != 0);
 
     /* Packet contains additional data structures */
     if (data.length() > offset)
         {
-            int id = data.at (offset);
+            QByteArray extended;
+            for (int i = offset; i < data.length() - offset - 1; i++)
+                extended.append (data.at (i));
+
+            int id = extended.at (1);
 
             /* Robot wants us to rumble a joystick */
             if (id == pRIOHeaderJoystickOutput)
@@ -316,32 +297,26 @@ bool DS_Protocol2015::ReadPacket (QByteArray data)
 
             /* Packet contains roboRIO RAM info */
             else if (id == pRIOHeaderRAMInformation)
-                {
-                    if (data.size() >= offset + 4)
-                        emit RAMUsageChanged (data.at (offset + 3));
-                }
+                emit ramUsageChanged (extended.at (5));
 
             /* Packet contains roboRIO disk info */
             else if (id == pRIOHeaderDiskInformation)
-                {
-                    if (data.size() >= offset + 4)
-                        emit DiskUsageChanged (data.at (offset + 3));
-                }
+                emit diskUsageChanged (extended.at (5));
 
             /* Packet contains CAN metrics data */
             else if (id == pRIOHeaderCANMetrics)
                 {
-                    if (data.size() >= offset + 14)
-                        {
-                            DS_CAN can;
-                            can.util = data.at (offset + 9);
-                            can.busOff = data.at (offset + 10);
-                            can.txFull = data.at (offset + 11);
-                            can.receive = data.at (offset + 12);
-                            can.transmit = data.at (offset + 13);
+                    DS_CAN can;
 
-                            emit CANInfoReceived (can);
-                        }
+                    int skip = 9;
+
+                    can.util     = (uint) extended.at (skip + 1);
+                    can.busOff   = (uint) extended.at (skip + 2);
+                    can.txFull   = (uint) extended.at (skip + 3);
+                    can.receive  = (uint) extended.at (skip + 4);
+                    can.transmit = (uint) extended.at (skip + 5);
+
+                    emit CANInfoReceived (can);
                 }
         }
 
@@ -353,23 +328,23 @@ bool DS_Protocol2015::ReadPacket (QByteArray data)
 // DS_Protocol2015::GetClientPacket
 //=============================================================================
 
-QByteArray DS_Protocol2015::GetClientPacket()
+QByteArray DS_Protocol2015::getClientPacket()
 {
     QByteArray data;
 
     /* Used for rebooting the robot and restarting its code */
-    quint8 status = IsConnectedToRobot() ? Status() : pStatusInvalid;
+    quint8 status = isConnectedToRobot() ? statusCode() : pStatusInvalid;
 
     /* Defines operation mode, e-stop state & enabled state */
-    quint8 opcode = (IsEmergencyStopped() ? pEmStopOn : pEmStopOff) |
-                    (IsEnabled() ? pEnabled : pDisabled) |
+    quint8 opcode = (isEmergencyStopped() ? pEmStopOn : pEmStopOff) |
+                    (isEnabled() ? pEnabled : pDisabled) |
                     (GetControlCode());
 
     /* Gets timezone data or joystick input */
-    QByteArray extensions = SendDateTime() ? GetTimezoneData() : GetJoystickData();
+    QByteArray extensions = sendDateTime() ? getTimezoneData() : getJoystickData();
 
     /* Construct the packet */
-    data.append (DS_ToBytes (SentPackets())); // Ping data
+    data.append (DS_ToBytes (sentPackets())); // Ping data
     data.append (pHeaderGeneral);             // Protocol version code
     data.append (opcode);                     // Operation code
     data.append (status);                     // Special instructions
@@ -383,35 +358,35 @@ QByteArray DS_Protocol2015::GetClientPacket()
 // DS_Protocol2015::GetJoystickData
 //=============================================================================
 
-QByteArray DS_Protocol2015::GetJoystickData()
+QByteArray DS_Protocol2015::getJoystickData()
 {
     QByteArray data;
 
     /* Do not send JS data on DS init */
-    if (SentPackets() <= 5)
+    if (sentPackets() <= 5)
         return data;
 
     /* Generate data for each joystick */
-    for (int i = 0; i < Joysticks()->count(); ++i)
+    for (int i = 0; i < joysticks()->count(); ++i)
         {
-            int numAxes    = Joysticks()->at (i)->numAxes;
-            int numButtons = Joysticks()->at (i)->numButtons;
-            int numPovHats = Joysticks()->at (i)->numHats;
+            quint8 numAxes    = joysticks()->at (i)->numAxes;
+            quint8 numButtons = joysticks()->at (i)->numButtons;
+            quint8 numPovHats = joysticks()->at (i)->numPOVs;
 
             /* Add joystick information and put the section header */
-            data.append (GetJoystickSize (Joysticks()->at (i)) - 1);
+            data.append (GetJoystickSize (joysticks()->at (i)) - 1);
             data.append (pHeaderJoystick);
 
             /* Add axis data */
             data.append (numAxes);
             for (int axis = 0; axis < numAxes; ++axis)
-                data.append (Joysticks()->at (i)->axes [axis] * 127);
+                data.append (joysticks()->at (i)->axes [axis] * 127);
 
             /* Generate button data */
             int buttons = 0;
             for (int button = 0; button < numButtons; ++button)
                 {
-                    bool pressed = Joysticks()->at (i)->buttons [button];
+                    bool pressed = joysticks()->at (i)->buttons [button];
                     buttons += pressed ? qPow (2, button) : 0;
                 }
 
@@ -422,7 +397,7 @@ QByteArray DS_Protocol2015::GetJoystickData()
             /* Add hat/pov data */
             data.append (numPovHats);
             for (int hat = 0; hat < numPovHats; ++hat)
-                data.append (DS_ToBytes (Joysticks()->at (i)->hats [hat]));
+                data.append (DS_ToBytes (joysticks()->at (i)->POVs [hat]));
         }
 
     return data;
@@ -432,12 +407,12 @@ QByteArray DS_Protocol2015::GetJoystickData()
 // DS_Protocol2015::GetTimezoneData
 //=============================================================================
 
-QByteArray DS_Protocol2015::GetTimezoneData()
+QByteArray DS_Protocol2015::getTimezoneData()
 {
     QByteArray data;
 
     /* Add size (always 11) */
-    data.append (11);
+    data.append (0x0B);
 
     /* Get current date/time */
     QDateTime dt = QDateTime::currentDateTime();
@@ -446,8 +421,7 @@ QByteArray DS_Protocol2015::GetTimezoneData()
 
     /* Add current date/time */
     data.append (pHeaderTime);
-    data.append (time.msec() / 255);
-    data.append (time.msec() - (time.msec() / 255));
+    data.append (DS_ToBytes (time.msec()));
     data.append (time.second());
     data.append (time.minute());
     data.append (time.hour());
@@ -469,13 +443,13 @@ QByteArray DS_Protocol2015::GetTimezoneData()
 
 int DS_Protocol2015::GetControlCode()
 {
-    if (ControlMode() == kControlTest)
+    if (controlMode() == kControlTest)
         return pControlTest;
 
-    else if (ControlMode() == kControlAutonomous)
+    else if (controlMode() == kControlAutonomous)
         return pControlAutonomous;
 
-    else if (ControlMode() == kControlTeleoperated)
+    else if (controlMode() == kControlTeleoperated)
         return pControlTeleoperated;
 
     return pControlTeleoperated;
@@ -487,22 +461,22 @@ int DS_Protocol2015::GetControlCode()
 
 int DS_Protocol2015::GetAllianceCode()
 {
-    if (Alliance() == kAllianceRed1)
+    if (alliance() == kAllianceRed1)
         return pRed1;
 
-    else if (Alliance() == kAllianceRed2)
+    else if (alliance() == kAllianceRed2)
         return pRed2;
 
-    else if (Alliance() == kAllianceRed3)
+    else if (alliance() == kAllianceRed3)
         return pRed3;
 
-    else if (Alliance() == kAllianceBlue1)
+    else if (alliance() == kAllianceBlue1)
         return pBlue1;
 
-    else if (Alliance() == kAllianceBlue2)
+    else if (alliance() == kAllianceBlue2)
         return pBlue2;
 
-    else if (Alliance() == kAllianceBlue3)
+    else if (alliance() == kAllianceBlue3)
         return pBlue3;
 
     return pRed1;
@@ -518,5 +492,5 @@ int DS_Protocol2015::GetJoystickSize (DS_Joystick* joystick)
             + (joystick->numAxes > 0 ? joystick->numAxes : 0)
             + (joystick->numButtons / 8)
             + (joystick->numButtons % 8 == 0 ? 0 : 1)
-            + (joystick->numHats > 0 ? joystick->numHats * 2 : 0);
+            + (joystick->numPOVs > 0 ? joystick->numPOVs * 2 : 0);
 }

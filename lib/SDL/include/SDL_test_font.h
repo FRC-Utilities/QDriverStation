@@ -38,7 +38,7 @@ extern "C" {
 
 /* Function prototypes */
 
-#define FONT_CHARACTER_SIZE 8
+#define FONT_CHARACTER_SIZE  8
 
 /**
  *  \brief Draw a string in the currently set font.
@@ -50,7 +50,7 @@ extern "C" {
  *
  *  \returns Returns 0 on success, -1 on failure.
  */
-int SDLTest_DrawCharacter (SDL_Renderer* renderer, int x, int y, char c);
+int SDLTest_DrawCharacter ( SDL_Renderer* renderer, int x, int y, char c );
 
 /**
  *  \brief Draw a string in the currently set font.
@@ -62,7 +62,8 @@ int SDLTest_DrawCharacter (SDL_Renderer* renderer, int x, int y, char c);
  *
  *  \returns Returns 0 on success, -1 on failure.
  */
-int SDLTest_DrawString (SDL_Renderer* renderer, int x, int y, const char* s);
+int SDLTest_DrawString ( SDL_Renderer* renderer, int x, int y, const char* s );
+
 
 /* Ends C function definitions when using C++ */
 #ifdef __cplusplus

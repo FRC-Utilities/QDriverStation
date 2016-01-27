@@ -52,6 +52,7 @@ typedef struct SDL_Finger
 /* Used as the device ID for mouse events simulated with touch input */
 #define SDL_TOUCH_MOUSEID ((Uint32)-1)
 
+
 /* Function prototypes */
 
 /**
@@ -72,8 +73,8 @@ extern DECLSPEC int SDLCALL SDL_GetNumTouchFingers (SDL_TouchID touchID);
 /**
  *  \brief Get the finger object of the given touch, with the given index.
  */
-extern DECLSPEC SDL_Finger* SDLCALL
-SDL_GetTouchFinger (SDL_TouchID touchID, int index);
+extern DECLSPEC SDL_Finger* SDLCALL SDL_GetTouchFinger (SDL_TouchID touchID,
+        int index);
 
 /* Ends C function definitions when using C++ */
 #ifdef __cplusplus

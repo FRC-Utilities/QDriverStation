@@ -20,41 +20,111 @@
  * THE SOFTWARE.
  */
 
-#include <QIcon>
-#include <QFontDatabase>
+//=============================================================================
+// System includes
+//=============================================================================
 
-#include "Global/AssemblyInfo.h"
+#include <QObject>
+#include <QSpinBox>
+#include <QComboBox>
+#include <QCheckBox>
+#include <QTabWidget>
+#include <QPushButton>
+#include <QApplication>
+#include <QInputDialog>
+
+//=============================================================================
+// Application includes
+//=============================================================================
+
+#include "Updater/Updater.h"
+#include "Utilities/Global.h"
+#include "Utilities/AppTheme.h"
+#include "Utilities/SoundPlayer.h"
 #include "MainWindow/MainWindow.h"
+
+//=============================================================================
+// Main entry-point of the application
+//=============================================================================
 
 int main (int argc, char* argv[])
 {
     QApplication app (argc, argv);
 
-    /* Load the application fonts */
-    QFontDatabase::addApplicationFont (":/fonts/FontAwesome.otf");
-    QFontDatabase::addApplicationFont (":/fonts/Inconsolata.otf");
-    QFontDatabase::addApplicationFont (":/fonts/Quicksand-Bold.ttf");
-    QFontDatabase::addApplicationFont (":/fonts/Quicksand-Regular.ttf");
-
     /* Configure application information */
-    app.setApplicationName    (AssemblyInfo::Name());
-    app.setApplicationVersion (AssemblyInfo::Version());
-    app.setOrganizationName   (AssemblyInfo::Organization());
-    app.setOrganizationDomain (AssemblyInfo::OrganizationDomain());
+    app.setApplicationVersion ("0.14");
+    app.setApplicationName ("QDriverStation");
 
-    /* The window will show itself when initialized */
-    MainWindow window;
-    Q_UNUSED (window);
+    /* Create the main window and check for updates */
+    Updater updater;
+    MainWindow mainwindow;
 
-    /* Configure appearance options */
-    app.setStyle (QStyleFactory::create ("fusion"));
-#if defined Q_OS_MAC
-    app.setWindowIcon (QIcon (""));
-    app.setFont (QFont ("Quicksand", 12, -1, false));
-#else
-    app.setWindowIcon (QIcon (":/icon.ico"));
-    app.setFont (QFont ("Quicksand", 8, -1, false));
-#endif
+    /* Avoid compilation warnings */
+    Q_UNUSED (updater);
+    Q_UNUSED (mainwindow);
 
+    /* Configure application style & start DS engine */
+    AppTheme::init();
+    GLOBAL_INIT();
+
+    /* Beep whenever a button or checkbox is clicked */
+    SoundPlayer soundPlayer;
+    foreach (QWidget* widget, app.allWidgets())
+        {
+            /* Do the conversions */
+            QSpinBox*    spin   = qobject_cast<QSpinBox*> (widget);
+            QCheckBox*   check  = qobject_cast<QCheckBox*> (widget);
+            QComboBox*   combo  = qobject_cast<QComboBox*> (widget);
+            QTabWidget*  tabwid = qobject_cast<QTabWidget*> (widget);
+            QPushButton* button = qobject_cast<QPushButton*> (widget);
+
+            /* The widget is a spin box */
+            if (spin != Q_NULLPTR)
+                {
+                    QObject::connect (spin, SIGNAL (valueChanged (int)),
+                                      &soundPlayer, SLOT (actionBeep (int)));
+                }
+
+            /* The widget is a combo box */
+            else if (combo != Q_NULLPTR)
+                {
+                    QObject::connect (combo, SIGNAL (currentIndexChanged (int)),
+                                      &soundPlayer, SLOT (actionBeep (int)));
+                }
+
+            /* The widget is a check box */
+            else if (check != Q_NULLPTR)
+                {
+                    QObject::connect (check, SIGNAL (clicked (bool)),
+                                      &soundPlayer, SLOT (actionBeep (bool)));
+                }
+
+            /* The widget is a tab widget */
+            else if (tabwid != Q_NULLPTR)
+                {
+                    QObject::connect (tabwid, SIGNAL (currentChanged (int)),
+                                      &soundPlayer, SLOT (actionBeep (int)));
+                }
+
+            /* The widget is a button */
+            else if (button != Q_NULLPTR)
+                {
+                    QObject::connect (button, SIGNAL (clicked (bool)),
+                                      &soundPlayer, SLOT (actionBeep (bool)));
+                }
+        }
+
+    /* Ask for team number on first launch */
+    if (Settings::get ("First launch", true).toBool())
+        {
+            DS()->setTeamNumber (QInputDialog::getInt (Q_NULLPTR,
+                                 QObject::tr ("QDriverStation"),
+                                 QObject::tr ("Please input your team number:"),
+                                 0, 0, 9999, 1, 0,
+                                 Qt::WindowStaysOnTopHint));
+            Settings::set ("First launch", false);
+        }
+
+    /* The force will be with you */
     return app.exec();
 }

@@ -28,6 +28,8 @@ TARGET = QDriverStation
 win32* {
     LIBS += -lPdh
     RC_FILE = $$PWD/etc/deploy/windows/info.rc
+    CONFIG -= windows
+    QMAKE_LFLAGS += $$QMAKE_LFLAGS_WINDOWS
 }
 
 macx* {
@@ -137,6 +139,7 @@ linux:!android {
 #-------------------------------------------------------------------------------
 
 include ($$PWD/lib/LibDS/LibDS.pri)
+include ($$PWD/lib/QtAwesome/QtAwesome.pri)
 
 #-------------------------------------------------------------------------------
 # Import headers, forms and sources
@@ -145,46 +148,66 @@ include ($$PWD/lib/LibDS/LibDS.pri)
 INCLUDEPATH += src
 
 HEADERS += \
-    $$PWD/src/Global/AssemblyInfo.h \
-    $$PWD/src/Global/Settings.h \
-    $$PWD/src/Joysticks/Joysticks.h \
-    $$PWD/src/Joysticks/JoysticksTab.h \
-    $$PWD/src/Joysticks/SDL_Layer.h \
-    $$PWD/src/Joysticks/VirtualJoystick.h \
-    $$PWD/src/MainWindow/Utilities/Battery.h \
-    $$PWD/src/MainWindow/Utilities/CPU.h \
-    $$PWD/src/MainWindow/Utilities/Dashboards.h \
-    $$PWD/src/MainWindow/Utilities/FirstRun.h \
-    $$PWD/src/MainWindow/Utilities/SmartProgressbar.h \
-    $$PWD/src/MainWindow/Utilities/SmartWindow.h \
-    $$PWD/src/MainWindow/MainWindow.h \
-    $$PWD/src/SettingsDialog/SettingsDialog.h \
-    $$PWD/src/Updater/Updater.h \
-    src/Joysticks/KeyEventFilter.h
+    src/Joysticks/JoystickManager.h \
+    src/Joysticks/VirtualJoystick.h \
+    src/MainWindow/Components/About.h \
+    src/MainWindow/Components/Buttons.h \
+    src/MainWindow/Components/CAN_Metrics.h \
+    src/MainWindow/Components/Console.h \
+    src/MainWindow/Components/Develop.h \
+    src/MainWindow/Components/Diagnostics.h \
+    src/MainWindow/Components/Joysticks.h \
+    src/MainWindow/Components/LeftTab.h \
+    src/MainWindow/Components/Operator.h \
+    src/MainWindow/Components/Preferences.h \
+    src/MainWindow/Components/RightTab.h \
+    src/MainWindow/Components/Status.h \
+    src/MainWindow/System/Battery.h \
+    src/MainWindow/System/CPU.h \
+    src/MainWindow/MainWindow.h \
+    src/SettingsWindow/SettingsWindow.h \
+    src/Updater/Updater.h \
+    src/Utilities/AppTheme.h \
+    src/Utilities/Global.h \
+    src/Utilities/Settings.h \
+    src/VJoystickWindow/VJoystickWindow.h \
+    src/MainWindow/Hacks/CustomTabStyle.h \
+    src/Joysticks/JoysticksCommon.h \
+    src/Joysticks/SDL_Joysticks.h \
+    src/Utilities/Beeper.h \
+    src/MainWindow/Hacks/SmartWindow.h \
+    src/Utilities/SoundPlayer.h
 
 SOURCES += \
-    $$PWD/src/main.cpp \
-    $$PWD/src/Global/AssemblyInfo.cpp \
-    $$PWD/src/Global/Settings.cpp \
-    $$PWD/src/Joysticks/JoysticksTab.cpp \
-    $$PWD/src/Joysticks/SDL_Layer.cpp \
-    $$PWD/src/Joysticks/VirtualJoystick.cpp \
-    $$PWD/src/MainWindow/MainWindow.cpp \
-    $$PWD/src/MainWindow/Utilities/Battery.cpp \
-    $$PWD/src/MainWindow/Utilities/CPU.cpp \
-    $$PWD/src/MainWindow/Utilities/Dashboards.cpp \
-    $$PWD/src/MainWindow/Utilities/FirstRun.cpp \
-    $$PWD/src/MainWindow/Utilities/SmartProgressbar.cpp \
-    $$PWD/src/MainWindow/Utilities/SmartWindow.cpp \
-    $$PWD/src/SettingsDialog/SettingsDialog.cpp \
-    $$PWD/src/Updater/Updater.cpp \
-    src/Joysticks/KeyEventFilter.cpp
-
-FORMS += \
-    $$PWD/src/Joysticks/JoysticksTab.ui \
-    $$PWD/src/Joysticks/VirtualJoystick.ui \
-    $$PWD/src/MainWindow/MainWindow.ui \
-    $$PWD/src/SettingsDialog/SettingsDialog.ui
+    src/Joysticks/JoystickManager.cpp \
+    src/Joysticks/VirtualJoystick.cpp \
+    src/MainWindow/Components/About.cpp \
+    src/MainWindow/Components/Buttons.cpp \
+    src/MainWindow/Components/CAN_Metrics.cpp \
+    src/MainWindow/Components/Console.cpp \
+    src/MainWindow/Components/Develop.cpp \
+    src/MainWindow/Components/Diagnostics.cpp \
+    src/MainWindow/Components/Joysticks.cpp \
+    src/MainWindow/Components/LeftTab.cpp \
+    src/MainWindow/Components/Operator.cpp \
+    src/MainWindow/Components/Preferences.cpp \
+    src/MainWindow/Components/RightTab.cpp \
+    src/MainWindow/Components/Status.cpp \
+    src/MainWindow/System/Battery.cpp \
+    src/MainWindow/System/CPU.cpp \
+    src/MainWindow/MainWindow.cpp \
+    src/SettingsWindow/SettingsWindow.cpp \
+    src/Updater/Updater.cpp \
+    src/Utilities/AppTheme.cpp \
+    src/Utilities/Global.cpp \
+    src/Utilities/Settings.cpp \
+    src/VJoystickWindow/VJoystickWindow.cpp \
+    src/main.cpp \
+    src/MainWindow/Hacks/CustomTabStyle.cpp \
+    src/Joysticks/SDL_Joysticks.cpp \
+    src/Utilities/Beeper.cpp \
+    src/MainWindow/Hacks/SmartWindow.cpp \
+    src/Utilities/SoundPlayer.cpp
 
 #-------------------------------------------------------------------------------
 # Import resources

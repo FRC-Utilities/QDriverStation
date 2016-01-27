@@ -20,7 +20,15 @@
  * THE SOFTWARE.
  */
 
+//=============================================================================
+// System includes
+//=============================================================================
+
 #include <QList>
+
+//=============================================================================
+// Library includes
+//=============================================================================
 
 #include "LibDS/Core/ProtocolBase.h"
 #include "LibDS/Core/ProtocolManager.h"
@@ -46,144 +54,163 @@ DS_ProtocolManager::~DS_ProtocolManager()
 }
 
 //=============================================================================
-// DS_ProtocolManager::CurrentProtocol
+// DS_ProtocolManager::currentProtocol
 //=============================================================================
 
-DS_ProtocolBase* DS_ProtocolManager::CurrentProtocol() const
+DS_ProtocolBase* DS_ProtocolManager::currentProtocol() const
 {
-    return ProtocolIsValid() ? m_protocol : Q_NULLPTR;
+    return isValid() ? m_protocol : Q_NULLPTR;
 }
 
 //=============================================================================
-// DS_ProtocolManager::ProtocolIsValid
+// DS_ProtocolManager::isValid
 //=============================================================================
 
-bool DS_ProtocolManager::ProtocolIsValid() const
+bool DS_ProtocolManager::isValid() const
 {
     return (m_protocol != Q_NULLPTR);
 }
 
 //=============================================================================
-// DS_ProtocolManager::SetProtocol
+// DS_ProtocolManager::joystickCount
 //=============================================================================
 
-void DS_ProtocolManager::SetProtocol (DS_ProtocolBase* protocol)
+int DS_ProtocolManager::joystickCount() const
+{
+    return isValid() ? currentProtocol()->joysticks()->count() : 0;
+}
+
+//=============================================================================
+// DS_ProtocolManager::setProtocol
+//=============================================================================
+
+void DS_ProtocolManager::setProtocol (DS_ProtocolBase* protocol)
 {
     if (protocol != Q_NULLPTR)
         {
-            free (m_protocol);
-
+            delete m_protocol;
             m_protocol = protocol;
-            m_protocol->SetJoysticks (m_joysticks);
+            m_protocol->setJoysticks (m_joysticks);
 
-            connect (m_protocol, SIGNAL (CodeChanged            (bool)),
-                     this,       SIGNAL (CodeChanged            (bool)));
-            connect (m_protocol, SIGNAL (RadioCommChanged       (bool)),
-                     this,       SIGNAL (RadioCommChanged       (bool)));
-            connect (m_protocol, SIGNAL (CommunicationsChanged  (DS_CommStatus)),
-                     this,       SIGNAL (CommunicationsChanged  (DS_CommStatus)));
-            connect (m_protocol, SIGNAL (RobotAddressChanged    (QString)),
-                     this,       SIGNAL (RobotAddressChanged    (QString)));
-            connect (m_protocol, SIGNAL (ControlModeChanged     (DS_ControlMode)),
-                     this,       SIGNAL (ControlModeChanged     (DS_ControlMode)));
-            connect (m_protocol, SIGNAL (DiskUsageChanged       (int)),
-                     this,       SIGNAL (DiskUsageChanged       (int)));
-            connect (m_protocol, SIGNAL (RAMUsageChanged        (int)),
-                     this,       SIGNAL (RAMUsageChanged        (int)));
-            connect (m_protocol, SIGNAL (CPUUsageChanged        (int)),
-                     this,       SIGNAL (CPUUsageChanged        (int)));
-            connect (m_protocol, SIGNAL (VoltageChanged         (QString)),
-                     this,       SIGNAL (VoltageChanged         (QString)));
-            connect (m_protocol, SIGNAL (VoltageBrownoutChanged (bool)),
-                     this,       SIGNAL (VoltageBrownoutChanged (bool)));
+            connect (m_protocol, SIGNAL (emergencyStopped       (void)),
+                     this,       SIGNAL (emergencyStopped       (void)));
+            connect (m_protocol, SIGNAL (codeChanged            (bool)),
+                     this,       SIGNAL (codeChanged            (bool)));
+            connect (m_protocol, SIGNAL (radioCommChanged       (bool)),
+                     this,       SIGNAL (radioCommChanged       (bool)));
+            connect (m_protocol, SIGNAL (communicationsChanged  (DS_CommStatus)),
+                     this,       SIGNAL (communicationsChanged  (DS_CommStatus)));
+            connect (m_protocol, SIGNAL (robotAddressChanged    (QString)),
+                     this,       SIGNAL (robotAddressChanged    (QString)));
+            connect (m_protocol, SIGNAL (controlModeChanged     (DS_ControlMode)),
+                     this,       SIGNAL (controlModeChanged     (DS_ControlMode)));
+            connect (m_protocol, SIGNAL (diskUsageChanged       (int)),
+                     this,       SIGNAL (diskUsageChanged       (int)));
+            connect (m_protocol, SIGNAL (ramUsageChanged        (int)),
+                     this,       SIGNAL (ramUsageChanged        (int)));
+            connect (m_protocol, SIGNAL (cpuUsageChanged        (int)),
+                     this,       SIGNAL (cpuUsageChanged        (int)));
+            connect (m_protocol, SIGNAL (voltageChanged         (QString)),
+                     this,       SIGNAL (voltageChanged         (QString)));
+            connect (m_protocol, SIGNAL (voltageBrownoutChanged (bool)),
+                     this,       SIGNAL (voltageBrownoutChanged (bool)));
             connect (m_protocol, SIGNAL (CANInfoReceived        (DS_CAN)),
                      this,       SIGNAL (CANInfoReceived        (DS_CAN)));
+            connect (m_protocol, SIGNAL (fmsChanged             (bool)),
+                     this,       SIGNAL (fmsChanged             (bool)));
+
+            m_protocol->setRobotAddress ("127.0.0.1");
         }
 }
 
 //=============================================================================
-// DS_ProtocolManager::ClearJoysticks
+// DS_ProtocolManager::resetJoysticks
 //=============================================================================
 
-void DS_ProtocolManager::ClearJoysticks()
+void DS_ProtocolManager::resetJoysticks()
 {
     m_joysticks->clear();
+
+    if (isValid())
+        currentProtocol()->onJoysticksChanged();
 }
 
 //=============================================================================
-// DS_ProtocolManager::AddJoystick
+// DS_ProtocolManager::addJoystick
 //=============================================================================
 
-void DS_ProtocolManager::AddJoystick (int axes, int buttons, int povHats)
+void DS_ProtocolManager::addJoystick (int axes, int buttons, int POVs)
 {
-
     DS_Joystick* js = new DS_Joystick;
 
     js->numAxes = axes;
+    js->numPOVs = POVs;
     js->numButtons = buttons;
-    js->numHats = povHats;
 
     js->axes = new double  [axes];
-    js->hats = new int  [povHats];
+    js->POVs = new int  [POVs];
     js->buttons = new bool [buttons];
 
     for (int i = 0; i < js->numAxes; i++)
         js->axes [i] = 0;
 
-    for (int i = 0; i < js->numHats; i++)
-        js->hats [i] = -1;
+    for (int i = 0; i < js->numPOVs; i++)
+        js->POVs [i] = -1;
 
     for (int i = 0; i < js->numButtons; i++)
         js->buttons [i] = false;
 
     m_joysticks->append (js);
+
+    if (isValid())
+        currentProtocol()->onJoysticksChanged();
 }
 
 //=============================================================================
-// DS_ProtocolManager::UpdateJoystickPOV
+// DS_ProtocolManager::updateJoystickPOV
 //=============================================================================
 
-void DS_ProtocolManager::UpdateJoystickPOV (int js, int hat, int angle)
+void DS_ProtocolManager::updateJoystickPOV (int js, int hat, int angle)
 {
-    if (JoystickIsValid (js))
-        m_joysticks->at (js)->hats [hat] = angle;
+    if (joystickExists (js))
+        m_joysticks->at (js)->POVs [hat] = angle;
 }
 
 //=============================================================================
-// DS_ProtocolManager::UpdateJoystickAxis
+// DS_ProtocolManager::updateJoystickAxis
 //=============================================================================
 
-void DS_ProtocolManager::UpdateJoystickAxis (int js, int axis, double value)
+void DS_ProtocolManager::updateJoystickAxis (int js, int axis, double value)
 {
-    if (JoystickIsValid (js))
+    if (joystickExists (js))
         m_joysticks->at (js)->axes [axis] = value;
 }
 
 //=============================================================================
-// DS_ProtocolManager::UpdateJoystickButton
+// DS_ProtocolManager::updateJoystickButton
 //=============================================================================
 
-void DS_ProtocolManager::UpdateJoystickButton (int js, int bt, bool status)
+void DS_ProtocolManager::updateJoystickButton (int js, int bt, bool status)
 {
-    if (JoystickIsValid (js))
+    if (joystickExists (js))
         m_joysticks->at (js)->buttons [bt] = status;
 }
 
 //=============================================================================
-// DS_ProtocolManager::ReadRobotPacket
+// DS_ProtocolManager::readRobotPacket
 //=============================================================================
 
-void DS_ProtocolManager::ReadRobotPacket (QByteArray data)
+void DS_ProtocolManager::readRobotPacket (QByteArray data)
 {
-    if (ProtocolIsValid())
-        CurrentProtocol()->ReadRobotPacket (data);
+    if (isValid())
+        currentProtocol()->readRobotPacket (data);
 }
 
 //=============================================================================
-// DS_ProtocolManager::JoystickIsValid
+// DS_ProtocolManager::joystickExists
 //=============================================================================
 
-bool DS_ProtocolManager::JoystickIsValid (int js) const
+bool DS_ProtocolManager::joystickExists (int js) const
 {
     return (js < m_joysticks->count());
 }

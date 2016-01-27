@@ -20,12 +20,11 @@
  * THE SOFTWARE.
  */
 
-#pragma once
-#ifndef _LIB_DS_NETWORK_RESOLVER_H
-#define _LIB_DS_NETWORK_RESOLVER_H
+#ifndef _LDS_NETWORK_RESOLVER_H
+#define _LDS_NETWORK_RESOLVER_H
 
 #include <QHostInfo>
-#include "LibDS/Core/Discovery/MDNS.h"
+#include "LibDS/Core/Discovery/MDNS_Discovery.h"
 
 /**
  * Allows the library to get the robot IP from a DNS or
@@ -56,38 +55,38 @@ public:
      * Looks for patterns in the \a address to determine the
      * address type
      */
-    AddressType GetAddressType (QString address);
+    AddressType getAddressType (QString address);
 
 public slots:
     /**
      * Uses the \c getAddressType() function to 'guess' the \a address
      * type and the steps that we need to take to resolve it.
      */
-    void GetIP (QString address);
+    void getIP (QString address);
 
     /**
      * Resolves the given \a address based on the address \a type.
      */
-    void GetIP (QString address, AddressType type);
+    void getIP (QString address, AddressType type);
 
 signals:
     /**
      * Emitted when the \a ip of the \a address is resolved
      */
-    void IpFound (QString address, QString ip);
+    void ipFound (QString address, QString ip);
 
 private slots:
     /**
      * Gets the available addresses from the \a info object and
      * emits the \c ipFound() signal with the appropiate data
      */
-    void OnLookupFinished (QHostInfo info);
+    void lookupFinished (QHostInfo info);
 
 private:
     /**
      * Figures out the IP address of a mDNS domain
      */
-    MDNS m_responder;
+    MDNS_Discovery m_responder;
 };
 
 #endif

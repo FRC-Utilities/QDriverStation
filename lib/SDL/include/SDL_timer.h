@@ -53,7 +53,7 @@ extern DECLSPEC Uint32 SDLCALL SDL_GetTicks (void);
  *      ... do work until timeout has elapsed
  *  }
  */
-#define SDL_TICKS_PASSED(A, B) ((Sint32)((B) - (A)) <= 0)
+#define SDL_TICKS_PASSED(A, B)  ((Sint32)((B) - (A)) <= 0)
 
 /**
  * \brief Get the current value of the high resolution counter
@@ -90,8 +90,9 @@ typedef int SDL_TimerID;
  *
  * \return A timer ID, or NULL when an error occurs.
  */
-extern DECLSPEC SDL_TimerID SDLCALL
-SDL_AddTimer (Uint32 interval, SDL_TimerCallback callback, void* param);
+extern DECLSPEC SDL_TimerID SDLCALL SDL_AddTimer (Uint32 interval,
+        SDL_TimerCallback callback,
+        void* param);
 
 /**
  * \brief Remove a timer knowing its ID.
@@ -101,6 +102,7 @@ SDL_AddTimer (Uint32 interval, SDL_TimerCallback callback, void* param);
  * \warning It is not safe to remove a timer multiple times.
  */
 extern DECLSPEC SDL_bool SDLCALL SDL_RemoveTimer (SDL_TimerID id);
+
 
 /* Ends C function definitions when using C++ */
 #ifdef __cplusplus

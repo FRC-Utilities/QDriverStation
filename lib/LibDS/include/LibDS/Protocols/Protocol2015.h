@@ -20,9 +20,8 @@
  * THE SOFTWARE.
  */
 
-#pragma once
-#ifndef _LIB_DS_PROTOCOL_2015_H
-#define _LIB_DS_PROTOCOL_2015_H
+#ifndef _LDS_PROTOCOL_2015_H
+#define _LDS_PROTOCOL_2015_H
 
 #include "LibDS/Core/ProtocolBase.h"
 
@@ -39,35 +38,33 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_ProtocolBase
 public:
     explicit DS_Protocol2015();
 
-    int RobotPort();
-    int ClientPort();
-    int NetConsolePort();
-    bool NetConsoleAcceptsInput();
-    QStringList DefaultRadioAddresses();
-    QStringList DefaultRobotAddresses();
+    virtual int robotPort();
+    virtual int clientPort();
+    virtual int tcpProbePort();
+    virtual int netConsolePort();
+    virtual bool netConsoleAcceptsInput();
+    virtual QStringList defaultRadioAddress();
+    virtual QStringList defaultRobotAddress();
 
 public slots:
-    void Reboot();
-    void RestartCode();
+    virtual void reboot();
+    virtual void restartCode();
 
 private slots:
-    void ResetProtocol();
-    void GetRobotInformation();
-    void ProcessRobotInformation (QNetworkReply* reply);
+    virtual void resetProtocol();
+    virtual void getRobotInformation();
+    virtual void processRobotInformation (QNetworkReply* reply);
 
 private:
-    bool ReadPacket (QByteArray data);
-    QByteArray GetClientPacket();
-    QByteArray GetJoystickData();
-    QByteArray GetTimezoneData();
+    virtual bool readPacket (QByteArray data);
+    virtual QByteArray getClientPacket();
+    virtual QByteArray getJoystickData();
+    virtual QByteArray getTimezoneData();
 
-    int GetControlCode();
-    int GetAllianceCode();
-    int GetJoystickSize (DS_Joystick* joystick);
+    virtual int GetControlCode();
+    virtual int GetAllianceCode();
+    virtual int GetJoystickSize (DS_Joystick* joystick);
 
-    /**
-     * Used for downloading robot information over a FTP connection.
-     */
     QNetworkAccessManager m_manager;
 };
 

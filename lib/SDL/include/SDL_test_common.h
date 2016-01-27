@@ -35,18 +35,18 @@
 #include "SDL.h"
 
 #if defined(__PSP__)
-#define DEFAULT_WINDOW_WIDTH 480
+#define DEFAULT_WINDOW_WIDTH  480
 #define DEFAULT_WINDOW_HEIGHT 272
 #else
-#define DEFAULT_WINDOW_WIDTH 640
+#define DEFAULT_WINDOW_WIDTH  640
 #define DEFAULT_WINDOW_HEIGHT 480
 #endif
 
-#define VERBOSE_VIDEO 0x00000001
-#define VERBOSE_MODES 0x00000002
-#define VERBOSE_RENDER 0x00000004
-#define VERBOSE_EVENT 0x00000008
-#define VERBOSE_AUDIO 0x00000010
+#define VERBOSE_VIDEO   0x00000001
+#define VERBOSE_MODES   0x00000002
+#define VERBOSE_RENDER  0x00000004
+#define VERBOSE_EVENT   0x00000008
+#define VERBOSE_AUDIO   0x00000010
 
 typedef struct
 {
@@ -124,8 +124,7 @@ extern "C" {
  * \brief Parse command line parameters and create common state.
  *
  * \param argv Array of command line parameters
- * \param flags Flags indicating which subsystem to initialize (i.e.
- *SDL_INIT_VIDEO | SDL_INIT_AUDIO)
+ * \param flags Flags indicating which subsystem to initialize (i.e. SDL_INIT_VIDEO | SDL_INIT_AUDIO)
  *
  * \returns Returns a newly allocated common state object.
  */
@@ -137,8 +136,7 @@ SDLTest_CommonState* SDLTest_CommonCreateState (char** argv, Uint32 flags);
  * \param state The common state describing the test window to create.
  * \param index The index of the argument to process in argv[].
  *
- * \returns The number of arguments processed (i.e. 1 for --fullscreen, 2 for
- *--video [videodriver], or -1 on error.
+ * \returns The number of arguments processed (i.e. 1 for --fullscreen, 2 for --video [videodriver], or -1 on error.
  */
 int SDLTest_CommonArg (SDLTest_CommonState* state, int index);
 
@@ -178,6 +176,7 @@ void SDLTest_CommonEvent (SDLTest_CommonState* state, SDL_Event* event,
  *
  */
 void SDLTest_CommonQuit (SDLTest_CommonState* state);
+
 
 /* Ends C function definitions when using C++ */
 #ifdef __cplusplus

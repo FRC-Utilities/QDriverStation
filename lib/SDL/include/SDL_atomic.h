@@ -93,8 +93,7 @@ typedef int SDL_SpinLock;
  *
  * \param lock Points to the lock.
  *
- * \return SDL_TRUE if the lock succeeded, SDL_FALSE if the lock is already
- *held.
+ * \return SDL_TRUE if the lock succeeded, SDL_FALSE if the lock is already held.
  */
 extern DECLSPEC SDL_bool SDLCALL SDL_AtomicTryLock (SDL_SpinLock* lock);
 
@@ -112,7 +111,8 @@ extern DECLSPEC void SDLCALL SDL_AtomicLock (SDL_SpinLock* lock);
  */
 extern DECLSPEC void SDLCALL SDL_AtomicUnlock (SDL_SpinLock* lock);
 
-/* @} */ /* SDL AtomicLock */
+/* @} *//* SDL AtomicLock */
+
 
 /**
  * The compiler barrier prevents the compiler from reordering
@@ -121,16 +121,12 @@ extern DECLSPEC void SDLCALL SDL_AtomicUnlock (SDL_SpinLock* lock);
 #if defined(_MSC_VER) && (_MSC_VER > 1200)
 void _ReadWriteBarrier (void);
 #pragma intrinsic(_ReadWriteBarrier)
-#define SDL_CompilerBarrier() _ReadWriteBarrier()
+#define SDL_CompilerBarrier()   _ReadWriteBarrier()
 #elif defined(__GNUC__)
-#define SDL_CompilerBarrier() __asm__ __volatile__("" : : : "memory")
+#define SDL_CompilerBarrier()   __asm__ __volatile__ ("" : : : "memory")
 #else
-#define SDL_CompilerBarrier()                                                  \
-  {                                                                            \
-    SDL_SpinLock _tmp = 0;                                                     \
-    SDL_AtomicLock(&_tmp);                                                     \
-    SDL_AtomicUnlock(&_tmp);                                                   \
-  }
+#define SDL_CompilerBarrier()   \
+{ SDL_SpinLock _tmp = 0; SDL_AtomicLock(&_tmp); SDL_AtomicUnlock(&_tmp); }
 #endif
 
 /**
@@ -153,37 +149,29 @@ void _ReadWriteBarrier (void);
  * http://preshing.com/20120913/acquire-and-release-semantics
  */
 #if defined(__GNUC__) && (defined(__powerpc__) || defined(__ppc__))
-#define SDL_MemoryBarrierRelease() __asm__ __volatile__("lwsync" : : : "memory")
-#define SDL_MemoryBarrierAcquire() __asm__ __volatile__("lwsync" : : : "memory")
+#define SDL_MemoryBarrierRelease()   __asm__ __volatile__ ("lwsync" : : : "memory")
+#define SDL_MemoryBarrierAcquire()   __asm__ __volatile__ ("lwsync" : : : "memory")
 #elif defined(__GNUC__) && defined(__arm__)
-#if defined(__ARM_ARCH_7__) || defined(__ARM_ARCH_7A__) ||                     \
-    defined(__ARM_ARCH_7EM__) || defined(__ARM_ARCH_7R__) ||                   \
-    defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7S__)
-#define SDL_MemoryBarrierRelease()                                             \
-  __asm__ __volatile__("dmb ish" : : : "memory")
-#define SDL_MemoryBarrierAcquire()                                             \
-  __asm__ __volatile__("dmb ish" : : : "memory")
-#elif defined(__ARM_ARCH_6__) || defined(__ARM_ARCH_6J__) ||                   \
-    defined(__ARM_ARCH_6K__) || defined(__ARM_ARCH_6T2__) ||                   \
-    defined(__ARM_ARCH_6Z__) || defined(__ARM_ARCH_6ZK__)
+#if defined(__ARM_ARCH_7__) || defined(__ARM_ARCH_7A__) || defined(__ARM_ARCH_7EM__) || defined(__ARM_ARCH_7R__) || defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7S__)
+#define SDL_MemoryBarrierRelease()   __asm__ __volatile__ ("dmb ish" : : : "memory")
+#define SDL_MemoryBarrierAcquire()   __asm__ __volatile__ ("dmb ish" : : : "memory")
+#elif defined(__ARM_ARCH_6__) || defined(__ARM_ARCH_6J__) || defined(__ARM_ARCH_6K__) || defined(__ARM_ARCH_6T2__) || defined(__ARM_ARCH_6Z__) || defined(__ARM_ARCH_6ZK__)
 #ifdef __thumb__
 /* The mcr instruction isn't available in thumb mode, use real functions */
-extern DECLSPEC void SDLCALL SDL_MemoryBarrierRelease ();
-extern DECLSPEC void SDLCALL SDL_MemoryBarrierAcquire ();
+extern DECLSPEC void SDLCALL SDL_MemoryBarrierRelease();
+extern DECLSPEC void SDLCALL SDL_MemoryBarrierAcquire();
 #else
-#define SDL_MemoryBarrierRelease()                                             \
-  __asm__ __volatile__("mcr p15, 0, %0, c7, c10, 5" : : "r"(0) : "memory")
-#define SDL_MemoryBarrierAcquire()                                             \
-  __asm__ __volatile__("mcr p15, 0, %0, c7, c10, 5" : : "r"(0) : "memory")
+#define SDL_MemoryBarrierRelease()   __asm__ __volatile__ ("mcr p15, 0, %0, c7, c10, 5" : : "r"(0) : "memory")
+#define SDL_MemoryBarrierAcquire()   __asm__ __volatile__ ("mcr p15, 0, %0, c7, c10, 5" : : "r"(0) : "memory")
 #endif /* __thumb__ */
 #else
-#define SDL_MemoryBarrierRelease() __asm__ __volatile__("" : : : "memory")
-#define SDL_MemoryBarrierAcquire() __asm__ __volatile__("" : : : "memory")
+#define SDL_MemoryBarrierRelease()   __asm__ __volatile__ ("" : : : "memory")
+#define SDL_MemoryBarrierAcquire()   __asm__ __volatile__ ("" : : : "memory")
 #endif /* __GNUC__ && __arm__ */
 #else
 /* This is correct for the x86 and x64 CPUs, and we'll expand this over time. */
-#define SDL_MemoryBarrierRelease() SDL_CompilerBarrier()
-#define SDL_MemoryBarrierAcquire() SDL_CompilerBarrier()
+#define SDL_MemoryBarrierRelease()  SDL_CompilerBarrier()
+#define SDL_MemoryBarrierAcquire()  SDL_CompilerBarrier()
 #endif
 
 /**
@@ -202,8 +190,8 @@ typedef struct
  *
  * \note If you don't know what this function is for, you shouldn't use it!
 */
-extern DECLSPEC SDL_bool SDLCALL
-SDL_AtomicCAS (SDL_atomic_t* a, int oldval, int newval);
+extern DECLSPEC SDL_bool SDLCALL SDL_AtomicCAS (SDL_atomic_t* a, int oldval,
+        int newval);
 
 /**
  * \brief Set an atomic variable to a value.
@@ -230,7 +218,7 @@ extern DECLSPEC int SDLCALL SDL_AtomicAdd (SDL_atomic_t* a, int v);
  * \brief Increment an atomic variable used as a reference count.
  */
 #ifndef SDL_AtomicIncRef
-#define SDL_AtomicIncRef(a) SDL_AtomicAdd(a, 1)
+#define SDL_AtomicIncRef(a)    SDL_AtomicAdd(a, 1)
 #endif
 
 /**
@@ -240,7 +228,7 @@ extern DECLSPEC int SDLCALL SDL_AtomicAdd (SDL_atomic_t* a, int v);
  *         SDL_FALSE otherwise
  */
 #ifndef SDL_AtomicDecRef
-#define SDL_AtomicDecRef(a) (SDL_AtomicAdd(a, -1) == 1)
+#define SDL_AtomicDecRef(a)    (SDL_AtomicAdd(a, -1) == 1)
 #endif
 
 /**
@@ -250,8 +238,8 @@ extern DECLSPEC int SDLCALL SDL_AtomicAdd (SDL_atomic_t* a, int v);
  *
  * \note If you don't know what this function is for, you shouldn't use it!
 */
-extern DECLSPEC SDL_bool SDLCALL
-SDL_AtomicCASPtr (void** a, void* oldval, void* newval);
+extern DECLSPEC SDL_bool SDLCALL SDL_AtomicCASPtr (void** a, void* oldval,
+        void* newval);
 
 /**
  * \brief Set a pointer to a value atomically.

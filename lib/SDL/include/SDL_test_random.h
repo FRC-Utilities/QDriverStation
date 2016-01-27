@@ -51,7 +51,7 @@ extern "C" {
 /*
  * Macros that return a random number in a specific format.
  */
-#define SDLTest_RandomInt(c) ((int)SDLTest_Random(c))
+#define SDLTest_RandomInt(c)        ((int)SDLTest_Random(c))
 
 /*
  * Context structure for the random number generator state.
@@ -64,6 +64,7 @@ typedef struct
     unsigned int ah;
     unsigned int al;
 } SDLTest_RandomContext;
+
 
 /* --- Function prototypes */
 
@@ -89,6 +90,7 @@ void SDLTest_RandomInit (SDLTest_RandomContext* rndContext, unsigned int xi,
  */
 void SDLTest_RandomInitTime (SDLTest_RandomContext* rndContext);
 
+
 /**
  *  \brief Initialize random number generator based on current system time.
  *
@@ -101,6 +103,7 @@ void SDLTest_RandomInitTime (SDLTest_RandomContext* rndContext);
  *
  */
 unsigned int SDLTest_Random (SDLTest_RandomContext* rndContext);
+
 
 /* Ends C function definitions when using C++ */
 #ifdef __cplusplus

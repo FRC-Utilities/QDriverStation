@@ -20,9 +20,8 @@
  * THE SOFTWARE.
  */
 
-#pragma once
-#ifndef _LIB_DS_WATCHDOG_H
-#define _LIB_DS_WATCHDOG_H
+#ifndef _LDS_WATCHDOG_H
+#define _LDS_WATCHDOG_H
 
 #include <QTimer>
 #include "LibDS/Core/Common.h"
@@ -49,21 +48,12 @@ public:
     explicit DS_Watchdog();
 
 public slots:
-    /**
-     * Kicks the dog so that it doesn't bite us
-     */
-    void Restart();
+    void restart();
 
 signals:
-    /**
-     * Emitted when the dog gets angry and wants to bite you
-     */
-    void Timeout();
+    void timeout();
 
 private:
-    /**
-     * Defines how patient our dear dog is
-     */
     QTimer m_timer;
 };
 

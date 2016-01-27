@@ -20,9 +20,8 @@
  * THE SOFTWARE.
  */
 
-#pragma once
-#ifndef _LIB_DS_NET_CONSOLE_H
-#define _LIB_DS_NET_CONSOLE_H
+#ifndef _LDS_NET_CONSOLE_H
+#define _LDS_NET_CONSOLE_H
 
 #include "LibDS/Core/Common.h"
 
@@ -43,14 +42,14 @@ public slots:
     /**
      * Changes the port used by the net console to get robot data
      */
-    void SetPort (int port);
+    void setPort (int port);
 
 signals:
     /**
      * Emitted when a message is received from the robot or the
      * internal Driver Station system
      */
-    void NewMessage (QString);
+    void newMessage (QString);
 
 private:
     /**
@@ -64,7 +63,7 @@ private slots:
      * Called when we receive data in the network socket.
      * Used to read the input data and process it.
      */
-    void ReadSocketData();
+    void readSocket();
 };
 
 #endif

@@ -20,9 +20,8 @@
  * THE SOFTWARE.
  */
 
-#pragma once
-#ifndef _LIB_DS_PROTOCOL_MANAGER_H
-#define _LIB_DS_PROTOCOL_MANAGER_H
+#ifndef _LDS_PROTOCOL_MANAGER_H
+#define _LDS_PROTOCOL_MANAGER_H
 
 #include "LibDS/Core/Common.h"
 
@@ -49,68 +48,78 @@ public:
     /**
      * Returns the current protocol in use
      */
-    DS_ProtocolBase* CurrentProtocol() const;
+    DS_ProtocolBase* currentProtocol() const;
 
     /**
      * Returns \c true if the current protocol is initialized
      */
-    bool ProtocolIsValid() const;
+    bool isValid() const;
+
+    /**
+     * Returns the number of joysticks registered with the protocol
+     */
+    int joystickCount() const;
 
 public slots:
     /**
      * Changes the protocol that we use to communicate with the robot
      */
-    void SetProtocol (DS_ProtocolBase* CurrentProtocol);
+    void setProtocol (DS_ProtocolBase* currentProtocol);
 
     /**
      * Un-registeres all the joysticks from the Driver Station
      */
-    void ClearJoysticks();
+    void resetJoysticks();
 
     /**
      * Registers a new joystick and its characteristics to the Driver Station
      */
-    void AddJoystick (int axes, int buttons, int povHats);
+    void addJoystick (int axes, int buttons, int POVs);
 
     /**
      * Updates the state of the POV hats in the selected joystick
      */
-    void UpdateJoystickPOV (int js, int hat, int angle);
+    void updateJoystickPOV (int js, int hat, int angle);
 
     /**
      * Updates the state of the axes in the selected joystick
      */
-    void UpdateJoystickAxis (int js, int axis, double value);
+    void updateJoystickAxis (int js, int axis, double value);
 
     /**
      * Updates the state of the buttons in the selected joystick
      */
-    void UpdateJoystickButton (int js, int bt, bool status);
+    void updateJoystickButton (int js, int bt, bool status);
 
     /**
      * Sends the input \a data to the current protocol to decode
      */
-    void ReadRobotPacket (QByteArray data);
+    void readRobotPacket (QByteArray data);
 
 signals:
     /**
      * Emitted when the protocol detects that the status of the
      * user code has changed
      */
-    void CodeChanged (bool);
+    void codeChanged (bool);
 
     /**
      * Emitted when the protocol changes its address.
      * This can be triggered by the user (or programmer) or the protocol
      * itself, when it figures out the IP address of the robot.
      */
-    void RobotAddressChanged (QString);
+    void robotAddressChanged (QString);
 
     /**
      * Emitted when the connection state between the computer and the
      * robot radio is changed
      */
-    void RadioCommChanged (bool);
+    void radioCommChanged (bool);
+
+    /**
+     * Emitted when the state of the FMS connection is changed
+     */
+    void fmsChanged (bool attached);
 
     /**
      * Emitted when the state of the network communications with the robot
@@ -121,42 +130,42 @@ signals:
      *     - The robot responds to ping requests and DS
      *     - The robot does not respond to ping requests nor the DS
      */
-    void CommunicationsChanged (DS_CommStatus);
+    void communicationsChanged (DS_CommStatus);
 
     /**
      * Emitted when the protocol detects that the robot voltage has changed
      */
-    void VoltageChanged (QString);
+    void voltageChanged (QString);
 
     /**
      * Emitted when the protocol detects that the RAM usage of the robot
      * has changed
      */
-    void CPUUsageChanged (int);
+    void cpuUsageChanged (int);
 
     /**
      * Emitted when the protocol detects that the RAM usage of the robot
      * has changed
      */
-    void RAMUsageChanged (int);
+    void ramUsageChanged (int);
 
     /**
      * Emitted when the protocol detects that the disk usage of the robot
      * has changed
      */
-    void DiskUsageChanged (int);
+    void diskUsageChanged (int);
 
     /**
      * Emitted when the protocol detects that the control mode has changed.
      * Note: this signal can be emitted when the user changes the control mode
      * or when the robot itself changes its mode (e.g. e-stop)
      */
-    void ControlModeChanged (DS_ControlMode);
+    void controlModeChanged (DS_ControlMode);
 
     /**
      * Emitted when the robot detects a possible voltage brownout
      */
-    void VoltageBrownoutChanged (bool);
+    void voltageBrownoutChanged (bool);
 
     /**
      * Emitted when the protocol receives and decodes a CAN data structure
@@ -167,25 +176,30 @@ signals:
      * Emitted when the client has just connected to the robot and downloaded
      * its library INI files and analyzed them
      */
-    void LibVersionChanged (QString);
+    void libVersionChanged (QString);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * its PCM INI files and analyzed them
      */
-    void RIOVersionChanged (QString);
+    void rioVersionChanged (QString);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * its PDP information and analyzed them
      */
-    void PDPVersionChanged (QString);
+    void pdpVersionChanged (QString);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
      * the PCM information files and analyzed them
      */
-    void PCMVersionChanged (QString);
+    void pcmVersionChanged (QString);
+
+    /**
+     * Emitted when the robot is e-stopped
+     */
+    void emergencyStopped();
 
 private:
     /**
@@ -201,7 +215,7 @@ private:
     /**
      * Returns \c true if the \a js is registered with the joystick list
      */
-    bool JoystickIsValid (int js) const;
+    bool joystickExists (int js) const;
 };
 
 #endif

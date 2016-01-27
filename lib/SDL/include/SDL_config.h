@@ -28,7 +28,7 @@
 
 #if !defined(_STDINT_H_) && (!defined(HAVE_STDINT_H) || !_HAVE_STDINT_H)
 #if defined(__GNUC__) || defined(__DMC__) || defined(__WATCOMC__)
-#define HAVE_STDINT_H 1
+#define HAVE_STDINT_H   1
 #elif defined(_MSC_VER)
 typedef signed __int8 int8_t;
 typedef unsigned __int8 uint8_t;
@@ -39,7 +39,7 @@ typedef unsigned __int32 uint32_t;
 typedef signed __int64 int64_t;
 typedef unsigned __int64 uint64_t;
 #ifndef _UINTPTR_T_DEFINED
-#ifdef _WIN64
+#ifdef  _WIN64
 typedef unsigned __int64 uintptr_t;
 #else
 typedef unsigned int uintptr_t;
@@ -71,13 +71,12 @@ typedef unsigned int uintptr_t;
 #endif /* !_STDINT_H_ && !HAVE_STDINT_H */
 
 #ifdef _WIN64
-#define SIZEOF_VOIDP 8
+# define SIZEOF_VOIDP 8
 #else
-#define SIZEOF_VOIDP 4
+# define SIZEOF_VOIDP 4
 #endif
 
-/* This is disabled by default to avoid C runtime dependencies and manifest
- * requirements */
+/* This is disabled by default to avoid C runtime dependencies and manifest requirements */
 #ifdef HAVE_LIBC
 /* Useful headers */
 #define HAVE_STDIO_H 1
@@ -119,8 +118,8 @@ typedef unsigned int uintptr_t;
 #define HAVE__STRNICMP 1
 #define HAVE_ATAN 1
 #define HAVE_ATAN2 1
-#define HAVE_ACOS 1
-#define HAVE_ASIN 1
+#define HAVE_ACOS  1
+#define HAVE_ASIN  1
 #define HAVE_CEIL 1
 #define HAVE_COS 1
 #define HAVE_COSF 1
@@ -141,67 +140,68 @@ typedef unsigned int uintptr_t;
 #define HAVE_M_PI 1
 #endif
 #else
-#define HAVE_STDARG_H 1
-#define HAVE_STDDEF_H 1
+#define HAVE_STDARG_H   1
+#define HAVE_STDDEF_H   1
 #endif
 
 /* Enable various audio drivers */
 #define SDL_AUDIO_DRIVER_DSOUND 1
-#define SDL_AUDIO_DRIVER_XAUDIO2 1
-#define SDL_AUDIO_DRIVER_WINMM 1
-#define SDL_AUDIO_DRIVER_DISK 1
-#define SDL_AUDIO_DRIVER_DUMMY 1
+#define SDL_AUDIO_DRIVER_XAUDIO2    1
+#define SDL_AUDIO_DRIVER_WINMM  1
+#define SDL_AUDIO_DRIVER_DISK   1
+#define SDL_AUDIO_DRIVER_DUMMY  1
 
 /* Enable various input drivers */
 #define SDL_JOYSTICK_DINPUT 1
-#define SDL_HAPTIC_DINPUT 1
+#define SDL_HAPTIC_DINPUT   1
 
 /* Enable various shared object loading systems */
-#define SDL_LOADSO_WINDOWS 1
+#define SDL_LOADSO_WINDOWS  1
 
 /* Enable various threading systems */
-#define SDL_THREAD_WINDOWS 1
+#define SDL_THREAD_WINDOWS  1
 
 /* Enable various timer systems */
-#define SDL_TIMER_WINDOWS 1
+#define SDL_TIMER_WINDOWS   1
 
 /* Enable various video drivers */
-#define SDL_VIDEO_DRIVER_DUMMY 1
-#define SDL_VIDEO_DRIVER_WINDOWS 1
+#define SDL_VIDEO_DRIVER_DUMMY  1
+#define SDL_VIDEO_DRIVER_WINDOWS    1
 
 #ifndef SDL_VIDEO_RENDER_D3D
-#define SDL_VIDEO_RENDER_D3D 1
+#define SDL_VIDEO_RENDER_D3D    1
 #endif
 
 /* Enable OpenGL support */
 #ifndef SDL_VIDEO_OPENGL
-#define SDL_VIDEO_OPENGL 1
+#define SDL_VIDEO_OPENGL    1
 #endif
 #ifndef SDL_VIDEO_OPENGL_WGL
-#define SDL_VIDEO_OPENGL_WGL 1
+#define SDL_VIDEO_OPENGL_WGL    1
 #endif
 #ifndef SDL_VIDEO_RENDER_OGL
-#define SDL_VIDEO_RENDER_OGL 1
+#define SDL_VIDEO_RENDER_OGL    1
 #endif
 #ifndef SDL_VIDEO_RENDER_OGL_ES2
-#define SDL_VIDEO_RENDER_OGL_ES2 1
+#define SDL_VIDEO_RENDER_OGL_ES2    1
 #endif
 #ifndef SDL_VIDEO_OPENGL_ES2
-#define SDL_VIDEO_OPENGL_ES2 1
+#define SDL_VIDEO_OPENGL_ES2    1
 #endif
 #ifndef SDL_VIDEO_OPENGL_EGL
-#define SDL_VIDEO_OPENGL_EGL 1
+#define SDL_VIDEO_OPENGL_EGL    1
 #endif
+
 
 /* Enable system power support */
 #define SDL_POWER_WINDOWS 1
 
 /* Enable filesystem support */
-#define SDL_FILESYSTEM_WINDOWS 1
+#define SDL_FILESYSTEM_WINDOWS  1
 
 /* Enable assembly routines (Win64 doesn't have inline asm) */
 #ifndef _WIN64
-#define SDL_ASSEMBLY_ROUTINES 1
+#define SDL_ASSEMBLY_ROUTINES   1
 #endif
 
 #endif /* _SDL_config_windows_h */

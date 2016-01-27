@@ -20,170 +20,59 @@
  * THE SOFTWARE.
  */
 
-#pragma once
-#ifndef _QDRIVER_STATION_JOYSTICKS_VIRTUAL_JOYSTICK_H
-#define _QDRIVER_STATION_JOYSTICKS_VIRTUAL_JOYSTICK_H
+#ifndef _QDS_VIRTUAL_JOYSTICK_H
+#define _QDS_VIRTUAL_JOYSTICK_H
 
+#include <QWidget>
 #include <QKeyEvent>
-#include <QCloseEvent>
+#include <QApplication>
 
-#include "Joysticks.h"
-#include "KeyEventFilter.h"
-#include "ui_VirtualJoystick.h"
+#include "JoysticksCommon.h"
+#include "Utilities/Global.h"
 
 /**
- * \class VirtualJoystick
- * \brief Moves the robot with the keyboard
+ * This class implements the code necessary to capture
+ * keyboard events and interpret them in such a way that
+ * it allows us to control the robot easily.
  *
- * The \c VirtualJoystick class allows the user to operate the robot using input
- * from the computer's keyboard.
- *
- * Additionally, this class is in charge of processing both the keyboard input
- * and the joystick input. The generated data is then sent to the \a JoystickTab
- * and the Driver Station
+ * This class also implements the keyboard shortcuts of
+ * the application, such as pressing <space> to E-stop the robot.
  */
-class VirtualJoystick : public QDialog
+class VirtualJoystick : public QObject
 {
     Q_OBJECT
 
 public:
-    VirtualJoystick();
+    explicit VirtualJoystick();
+    ~VirtualJoystick();
 
-    /**
-     * Loads the saved settings on the UI
-     */
-    void ReadSettings();
+    double axisRange() const;
+    bool joystickEnabled() const;
+    QDS_InputDevice* joystick() const;
 
-    /**
-     * Returns the number of axes for the selected joystick
-     * @note The joystick can be either the 'real' one or the virtual one
-     */
-    int GetNumAxes (int js);
-
-    /**
-     * Returns the number of hats for the selected joystick
-     * @note The joystick can be either the 'real' one or the virtual one
-     */
-    int GetNumHats (int js);
-
-    /**
-     * Returns the number of buttons for the selected joystick
-     * @note The joystick can be either the 'real' one or the virtual one
-     */
-    int GetNumButtons (int js);
+public slots:
+    void setJoystickID (int id);
+    void setAxisRange (double range);
+    void setJoystickEnabled (bool enabled);
 
 signals:
-    /**
-     * Emitted when the joystick count is adjusted and updated
-     */
-    void CountChanged (int);
-
-    /**
-     * Emitted when the joystick count is adjusted and updated
-     */
-    void CountChanged (QStringList);
-
-    /**
-     * Emitted when the system detects a change in the state of the hats of
-     * one of the connected joysticks
-     */
-    void HatEvent (GM_Hat);
-
-    /**
-     * Emitted when the system detects a change in the state of the axes of
-     * one of the connected joysticks
-     */
-    void AxisEvent (GM_Axis);
-
-    /**
-     * Emitted when the system detects a change in the state of the buttons of
-     * one of the connected joysticks
-     */
-    void ButtonEvent (GM_Button);
+    void enabledChanged();
+    void axisEvent (QDS_AxisEvent event);
+    void buttonEvent (QDS_ButtonEvent event);
 
 private slots:
-    /**
-     * Returns the total number of joysticks, including the SDL joysticks and
-     * the virtual joystick
-     */
-    void OnCountChanged (int count);
+    void readAxes (int key, bool pressed);
+    void readButtons (int key, bool pressed);
+    void readShortcuts (int key, bool pressed);
+    void processKeyEvent (QKeyEvent* event, bool pressed);
 
-    /**
-     * Returns a list with the names of all joysticks, including the SDL
-     * joysticks and the virtual joystick
-     */
-    void OnCountChanged (QStringList input);
-
-    /**
-     * Parses the key event and updates the axes of the virtual joystick
-     */
-    void RegisterKey (QKeyEvent* event, bool pressed);
-
-    /**
-     * Filters the \a key to update the \a value of the axis assigned to a
-     * specific key
-     */
-    void ReadAxes (int key, double value, bool pressed);
-
-    /**
-     * Filters the \a key to update the \a pressed state of the button assigned
-     * to a specific key
-     */
-    void ReadButtons (int key, bool pressed);
-
-    /**
-     * Resizes the window to a minimum size
-     */
-    void ResizeToFit();
-
-    /**
-     * Saves the new range value on the settings registry
-     */
-    void OnRangeChanged (double value);
-
-    /**
-     * Changes the \a enabled state of the virtual joystick and updates the
-     * required internal values
-     */
-    void SetVirtualJoystickEnabled (bool enabled);
-
-    /**
-     * Sends the hat data to the Driver Station
-     */
-    void OnHatEvent (GM_Hat hat);
-
-    /**
-     * Sends the axis data to the Driver Station
-     */
-    void OnAxisEvent (GM_Axis axis);
-
-    /**
-     * Sends the button data to the Driver Station
-     */
-    void OnButtonEvent (GM_Button button);
-
+protected:
+    bool eventFilter (QObject* object, QEvent* event);
 
 private:
-    /**
-     * If set to \c true, the application will use some keys of the keyboard to
-     * simulate a virtual joystick
-     */
-    bool m_enabled;
-
-    /**
-     * Contains the UI components and widgets
-     */
-    Ui::VirtualJoystick ui;
-
-    /**
-     * Represents the virtual joystick
-     */
-    GM_Joystick m_joystick;
-
-    /**
-     * Allows us to get access to every key event in the application
-     */
-    KeyEventFilter m_filter;
+    double m_axisRange;
+    bool m_joystickEnabled;
+    QDS_InputDevice* m_joystick;
 };
 
 #endif
