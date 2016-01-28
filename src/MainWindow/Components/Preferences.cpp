@@ -39,6 +39,7 @@
 #include "Preferences.h"
 #include "Utilities/Global.h"
 #include "Utilities/Settings.h"
+#include "Dashboards/Dashboards.h"
 
 //=============================================================================
 // Preferences::Preferences
@@ -87,7 +88,10 @@ void Preferences::createWidgets()
     m_countdown->setRange  (0, 500);
     m_autonomous->setRange (0, 500);
     m_teamNumber->setRange (0, 9999);
+
     m_protocols->addItems  (DS()->protocols());
+    m_dashboards->addItems (Dashboards::getInstance()->dashboardList());
+    m_dashboards->setCurrentIndex (Settings::get ("Dashboard", 0).toInt());
 }
 
 //=============================================================================
@@ -196,6 +200,7 @@ void Preferences::setProtocol (int index)
 void Preferences::setDashboard (int index)
 {
     Settings::set ("Dashboard", index);
+    Dashboards::getInstance()->reloadDashboard();
 }
 
 //=============================================================================
