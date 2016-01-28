@@ -68,8 +68,6 @@ void DS_Client::setClientPort (int port)
 void DS_Client::setRobotAddress (QString address)
 {
     m_address = address;
-
-    qDebug() << address;
 }
 
 //=============================================================================
