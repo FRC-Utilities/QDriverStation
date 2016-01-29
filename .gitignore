@@ -15,3 +15,12 @@
 *.exe
 *.out
 *.app
+qdriverstation
+
+# Other build artifacts
+moc
+qrc
+
+
+# The makefile--duh.
+Makefile
