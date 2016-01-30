@@ -118,8 +118,6 @@ void DS_ProtocolManager::setProtocol (DS_ProtocolBase* protocol)
                      this,       SIGNAL (CANInfoReceived        (DS_CAN)));
             connect (m_protocol, SIGNAL (fmsChanged             (bool)),
                      this,       SIGNAL (fmsChanged             (bool)));
-
-            m_protocol->setRobotAddress ("127.0.0.1");
         }
 }
 
