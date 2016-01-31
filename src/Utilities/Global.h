@@ -23,34 +23,53 @@
 #ifndef _QDS_GLOBAL_H
 #define _QDS_GLOBAL_H
 
+//=============================================================================
+// System/library includes
+//=============================================================================
+
 #include <QDebug>
 #include <QtAwesome.h>
 #include <LibDS/DriverStation.h>
+
+//=============================================================================
+// Application includes
+//=============================================================================
 
 #include "Beeper.h"
 #include "Settings.h"
 #include "AppTheme.h"
 #include "Joysticks/JoystickManager.h"
 
+//=============================================================================
+// Global variables
+//=============================================================================
+
 const QString NULL_STR = "";
 const QString NO_DATA  = "--.--";
 
-/* Global objects */
+//=============================================================================
+// Global Objects
+//=============================================================================
+
 Beeper* BEEPER();
 DriverStation* DS();
 QtAwesome* AWESOME();
 QThread* SECONDARY_THREAD();
 JoystickManager* JOYSTICK_MANAGER();
 
-/* Global margin ratios */
+//=============================================================================
+// Common UI factors
+//=============================================================================
+
 QMargins NULL_MARGINS();
 QMargins MAIN_MARGINS();
 QMargins SMALL_MARGINS();
-
-/* Global UI scalling ratio */
 qreal DPI_SCALE (qreal input);
 
-/* Global functions */
+//=============================================================================
+// Global functions
+//=============================================================================
+
 void SDL_INIT();
 void GLOBAL_INIT();
 void SHOW_SETTINGS_WINDOW();

@@ -33,14 +33,15 @@ public:
     typedef enum
     {
         kAuto     = 0,
-        kGerman   = 1,
-        kEnglish  = 2,
-        kSpanish  = 3,
-        kAurebesh = 4,
+        kAurebesh = 1,
+        kGerman   = 2,
+        kEnglish  = 3,
+        kSpanish  = 4,
     } LanguageType;
 
     static void init();
     static QFont appFont();
+    static QFont monoFont();
     static QString systemLanguage();
     static QTranslator* translator();
     static LanguageType currentLanguage();

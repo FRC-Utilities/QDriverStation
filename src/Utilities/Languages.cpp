@@ -42,6 +42,7 @@
 //=============================================================================
 
 QString _fontName;
+const QString _defaultFont = "QuickSand";
 static QTranslator* _translator = Q_NULLPTR;
 
 //=============================================================================
@@ -57,20 +58,20 @@ void Languages::init()
     switch (currentLanguage())
         {
         case kAuto:
-            _fontName = "Quicksand";
+            _fontName = _defaultFont;
             locale    = systemLanguage();
             break;
         case kGerman:
             locale    = "de";
-            _fontName = "Quicksand";
+            _fontName = _defaultFont;
             break;
         case kEnglish:
             locale    = "en";
-            _fontName = "Quicksand";
+            _fontName = _defaultFont;
             break;
         case kSpanish:
             locale    = "es";
-            _fontName = "Quicksand";
+            _fontName = _defaultFont;
             break;
         case kAurebesh:
             locale    = "en";
@@ -78,7 +79,7 @@ void Languages::init()
             break;
         default:
             locale    = "en";
-            _fontName = "Quicksand";
+            _fontName = _defaultFont;
             break;
         }
 
@@ -95,6 +96,34 @@ QFont Languages::appFont()
     QFont font;
     font.setFamily (_fontName);
     font.setPixelSize (DPI_SCALE (12));
+    return font;
+}
+
+//=============================================================================
+// Languages::monoFont
+//=============================================================================
+
+QFont Languages::monoFont()
+{
+    QFont font;
+    if (appFont().family() != _defaultFont)
+        {
+            font.setFixedPitch (true);
+            font.setFamily     (appFont().family());
+            font.setPixelSize  (appFont().pixelSize());
+        }
+
+    else
+        {
+#if defined Q_OS_WIN
+            font.setFamily     ("Consolas");
+            font.setPixelSize  (DPI_SCALE (12));
+#else
+            font.setFamily     ("Inconsolata");
+            font.setPixelSize  (DPI_SCALE (12));
+#endif
+        }
+
     return font;
 }
 
@@ -140,10 +169,10 @@ QStringList Languages::getAvailableLanguages()
     QStringList list;
 
     list.append ("Auto");
+    list.append ("Aurebesh (Star Wars glyphs)");
     list.append ("Deutsch");
     list.append ("English");
     list.append ("Español");
-    list.append ("Aurebesh (Star Wars)");
 
     return list;
 }

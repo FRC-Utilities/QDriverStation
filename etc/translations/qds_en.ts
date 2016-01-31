@@ -436,7 +436,7 @@
     <message>
         <location filename="../../src/Utilities/Global.cpp" line="186"/>
         <location filename="../../src/Utilities/Global.cpp" line="191"/>
-        <location filename="../../src/main.cpp" line="124"/>
+        <location filename="../../src/main.cpp" line="128"/>
         <source>QDriverStation</source>
         <translation></translation>
     </message>
@@ -451,17 +451,17 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="125"/>
+        <location filename="../../src/main.cpp" line="129"/>
         <source>Please input your team number:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/Utilities/Languages.cpp" line="147"/>
+        <location filename="../../src/Utilities/Languages.cpp" line="162"/>
         <source>Change language</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/Utilities/Languages.cpp" line="148"/>
+        <location filename="../../src/Utilities/Languages.cpp" line="163"/>
         <source>You must restart the application in order for the changes to take effect</source>
         <translation></translation>
     </message>

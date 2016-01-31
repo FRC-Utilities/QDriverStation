@@ -37,6 +37,7 @@
 
 #include "Console.h"
 #include "Utilities/Global.h"
+#include "Utilities/Languages.h"
 
 //=============================================================================
 // Console::Console
@@ -109,16 +110,8 @@ void Console::createLayouts()
 
 void Console::configureStyles()
 {
-    /* Set console font */
-    QFont consoleFont;
-#if defined Q_OS_WIN
-    consoleFont.setFamily     ("Consolas");
-    consoleFont.setPixelSize  (DPI_SCALE (12));
-#else
-    consoleFont.setFamily     ("Inconsolata");
-    consoleFont.setPixelSize  (DPI_SCALE (12));
-#endif
-    m_console->setFont        (consoleFont);
+    /* Apply monospace font to the console */
+    m_console->setFont (Languages::monoFont());
 
     /* Change the fonts of the buttons */
     m_copyButton->setFont     (AWESOME()->font (DPI_SCALE (12)));
