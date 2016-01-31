@@ -42,7 +42,6 @@
 //=============================================================================
 
 QString _fontName;
-static QFont* _font = Q_NULLPTR;
 static QTranslator* _translator = Q_NULLPTR;
 
 //=============================================================================
@@ -93,14 +92,10 @@ void Languages::init()
 
 QFont Languages::appFont()
 {
-    if (_font == Q_NULLPTR)
-        {
-            _font = new QFont;
-            _font->setFamily (_fontName);
-            _font->setPixelSize (DPI_SCALE (12));
-        }
-
-    return *_font;
+    QFont font;
+    font.setFamily (_fontName);
+    font.setPixelSize (DPI_SCALE (12));
+    return font;
 }
 
 //=============================================================================
