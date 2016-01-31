@@ -23,6 +23,7 @@
 #ifndef _QDS_APP_LANGUAGES_H
 #define _QDS_APP_LANGUAGES_H
 
+#include <QFont>
 #include <QTranslator>
 #include <QStringList>
 
@@ -39,12 +40,12 @@ public:
     } LanguageType;
 
     static void init();
+    static QFont appFont();
+    static QString systemLanguage();
     static QTranslator* translator();
     static LanguageType currentLanguage();
     static QStringList getAvailableLanguages();
     static void setLanguage (LanguageType language);
-
-    static QString systemLanguage();
 };
 
 #endif

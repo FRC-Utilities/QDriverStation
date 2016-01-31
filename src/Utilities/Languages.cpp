@@ -24,7 +24,6 @@
 // System includes
 //=============================================================================
 
-#include <QFont>
 #include <QLocale>
 #include <QTextCodec>
 #include <QMessageBox>
@@ -42,6 +41,8 @@
 // Languages::globalVariables
 //=============================================================================
 
+QString _fontName;
+static QFont* _font = Q_NULLPTR;
 static QTranslator* _translator = Q_NULLPTR;
 
 //=============================================================================
@@ -51,46 +52,64 @@ static QTranslator* _translator = Q_NULLPTR;
 void Languages::init()
 {
     QString locale;
-    QString fontName;
     QTextCodec::setCodecForLocale (QTextCodec::codecForName ("UTF-8"));
 
     /* Get which translation file and font to open */
     switch (currentLanguage())
         {
         case kAuto:
-            fontName = "Quicksand";
-            locale   = systemLanguage();
+            _fontName = "Quicksand";
+            locale    = systemLanguage();
             break;
         case kGerman:
-            locale   = "de";
-            fontName = "Quicksand";
+            locale    = "de";
+            _fontName = "Quicksand";
             break;
         case kEnglish:
-            locale   = "en";
-            fontName = "Quicksand";
+            locale    = "en";
+            _fontName = "Quicksand";
             break;
         case kSpanish:
-            locale   = "es";
-            fontName = "Quicksand";
+            locale    = "es";
+            _fontName = "Quicksand";
             break;
         case kAurebesh:
-            locale   = "en";
-            fontName = "Aurebesh";
+            locale    = "en";
+            _fontName = "Aurebesh";
             break;
         default:
-            locale   = "en";
-            fontName = "Quicksand";
+            locale    = "en";
+            _fontName = "Quicksand";
             break;
         }
 
-    /* Change application font */
-    QFont font;
-    font.setFamily (fontName);
-    font.setPixelSize (DPI_SCALE (12));
-    QApplication::setFont (font);
-
     /* Load translations */
     translator()->load (":/languages/qds_" + locale);
+}
+
+//=============================================================================
+// Languages::appFont
+//=============================================================================
+
+QFont Languages::appFont()
+{
+    if (_font == Q_NULLPTR)
+        {
+            _font = new QFont;
+            _font->setFamily (_fontName);
+            _font->setPixelSize (DPI_SCALE (12));
+        }
+
+    return *_font;
+}
+
+//=============================================================================
+// Languages::systemLanguage
+//=============================================================================
+
+QString Languages::systemLanguage()
+{
+    return QLocale::system().name().split ("_").at (0);
 }
 
 //=============================================================================
@@ -149,13 +168,4 @@ void Languages::setLanguage (LanguageType language)
                                                    "in order for the changes to take "
                                                    "effect"));
         }
-}
-
-//=============================================================================
-// Languages::systemLanguage
-//=============================================================================
-
-QString Languages::systemLanguage()
-{
-    return QLocale::system().name().split ("_").at (0);
 }

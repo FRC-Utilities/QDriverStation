@@ -57,6 +57,7 @@ int main (int argc, char* argv[])
     app.setApplicationName    ("QDriverStation");
     app.setOrganizationDomain ("www.wint3794.org");
     app.installTranslator     (Languages::translator());
+    app.setFont               (Languages::appFont());
 
     /* */
     AppTheme::init();
@@ -72,8 +73,17 @@ int main (int argc, char* argv[])
 
     /* Beep whenever a button or checkbox is clicked */
     SoundPlayer soundPlayer;
+    QString family = Languages::appFont().family();
     foreach (QWidget* widget, app.allWidgets())
         {
+            /* Apply our custom font [hack] */
+            if (widget->font().family() != "FontAwesome")
+                {
+                    QFont font = widget->font();
+                    font.setFamily (family);
+                    widget->setFont (font);
+                }
+
             /* Do the conversions */
             QSpinBox*    spin   = qobject_cast<QSpinBox*> (widget);
             QCheckBox*   check  = qobject_cast<QCheckBox*> (widget);
