@@ -73,22 +73,22 @@
 <context>
     <name>Console</name>
     <message>
-        <location filename="../../src/MainWindow/Components/Console.cpp" line="128"/>
+        <location filename="../../src/MainWindow/Components/Console.cpp" line="121"/>
         <source>Displays robot messages and logs</source>
         <translation>Muestra mensajes del robot y logs</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Console.cpp" line="129"/>
+        <location filename="../../src/MainWindow/Components/Console.cpp" line="122"/>
         <source>Copy the console log</source>
         <translation>Copiar el texto de la consola</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Console.cpp" line="130"/>
+        <location filename="../../src/MainWindow/Components/Console.cpp" line="123"/>
         <source>Clear the console window</source>
         <translation>Despejar la consola</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Console.cpp" line="141"/>
+        <location filename="../../src/MainWindow/Components/Console.cpp" line="134"/>
         <source>INFO: NetConsole output copied to clipboard</source>
         <translation>INFO: El texto de la consola se copió al portapapeles</translation>
     </message>
@@ -261,7 +261,7 @@
     <message>
         <location filename="../../lib/LibDS/src/DriverStation.cpp" line="579"/>
         <source>No Robot Code</source>
-        <translation>No hay Código</translation>
+        <translation>No hay Código en el Robot</translation>
     </message>
     <message>
         <location filename="../../lib/LibDS/src/DriverStation.cpp" line="583"/>
@@ -276,7 +276,7 @@
     <message>
         <location filename="../../lib/LibDS/src/DriverStation.cpp" line="586"/>
         <source>No Robot Communication</source>
-        <translation>No hay Comunicación</translation>
+        <translation>No hay Comunicación con el Robot</translation>
     </message>
 </context>
 <context>
@@ -456,12 +456,12 @@
         <translation>Introduzca su número de equipo:</translation>
     </message>
     <message>
-        <location filename="../../src/Utilities/Languages.cpp" line="162"/>
+        <location filename="../../src/Utilities/Languages.cpp" line="190"/>
         <source>Change language</source>
         <translation>Cambiar lenguaje</translation>
     </message>
     <message>
-        <location filename="../../src/Utilities/Languages.cpp" line="163"/>
+        <location filename="../../src/Utilities/Languages.cpp" line="191"/>
         <source>You must restart the application in order for the changes to take effect</source>
         <translation>Debe reiniciar la aplicación para que los cambios surtan efecto</translation>
     </message>
@@ -564,7 +564,7 @@
     <message>
         <location filename="../../src/MainWindow/Components/Status.cpp" line="79"/>
         <source>No Robot Communication</source>
-        <translation>No hay Comunicación</translation>
+        <translation>No hay Comunicación con el Robot</translation>
     </message>
     <message>
         <location filename="../../src/MainWindow/Components/Status.cpp" line="87"/>

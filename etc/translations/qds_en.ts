@@ -73,22 +73,22 @@
 <context>
     <name>Console</name>
     <message>
-        <location filename="../../src/MainWindow/Components/Console.cpp" line="128"/>
+        <location filename="../../src/MainWindow/Components/Console.cpp" line="121"/>
         <source>Displays robot messages and logs</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Console.cpp" line="129"/>
+        <location filename="../../src/MainWindow/Components/Console.cpp" line="122"/>
         <source>Copy the console log</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Console.cpp" line="130"/>
+        <location filename="../../src/MainWindow/Components/Console.cpp" line="123"/>
         <source>Clear the console window</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Console.cpp" line="141"/>
+        <location filename="../../src/MainWindow/Components/Console.cpp" line="134"/>
         <source>INFO: NetConsole output copied to clipboard</source>
         <translation></translation>
     </message>
@@ -456,12 +456,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/Utilities/Languages.cpp" line="162"/>
+        <location filename="../../src/Utilities/Languages.cpp" line="190"/>
         <source>Change language</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/Utilities/Languages.cpp" line="163"/>
+        <location filename="../../src/Utilities/Languages.cpp" line="191"/>
         <source>You must restart the application in order for the changes to take effect</source>
         <translation></translation>
     </message>
