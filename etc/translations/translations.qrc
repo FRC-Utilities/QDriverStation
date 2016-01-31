@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/languages">
+        <file>qds_de.qm</file>
+        <file>qds_en.qm</file>
+        <file>qds_es.qm</file>
+    </qresource>
+</RCC>

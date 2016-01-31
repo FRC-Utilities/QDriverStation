@@ -83,9 +83,9 @@ MainWindow::MainWindow()
 
     setUseFixedSize              (true);
     setCentralWidget             (m_central);
-    setWindowTitle               (qApp->applicationName()
+    setWindowTitle               (QApplication::applicationName()
                                   + QString (" ")
-                                  + qApp->applicationVersion());
+                                  + QApplication::applicationVersion());
 }
 
 //=============================================================================

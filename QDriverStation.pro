@@ -177,7 +177,8 @@ HEADERS += \
     $$PWD/src/Utilities/Beeper.h \
     $$PWD/src/MainWindow/Hacks/SmartWindow.h \
     $$PWD/src/Utilities/SoundPlayer.h \
-    src/Dashboards/Dashboards.h
+    $$PWD/src/Dashboards/Dashboards.h \
+    src/Utilities/Languages.h
 
 SOURCES += \
     $$PWD/src/Joysticks/JoystickManager.cpp \
@@ -209,13 +210,20 @@ SOURCES += \
     $$PWD/src/Utilities/Beeper.cpp \
     $$PWD/src/MainWindow/Hacks/SmartWindow.cpp \
     $$PWD/src/Utilities/SoundPlayer.cpp \
-    src/Dashboards/Dashboards.cpp
+    $$PWD/src/Dashboards/Dashboards.cpp \
+    src/Utilities/Languages.cpp
 
 #-------------------------------------------------------------------------------
 # Import resources
 #-------------------------------------------------------------------------------
 
-RESOURCES += \
-    $$PWD/etc/resources/resources.qrc
+RESOURCES += $$PWD/etc/resources/resources.qrc
+RESOURCES += $$PWD/etc/translations/translations.qrc
 
+#-------------------------------------------------------------------------------
+# Translations
+#-------------------------------------------------------------------------------
 
+TRANSLATIONS += $$PWD/etc/translations/qds_es.ts
+TRANSLATIONS += $$PWD/etc/translations/qds_en.ts
+TRANSLATIONS += $$PWD/etc/translations/qds_de.ts

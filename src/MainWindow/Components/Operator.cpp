@@ -31,6 +31,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QProgressBar>
+#include <QFontMetrics>
 #include <QButtonGroup>
 
 #include <LibDS/Core/Timers.h>
@@ -211,8 +212,8 @@ void Operator::createLayouts()
     /* Configure size of widgets */
     m_cpu->setFixedHeight                    (DPI_SCALE (16));
     m_battery->setFixedHeight                (DPI_SCALE (16));
-    m_enable->setFixedSize                   (DPI_SCALE (74), DPI_SCALE (48));
-    m_dsable->setFixedSize                   (DPI_SCALE (74), DPI_SCALE (48));
+    m_enable->setFixedHeight                 (DPI_SCALE (48));
+    m_dsable->setFixedHeight                 (DPI_SCALE (48));
     m_cpu->setFixedSize                      (DPI_SCALE (96), DPI_SCALE (18));
     m_battery->setFixedSize                  (DPI_SCALE (96), DPI_SCALE (18));
     m_windowNormal->setFixedSize             (DPI_SCALE (48), DPI_SCALE (28));
@@ -261,17 +262,6 @@ void Operator::configureStyles()
     m_windowDocked->setChecked    (Settings::get ("Docked", false).toBool());
     m_windowNormal->setChecked    (!m_windowDocked->isChecked());
 
-    /* The tooltips */
-    m_plugIcon->setToolTip        (tr ("Plugged to AC power line"));
-    m_windowDocked->setToolTip    (tr ("Dock the window to the bottom"));
-    m_windowNormal->setToolTip    (tr ("Display the window normally"));
-    m_enable->setToolTip          (tr ("Enable the robot"));
-    m_dsable->setToolTip          (tr ("Disable the robot"));
-    m_teleop->setToolTip          (tr ("Operator control"));
-    m_autonomous->setToolTip      (tr ("You develop SKYNET and let it run..."));
-    m_test->setToolTip            (tr ("Control each individual component"));
-    m_practice->setToolTip        (tr ("Simulate a timed match"));
-
     /* Put the available alliances & positions in the station combo */
     m_teamStation->insertItems    (0, DS()->alliances());
 
@@ -293,6 +283,15 @@ void Operator::configureStyles()
 
     /* Update the enable/disable state and appearance */
     updateEnableState();
+
+    /* Resize the buttons to fit */
+    QFontMetrics metrics (font);
+    int dsableWidth = metrics.width (m_dsable->text()) * 1.15;
+    int enableWidth = metrics.width (m_enable->text()) * 1.15;
+    int buttonWidth = dsableWidth > enableWidth ? dsableWidth : enableWidth;
+    buttonWidth = buttonWidth < DPI_SCALE (74) ? DPI_SCALE (74) : buttonWidth;
+    m_dsable->setFixedWidth (buttonWidth);
+    m_enable->setFixedWidth (buttonWidth);
 
     /* Update progressbar style */
     CPU::initQueryProcess();

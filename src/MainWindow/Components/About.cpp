@@ -49,7 +49,7 @@ About::About (QWidget* parent) : QWidget (parent)
     m_site              = new QPushButton (tr ("Visit Website"), this);
     m_reportBug         = new QPushButton (tr ("Report bug"), this);
     m_version           = new QLabel      (tr ("Version %1")
-                                           .arg (qApp->applicationVersion()),
+                                           .arg (QApplication::applicationVersion()),
                                            this);
 
     QSpacerItem* spacer = new QSpacerItem (0, 0,
@@ -71,9 +71,6 @@ About::About (QWidget* parent) : QWidget (parent)
     m_buttonLayout->addWidget        (m_site);
     m_buttonLayout->addWidget        (m_reportBug);
     m_buttonLayout->addSpacerItem    (spacer);
-
-    m_site->setFixedWidth            (DPI_SCALE (96));
-    m_reportBug->setFixedWidth       (DPI_SCALE (96));
 
     m_appIcon->setAlignment          (Qt::AlignCenter);
     m_version->setAlignment          (Qt::AlignCenter);

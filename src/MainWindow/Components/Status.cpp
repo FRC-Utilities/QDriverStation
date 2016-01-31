@@ -76,7 +76,7 @@ void Status::createWidgets()
     /* Create the indicator labels */
     m_team         = new QLabel (NO_DATA, this);
     m_voltage      = new QLabel (NO_DATA, this);
-    m_robotStatus  = new QLabel ("No Robot Communication", this);
+    m_robotStatus  = new QLabel (tr ("No Robot Communication"), this);
 
     /* Create the indicator LEDs */
     m_comm         = new QPushButton ("", this);

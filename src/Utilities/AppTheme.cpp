@@ -37,7 +37,9 @@ void AppTheme::init()
 {
     /* Load the application fonts */
     QFontDatabase::addApplicationFont (":/fonts/Inconsolata.otf");
+    QFontDatabase::addApplicationFont (":/fonts/Aurebesh-Bold.ttf");
     QFontDatabase::addApplicationFont (":/fonts/Quicksand-Bold.ttf");
+    QFontDatabase::addApplicationFont (":/fonts/Aurebesh-Regular.ttf");
     QFontDatabase::addApplicationFont (":/fonts/Quicksand-Regular.ttf");
 
     /* Configure appearance options */
@@ -47,21 +49,6 @@ void AppTheme::init()
 #else
     QApplication::setWindowIcon (QIcon (":/icon.ico"));
 #endif
-
-    /* Finally, change application fonts */
-    AppTheme::loadFonts();
-}
-
-//=============================================================================
-// AppTheme::LoadFonts
-//=============================================================================
-
-void AppTheme::loadFonts()
-{
-    QFont font;
-    font.setFamily ("Quicksand");
-    font.setPixelSize (DPI_SCALE (12));
-    QApplication::setFont (font);
 }
 
 //=============================================================================

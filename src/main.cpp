@@ -40,6 +40,7 @@
 #include "Updater/Updater.h"
 #include "Utilities/Global.h"
 #include "Utilities/AppTheme.h"
+#include "Utilities/Languages.h"
 #include "Utilities/SoundPlayer.h"
 #include "MainWindow/MainWindow.h"
 
@@ -49,11 +50,17 @@
 
 int main (int argc, char* argv[])
 {
-    QApplication app (argc, argv);
-
     /* Configure application information */
+    QApplication app (argc, argv);
     app.setApplicationVersion ("0.14");
-    app.setApplicationName ("QDriverStation");
+    app.setOrganizationName   ("WinT 3794");
+    app.setApplicationName    ("QDriverStation");
+    app.setOrganizationDomain ("www.wint3794.org");
+    app.installTranslator     (Languages::translator());
+
+    /* */
+    AppTheme::init();
+    GLOBAL_INIT();
 
     /* Create the main window and check for updates */
     Updater updater;
@@ -62,10 +69,6 @@ int main (int argc, char* argv[])
     /* Avoid compilation warnings */
     Q_UNUSED (updater);
     Q_UNUSED (mainwindow);
-
-    /* Configure application style & start DS engine */
-    AppTheme::init();
-    GLOBAL_INIT();
 
     /* Beep whenever a button or checkbox is clicked */
     SoundPlayer soundPlayer;

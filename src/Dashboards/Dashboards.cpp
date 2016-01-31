@@ -100,12 +100,12 @@ Dashboards::DashboardTypes Dashboards::currentDashboard()
 QStringList Dashboards::dashboardList()
 {
     QStringList list;
-    list.append ("None");
-    list.append ("SFX Dashboard");
-    list.append ("SmartDashboard");
+    list.append (tr ("None"));
+    list.append (tr ("SFX Dashboard"));
+    list.append (tr ("SmartDashboard"));
 
 #if defined _WIN32 || defined _WIN64
-    list.append ("LabVIEW Dashboard");
+    list.append (tr ("LabVIEW Dashboard"));
 #endif
 
     return list;

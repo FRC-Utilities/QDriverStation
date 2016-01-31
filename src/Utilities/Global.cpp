@@ -161,7 +161,7 @@ qreal DPI_SCALE (qreal input)
 {
     if (RATIO == -1)
         {
-            RATIO = (qApp->primaryScreen()->physicalDotsPerInch() / 100) * 0.9;
+            RATIO = (QApplication::primaryScreen()->physicalDotsPerInch() / 100) * 0.9;
 
             if (RATIO < 1.2)
                 RATIO = 1;

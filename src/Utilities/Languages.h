@@ -20,28 +20,31 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_APP_THEME_H
-#define _QDS_APP_THEME_H
+#ifndef _QDS_APP_LANGUAGES_H
+#define _QDS_APP_LANGUAGES_H
 
-#include "Utilities/Global.h"
+#include <QTranslator>
+#include <QStringList>
 
-class AppTheme
+class Languages
 {
 public:
-    typedef struct
+    typedef enum
     {
-        QString base;
-        QString highlight;
-        QString background;
-        QString foreground;
-    } Theme;
+        kAuto     = 0,
+        kGerman   = 1,
+        kEnglish  = 2,
+        kSpanish  = 3,
+        kAurebesh = 4,
+    } LanguageType;
 
     static void init();
-    static void loadTheme();
-    static void resetTheme();
-    static void apply (const Theme& theme);
+    static QTranslator* translator();
+    static LanguageType currentLanguage();
+    static QStringList getAvailableLanguages();
+    static void setLanguage (LanguageType language);
 
-    static Theme current();
+    static QString systemLanguage();
 };
 
 #endif

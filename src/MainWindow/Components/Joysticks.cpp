@@ -117,6 +117,7 @@ Joysticks::Joysticks (QWidget* parent) : QWidget (parent)
     m_mainLayout->addWidget              (m_axisIndicators);
     m_mainLayout->addWidget              (m_buttonIndicators);
     m_mainLayout->addWidget              (m_POVIndicators);
+    m_mainLayout->addSpacerItem          (spacer());
     m_joystickBox->addWidget             (m_joystickNames);
 
     /* Connect slots */

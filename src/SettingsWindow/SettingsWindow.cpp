@@ -27,6 +27,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QCheckBox>
+#include <QComboBox>
 #include <QGroupBox>
 #include <QTabWidget>
 #include <QPushButton>
@@ -42,6 +43,7 @@
 
 #include "SettingsWindow.h"
 #include "Utilities/Global.h"
+#include "Utilities/Languages.h"
 
 //=============================================================================
 // Global variables
@@ -129,7 +131,9 @@ void SettingsWindow::createWidgets()
     m_foregroundEdit    = new QLineEdit (this);
 
     /* Misc. settings such as auto-updater and sound settings */
-    m_othersContainer   = new QWidget (this);
+    m_othersContainer   = new QWidget   (this);
+    m_languageBox       = new QComboBox (this);
+    m_languageLabel     = new QLabel    (tr ("Language") + ":", this);
     m_otherSettingsBox  = new QGroupBox (tr ("Other Settings"), this);
     m_autoUpdater       = new QCheckBox (tr ("Check for updates automatically"),
                                          this);
@@ -194,6 +198,10 @@ void SettingsWindow::createWidgets()
     m_backgroundButton->setObjectName (BACKGROUND_OBJ_NAME);
     m_foregroundEdit->setObjectName   (FOREGROUND_OBJ_NAME);
     m_foregroundButton->setObjectName (FOREGROUND_OBJ_NAME);
+
+    /* Load available languages */
+    m_languageBox->addItems (Languages::getAvailableLanguages());
+    m_languageBox->setCurrentIndex ((int) Languages::currentLanguage());
 }
 
 //=============================================================================
@@ -205,6 +213,11 @@ void SettingsWindow::createLayouts()
     QSpacerItem* spacer = new QSpacerItem (0, 0,
                                            QSizePolicy::MinimumExpanding,
                                            QSizePolicy::MinimumExpanding);
+
+    QSpacerItem* smallSpacer = new QSpacerItem (DPI_SCALE (15),
+            DPI_SCALE (15),
+            QSizePolicy::Minimum,
+            QSizePolicy::Minimum);
 
     /* Custom address checkbox & text */
     m_addressLayout = new QVBoxLayout (m_addressWidget);
@@ -221,33 +234,36 @@ void SettingsWindow::createLayouts()
     m_networkLayout->addSpacerItem (spacer);
 
     /* Appearance box */
-    m_appearanceLayout = new QGridLayout (m_appearanceBox);
-    m_appearanceLayout->setVerticalSpacing (DPI_SCALE (5));
+    m_appearanceLayout = new QGridLayout     (m_appearanceBox);
+    m_appearanceLayout->setVerticalSpacing   (DPI_SCALE (5));
     m_appearanceLayout->setHorizontalSpacing (DPI_SCALE (10));
-    m_appearanceLayout->setContentsMargins (MAIN_MARGINS());
-    m_appearanceLayout->addWidget (m_baseLabel,        0, 0);
-    m_appearanceLayout->addWidget (m_highlightLabel,   1, 0);
-    m_appearanceLayout->addWidget (m_backgroundLabel,  2, 0);
-    m_appearanceLayout->addWidget (m_foregroundLabel,  3, 0);
-    m_appearanceLayout->addWidget (m_baseColor,        0, 1);
-    m_appearanceLayout->addWidget (m_highlightColor,   1, 1);
-    m_appearanceLayout->addWidget (m_backgroundColor,  2, 1);
-    m_appearanceLayout->addWidget (m_foregroundColor,  3, 1);
-    m_appearanceLayout->addWidget (m_baseEdit,         0, 2);
-    m_appearanceLayout->addWidget (m_highlightEdit,    1, 2);
-    m_appearanceLayout->addWidget (m_backgroundEdit,   2, 2);
-    m_appearanceLayout->addWidget (m_foregroundEdit,   3, 2);
-    m_appearanceLayout->addWidget (m_baseButton,       0, 3);
-    m_appearanceLayout->addWidget (m_highlightButton,  1, 3);
-    m_appearanceLayout->addWidget (m_backgroundButton, 2, 3);
-    m_appearanceLayout->addWidget (m_foregroundButton, 3, 3);
+    m_appearanceLayout->setContentsMargins   (MAIN_MARGINS());
+    m_appearanceLayout->addWidget            (m_baseLabel,        0, 0);
+    m_appearanceLayout->addWidget            (m_highlightLabel,   1, 0);
+    m_appearanceLayout->addWidget            (m_backgroundLabel,  2, 0);
+    m_appearanceLayout->addWidget            (m_foregroundLabel,  3, 0);
+    m_appearanceLayout->addWidget            (m_baseColor,        0, 1);
+    m_appearanceLayout->addWidget            (m_highlightColor,   1, 1);
+    m_appearanceLayout->addWidget            (m_backgroundColor,  2, 1);
+    m_appearanceLayout->addWidget            (m_foregroundColor,  3, 1);
+    m_appearanceLayout->addWidget            (m_baseEdit,         0, 2);
+    m_appearanceLayout->addWidget            (m_highlightEdit,    1, 2);
+    m_appearanceLayout->addWidget            (m_backgroundEdit,   2, 2);
+    m_appearanceLayout->addWidget            (m_foregroundEdit,   3, 2);
+    m_appearanceLayout->addWidget            (m_baseButton,       0, 3);
+    m_appearanceLayout->addWidget            (m_highlightButton,  1, 3);
+    m_appearanceLayout->addWidget            (m_backgroundButton, 2, 3);
+    m_appearanceLayout->addWidget            (m_foregroundButton, 3, 3);
 
     /* Other settings checkboxes */
-    m_otherSettingsCheckboxes = new QVBoxLayout (m_othersContainer);
-    m_otherSettingsCheckboxes->setSpacing (DPI_SCALE (2));
-    m_otherSettingsCheckboxes->addWidget (m_autoUpdater);
-    m_otherSettingsCheckboxes->addWidget (m_soundEffects);
-    m_otherSettingsCheckboxes->addWidget (m_promptOnQuit);
+    m_otherSettingsWidgets = new QVBoxLayout (m_othersContainer);
+    m_otherSettingsWidgets->setSpacing       (DPI_SCALE (2));
+    m_otherSettingsWidgets->addWidget        (m_languageLabel);
+    m_otherSettingsWidgets->addWidget        (m_languageBox);
+    m_otherSettingsWidgets->addSpacerItem    (smallSpacer);
+    m_otherSettingsWidgets->addWidget        (m_autoUpdater);
+    m_otherSettingsWidgets->addWidget        (m_soundEffects);
+    m_otherSettingsWidgets->addWidget        (m_promptOnQuit);
 
     /* Other settings layout */
     m_otherSettingsLayout = new QHBoxLayout (m_otherSettingsBox);
@@ -410,6 +426,8 @@ void SettingsWindow::applySettings()
     Settings::set ("Auto Updater",   m_autoUpdater->isChecked());
     Settings::set ("UI Sounds",      m_soundEffects->isChecked());
     Settings::set ("Prompt on Quit", m_promptOnQuit->isChecked());
+    Languages::setLanguage ((Languages::LanguageType)
+                            m_languageBox->currentIndex());
 
     /* Create and apply a theme from UI values */
     AppTheme::Theme theme;

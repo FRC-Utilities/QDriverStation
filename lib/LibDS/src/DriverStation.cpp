@@ -173,12 +173,12 @@ QStringList DriverStation::alliances()
 {
     QStringList list;
 
-    list.append ("Red 1");
-    list.append ("Red 2");
-    list.append ("Red 3");
-    list.append ("Blue 1");
-    list.append ("Blue 2");
-    list.append ("Blue 3");
+    list.append (tr ("Red 1"));
+    list.append (tr ("Red 2"));
+    list.append (tr ("Red 3"));
+    list.append (tr ("Blue 1"));
+    list.append (tr ("Blue 2"));
+    list.append (tr ("Blue 3"));
 
     return list;
 }
@@ -190,8 +190,8 @@ QStringList DriverStation::alliances()
 QStringList DriverStation::protocols()
 {
     QStringList list;
-    list.append ("2016 Protocol");
-    list.append ("2015 Protocol");
+    list.append (tr ("2016 Protocol"));
+    list.append (tr ("2015 Protocol"));
     return list;
 }
 
@@ -573,17 +573,17 @@ QString DriverStation::getRobotStatus()
             && m_manager->currentProtocol()->isConnectedToRobot())
         {
             if (m_manager->currentProtocol()->isEmergencyStopped())
-                return "Emergency Stopped";
+                return tr ("Emergency Stopped");
 
             if (!m_manager->currentProtocol()->hasCode())
-                return "No Robot Code";
+                return tr ("No Robot Code");
 
             return QString ("%1 %2")
                    .arg (DS_GetControlModeString (controlMode()))
-                   .arg (isEnabled() ? "Enabled" : "Disabled");
+                   .arg (isEnabled() ? tr ("Enabled") : tr ("Disabled"));
         }
 
-    return QString ("No Robot Communication");
+    return tr ("No Robot Communication");
 }
 
 //=============================================================================

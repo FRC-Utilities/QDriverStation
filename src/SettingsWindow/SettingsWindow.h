@@ -29,6 +29,7 @@ class QLabel;
 class QWidget;
 class QLineEdit;
 class QCheckBox;
+class QComboBox;
 class QGroupBox;
 class QTabWidget;
 class QPushButton;
@@ -88,6 +89,9 @@ private:
     QGroupBox* m_otherSettingsBox;
     QWidget* m_othersContainer;
 
+    QLabel* m_languageLabel;
+    QComboBox* m_languageBox;
+
     QLabel* m_baseLabel;
     QLabel* m_highlightLabel;
     QLabel* m_backgroundLabel;
@@ -121,7 +125,7 @@ private:
     QHBoxLayout* m_networkingLayout;
     QGridLayout* m_appearanceLayout;
     QHBoxLayout* m_otherSettingsLayout;
-    QVBoxLayout* m_otherSettingsCheckboxes;
+    QVBoxLayout* m_otherSettingsWidgets;
 };
 
 #endif

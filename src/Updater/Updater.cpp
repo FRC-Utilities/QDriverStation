@@ -92,7 +92,7 @@ void Updater::showUpdateMessages()
                                         "You can download this version using the link:"
                                         "<br/><br/>"
                                         "%3")
-                                    .arg (qApp->applicationName())
+                                    .arg (QApplication::applicationName())
                                     .arg (QString ("<strong>%1</strong>").arg (m_version))
                                     .arg (QString ("<a href=%1>%2</a>").arg (m_downloadLink,
                                             m_downloadLink)));
@@ -144,7 +144,7 @@ void Updater::getApplicationVersion (QByteArray data)
                          QString ("latest-%1").arg (m_platform));
 
     QStringList online = m_version.split (".");
-    QStringList local  = qApp->applicationVersion().split (".");
+    QStringList local  = QApplication::applicationVersion().split (".");
 
     /* Figure out if local version is smaller than online version */
     for (int i = 0; i < online.count() - 1; ++i)

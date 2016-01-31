@@ -136,10 +136,10 @@ void Console::configureStyles()
 
 void Console::copy()
 {
-    qApp->clipboard()->setText (m_console->toPlainText());
+    QApplication::clipboard()->setText (m_console->toPlainText());
     log ("<font color=\"#AAA\"><p>"
-         "INFO: NetConsole output copied to clipboard"
-         "</p></font>");
+         + tr ("INFO: NetConsole output copied to clipboard")
+         + "</p></font>");
 }
 
 //=============================================================================
