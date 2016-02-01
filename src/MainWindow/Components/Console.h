@@ -25,11 +25,11 @@
 
 #include <QWidget>
 
-class QLineEdit;
 class QVBoxLayout;
 class QHBoxLayout;
 class QPushButton;
-class QPlainTextEdit;
+class ConsoleWidget;
+class MessagesWindow;
 
 class Console : public QWidget
 {
@@ -41,29 +41,18 @@ public:
 private slots:
     void createWidgets();
     void createLayouts();
-    void configureStyles();
-
-    void copy();
-    void clear();
-    void log (QString message);
-
-    void sendCommand();
-    void onProtocolChanged();
 
 private:
     QVBoxLayout* m_mainLayout;
     QHBoxLayout* m_buttonsLayout;
-    QHBoxLayout* m_commandsLayout;
-
-    QLineEdit* m_commands;
-    QWidget* m_commandsWidget;
-    QPushButton* m_sendCommand;
-
-    QPlainTextEdit* m_console;
 
     QWidget* m_buttonsWidget;
     QPushButton* m_copyButton;
     QPushButton* m_clearButton;
+    QPushButton* m_expandButton;
+
+    ConsoleWidget* m_consoleWidget;
+    MessagesWindow* m_messagesWindow;
 };
 
 #endif

@@ -94,8 +94,8 @@ MainWindow::MainWindow()
 
 MainWindow::~MainWindow()
 {
-    foreach (QWidget * widget, findChildren<QWidget*>())
-    widget->deleteLater();
+    foreach (QWidget* widget, findChildren<QWidget*>())
+        widget->deleteLater();
 }
 
 //=============================================================================

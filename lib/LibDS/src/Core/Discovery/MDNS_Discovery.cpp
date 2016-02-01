@@ -161,14 +161,14 @@ void MDNS_Discovery::clearCache()
 void MDNS_Discovery::lookupFinished (QHostInfo info)
 {
     foreach (QHostAddress address, info.addresses())
-    {
-        if (address.protocol() == QAbstractSocket::AnyIPProtocol)
-            {
-                addToCache (info.hostName(), address.toString());
-                emit ipFound (info.hostName(), address.toString());
-                return;
-            }
-    }
+        {
+            if (address.protocol() == QAbstractSocket::AnyIPProtocol)
+                {
+                    addToCache (info.hostName(), address.toString());
+                    emit ipFound (info.hostName(), address.toString());
+                    return;
+                }
+        }
 }
 
 //=============================================================================

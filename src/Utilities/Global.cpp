@@ -237,20 +237,20 @@ void SHOW_VIRTUAL_JOYSTICKS()
 void MORSE_BEEP (QString input, int frequency)
 {
     foreach (QString character, input.split (""))
-    {
-        int time = 0;
-        int base = 50;
+        {
+            int time = 0;
+            int base = 50;
 
-        if (character == ".")
-            time = base;
-        else if (character == "-")
-            time = base * 3;
-        else if (character == " ")
-            time = base * 3;
-        else if (character == "/")
-            time = base * 7;
+            if (character == ".")
+                time = base;
+            else if (character == "-")
+                time = base * 3;
+            else if (character == " ")
+                time = base * 3;
+            else if (character == "/")
+                time = base * 7;
 
-        BEEPER()->beep (frequency, time);
-        BEEPER()->beep (0, base);
-    }
+            BEEPER()->beep (frequency, time);
+            BEEPER()->beep (0, base);
+        }
 }

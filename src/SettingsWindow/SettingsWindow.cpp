@@ -75,8 +75,8 @@ SettingsWindow::SettingsWindow()
 
 SettingsWindow::~SettingsWindow()
 {
-    foreach (QWidget * widget, findChildren<QWidget*>())
-    widget->deleteLater();
+    foreach (QWidget* widget, findChildren<QWidget*>())
+        widget->deleteLater();
 }
 
 //=============================================================================
@@ -200,8 +200,8 @@ void SettingsWindow::createWidgets()
     m_foregroundButton->setObjectName (FOREGROUND_OBJ_NAME);
 
     /* Load available languages */
-    m_languageBox->addItems (Languages::getAvailableLanguages());
-    m_languageBox->setCurrentIndex ((int) Languages::currentLanguage());
+    m_languageBox->addItems           (Languages::getAvailableLanguages());
+    m_languageBox->setCurrentIndex    ((int) Languages::currentLanguage());
 }
 
 //=============================================================================
@@ -220,77 +220,77 @@ void SettingsWindow::createLayouts()
             QSizePolicy::Minimum);
 
     /* Custom address checkbox & text */
-    m_addressLayout = new QVBoxLayout (m_addressWidget);
-    m_addressLayout->setSpacing (DPI_SCALE (5));
-    m_addressLayout->addWidget (m_useCustomAddress);
-    m_addressLayout->addWidget (m_robotAddress);
+    m_addressLayout = new QVBoxLayout         (m_addressWidget);
+    m_addressLayout->setSpacing               (DPI_SCALE (5));
+    m_addressLayout->addWidget                (m_useCustomAddress);
+    m_addressLayout->addWidget                (m_robotAddress);
 
     /* Network icon & custom address */
-    m_networkLayout = new QHBoxLayout (m_networkingBox);
-    m_networkLayout->setSpacing (DPI_SCALE (5));
-    m_networkLayout->setContentsMargins (MAIN_MARGINS());
-    m_networkLayout->addWidget (m_networkingIcon);
-    m_networkLayout->addWidget (m_addressWidget);
-    m_networkLayout->addSpacerItem (spacer);
+    m_networkLayout = new QHBoxLayout         (m_networkingBox);
+    m_networkLayout->setSpacing               (DPI_SCALE (5));
+    m_networkLayout->setContentsMargins       (MAIN_MARGINS());
+    m_networkLayout->addWidget                (m_networkingIcon);
+    m_networkLayout->addWidget                (m_addressWidget);
+    m_networkLayout->addSpacerItem            (spacer);
 
     /* Appearance box */
-    m_appearanceLayout = new QGridLayout     (m_appearanceBox);
-    m_appearanceLayout->setVerticalSpacing   (DPI_SCALE (5));
-    m_appearanceLayout->setHorizontalSpacing (DPI_SCALE (10));
-    m_appearanceLayout->setContentsMargins   (MAIN_MARGINS());
-    m_appearanceLayout->addWidget            (m_baseLabel,        0, 0);
-    m_appearanceLayout->addWidget            (m_highlightLabel,   1, 0);
-    m_appearanceLayout->addWidget            (m_backgroundLabel,  2, 0);
-    m_appearanceLayout->addWidget            (m_foregroundLabel,  3, 0);
-    m_appearanceLayout->addWidget            (m_baseColor,        0, 1);
-    m_appearanceLayout->addWidget            (m_highlightColor,   1, 1);
-    m_appearanceLayout->addWidget            (m_backgroundColor,  2, 1);
-    m_appearanceLayout->addWidget            (m_foregroundColor,  3, 1);
-    m_appearanceLayout->addWidget            (m_baseEdit,         0, 2);
-    m_appearanceLayout->addWidget            (m_highlightEdit,    1, 2);
-    m_appearanceLayout->addWidget            (m_backgroundEdit,   2, 2);
-    m_appearanceLayout->addWidget            (m_foregroundEdit,   3, 2);
-    m_appearanceLayout->addWidget            (m_baseButton,       0, 3);
-    m_appearanceLayout->addWidget            (m_highlightButton,  1, 3);
-    m_appearanceLayout->addWidget            (m_backgroundButton, 2, 3);
-    m_appearanceLayout->addWidget            (m_foregroundButton, 3, 3);
+    m_appearanceLayout = new QGridLayout      (m_appearanceBox);
+    m_appearanceLayout->setVerticalSpacing    (DPI_SCALE (5));
+    m_appearanceLayout->setHorizontalSpacing  (DPI_SCALE (10));
+    m_appearanceLayout->setContentsMargins    (MAIN_MARGINS());
+    m_appearanceLayout->addWidget             (m_baseLabel,        0, 0);
+    m_appearanceLayout->addWidget             (m_highlightLabel,   1, 0);
+    m_appearanceLayout->addWidget             (m_backgroundLabel,  2, 0);
+    m_appearanceLayout->addWidget             (m_foregroundLabel,  3, 0);
+    m_appearanceLayout->addWidget             (m_baseColor,        0, 1);
+    m_appearanceLayout->addWidget             (m_highlightColor,   1, 1);
+    m_appearanceLayout->addWidget             (m_backgroundColor,  2, 1);
+    m_appearanceLayout->addWidget             (m_foregroundColor,  3, 1);
+    m_appearanceLayout->addWidget             (m_baseEdit,         0, 2);
+    m_appearanceLayout->addWidget             (m_highlightEdit,    1, 2);
+    m_appearanceLayout->addWidget             (m_backgroundEdit,   2, 2);
+    m_appearanceLayout->addWidget             (m_foregroundEdit,   3, 2);
+    m_appearanceLayout->addWidget             (m_baseButton,       0, 3);
+    m_appearanceLayout->addWidget             (m_highlightButton,  1, 3);
+    m_appearanceLayout->addWidget             (m_backgroundButton, 2, 3);
+    m_appearanceLayout->addWidget             (m_foregroundButton, 3, 3);
 
     /* Other settings checkboxes */
-    m_otherSettingsWidgets = new QVBoxLayout (m_othersContainer);
-    m_otherSettingsWidgets->setSpacing       (DPI_SCALE (2));
-    m_otherSettingsWidgets->addWidget        (m_languageLabel);
-    m_otherSettingsWidgets->addWidget        (m_languageBox);
-    m_otherSettingsWidgets->addSpacerItem    (smallSpacer);
-    m_otherSettingsWidgets->addWidget        (m_autoUpdater);
-    m_otherSettingsWidgets->addWidget        (m_soundEffects);
-    m_otherSettingsWidgets->addWidget        (m_promptOnQuit);
+    m_otherSettingsWidgets = new QVBoxLayout  (m_othersContainer);
+    m_otherSettingsWidgets->setSpacing        (DPI_SCALE (2));
+    m_otherSettingsWidgets->addWidget         (m_languageLabel);
+    m_otherSettingsWidgets->addWidget         (m_languageBox);
+    m_otherSettingsWidgets->addSpacerItem     (smallSpacer);
+    m_otherSettingsWidgets->addWidget         (m_autoUpdater);
+    m_otherSettingsWidgets->addWidget         (m_soundEffects);
+    m_otherSettingsWidgets->addWidget         (m_promptOnQuit);
 
     /* Other settings layout */
-    m_otherSettingsLayout = new QHBoxLayout (m_otherSettingsBox);
-    m_otherSettingsLayout->setSpacing (DPI_SCALE (5));
+    m_otherSettingsLayout = new QHBoxLayout   (m_otherSettingsBox);
+    m_otherSettingsLayout->setSpacing         (DPI_SCALE (5));
     m_otherSettingsLayout->setContentsMargins (MAIN_MARGINS());
-    m_otherSettingsLayout->addWidget (m_otherSettingsIcon);
-    m_otherSettingsLayout->addWidget (m_othersContainer);
-    m_otherSettingsLayout->addSpacerItem (spacer);
+    m_otherSettingsLayout->addWidget          (m_otherSettingsIcon);
+    m_otherSettingsLayout->addWidget          (m_othersContainer);
+    m_otherSettingsLayout->addSpacerItem      (spacer);
 
     /* Everything except the buttons */
-    m_containerLayout = new QVBoxLayout (m_containerWidget);
-    m_containerLayout->addWidget (m_networkingBox);
-    m_containerLayout->addWidget (m_otherSettingsBox);
-    m_containerLayout->addWidget (m_appearanceBox);
-    m_containerLayout->addSpacerItem (spacer);
+    m_containerLayout = new QVBoxLayout       (m_containerWidget);
+    m_containerLayout->addWidget              (m_networkingBox);
+    m_containerLayout->addWidget              (m_otherSettingsBox);
+    m_containerLayout->addWidget              (m_appearanceBox);
+    m_containerLayout->addSpacerItem          (spacer);
 
     /* Reset, Apply & Cancel buttons */
-    m_buttonsLayout = new QHBoxLayout (m_buttonsWidget);
-    m_buttonsLayout->addWidget (m_reset);
-    m_buttonsLayout->addSpacerItem (spacer);
-    m_buttonsLayout->addWidget (m_cancel);
-    m_buttonsLayout->addWidget (m_ok);
+    m_buttonsLayout = new QHBoxLayout         (m_buttonsWidget);
+    m_buttonsLayout->addWidget                (m_reset);
+    m_buttonsLayout->addSpacerItem            (spacer);
+    m_buttonsLayout->addWidget                (m_cancel);
+    m_buttonsLayout->addWidget                (m_ok);
 
     /* Window layout */
-    m_mainLayout = new QVBoxLayout (this);
-    m_mainLayout->addWidget (m_container);
-    m_mainLayout->addWidget (m_buttonsWidget);
+    m_mainLayout = new QVBoxLayout            (this);
+    m_mainLayout->addWidget                   (m_container);
+    m_mainLayout->addWidget                   (m_buttonsWidget);
 }
 
 //=============================================================================

@@ -185,7 +185,9 @@ HEADERS += \
     $$PWD/src/MainWindow/Hacks/SmartWindow.h \
     $$PWD/src/Utilities/SoundPlayer.h \
     $$PWD/src/Dashboards/Dashboards.h \
-    src/Utilities/Languages.h
+    src/Utilities/Languages.h \
+    src/MessagesWindow/ConsoleWidget.h \
+    src/MessagesWindow/MessagesWindow.h
 
 SOURCES += \
     $$PWD/src/Joysticks/JoystickManager.cpp \
@@ -218,7 +220,9 @@ SOURCES += \
     $$PWD/src/MainWindow/Hacks/SmartWindow.cpp \
     $$PWD/src/Utilities/SoundPlayer.cpp \
     $$PWD/src/Dashboards/Dashboards.cpp \
-    src/Utilities/Languages.cpp
+    src/Utilities/Languages.cpp \
+    src/MessagesWindow/ConsoleWidget.cpp \
+    src/MessagesWindow/MessagesWindow.cpp
 
 #-------------------------------------------------------------------------------
 # Import resources

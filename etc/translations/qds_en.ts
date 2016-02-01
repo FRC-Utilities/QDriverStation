@@ -71,35 +71,20 @@
     </message>
 </context>
 <context>
-    <name>Console</name>
+    <name>ConsoleWidget</name>
     <message>
-        <location filename="../../src/MainWindow/Components/Console.cpp" line="76"/>
+        <location filename="../../src/MessagesWindow/ConsoleWidget.cpp" line="76"/>
+        <source>INFO: NetConsole output copied to clipboard</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/MessagesWindow/ConsoleWidget.cpp" line="98"/>
         <source>Send</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Console.cpp" line="129"/>
-        <source>Write a command</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../src/MainWindow/Components/Console.cpp" line="146"/>
-        <source>Displays robot messages and logs</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../src/MainWindow/Components/Console.cpp" line="147"/>
-        <source>Copy the console log</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../src/MainWindow/Components/Console.cpp" line="148"/>
-        <source>Clear the console window</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../src/MainWindow/Components/Console.cpp" line="159"/>
-        <source>INFO: NetConsole output copied to clipboard</source>
+        <location filename="../../src/MessagesWindow/ConsoleWidget.cpp" line="104"/>
+        <source>Type a command</source>
         <translation></translation>
     </message>
 </context>
@@ -341,6 +326,14 @@
     </message>
 </context>
 <context>
+    <name>MessagesWindow</name>
+    <message>
+        <location filename="../../src/MessagesWindow/MessagesWindow.cpp" line="49"/>
+        <source>Messages</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
     <name>Operator</name>
     <message>
         <location filename="../../src/MainWindow/Components/Operator.cpp" line="96"/>
@@ -451,7 +444,7 @@
     <message>
         <location filename="../../src/Utilities/Global.cpp" line="186"/>
         <location filename="../../src/Utilities/Global.cpp" line="191"/>
-        <location filename="../../src/main.cpp" line="125"/>
+        <location filename="../../src/main.cpp" line="126"/>
         <source>QDriverStation</source>
         <translation></translation>
     </message>
@@ -466,7 +459,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="126"/>
+        <location filename="../../src/main.cpp" line="127"/>
         <source>Please input your team number:</source>
         <translation></translation>
     </message>

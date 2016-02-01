@@ -24,13 +24,9 @@
 // System includes
 //=============================================================================
 
-#include <QLineEdit>
-#include <QClipboard>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QPushButton>
-#include <QApplication>
-#include <QPlainTextEdit>
 
 //=============================================================================
 // Application includes
@@ -39,6 +35,8 @@
 #include "Console.h"
 #include "Utilities/Global.h"
 #include "Utilities/Languages.h"
+#include "MessagesWindow/ConsoleWidget.h"
+#include "MessagesWindow/MessagesWindow.h"
 
 //=============================================================================
 // Console::Console
@@ -48,19 +46,6 @@ Console::Console (QWidget* parent) : QWidget (parent)
 {
     createWidgets();
     createLayouts();
-    configureStyles();
-
-    connect (m_sendCommand, SIGNAL (clicked()),   this, SLOT (sendCommand()));
-    connect (m_copyButton,  SIGNAL (clicked()),   this, SLOT (copy()));
-    connect (m_clearButton, SIGNAL (clicked()),   this, SLOT (clear()));
-    connect (m_commands,    SIGNAL (returnPressed()),
-             this,            SLOT (sendCommand()));
-    connect (DS(),          SIGNAL (newMessage (QString)),
-             this,            SLOT (log (QString)));
-    connect (DS(),          SIGNAL (protocolChanged()),
-             this,            SLOT (onProtocolChanged()));
-
-    onProtocolChanged();
 }
 
 //=============================================================================
@@ -69,13 +54,21 @@ Console::Console (QWidget* parent) : QWidget (parent)
 
 void Console::createWidgets()
 {
+    m_messagesWindow = new MessagesWindow();
+
     m_buttonsWidget  = new QWidget        (this);
-    m_console        = new QPlainTextEdit (this);
-    m_commands       = new QLineEdit      (this);
-    m_commandsWidget = new QWidget        (this);
-    m_sendCommand    = new QPushButton    (tr    ("Send"),    this);
-    m_copyButton     = new QPushButton    (QChar (fa::copy),  this);
-    m_clearButton    = new QPushButton    (QChar (fa::trash), this);
+    m_consoleWidget  = new ConsoleWidget  (this);
+    m_copyButton     = new QPushButton    (QChar (fa::copy),   this);
+    m_clearButton    = new QPushButton    (QChar (fa::trash),  this);
+    m_expandButton   = new QPushButton    (QChar (fa::expand), this);
+
+    m_copyButton->setFont   (AWESOME()->font (DPI_SCALE (12)));
+    m_clearButton->setFont  (AWESOME()->font (DPI_SCALE (12)));
+    m_expandButton->setFont (AWESOME()->font (DPI_SCALE (12)));
+
+    connect (m_copyButton,   SIGNAL (clicked()), m_consoleWidget,  SLOT (copy()));
+    connect (m_clearButton,  SIGNAL (clicked()), m_consoleWidget,  SLOT (clear()));
+    connect (m_expandButton, SIGNAL (clicked()), m_messagesWindow, SLOT (show()));
 }
 
 //=============================================================================
@@ -84,124 +77,29 @@ void Console::createWidgets()
 
 void Console::createLayouts()
 {
+    QSpacerItem* spacer = new QSpacerItem (0, 0,
+                                           QSizePolicy::MinimumExpanding,
+                                           QSizePolicy::MinimumExpanding);
     /* Configure buttons layout */
     m_buttonsLayout = new QHBoxLayout   (m_buttonsWidget);
+    m_buttonsLayout->setSpacing         (DPI_SCALE (5));
+    m_buttonsLayout->setContentsMargins (NULL_MARGINS());
     m_buttonsLayout->addWidget          (m_copyButton);
     m_buttonsLayout->addWidget          (m_clearButton);
-
-    /* Configure the commands layout */
-    m_commandsLayout = new QHBoxLayout (m_commandsWidget);
-    m_commandsLayout->addWidget        (m_commands);
-    m_commandsLayout->addWidget        (m_sendCommand);
-    m_commandsLayout->setStretch       (0, 1);
-    m_commandsLayout->setStretch       (1, 0);
+    m_buttonsLayout->addSpacerItem      (spacer);
+    m_buttonsLayout->addWidget          (m_expandButton);
 
     /* Configure main layout */
     m_mainLayout = new QVBoxLayout      (this);
-    m_mainLayout->addWidget             (m_buttonsWidget);
-    m_mainLayout->addWidget             (m_console);
-    m_mainLayout->addWidget             (m_commandsWidget);
-
-    /* Change spacing & resize to fit */
     m_mainLayout->setSpacing            (DPI_SCALE (10));
-    m_buttonsLayout->setSpacing         (DPI_SCALE (5));
-    m_buttonsLayout->setSizeConstraint  (QLayout::SetFixedSize);
-
-    /* Set margins */
-    m_mainLayout->setContentsMargins     (MAIN_MARGINS());
-    m_buttonsLayout->setContentsMargins  (NULL_MARGINS());
-    m_commandsLayout->setContentsMargins (NULL_MARGINS());
-
-    /* Configure console output widget */
-    m_console->setReadOnly              (true);
-    m_console->setMaximumHeight         (DPI_SCALE (140));
-    m_console->setMinimumWidth          (DPI_SCALE (320));;
+    m_mainLayout->setContentsMargins    (MAIN_MARGINS());
+    m_mainLayout->addWidget             (m_buttonsWidget);
+    m_mainLayout->addWidget             (m_consoleWidget);
+    m_mainLayout->setStretch            (0, 0);
+    m_mainLayout->setStretch            (1, 1);
 
     /* Set button sizes */
-    m_copyButton->setFixedWidth         (DPI_SCALE (72));
-    m_clearButton->setFixedWidth        (DPI_SCALE (72));
-    m_copyButton->setFixedHeight        (DPI_SCALE (24));
-    m_clearButton->setFixedHeight       (DPI_SCALE (24));
-
-    /* Configure the commands widget */
-    m_commands->setFixedHeight          (DPI_SCALE (24));
-    m_sendCommand->setFixedSize         (DPI_SCALE (72), DPI_SCALE (24));
-    m_commands->setPlaceholderText      (tr ("Write a command") + "...");
-}
-
-//=============================================================================
-// Console::configureStyles
-//=============================================================================
-
-void Console::configureStyles()
-{
-    /* Apply monospace font to the console */
-    m_console->setFont        (Languages::monoFont());
-
-    /* Change the fonts of the buttons */
-    m_copyButton->setFont     (AWESOME()->font (DPI_SCALE (12)));
-    m_clearButton->setFont    (AWESOME()->font (DPI_SCALE (12)));
-
-    /* Set tooltips */
-    m_console->setToolTip     (tr ("Displays robot messages and logs"));
-    m_copyButton->setToolTip  (tr ("Copy the console log"));
-    m_clearButton->setToolTip (tr ("Clear the console window"));
-}
-
-//=============================================================================
-// Console::copy
-//=============================================================================
-
-void Console::copy()
-{
-    QApplication::clipboard()->setText (m_console->toPlainText());
-    log ("<font color=\"#AAA\"><p>"
-         + tr ("INFO: NetConsole output copied to clipboard")
-         + "</p></font>");
-}
-
-//=============================================================================
-// Console::clear
-//=============================================================================
-
-void Console::clear()
-{
-    m_console->clear();
-}
-
-//=============================================================================
-// Console::log
-//=============================================================================
-
-void Console::log (QString message)
-{
-    m_console->appendHtml (message);
-    m_console->ensureCursorVisible();
-}
-
-//=============================================================================
-// Console::sendCommand
-//=============================================================================
-
-void Console::sendCommand()
-{
-    QString format = QString ("<font color=#0F0>DS->RIO:</font>&nbsp;"
-                              "<font color=#0A0>%1</font>");
-
-    if (!m_commands->text().isEmpty())
-        {
-            log (format.arg (m_commands->text()));
-            DS()->sendCommand (m_commands->text());
-            m_commands->clear();
-        }
-}
-
-//=============================================================================
-// Console::onProtocolChanged
-//=============================================================================
-
-void Console::onProtocolChanged()
-{
-    m_commandsWidget->setEnabled (DS()->acceptsConsoleCommands());
-    m_commandsWidget->setVisible (DS()->acceptsConsoleCommands());
+    m_copyButton->setFixedSize          (DPI_SCALE (48), DPI_SCALE (24));
+    m_clearButton->setFixedSize         (DPI_SCALE (48), DPI_SCALE (24));
+    m_expandButton->setFixedSize        (DPI_SCALE (48), DPI_SCALE (24));
 }
