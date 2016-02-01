@@ -2601,7 +2601,7 @@ GL_APICALL void GL_APIENTRY glMultiDrawElementsEXT (GLenum, const GLsizei*,
 typedef void (GL_APIENTRYP PFNGLMULTIDRAWARRAYSEXTPROC) (GLenum mode,
         GLint* first, GLsizei* count, GLsizei primcount);
 typedef void (GL_APIENTRYP PFNGLMULTIDRAWELEMENTSEXTPROC) (GLenum mode,
-        const GLsizei* count, GLenum type, const GLvoid * *indices, GLsizei primcount);
+        const GLsizei* count, GLenum type, const GLvoid** indices, GLsizei primcount);
 #endif
 
 /* GL_EXT_occlusion_query_boolean */

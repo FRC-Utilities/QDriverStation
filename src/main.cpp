@@ -59,6 +59,7 @@ int main (int argc, char* argv[])
     app.installTranslator     (Languages::translator());
 
     /* Create the main window and check for updates */
+    app.setFont (Languages::appFont());
     Updater updater;
     MainWindow mainwindow;
 
@@ -73,50 +74,50 @@ int main (int argc, char* argv[])
 
     /* Beep whenever a button or checkbox is clicked */
     SoundPlayer soundPlayer;
-    foreach (QWidget* widget, app.allWidgets())
-        {
-            /* Do the conversions */
-            QSpinBox*    spin   = qobject_cast<QSpinBox*> (widget);
-            QCheckBox*   check  = qobject_cast<QCheckBox*> (widget);
-            QComboBox*   combo  = qobject_cast<QComboBox*> (widget);
-            QTabWidget*  tabwid = qobject_cast<QTabWidget*> (widget);
-            QPushButton* button = qobject_cast<QPushButton*> (widget);
+    foreach (QWidget * widget, app.allWidgets())
+    {
+        /* Do the conversions */
+        QSpinBox*    spin   = qobject_cast<QSpinBox*> (widget);
+        QCheckBox*   check  = qobject_cast<QCheckBox*> (widget);
+        QComboBox*   combo  = qobject_cast<QComboBox*> (widget);
+        QTabWidget*  tabwid = qobject_cast<QTabWidget*> (widget);
+        QPushButton* button = qobject_cast<QPushButton*> (widget);
 
-            /* The widget is a spin box */
-            if (spin != Q_NULLPTR)
-                {
-                    QObject::connect (spin, SIGNAL (valueChanged (int)),
-                                      &soundPlayer, SLOT (actionBeep (int)));
-                }
+        /* The widget is a spin box */
+        if (spin != Q_NULLPTR)
+            {
+                QObject::connect (spin, SIGNAL (valueChanged (int)),
+                                  &soundPlayer, SLOT (actionBeep (int)));
+            }
 
-            /* The widget is a combo box */
-            else if (combo != Q_NULLPTR)
-                {
-                    QObject::connect (combo, SIGNAL (currentIndexChanged (int)),
-                                      &soundPlayer, SLOT (actionBeep (int)));
-                }
+        /* The widget is a combo box */
+        else if (combo != Q_NULLPTR)
+            {
+                QObject::connect (combo, SIGNAL (currentIndexChanged (int)),
+                                  &soundPlayer, SLOT (actionBeep (int)));
+            }
 
-            /* The widget is a check box */
-            else if (check != Q_NULLPTR)
-                {
-                    QObject::connect (check, SIGNAL (clicked (bool)),
-                                      &soundPlayer, SLOT (actionBeep (bool)));
-                }
+        /* The widget is a check box */
+        else if (check != Q_NULLPTR)
+            {
+                QObject::connect (check, SIGNAL (clicked (bool)),
+                                  &soundPlayer, SLOT (actionBeep (bool)));
+            }
 
-            /* The widget is a tab widget */
-            else if (tabwid != Q_NULLPTR)
-                {
-                    QObject::connect (tabwid, SIGNAL (currentChanged (int)),
-                                      &soundPlayer, SLOT (actionBeep (int)));
-                }
+        /* The widget is a tab widget */
+        else if (tabwid != Q_NULLPTR)
+            {
+                QObject::connect (tabwid, SIGNAL (currentChanged (int)),
+                                  &soundPlayer, SLOT (actionBeep (int)));
+            }
 
-            /* The widget is a button */
-            else if (button != Q_NULLPTR)
-                {
-                    QObject::connect (button, SIGNAL (clicked (bool)),
-                                      &soundPlayer, SLOT (actionBeep (bool)));
-                }
-        }
+        /* The widget is a button */
+        else if (button != Q_NULLPTR)
+            {
+                QObject::connect (button, SIGNAL (clicked (bool)),
+                                  &soundPlayer, SLOT (actionBeep (bool)));
+            }
+    }
 
     /* Ask for team number on first launch */
     if (Settings::get ("First launch", true).toBool())

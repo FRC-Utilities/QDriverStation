@@ -75,8 +75,8 @@ SettingsWindow::SettingsWindow()
 
 SettingsWindow::~SettingsWindow()
 {
-    foreach (QWidget* widget, findChildren<QWidget*>())
-        widget->deleteLater();
+    foreach (QWidget * widget, findChildren<QWidget*>())
+    widget->deleteLater();
 }
 
 //=============================================================================

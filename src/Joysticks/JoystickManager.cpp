@@ -80,7 +80,7 @@ QStringList JoystickManager::deviceNames()
     QStringList names;
 
     foreach (QDS_InputDevice joystick, inputDevices())
-        names.append (joystick.name);
+    names.append (joystick.name);
 
     return names;
 }
@@ -154,7 +154,7 @@ void JoystickManager::updateInterfaces()
     resetJoysticks();
 
     foreach (QDS_InputDevice joystick, sdlJoysticks()->joysticks())
-        addInputDevice (joystick);
+    addInputDevice (joystick);
 
     if (virtualJoystick()->joystickEnabled())
         {
@@ -163,11 +163,11 @@ void JoystickManager::updateInterfaces()
         }
 
     foreach (QDS_InputDevice joystick, inputDevices())
-        {
-            DS()->addJoystick (joystick.numAxes,
-                               joystick.numButtons,
-                               joystick.numPOVs);
-        }
+    {
+        DS()->addJoystick (joystick.numAxes,
+                           joystick.numButtons,
+                           joystick.numPOVs);
+    }
 }
 
 //=============================================================================
