@@ -31,6 +31,7 @@ class ConsoleWidget;
 
 class MessagesWindow : public QDialog
 {
+    Q_OBJECT
 
 public:
     explicit MessagesWindow();
