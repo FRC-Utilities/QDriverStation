@@ -75,7 +75,7 @@
     <message>
         <location filename="../../src/MessagesWindow/ConsoleWidget.cpp" line="76"/>
         <source>INFO: NetConsole output copied to clipboard</source>
-        <translation>INFO: NetConsole Ausgabe wurde in die Zwischenablage kopiert</translation>
+        <translation>INFO: Ausgabe der NetConsole wurde kopiert</translation>
     </message>
     <message>
         <location filename="../../src/MessagesWindow/ConsoleWidget.cpp" line="98"/>
