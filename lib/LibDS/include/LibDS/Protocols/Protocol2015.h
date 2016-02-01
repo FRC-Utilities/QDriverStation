@@ -42,7 +42,7 @@ public:
     virtual int clientPort();
     virtual int tcpProbePort();
     virtual int netConsolePort();
-    virtual bool netConsoleAcceptsInput();
+    virtual bool acceptsConsoleCommands();
     virtual QStringList defaultRadioAddress();
     virtual QStringList defaultRobotAddress();
 
@@ -61,9 +61,9 @@ private:
     virtual QByteArray getJoystickData();
     virtual QByteArray getTimezoneData();
 
-    virtual int GetControlCode();
-    virtual int GetAllianceCode();
-    virtual int GetJoystickSize (DS_Joystick* joystick);
+    virtual int getControlCode();
+    virtual int getAllianceCode();
+    virtual int getJoystickSize (DS_Joystick* joystick);
 
     QNetworkAccessManager m_manager;
 };

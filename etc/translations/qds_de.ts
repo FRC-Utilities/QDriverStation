@@ -73,22 +73,32 @@
 <context>
     <name>Console</name>
     <message>
-        <location filename="../../src/MainWindow/Components/Console.cpp" line="121"/>
+        <location filename="../../src/MainWindow/Components/Console.cpp" line="76"/>
+        <source>Send</source>
+        <translation>Senden</translation>
+    </message>
+    <message>
+        <location filename="../../src/MainWindow/Components/Console.cpp" line="129"/>
+        <source>Write a command</source>
+        <translation>Schrieben Sie einen Befehl</translation>
+    </message>
+    <message>
+        <location filename="../../src/MainWindow/Components/Console.cpp" line="146"/>
         <source>Displays robot messages and logs</source>
         <translation>Zeigt Roboter-Nachrichten und Aufzeichnungen</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Console.cpp" line="122"/>
+        <location filename="../../src/MainWindow/Components/Console.cpp" line="147"/>
         <source>Copy the console log</source>
         <translation>Kopieren Sie die Aufzeichnungen</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Console.cpp" line="123"/>
+        <location filename="../../src/MainWindow/Components/Console.cpp" line="148"/>
         <source>Clear the console window</source>
         <translation>Löschen Sie den Text im Konsolenfenster</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Console.cpp" line="134"/>
+        <location filename="../../src/MainWindow/Components/Console.cpp" line="159"/>
         <source>INFO: NetConsole output copied to clipboard</source>
         <translation>INFO: NetConsole Ausgabe wurde in die Zwischenablage kopiert</translation>
     </message>
@@ -214,67 +224,72 @@
 <context>
     <name>DriverStation</name>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="176"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="177"/>
         <source>Red 1</source>
         <translation>Rot 1</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="177"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="178"/>
         <source>Red 2</source>
         <translation>Rot 2</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="178"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="179"/>
         <source>Red 3</source>
         <translation>Rot 3</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="179"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="180"/>
         <source>Blue 1</source>
         <translation>Blau 1</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="180"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="181"/>
         <source>Blue 2</source>
         <translation>Blau 2</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="181"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="182"/>
         <source>Blue 3</source>
         <translation>Blau 3</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="193"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="194"/>
         <source>2016 Protocol</source>
         <translation>2016 Protokoll</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="194"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="195"/>
         <source>2015 Protocol</source>
         <translation>2015 Protokoll</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="576"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="196"/>
+        <source>2014 Protocol</source>
+        <translation>2014 Protokoll</translation>
+    </message>
+    <message>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="598"/>
         <source>Emergency Stopped</source>
         <translation>Not-Halt</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="579"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="601"/>
         <source>No Robot Code</source>
         <translation>Kein Roboter Code</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="583"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="605"/>
         <source>Enabled</source>
         <translation>Aktivieren</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="583"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="605"/>
         <source>Disabled</source>
         <translation>Deaktivieren</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="586"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="608"/>
         <source>No Robot Communication</source>
         <translation>Kein Roboter Kommunikations</translation>
     </message>
@@ -436,7 +451,7 @@
     <message>
         <location filename="../../src/Utilities/Global.cpp" line="186"/>
         <location filename="../../src/Utilities/Global.cpp" line="191"/>
-        <location filename="../../src/main.cpp" line="128"/>
+        <location filename="../../src/main.cpp" line="125"/>
         <source>QDriverStation</source>
         <translation></translation>
     </message>
@@ -451,7 +466,7 @@
         <translation>Sehr vorsichtig sein bei Verwendung eines externen Joysticks!</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="129"/>
+        <location filename="../../src/main.cpp" line="126"/>
         <source>Please input your team number:</source>
         <translation>Bitte geben Sie Ihre Teamnummer:</translation>
     </message>

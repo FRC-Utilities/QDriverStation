@@ -33,6 +33,11 @@
 #include "LibDS/Core/Discovery/Discovery.h"
 
 /**
+ * Use this when the protocol itself is not bound to a specific port
+ */
+#define DS_PROTOCOL_NO_PORT -1
+
+/**
  * \class DS_Protocol
  *
  * Implements an abstract class to be used as a base for any protocol that
@@ -180,7 +185,7 @@ public:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual bool netConsoleAcceptsInput()
+    virtual bool acceptsConsoleCommands()
     {
         return false;
     }

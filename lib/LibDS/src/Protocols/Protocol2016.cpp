@@ -31,9 +31,8 @@ QStringList DS_Protocol2016::defaultRobotAddress()
     QStringList list;
 
     list.append (QString ("roboRIO-%1-FRC.local").arg (team()));
-    list.append (QString ("roboRIO-%1-FRC._ni._tcp.local").arg (team()));
-    list.append (QString (DS_GetStaticIp (172, team(), 2)));
-    list.append (QString (DS_GetStaticIp (team(), 2)));
+    list.append (QString ("roboRIO-%1-FRC").arg (team()));
+    list.append (QString ("172.22.11.2"));
     list.append (QString ("127.0.0.1"));
 
     return list;

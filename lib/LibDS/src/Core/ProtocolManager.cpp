@@ -88,10 +88,23 @@ void DS_ProtocolManager::setProtocol (DS_ProtocolBase* protocol)
 {
     if (protocol != Q_NULLPTR)
         {
-            delete m_protocol;
+            /* There is already a running protocol */
+            if (isValid())
+                {
+                    /* Pass current protocol settings to new protocol */
+                    protocol->setTeam         (m_protocol->team());
+                    protocol->setRobotAddress (m_protocol->robotAddress());
+
+                    /* Delete the old protocol */
+                    m_protocol->disconnect();
+                    //m_protocol->deleteLater(); <-- Seems to crash the app :/
+                }
+
+            /* Re-assign protocol and joysticks */
             m_protocol = protocol;
             m_protocol->setJoysticks (m_joysticks);
 
+            /* Re-connect protocol signals/slots */
             connect (m_protocol, SIGNAL (emergencyStopped       (void)),
                      this,       SIGNAL (emergencyStopped       (void)));
             connect (m_protocol, SIGNAL (codeChanged            (bool)),

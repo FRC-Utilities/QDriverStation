@@ -62,7 +62,8 @@ public:
     enum ProtocolType
     {
         kProtocol2016 = 0,
-        kProtocol2015 = 1
+        kProtocol2015 = 1,
+        kProtocol2014 = 2
     };
 
     /**
@@ -139,6 +140,17 @@ public:
      */
     Q_INVOKABLE int joystickCount();
 
+    /**
+     * Returns the current team number
+     */
+    Q_INVOKABLE int team();
+
+    /**
+     * Returns \c true if the current protocol allows us to send
+     * commands through the NetConsole
+     */
+    Q_INVOKABLE bool acceptsConsoleCommands();
+
 public slots:
     /**
      * Initializes the class and the interlal loop/refresh system
@@ -159,6 +171,11 @@ public slots:
      * Changes the \a enabled state of the robot
      */
     Q_INVOKABLE void setEnabled (bool enabled);
+
+    /**
+     * Sends a command through the net console
+     */
+    Q_INVOKABLE void sendCommand (QString command);
 
     /**
      * If \a emergency_stop is set to \c true, the robot will stop moving

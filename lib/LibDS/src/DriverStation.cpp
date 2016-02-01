@@ -36,6 +36,7 @@
 // Protocols
 //=============================================================================
 
+#include "LibDS/Protocols/Protocol2014.h"
 #include "LibDS/Protocols/Protocol2015.h"
 #include "LibDS/Protocols/Protocol2016.h"
 
@@ -192,6 +193,7 @@ QStringList DriverStation::protocols()
     QStringList list;
     list.append (tr ("2016 Protocol"));
     list.append (tr ("2015 Protocol"));
+    list.append (tr ("2014 Protocol"));
     return list;
 }
 
@@ -313,6 +315,30 @@ int DriverStation::joystickCount()
 }
 
 //=============================================================================
+// DriverStation::team
+//=============================================================================
+
+int DriverStation::team()
+{
+    if (m_manager->isValid())
+        return m_manager->currentProtocol()->team();
+
+    return 0;
+}
+
+//=============================================================================
+// DriverStation::acceptsConsoleCommands
+//=============================================================================
+
+bool DriverStation::acceptsConsoleCommands()
+{
+    if (m_manager->isValid())
+        return m_manager->currentProtocol()->acceptsConsoleCommands();
+
+    return false;
+}
+
+//=============================================================================
 // DriverStation::init
 //=============================================================================
 
@@ -364,6 +390,15 @@ void DriverStation::setEnabled (bool enabled)
             else
                 m_elapsedTime->stopTimer();
         }
+}
+
+//=============================================================================
+// DriverStation::sendConsoleCommand
+//=============================================================================
+
+void DriverStation::sendCommand (QString command)
+{
+    m_netConsole->sendCommand (command);
 }
 
 //=============================================================================
@@ -420,21 +455,11 @@ void DriverStation::setProtocol (DS_ProtocolBase* protocol)
 {
     if (protocol != Q_NULLPTR)
         {
-            /* Pass current protocol settings to new protocol */
-            if (m_manager->isValid())
-                {
-                    int team = m_manager->currentProtocol()->team();
-                    QString address = m_manager->currentProtocol()->robotAddress();
-
-                    protocol->setTeam (team);
-                    protocol->setRobotAddress (address);
-                }
-
-            /* Configure the DS modules with the new protocol */
             m_manager->setProtocol  (protocol);
             m_client->setRobotPort  (protocol->robotPort());
             m_client->setClientPort (protocol->clientPort());
             m_netConsole->setPort   (protocol->netConsolePort());
+            m_netConsole->setAcceptsInput (protocol->acceptsConsoleCommands());
 
             emit protocolChanged();
         }
@@ -446,17 +471,14 @@ void DriverStation::setProtocol (DS_ProtocolBase* protocol)
 
 void DriverStation::setProtocol (ProtocolType protocol)
 {
-    if (protocol == kProtocol2015)
-        {
-            m_protocol = new DS_Protocol2015;
-            setProtocol (m_protocol);
-        }
-
     if (protocol == kProtocol2016)
-        {
-            m_protocol = new DS_Protocol2016;
-            setProtocol (m_protocol);
-        }
+        setProtocol (new DS_Protocol2016);
+
+    if (protocol == kProtocol2015)
+        setProtocol (new DS_Protocol2015);
+
+    if (protocol == kProtocol2014)
+        setProtocol (new DS_Protocol2014);
 }
 
 //=============================================================================

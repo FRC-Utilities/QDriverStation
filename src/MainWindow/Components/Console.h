@@ -25,6 +25,7 @@
 
 #include <QWidget>
 
+class QLineEdit;
 class QVBoxLayout;
 class QHBoxLayout;
 class QPushButton;
@@ -46,9 +47,17 @@ private slots:
     void clear();
     void log (QString message);
 
+    void sendCommand();
+    void onProtocolChanged();
+
 private:
     QVBoxLayout* m_mainLayout;
     QHBoxLayout* m_buttonsLayout;
+    QHBoxLayout* m_commandsLayout;
+
+    QLineEdit* m_commands;
+    QWidget* m_commandsWidget;
+    QPushButton* m_sendCommand;
 
     QPlainTextEdit* m_console;
 

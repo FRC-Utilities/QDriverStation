@@ -24,6 +24,7 @@
 // System includes
 //=============================================================================
 
+#include <QLineEdit>
 #include <QClipboard>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -49,9 +50,17 @@ Console::Console (QWidget* parent) : QWidget (parent)
     createLayouts();
     configureStyles();
 
+    connect (m_sendCommand, SIGNAL (clicked()),   this, SLOT (sendCommand()));
     connect (m_copyButton,  SIGNAL (clicked()),   this, SLOT (copy()));
     connect (m_clearButton, SIGNAL (clicked()),   this, SLOT (clear()));
-    connect (DS(), SIGNAL (newMessage (QString)), this, SLOT (log (QString)));
+    connect (m_commands,    SIGNAL (returnPressed()),
+             this,            SLOT (sendCommand()));
+    connect (DS(),          SIGNAL (newMessage (QString)),
+             this,            SLOT (log (QString)));
+    connect (DS(),          SIGNAL (protocolChanged()),
+             this,            SLOT (onProtocolChanged()));
+
+    onProtocolChanged();
 }
 
 //=============================================================================
@@ -60,11 +69,13 @@ Console::Console (QWidget* parent) : QWidget (parent)
 
 void Console::createWidgets()
 {
-    m_buttonsWidget = new QWidget (this);
-    m_console       = new QPlainTextEdit (this);
-    m_copyButton    = new QPushButton (QChar (fa::copy), this);
-    m_clearButton   = new QPushButton (QChar (fa::trash), this);
-
+    m_buttonsWidget  = new QWidget        (this);
+    m_console        = new QPlainTextEdit (this);
+    m_commands       = new QLineEdit      (this);
+    m_commandsWidget = new QWidget        (this);
+    m_sendCommand    = new QPushButton    (tr    ("Send"),    this);
+    m_copyButton     = new QPushButton    (QChar (fa::copy),  this);
+    m_clearButton    = new QPushButton    (QChar (fa::trash), this);
 }
 
 //=============================================================================
@@ -78,10 +89,18 @@ void Console::createLayouts()
     m_buttonsLayout->addWidget          (m_copyButton);
     m_buttonsLayout->addWidget          (m_clearButton);
 
+    /* Configure the commands layout */
+    m_commandsLayout = new QHBoxLayout (m_commandsWidget);
+    m_commandsLayout->addWidget        (m_commands);
+    m_commandsLayout->addWidget        (m_sendCommand);
+    m_commandsLayout->setStretch       (0, 1);
+    m_commandsLayout->setStretch       (1, 0);
+
     /* Configure main layout */
     m_mainLayout = new QVBoxLayout      (this);
     m_mainLayout->addWidget             (m_buttonsWidget);
     m_mainLayout->addWidget             (m_console);
+    m_mainLayout->addWidget             (m_commandsWidget);
 
     /* Change spacing & resize to fit */
     m_mainLayout->setSpacing            (DPI_SCALE (10));
@@ -89,8 +108,9 @@ void Console::createLayouts()
     m_buttonsLayout->setSizeConstraint  (QLayout::SetFixedSize);
 
     /* Set margins */
-    m_mainLayout->setContentsMargins    (MAIN_MARGINS());
-    m_buttonsLayout->setContentsMargins (NULL_MARGINS());
+    m_mainLayout->setContentsMargins     (MAIN_MARGINS());
+    m_buttonsLayout->setContentsMargins  (NULL_MARGINS());
+    m_commandsLayout->setContentsMargins (NULL_MARGINS());
 
     /* Configure console output widget */
     m_console->setReadOnly              (true);
@@ -102,6 +122,11 @@ void Console::createLayouts()
     m_clearButton->setFixedWidth        (DPI_SCALE (72));
     m_copyButton->setFixedHeight        (DPI_SCALE (24));
     m_clearButton->setFixedHeight       (DPI_SCALE (24));
+
+    /* Configure the commands widget */
+    m_commands->setFixedHeight          (DPI_SCALE (24));
+    m_sendCommand->setFixedSize         (DPI_SCALE (72), DPI_SCALE (24));
+    m_commands->setPlaceholderText      (tr ("Write a command") + "...");
 }
 
 //=============================================================================
@@ -111,7 +136,7 @@ void Console::createLayouts()
 void Console::configureStyles()
 {
     /* Apply monospace font to the console */
-    m_console->setFont (Languages::monoFont());
+    m_console->setFont        (Languages::monoFont());
 
     /* Change the fonts of the buttons */
     m_copyButton->setFont     (AWESOME()->font (DPI_SCALE (12)));
@@ -152,4 +177,31 @@ void Console::log (QString message)
 {
     m_console->appendHtml (message);
     m_console->ensureCursorVisible();
+}
+
+//=============================================================================
+// Console::sendCommand
+//=============================================================================
+
+void Console::sendCommand()
+{
+    QString format = QString ("<font color=#0F0>DS->RIO:</font>&nbsp;"
+                              "<font color=#0A0>%1</font>");
+
+    if (!m_commands->text().isEmpty())
+        {
+            log (format.arg (m_commands->text()));
+            DS()->sendCommand (m_commands->text());
+            m_commands->clear();
+        }
+}
+
+//=============================================================================
+// Console::onProtocolChanged
+//=============================================================================
+
+void Console::onProtocolChanged()
+{
+    m_commandsWidget->setEnabled (DS()->acceptsConsoleCommands());
+    m_commandsWidget->setVisible (DS()->acceptsConsoleCommands());
 }

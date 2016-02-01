@@ -91,7 +91,7 @@ DS_Protocol2015::DS_Protocol2015()
 }
 
 //=============================================================================
-// DS_Protocol2015::RobotPort
+// DS_Protocol2015::robotPort
 //=============================================================================
 
 int DS_Protocol2015::robotPort()
@@ -100,7 +100,7 @@ int DS_Protocol2015::robotPort()
 }
 
 //=============================================================================
-// DS_Protocol2015::ClientPort
+// DS_Protocol2015::clientPort
 //=============================================================================
 
 int DS_Protocol2015::clientPort()
@@ -109,7 +109,7 @@ int DS_Protocol2015::clientPort()
 }
 
 //=============================================================================
-// DS_Protocol2015::TcpProbePort
+// DS_Protocol2015::tcpProbePort
 //=============================================================================
 
 int DS_Protocol2015::tcpProbePort()
@@ -118,7 +118,7 @@ int DS_Protocol2015::tcpProbePort()
 }
 
 //=============================================================================
-// DS_Protocol2015::NetConsolePort
+// DS_Protocol2015::netConsolePort
 //=============================================================================
 
 int DS_Protocol2015::netConsolePort()
@@ -127,16 +127,16 @@ int DS_Protocol2015::netConsolePort()
 }
 
 //=============================================================================
-// DS_Protocol2015::NetConsoleAcceptsInput
+// DS_Protocol2015::acceptsConsoleCommnds
 //=============================================================================
 
-bool DS_Protocol2015::netConsoleAcceptsInput()
+bool DS_Protocol2015::acceptsConsoleCommands()
 {
     return false;
 }
 
 //=============================================================================
-// DS_Protocol2015::DefaultRadioAddress
+// DS_Protocol2015::defaultRadioAddress
 //=============================================================================
 
 QStringList DS_Protocol2015::defaultRadioAddress()
@@ -147,7 +147,7 @@ QStringList DS_Protocol2015::defaultRadioAddress()
 }
 
 //=============================================================================
-// DS_Protocol2015::DefaultRobotAddress
+// DS_Protocol2015::defaultRobotAddress
 //=============================================================================
 
 QStringList DS_Protocol2015::defaultRobotAddress()
@@ -155,16 +155,15 @@ QStringList DS_Protocol2015::defaultRobotAddress()
     QStringList list;
 
     list.append (QString ("roboRIO-%1.local").arg (team()));
-    list.append (QString ("roboRIO-%1._ni._tcp.local").arg (team()));
-    list.append (QString (DS_GetStaticIp (172, team(), 2)));
-    list.append (QString (DS_GetStaticIp (team(), 2)));
+    list.append (QString ("roboRIO-%1").arg (team()));
+    list.append (QString ("172.22.11.2"));
     list.append (QString ("127.0.0.1"));
 
     return list;
 }
 
 //=============================================================================
-// DS_Protocol2015::Reboot
+// DS_Protocol2015::reboot
 //=============================================================================
 
 void DS_Protocol2015::reboot()
@@ -173,7 +172,7 @@ void DS_Protocol2015::reboot()
 }
 
 //=============================================================================
-// DS_Protocol2015::RestartCode
+// DS_Protocol2015::restartCode
 //=============================================================================
 
 void DS_Protocol2015::restartCode()
@@ -182,7 +181,7 @@ void DS_Protocol2015::restartCode()
 }
 
 //=============================================================================
-// DS_Protocol2015::ResetProtocol
+// DS_Protocol2015::resetProtocol
 //=============================================================================
 
 void DS_Protocol2015::resetProtocol()
@@ -191,7 +190,7 @@ void DS_Protocol2015::resetProtocol()
 }
 
 //=============================================================================
-// DS_Protocol2015::GetRobotInformation
+// DS_Protocol2015::getRobotInformation
 //=============================================================================
 
 void DS_Protocol2015::getRobotInformation()
@@ -203,7 +202,7 @@ void DS_Protocol2015::getRobotInformation()
 }
 
 //=============================================================================
-// DS_Protocol2015::ProcessRobotInformation
+// DS_Protocol2015::processRobotInformation
 //=============================================================================
 
 void DS_Protocol2015::processRobotInformation (QNetworkReply* reply)
@@ -247,7 +246,7 @@ void DS_Protocol2015::processRobotInformation (QNetworkReply* reply)
 }
 
 //=============================================================================
-// DS_Protocol2015::ReadPacket
+// DS_Protocol2015::readPacket
 //=============================================================================
 
 bool DS_Protocol2015::readPacket (QByteArray data)
@@ -325,7 +324,7 @@ bool DS_Protocol2015::readPacket (QByteArray data)
 }
 
 //=============================================================================
-// DS_Protocol2015::GetClientPacket
+// DS_Protocol2015::getClientPacket
 //=============================================================================
 
 QByteArray DS_Protocol2015::getClientPacket()
@@ -338,7 +337,7 @@ QByteArray DS_Protocol2015::getClientPacket()
     /* Defines operation mode, e-stop state & enabled state */
     quint8 opcode = (isEmergencyStopped() ? pEmStopOn : pEmStopOff) |
                     (isEnabled() ? pEnabled : pDisabled) |
-                    (GetControlCode());
+                    (getControlCode());
 
     /* Gets timezone data or joystick input */
     QByteArray extensions = sendDateTime() ? getTimezoneData() : getJoystickData();
@@ -348,14 +347,14 @@ QByteArray DS_Protocol2015::getClientPacket()
     data.append (pHeaderGeneral);             // Protocol version code
     data.append (opcode);                     // Operation code
     data.append (status);                     // Special instructions
-    data.append (GetAllianceCode());          // Alliance & position
+    data.append (getAllianceCode());          // Alliance & position
     data.append (extensions);                 // Joystick data or UTC info
 
     return data;
 }
 
 //=============================================================================
-// DS_Protocol2015::GetJoystickData
+// DS_Protocol2015::getJoystickData
 //=============================================================================
 
 QByteArray DS_Protocol2015::getJoystickData()
@@ -374,7 +373,7 @@ QByteArray DS_Protocol2015::getJoystickData()
             quint8 numPovHats = joysticks()->at (i)->numPOVs;
 
             /* Add joystick information and put the section header */
-            data.append (GetJoystickSize (joysticks()->at (i)) - 1);
+            data.append (getJoystickSize (joysticks()->at (i)) - 1);
             data.append (pHeaderJoystick);
 
             /* Add axis data */
@@ -404,7 +403,7 @@ QByteArray DS_Protocol2015::getJoystickData()
 }
 
 //=============================================================================
-// DS_Protocol2015::GetTimezoneData
+// DS_Protocol2015::getTimezoneData
 //=============================================================================
 
 QByteArray DS_Protocol2015::getTimezoneData()
@@ -438,10 +437,10 @@ QByteArray DS_Protocol2015::getTimezoneData()
 }
 
 //=============================================================================
-// DS_Protocol2015::GetControlCode
+// DS_Protocol2015::getControlCode
 //=============================================================================
 
-int DS_Protocol2015::GetControlCode()
+int DS_Protocol2015::getControlCode()
 {
     if (controlMode() == kControlTest)
         return pControlTest;
@@ -456,10 +455,10 @@ int DS_Protocol2015::GetControlCode()
 }
 
 //=============================================================================
-// DS_Protocol2015::GetAllianceCode
+// DS_Protocol2015::getAllianceCode
 //=============================================================================
 
-int DS_Protocol2015::GetAllianceCode()
+int DS_Protocol2015::getAllianceCode()
 {
     if (alliance() == kAllianceRed1)
         return pRed1;
@@ -483,10 +482,10 @@ int DS_Protocol2015::GetAllianceCode()
 }
 
 //=============================================================================
-// DS_Protocol2015::GetJoystickSize
+// DS_Protocol2015::getJoystickSize
 //=============================================================================
 
-int DS_Protocol2015::GetJoystickSize (DS_Joystick* joystick)
+int DS_Protocol2015::getJoystickSize (DS_Joystick* joystick)
 {
     return  5
             + (joystick->numAxes > 0 ? joystick->numAxes : 0)

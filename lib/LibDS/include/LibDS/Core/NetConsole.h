@@ -44,6 +44,16 @@ public slots:
      */
     void setPort (int port);
 
+    /**
+     * Sends a command to the robot through the Console network
+     */
+    void sendCommand (QString command);
+
+    /**
+     * Enables or disables the option to send commands through the NetConsole
+     */
+    void setAcceptsInput (bool acceptsInput);
+
 signals:
     /**
      * Emitted when a message is received from the robot or the
@@ -52,6 +62,16 @@ signals:
     void newMessage (QString);
 
 private:
+    /**
+     * The UDP port of the NetConsole
+     */
+    int m_port;
+
+    /**
+     * Controls 'write' access to the console
+     */
+    bool m_acceptsInput;
+
     /**
      * The network socket in which we receive data from the robot
      */

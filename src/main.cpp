@@ -58,16 +58,13 @@ int main (int argc, char* argv[])
     app.setOrganizationDomain ("www.wint3794.org");
     app.installTranslator     (Languages::translator());
 
-    /* Initialize the DS and theming engine */
-    GLOBAL_INIT();
-    AppTheme::init();
-    app.setFont (Languages::appFont());
-
     /* Create the main window and check for updates */
     Updater updater;
     MainWindow mainwindow;
 
     /* Repeat this line to be sure that font is applied on everything */
+    GLOBAL_INIT();
+    AppTheme::init();
     app.setFont (Languages::appFont());
 
     /* Avoid compilation warnings */
