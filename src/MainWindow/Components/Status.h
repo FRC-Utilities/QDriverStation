@@ -44,17 +44,20 @@ private slots:
     void configureStyles();
     void connectSlots();
 
-    void updateJoysticks ();
-    void updateTeam       (int team);
-    void updateStatus     (QString status);
-    void updateVoltage    (QString voltage);
-    void updateCodeStatus (bool codeAvailable);
-    void updateCommStatus (DS_CommStatus status);
+    void updateJoysticks     (void);
+    void updateEmergencyStop (void);
+    void updateTeam          (int team);
+    void updateStatus        (QString status);
+    void updateVoltage       (QString voltage);
+    void updateCodeStatus    (bool codeAvailable);
+    void updateCommStatus    (DS_CommStatus status);
 
     void doErrorAnimation();
     void toggleStatusColors();
 
 private:
+    bool m_estop;
+
     QLabel* m_team;
     QLabel* m_voltage;
     QLabel* m_robotStatus;

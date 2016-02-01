@@ -41,19 +41,34 @@ public:
 
 public slots:
     /**
-     * Sends a the input \a data to the robot
+     * Sends a the input \a data to the FMS
      */
-    void sendPacket (QByteArray data);
+    void sendToFms (QByteArray data);
 
     /**
-     * Changes the port in which we send the packets to
+     * Sends a the input \a data to the robot
      */
-    void setRobotPort (int port);
+    void sendToRobot (QByteArray data);
+
+    /**
+     * Changes the port in which we receive the FMS packets
+     */
+    void setFmsInputPort (int port);
+
+    /**
+     * Changes the port in which we send the FMS packets
+     */
+    void setFmsOutputPort (int port);
 
     /**
      * Changes the port in where we receive robot packets
      */
-    void setClientPort (int port);
+    void setRobotInputPort (int port);
+
+    /**
+     * Changes the port in which we send the DS->Robot packets
+     */
+    void setRobotOutputPort (int port);
 
     /**
      * Changes the address where we send the packets to
@@ -62,17 +77,32 @@ public slots:
 
 signals:
     /**
+     * Emitted when the client receives a packet from the FMS
+     */
+    void fmsPacketReceived (QByteArray);
+
+    /**
      * Emitted when the client receives a packet from the robot
      */
-    void dataReceived (QByteArray);
+    void robotPacketReceived (QByteArray);
 
 private slots:
     /**
      * Reads the received data and sends it to the \c DriverStation
      */
-    void readPacket();
+    void readFmsPacket();
+
+    /**
+     * Reads the received data and sends it to the \c DriverStation
+     */
+    void readRobotPacket();
 
 private:
+    /**
+     * The port in which we send data to the FMS
+     */
+    int m_fmsPort;
+
     /**
      * The port in which we send data to the robot
      */
@@ -81,7 +111,7 @@ private:
     /**
      * The address of the robot
      */
-    QString m_address;
+    QString m_robotAddress;
 
     /**
      * We send data to the robot through this socket
@@ -91,7 +121,12 @@ private:
     /**
      * We receive data from the robot through this socket
      */
-    QUdpSocket m_receiver;
+    QUdpSocket m_fmsReceiver;
+
+    /**
+     * We receive data from the robot through this socket
+     */
+    QUdpSocket m_robotReceiver;
 };
 
 #endif

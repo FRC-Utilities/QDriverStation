@@ -74,6 +74,7 @@ Status::Status (QWidget* parent) : QWidget (parent)
 void Status::createWidgets()
 {
     /* Create the indicator labels */
+    m_estop        = false;
     m_team         = new QLabel (NO_DATA, this);
     m_voltage      = new QLabel (NO_DATA, this);
     m_robotStatus  = new QLabel (tr ("No Robot Communication"), this);
@@ -211,8 +212,8 @@ void Status::configureStyles()
 
 void Status::connectSlots()
 {
-    connect (DS(), SIGNAL (joystickCountChanged()),
-             this,   SLOT (updateJoysticks()));
+    connect (DS(), SIGNAL (joystickCountChanged  (void)),
+             this,   SLOT (updateJoysticks       (void)));
     connect (DS(), SIGNAL (communicationsChanged (DS_CommStatus)),
              this,   SLOT (updateCommStatus      (DS_CommStatus)));
     connect (DS(), SIGNAL (codeChanged           (bool)),
@@ -223,15 +224,30 @@ void Status::connectSlots()
              this,   SLOT (updateStatus          (QString)));
     connect (DS(), SIGNAL (teamChanged           (int)),
              this,   SLOT (updateTeam            (int)));
+    connect (DS(), SIGNAL (emergencyStopped      (void)),
+             this,   SLOT (updateEmergencyStop   (void)));
 }
 
 //=============================================================================
 // Status::updateJoysticks
 //=============================================================================
 
-void Status::updateJoysticks()
+void Status::updateJoysticks (void)
 {
     m_sticks->setChecked (DS()->joystickCount() > 0);
+}
+
+//=============================================================================
+// Status::updateEmergencyStop
+//=============================================================================
+
+void Status::updateEmergencyStop (void)
+{
+    if (DS()->isEmergencyStopped() && !m_estop)
+        {
+            m_estop = true;
+            BEEPER()->beep (660, 800);
+        }
 }
 
 //=============================================================================

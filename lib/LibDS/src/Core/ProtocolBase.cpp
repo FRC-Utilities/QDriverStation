@@ -44,24 +44,25 @@ const QString PARTIAL_COMM   = "<p>"
 
 DS_ProtocolBase::DS_ProtocolBase()
 {
-    m_team = 0;
-    m_resetCount = 0;
-    m_sentPackets = 0;
-    m_radioIterator = 0;
-    m_robotIterator = 0;
+    m_team                = 0;
+    m_resetCount          = 0;
+    m_radioIterator       = 0;
+    m_robotIterator       = 0;
+    m_sentFMSPackets      = 0;
+    m_sentRobotPackets    = 0;
 
-    m_robotAddress = QString ("");
+    m_robotAddress        = QString ("");
 
-    m_alliance = kAllianceRed1;
-    m_controlMode = kControlInvalid;
+    m_alliance            = kAllianceRed1;
+    m_controlMode         = kControlInvalid;
     m_communicationStatus = kFailing;
 
-    m_enabled = false;
-    m_robotCode = false;
-    m_emergencyStop = false;
-    m_radioConnected = false;
+    m_enabled             = false;
+    m_robotCode           = false;
+    m_emergencyStop       = false;
+    m_radioConnected      = false;
 
-    m_joysticks = new QList<DS_Joystick*>;
+    m_joysticks           = new QList<DS_Joystick*>;
 
     m_radioPing.setObjectName ("Radio Ping");
     m_robotPing.setObjectName ("Robot Ping");
@@ -99,15 +100,6 @@ int DS_ProtocolBase::team() const
 }
 
 //=============================================================================
-// DS_ProtocolBase::statusCode
-//=============================================================================
-
-int DS_ProtocolBase::statusCode() const
-{
-    return m_status;
-}
-
-//=============================================================================
 // DS_ProtocolBase::hasCode
 //=============================================================================
 
@@ -117,12 +109,21 @@ bool DS_ProtocolBase::hasCode() const
 }
 
 //=============================================================================
-// DS_ProtocolBase::sentPackets
+// DS_ProtocolBase::sentFMSPackets
 //=============================================================================
 
-int DS_ProtocolBase::sentPackets() const
+int DS_ProtocolBase::sentFmsPackets() const
 {
-    return m_sentPackets;
+    return m_sentFMSPackets;
+}
+
+//=============================================================================
+// DS_ProtocolBase::sentRobotPackets
+//=============================================================================
+
+int DS_ProtocolBase::sentRobotPackets() const
+{
+    return m_sentRobotPackets;
 }
 
 //=============================================================================
@@ -240,13 +241,23 @@ QString DS_ProtocolBase::robotAddress()
 }
 
 //=============================================================================
+// DS_ProtocolBase::createFMSPacket
+//=============================================================================
+
+QByteArray DS_ProtocolBase::createFmsPacket()
+{
+    m_sentFMSPackets += 1;
+    return _getFmsPacket();
+}
+
+//=============================================================================
 // DS_ProtocolBase::createPacket
 //=============================================================================
 
-QByteArray DS_ProtocolBase::createPacket()
+QByteArray DS_ProtocolBase::createRobotPacket()
 {
-    m_sentPackets += 1;
-    return getClientPacket();
+    m_sentRobotPackets += 1;
+    return _getClientPacket();
 }
 
 //=============================================================================
@@ -280,7 +291,7 @@ void DS_ProtocolBase::reset()
         }
 
     /* Custom reset procedures for each protocol */
-    resetProtocol();
+    _resetProtocol();
 
     /* Emit appropiate signals */
     updateVoltage (0, 0);
@@ -376,6 +387,16 @@ void DS_ProtocolBase::setJoysticks (QList<DS_Joystick*>* joysticks)
 }
 
 //=============================================================================
+// DS_ProtocolBase::readFMSPacket
+//=============================================================================
+
+void DS_ProtocolBase::readFmsPacket (QByteArray data)
+{
+    if (_readFMSPacket (data))
+        emit fmsChanged (true);
+}
+
+//=============================================================================
 // DS_ProtocolBase::readRobotPacket
 //=============================================================================
 
@@ -386,7 +407,7 @@ void DS_ProtocolBase::readRobotPacket (QByteArray data)
             /* We just have connected to the robot, update internal values */
             if (!isConnectedToRobot())
                 {
-                    getRobotInformation();
+                    _getRobotInformation();
 
                     setEnabled (false);
                     updateCommStatus (kFull);
@@ -394,18 +415,9 @@ void DS_ProtocolBase::readRobotPacket (QByteArray data)
                 }
 
             /* Let the protocol implementation read the rest of the data */
-            if (readPacket (data))
+            if (_readRobotPacket (data))
                 emit packetReceived();
         }
-}
-
-//=============================================================================
-// DS_ProtocolBase::updateStatus
-//=============================================================================
-
-void DS_ProtocolBase::updateStatus (int status)
-{
-    m_status = status;
 }
 
 //=============================================================================
@@ -490,7 +502,7 @@ void DS_ProtocolBase::updateVoltage (int major, int minor)
 void DS_ProtocolBase::pingRobot()
 {
     m_robotPing.abort();
-    m_robotPing.connectToHost (robotAddress(), tcpProbePort(),
+    m_robotPing.connectToHost (robotAddress(), tcpProbesPort(),
                                QTcpSocket::ReadOnly);
 }
 

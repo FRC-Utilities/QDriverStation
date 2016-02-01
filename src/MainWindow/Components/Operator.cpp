@@ -25,6 +25,7 @@
 //=============================================================================
 
 #include <QLabel>
+#include <QTimer>
 #include <QComboBox>
 #include <QPushButton>
 #include <QGridLayout>
@@ -33,8 +34,6 @@
 #include <QProgressBar>
 #include <QFontMetrics>
 #include <QButtonGroup>
-
-#include <LibDS/Core/Timers.h>
 
 //=============================================================================
 // Application includes
@@ -78,6 +77,7 @@ Operator::Operator (QWidget* parent) : QWidget (parent)
     configureStyles();
 
     connectSlots();
+    updateProgressbars();
 }
 
 //=============================================================================
@@ -320,8 +320,6 @@ void Operator::connectSlots()
              this,                       SLOT (updateControlMode   (int)));
     connect (m_teamStation,            SIGNAL (currentIndexChanged (int)),
              DS(),                       SLOT (setAlliance         (int)));
-    connect (DS_Timers::getInstance(), SIGNAL (timeout1000         (void)),
-             this,                       SLOT (updateProgressbars  (void)));
 }
 
 //=============================================================================
@@ -383,6 +381,9 @@ void Operator::updateProgressbars()
     /* Apply palettes */
     m_cpu->setPalette (cpuPalette);
     m_battery->setPalette (batteryPalette);
+
+    /* Start a timer */
+    QTimer::singleShot (1000, Qt::CoarseTimer, this, SLOT (updateProgressbars()));
 }
 
 //=============================================================================

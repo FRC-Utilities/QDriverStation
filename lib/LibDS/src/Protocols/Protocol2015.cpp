@@ -36,11 +36,13 @@ const QString LIB_PATH = "/tmp/frc_versions/FRC_Lib_Version.ini";
 
 enum ProtocolStandards
 {
-    /* Client -> RoboRIO operation modes/states */
+    /* Client -> RoboRIO operation states */
     pEmStopOn                 = 0x80, /**< Emergency stop enabled */
     pEmStopOff                = 0x00, /**< Emergency stop disabled */
     pEnabled                  = 0x04, /**< Robot Enabled */
     pDisabled                 = 0x00, /**< Robot Disabled */
+
+    /* Client -> RoboRIO operation modes */
     pControlTest              = 0x01, /**< Individual actuators can be moved */
     pControlAutonomous        = 0x02, /**< Robot takes over the world */
     pControlTeleoperated      = 0x00, /**< User moves the robot */
@@ -52,10 +54,10 @@ enum ProtocolStandards
     pHeaderTimezone           = 0x10, /**< Indicates start of Timezone data */
 
     /* Client -> RoboRIO special instructions */
-    pStatusNormal             = 0x10, /**< Normal operation */
-    pStatusInvalid            = 0x00, /**< No communication */
-    pStatusRebootRio          = 0x14, /**< Reboot the roboRIO */
-    pStatusRestartCode        = 0x16, /**< Kill the user code */
+    pInstructionNormal        = 0x10, /**< Normal operation */
+    pInstructionInvalid       = 0x00, /**< No communication */
+    pInstructionRebootRIO     = 0x14, /**< Reboot the roboRIO */
+    pInstructionRestartCode   = 0x16, /**< Kill the user code */
 
     /* Client -> RoboRIO alliance & postion */
     pRed1                     = 0x00, /**< Red alliance, position 1  */
@@ -81,38 +83,64 @@ enum ProtocolStandards
 };
 
 //=============================================================================
-// DS_Protocol2015::DS_Protocol2015
+// DS_Protocol2015::fmsFrequency
 //=============================================================================
 
-DS_Protocol2015::DS_Protocol2015()
+int DS_Protocol2015::fmsFrequency()
 {
-    connect (&m_manager, SIGNAL (finished (QNetworkReply*)),
-             this,       SLOT   (processRobotInformation (QNetworkReply*)));
+    return 2;
 }
 
 //=============================================================================
-// DS_Protocol2015::robotPort
+// DS_Protocol2015::robotFrequency
 //=============================================================================
 
-int DS_Protocol2015::robotPort()
+int DS_Protocol2015::robotFrequency()
 {
-    return 1110;
+    return 50;
+}
+
+//=============================================================================
+// DS_Protocol2015::fmsInputPort
+//=============================================================================
+
+int DS_Protocol2015::fmsInputPort()
+{
+    return 1120;
+}
+
+//=============================================================================
+// DS_Protocol2015::fmsOutputPort
+//=============================================================================
+
+int DS_Protocol2015::fmsOutputPort()
+{
+    return 1160;
 }
 
 //=============================================================================
 // DS_Protocol2015::clientPort
 //=============================================================================
 
-int DS_Protocol2015::clientPort()
+int DS_Protocol2015::robotInputPort()
 {
     return 1150;
+}
+
+//=============================================================================
+// DS_Protocol2015::robotPort
+//=============================================================================
+
+int DS_Protocol2015::robotOutputPort()
+{
+    return 1110;
 }
 
 //=============================================================================
 // DS_Protocol2015::tcpProbePort
 //=============================================================================
 
-int DS_Protocol2015::tcpProbePort()
+int DS_Protocol2015::tcpProbesPort()
 {
     return 80;
 }
@@ -141,9 +169,7 @@ bool DS_Protocol2015::acceptsConsoleCommands()
 
 QStringList DS_Protocol2015::defaultRadioAddress()
 {
-    QStringList list;
-    list.append (DS_GetStaticIp (team(), 1));
-    return list;
+    return QStringList (DS_GetStaticIp (team(), 1));
 }
 
 //=============================================================================
@@ -168,7 +194,7 @@ QStringList DS_Protocol2015::defaultRobotAddress()
 
 void DS_Protocol2015::reboot()
 {
-    updateStatus (pStatusRebootRio);
+    m_instructionCode = pInstructionRebootRIO;
 }
 
 //=============================================================================
@@ -177,79 +203,33 @@ void DS_Protocol2015::reboot()
 
 void DS_Protocol2015::restartCode()
 {
-    updateStatus (pStatusRestartCode);
+    m_instructionCode  = pInstructionRestartCode;
 }
 
 //=============================================================================
 // DS_Protocol2015::resetProtocol
 //=============================================================================
 
-void DS_Protocol2015::resetProtocol()
+void DS_Protocol2015::_resetProtocol()
 {
-    updateStatus (pStatusInvalid);
+    m_instructionCode = pInstructionInvalid;
 }
 
 //=============================================================================
-// DS_Protocol2015::getRobotInformation
+// DS_Protocol2015::readFMSPacket
 //=============================================================================
 
-void DS_Protocol2015::getRobotInformation()
+bool DS_Protocol2015::_readFMSPacket (QByteArray data)
 {
-    QString host = "ftp://" + robotAddress();
-    m_manager.get (QNetworkRequest (host + LIB_PATH));
-    m_manager.get (QNetworkRequest (host + PCM_PATH));
-    m_manager.get (QNetworkRequest (host + PDP_PATH));
-}
-
-//=============================================================================
-// DS_Protocol2015::processRobotInformation
-//=============================================================================
-
-void DS_Protocol2015::processRobotInformation (QNetworkReply* reply)
-{
-    QString url = reply->url().toString();
-    QString data = QString::fromUtf8 (reply->readAll());
-
-    if (data.isEmpty() || url.isEmpty())
-        return;
-
-    else if (url.contains (PCM_PATH, Qt::CaseInsensitive))
-        {
-            QString version;
-            QString key = "currentVersion";
-
-            version.append (data.at (data.indexOf (key) + key.length() + 1));
-            version.append (data.at (data.indexOf (key) + key.length() + 2));
-            version.append (data.at (data.indexOf (key) + key.length() + 3));
-            version.append (data.at (data.indexOf (key) + key.length() + 4));
-
-            emit pcmVersionChanged (version);
-        }
-
-    else if (url.contains (PDP_PATH, Qt::CaseInsensitive))
-        {
-            QString version;
-            QString key = "currentVersion";
-
-            version.append (data.at (data.indexOf (key) + key.length() + 1));
-            version.append (data.at (data.indexOf (key) + key.length() + 2));
-            version.append (data.at (data.indexOf (key) + key.length() + 3));
-            version.append (data.at (data.indexOf (key) + key.length() + 4));
-
-            emit pdpVersionChanged (version);
-        }
-
-    else if (url.contains (LIB_PATH, Qt::CaseInsensitive))
-        emit libVersionChanged (data);
-
-    delete reply;
+    Q_UNUSED (data);
+    return true;
 }
 
 //=============================================================================
 // DS_Protocol2015::readPacket
 //=============================================================================
 
-bool DS_Protocol2015::readPacket (QByteArray data)
+bool DS_Protocol2015::_readRobotPacket (QByteArray data)
 {
     int offset = 8;
 
@@ -258,8 +238,8 @@ bool DS_Protocol2015::readPacket (QByteArray data)
         return false;
 
     /* Be sure to reset status bit */
-    if (statusCode() == pStatusInvalid)
-        updateStatus (pStatusNormal);
+    if (m_instructionCode  == pInstructionInvalid)
+        m_instructionCode = pInstructionNormal;
 
     /* Read robot packet */
     quint8 opcode       = data.at (3);
@@ -324,15 +304,26 @@ bool DS_Protocol2015::readPacket (QByteArray data)
 }
 
 //=============================================================================
+// DS_Protocol2015::getFMSPacket
+//============================================================================
+
+QByteArray DS_Protocol2015::_getFmsPacket()
+{
+    QByteArray data;
+    return data;
+}
+
+//=============================================================================
 // DS_Protocol2015::getClientPacket
 //=============================================================================
 
-QByteArray DS_Protocol2015::getClientPacket()
+QByteArray DS_Protocol2015::_getClientPacket()
 {
     QByteArray data;
 
     /* Used for rebooting the robot and restarting its code */
-    quint8 status = isConnectedToRobot() ? statusCode() : pStatusInvalid;
+    quint8 instruction = isConnectedToRobot() ? m_instructionCode :
+                         pInstructionInvalid;
 
     /* Defines operation mode, e-stop state & enabled state */
     quint8 opcode = (isEmergencyStopped() ? pEmStopOn : pEmStopOff) |
@@ -340,15 +331,16 @@ QByteArray DS_Protocol2015::getClientPacket()
                     (getControlCode());
 
     /* Gets timezone data or joystick input */
-    QByteArray extensions = sendDateTime() ? getTimezoneData() : getJoystickData();
+    QByteArray extensions = sendDateTime() ? _getTimezoneData() :
+                            _getJoystickData();
 
     /* Construct the packet */
-    data.append (DS_ToBytes (sentPackets())); // Ping data
-    data.append (pHeaderGeneral);             // Protocol version code
-    data.append (opcode);                     // Operation code
-    data.append (status);                     // Special instructions
-    data.append (getAllianceCode());          // Alliance & position
-    data.append (extensions);                 // Joystick data or UTC info
+    data.append (DS_ToBytes (sentRobotPackets())); // Ping data
+    data.append (pHeaderGeneral);                  // Protocol version code
+    data.append (opcode);                          // Operation code
+    data.append (instruction);                     // Special instructions
+    data.append (getAllianceCode());               // Alliance & position
+    data.append (extensions);                      // Joystick data or UTC info
 
     return data;
 }
@@ -357,12 +349,12 @@ QByteArray DS_Protocol2015::getClientPacket()
 // DS_Protocol2015::getJoystickData
 //=============================================================================
 
-QByteArray DS_Protocol2015::getJoystickData()
+QByteArray DS_Protocol2015::_getJoystickData()
 {
     QByteArray data;
 
     /* Do not send JS data on DS init */
-    if (sentPackets() <= 5)
+    if (sentRobotPackets() <= 5)
         return data;
 
     /* Generate data for each joystick */
@@ -406,7 +398,7 @@ QByteArray DS_Protocol2015::getJoystickData()
 // DS_Protocol2015::getTimezoneData
 //=============================================================================
 
-QByteArray DS_Protocol2015::getTimezoneData()
+QByteArray DS_Protocol2015::_getTimezoneData()
 {
     QByteArray data;
 

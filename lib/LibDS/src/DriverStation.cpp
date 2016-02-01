@@ -20,13 +20,19 @@
  * THE SOFTWARE.
  */
 
+//=============================================================================
+// System includes
+//=============================================================================
+
+#include <QTimer>
 #include <QSound>
+#include <QThread>
+#include <QApplication>
 
 //=============================================================================
 // Core components
 //=============================================================================
 
-#include "LibDS/Core/Timers.h"
 #include "LibDS/Core/Client.h"
 #include "LibDS/Core/NetConsole.h"
 #include "LibDS/Core/ElapsedTimer.h"
@@ -50,7 +56,8 @@
 // Library instance
 //=============================================================================
 
-DriverStation* DriverStation::s_instance = Q_NULLPTR;
+QThread*       THREAD   = Q_NULLPTR;
+DriverStation* INSTANCE = Q_NULLPTR;
 
 //=============================================================================
 // DriverStation::DriverStation
@@ -58,6 +65,16 @@ DriverStation* DriverStation::s_instance = Q_NULLPTR;
 
 DriverStation::DriverStation()
 {
+    /* Register the DS types so that Qt does not bitch about the connections */
+    qRegisterMetaType <DS_CAN>           ("DS_CAN");
+    qRegisterMetaType <DS_Joystick>      ("DS_Joystick");
+    qRegisterMetaType <DS_Alliance>      ("DS_Alliance");
+    qRegisterMetaType <DS_CommStatus>    ("DS_CommStatus");
+    qRegisterMetaType <DS_ControlMode>   ("DS_ControlMode");
+    qRegisterMetaType <DS_RumbleRequest> ("DS_RumbleRequest");
+
+    /* This is changed with the init() function, which must be called by
+     * the programmer when the UI is loaded */
     m_init = false;
 
     /* Initialize private members */
@@ -113,7 +130,7 @@ DriverStation::DriverStation()
 
     /* Sync robot address and calculated IPs automatically */
     connect (m_manager, SIGNAL (robotAddressChanged (QString)),
-             m_client,  SLOT   (setRobotAddress     (QString)));
+             m_client,    SLOT (setRobotAddress     (QString)));
 
     /* Update the elapsed time text automatically */
     connect (m_elapsedTime, SIGNAL (elapsedTimeChanged (QString)),
@@ -124,10 +141,12 @@ DriverStation::DriverStation()
              this,          SIGNAL (newMessage (QString)));
 
     /* Send and read robot packets */
-    connect (m_client,  SIGNAL (dataReceived     (QByteArray)),
-             this,        SLOT (readRobotPacket  (QByteArray)));
-    connect (DS_Timers::getInstance(), SIGNAL    (timeout20()),
-             this,                       SLOT    (sendClientPacket()));
+    connect (m_client,  SIGNAL (robotPacketReceived (QByteArray)),
+             this,        SLOT (readRobotPacket     (QByteArray)));
+
+    /* Send and read FMS packets */
+    connect (m_client,  SIGNAL (fmsPacketReceived   (QByteArray)),
+             this,        SLOT (readFmsPacket       (QByteArray)));
 }
 
 //=============================================================================
@@ -141,8 +160,6 @@ DriverStation::~DriverStation()
     delete m_protocol;
     delete m_netConsole;
     delete m_elapsedTime;
-
-    delete s_instance;
 }
 
 //=============================================================================
@@ -151,10 +168,18 @@ DriverStation::~DriverStation()
 
 DriverStation* DriverStation::getInstance()
 {
-    if (s_instance == Q_NULLPTR)
-        s_instance = new DriverStation();
+    if (INSTANCE == Q_NULLPTR)
+        {
+            THREAD   = new QThread (qApp);
+            INSTANCE = new DriverStation();
 
-    return s_instance;
+            connect (qApp, SIGNAL (aboutToQuit()), THREAD, SLOT (quit()));
+
+            INSTANCE->moveToThread (THREAD);
+            THREAD->start (QThread::TimeCriticalPriority);
+        }
+
+    return INSTANCE;
 }
 
 //=============================================================================
@@ -349,8 +374,7 @@ void DriverStation::init()
             m_init = true;
 
             QTimer::singleShot (500, this, SIGNAL (initialized()));
-            QTimer::singleShot (500, this, SLOT   (resetEverything()));
-            QTimer::singleShot (500, DS_Timers::getInstance(), SLOT (start()));
+            QTimer::singleShot (500, this,   SLOT (resetEverything()));
         }
 }
 
@@ -455,11 +479,16 @@ void DriverStation::setProtocol (DS_ProtocolBase* protocol)
 {
     if (protocol != Q_NULLPTR)
         {
-            m_manager->setProtocol  (protocol);
-            m_client->setRobotPort  (protocol->robotPort());
-            m_client->setClientPort (protocol->clientPort());
-            m_netConsole->setPort   (protocol->netConsolePort());
+            m_manager->setProtocol        (protocol);
+            m_client->setFmsInputPort     (protocol->fmsInputPort());
+            m_client->setFmsOutputPort    (protocol->fmsOutputPort());
+            m_client->setRobotInputPort   (protocol->robotInputPort());
+            m_client->setRobotOutputPort  (protocol->robotOutputPort());
+            m_netConsole->setPort         (protocol->netConsolePort());
             m_netConsole->setAcceptsInput (protocol->acceptsConsoleCommands());
+
+            sendToFms();
+            sendToRobot();
 
             emit protocolChanged();
         }
@@ -609,13 +638,33 @@ QString DriverStation::getRobotStatus()
 }
 
 //=============================================================================
+// DriverStation::sendFMSPacket
+//=============================================================================
+
+void DriverStation::sendToFms()
+{
+    if (!m_manager->isValid())
+        return;
+
+    m_client->sendToFms (m_manager->currentProtocol()->createFmsPacket());
+    QTimer::singleShot (1000 / m_manager->currentProtocol()->fmsFrequency(),
+                        Qt::PreciseTimer,
+                        this, SLOT (sendToFms()));
+}
+
+//=============================================================================
 // DriverStation::sendClientPacket
 //=============================================================================
 
-void DriverStation::sendClientPacket()
+void DriverStation::sendToRobot()
 {
-    if (m_manager->isValid())
-        m_client->sendPacket (m_manager->currentProtocol()->createPacket());
+    if (!m_manager->isValid())
+        return;
+
+    m_client->sendToRobot (m_manager->currentProtocol()->createRobotPacket());
+    QTimer::singleShot (1000 / m_manager->currentProtocol()->robotFrequency(),
+                        Qt::PreciseTimer,
+                        this, SLOT (sendToRobot()));
 }
 
 //=============================================================================
@@ -634,13 +683,23 @@ void DriverStation::resetEverything()
 }
 
 //=============================================================================
+// DriverStation::readFmsPacket
+//=============================================================================
+
+void DriverStation::readFmsPacket (QByteArray response)
+{
+    if (m_manager->isValid())
+        m_manager->currentProtocol()->readFmsPacket (response);
+}
+
+//=============================================================================
 // DriverStation::readRobotPacket
 //=============================================================================
 
-void DriverStation::readRobotPacket (QByteArray robotResponse)
+void DriverStation::readRobotPacket (QByteArray response)
 {
     if (m_manager->isValid())
-        m_manager->currentProtocol()->readRobotPacket (robotResponse);
+        m_manager->currentProtocol()->readRobotPacket (response);
 }
 
 //=============================================================================

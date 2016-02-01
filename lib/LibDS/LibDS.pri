@@ -49,7 +49,6 @@ HEADERS += \
     $$PWD/include/LibDS/Core/NetConsole.h \
     $$PWD/include/LibDS/Core/ProtocolBase.h \
     $$PWD/include/LibDS/Core/ProtocolManager.h \
-    $$PWD/include/LibDS/Core/Timers.h \
     $$PWD/include/LibDS/Core/Watchdog.h \
     $$PWD/include/LibDS/Core/Discovery/Discovery.h \
     $$PWD/include/LibDS/Protocols/Protocol2016.h \
@@ -64,7 +63,6 @@ SOURCES += \
     $$PWD/src/Core/NetConsole.cpp \
     $$PWD/src/Core/ProtocolBase.cpp \
     $$PWD/src/Core/ProtocolManager.cpp \
-    $$PWD/src/Core/Timers.cpp \
     $$PWD/src/Core/Watchdog.cpp \
     $$PWD/src/Core/Discovery/Discovery.cpp \
     $$PWD/src/Protocols/Protocol2015.cpp \

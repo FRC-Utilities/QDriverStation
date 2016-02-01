@@ -57,19 +57,19 @@ public:
     int team() const;
 
     /**
-     * The current status code of the robot
-     */
-    int statusCode() const;
-
-    /**
      * Returns \c true if the user code is loaded on the robot
      */
     bool hasCode() const;
 
     /**
-     * The number of packets that we sent
+     * The number of packets that we sent to the FMS
      */
-    int sentPackets() const;
+    int sentFmsPackets() const;
+
+    /**
+     * The number of packets that we sent to the robot
+     */
+    int sentRobotPackets() const;
 
     /**
      * Returns \c true if the robot is enabled
@@ -136,18 +136,53 @@ public:
     QString robotAddress();
 
     /**
-     * Constructs a client packet and updates the internal values
+     * Constructs a FMS packet and updates the interal values
      */
-    QByteArray createPacket();
+    QByteArray createFmsPacket();
 
     /**
-     * Returns the port in which we send data to the robot
+     * Constructs a client packet and updates the internal values
+     */
+    QByteArray createRobotPacket();
+
+    /**
+     * Returns the frequency rate (in Hz) in which we should send a FMS packet
      *
      * \note This function must be implemented by each protocol
      */
-    virtual int robotPort()
+    virtual int fmsFrequency()
     {
         return 0;
+    }
+
+    /**
+     * Returns the frequency rate (in Hz) in which we should send a robot packet
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual int robotFrequency()
+    {
+        return 0;
+    }
+
+    /**
+     * Returns the port in which we receive FMS data
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual int fmsInputPort()
+    {
+        return DS_PROTOCOL_NO_PORT;
+    }
+
+    /**
+     * Returns the port in which we send FMS data
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual int fmsOutputPort()
+    {
+        return DS_PROTOCOL_NO_PORT;
     }
 
     /**
@@ -155,9 +190,19 @@ public:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual int clientPort()
+    virtual int robotInputPort()
     {
-        return 0;
+        return DS_PROTOCOL_NO_PORT;
+    }
+
+    /**
+     * Returns the port in which we send data to the robot
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual int robotOutputPort()
+    {
+        return DS_PROTOCOL_NO_PORT;
     }
 
     /**
@@ -165,9 +210,9 @@ public:
      * This is used to check if we can communicate with the robot controller
      * itself and obtain the 'partial' communication status
      */
-    virtual int tcpProbePort()
+    virtual int tcpProbesPort()
     {
-        return 0;
+        return DS_PROTOCOL_NO_PORT;
     }
 
     /**
@@ -177,7 +222,7 @@ public:
      */
     virtual int netConsolePort()
     {
-        return 0;
+        return DS_PROTOCOL_NO_PORT;
     }
 
     /**
@@ -256,6 +301,11 @@ public slots:
     void setJoysticks (QList<DS_Joystick*>* joysticks);
 
     /**
+     * Reads the FMS packet and calls the appropiate functions to interpret it
+     */
+    void readFmsPacket (QByteArray data);
+
+    /**
      * Reads the robot data and calls the appropiate functions to interpret it
      */
     void readRobotPacket (QByteArray data);
@@ -277,7 +327,7 @@ public slots:
     /**
      * Called when the state of the joysticks is changed
      */
-    virtual void onJoysticksChanged() {}
+    virtual void _onJoysticksChanged() {}
 
 signals:
     /**
@@ -413,22 +463,33 @@ protected slots:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual void resetProtocol()  {}
+    virtual void _resetProtocol()  {}
 
     /**
      * Implements a method to get more information about the robot components
      *
      * \note This function must be implemented by each protocol
      */
-    virtual void getRobotInformation()  {}
+    virtual void _getRobotInformation()  {}
 
 protected:
+    /**
+     * Interprets the received FMS \a data
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual bool _readFMSPacket (QByteArray data)
+    {
+        Q_UNUSED (data);
+        return false;
+    }
+
     /**
      * Interprets the received robot \a data and emits the appropiate signals
      *
      * \note This function must be implemented by each protocol
      */
-    virtual bool readPacket (QByteArray data)
+    virtual bool _readRobotPacket (QByteArray data)
     {
         Q_UNUSED (data);
         return false;
@@ -440,7 +501,7 @@ protected:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual QByteArray getJoystickData()
+    virtual QByteArray _getJoystickData()
     {
         return QByteArray ("");
     }
@@ -451,7 +512,17 @@ protected:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual QByteArray getTimezoneData()
+    virtual QByteArray _getTimezoneData()
+    {
+        return QByteArray ("");
+    }
+
+    /**
+     * Generates a control packet to be sent to the FMS
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual QByteArray _getFmsPacket()
     {
         return QByteArray ("");
     }
@@ -461,15 +532,10 @@ protected:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual QByteArray getClientPacket()
+    virtual QByteArray _getClientPacket()
     {
         return QByteArray ("");
     }
-
-    /**
-     * Changes the current robot \a status
-     */
-    void updateStatus (int statusCode);
 
     /**
      * Changes the state of the robot code and emits the appropiate signals
@@ -510,14 +576,6 @@ private:
     int m_team;
 
     /**
-     * Represents the operation status of the robot.
-     * This value can be used to send 'special' commands to the robot,
-     * such as rebooting the main controller (e.g. roboRIO or cRIO) or restarting
-     * the user code
-     */
-    int m_status;
-
-    /**
      * Holds the number of times the \c reset() function was called.
      * We use it to toggle the usage of the fallback robot address every certain
      * number of protocol resets.
@@ -525,9 +583,14 @@ private:
     int m_resetCount;
 
     /**
+     * Represents the number of packets sent to the FMS
+     */
+    int m_sentFMSPackets;
+
+    /**
      * Represents the number of packets sent to the robot
      */
-    int m_sentPackets;
+    int m_sentRobotPackets;
 
     /**
      * We use this to switch between the radio addresses specified by the

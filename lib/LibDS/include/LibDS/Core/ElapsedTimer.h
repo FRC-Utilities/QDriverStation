@@ -23,7 +23,9 @@
 #ifndef _LDS_ELAPSED_TIME_H
 #define _LDS_ELAPSED_TIME_H
 
+#include <QTimer>
 #include <QElapsedTimer>
+
 #include "LibDS/Core/Common.h"
 
 /**

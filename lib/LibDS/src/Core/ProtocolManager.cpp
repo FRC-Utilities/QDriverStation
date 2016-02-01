@@ -143,7 +143,7 @@ void DS_ProtocolManager::resetJoysticks()
     m_joysticks->clear();
 
     if (isValid())
-        currentProtocol()->onJoysticksChanged();
+        currentProtocol()->_onJoysticksChanged();
 }
 
 //=============================================================================
@@ -174,7 +174,7 @@ void DS_ProtocolManager::addJoystick (int axes, int buttons, int POVs)
     m_joysticks->append (js);
 
     if (isValid())
-        currentProtocol()->onJoysticksChanged();
+        currentProtocol()->_onJoysticksChanged();
 }
 
 //=============================================================================

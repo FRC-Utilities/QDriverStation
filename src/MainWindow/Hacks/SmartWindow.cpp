@@ -20,11 +20,11 @@
  * THE SOFTWARE.
  */
 
+#include <QTimer>
 #include <QLayout>
 #include <QMessageBox>
 #include <QApplication>
 #include <QDesktopWidget>
-#include <LibDS/Core/Timers.h>
 
 #include "SmartWindow.h"
 #include "Utilities/Settings.h"
@@ -35,10 +35,8 @@
 
 SmartWindow::SmartWindow()
 {
+    resizeToFit();
     m_useFixedSize = true;
-
-    connect (DS_Timers::getInstance(), SIGNAL (timeout20()),
-             this,                     SLOT   (resizeToFit()));
 }
 
 //=============================================================================
@@ -114,7 +112,6 @@ void SmartWindow::setWindowMode (const WindowMode& mode)
         setWindowFlags (Qt::FramelessWindowHint);
 
     show();
-    resizeToFit();
 }
 
 //=============================================================================
@@ -140,4 +137,6 @@ void SmartWindow::resizeToFit()
             setFixedSize (minimumSizeHint());
             layout()->setSizeConstraint (QLayout::SetMinimumSize);
         }
+
+    QTimer::singleShot (100, Qt::CoarseTimer, this, SLOT (resizeToFit()));
 }

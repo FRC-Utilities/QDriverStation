@@ -36,13 +36,19 @@ class LIB_DS_DECL DS_Protocol2015 : public DS_ProtocolBase
     Q_OBJECT
 
 public:
-    explicit DS_Protocol2015();
+    virtual int fmsFrequency();
+    virtual int robotFrequency();
 
-    virtual int robotPort();
-    virtual int clientPort();
-    virtual int tcpProbePort();
+    virtual int fmsInputPort();
+    virtual int fmsOutputPort();
+    virtual int robotInputPort();
+    virtual int robotOutputPort();
+
+    virtual int tcpProbesPort();
     virtual int netConsolePort();
+
     virtual bool acceptsConsoleCommands();
+
     virtual QStringList defaultRadioAddress();
     virtual QStringList defaultRobotAddress();
 
@@ -51,21 +57,22 @@ public slots:
     virtual void restartCode();
 
 private slots:
-    virtual void resetProtocol();
-    virtual void getRobotInformation();
-    virtual void processRobotInformation (QNetworkReply* reply);
+    virtual void _resetProtocol();
 
 private:
-    virtual bool readPacket (QByteArray data);
-    virtual QByteArray getClientPacket();
-    virtual QByteArray getJoystickData();
-    virtual QByteArray getTimezoneData();
+    virtual bool _readFMSPacket (QByteArray data);
+    virtual bool _readRobotPacket (QByteArray data);
+
+    virtual QByteArray _getFmsPacket();
+    virtual QByteArray _getClientPacket();
+    virtual QByteArray _getJoystickData();
+    virtual QByteArray _getTimezoneData();
 
     virtual int getControlCode();
     virtual int getAllianceCode();
     virtual int getJoystickSize (DS_Joystick* joystick);
 
-    QNetworkAccessManager m_manager;
+    int m_instructionCode;
 };
 
 #endif

@@ -401,9 +401,6 @@ signals:
      */
     void elapsedTimeChanged (QString time);
 
-protected:
-    static DriverStation* s_instance;
-
 private:
     /**
      * This variable allows (or disallows) us to receive joystick
@@ -457,7 +454,12 @@ private slots:
     /**
      * Sends a generated client packet to the robot
      */
-    void sendClientPacket();
+    void sendToFms();
+
+    /**
+     * Sends a generated client packet to the robot
+     */
+    void sendToRobot();
 
     /**
      * Resets the internal values of the library when we disconnect from the
@@ -466,9 +468,14 @@ private slots:
     void resetEverything();
 
     /**
-     * Sends the received data to the current protocol
+     * Sends the received FMS packet to the current protocol for further processing
      */
-    void readRobotPacket (QByteArray robotResponse);
+    void readFmsPacket (QByteArray response);
+
+    /**
+     * Sends the received robot packet to the current protocol for further processing
+     */
+    void readRobotPacket (QByteArray response);
 
     /**
      * Notifies other object when the status of the user code or the robot

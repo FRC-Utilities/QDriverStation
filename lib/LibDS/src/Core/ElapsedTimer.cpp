@@ -20,7 +20,6 @@
  * THE SOFTWARE.
  */
 
-#include "LibDS/Core/Timers.h"
 #include "LibDS/Core/ElapsedTimer.h"
 
 //=============================================================================
@@ -31,9 +30,6 @@ DS_ElapsedTime::DS_ElapsedTime()
 {
     stopTimer();
     getElapsedTime();
-
-    connect (DS_Timers::getInstance(), SIGNAL (timeout100()),
-             this,                       SLOT (getElapsedTime()));
 }
 
 //=============================================================================
@@ -75,4 +71,6 @@ void DS_ElapsedTime::getElapsedTime()
                                      .arg (secs, 2, 10, QLatin1Char ('0'))
                                      .arg (QString::number (msec).at (0)));
         }
+
+    QTimer::singleShot (100, Qt::PreciseTimer, this, SLOT (getElapsedTime()));
 }

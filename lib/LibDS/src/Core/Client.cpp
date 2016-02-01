@@ -28,53 +28,93 @@
 
 DS_Client::DS_Client()
 {
-    connect (&m_receiver, SIGNAL (readyRead()), this, SLOT (readPacket()));
+    connect (&m_fmsReceiver,   SIGNAL (readyRead       (void)),
+             this,               SLOT (readFmsPacket   (void)));
+    connect (&m_robotReceiver, SIGNAL (readyRead       (void)),
+             this,               SLOT (readRobotPacket (void)));
 }
 
 //=============================================================================
-// DS_Client::SendToRobot
+// DS_Client::sendFmsPacket
 //=============================================================================
 
-void DS_Client::sendPacket (QByteArray data)
+void DS_Client::sendToFms (QByteArray data)
 {
-    m_sender.writeDatagram (data, QHostAddress (m_address), m_robotPort);
+    m_sender.writeDatagram (data, QHostAddress::Any, m_fmsPort);
 }
 
 //=============================================================================
-// DS_Client::SetRobotPort
+// DS_Client::sendClientPacket
 //=============================================================================
 
-void DS_Client::setRobotPort (int port)
+void DS_Client::sendToRobot (QByteArray data)
+{
+    m_sender.writeDatagram (data, QHostAddress (m_robotAddress), m_robotPort);
+}
+
+//=============================================================================
+// DS_Client::setFmsInputPort
+//=============================================================================
+
+void DS_Client::setFmsInputPort (int port)
+{
+    m_fmsReceiver.disconnectFromHost();
+    m_fmsReceiver.bind (QHostAddress::Any, port, QUdpSocket::ShareAddress);
+    m_fmsReceiver.setSocketOption (QAbstractSocket::MulticastLoopbackOption, 0);
+}
+
+//=============================================================================
+// DS_Client::setFmsOutputPort
+//=============================================================================
+
+void DS_Client::setFmsOutputPort (int port)
+{
+    m_fmsPort = port;
+}
+
+//=============================================================================
+// DS_Client::setRobotInputPort
+//=============================================================================
+
+void DS_Client::setRobotInputPort (int port)
+{
+    m_robotReceiver.disconnectFromHost();
+    m_robotReceiver.bind (QHostAddress::Any, port, QUdpSocket::ShareAddress);
+    m_robotReceiver.setSocketOption (QAbstractSocket::MulticastLoopbackOption, 0);
+}
+
+//=============================================================================
+// DS_Client::setRobotOutputPort
+//=============================================================================
+
+void DS_Client::setRobotOutputPort (int port)
 {
     m_robotPort = port;
 }
 
 //=============================================================================
-// DS_Client::SetClientPort
-//=============================================================================
-
-void DS_Client::setClientPort (int port)
-{
-    m_receiver.disconnectFromHost();
-
-    m_receiver.bind (QHostAddress::Any, port, QUdpSocket::ShareAddress);
-    m_receiver.setSocketOption (QAbstractSocket::MulticastLoopbackOption, 0);
-}
-
-//=============================================================================
-// DS_Client::SetRobotAddress
+// DS_Client::setRobotAddress
 //=============================================================================
 
 void DS_Client::setRobotAddress (QString address)
 {
-    m_address = address;
+    m_robotAddress = address;
 }
 
 //=============================================================================
-// DS_Client::OnDataReceived
+// DS_Client::readFmsPacket
 //=============================================================================
 
-void DS_Client::readPacket()
+void DS_Client::readFmsPacket()
 {
-    emit dataReceived (DS_GetSocketData (&m_receiver));
+    emit fmsPacketReceived (DS_GetSocketData (&m_fmsReceiver));
+}
+
+//=============================================================================
+// DS_Client::readRobotPacket
+//=============================================================================
+
+void DS_Client::readRobotPacket()
+{
+    emit robotPacketReceived (DS_GetSocketData (&m_robotReceiver));
 }
