@@ -49,6 +49,9 @@ MessagesWindow::MessagesWindow()
     m_tabWidget->addTab          (m_consoleWidget, tr ("Messages"));
     m_layout->setContentsMargins (MAIN_MARGINS());
     m_layout->addWidget          (m_tabWidget);
+
+    setMinimumSize (minimumSizeHint().width()  * 2.0,
+                    minimumSizeHint().height() * 2.0);
 }
 
 //=============================================================================

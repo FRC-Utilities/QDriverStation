@@ -37,7 +37,6 @@ class MainWindow : public SmartWindow
 
 public:
     explicit MainWindow();
-    ~MainWindow();
 
 protected:
     void closeEvent (QCloseEvent* event);

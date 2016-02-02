@@ -99,10 +99,10 @@ void Operator::createWidgets()
     /* Create and configure mode checkboxes */
     m_modesWidget      = new QWidget (this);
     m_modesGroup       = new QButtonGroup (this);
-    m_test             = new QPushButton (tr ("Test"), this);
+    m_test             = new QPushButton (tr ("Test"),         this);
     m_teleop           = new QPushButton (tr ("Teleoperated"), this);
-    m_practice         = new QPushButton (tr ("Practice"), this);
-    m_autonomous       = new QPushButton (tr ("Autonomous"), this);
+    m_practice         = new QPushButton (tr ("Practice"),     this);
+    m_autonomous       = new QPushButton (tr ("Autonomous"),   this);
 
     /* Create indicators */
     m_cpu              = new QProgressBar (this);
@@ -112,17 +112,17 @@ void Operator::createWidgets()
     m_plugIcon         = new QLabel (QChar (fa::plug), this);
 
     /* Create indicator captions */
-    m_cpuLabel         = new QLabel (tr ("PC CPU"), this);
-    m_batteryLabel     = new QLabel (tr ("PC Battery"), this);
-    m_windowModeLabel  = new QLabel (tr ("Window Mode"), this);
+    m_cpuLabel         = new QLabel (tr ("PC CPU"),       this);
+    m_batteryLabel     = new QLabel (tr ("PC Battery"),   this);
+    m_windowModeLabel  = new QLabel (tr ("Window Mode"),  this);
     m_elapsedTimeLabel = new QLabel (tr ("Elapsed Time"), this);
     m_teamStationLabel = new QLabel (tr ("Team Station"), this);
 
     /* Create window mode buttons */
     m_windowGroup      = new QButtonGroup (this);
-    m_windowWidget     = new QWidget (this);
-    m_windowNormal     = new QPushButton (QChar (fa::reply), this);
-    m_windowDocked     = new QPushButton (QChar (fa::expand), this);
+    m_windowWidget     = new QWidget      (this);
+    m_windowNormal     = new QPushButton  (QChar (fa::reply),  this);
+    m_windowDocked     = new QPushButton  (QChar (fa::expand), this);
 
     /* Configure the button groups */
     m_stateGroup->addButton  (m_enable);
