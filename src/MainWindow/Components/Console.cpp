@@ -27,16 +27,17 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <QPlainTextEdit>
 
 //=============================================================================
 // Application includes
 //=============================================================================
 
 #include "Console.h"
-#include "Utilities/Global.h"
-#include "Utilities/Languages.h"
-#include "MessagesWindow/ConsoleWidget.h"
-#include "MessagesWindow/MessagesWindow.h"
+#include "Global/Global.h"
+#include "Global/Languages.h"
+#include "InfoWindow/ConsoleWidget.h"
+#include "InfoWindow/InfoWindow.h"
 
 //=============================================================================
 // Console::Console
@@ -54,21 +55,24 @@ Console::Console (QWidget* parent) : QWidget (parent)
 
 void Console::createWidgets()
 {
-    m_messagesWindow = new MessagesWindow();
-
     m_buttonsWidget  = new QWidget        (this);
-    m_consoleWidget  = new ConsoleWidget  (this);
+    m_console        = new QPlainTextEdit (this);
     m_copyButton     = new QPushButton    (QChar (fa::copy),   this);
     m_clearButton    = new QPushButton    (QChar (fa::trash),  this);
-    m_expandButton   = new QPushButton    (QChar (fa::expand), this);
 
+    m_console->setReadOnly  (true);
+    m_console->setFont      (Languages::monoFont());
     m_copyButton->setFont   (AWESOME()->font (DPI_SCALE (12)));
     m_clearButton->setFont  (AWESOME()->font (DPI_SCALE (12)));
-    m_expandButton->setFont (AWESOME()->font (DPI_SCALE (12)));
 
-    connect (m_copyButton,   SIGNAL (clicked()), m_consoleWidget,  SLOT (copy()));
-    connect (m_clearButton,  SIGNAL (clicked()), m_consoleWidget,  SLOT (clear()));
-    connect (m_expandButton, SIGNAL (clicked()), m_messagesWindow, SLOT (show()));
+    connect (m_copyButton,                 SIGNAL (clicked           (void)),
+             MESSAGES_WINDOW()->console(),   SLOT (copy              (void)));
+    connect (m_clearButton,                SIGNAL (clicked           (void)),
+             MESSAGES_WINDOW()->console(),   SLOT (clear             (void)));
+    connect (m_clearButton,                SIGNAL (clicked           (void)),
+             m_console,                      SLOT (clear             (void)));
+    connect (MESSAGES_WINDOW()->console(), SIGNAL (messageRegistered (QString)),
+             this,                           SLOT (registerMessage   (QString)));
 }
 
 //=============================================================================
@@ -87,19 +91,28 @@ void Console::createLayouts()
     m_buttonsLayout->addWidget          (m_copyButton);
     m_buttonsLayout->addWidget          (m_clearButton);
     m_buttonsLayout->addSpacerItem      (spacer);
-    m_buttonsLayout->addWidget          (m_expandButton);
 
     /* Configure main layout */
     m_mainLayout = new QVBoxLayout      (this);
     m_mainLayout->setSpacing            (DPI_SCALE (10));
     m_mainLayout->setContentsMargins    (MAIN_MARGINS());
     m_mainLayout->addWidget             (m_buttonsWidget);
-    m_mainLayout->addWidget             (m_consoleWidget);
+    m_mainLayout->addWidget             (m_console);
     m_mainLayout->setStretch            (0, 0);
     m_mainLayout->setStretch            (1, 1);
 
-    /* Set button sizes */
-    m_copyButton->setFixedSize          (DPI_SCALE (48), DPI_SCALE (24));
-    m_clearButton->setFixedSize         (DPI_SCALE (48), DPI_SCALE (24));
-    m_expandButton->setFixedSize        (DPI_SCALE (48), DPI_SCALE (24));
+    /* Set widget sizes */
+    m_console->setMinimumSize           (DPI_SCALE (288), DPI_SCALE (96));
+    m_copyButton->setFixedSize          (DPI_SCALE  (74), DPI_SCALE (24));
+    m_clearButton->setFixedSize         (DPI_SCALE  (74), DPI_SCALE (24));
+}
+
+//=============================================================================
+// Console::registerMessage
+//=============================================================================
+
+void Console::registerMessage (QString text)
+{
+    m_console->appendHtml (text);
+    m_console->ensureCursorVisible();
 }

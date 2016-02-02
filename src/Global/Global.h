@@ -20,47 +20,62 @@
  * THE SOFTWARE.
  */
 
+#ifndef _QDS_GLOBAL_H
+#define _QDS_GLOBAL_H
+
 //=============================================================================
-// System includes
+// System/library includes
 //=============================================================================
 
-#include <QTabWidget>
-#include <QVBoxLayout>
+#include <QDebug>
+#include <QtAwesome.h>
+#include <LibDS/DriverStation.h>
 
 //=============================================================================
 // Application includes
 //=============================================================================
 
-#include "ConsoleWidget.h"
-#include "MessagesWindow.h"
-#include "Utilities/Global.h"
+class Beeper;
+class Settings;
+class AppTheme;
+class InfoWindow;
+class JoystickManager;
 
 //=============================================================================
-// MessagesWindow::MessagesWindow
+// Global variables
 //=============================================================================
 
-MessagesWindow::MessagesWindow()
-{
-    m_tabWidget     = new QTabWidget    (this);
-    m_consoleWidget = new ConsoleWidget (this);
-    m_layout        = new QVBoxLayout   (this);
-
-    m_consoleWidget->layout()->setContentsMargins (MAIN_MARGINS());
-    m_tabWidget->addTab          (m_consoleWidget, tr ("Messages"));
-    m_layout->setContentsMargins (MAIN_MARGINS());
-    m_layout->addWidget          (m_tabWidget);
-
-    setMinimumSize (minimumSizeHint().width()  * 2.0,
-                    minimumSizeHint().height() * 2.0);
-}
+const QString NULL_STR = "";
+const QString NO_DATA  = "--.--";
 
 //=============================================================================
-// MessagesWindow::~MessagesWindow
+// Global Objects
 //=============================================================================
 
-MessagesWindow::~MessagesWindow()
-{
-    delete m_layout;
-    delete m_tabWidget;
-    delete m_consoleWidget;
-}
+extern Beeper* BEEPER();
+extern DriverStation* DS();
+extern QtAwesome* AWESOME();
+extern QThread* SECONDARY_THREAD();
+extern InfoWindow* MESSAGES_WINDOW();
+extern JoystickManager* JOYSTICK_MANAGER();
+
+//=============================================================================
+// Common UI factors
+//=============================================================================
+
+extern QMargins NULL_MARGINS();
+extern QMargins MAIN_MARGINS();
+extern QMargins SMALL_MARGINS();
+extern qreal DPI_SCALE (qreal input);
+
+//=============================================================================
+// Global functions
+//=============================================================================
+
+void SDL_INIT();
+void GLOBAL_INIT();
+void SHOW_SETTINGS_WINDOW();
+void SHOW_VIRTUAL_JOYSTICKS();
+void MORSE_BEEP (QString input, int frequency);
+
+#endif

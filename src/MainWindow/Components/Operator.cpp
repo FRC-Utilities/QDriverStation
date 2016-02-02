@@ -40,7 +40,8 @@
 //=============================================================================
 
 #include "Operator.h"
-#include "Utilities/Global.h"
+#include "Global/Global.h"
+#include "Global/Settings.h"
 #include "MainWindow/System/CPU.h"
 #include "MainWindow/System/Battery.h"
 

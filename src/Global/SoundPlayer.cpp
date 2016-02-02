@@ -20,47 +20,26 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_CONSOLE_WIDGET_H
-#define _QDS_CONSOLE_WIDGET_H
+#include "Global.h"
+#include "Beeper.h"
+#include "SoundPlayer.h"
 
-#include <QWidget>
+//=============================================================================
+// SoundPlayer::actionBeep
+//=============================================================================
 
-class QLineEdit;
-class QPushButton;
-class QVBoxLayout;
-class QHBoxLayout;
-class QPlainTextEdit;
-
-class ConsoleWidget : public QWidget
+void SoundPlayer::actionBeep (int index)
 {
-    Q_OBJECT
+    Q_UNUSED (index);
+    BEEPER()->beep (440, 100);
+}
 
-public:
-    explicit ConsoleWidget (QWidget* parent);
-    ~ConsoleWidget();
+//=============================================================================
+// SoundPlayer::actionBeep
+//=============================================================================
 
-public slots:
-    void copy();
-    void clear();
-
-private slots:
-    void createWidgets();
-    void createLayouts();
-    void connectSlots();
-
-    void sendCommand();
-    void onProtocolChanged();
-    void registerMessage (QString text);
-
-private:
-    QVBoxLayout* m_mainLayout;
-    QHBoxLayout* m_commandLayout;
-
-    QWidget* m_commandWidget;
-    QLineEdit* m_commandEdit;
-    QPushButton* m_sendButton;
-
-    QPlainTextEdit* m_consoleEdit;
-};
-
-#endif
+void SoundPlayer::actionBeep (bool checked)
+{
+    Q_UNUSED (checked);
+    BEEPER()->beep (440, 100);
+}

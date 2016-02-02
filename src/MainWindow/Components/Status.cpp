@@ -35,7 +35,8 @@
 //=============================================================================
 
 #include "Status.h"
-#include "Utilities/Global.h"
+#include "Global/Global.h"
+#include "Global/Beeper.h"
 
 //=============================================================================
 // CSS definitions

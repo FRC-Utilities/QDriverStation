@@ -38,10 +38,11 @@
 //=============================================================================
 
 #include "Updater/Updater.h"
-#include "Utilities/Global.h"
-#include "Utilities/AppTheme.h"
-#include "Utilities/Languages.h"
-#include "Utilities/SoundPlayer.h"
+#include "Global/Global.h"
+#include "Global/AppTheme.h"
+#include "Global/Settings.h"
+#include "Global/Languages.h"
+#include "Global/SoundPlayer.h"
 #include "MainWindow/MainWindow.h"
 
 //=============================================================================

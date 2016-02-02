@@ -27,7 +27,7 @@
 #include <QDesktopWidget>
 
 #include "SmartWindow.h"
-#include "Utilities/Settings.h"
+#include "Global/Settings.h"
 
 //=============================================================================
 // SmartWindow::SmartWindow

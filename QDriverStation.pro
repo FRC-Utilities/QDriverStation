@@ -174,20 +174,20 @@ HEADERS += \
     $$PWD/src/MainWindow/MainWindow.h \
     $$PWD/src/SettingsWindow/SettingsWindow.h \
     $$PWD/src/Updater/Updater.h \
-    $$PWD/src/Utilities/AppTheme.h \
-    $$PWD/src/Utilities/Global.h \
-    $$PWD/src/Utilities/Settings.h \
+    $$PWD/src/Global/AppTheme.h \
+    $$PWD/src/Global/Global.h \
+    $$PWD/src/Global/Settings.h \
     $$PWD/src/VJoystickWindow/VJoystickWindow.h \
     $$PWD/src/MainWindow/Hacks/CustomTabStyle.h \
     $$PWD/src/Joysticks/JoysticksCommon.h \
     $$PWD/src/Joysticks/SDL_Joysticks.h \
-    $$PWD/src/Utilities/Beeper.h \
+    $$PWD/src/Global/Beeper.h \
     $$PWD/src/MainWindow/Hacks/SmartWindow.h \
-    $$PWD/src/Utilities/SoundPlayer.h \
+    $$PWD/src/Global/SoundPlayer.h \
     $$PWD/src/Dashboards/Dashboards.h \
-    src/Utilities/Languages.h \
-    src/MessagesWindow/ConsoleWidget.h \
-    src/MessagesWindow/MessagesWindow.h
+    src/Global/Languages.h \
+    src/InfoWindow/ConsoleWidget.h \
+    src/InfoWindow/InfoWindow.h
 
 SOURCES += \
     $$PWD/src/Joysticks/JoystickManager.cpp \
@@ -209,20 +209,20 @@ SOURCES += \
     $$PWD/src/MainWindow/MainWindow.cpp \
     $$PWD/src/SettingsWindow/SettingsWindow.cpp \
     $$PWD/src/Updater/Updater.cpp \
-    $$PWD/src/Utilities/AppTheme.cpp \
-    $$PWD/src/Utilities/Global.cpp \
-    $$PWD/src/Utilities/Settings.cpp \
+    $$PWD/src/Global/AppTheme.cpp \
+    $$PWD/src/Global/Global.cpp \
+    $$PWD/src/Global/Settings.cpp \
     $$PWD/src/VJoystickWindow/VJoystickWindow.cpp \
     $$PWD/src/main.cpp \
     $$PWD/src/MainWindow/Hacks/CustomTabStyle.cpp \
     $$PWD/src/Joysticks/SDL_Joysticks.cpp \
-    $$PWD/src/Utilities/Beeper.cpp \
+    $$PWD/src/Global/Beeper.cpp \
     $$PWD/src/MainWindow/Hacks/SmartWindow.cpp \
-    $$PWD/src/Utilities/SoundPlayer.cpp \
+    $$PWD/src/Global/SoundPlayer.cpp \
     $$PWD/src/Dashboards/Dashboards.cpp \
-    src/Utilities/Languages.cpp \
-    src/MessagesWindow/ConsoleWidget.cpp \
-    src/MessagesWindow/MessagesWindow.cpp
+    src/Global/Languages.cpp \
+    src/InfoWindow/ConsoleWidget.cpp \
+    src/InfoWindow/InfoWindow.cpp
 
 #-------------------------------------------------------------------------------
 # Import resources

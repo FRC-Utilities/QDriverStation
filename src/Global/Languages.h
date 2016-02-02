@@ -20,27 +20,33 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_MESSAGES_WINDOW_H
-#define _QDS_MESSAGES_WINDOW_H
+#ifndef _QDS_APP_LANGUAGES_H
+#define _QDS_APP_LANGUAGES_H
 
-#include <QDialog>
+#include <QFont>
+#include <QTranslator>
+#include <QStringList>
 
-class QTabWidget;
-class QVBoxLayout;
-class ConsoleWidget;
-
-class MessagesWindow : public QDialog
+class Languages
 {
-    Q_OBJECT
-
 public:
-    explicit MessagesWindow();
-    ~MessagesWindow();
+    typedef enum
+    {
+        kAuto     = 0,
+        kAurebesh = 1,
+        kGerman   = 2,
+        kEnglish  = 3,
+        kSpanish  = 4,
+    } LanguageType;
 
-private:
-    QVBoxLayout* m_layout;
-    QTabWidget* m_tabWidget;
-    ConsoleWidget* m_consoleWidget;
+    static void init();
+    static QFont appFont();
+    static QFont monoFont();
+    static QString systemLanguage();
+    static QTranslator* translator();
+    static LanguageType currentLanguage();
+    static QStringList getAvailableLanguages();
+    static void setLanguage (LanguageType language);
 };
 
 #endif

@@ -28,7 +28,7 @@
 #include <QApplication>
 
 #include "JoysticksCommon.h"
-#include "Utilities/Global.h"
+#include "Global/Global.h"
 
 /**
  * This class implements the code necessary to capture

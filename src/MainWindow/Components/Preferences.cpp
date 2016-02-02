@@ -37,8 +37,8 @@
 //=============================================================================
 
 #include "Preferences.h"
-#include "Utilities/Global.h"
-#include "Utilities/Settings.h"
+#include "Global/Global.h"
+#include "Global/Settings.h"
 #include "Dashboards/Dashboards.h"
 
 //=============================================================================

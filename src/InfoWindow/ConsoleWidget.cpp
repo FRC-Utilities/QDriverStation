@@ -37,8 +37,8 @@
 //=============================================================================
 
 #include "ConsoleWidget.h"
-#include "Utilities/Global.h"
-#include "Utilities/Languages.h"
+#include "Global/Global.h"
+#include "Global/Languages.h"
 
 //=============================================================================
 // ConsoleWidget::ConsoleWidget
@@ -177,4 +177,6 @@ void ConsoleWidget::registerMessage (QString text)
 {
     m_consoleEdit->appendHtml (text);
     m_consoleEdit->ensureCursorVisible();
+
+    emit messageRegistered (text);
 }

@@ -37,7 +37,8 @@
 //=============================================================================
 
 #include "Joysticks.h"
-#include "Utilities/Global.h"
+#include "Global/Global.h"
+#include "Joysticks/JoystickManager.h"
 
 //=============================================================================
 // CSS

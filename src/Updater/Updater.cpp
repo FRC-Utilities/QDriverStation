@@ -33,7 +33,8 @@
 //=============================================================================
 
 #include "Updater.h"
-#include "Utilities/Global.h"
+#include "Global/Global.h"
+#include "Global/Settings.h"
 
 //=============================================================================
 // Updater::Updater

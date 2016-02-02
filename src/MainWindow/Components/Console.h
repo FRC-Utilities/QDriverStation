@@ -28,8 +28,7 @@
 class QVBoxLayout;
 class QHBoxLayout;
 class QPushButton;
-class ConsoleWidget;
-class MessagesWindow;
+class QPlainTextEdit;
 
 class Console : public QWidget
 {
@@ -42,6 +41,8 @@ private slots:
     void createWidgets();
     void createLayouts();
 
+    void registerMessage (QString text);
+
 private:
     QVBoxLayout* m_mainLayout;
     QHBoxLayout* m_buttonsLayout;
@@ -49,10 +50,8 @@ private:
     QWidget* m_buttonsWidget;
     QPushButton* m_copyButton;
     QPushButton* m_clearButton;
-    QPushButton* m_expandButton;
 
-    ConsoleWidget* m_consoleWidget;
-    MessagesWindow* m_messagesWindow;
+    QPlainTextEdit* m_console;
 };
 
 #endif

@@ -39,7 +39,9 @@
 //=============================================================================
 
 #include "VJoystickWindow.h"
-#include "Utilities/Global.h"
+#include "Global/Global.h"
+#include "Global/Settings.h"
+#include "Joysticks/JoystickManager.h"
 #include "Joysticks/VirtualJoystick.h"
 
 //=============================================================================

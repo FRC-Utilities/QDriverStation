@@ -36,7 +36,10 @@
 //=============================================================================
 
 #include "MainWindow.h"
-#include "Utilities/Global.h"
+#include "Global/Global.h"
+#include "Global/Beeper.h"
+#include "Global/Settings.h"
+#include "InfoWindow/InfoWindow.h"
 
 #include "Components/Status.h"
 #include "Components/Buttons.h"
@@ -80,6 +83,8 @@ MainWindow::MainWindow()
              m_status,    SLOT   (doErrorAnimation()));
     connect (qApp,      SIGNAL   (aboutToQuit()),
              this,        SLOT   (quitSound()));
+    connect (m_buttons, SIGNAL   (close()),
+             this,        SLOT   (close()));
 
     setUseFixedSize              (true);
     setCentralWidget             (m_central);
@@ -112,6 +117,7 @@ void MainWindow::closeEvent (QCloseEvent* event)
         }
 
     event->accept();
+    QApplication::closeAllWindows();
 }
 
 //=============================================================================
@@ -122,6 +128,8 @@ void MainWindow::showUnDocked()
 {
     setWindowMode (kNormal);
     Settings::set ("Docked", false);
+
+    MESSAGES_WINDOW()->hide();
 }
 
 //=============================================================================
@@ -143,6 +151,8 @@ void MainWindow::showDocked()
 {
     setWindowMode (kDocked);
     Settings::set ("Docked", true);
+
+    MESSAGES_WINDOW()->showDocked (height());
 }
 
 //=============================================================================
@@ -161,7 +171,6 @@ void MainWindow::startUpSound()
 
 void MainWindow::displayWindow()
 {
-    bool docked = Settings::get ("Docked", false).toBool();
-    setWindowMode (docked ? kDocked : kNormal);
     QTimer::singleShot (100, Qt::CoarseTimer, this, SLOT (startUpSound()));
+    Settings::get ("Docked", false).toBool() ? showDocked() : showUnDocked();
 }

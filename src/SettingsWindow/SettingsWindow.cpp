@@ -42,8 +42,11 @@
 //=============================================================================
 
 #include "SettingsWindow.h"
-#include "Utilities/Global.h"
-#include "Utilities/Languages.h"
+
+#include "Global/Global.h"
+#include "Global/AppTheme.h"
+#include "Global/Settings.h"
+#include "Global/Languages.h"
 
 //=============================================================================
 // Global variables

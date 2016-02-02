@@ -33,7 +33,7 @@
 //=============================================================================
 
 #include "SDL_Joysticks.h"
-#include "Utilities/Global.h"
+#include "Global/Global.h"
 
 //=============================================================================
 // Fix errors/warnings with main() re-define

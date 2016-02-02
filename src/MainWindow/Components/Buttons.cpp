@@ -33,7 +33,7 @@
 //=============================================================================
 
 #include "Buttons.h"
-#include "Utilities/Global.h"
+#include "Global/Global.h"
 
 //=============================================================================
 // Buttons::Buttons
@@ -92,9 +92,9 @@ Buttons::Buttons (QWidget* parent) : QWidget (parent)
     m_close->setPalette          (closePalette);
 
     /* Configure button actions */
-    connect (m_close,    SIGNAL (clicked()), qApp, SLOT (closeAllWindows()));
-    connect (m_settings, SIGNAL (clicked()), this, SLOT (showSettingsWindow()));
-    connect (m_virtualJ, SIGNAL (clicked()), this, SLOT (showVirtualJoysticks()));
+    connect (m_close,    SIGNAL (clicked()), this, SIGNAL (close()));
+    connect (m_settings, SIGNAL (clicked()), this,   SLOT (showSettingsWindow()));
+    connect (m_virtualJ, SIGNAL (clicked()), this,   SLOT (showVirtualJoysticks()));
 }
 
 //=============================================================================

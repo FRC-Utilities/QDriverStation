@@ -21,6 +21,7 @@
  */
 
 #include "VirtualJoystick.h"
+#include "Global/Settings.h"
 
 //=============================================================================
 // VirtualJoystick::VirtualJoystick

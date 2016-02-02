@@ -31,7 +31,7 @@
 // Application includes
 //=============================================================================
 
-#include "Utilities/Settings.h"
+#include "Global/Settings.h"
 #include "Dashboards/Dashboards.h"
 
 //=============================================================================

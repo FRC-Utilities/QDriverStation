@@ -37,7 +37,7 @@
 //=============================================================================
 
 #include "Diagnostics.h"
-#include "Utilities/Global.h"
+#include "Global/Global.h"
 
 //=============================================================================
 // Diagnostics::Diagnostics

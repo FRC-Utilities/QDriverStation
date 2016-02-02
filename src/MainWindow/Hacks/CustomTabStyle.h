@@ -27,7 +27,7 @@
 #include <QStyleFactory>
 #include <QStyleOptionTab>
 
-#include "Utilities/Global.h"
+#include "Global/Global.h"
 
 class CustomTabStyle : public QProxyStyle
 {
