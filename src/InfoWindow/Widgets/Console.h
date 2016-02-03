@@ -20,45 +20,50 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_INFO_WINDOW_H
-#define _QDS_INFO_WINDOW_H
+#ifndef _QDS_IW_CONSOLE_H
+#define _QDS_IW_CONSOLE_H
 
-#include <QDialog>
+#include <QWidget>
 
-class Drive;
-class Camera;
-class Console;
-class Checklist;
-class QComboBox;
-class QTabWidget;
-class QHBoxLayout;
+class QLineEdit;
+class QPushButton;
 class QVBoxLayout;
+class QHBoxLayout;
+class QPlainTextEdit;
 
-class InfoWindow : public QDialog
+class Console : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit InfoWindow();
-    Console* console() const;
+    explicit Console (QWidget* parent);
+    ~Console();
 
 public slots:
-    void showDocked (int displacement);
+    void copy();
+    void clear();
+
+signals:
+    void messageRegistered (QString text);
+
+private slots:
+    void createWidgets();
+    void createLayouts();
+    void connectSlots();
+
+    void sendCommand();
+    void onProtocolChanged();
+    void registerMessage (QString text);
 
 private:
-    QHBoxLayout* m_layout;
-    QHBoxLayout* m_camLayout;
-    QVBoxLayout* m_rightLayout;
+    QVBoxLayout* m_mainLayout;
+    QHBoxLayout* m_commandLayout;
 
-    QWidget* m_rightWidget;
-    QTabWidget* m_tabWidget;
-    QComboBox* m_cameraOptions;
-    QWidget* m_camControlWidget;
+    QWidget* m_commandWidget;
+    QLineEdit* m_commandEdit;
+    QPushButton* m_sendButton;
 
-    Drive* m_drive;
-    Camera* m_camera;
-    Console* m_console;
-    Checklist* m_checkList;
+    QPlainTextEdit* m_consoleEdit;
 };
 
 #endif

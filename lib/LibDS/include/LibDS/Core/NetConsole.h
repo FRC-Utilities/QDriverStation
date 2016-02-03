@@ -42,7 +42,12 @@ public slots:
     /**
      * Changes the port used by the net console to get robot data
      */
-    void setPort (int port);
+    void setInputPort (int port);
+
+    /**
+     * Changes the port used by the net console to send robot data
+     */
+    void setOutputPort (int port);
 
     /**
      * Sends a command to the robot through the Console network
@@ -65,7 +70,7 @@ private:
     /**
      * The UDP port of the NetConsole
      */
-    int m_port;
+    int m_outPort;
 
     /**
      * Controls 'write' access to the console

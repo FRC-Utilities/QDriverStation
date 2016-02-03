@@ -20,45 +20,4 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_INFO_WINDOW_H
-#define _QDS_INFO_WINDOW_H
-
-#include <QDialog>
-
-class Drive;
-class Camera;
-class Console;
-class Checklist;
-class QComboBox;
-class QTabWidget;
-class QHBoxLayout;
-class QVBoxLayout;
-
-class InfoWindow : public QDialog
-{
-    Q_OBJECT
-
-public:
-    explicit InfoWindow();
-    Console* console() const;
-
-public slots:
-    void showDocked (int displacement);
-
-private:
-    QHBoxLayout* m_layout;
-    QHBoxLayout* m_camLayout;
-    QVBoxLayout* m_rightLayout;
-
-    QWidget* m_rightWidget;
-    QTabWidget* m_tabWidget;
-    QComboBox* m_cameraOptions;
-    QWidget* m_camControlWidget;
-
-    Drive* m_drive;
-    Camera* m_camera;
-    Console* m_console;
-    Checklist* m_checkList;
-};
-
-#endif
+#include "LibDS/NetworkTables/NetworkTables.h"

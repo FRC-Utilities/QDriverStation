@@ -20,50 +20,27 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_CONSOLE_WIDGET_H
-#define _QDS_CONSOLE_WIDGET_H
+#ifndef _QDS_IW_CHECKLIST_H
+#define _QDS_IW_CHECKLIST_H
 
 #include <QWidget>
 
-class QLineEdit;
-class QPushButton;
 class QVBoxLayout;
-class QHBoxLayout;
 class QPlainTextEdit;
 
-class ConsoleWidget : public QWidget
+class Checklist : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit ConsoleWidget (QWidget* parent);
-    ~ConsoleWidget();
-
-public slots:
-    void copy();
-    void clear();
-
-signals:
-    void messageRegistered (QString text);
+    explicit Checklist (QWidget* parent);
 
 private slots:
-    void createWidgets();
-    void createLayouts();
-    void connectSlots();
-
-    void sendCommand();
-    void onProtocolChanged();
-    void registerMessage (QString text);
+    void saveChecklist();
 
 private:
-    QVBoxLayout* m_mainLayout;
-    QHBoxLayout* m_commandLayout;
-
-    QWidget* m_commandWidget;
-    QLineEdit* m_commandEdit;
-    QPushButton* m_sendButton;
-
-    QPlainTextEdit* m_consoleEdit;
+    QVBoxLayout* m_layout;
+    QPlainTextEdit* m_edit;
 };
 
 #endif

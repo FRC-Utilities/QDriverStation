@@ -23,7 +23,7 @@
 #include "RightTab.h"
 
 #include "About.h"
-#include "Console.h"
+#include "Messages.h"
 #include "CAN_Metrics.h"
 
 #include "../Hacks/CustomTabStyle.h"
@@ -34,14 +34,14 @@
 
 RightTab::RightTab (QWidget* parent) : QTabWidget (parent)
 {
-    m_about   = new About       (this);
-    m_console = new Console     (this);
-    m_metrics = new CAN_Metrics (this);
+    m_about    = new About       (this);
+    m_messages = new Messages     (this);
+    m_metrics  = new CAN_Metrics (this);
 
     setTabPosition              (East);
-    addTab                      (m_console, QIcon(), QChar (fa::envelope));
-    addTab                      (m_metrics, QIcon(), QChar (fa::random));
-    addTab                      (m_about,   QIcon(), QChar (fa::infocircle));
+    addTab                      (m_messages, QIcon(), QChar (fa::envelope));
+    addTab                      (m_metrics,  QIcon(), QChar (fa::random));
+    addTab                      (m_about,    QIcon(), QChar (fa::infocircle));
 
     tabBar()->setStyle          (new CustomTabStyle);
     tabBar()->setFont           (AWESOME()->font (DPI_SCALE (16)));

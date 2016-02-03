@@ -83,7 +83,7 @@ MainWindow::MainWindow()
              m_status,    SLOT   (doErrorAnimation()));
     connect (qApp,      SIGNAL   (aboutToQuit()),
              this,        SLOT   (quitSound()));
-    connect (m_buttons, SIGNAL   (close()),
+    connect (m_buttons, SIGNAL   (closeClicked()),
              this,        SLOT   (close()));
 
     setUseFixedSize              (true);
@@ -129,7 +129,7 @@ void MainWindow::showUnDocked()
     setWindowMode (kNormal);
     Settings::set ("Docked", false);
 
-    MESSAGES_WINDOW()->hide();
+    INFORMATION_WINDOW()->hide();
 }
 
 //=============================================================================
@@ -152,7 +152,7 @@ void MainWindow::showDocked()
     setWindowMode (kDocked);
     Settings::set ("Docked", true);
 
-    MESSAGES_WINDOW()->showDocked (height());
+    INFORMATION_WINDOW()->showDocked (height());
 }
 
 //=============================================================================

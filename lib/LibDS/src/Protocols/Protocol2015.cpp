@@ -146,12 +146,21 @@ int DS_Protocol2015::tcpProbesPort()
 }
 
 //=============================================================================
-// DS_Protocol2015::netConsolePort
+// DS_Protocol2015::netConsoleInputPort
 //=============================================================================
 
-int DS_Protocol2015::netConsolePort()
+int DS_Protocol2015::netConsoleInputPort()
 {
     return 6666;
+}
+
+//=============================================================================
+// DS_Protocol2015::netConsoleOutputPort
+//=============================================================================
+
+int DS_Protocol2015::netConsoleOutputPort()
+{
+    return 6668;
 }
 
 //=============================================================================
@@ -160,7 +169,7 @@ int DS_Protocol2015::netConsolePort()
 
 bool DS_Protocol2015::acceptsConsoleCommands()
 {
-    return false;
+    return true;
 }
 
 //=============================================================================

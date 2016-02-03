@@ -32,6 +32,11 @@
 #include "LibDS/Core/Library.h"
 
 /**
+ * Use this when the protocol itself is not bound to a specific port
+ */
+#define DS_PROTOCOL_NO_PORT -1
+
+/**
  * Represents the available operation modes of the robot.
  */
 typedef enum

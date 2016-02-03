@@ -53,13 +53,6 @@
 #include "LibDS/DriverStation.h"
 
 //=============================================================================
-// Library instance
-//=============================================================================
-
-QThread*       THREAD   = Q_NULLPTR;
-DriverStation* INSTANCE = Q_NULLPTR;
-
-//=============================================================================
 // DriverStation::DriverStation
 //=============================================================================
 
@@ -168,18 +161,14 @@ DriverStation::~DriverStation()
 
 DriverStation* DriverStation::getInstance()
 {
-    if (INSTANCE == Q_NULLPTR)
-        {
-            THREAD   = new QThread (qApp);
-            INSTANCE = new DriverStation();
+    static DriverStation instance;
+    static QThread thread;
 
-            connect (qApp, SIGNAL (aboutToQuit()), THREAD, SLOT (quit()));
+    instance.moveToThread (&thread);
+    thread.start (QThread::TimeCriticalPriority);
+    connect (qApp, SIGNAL (aboutToQuit()), &thread, SLOT (quit()));
 
-            INSTANCE->moveToThread (THREAD);
-            THREAD->start (QThread::TimeCriticalPriority);
-        }
-
-    return INSTANCE;
+    return &instance;
 }
 
 //=============================================================================
@@ -312,7 +301,7 @@ bool DriverStation::isEnabled()
 
 bool DriverStation::isEmergencyStopped()
 {
-    if (m_manager->isValid())
+    if (isConnected())
         return m_manager->currentProtocol()->isEmergencyStopped();
 
     return false;
@@ -484,7 +473,8 @@ void DriverStation::setProtocol (DS_ProtocolBase* protocol)
             m_client->setFmsOutputPort    (protocol->fmsOutputPort());
             m_client->setRobotInputPort   (protocol->robotInputPort());
             m_client->setRobotOutputPort  (protocol->robotOutputPort());
-            m_netConsole->setPort         (protocol->netConsolePort());
+            m_netConsole->setInputPort    (protocol->netConsoleInputPort());
+            m_netConsole->setOutputPort   (protocol->netConsoleOutputPort());
             m_netConsole->setAcceptsInput (protocol->acceptsConsoleCommands());
 
             sendToFms();

@@ -36,15 +36,15 @@
 // Application includes
 //=============================================================================
 
-#include "ConsoleWidget.h"
+#include "Console.h"
 #include "Global/Global.h"
 #include "Global/Languages.h"
 
 //=============================================================================
-// ConsoleWidget::ConsoleWidget
+// Console::Console
 //=============================================================================
 
-ConsoleWidget::ConsoleWidget (QWidget* parent) : QWidget (parent)
+Console::Console (QWidget* parent) : QWidget (parent)
 {
     createWidgets();
     createLayouts();
@@ -53,10 +53,10 @@ ConsoleWidget::ConsoleWidget (QWidget* parent) : QWidget (parent)
 }
 
 //=============================================================================
-// ConsoleWidget::~ConsoleWidget
+// Console::~Console
 //=============================================================================
 
-ConsoleWidget::~ConsoleWidget()
+Console::~Console()
 {
     delete m_sendButton;
     delete m_consoleEdit;
@@ -65,10 +65,10 @@ ConsoleWidget::~ConsoleWidget()
 }
 
 //=============================================================================
-// ConsoleWidget::copy
+// Console::copy
 //=============================================================================
 
-void ConsoleWidget::copy()
+void Console::copy()
 {
     QApplication::clipboard()->setText (m_consoleEdit->toPlainText());
 
@@ -78,19 +78,19 @@ void ConsoleWidget::copy()
 }
 
 //=============================================================================
-// ConsoleWidget::clear
+// Console::clear
 //=============================================================================
 
-void ConsoleWidget::clear()
+void Console::clear()
 {
     m_consoleEdit->clear();
 }
 
 //=============================================================================
-// ConsoleWidget::createWidgets
+// Console::createWidgets
 //=============================================================================
 
-void ConsoleWidget::createWidgets()
+void Console::createWidgets()
 {
     m_commandWidget = new QWidget        (this);
     m_commandEdit   = new QLineEdit      (this);
@@ -101,15 +101,16 @@ void ConsoleWidget::createWidgets()
     m_sendButton->setFixedHeight         (DPI_SCALE (24));
     m_commandEdit->setFixedHeight        (DPI_SCALE (24));
     m_consoleEdit->setFont               (Languages::monoFont());
+    m_commandEdit->setFont               (Languages::monoFont());
     m_commandEdit->setPlaceholderText    (tr ("Type a command") + "...");
     m_consoleEdit->setMinimumSize        (DPI_SCALE (288), DPI_SCALE (96));
 }
 
 //=============================================================================
-// ConsoleWidget::createLayouts
+// Console::createLayouts
 //=============================================================================
 
-void ConsoleWidget::createLayouts()
+void Console::createLayouts()
 {
     m_commandLayout = new QHBoxLayout   (m_commandWidget);
     m_commandLayout->setContentsMargins (NULL_MARGINS());
@@ -127,10 +128,10 @@ void ConsoleWidget::createLayouts()
 }
 
 //=============================================================================
-// ConsoleWidget::connectSlots
+// Console::connectSlots
 //=============================================================================
 
-void ConsoleWidget::connectSlots()
+void Console::connectSlots()
 {
     connect (m_commandEdit, SIGNAL (returnPressed()),
              this,            SLOT (sendCommand()));
@@ -143,10 +144,10 @@ void ConsoleWidget::connectSlots()
 }
 
 //=============================================================================
-// ConsoleWidget::sendCommand
+// Console::sendCommand
 //=============================================================================
 
-void ConsoleWidget::ConsoleWidget::sendCommand()
+void Console::Console::sendCommand()
 {
     QString format = QString ("<font color=#0F0>DS->RIO:</font>&nbsp;"
                               "<font color=#0A0>%1</font>");
@@ -160,20 +161,20 @@ void ConsoleWidget::ConsoleWidget::sendCommand()
 }
 
 //=============================================================================
-// ConsoleWidget::onProtocolChanged
+// Console::onProtocolChanged
 //=============================================================================
 
-void ConsoleWidget::onProtocolChanged()
+void Console::onProtocolChanged()
 {
     m_commandWidget->setEnabled (DS()->acceptsConsoleCommands());
     m_commandWidget->setVisible (DS()->acceptsConsoleCommands());
 }
 
 //=============================================================================
-// ConsoleWidget::registerMessage
+// Console::registerMessage
 //=============================================================================
 
-void ConsoleWidget::registerMessage (QString text)
+void Console::registerMessage (QString text)
 {
     m_consoleEdit->appendHtml (text);
     m_consoleEdit->ensureCursorVisible();

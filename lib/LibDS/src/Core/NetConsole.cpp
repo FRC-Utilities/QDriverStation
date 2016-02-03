@@ -29,7 +29,7 @@
 
 DS_NetConsole::DS_NetConsole()
 {
-    m_port = 0;
+    m_outPort = 0;
     m_acceptsInput = false;
     connect (&m_socket, SIGNAL (readyRead()), this, SLOT (readSocket()));
 }
@@ -38,11 +38,19 @@ DS_NetConsole::DS_NetConsole()
 // DS_NetConsole::setPort
 //=============================================================================
 
-void DS_NetConsole::setPort (int port)
+void DS_NetConsole::setInputPort (int port)
 {
-    m_port = port;
     m_socket.disconnectFromHost();
-    m_socket.bind (QHostAddress::Any, m_port, QUdpSocket::ShareAddress);
+    m_socket.bind (QHostAddress::Any, port, QUdpSocket::ShareAddress);
+}
+
+//=============================================================================
+// DS_NetConsole::setOutputPort
+//=============================================================================
+
+void DS_NetConsole::setOutputPort (int port)
+{
+    m_outPort = port;
 }
 
 //=============================================================================
@@ -51,8 +59,8 @@ void DS_NetConsole::setPort (int port)
 
 void DS_NetConsole::sendCommand (QString command)
 {
-    if (m_acceptsInput)
-        m_socket.writeDatagram (command.toUtf8(), QHostAddress::Any, m_port);
+    if (m_acceptsInput && m_outPort != DS_PROTOCOL_NO_PORT)
+        m_socket.writeDatagram (command.toUtf8(), QHostAddress::Any, m_outPort);
 }
 
 //=============================================================================

@@ -90,63 +90,13 @@ QMAKE_CXXFLAGS += -Werror  # Haha
 QMAKE_CXXFLAGS += -Wunused
 
 #-------------------------------------------------------------------------------
-# SDL configuration code
-#-------------------------------------------------------------------------------
-
-INCLUDEPATH += $$PWD/lib/SDL/include
-
-win32* {
-    DEFINES += SDL_WIN
-}
-
-win32-g++* {
-    LIBS += -L$$PWD/lib/SDL/bin/windows/mingw/ -lSDL2
-}
-
-win32-msvc* {
-    contains (QMAKE_TARGET.arch, x86_64) {
-        LIBS += -L$$PWD/lib/SDL/bin/windows/msvc/x64/ -lSDL2
-    }
-
-    else {
-        LIBS += -L$$PWD/lib/SDL/bin/windows/msvc/x86/ -lSDL2
-    }
-}
-
-macx* {
-    LIBS += -L$$PWD/lib/SDL/bin/mac-osx/ -lSDL2
-
-    LIBS += -framework AudioToolbox
-    LIBS += -framework AudioUnit
-    LIBS += -framework Cocoa
-    LIBS += -framework CoreAudio
-    LIBS += -framework IOKit
-    LIBS += -framework OpenGL
-    LIBS += -framework CoreFoundation
-    LIBS += -framework Carbon
-    LIBS += -framework ForceFeedback
-
-    QMAKE_LFLAGS += -F /System/Library/Frameworks/AudioToolbox.framework/
-    QMAKE_LFLAGS += -F /System/Library/Frameworks/AudioUnit.framework/
-    QMAKE_LFLAGS += -F /System/Library/Frameworks/Cocoa.framework/
-    QMAKE_LFLAGS += -F /System/Library/Frameworks/CoreAudio.framework/
-    QMAKE_LFLAGS += -F /System/Library/Frameworks/IOKit.framework/
-    QMAKE_LFLAGS += -F /System/Library/Frameworks/OpenGL.framework/
-    QMAKE_LFLAGS += -F /System/Library/Frameworks/CoreFoundation.framework/
-    QMAKE_LFLAGS += -F /System/Library/Frameworks/Carbon.framework/
-    QMAKE_LFLAGS += -F /System/Library/Frameworks/ForceFeedback.framework/
-}
-
-linux:!android {
-    LIBS += -lSDL2
-}
-
-#-------------------------------------------------------------------------------
 # Include other libraries
 #-------------------------------------------------------------------------------
 
+include ($$PWD/lib/SDL/SDL.pri)
 include ($$PWD/lib/LibDS/LibDS.pri)
 include ($$PWD/lib/QtAwesome/QtAwesome.pri)
+include ($$PWD/lib/QCustomPlot/QCustomPlot.pri)
 
 #-------------------------------------------------------------------------------
 # Import headers, forms and sources
@@ -155,74 +105,81 @@ include ($$PWD/lib/QtAwesome/QtAwesome.pri)
 INCLUDEPATH += $$PWD/src
 
 HEADERS += \
+    $$PWD/src/Dashboards/Dashboards.h \
+    $$PWD/src/Global/AppTheme.h \
+    $$PWD/src/Global/Beeper.h \
+    $$PWD/src/Global/Global.h \
+    $$PWD/src/Global/Languages.h \
+    $$PWD/src/Global/Settings.h \
+    $$PWD/src/Global/SoundPlayer.h \
+    $$PWD/src/InfoWindow/Widgets/Camera.h \
+    $$PWD/src/InfoWindow/Widgets/Checklist.h \
+    $$PWD/src/InfoWindow/Widgets/Console.h \
+    $$PWD/src/InfoWindow/Widgets/Drive.h \
+    $$PWD/src/InfoWindow/InfoWindow.h \
     $$PWD/src/Joysticks/JoystickManager.h \
+    $$PWD/src/Joysticks/JoysticksCommon.h \
+    $$PWD/src/Joysticks/SDL_Joysticks.h \
     $$PWD/src/Joysticks/VirtualJoystick.h \
     $$PWD/src/MainWindow/Components/About.h \
     $$PWD/src/MainWindow/Components/Buttons.h \
     $$PWD/src/MainWindow/Components/CAN_Metrics.h \
-    $$PWD/src/MainWindow/Components/Console.h \
     $$PWD/src/MainWindow/Components/Develop.h \
     $$PWD/src/MainWindow/Components/Diagnostics.h \
     $$PWD/src/MainWindow/Components/Joysticks.h \
     $$PWD/src/MainWindow/Components/LeftTab.h \
+    $$PWD/src/MainWindow/Components/Messages.h \
     $$PWD/src/MainWindow/Components/Operator.h \
     $$PWD/src/MainWindow/Components/Preferences.h \
     $$PWD/src/MainWindow/Components/RightTab.h \
     $$PWD/src/MainWindow/Components/Status.h \
+    $$PWD/src/MainWindow/Hacks/CustomTabStyle.h \
+    $$PWD/src/MainWindow/Hacks/SmartWindow.h \
     $$PWD/src/MainWindow/System/Battery.h \
     $$PWD/src/MainWindow/System/CPU.h \
     $$PWD/src/MainWindow/MainWindow.h \
     $$PWD/src/SettingsWindow/SettingsWindow.h \
     $$PWD/src/Updater/Updater.h \
-    $$PWD/src/Global/AppTheme.h \
-    $$PWD/src/Global/Global.h \
-    $$PWD/src/Global/Settings.h \
-    $$PWD/src/VJoystickWindow/VJoystickWindow.h \
-    $$PWD/src/MainWindow/Hacks/CustomTabStyle.h \
-    $$PWD/src/Joysticks/JoysticksCommon.h \
-    $$PWD/src/Joysticks/SDL_Joysticks.h \
-    $$PWD/src/Global/Beeper.h \
-    $$PWD/src/MainWindow/Hacks/SmartWindow.h \
-    $$PWD/src/Global/SoundPlayer.h \
-    $$PWD/src/Dashboards/Dashboards.h \
-    src/Global/Languages.h \
-    src/InfoWindow/ConsoleWidget.h \
-    src/InfoWindow/InfoWindow.h
+    $$PWD/src/VJoystickWindow/VJoystickWindow.h
 
 SOURCES += \
+    $$PWD/src/Dashboards/Dashboards.cpp \
+    $$PWD/src/Global/AppTheme.cpp \
+    $$PWD/src/Global/Beeper.cpp \
+    $$PWD/src/Global/Global.cpp \
+    $$PWD/src/Global/Languages.cpp \
+    $$PWD/src/Global/Settings.cpp \
+    $$PWD/src/Global/SoundPlayer.cpp \
+    $$PWD/src/InfoWindow/Widgets/Camera.cpp \
+    $$PWD/src/InfoWindow/Widgets/Checklist.cpp \
+    $$PWD/src/InfoWindow/Widgets/Console.cpp \
+    $$PWD/src/InfoWindow/Widgets/Drive.cpp \
+    $$PWD/src/InfoWindow/InfoWindow.cpp \
     $$PWD/src/Joysticks/JoystickManager.cpp \
+    $$PWD/src/Joysticks/SDL_Joysticks.cpp \
     $$PWD/src/Joysticks/VirtualJoystick.cpp \
     $$PWD/src/MainWindow/Components/About.cpp \
     $$PWD/src/MainWindow/Components/Buttons.cpp \
     $$PWD/src/MainWindow/Components/CAN_Metrics.cpp \
-    $$PWD/src/MainWindow/Components/Console.cpp \
     $$PWD/src/MainWindow/Components/Develop.cpp \
     $$PWD/src/MainWindow/Components/Diagnostics.cpp \
     $$PWD/src/MainWindow/Components/Joysticks.cpp \
     $$PWD/src/MainWindow/Components/LeftTab.cpp \
+    $$PWD/src/MainWindow/Components/Messages.cpp \
     $$PWD/src/MainWindow/Components/Operator.cpp \
     $$PWD/src/MainWindow/Components/Preferences.cpp \
     $$PWD/src/MainWindow/Components/RightTab.cpp \
     $$PWD/src/MainWindow/Components/Status.cpp \
+    $$PWD/src/MainWindow/Hacks/CustomTabStyle.cpp \
+    $$PWD/src/MainWindow/Hacks/SmartWindow.cpp \
     $$PWD/src/MainWindow/System/Battery.cpp \
     $$PWD/src/MainWindow/System/CPU.cpp \
     $$PWD/src/MainWindow/MainWindow.cpp \
     $$PWD/src/SettingsWindow/SettingsWindow.cpp \
     $$PWD/src/Updater/Updater.cpp \
-    $$PWD/src/Global/AppTheme.cpp \
-    $$PWD/src/Global/Global.cpp \
-    $$PWD/src/Global/Settings.cpp \
     $$PWD/src/VJoystickWindow/VJoystickWindow.cpp \
-    $$PWD/src/main.cpp \
-    $$PWD/src/MainWindow/Hacks/CustomTabStyle.cpp \
-    $$PWD/src/Joysticks/SDL_Joysticks.cpp \
-    $$PWD/src/Global/Beeper.cpp \
-    $$PWD/src/MainWindow/Hacks/SmartWindow.cpp \
-    $$PWD/src/Global/SoundPlayer.cpp \
-    $$PWD/src/Dashboards/Dashboards.cpp \
-    src/Global/Languages.cpp \
-    src/InfoWindow/ConsoleWidget.cpp \
-    src/InfoWindow/InfoWindow.cpp
+    $$PWD/src/main.cpp
+
 
 #-------------------------------------------------------------------------------
 # Import resources

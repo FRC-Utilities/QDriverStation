@@ -50,30 +50,14 @@
 static qreal RATIO = -1;
 
 //=============================================================================
-// Global objects
-//=============================================================================
-
-static Beeper*                   _beeper = Q_NULLPTR;
-static QtAwesome*               _awesome = Q_NULLPTR;
-static QThread*         _secondaryThread = Q_NULLPTR;
-static SettingsWindow*   _settingsWindow = Q_NULLPTR;
-static VJoystickWindow* _vjoystickWindow = Q_NULLPTR;
-static InfoWindow*   _messagesWindow = Q_NULLPTR;
-static JoystickManager* _joystickManager = Q_NULLPTR;
-
-//=============================================================================
 // BEEPER
 //=============================================================================
 
 Beeper* BEEPER()
 {
-    if (_beeper == Q_NULLPTR)
-        {
-            _beeper = new Beeper();
-            _beeper->moveToThread (SECONDARY_THREAD());
-        }
-
-    return _beeper;
+    static Beeper instance;
+    instance.moveToThread (SECONDARY_THREAD());
+    return &instance;
 }
 
 //=============================================================================
@@ -91,15 +75,13 @@ DriverStation* DS()
 
 QtAwesome* AWESOME()
 {
-    if (_awesome == Q_NULLPTR)
-        {
-            _awesome = new QtAwesome (qApp);
-            _awesome->initFontAwesome();
-            _awesome->setDefaultOption ("scale-factor", DPI_SCALE (1));
-            _awesome->setDefaultOption ("color", AppTheme::Theme().foreground);
-        }
+    static QtAwesome instance;
 
-    return _awesome;
+    instance.initFontAwesome();
+    instance.setDefaultOption ("scale-factor", DPI_SCALE (1));
+    instance.setDefaultOption ("color", AppTheme::Theme().foreground);
+
+    return &instance;
 }
 
 //=============================================================================
@@ -108,22 +90,20 @@ QtAwesome* AWESOME()
 
 QThread* SECONDARY_THREAD()
 {
-    if (_secondaryThread == Q_NULLPTR)
-        _secondaryThread = new QThread();
-
-    return _secondaryThread;
+    static QThread instance;
+    instance.start (QThread::HighPriority);
+    QObject::connect (qApp, SIGNAL (aboutToQuit()), &instance, SLOT (quit()));
+    return &instance;
 }
 
 //=============================================================================
 // MESSAGES_WINDOW
 //=============================================================================
 
-InfoWindow* MESSAGES_WINDOW()
+InfoWindow* INFORMATION_WINDOW()
 {
-    if (_messagesWindow == Q_NULLPTR)
-        _messagesWindow = new InfoWindow();
-
-    return _messagesWindow;
+    static InfoWindow instance;
+    return &instance;
 }
 
 //=============================================================================
@@ -132,10 +112,29 @@ InfoWindow* MESSAGES_WINDOW()
 
 JoystickManager* JOYSTICK_MANAGER()
 {
-    if (_joystickManager == Q_NULLPTR)
-        _joystickManager = new JoystickManager();
+    static JoystickManager instance;
+    instance.moveToThread (SECONDARY_THREAD());
+    return &instance;
+}
 
-    return _joystickManager;
+//=============================================================================
+// SETTINGS_WINDOW
+//=============================================================================
+
+SettingsWindow* SETTINGS_WINDOW()
+{
+    static SettingsWindow instance;
+    return &instance;
+}
+
+//=============================================================================
+// VJOYSTICK_WINDOW
+//=============================================================================
+
+VJoystickWindow* VJOYSTICK_WINDOW()
+{
+    static VJoystickWindow instance;
+    return &instance;
 }
 
 //=============================================================================
@@ -223,11 +222,8 @@ void GLOBAL_INIT()
     SDL_INIT();
     DS()->init();
 
-    if (_settingsWindow == Q_NULLPTR)
-        _settingsWindow = new SettingsWindow;
-
-    if (_vjoystickWindow == Q_NULLPTR)
-        _vjoystickWindow = new VJoystickWindow;
+    Q_UNUSED (SETTINGS_WINDOW());
+    Q_UNUSED (VJOYSTICK_WINDOW());
 }
 
 //=============================================================================
@@ -236,7 +232,7 @@ void GLOBAL_INIT()
 
 void SHOW_SETTINGS_WINDOW()
 {
-    _settingsWindow->show();
+    SETTINGS_WINDOW()->show();
 }
 
 //=============================================================================
@@ -245,7 +241,7 @@ void SHOW_SETTINGS_WINDOW()
 
 void SHOW_VIRTUAL_JOYSTICKS()
 {
-    _vjoystickWindow->show();
+    VJOYSTICK_WINDOW()->show();
 }
 
 //=============================================================================

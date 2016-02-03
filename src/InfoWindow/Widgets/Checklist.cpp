@@ -20,66 +20,66 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_GLOBAL_H
-#define _QDS_GLOBAL_H
-
 //=============================================================================
-// System/library includes
+// System includes
 //=============================================================================
 
-#include <QDebug>
-#include <QtAwesome.h>
-#include <LibDS/DriverStation.h>
+#include <QVBoxLayout>
+#include <QPlainTextEdit>
 
 //=============================================================================
 // Application includes
 //=============================================================================
 
-class Beeper;
-class Settings;
-class AppTheme;
-class InfoWindow;
-class SettingsWindow;
-class VJoystickWindow;
-class JoystickManager;
+#include "Checklist.h"
+#include "Global/Global.h"
+#include "Global/Settings.h"
+#include "Global/Languages.h"
 
 //=============================================================================
 // Global variables
 //=============================================================================
 
-#define NULL_STR QString ("")
-#define  NO_DATA QString ("--.--")
+const QString _STYLE        = "QPlainTextEdit {"
+                              "color: #222;"
+                              "background: url(:/textures/notes.png) repeat-y; }";
+const QString _DEFAULT_LIST = QObject::tr ("NOTES: \n"
+                              "1. Secure battery and connection.\n"
+                              "2. Ethernet cable from radio to robot controller.\n"
+                              "3. Radio switch position and LEDs.\n"
+                              "4. Remove safety pins.\n"
+                              "\n"
+                              "Modify this text directly to customize your list.");
 
 //=============================================================================
-// Global Objects
+// CheckList::CheckList
 //=============================================================================
 
-extern Beeper* BEEPER();
-extern DriverStation* DS();
-extern QtAwesome* AWESOME();
-extern QThread* SECONDARY_THREAD();
-extern InfoWindow* INFORMATION_WINDOW();
-extern SettingsWindow* SETTINGS_WINDOW();
-extern VJoystickWindow* VJOYSTICK_WINDOW();
-extern JoystickManager* JOYSTICK_MANAGER();
+Checklist::Checklist (QWidget* parent) : QWidget (parent)
+{
+    /* Create widgets */
+    m_layout = new QVBoxLayout (this);
+    m_edit   = new QPlainTextEdit (parent);
+
+    /* Configure layout */
+    m_layout->addWidget (m_edit);
+    m_layout->setContentsMargins (MAIN_MARGINS());
+
+    /* Load checklist into text editor */
+    QFont font = Languages::monoFont();
+    font.setPixelSize     (DPI_SCALE (14));
+    m_edit->setFont       (font);
+    m_edit->setStyleSheet (_STYLE);
+    m_edit->setPlainText  (Settings::get ("Checklist", _DEFAULT_LIST).toString());
+
+    connect (m_edit, SIGNAL (textChanged()), this, SLOT (saveChecklist()));
+}
 
 //=============================================================================
-// Common UI factors
+// CheckList::saveChecklist
 //=============================================================================
 
-extern QMargins NULL_MARGINS();
-extern QMargins MAIN_MARGINS();
-extern QMargins SMALL_MARGINS();
-extern qreal DPI_SCALE (qreal input);
-
-//=============================================================================
-// Global functions
-//=============================================================================
-
-extern void SDL_INIT();
-extern void GLOBAL_INIT();
-extern void SHOW_SETTINGS_WINDOW();
-extern void SHOW_VIRTUAL_JOYSTICKS();
-extern void MORSE_BEEP (QString input, int frequency);
-
-#endif
+void Checklist::saveChecklist()
+{
+    Settings::set ("Checklist", m_edit->toPlainText());
+}

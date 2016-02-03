@@ -20,45 +20,17 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_INFO_WINDOW_H
-#define _QDS_INFO_WINDOW_H
+#ifndef _QDS_IW_DRIVE_H
+#define _QDS_IW_DRIVE_H
 
-#include <QDialog>
+#include <QWidget>
 
-class Drive;
-class Camera;
-class Console;
-class Checklist;
-class QComboBox;
-class QTabWidget;
-class QHBoxLayout;
-class QVBoxLayout;
-
-class InfoWindow : public QDialog
+class Drive : public QWidget
 {
-    Q_OBJECT
 
 public:
-    explicit InfoWindow();
-    Console* console() const;
+    explicit Drive (QWidget* parent);
 
-public slots:
-    void showDocked (int displacement);
-
-private:
-    QHBoxLayout* m_layout;
-    QHBoxLayout* m_camLayout;
-    QVBoxLayout* m_rightLayout;
-
-    QWidget* m_rightWidget;
-    QTabWidget* m_tabWidget;
-    QComboBox* m_cameraOptions;
-    QWidget* m_camControlWidget;
-
-    Drive* m_drive;
-    Camera* m_camera;
-    Console* m_console;
-    Checklist* m_checkList;
 };
 
 #endif

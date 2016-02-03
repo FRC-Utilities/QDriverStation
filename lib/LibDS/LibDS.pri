@@ -25,17 +25,12 @@
 CODECFORTR = UTF-8
 CODECFORSRC = UTF-8
 
-QT += gui
 QT += core
 QT += network
 QT += widgets
 QT += multimedia
 
 CONFIG += c++11
-
-!win32* {
-    QMAKE_CXXFLAGS += -std=c++0x
-}
 
 INCLUDEPATH += $$PWD/include
 
@@ -53,7 +48,8 @@ HEADERS += \
     $$PWD/include/LibDS/Core/Discovery/Discovery.h \
     $$PWD/include/LibDS/Protocols/Protocol2016.h \
     $$PWD/include/LibDS/Core/Discovery/MDNS_Discovery.h \
-    $$PWD/include/LibDS/Protocols/Protocol2014.h
+    $$PWD/include/LibDS/Protocols/Protocol2014.h \
+    $$PWD/include/LibDS/NetworkTables/NetworkTables.h
 
 SOURCES += \
     $$PWD/src/DriverStation.cpp \
@@ -68,6 +64,7 @@ SOURCES += \
     $$PWD/src/Protocols/Protocol2015.cpp \
     $$PWD/src/Protocols/Protocol2016.cpp \
     $$PWD/src/Core/Discovery/MDNS_Discovery.cpp \
-    $$PWD/src/Protocols/Protocol2014.cpp
+    $$PWD/src/Protocols/Protocol2014.cpp \
+    $$PWD/src/NetworkTables/NetworkTables.cpp
 
 RESOURCES += $$PWD/etc/sounds/libds-sounds.qrc

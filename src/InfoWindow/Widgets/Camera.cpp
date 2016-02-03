@@ -20,66 +20,71 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_GLOBAL_H
-#define _QDS_GLOBAL_H
-
 //=============================================================================
-// System/library includes
+// System includes
 //=============================================================================
 
-#include <QDebug>
-#include <QtAwesome.h>
-#include <LibDS/DriverStation.h>
+#include <QTabWidget>
+#include <QVBoxLayout>
 
 //=============================================================================
 // Application includes
 //=============================================================================
 
-class Beeper;
-class Settings;
-class AppTheme;
-class InfoWindow;
-class SettingsWindow;
-class VJoystickWindow;
-class JoystickManager;
+#include "Camera.h"
 
 //=============================================================================
-// Global variables
+// Camera::Camera
 //=============================================================================
 
-#define NULL_STR QString ("")
-#define  NO_DATA QString ("--.--")
+Camera::Camera (QWidget* parent) : QWidget (parent)
+{
+    /* Create widgets */
+    m_camera    = new QWidget (this);
+    m_tabWidget = new QTabWidget (this);
+    m_layout    = new QVBoxLayout (this);
+
+    /* Configure tab widget */
+    m_tabWidget->addTab (m_camera, tr ("Camera"));
+
+    /* Configure layout */
+    m_layout->addWidget (m_tabWidget);
+    m_layout->setContentsMargins (QMargins (0, 0, 0, 0));
+}
 
 //=============================================================================
-// Global Objects
+// Camera::getOptions
 //=============================================================================
 
-extern Beeper* BEEPER();
-extern DriverStation* DS();
-extern QtAwesome* AWESOME();
-extern QThread* SECONDARY_THREAD();
-extern InfoWindow* INFORMATION_WINDOW();
-extern SettingsWindow* SETTINGS_WINDOW();
-extern VJoystickWindow* VJOYSTICK_WINDOW();
-extern JoystickManager* JOYSTICK_MANAGER();
+QStringList Camera::getOptions()
+{
+    QStringList list;
+
+    list.append (tr ("Camera Off"));
+    list.append (tr ("USB Camera SW"));
+    list.append (tr ("USB Camera HW"));
+    list.append (tr ("IP Camera"));
+
+    return list;
+}
 
 //=============================================================================
-// Common UI factors
+// Camera::setCameraOption
 //=============================================================================
 
-extern QMargins NULL_MARGINS();
-extern QMargins MAIN_MARGINS();
-extern QMargins SMALL_MARGINS();
-extern qreal DPI_SCALE (qreal input);
-
-//=============================================================================
-// Global functions
-//=============================================================================
-
-extern void SDL_INIT();
-extern void GLOBAL_INIT();
-extern void SHOW_SETTINGS_WINDOW();
-extern void SHOW_VIRTUAL_JOYSTICKS();
-extern void MORSE_BEEP (QString input, int frequency);
-
-#endif
+void Camera::setCameraOption (int option)
+{
+    switch ((CameraOption) option)
+        {
+        case kCameraOff:
+            break;
+        case kCameraUSB_SW:
+            break;
+        case kCameraUSB_HW:
+            break;
+        case kCameraIP:
+            break;
+        default:
+            break;
+        }
+}

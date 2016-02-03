@@ -50,9 +50,6 @@ public slots:
 
 protected:
     explicit Dashboards();
-    ~Dashboards();
-
-    static Dashboards* s_instance;
 
 private:
     QProcess m_process;

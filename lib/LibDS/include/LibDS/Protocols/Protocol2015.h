@@ -45,8 +45,9 @@ public:
     virtual int robotOutputPort();
 
     virtual int tcpProbesPort();
-    virtual int netConsolePort();
 
+    virtual int netConsoleInputPort();
+    virtual int netConsoleOutputPort();
     virtual bool acceptsConsoleCommands();
 
     virtual QStringList defaultRadioAddress();

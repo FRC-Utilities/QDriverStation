@@ -92,7 +92,7 @@ Buttons::Buttons (QWidget* parent) : QWidget (parent)
     m_close->setPalette          (closePalette);
 
     /* Configure button actions */
-    connect (m_close,    SIGNAL (clicked()), this, SIGNAL (close()));
+    connect (m_close,    SIGNAL (clicked()), this, SIGNAL (closeClicked()));
     connect (m_settings, SIGNAL (clicked()), this,   SLOT (showSettingsWindow()));
     connect (m_virtualJ, SIGNAL (clicked()), this,   SLOT (showVirtualJoysticks()));
 }

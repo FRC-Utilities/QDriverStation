@@ -36,7 +36,7 @@ public:
     explicit Buttons (QWidget* parent);
 
 signals:
-    void close();
+    void closeClicked();
 
 private slots:
     void showSettingsWindow();

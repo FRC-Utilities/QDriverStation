@@ -20,45 +20,38 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_INFO_WINDOW_H
-#define _QDS_INFO_WINDOW_H
+#ifndef _QDS_MW_CONSOLE_H
+#define _QDS_MW_CONSOLE_H
 
-#include <QDialog>
+#include <QWidget>
 
-class Drive;
-class Camera;
-class Console;
-class Checklist;
-class QComboBox;
-class QTabWidget;
-class QHBoxLayout;
 class QVBoxLayout;
+class QHBoxLayout;
+class QPushButton;
+class QPlainTextEdit;
 
-class InfoWindow : public QDialog
+class Messages : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit InfoWindow();
-    Console* console() const;
+    explicit Messages (QWidget* parent);
 
-public slots:
-    void showDocked (int displacement);
+private slots:
+    void createWidgets();
+    void createLayouts();
+
+    void registerMessage (QString text);
 
 private:
-    QHBoxLayout* m_layout;
-    QHBoxLayout* m_camLayout;
-    QVBoxLayout* m_rightLayout;
+    QVBoxLayout* m_mainLayout;
+    QHBoxLayout* m_buttonsLayout;
 
-    QWidget* m_rightWidget;
-    QTabWidget* m_tabWidget;
-    QComboBox* m_cameraOptions;
-    QWidget* m_camControlWidget;
+    QWidget* m_buttonsWidget;
+    QPushButton* m_copyButton;
+    QPushButton* m_clearButton;
 
-    Drive* m_drive;
-    Camera* m_camera;
-    Console* m_console;
-    Checklist* m_checkList;
+    QPlainTextEdit* m_console;
 };
 
 #endif

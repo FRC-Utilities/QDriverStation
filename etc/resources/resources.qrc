@@ -9,5 +9,6 @@
         <file>icons/other_settings.png</file>
         <file>fonts/Aurebesh-Bold.ttf</file>
         <file>fonts/Aurebesh-Regular.ttf</file>
+        <file>textures/notes.png</file>
     </qresource>
 </RCC>

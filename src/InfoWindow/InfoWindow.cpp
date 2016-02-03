@@ -25,7 +25,9 @@
 //=============================================================================
 
 #include <QScreen>
+#include <QComboBox>
 #include <QTabWidget>
+#include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QApplication>
 
@@ -34,8 +36,11 @@
 //=============================================================================
 
 #include "InfoWindow.h"
-#include "ConsoleWidget.h"
 #include "Global/Global.h"
+#include "Widgets/Drive.h"
+#include "Widgets/Camera.h"
+#include "Widgets/Console.h"
+#include "Widgets/Checklist.h"
 
 //=============================================================================
 // MessagesWindow::MessagesWindow
@@ -43,39 +48,71 @@
 
 InfoWindow::InfoWindow()
 {
-    m_tabWidget     = new QTabWidget    (this);
-    m_consoleWidget = new ConsoleWidget (this);
-    m_layout        = new QVBoxLayout   (this);
+    /* Create widgets */
+    m_drive            = new Drive       (this);
+    m_camera           = new Camera      (this);
+    m_console          = new Console     (this);
+    m_checkList        = new Checklist   (this);
+    m_tabWidget        = new QTabWidget  (this);
+    m_rightWidget      = new QWidget     (this);
+    m_cameraOptions    = new QComboBox   (this);
+    m_camControlWidget = new QWidget     (this);
 
+    /* Create the layouts */
+    m_layout           = new QHBoxLayout (this);
+    m_camLayout        = new QHBoxLayout (m_camControlWidget);
+    m_rightLayout      = new QVBoxLayout (m_rightWidget);
+
+    /* Configure right widget (tabs & cam options) */
+    m_rightLayout->setSpacing         (DPI_SCALE (5));
+    m_rightLayout->setContentsMargins (NULL_MARGINS());
+    m_rightLayout->addWidget          (m_tabWidget);
+    m_rightLayout->addWidget          (m_camControlWidget);
+    m_rightLayout->setStretch         (0, 1);
+    m_rightLayout->setStretch         (1, 0);
+
+    /* Create the spacer between the camera options combo and buttons */
+    QSpacerItem* spacer = new QSpacerItem (0,
+                                           0,
+                                           QSizePolicy::MinimumExpanding,
+                                           QSizePolicy::MinimumExpanding);
+
+    /* Configure the camera control options */
+    m_cameraOptions->addItems         (m_camera->getOptions());
+    m_camLayout->setContentsMargins   (NULL_MARGINS());
+    m_camLayout->addWidget            (m_cameraOptions);
+    m_camLayout->addSpacerItem        (spacer);
+
+    /* Configure the tabs */
+    m_tabWidget->addTab (m_drive,     tr ("Drive"));
+    m_tabWidget->addTab (m_console,   tr ("Console"));
+    m_tabWidget->addTab (m_checkList, tr ("Checklist"));
+
+    /* Use custom margins to look good when displayed with MW on bottom */
     QMargins margins = QMargins (DPI_SCALE (10),
                                  DPI_SCALE (10),
                                  DPI_SCALE (10),
                                  DPI_SCALE  (0));
 
-    m_consoleWidget->layout()->setContentsMargins (MAIN_MARGINS());
-    m_tabWidget->addTab          (m_consoleWidget, tr ("Console"));
+    /* Configure the layout */
+    m_layout->addWidget (m_camera);
+    m_layout->addWidget (m_rightWidget);
+    m_layout->setSpacing (DPI_SCALE (10));
     m_layout->setContentsMargins (margins);
-    m_layout->addWidget          (m_tabWidget);
-}
+    m_console->layout()->setContentsMargins (MAIN_MARGINS());
 
-//=============================================================================
-// MessagesWindow::~MessagesWindow
-//=============================================================================
-
-InfoWindow::~InfoWindow()
-{
-    delete m_layout;
-    delete m_tabWidget;
-    delete m_consoleWidget;
+    /* Connect signals/slots */
+    connect (m_cameraOptions, SIGNAL (currentIndexChanged (int)),
+             m_camera,          SLOT (setCameraOption     (int)));
 }
 
 //=============================================================================
 // MessagesWindow::console
 //=============================================================================
 
-ConsoleWidget* InfoWindow::console() const
+Console* InfoWindow::console() const
 {
-    return m_consoleWidget;
+    return m_console;
 }
 
 //=============================================================================

@@ -47,9 +47,6 @@ class LIB_DS_DECL DriverStation : public QObject
     Q_ENUMS (ProtocolType)
 
 public:
-    explicit DriverStation();
-    ~DriverStation();
-
     static DriverStation* getInstance();
 
     /**
@@ -257,6 +254,10 @@ public slots:
      * Updates the \a state of the selected \a button in the specified \a josytick
      */
     Q_INVOKABLE void updateJoystickButton (int js, int button, bool pressed);
+
+protected:
+    explicit DriverStation();
+    ~DriverStation();
 
 signals:
     /**

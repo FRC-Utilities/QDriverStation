@@ -26,7 +26,7 @@
 #include <QTabWidget>
 
 class About;
-class Console;
+class Messages;
 class CAN_Metrics;
 
 class RightTab : public QTabWidget
@@ -36,7 +36,7 @@ public:
 
 private:
     About* m_about;
-    Console* m_console;
+    Messages* m_messages;
     CAN_Metrics* m_metrics;
 };
 

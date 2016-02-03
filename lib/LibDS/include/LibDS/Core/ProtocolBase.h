@@ -33,11 +33,6 @@
 #include "LibDS/Core/Discovery/Discovery.h"
 
 /**
- * Use this when the protocol itself is not bound to a specific port
- */
-#define DS_PROTOCOL_NO_PORT -1
-
-/**
  * \class DS_Protocol
  *
  * Implements an abstract class to be used as a base for any protocol that
@@ -220,7 +215,17 @@ public:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual int netConsolePort()
+    virtual int netConsoleInputPort()
+    {
+        return DS_PROTOCOL_NO_PORT;
+    }
+
+    /**
+     * Returns the port used for communicating data through the net console
+     *
+     * \note This function must be implemented by each protocol
+     */
+    virtual int netConsoleOutputPort()
     {
         return DS_PROTOCOL_NO_PORT;
     }
