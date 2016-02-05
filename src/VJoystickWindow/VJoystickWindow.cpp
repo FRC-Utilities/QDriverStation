@@ -161,7 +161,7 @@ void VJoystickWindow::createLayouts()
     m_tabsLayout->setStretch              (1, 0);
 
     /* Spacer between keyboard checkbox and close button */
-    QSpacerItem* spacer = new QSpacerItem (DPI_SCALE (128), 0
+    QSpacerItem* spacer = new QSpacerItem (DPI_SCALE (128), 0,
                                            QSizePolicy::MinimumExpanding,
                                            QSizePolicy::MinimumExpanding);
 
