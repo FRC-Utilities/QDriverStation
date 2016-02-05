@@ -86,8 +86,7 @@ QStringList Dashboards::dashboardList()
 {
     QStringList list;
     list.append (tr ("None"));
-    list.append (tr ("QDashboard"));
-    list.append (tr ("SFX Dashboard"));
+    list.append (tr ("Built-in Dashboard"));
     list.append (tr ("SmartDashboard"));
 
 #if defined _WIN32 || defined _WIN64
@@ -107,31 +106,14 @@ void Dashboards::openDashboard()
     m_current = (DashboardTypes) Settings::get ("Dashboard", kNone).toInt();
 
     /* Open the 'internal' dashboard */
-    if (m_current == kQDashboard)
+    if (m_current == kBuiltin)
         INFORMATION_WINDOW()->show();
 
     /* Open an external dashboard */
     else
         {
-            /* Open the SFX Dashboard */
-            if (m_current == kSfxDashboard)
-                {
-                    QDir dir;
-                    QStringList files;
-
-                    /* Go to the WPILib directory and get the available folders */
-                    dir.cd (QString ("%1/wpilib/tools/").arg (QDir::homePath()));
-                    files = dir.entryList (QDir::Dirs);
-
-                    /* In theory, the only folder should contain the SFX DB, open it */
-                    if (files.count() >= 3)
-                        path = QString ("java -jar \"%1/%2/sfx.jar\"")
-                               .arg (dir.absolutePath())
-                               .arg (files.at (2));
-                }
-
             /* Open the SmartDashboard, easy as cake */
-            else if (m_current == kSmartDashboard)
+            if (m_current == kSmartDashboard)
                 {
                     path = QString ("java -jar \"%1/wpilib/tools/SmartDashboard.jar\"")
                            .arg (QDir::homePath());
@@ -159,7 +141,7 @@ void Dashboards::openDashboard()
 
 void Dashboards::closeDashboard()
 {
-    if (m_current != kQDashboard)
+    if (m_current != kBuiltin)
         m_process.close();
 
     else

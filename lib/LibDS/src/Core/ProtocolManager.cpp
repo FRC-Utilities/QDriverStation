@@ -37,20 +37,10 @@
 // DS_ProtocolManager::DS_ProtocolManager
 //=============================================================================
 
-DS_ProtocolManager::DS_ProtocolManager()
+DS_ProtocolManager::DS_ProtocolManager (QObject* parent) : QObject (parent)
 {
     m_protocol = Q_NULLPTR;
     m_joysticks = new QList<DS_Joystick*>;
-}
-
-//=============================================================================
-// DS_ProtocolManager::~DS_ProtocolManager
-//=============================================================================
-
-DS_ProtocolManager::~DS_ProtocolManager()
-{
-    delete m_protocol;
-    delete m_joysticks;
 }
 
 //=============================================================================

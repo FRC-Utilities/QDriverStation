@@ -35,7 +35,6 @@ class QListWidget;
 class QHBoxLayout;
 class QVBoxLayout;
 class QGridLayout;
-class QSpacerItem;
 
 class Joysticks : public QWidget
 {
@@ -53,8 +52,6 @@ private slots:
     void onButtonEvent (QDS_ButtonEvent event);
 
 private:
-    QSpacerItem* spacer();
-
     QHBoxLayout* m_mainLayout;
     QListWidget* m_joystickNames;
 

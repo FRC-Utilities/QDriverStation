@@ -72,17 +72,11 @@ InfoWidget::InfoWidget (QWidget* parent) : QWidget (parent)
     m_rightLayout->setStretch         (0, 1);
     m_rightLayout->setStretch         (1, 0);
 
-    /* Create the spacer between the camera options combo and buttons */
-    QSpacerItem* spacer = new QSpacerItem (0,
-                                           0,
-                                           QSizePolicy::MinimumExpanding,
-                                           QSizePolicy::MinimumExpanding);
-
     /* Configure the camera control options */
     m_cameraOptions->addItems         (m_camera->getOptions());
     m_camLayout->setContentsMargins   (NULL_MARGINS());
     m_camLayout->addWidget            (m_cameraOptions);
-    m_camLayout->addSpacerItem        (spacer);
+    m_camLayout->addSpacerItem        (SPACER());
 
     /* Configure the tabs */
     m_tabWidget->addTab (m_drive,     tr ("Drive"));

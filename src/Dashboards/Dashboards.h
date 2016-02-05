@@ -33,10 +33,9 @@ public:
     enum DashboardTypes
     {
         kNone           = 0x00,
-        kQDashboard     = 0x01,
-        kSfxDashboard   = 0x02,
-        kSmartDashboard = 0x03,
-        kLabVIEW        = 0x04,
+        kBuiltin        = 0x01,
+        kSmartDashboard = 0x02,
+        kLabVIEW        = 0x03,
     };
 
     static Dashboards* getInstance();

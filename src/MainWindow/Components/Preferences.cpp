@@ -100,9 +100,6 @@ void Preferences::createWidgets()
 
 void Preferences::createLayouts()
 {
-    QSpacerItem* spacer = new QSpacerItem  (5, 5,
-                                            QSizePolicy::Minimum,
-                                            QSizePolicy::MinimumExpanding);
     /* Left widgets */
     m_leftContainer  = new QWidget         (this);
     m_leftLayout     = new QVBoxLayout     (m_leftContainer);
@@ -113,7 +110,7 @@ void Preferences::createLayouts()
     m_leftLayout->addWidget                (m_dashboards);
     m_leftLayout->addWidget                (m_protocolLabel);
     m_leftLayout->addWidget                (m_protocols);
-    m_leftLayout->addSpacerItem            (spacer);
+    m_leftLayout->addSpacerItem            (SPACER());
 
     /* Practice timings */
     m_practiceLayout = new QGridLayout     (m_practiceTimings);

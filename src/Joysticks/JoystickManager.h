@@ -43,7 +43,6 @@ class JoystickManager : public QObject
 
 public:
     explicit JoystickManager();
-    ~JoystickManager();
 
     /**
      * Returns a list with the names of all the input interfaces

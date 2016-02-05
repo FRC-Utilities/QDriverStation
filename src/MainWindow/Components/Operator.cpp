@@ -176,12 +176,6 @@ void Operator::createLayouts()
     m_operationLayout->addWidget             (m_modesWidget);
     m_operationLayout->addWidget             (m_stateWidget);
 
-    /* Configure le spacer */
-    QSpacerItem* spacer = new QSpacerItem    (0,
-            0,
-            QSizePolicy::MinimumExpanding,
-            QSizePolicy::MinimumExpanding);
-
     /* Configure the indicator layout */
     m_indicatorsLayout = new QGridLayout     (m_indicatorsWidget);
     m_indicatorsLayout->setVerticalSpacing   (DPI_SCALE (5));
@@ -194,14 +188,14 @@ void Operator::createLayouts()
     m_indicatorsLayout->addWidget            (m_teamStationLabel, 7, 0);
     m_indicatorsLayout->addWidget            (m_plugIcon,         2, 1);
     m_indicatorsLayout->addWidget            (m_elapsedTime,      0, 2);
-    m_indicatorsLayout->addItem              (spacer,             1, 0);
+    m_indicatorsLayout->addItem              (SPACER(),           1, 0);
     m_indicatorsLayout->addWidget            (m_battery,          2, 2);
     m_indicatorsLayout->addWidget            (m_cpu,              3, 2);
-    m_indicatorsLayout->addItem              (spacer,             4, 1);
+    m_indicatorsLayout->addItem              (SPACER(),           4, 1);
     m_indicatorsLayout->addWidget            (m_windowWidget,     5, 2);
-    m_indicatorsLayout->addItem              (spacer,             6, 0);
+    m_indicatorsLayout->addItem              (SPACER(),           6, 0);
     m_indicatorsLayout->addWidget            (m_teamStation,      7, 2);
-    m_indicatorsLayout->addItem              (spacer,             8, 1);
+    m_indicatorsLayout->addItem              (SPACER(),           8, 1);
 
     /* Configure the main layout */
     m_mainLayout = new QHBoxLayout           (this);
@@ -363,25 +357,28 @@ void Operator::updateEnableState()
 
 void Operator::updateProgressbars()
 {
-    m_cpu->setValue (CPU::getUsage());
-    m_battery->setValue (Battery::currentLevel());
-    m_plugIcon->setVisible (Battery::isConenctedToPowerSupply());
+    if (m_cpu && m_battery && m_plugIcon)
+        {
+            m_cpu->setValue (CPU::getUsage());
+            m_battery->setValue (Battery::currentLevel());
+            m_plugIcon->setVisible (Battery::isConenctedToPowerSupply());
 
-    /* Create CPU palette */
-    QPalette cpuPalette;
-    cpuPalette.setColor (QPalette::Highlight, QColor ("#dcae00"));
+            /* Create CPU palette */
+            QPalette cpuPalette;
+            cpuPalette.setColor (QPalette::Highlight, QColor ("#dcae00"));
 
-    /* Create battery palette */
-    QPalette batteryPalette;
-    batteryPalette.setColor (QPalette::Highlight,
-                             QColor (m_battery->value() <= 25 ?
-                                     "#ee141a" :
-                                     "#deae00"));
+            /* Create battery palette */
+            QPalette batteryPalette;
+            batteryPalette.setColor (QPalette::Highlight,
+                                     QColor (m_battery->value() <= 25 ?
+                                             "#ee141a" :
+                                             "#deae00"));
 
 
-    /* Apply palettes */
-    m_cpu->setPalette (cpuPalette);
-    m_battery->setPalette (batteryPalette);
+            /* Apply palettes */
+            m_cpu->setPalette (cpuPalette);
+            m_battery->setPalette (batteryPalette);
+        }
 
     /* Start a timer */
     QTimer::singleShot (1000, Qt::CoarseTimer, this, SLOT (updateProgressbars()));

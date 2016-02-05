@@ -37,7 +37,7 @@ class LIB_DS_DECL DS_Client : public QObject
     Q_OBJECT
 
 public:
-    explicit DS_Client();
+    explicit DS_Client (QObject* parent);
 
 public slots:
     /**

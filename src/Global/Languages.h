@@ -33,10 +33,9 @@ public:
     typedef enum
     {
         kAuto     = 0,
-        kAurebesh = 1,
-        kGerman   = 2,
-        kEnglish  = 3,
-        kSpanish  = 4,
+        kGerman   = 1,
+        kEnglish  = 2,
+        kSpanish  = 3,
     } LanguageType;
 
     static void init();

@@ -27,6 +27,7 @@
 #include <SDL.h>
 #include <QThread>
 #include <QScreen>
+#include <QSpacerItem>
 #include <QMessageBox>
 #include <QApplication>
 
@@ -82,6 +83,17 @@ QtAwesome* AWESOME()
     instance.setDefaultOption ("color", AppTheme::Theme().foreground);
 
     return &instance;
+}
+
+//=============================================================================
+// SPACER
+//=============================================================================
+
+QSpacerItem* SPACER()
+{
+    return new QSpacerItem (0, 0,
+                            QSizePolicy::MinimumExpanding,
+                            QSizePolicy::MinimumExpanding);
 }
 
 //=============================================================================

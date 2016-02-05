@@ -37,7 +37,6 @@ class Console : public QWidget
 
 public:
     explicit Console (QWidget* parent);
-    ~Console();
 
 public slots:
     void copy();

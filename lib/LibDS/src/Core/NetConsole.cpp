@@ -27,7 +27,7 @@
 // DS_NetConsole::DS_NetConsole
 //=============================================================================
 
-DS_NetConsole::DS_NetConsole()
+DS_NetConsole::DS_NetConsole (QObject* parent) : QObject (parent)
 {
     m_outPort = 0;
     m_acceptsInput = false;

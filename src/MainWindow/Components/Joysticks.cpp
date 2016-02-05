@@ -107,9 +107,9 @@ Joysticks::Joysticks (QWidget* parent) : QWidget (parent)
     m_axisGroupBox->addWidget            (m_axesContainer);
     m_povGroupBox->addWidget             (m_povsContainer);
     m_buttonGroupBox->addWidget          (m_buttonsContainer);
-    m_axisGroupBox->addSpacerItem        (spacer());
-    m_povGroupBox->addSpacerItem         (spacer());
-    m_buttonGroupBox->addSpacerItem      (spacer());
+    m_axisGroupBox->addSpacerItem        (SPACER());
+    m_povGroupBox->addSpacerItem         (SPACER());
+    m_buttonGroupBox->addSpacerItem      (SPACER());
 
     /* Set main layout */
     m_mainLayout = new QHBoxLayout       (this);
@@ -118,7 +118,7 @@ Joysticks::Joysticks (QWidget* parent) : QWidget (parent)
     m_mainLayout->addWidget              (m_axisIndicators);
     m_mainLayout->addWidget              (m_buttonIndicators);
     m_mainLayout->addWidget              (m_POVIndicators);
-    m_mainLayout->addSpacerItem          (spacer());
+    m_mainLayout->addSpacerItem          (SPACER());
     m_joystickBox->addWidget             (m_joystickNames);
 
     /* Connect slots */
@@ -287,15 +287,4 @@ void Joysticks::onButtonEvent (QDS_ButtonEvent event)
 
     if (event.button < m_buttons.count())
         m_buttons.at (event.button)->setChecked (event.pressed);
-}
-
-//=============================================================================
-// Joysticks::spacer
-//=============================================================================
-
-QSpacerItem* Joysticks::spacer()
-{
-    return new QSpacerItem (0, 0,
-                            QSizePolicy::MinimumExpanding,
-                            QSizePolicy::MinimumExpanding);
 }

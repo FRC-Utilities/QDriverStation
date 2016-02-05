@@ -45,9 +45,6 @@ Buttons::Buttons (QWidget* parent) : QWidget (parent)
     m_close             = new QPushButton (QChar (fa::close),     this);
     m_settings          = new QPushButton (QChar (fa::wrench),    this);
     m_virtualJ          = new QPushButton (QChar (fa::keyboardo), this);
-    QSpacerItem* spacer = new QSpacerItem (0, 0,
-                                           QSizePolicy::MinimumExpanding,
-                                           QSizePolicy::MinimumExpanding);
 
     /* Set tooltips */
     m_close->setToolTip          (tr ("Quit"));
@@ -60,7 +57,7 @@ Buttons::Buttons (QWidget* parent) : QWidget (parent)
     m_layout->addWidget          (m_close);
     m_layout->addWidget          (m_settings);
     m_layout->addWidget          (m_virtualJ);
-    m_layout->addSpacerItem      (spacer);
+    m_layout->addSpacerItem      (SPACER());
 
     /* Change the font of the buttons to display font awesome */;
     m_close->setFont             (AWESOME()->font (DPI_SCALE (16)));

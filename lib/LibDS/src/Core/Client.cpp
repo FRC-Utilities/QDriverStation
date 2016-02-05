@@ -26,7 +26,7 @@
 // DS_Client::DS_Client
 //=============================================================================
 
-DS_Client::DS_Client()
+DS_Client::DS_Client (QObject* parent) : QObject (parent)
 {
     connect (&m_fmsReceiver,   SIGNAL (readyRead       (void)),
              this,               SLOT (readFmsPacket   (void)));

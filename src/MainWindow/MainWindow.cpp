@@ -115,6 +115,9 @@ MainWindow::MainWindow()
     setWindowTitle                (QApplication::applicationName()
                                    + QString (" ")
                                    + QApplication::applicationVersion());
+
+    move (Settings::get ("MainWindow X", 100).toInt(),
+          Settings::get ("MainWindow Y", 100).toInt());
 }
 
 //=============================================================================
@@ -172,7 +175,7 @@ void MainWindow::showUnDocked()
     showNormal();
     setFixedSize (minimumSizeHint());
 
-    if (Dashboards::getInstance()->currentDashboard() == Dashboards::kQDashboard)
+    if (Dashboards::getInstance()->currentDashboard() == Dashboards::kBuiltin)
         INFORMATION_WINDOW()->show();
 
     move (Settings::get ("MainWindow X", 100).toInt(),
@@ -208,7 +211,7 @@ void MainWindow::showDocked()
     setFixedWidth  (desktop.width());
     setFixedHeight (minimumSizeHint().height());
 
-    if (Dashboards::getInstance()->currentDashboard() == Dashboards::kQDashboard)
+    if (Dashboards::getInstance()->currentDashboard() == Dashboards::kBuiltin)
         {
             showFullScreen();
             m_dashboard->setVisible (true);

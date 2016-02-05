@@ -36,7 +36,7 @@ class LIB_DS_DECL DS_NetConsole : public QObject
     Q_OBJECT
 
 public:
-    explicit DS_NetConsole();
+    explicit DS_NetConsole (QObject* parent);
 
 public slots:
     /**

@@ -40,7 +40,7 @@ class LIB_DS_DECL DS_ElapsedTime : public QObject
     Q_OBJECT
 
 public:
-    explicit DS_ElapsedTime();
+    explicit DS_ElapsedTime (QObject* parent);
 
 public slots:
     /**

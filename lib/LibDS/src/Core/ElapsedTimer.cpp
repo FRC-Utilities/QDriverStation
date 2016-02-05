@@ -26,7 +26,7 @@
 // DS_ElapsedTime::DS_ElapsedTime
 //=============================================================================
 
-DS_ElapsedTime::DS_ElapsedTime()
+DS_ElapsedTime::DS_ElapsedTime (QObject* parent) : QObject (parent)
 {
     stopTimer();
     getElapsedTime();

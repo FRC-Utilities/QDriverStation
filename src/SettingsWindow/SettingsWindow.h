@@ -43,7 +43,6 @@ class SettingsWindow : public QDialog
 
 public:
     explicit SettingsWindow();
-    ~SettingsWindow();
 
     enum Colors
     {

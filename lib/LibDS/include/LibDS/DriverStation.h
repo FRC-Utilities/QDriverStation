@@ -257,7 +257,6 @@ public slots:
 
 protected:
     explicit DriverStation();
-    ~DriverStation();
 
 signals:
     /**

@@ -71,10 +71,10 @@ DriverStation::DriverStation()
     m_init = false;
 
     /* Initialize private members */
-    m_client      = new DS_Client;
-    m_netConsole  = new DS_NetConsole;
-    m_elapsedTime = new DS_ElapsedTime;
-    m_manager     = new DS_ProtocolManager;
+    m_client      = new DS_Client          (this);
+    m_netConsole  = new DS_NetConsole      (this);
+    m_elapsedTime = new DS_ElapsedTime     (this);
+    m_manager     = new DS_ProtocolManager (this);
     m_protocol    = Q_NULLPTR;
 
     /* Update internal values and notify object on robot status events */
@@ -140,19 +140,6 @@ DriverStation::DriverStation()
     /* Send and read FMS packets */
     connect (m_client,  SIGNAL (fmsPacketReceived   (QByteArray)),
              this,        SLOT (readFmsPacket       (QByteArray)));
-}
-
-//=============================================================================
-// DriverStation::~DriverStation
-//=============================================================================
-
-DriverStation::~DriverStation()
-{
-    delete m_client;
-    delete m_manager;
-    delete m_protocol;
-    delete m_netConsole;
-    delete m_elapsedTime;
 }
 
 //=============================================================================

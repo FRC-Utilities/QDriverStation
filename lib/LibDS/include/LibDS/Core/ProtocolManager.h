@@ -42,8 +42,7 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject
     Q_OBJECT
 
 public:
-    explicit DS_ProtocolManager();
-    ~DS_ProtocolManager();
+    explicit DS_ProtocolManager (QObject* parent);
 
     /**
      * Returns the current protocol in use

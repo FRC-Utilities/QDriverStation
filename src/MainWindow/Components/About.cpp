@@ -52,25 +52,21 @@ About::About (QWidget* parent) : QWidget (parent)
                                            .arg (QApplication::applicationVersion()),
                                            this);
 
-    QSpacerItem* spacer = new QSpacerItem (0, 0,
-                                           QSizePolicy::MinimumExpanding,
-                                           QSizePolicy::MinimumExpanding);
-
     m_mainLayout = new QVBoxLayout   (this);
     m_mainLayout->setSpacing         (DPI_SCALE (5));
-    m_mainLayout->addSpacerItem      (spacer);
+    m_mainLayout->addSpacerItem      (SPACER());
     m_mainLayout->addWidget          (m_appIcon);
     m_mainLayout->addWidget          (m_version);
-    m_mainLayout->addSpacerItem      (spacer);
+    m_mainLayout->addSpacerItem      (SPACER());
     m_mainLayout->addWidget          (m_buttonContainer);
-    m_mainLayout->addSpacerItem      (spacer);
+    m_mainLayout->addSpacerItem      (SPACER());
 
     m_buttonLayout = new QHBoxLayout (m_buttonContainer);
     m_buttonLayout->setSpacing       (DPI_SCALE (5));
-    m_buttonLayout->addSpacerItem    (spacer);
+    m_buttonLayout->addSpacerItem    (SPACER());
     m_buttonLayout->addWidget        (m_site);
     m_buttonLayout->addWidget        (m_reportBug);
-    m_buttonLayout->addSpacerItem    (spacer);
+    m_buttonLayout->addSpacerItem    (SPACER());
 
     m_appIcon->setAlignment          (Qt::AlignCenter);
     m_version->setAlignment          (Qt::AlignCenter);

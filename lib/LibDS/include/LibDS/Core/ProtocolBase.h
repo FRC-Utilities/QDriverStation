@@ -44,7 +44,6 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject
 
 public:
     explicit DS_ProtocolBase();
-    ~DS_ProtocolBase();
 
     /**
      * Returns the current team number

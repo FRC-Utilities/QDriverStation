@@ -65,14 +65,14 @@ void Messages::createWidgets()
     m_copyButton->setFont   (AWESOME()->font (DPI_SCALE (12)));
     m_clearButton->setFont  (AWESOME()->font (DPI_SCALE (12)));
 
-    connect (m_copyButton,                 SIGNAL (clicked           (void)),
+    connect (m_copyButton,                    SIGNAL (clicked           (void)),
              INFORMATION_WINDOW()->console(),   SLOT (copy              (void)));
-    connect (m_clearButton,                SIGNAL (clicked           (void)),
+    connect (m_clearButton,                   SIGNAL (clicked           (void)),
              INFORMATION_WINDOW()->console(),   SLOT (clear             (void)));
-    connect (m_clearButton,                SIGNAL (clicked           (void)),
-             m_console,                      SLOT (clear             (void)));
+    connect (m_clearButton,                   SIGNAL (clicked           (void)),
+             m_console,                         SLOT (clear             (void)));
     connect (INFORMATION_WINDOW()->console(), SIGNAL (messageRegistered (QString)),
-             this,                           SLOT (registerMessage   (QString)));
+             this,                              SLOT (registerMessage   (QString)));
 }
 
 //=============================================================================
@@ -81,16 +81,13 @@ void Messages::createWidgets()
 
 void Messages::createLayouts()
 {
-    QSpacerItem* spacer = new QSpacerItem (0, 0,
-                                           QSizePolicy::MinimumExpanding,
-                                           QSizePolicy::MinimumExpanding);
     /* Configure buttons layout */
     m_buttonsLayout = new QHBoxLayout   (m_buttonsWidget);
     m_buttonsLayout->setSpacing         (DPI_SCALE (5));
     m_buttonsLayout->setContentsMargins (NULL_MARGINS());
     m_buttonsLayout->addWidget          (m_copyButton);
     m_buttonsLayout->addWidget          (m_clearButton);
-    m_buttonsLayout->addSpacerItem      (spacer);
+    m_buttonsLayout->addSpacerItem      (SPACER());
 
     /* Configure main layout */
     m_mainLayout = new QVBoxLayout      (this);

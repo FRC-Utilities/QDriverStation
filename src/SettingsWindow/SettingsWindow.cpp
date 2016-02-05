@@ -73,75 +73,67 @@ SettingsWindow::SettingsWindow()
 }
 
 //=============================================================================
-// SettingsWindow::~SettingsWindow
-//=============================================================================
-
-SettingsWindow::~SettingsWindow()
-{
-    foreach (QWidget* widget, findChildren<QWidget*>())
-        widget->deleteLater();
-}
-
-//=============================================================================
 // SettingsWindow::createWidgets
 //=============================================================================
 
 void SettingsWindow::createWidgets()
 {
     /* Tab widget */
-    m_container         = new QTabWidget (this);
-    m_containerWidget   = new QWidget (this);
+    m_container         = new QTabWidget;
+    m_containerWidget   = new QWidget    (m_container);
 
     /* Network settings box */
-    m_addressWidget     = new QWidget   (this);
-    m_robotAddress      = new QLineEdit (this);
-    m_networkingIcon    = new QLabel    ("", this);
-    m_otherSettingsIcon = new QLabel    ("", this);
-    m_networkingBox     = new QGroupBox (tr ("Networking"), this);
-    m_useCustomAddress  = new QCheckBox (tr ("Use custom robot address"), this);
+    m_addressWidget     = new QWidget   (m_container);
+    m_robotAddress      = new QLineEdit (m_container);
+    m_networkingIcon    = new QLabel    ("", m_container);
+    m_otherSettingsIcon = new QLabel    ("", m_container);
+    m_networkingBox     = new QGroupBox (tr ("Networking"), m_container);
+    m_useCustomAddress  = new QCheckBox (tr ("Use custom robot address"),
+                                         m_container);
 
     /* Buttons */
-    m_buttonsWidget     = new QWidget (this);
-    m_reset             = new QPushButton (tr ("Reset"),  this);
-    m_ok                = new QPushButton (tr ("OK"),     this);
-    m_cancel            = new QPushButton (tr ("Cancel"), this);
+    m_buttonsWidget     = new QWidget (m_container);
+    m_reset             = new QPushButton (tr ("Reset"),  m_container);
+    m_ok                = new QPushButton (tr ("OK"),     m_container);
+    m_cancel            = new QPushButton (tr ("Cancel"), m_container);
 
     /* That crap that allows you to change the application's theme */
-    m_appearanceBox     = new QGroupBox (tr ("Colors"), this);
+    m_appearanceBox     = new QGroupBox (tr ("Colors"), m_container);
 
     /* Color captions/labels */
-    m_baseLabel         = new QLabel (tr ("Base"), this);
-    m_highlightLabel    = new QLabel (tr ("Highlight"), this);
-    m_backgroundLabel   = new QLabel (tr ("Background"), this);
-    m_foregroundLabel   = new QLabel (tr ("Foreground"), this);
+    m_baseLabel         = new QLabel (tr ("Base"),       m_container);
+    m_highlightLabel    = new QLabel (tr ("Highlight"),  m_container);
+    m_backgroundLabel   = new QLabel (tr ("Background"), m_container);
+    m_foregroundLabel   = new QLabel (tr ("Foreground"), m_container);
 
     /* Color rectangles */
-    m_baseColor         = new QWidget (this);
-    m_highlightColor    = new QWidget (this);
-    m_backgroundColor   = new QWidget (this);
-    m_foregroundColor   = new QWidget (this);
+    m_baseColor         = new QWidget (m_container);
+    m_highlightColor    = new QWidget (m_container);
+    m_backgroundColor   = new QWidget (m_container);
+    m_foregroundColor   = new QWidget (m_container);
 
     /* The buttons that fire up a color dialog */
-    m_baseButton        = new QPushButton ("...", this);
-    m_highlightButton   = new QPushButton ("...", this);
-    m_backgroundButton  = new QPushButton ("...", this);
-    m_foregroundButton  = new QPushButton ("...", this);
+    m_baseButton        = new QPushButton ("...", m_container);
+    m_highlightButton   = new QPushButton ("...", m_container);
+    m_backgroundButton  = new QPushButton ("...", m_container);
+    m_foregroundButton  = new QPushButton ("...", m_container);
 
     /* The HEX color editors */
-    m_baseEdit          = new QLineEdit (this);
-    m_highlightEdit     = new QLineEdit (this);
-    m_backgroundEdit    = new QLineEdit (this);
-    m_foregroundEdit    = new QLineEdit (this);
+    m_baseEdit          = new QLineEdit (m_container);
+    m_highlightEdit     = new QLineEdit (m_container);
+    m_backgroundEdit    = new QLineEdit (m_container);
+    m_foregroundEdit    = new QLineEdit (m_container);
 
     /* Misc. settings such as auto-updater and sound settings */
-    m_othersContainer   = new QWidget   (this);
-    m_languageBox       = new QComboBox (this);
-    m_languageLabel     = new QLabel    (tr ("Language") + ":", this);
-    m_otherSettingsBox  = new QGroupBox (tr ("Other Settings"), this);
+    m_othersContainer   = new QWidget   (m_container);
+    m_languageBox       = new QComboBox (m_container);
+    m_languageLabel     = new QLabel    (tr ("Language") + ":", m_container);
+    m_otherSettingsBox  = new QGroupBox (tr ("Other Settings"), m_container);
     m_autoUpdater       = new QCheckBox (tr ("Check for updates automatically"),
-                                         this);
-    m_soundEffects      = new QCheckBox (tr ("Enable UI sound effects"), this);
-    m_promptOnQuit      = new QCheckBox (tr ("Prompt on quit"), this);
+                                         m_container);
+    m_soundEffects      = new QCheckBox (tr ("Enable UI sound effects"),
+                                         m_container);
+    m_promptOnQuit      = new QCheckBox (tr ("Prompt on quit"), m_container);
 
     /* Defines the size of the color rectangles and color dialog buttons */
     QSize rectangle = QSize          (DPI_SCALE (24), DPI_SCALE (24));
@@ -213,10 +205,6 @@ void SettingsWindow::createWidgets()
 
 void SettingsWindow::createLayouts()
 {
-    QSpacerItem* spacer = new QSpacerItem (0, 0,
-                                           QSizePolicy::MinimumExpanding,
-                                           QSizePolicy::MinimumExpanding);
-
     QSpacerItem* smallSpacer = new QSpacerItem (DPI_SCALE (15),
             DPI_SCALE (15),
             QSizePolicy::Minimum,
@@ -234,7 +222,7 @@ void SettingsWindow::createLayouts()
     m_networkLayout->setContentsMargins       (MAIN_MARGINS());
     m_networkLayout->addWidget                (m_networkingIcon);
     m_networkLayout->addWidget                (m_addressWidget);
-    m_networkLayout->addSpacerItem            (spacer);
+    m_networkLayout->addSpacerItem            (SPACER());
 
     /* Appearance box */
     m_appearanceLayout = new QGridLayout      (m_appearanceBox);
@@ -274,19 +262,19 @@ void SettingsWindow::createLayouts()
     m_otherSettingsLayout->setContentsMargins (MAIN_MARGINS());
     m_otherSettingsLayout->addWidget          (m_otherSettingsIcon);
     m_otherSettingsLayout->addWidget          (m_othersContainer);
-    m_otherSettingsLayout->addSpacerItem      (spacer);
+    m_otherSettingsLayout->addSpacerItem      (SPACER());
 
     /* Everything except the buttons */
     m_containerLayout = new QVBoxLayout       (m_containerWidget);
     m_containerLayout->addWidget              (m_networkingBox);
     m_containerLayout->addWidget              (m_otherSettingsBox);
     m_containerLayout->addWidget              (m_appearanceBox);
-    m_containerLayout->addSpacerItem          (spacer);
+    m_containerLayout->addSpacerItem          (SPACER());
 
     /* Reset, Apply & Cancel buttons */
     m_buttonsLayout = new QHBoxLayout         (m_buttonsWidget);
     m_buttonsLayout->addWidget                (m_reset);
-    m_buttonsLayout->addSpacerItem            (spacer);
+    m_buttonsLayout->addSpacerItem            (SPACER());
     m_buttonsLayout->addWidget                (m_cancel);
     m_buttonsLayout->addWidget                (m_ok);
 
