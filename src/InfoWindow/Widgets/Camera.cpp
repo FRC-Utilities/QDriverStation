@@ -32,6 +32,7 @@
 //=============================================================================
 
 #include "Camera.h"
+#include "Global/Global.h"
 
 //=============================================================================
 // Camera::Camera
@@ -50,6 +51,9 @@ Camera::Camera (QWidget* parent) : QWidget (parent)
     /* Configure layout */
     m_layout->addWidget (m_tabWidget);
     m_layout->setContentsMargins (QMargins (0, 0, 0, 0));
+
+    /* Configure size */
+    setMinimumWidth (DPI_SCALE (450));
 }
 
 //=============================================================================

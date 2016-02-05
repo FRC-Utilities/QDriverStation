@@ -25,6 +25,7 @@
 //=============================================================================
 
 #include "Drive.h"
+#include "Global/Global.h"
 
 //=============================================================================
 // System includes
@@ -32,5 +33,5 @@
 
 Drive::Drive (QWidget* parent) : QWidget (parent)
 {
-
+    setMinimumWidth (DPI_SCALE (450));
 }

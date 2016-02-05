@@ -23,15 +23,17 @@
 #ifndef _QDS_MAIN_WINDOW_H
 #define _QDS_MAIN_WINDOW_H
 
-#include "Hacks/SmartWindow.h"
+#include <QMainWindow>
 
 class Status;
 class Buttons;
 class LeftTab;
 class RightTab;
+class InfoWidget;
 class QHBoxLayout;
+class QVBoxLayout;
 
-class MainWindow : public SmartWindow
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
@@ -39,6 +41,7 @@ public:
     explicit MainWindow();
 
 protected:
+    void moveEvent (QMoveEvent* event);
     void closeEvent (QCloseEvent* event);
 
 private slots:
@@ -53,12 +56,15 @@ private:
     bool m_closing;
 
     QWidget* m_central;
+    QWidget* m_container;
+    InfoWidget* m_dashboard;
 
     Status* m_status;
     Buttons* m_buttons;
     LeftTab* m_leftTab;
     RightTab* m_rightTab;
 
+    QVBoxLayout* m_main;
     QHBoxLayout* m_layout;
 };
 

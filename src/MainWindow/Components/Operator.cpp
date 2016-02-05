@@ -260,7 +260,7 @@ void Operator::configureStyles()
     /* Configure default checked buttons */
     m_teleop->setChecked          (true);
     m_dsable->setChecked          (true);
-    m_windowDocked->setChecked    (Settings::get ("Docked", false).toBool());
+    m_windowDocked->setChecked    (Settings::get ("Fullscreen", false).toBool());
     m_windowNormal->setChecked    (!m_windowDocked->isChecked());
 
     /* Put the available alliances & positions in the station combo */
@@ -314,7 +314,7 @@ void Operator::connectSlots()
     connect (m_windowDocked,           SIGNAL (clicked             (void)),
              this,                     SIGNAL (showDocked          (void)));
     connect (m_windowNormal,           SIGNAL (clicked             (void)),
-             this,                     SIGNAL (showNormally        (void)));
+             this,                     SIGNAL (showUnDocked        (void)));
     connect (DS(),                     SIGNAL (elapsedTimeChanged  (QString)),
              m_elapsedTime,              SLOT (setText             (QString)));
     connect (m_modesGroup,             SIGNAL (buttonClicked       (int)),

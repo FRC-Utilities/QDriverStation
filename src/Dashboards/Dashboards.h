@@ -33,9 +33,10 @@ public:
     enum DashboardTypes
     {
         kNone           = 0x00,
-        kSfxDashboard   = 0x01,
-        kSmartDashboard = 0x02,
-        kLabVIEW        = 0x03
+        kQDashboard     = 0x01,
+        kSfxDashboard   = 0x02,
+        kSmartDashboard = 0x03,
+        kLabVIEW        = 0x04,
     };
 
     static Dashboards* getInstance();
@@ -47,6 +48,9 @@ public slots:
     void openDashboard();
     void closeDashboard();
     void reloadDashboard();
+
+signals:
+    void dashboardChanged();
 
 protected:
     explicit Dashboards();

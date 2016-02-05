@@ -24,15 +24,10 @@
 #define _QDS_INFO_WINDOW_H
 
 #include <QDialog>
+#include <QMoveEvent>
 
-class Drive;
-class Camera;
 class Console;
-class Checklist;
-class QComboBox;
-class QTabWidget;
-class QHBoxLayout;
-class QVBoxLayout;
+class InfoWidget;
 
 class InfoWindow : public QDialog
 {
@@ -42,23 +37,11 @@ public:
     explicit InfoWindow();
     Console* console() const;
 
-public slots:
-    void showDocked (int displacement);
+protected:
+    void moveEvent (QMoveEvent* event);
 
 private:
-    QHBoxLayout* m_layout;
-    QHBoxLayout* m_camLayout;
-    QVBoxLayout* m_rightLayout;
-
-    QWidget* m_rightWidget;
-    QTabWidget* m_tabWidget;
-    QComboBox* m_cameraOptions;
-    QWidget* m_camControlWidget;
-
-    Drive* m_drive;
-    Camera* m_camera;
-    Console* m_console;
-    Checklist* m_checkList;
+    InfoWidget* m_infoWidget;
 };
 
 #endif

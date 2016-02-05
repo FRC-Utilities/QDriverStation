@@ -20,36 +20,44 @@
  * THE SOFTWARE.
  */
 
-#ifndef _QDS_MW_HACKS_SMART_WINDOW_H
-#define _QDS_MW_HACKS_SMART_WINDOW_H
+#ifndef _QDS_INFO_WIDGET_H
+#define _QDS_INFO_WIDGET_H
 
-#include <QMoveEvent>
-#include <QMainWindow>
+#include <QWidget>
 
-class SmartWindow : public QMainWindow
+class Drive;
+class Camera;
+class Console;
+class Checklist;
+class QComboBox;
+class QTabWidget;
+class QHBoxLayout;
+class QVBoxLayout;
+
+class InfoWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit SmartWindow();
-    enum WindowMode { kNormal, kDocked };
-
-    bool isDocked();
-    bool usesFixedSize();
-
-protected:
-    void moveEvent (QMoveEvent* e);
-
-public slots:
-    void setUseFixedSize (bool fixed);
-    void setWindowMode (const WindowMode& mode);
-
-private slots:
-    void resizeToFit();
+    explicit InfoWidget (QWidget* parent);
+    Console* console() const;
 
 private:
-    bool m_useFixedSize;
-    WindowMode m_windowMode;
+    QWidget* m_centralWidget;
+
+    QHBoxLayout* m_layout;
+    QHBoxLayout* m_camLayout;
+    QVBoxLayout* m_rightLayout;
+
+    QWidget* m_rightWidget;
+    QTabWidget* m_tabWidget;
+    QComboBox* m_cameraOptions;
+    QWidget* m_camControlWidget;
+
+    Drive* m_drive;
+    Camera* m_camera;
+    Console* m_console;
+    Checklist* m_checkList;
 };
 
 #endif

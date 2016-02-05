@@ -31,7 +31,9 @@
 // Application includes
 //=============================================================================
 
+#include "Global/Global.h"
 #include "Global/Settings.h"
+#include "InfoWindow/InfoWindow.h"
 #include "Dashboards/Dashboards.h"
 
 //=============================================================================
@@ -84,6 +86,7 @@ QStringList Dashboards::dashboardList()
 {
     QStringList list;
     list.append (tr ("None"));
+    list.append (tr ("QDashboard"));
     list.append (tr ("SFX Dashboard"));
     list.append (tr ("SmartDashboard"));
 
@@ -103,41 +106,51 @@ void Dashboards::openDashboard()
     QString path;
     m_current = (DashboardTypes) Settings::get ("Dashboard", kNone).toInt();
 
-    /* Open the SFX Dashboard */
-    if (m_current == kSfxDashboard)
+    /* Open the 'internal' dashboard */
+    if (m_current == kQDashboard)
+        INFORMATION_WINDOW()->show();
+
+    /* Open an external dashboard */
+    else
         {
-            QDir dir;
-            QStringList files;
+            /* Open the SFX Dashboard */
+            if (m_current == kSfxDashboard)
+                {
+                    QDir dir;
+                    QStringList files;
 
-            /* Go to the WPILib directory and get the available folders */
-            dir.cd (QString ("%1/wpilib/tools/").arg (QDir::homePath()));
-            files = dir.entryList (QDir::Dirs);
+                    /* Go to the WPILib directory and get the available folders */
+                    dir.cd (QString ("%1/wpilib/tools/").arg (QDir::homePath()));
+                    files = dir.entryList (QDir::Dirs);
 
-            /* In theory, the only folder should contain the SFX DB, open it */
-            if (files.count() >= 3)
-                path = QString ("java -jar \"%1/%2/sfx.jar\"")
-                       .arg (dir.absolutePath())
-                       .arg (files.at (2));
-        }
+                    /* In theory, the only folder should contain the SFX DB, open it */
+                    if (files.count() >= 3)
+                        path = QString ("java -jar \"%1/%2/sfx.jar\"")
+                               .arg (dir.absolutePath())
+                               .arg (files.at (2));
+                }
 
-    /* Open the SmartDashboard, easy as cake */
-    else if (m_current == kSmartDashboard)
-        {
-            path = QString ("java -jar \"%1/wpilib/tools/SmartDashboard.jar\"")
-                   .arg (QDir::homePath());
-        }
+            /* Open the SmartDashboard, easy as cake */
+            else if (m_current == kSmartDashboard)
+                {
+                    path = QString ("java -jar \"%1/wpilib/tools/SmartDashboard.jar\"")
+                           .arg (QDir::homePath());
+                }
 
-    /* Open the LabVIEW Dashboard */
+            /* Open the LabVIEW Dashboard */
 #if defined _WIN32 || defined _WIN64
-    else if (m_current == kLabVIEW)
-        {
-            QString pF = IS_64_BIT ? "C:/Program Files (x86)" : "C:/Program Files";
-            path = QString ("%1/FRC Dashboard/Dashboard.exe").arg (pF);
-            path = "\"" + path + "\"";
-        }
+            else if (m_current == kLabVIEW)
+                {
+                    QString pF = IS_64_BIT ? "C:/Program Files (x86)" : "C:/Program Files";
+                    path = QString ("%1/FRC Dashboard/Dashboard.exe").arg (pF);
+                    path = "\"" + path + "\"";
+                }
 #endif
 
-    m_process.start (path);
+            m_process.start (path);
+        }
+
+    emit dashboardChanged();
 }
 
 //=============================================================================
@@ -146,7 +159,11 @@ void Dashboards::openDashboard()
 
 void Dashboards::closeDashboard()
 {
-    m_process.close();
+    if (m_current != kQDashboard)
+        m_process.close();
+
+    else
+        INFORMATION_WINDOW()->hide();
 }
 
 //=============================================================================

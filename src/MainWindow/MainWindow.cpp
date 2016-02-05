@@ -39,6 +39,8 @@
 #include "Global/Global.h"
 #include "Global/Beeper.h"
 #include "Global/Settings.h"
+#include "Dashboards/Dashboards.h"
+#include "InfoWindow/InfoWidget.h"
 #include "InfoWindow/InfoWindow.h"
 
 #include "Components/Status.h"
@@ -53,45 +55,83 @@
 
 MainWindow::MainWindow()
 {
+    /* Configure internal variables */
     m_docked   = false;
     m_closing  = false;
 
-    m_central  = new QWidget     (this);
-    m_status   = new Status      (m_central);
-    m_buttons  = new Buttons     (m_central);
-    m_leftTab  = new LeftTab     (m_central);
-    m_rightTab = new RightTab    (m_central);
-    m_layout   = new QHBoxLayout (m_central);
+    /* Create widgets */
+    m_central   = new QWidget     (this);
+    m_dashboard = new InfoWidget  (this);
+    m_container = new QWidget     (m_central);
+    m_status    = new Status      (m_container);
+    m_buttons   = new Buttons     (m_container);
+    m_leftTab   = new LeftTab     (m_container);
+    m_rightTab  = new RightTab    (m_container);
+    m_layout    = new QHBoxLayout (m_container);
+    m_main      = new QVBoxLayout (m_central);
 
-    m_layout->addWidget          (m_leftTab);
-    m_layout->addWidget          (m_status);
-    m_layout->addWidget          (m_rightTab);
-    m_layout->addWidget          (m_buttons);
-    m_layout->setStretch         (0, 0);
-    m_layout->setStretch         (1, 0);
-    m_layout->setStretch         (2, 1);
-    m_layout->setStretch         (3, 0);
-    m_layout->setSpacing         (DPI_SCALE (5));
+    /* Add the common widgets */
+    m_layout->addWidget           (m_leftTab);
+    m_layout->addWidget           (m_status);
+    m_layout->addWidget           (m_rightTab);
+    m_layout->addWidget           (m_buttons);
+    m_layout->setStretch          (0, 0);
+    m_layout->setStretch          (1, 0);
+    m_layout->setStretch          (2, 1);
+    m_layout->setStretch          (3, 0);
+    m_layout->setSpacing          (DPI_SCALE (5));
+    m_layout->setContentsMargins  (NULL_MARGINS());
 
-    connect (DS(),      SIGNAL   (initialized()),
-             this,        SLOT   (displayWindow()));
-    connect (m_leftTab, SIGNAL   (showDocked()),
-             this,        SLOT   (showDocked()));
-    connect (m_leftTab, SIGNAL   (showNormally()),
-             this,        SLOT   (showUnDocked()));
-    connect (m_leftTab, SIGNAL   (requestErrorAnimation()),
-             m_status,    SLOT   (doErrorAnimation()));
-    connect (qApp,      SIGNAL   (aboutToQuit()),
-             this,        SLOT   (quitSound()));
-    connect (m_buttons, SIGNAL   (closeClicked()),
-             this,        SLOT   (close()));
+    /* Configure the main layout, which also contains the dashboard */
+    m_main->addWidget             (m_dashboard);
+    m_main->addWidget             (m_container);
+    m_main->setStretch            (0, 1);
+    m_main->setStretch            (1, 0);
+    m_main->setContentsMargins    (MAIN_MARGINS());
+    m_main->setSpacing            (DPI_SCALE (10));
 
-    setUseFixedSize              (true);
-    setCentralWidget             (m_central);
-    setWindowTitle               (QApplication::applicationName()
-                                  + QString (" ")
-                                  + QApplication::applicationVersion());
+    /* Signals/slots */
+    connect (DS(),      SIGNAL    (initialized()),
+             this,        SLOT    (displayWindow()));
+    connect (m_leftTab, SIGNAL    (showDocked()),
+             this,        SLOT    (showDocked()));
+    connect (m_leftTab, SIGNAL    (showUnDocked()),
+             this,        SLOT    (showUnDocked()));
+    connect (m_leftTab, SIGNAL    (requestErrorAnimation()),
+             m_status,    SLOT    (doErrorAnimation()));
+    connect (qApp,      SIGNAL    (aboutToQuit()),
+             this,        SLOT    (quitSound()));
+    connect (m_buttons, SIGNAL    (closeClicked()),
+             this,        SLOT    (close()));
+    connect (Dashboards::getInstance(), SIGNAL (dashboardChanged()),
+             this,                        SLOT (showUnDocked()));
+
+    /* Ensure that the 'normal' widgets resize to fit */
+    m_dashboard->setVisible       (false);
+    m_container->setFixedHeight   (m_container->minimumSizeHint().height());
+
+    /* Configure window options */
+    setCentralWidget              (m_central);
+    setWindowTitle                (QApplication::applicationName()
+                                   + QString (" ")
+                                   + QApplication::applicationVersion());
 }
+
+//=============================================================================
+// MainWindow::moveEvent
+//=============================================================================
+
+void MainWindow::moveEvent (QMoveEvent* event)
+{
+    event->accept();
+
+    if (!m_docked)
+        {
+            Settings::set ("MainWindow X", x());
+            Settings::set ("MainWindow Y", y());
+        }
+}
+
 
 //=============================================================================
 // MainWindow::closeEvent
@@ -126,10 +166,19 @@ void MainWindow::closeEvent (QCloseEvent* event)
 
 void MainWindow::showUnDocked()
 {
-    setWindowMode (kNormal);
-    Settings::set ("Docked", false);
+    m_docked = false;
+    m_dashboard->setVisible (false);
 
-    INFORMATION_WINDOW()->hide();
+    showNormal();
+    setFixedSize (minimumSizeHint());
+
+    if (Dashboards::getInstance()->currentDashboard() == Dashboards::kQDashboard)
+        INFORMATION_WINDOW()->show();
+
+    move (Settings::get ("MainWindow X", 100).toInt(),
+          Settings::get ("MainWindow Y", 100).toInt());
+
+    Settings::set ("Fullscreen", false);
 }
 
 //=============================================================================
@@ -149,10 +198,26 @@ void MainWindow::quitSound()
 
 void MainWindow::showDocked()
 {
-    setWindowMode (kDocked);
-    Settings::set ("Docked", true);
+    m_docked = true;
+    INFORMATION_WINDOW()->hide();
+    m_dashboard->setVisible (false);
 
-    INFORMATION_WINDOW()->showDocked (height());
+    QSize screen = QApplication::primaryScreen()->size();
+    QSize desktop = QApplication::primaryScreen()->availableSize();
+
+    setFixedWidth  (desktop.width());
+    setFixedHeight (minimumSizeHint().height());
+
+    if (Dashboards::getInstance()->currentDashboard() == Dashboards::kQDashboard)
+        {
+            showFullScreen();
+            m_dashboard->setVisible (true);
+            setFixedHeight (screen.height());
+        }
+
+    move (0, desktop.height() - height());
+
+    Settings::set ("Fullscreen", true);
 }
 
 //=============================================================================
@@ -171,6 +236,7 @@ void MainWindow::startUpSound()
 
 void MainWindow::displayWindow()
 {
+    showNormal();
+    Settings::get ("Fullscreen", false).toBool() ? showDocked() : showUnDocked();
     QTimer::singleShot (100, Qt::CoarseTimer, this, SLOT (startUpSound()));
-    Settings::get ("Docked", false).toBool() ? showDocked() : showUnDocked();
 }

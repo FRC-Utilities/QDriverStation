@@ -134,13 +134,13 @@ HEADERS += \
     $$PWD/src/MainWindow/Components/RightTab.h \
     $$PWD/src/MainWindow/Components/Status.h \
     $$PWD/src/MainWindow/Hacks/CustomTabStyle.h \
-    $$PWD/src/MainWindow/Hacks/SmartWindow.h \
     $$PWD/src/MainWindow/System/Battery.h \
     $$PWD/src/MainWindow/System/CPU.h \
     $$PWD/src/MainWindow/MainWindow.h \
     $$PWD/src/SettingsWindow/SettingsWindow.h \
     $$PWD/src/Updater/Updater.h \
-    $$PWD/src/VJoystickWindow/VJoystickWindow.h
+    $$PWD/src/VJoystickWindow/VJoystickWindow.h \
+    src/InfoWindow/InfoWidget.h
 
 SOURCES += \
     $$PWD/src/Dashboards/Dashboards.cpp \
@@ -171,14 +171,14 @@ SOURCES += \
     $$PWD/src/MainWindow/Components/RightTab.cpp \
     $$PWD/src/MainWindow/Components/Status.cpp \
     $$PWD/src/MainWindow/Hacks/CustomTabStyle.cpp \
-    $$PWD/src/MainWindow/Hacks/SmartWindow.cpp \
     $$PWD/src/MainWindow/System/Battery.cpp \
     $$PWD/src/MainWindow/System/CPU.cpp \
     $$PWD/src/MainWindow/MainWindow.cpp \
     $$PWD/src/SettingsWindow/SettingsWindow.cpp \
     $$PWD/src/Updater/Updater.cpp \
     $$PWD/src/VJoystickWindow/VJoystickWindow.cpp \
-    $$PWD/src/main.cpp
+    $$PWD/src/main.cpp \
+    src/InfoWindow/InfoWidget.cpp
 
 
 #-------------------------------------------------------------------------------
