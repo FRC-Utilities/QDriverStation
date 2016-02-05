@@ -22,17 +22,17 @@
 <context>
     <name>Buttons</name>
     <message>
-        <location filename="../../src/MainWindow/Components/Buttons.cpp" line="53"/>
+        <location filename="../../src/MainWindow/Components/Buttons.cpp" line="50"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Buttons.cpp" line="54"/>
+        <location filename="../../src/MainWindow/Components/Buttons.cpp" line="51"/>
         <source>Preferences</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Buttons.cpp" line="55"/>
+        <location filename="../../src/MainWindow/Components/Buttons.cpp" line="52"/>
         <source>Virtual/Keyboard Joystick</source>
         <translation>Virtuellen Joystick</translation>
     </message>
@@ -73,27 +73,27 @@
 <context>
     <name>Camera</name>
     <message>
-        <location filename="../../src/InfoWindow/Widgets/Camera.cpp" line="48"/>
+        <location filename="../../src/InfoWindow/Widgets/Camera.cpp" line="49"/>
         <source>Camera</source>
         <translation>Kamera</translation>
     </message>
     <message>
-        <location filename="../../src/InfoWindow/Widgets/Camera.cpp" line="63"/>
+        <location filename="../../src/InfoWindow/Widgets/Camera.cpp" line="67"/>
         <source>Camera Off</source>
         <translation>Kamera Aus</translation>
     </message>
     <message>
-        <location filename="../../src/InfoWindow/Widgets/Camera.cpp" line="64"/>
+        <location filename="../../src/InfoWindow/Widgets/Camera.cpp" line="68"/>
         <source>USB Camera SW</source>
         <translation>USB Kamera SW</translation>
     </message>
     <message>
-        <location filename="../../src/InfoWindow/Widgets/Camera.cpp" line="65"/>
+        <location filename="../../src/InfoWindow/Widgets/Camera.cpp" line="69"/>
         <source>USB Camera HW</source>
         <translation>USB Kamera HW</translation>
     </message>
     <message>
-        <location filename="../../src/InfoWindow/Widgets/Camera.cpp" line="66"/>
+        <location filename="../../src/InfoWindow/Widgets/Camera.cpp" line="70"/>
         <source>IP Camera</source>
         <translation>IP-Kamera</translation>
     </message>
@@ -101,17 +101,17 @@
 <context>
     <name>Console</name>
     <message>
-        <location filename="../../src/InfoWindow/Widgets/Console.cpp" line="76"/>
+        <location filename="../../src/InfoWindow/Widgets/Console.cpp" line="64"/>
         <source>INFO: NetConsole output copied to clipboard</source>
         <translation>INFO: Ausgabe der NetConsole wurde kopiert</translation>
     </message>
     <message>
-        <location filename="../../src/InfoWindow/Widgets/Console.cpp" line="98"/>
+        <location filename="../../src/InfoWindow/Widgets/Console.cpp" line="86"/>
         <source>Send</source>
         <translation>Senden</translation>
     </message>
     <message>
-        <location filename="../../src/InfoWindow/Widgets/Console.cpp" line="105"/>
+        <location filename="../../src/InfoWindow/Widgets/Console.cpp" line="93"/>
         <source>Type a command</source>
         <translation>Geben Sie einen Befehl</translation>
     </message>
@@ -119,22 +119,22 @@
 <context>
     <name>Dashboards</name>
     <message>
-        <location filename="../../src/Dashboards/Dashboards.cpp" line="86"/>
+        <location filename="../../src/Dashboards/Dashboards.cpp" line="88"/>
         <source>None</source>
         <translation>Keine</translation>
     </message>
     <message>
-        <location filename="../../src/Dashboards/Dashboards.cpp" line="87"/>
-        <source>SFX Dashboard</source>
-        <translation></translation>
+        <location filename="../../src/Dashboards/Dashboards.cpp" line="89"/>
+        <source>Built-in Dashboard</source>
+        <translation>Eingebaut Armaturenbrett</translation>
     </message>
     <message>
-        <location filename="../../src/Dashboards/Dashboards.cpp" line="88"/>
+        <location filename="../../src/Dashboards/Dashboards.cpp" line="90"/>
         <source>SmartDashboard</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/Dashboards/Dashboards.cpp" line="91"/>
+        <location filename="../../src/Dashboards/Dashboards.cpp" line="93"/>
         <source>LabVIEW Dashboard</source>
         <translation></translation>
     </message>
@@ -237,92 +237,100 @@
 <context>
     <name>DriverStation</name>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="191"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="178"/>
         <source>Red 1</source>
         <translation>Rot 1</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="192"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="179"/>
         <source>Red 2</source>
         <translation>Rot 2</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="193"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="180"/>
         <source>Red 3</source>
         <translation>Rot 3</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="194"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="181"/>
         <source>Blue 1</source>
         <translation>Blau 1</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="195"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="182"/>
         <source>Blue 2</source>
         <translation>Blau 2</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="196"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="183"/>
         <source>Blue 3</source>
         <translation>Blau 3</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="208"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="195"/>
         <source>2016 Protocol</source>
         <translation>2016 Protokoll</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="209"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="196"/>
         <source>2015 Protocol</source>
         <translation>2015 Protokoll</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="210"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="197"/>
         <source>2014 Protocol</source>
         <translation>2014 Protokoll</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="617"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="604"/>
         <source>Emergency Stopped</source>
         <translation>Not-Halt</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="620"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="607"/>
         <source>No Robot Code</source>
         <translation>Kein Roboter Code</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="624"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="611"/>
         <source>Enabled</source>
         <translation>Aktivieren</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="624"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="611"/>
         <source>Disabled</source>
         <translation>Deaktivieren</translation>
     </message>
     <message>
-        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="627"/>
+        <location filename="../../lib/LibDS/src/DriverStation.cpp" line="614"/>
         <source>No Robot Communication</source>
         <translation>Kein Roboter Kommunikations</translation>
     </message>
 </context>
 <context>
-    <name>InfoWindow</name>
+    <name>InfoWidget</name>
     <message>
-        <location filename="../../src/InfoWindow/InfoWindow.cpp" line="87"/>
+        <location filename="../../src/InfoWindow/InfoWidget.cpp" line="82"/>
         <source>Drive</source>
         <translation>Armaturenbrett</translation>
     </message>
     <message>
-        <location filename="../../src/InfoWindow/InfoWindow.cpp" line="88"/>
+        <location filename="../../src/InfoWindow/InfoWidget.cpp" line="83"/>
         <source>Console</source>
         <translation>Konsole</translation>
     </message>
     <message>
-        <location filename="../../src/InfoWindow/InfoWindow.cpp" line="89"/>
+        <location filename="../../src/InfoWindow/InfoWidget.cpp" line="84"/>
         <source>Checklist</source>
         <translation>Kontroll-Liste</translation>
+    </message>
+</context>
+<context>
+    <name>InfoWindow</name>
+    <message>
+        <location filename="../../src/InfoWindow/InfoWindow.cpp" line="46"/>
+        <source>Dashboard</source>
+        <translation>Armaturenbrett</translation>
     </message>
 </context>
 <context>
@@ -361,12 +369,12 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../src/MainWindow/MainWindow.cpp" line="105"/>
+        <location filename="../../src/MainWindow/MainWindow.cpp" line="148"/>
         <source>QDriverStation</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/MainWindow.cpp" line="106"/>
+        <location filename="../../src/MainWindow/MainWindow.cpp" line="149"/>
         <source>Are you sure you want to exit the QDriverStation?</source>
         <translation>Wollen Sie, um der QDriverStation zu beenden?</translation>
     </message>
@@ -480,19 +488,19 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../src/Global/Global.cpp" line="203"/>
-        <location filename="../../src/Global/Global.cpp" line="208"/>
+        <location filename="../../src/Global/Global.cpp" line="215"/>
+        <location filename="../../src/Global/Global.cpp" line="220"/>
         <location filename="../../src/main.cpp" line="127"/>
         <source>QDriverStation</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/Global/Global.cpp" line="204"/>
+        <location filename="../../src/Global/Global.cpp" line="216"/>
         <source>SDL initailization error: %1</source>
         <translation>SDL fehler: %1</translation>
     </message>
     <message>
-        <location filename="../../src/Global/Global.cpp" line="209"/>
+        <location filename="../../src/Global/Global.cpp" line="221"/>
         <source>You will still be able to use the QDriverStation, however, you MUST be VERY careful while using an external joystick!</source>
         <translation>Sehr vorsichtig sein bei Verwendung eines externen Joysticks!</translation>
     </message>
@@ -502,12 +510,12 @@
         <translation>Bitte geben Sie Ihre Teamnummer:</translation>
     </message>
     <message>
-        <location filename="../../src/Global/Languages.cpp" line="190"/>
+        <location filename="../../src/Global/Languages.cpp" line="168"/>
         <source>Change language</source>
         <translation>Sprache ändern</translation>
     </message>
     <message>
-        <location filename="../../src/Global/Languages.cpp" line="191"/>
+        <location filename="../../src/Global/Languages.cpp" line="169"/>
         <source>You must restart the application in order for the changes to take effect</source>
         <translation>Sie müssen die Anwendung neu starten, damit die Änderungen wirksam werden</translation>
     </message>
@@ -526,92 +534,92 @@ Modify this text directly to customize your list.</source>
 <context>
     <name>SettingsWindow</name>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="100"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="90"/>
         <source>Networking</source>
         <translation>Netzwerk</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="101"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="91"/>
         <source>Use custom robot address</source>
         <translation>Benutzerdefinierte Roboter-Addresse</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="105"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="96"/>
         <source>Reset</source>
         <translation>Rücksetzen</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="106"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="97"/>
         <source>OK</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="107"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="98"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="110"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="101"/>
         <source>Colors</source>
         <translation>Farben</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="113"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="104"/>
         <source>Base</source>
         <translation>Grundfarbe</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="114"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="105"/>
         <source>Highlight</source>
         <translation>Markierung</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="115"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="106"/>
         <source>Background</source>
         <translation>Hintergrund</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="116"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="107"/>
         <source>Foreground</source>
         <translation>Vordergrund</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="139"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="130"/>
         <source>Language</source>
         <translation>Sprache</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="140"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="131"/>
         <source>Other Settings</source>
         <translation>Andere Einstellungen</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="141"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="132"/>
         <source>Check for updates automatically</source>
         <translation>Automatisch nach Updates suchen</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="143"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="134"/>
         <source>Enable UI sound effects</source>
         <translation>Aktivieren die UI Sound-Effekte</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="144"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="136"/>
         <source>Prompt on quit</source>
         <translation>Fragen auf Beenden</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="152"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="144"/>
         <source>General</source>
         <translation>Allgemeine</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="348"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="336"/>
         <source>Reset Settings</source>
         <translation>Einstellungen zürucksetzen</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="349"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="337"/>
         <source>Are you sure you want to reset these settings?</source>
         <translation>Sind Sie sicher, dass Sie diese Einstellungen zürucksetzen möchten?</translation>
     </message>

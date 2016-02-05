@@ -51,7 +51,11 @@ private slots:
     void startUpSound();
     void displayWindow();
 
+    void updateSize();
+
 private:
+    bool usesBuiltinDashboard();
+
     bool m_docked;
     bool m_closing;
 

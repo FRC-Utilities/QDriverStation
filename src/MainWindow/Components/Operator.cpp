@@ -42,6 +42,7 @@
 #include "Operator.h"
 #include "Global/Global.h"
 #include "Global/Settings.h"
+#include "Dashboards/Dashboards.h"
 #include "MainWindow/System/CPU.h"
 #include "MainWindow/System/Battery.h"
 
@@ -301,20 +302,22 @@ void Operator::configureStyles()
 
 void Operator::connectSlots()
 {
-    connect (m_enable,                 SIGNAL (clicked             (void)),
-             this,                       SLOT (updateEnableState   (void)));
-    connect (m_dsable,                 SIGNAL (clicked             (void)),
-             this,                       SLOT (updateEnableState   (void)));
-    connect (m_windowDocked,           SIGNAL (clicked             (void)),
-             this,                     SIGNAL (showDocked          (void)));
-    connect (m_windowNormal,           SIGNAL (clicked             (void)),
-             this,                     SIGNAL (showUnDocked        (void)));
-    connect (DS(),                     SIGNAL (elapsedTimeChanged  (QString)),
-             m_elapsedTime,              SLOT (setText             (QString)));
-    connect (m_modesGroup,             SIGNAL (buttonClicked       (int)),
-             this,                       SLOT (updateControlMode   (int)));
-    connect (m_teamStation,            SIGNAL (currentIndexChanged (int)),
-             DS(),                       SLOT (setAlliance         (int)));
+    connect (m_enable,                  SIGNAL (clicked             (void)),
+             this,                        SLOT (updateEnableState   (void)));
+    connect (m_dsable,                  SIGNAL (clicked             (void)),
+             this,                        SLOT (updateEnableState   (void)));
+    connect (m_windowDocked,            SIGNAL (clicked             (void)),
+             this,                      SIGNAL (showDocked          (void)));
+    connect (m_windowNormal,            SIGNAL (clicked             (void)),
+             this,                      SIGNAL (showUnDocked        (void)));
+    connect (DS(),                      SIGNAL (elapsedTimeChanged  (QString)),
+             m_elapsedTime,               SLOT (setText             (QString)));
+    connect (m_modesGroup,              SIGNAL (buttonClicked       (int)),
+             this,                        SLOT (updateControlMode   (int)));
+    connect (m_teamStation,             SIGNAL (currentIndexChanged (int)),
+             DS(),                        SLOT (setAlliance         (int)));
+    connect (Dashboards::getInstance(), SIGNAL (dashboardChanged    (void)),
+             this,                        SLOT (updateWindowState   (void)));
 }
 
 //=============================================================================
@@ -349,6 +352,19 @@ void Operator::updateEnableState()
                     emit requestErrorAnimation();
                 }
         }
+}
+
+//=============================================================================
+// Operator::updateWindowState
+//=============================================================================
+
+void Operator::updateWindowState()
+{
+    if (m_windowDocked->isChecked())
+        emit showDocked();
+
+    else
+        emit showNormal();
 }
 
 //=============================================================================

@@ -48,6 +48,7 @@ private slots:
     void connectSlots();
 
     void updateEnableState();
+    void updateWindowState();
     void updateProgressbars();
     void updateControlMode (int index);
 

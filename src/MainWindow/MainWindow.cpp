@@ -103,8 +103,6 @@ MainWindow::MainWindow()
              this,        SLOT    (quitSound()));
     connect (m_buttons, SIGNAL    (closeClicked()),
              this,        SLOT    (close()));
-    connect (Dashboards::getInstance(), SIGNAL (dashboardChanged()),
-             this,                        SLOT (showUnDocked()));
 
     /* Ensure that the 'normal' widgets resize to fit */
     m_dashboard->setVisible       (false);
@@ -171,16 +169,16 @@ void MainWindow::showUnDocked()
 {
     m_docked = false;
     m_dashboard->setVisible (false);
+    setWindowFlags (Qt::WindowCloseButtonHint);
 
-    showNormal();
-    setFixedSize (minimumSizeHint());
-
-    if (Dashboards::getInstance()->currentDashboard() == Dashboards::kBuiltin)
+    if (usesBuiltinDashboard())
         INFORMATION_WINDOW()->show();
 
     move (Settings::get ("MainWindow X", 100).toInt(),
           Settings::get ("MainWindow Y", 100).toInt());
 
+    showNormal();
+    setFixedSize (0, 0);
     Settings::set ("Fullscreen", false);
 }
 
@@ -203,23 +201,10 @@ void MainWindow::showDocked()
 {
     m_docked = true;
     INFORMATION_WINDOW()->hide();
-    m_dashboard->setVisible (false);
+    setWindowFlags (Qt::FramelessWindowHint);
+    m_dashboard->setVisible (usesBuiltinDashboard());
 
-    QSize screen = QApplication::primaryScreen()->size();
-    QSize desktop = QApplication::primaryScreen()->availableSize();
-
-    setFixedWidth  (desktop.width());
-    setFixedHeight (minimumSizeHint().height());
-
-    if (Dashboards::getInstance()->currentDashboard() == Dashboards::kBuiltin)
-        {
-            showFullScreen();
-            m_dashboard->setVisible (true);
-            setFixedHeight (screen.height());
-        }
-
-    move (0, desktop.height() - height());
-
+    showNormal();
     Settings::set ("Fullscreen", true);
 }
 
@@ -241,5 +226,47 @@ void MainWindow::displayWindow()
 {
     showNormal();
     Settings::get ("Fullscreen", false).toBool() ? showDocked() : showUnDocked();
+
+    QTimer::singleShot (100, Qt::CoarseTimer, this, SLOT (updateSize()));
     QTimer::singleShot (100, Qt::CoarseTimer, this, SLOT (startUpSound()));
+}
+
+//=============================================================================
+// MainWindow::updateSize
+//=============================================================================
+
+void MainWindow::updateSize()
+{
+    if (m_docked)
+        {
+            if (usesBuiltinDashboard())
+                {
+                    move (0, 0);
+                    setFixedSize (QApplication::primaryScreen()->availableSize());
+                }
+
+            else
+                {
+                    QSize desktop = QApplication::primaryScreen()->availableSize();
+
+                    setFixedWidth  (desktop.width());
+                    setFixedHeight (minimumSizeHint().height());
+
+                    move (0, desktop.height() - height());
+                }
+        }
+
+    else
+        setFixedSize (minimumSizeHint());
+
+    QTimer::singleShot (100, Qt::CoarseTimer, this, SLOT (updateSize()));
+}
+
+//=============================================================================
+// MainWindow::usesBuiltinDashboard
+//=============================================================================
+
+bool MainWindow::usesBuiltinDashboard()
+{
+    return Dashboards::getInstance()->currentDashboard() == Dashboards::kBuiltin;
 }

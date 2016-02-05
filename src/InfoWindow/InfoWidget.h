@@ -43,8 +43,6 @@ public:
     Console* console() const;
 
 private:
-    QWidget* m_centralWidget;
-
     QHBoxLayout* m_layout;
     QHBoxLayout* m_camLayout;
     QVBoxLayout* m_rightLayout;
