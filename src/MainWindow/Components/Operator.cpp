@@ -364,7 +364,7 @@ void Operator::updateWindowState()
         emit showDocked();
 
     else
-        emit showNormal();
+        emit showUnDocked();
 }
 
 //=============================================================================
