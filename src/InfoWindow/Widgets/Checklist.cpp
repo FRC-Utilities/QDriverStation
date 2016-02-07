@@ -72,7 +72,8 @@ Checklist::Checklist (QWidget* parent) : QWidget (parent)
     m_edit->setStyleSheet (_STYLE);
     m_edit->setPlainText  (Settings::get ("Checklist", _DEFAULT_LIST).toString());
 
-    connect (m_edit, SIGNAL (textChanged()), this, SLOT (saveChecklist()));
+    connect (m_edit, &QPlainTextEdit::textChanged,
+             this,   &Checklist::saveChecklist);
 }
 
 //=============================================================================

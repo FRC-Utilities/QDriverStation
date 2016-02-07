@@ -67,15 +67,16 @@ DS_ProtocolBase::DS_ProtocolBase()
     m_radioPing.setObjectName ("Radio Ping");
     m_robotPing.setObjectName ("Robot Ping");
 
-    connect (&m_watchdog, SIGNAL (timeout()), this, SLOT (reset()));
-    connect (this, SIGNAL (packetReceived()), &m_watchdog, SLOT (restart()));
-
-    connect (&m_robotPing,  SIGNAL (stateChanged   (QAbstractSocket::SocketState)),
-             this,            SLOT (onPingResponse (QAbstractSocket::SocketState)));
-    connect (&m_radioPing,  SIGNAL (stateChanged   (QAbstractSocket::SocketState)),
-             this,            SLOT (onPingResponse (QAbstractSocket::SocketState)));
-    connect (&m_discovery,  SIGNAL (ipFound        (QString, QString)),
-             this,            SLOT (updateRobotIP  (QString, QString)));
+    connect (&m_watchdog,  &DS_Watchdog::timeout,
+             this,         &DS_ProtocolBase::reset);
+    connect (this,         &DS_ProtocolBase::packetReceived,
+             &m_watchdog,  &DS_Watchdog::restart);
+    connect (&m_robotPing, &QTcpSocket::stateChanged,
+             this,         &DS_ProtocolBase::onPingResponse);
+    connect (&m_radioPing, &QTcpSocket::stateChanged,
+             this,         &DS_ProtocolBase::onPingResponse);
+    connect (&m_discovery, &NetworkDiscovery::ipFound,
+             this,         &DS_ProtocolBase::updateRobotIP);
 
     reset();
 }

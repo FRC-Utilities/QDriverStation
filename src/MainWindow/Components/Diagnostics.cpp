@@ -92,7 +92,7 @@ void Diagnostics::createWidgets()
 
     /* Reboot & restart code buttons */
     m_reboot                 = new QPushButton (tr ("Reboot RIO"));
-    m_restart            = new QPushButton (tr ("Restart Code"));
+    m_restart                = new QPushButton (tr ("Restart Code"));
 
     /* Disable the checkboxes */
     m_ethernetLink->setEnabled             (false);
@@ -198,32 +198,37 @@ void Diagnostics::createLayouts()
 
 void Diagnostics::connectSlots()
 {
-    connect (DS(),       SIGNAL (radioChanged          (bool)),
-             m_radio,      SLOT (setChecked            (bool)));
-    connect (DS(),       SIGNAL (radioChanged          (bool)),
-             m_bridge,     SLOT (setChecked            (bool)));
-    connect (DS(),       SIGNAL (communicationsChanged (bool)),
-             m_robot,      SLOT (setChecked            (bool)));
-    connect (DS(),       SIGNAL (fmsChanged            (bool)),
-             m_fms,        SLOT (setChecked            (bool)));
-    connect (DS(),       SIGNAL (rioVersionChanged     (QString)),
-             m_rioVersion, SLOT (setText               (QString)));
-    connect (DS(),       SIGNAL (pdpVersionChanged     (QString)),
-             m_pdpVersion, SLOT (setText               (QString)));
-    connect (DS(),       SIGNAL (pcmVersionChanged     (QString)),
-             m_pcmVersion, SLOT (setText               (QString)));
-    connect (DS(),       SIGNAL (libVersionChanged     (QString)),
-             m_libVersion, SLOT (setText               (QString)));
-    connect (DS(),       SIGNAL (cpuUsageChanged       (int)),
-             this,         SLOT (updateCpuUsage        (int)));
-    connect (DS(),       SIGNAL (ramUsageChanged       (int)),
-             this,         SLOT (updateRamUsage        (int)));
-    connect (DS(),       SIGNAL (diskUsageChanged      (int)),
-             this,         SLOT (updateDiskUsage       (int)));
-    connect (m_reboot,   SIGNAL (clicked               (void)),
-             DS(),         SLOT (rebootRobot           (void)));
-    connect (m_restart,  SIGNAL (clicked               (void)),
-             DS(),         SLOT (restartCode           (void)));
+    connect (DS(),         &DriverStation::radioChanged,
+             m_radio,      &QCheckBox::setChecked);
+    connect (DS(),         &DriverStation::radioChanged,
+             m_bridge,     &QCheckBox::setChecked);
+    connect (DS(),         &DriverStation::fmsChanged,
+             m_fms,        &QCheckBox::setChecked);
+    connect (DS(),         &DriverStation::rioVersionChanged,
+             m_rioVersion, &QLabel::setText);
+    connect (DS(),         &DriverStation::pdpVersionChanged,
+             m_pdpVersion, &QLabel::setText);
+    connect (DS(),         &DriverStation::pcmVersionChanged,
+             m_pcmVersion, &QLabel::setText);
+    connect (DS(),         &DriverStation::libVersionChanged,
+             m_libVersion, &QLabel::setText);
+    connect (DS(),         &DriverStation::cpuUsageChanged,
+             this,         &Diagnostics::updateCpuUsage);
+    connect (DS(),         &DriverStation::ramUsageChanged,
+             this,         &Diagnostics::updateRamUsage);
+    connect (DS(),         &DriverStation::diskUsageChanged,
+             this,         &Diagnostics::updateDiskUsage);
+    connect (m_reboot,     &QPushButton::clicked,
+             DS(),         &DriverStation::rebootRobot);
+    connect (m_restart,    &QPushButton::clicked,
+             DS(),         &DriverStation::restartCode);
+
+    /* Lambda-functions */
+    connect (DS(), &DriverStation::communicationsChanged,
+             [ = ] (DS_CommStatus status)
+    {
+        m_robot->setChecked (status == kFull);
+    });
 }
 
 //=============================================================================

@@ -85,9 +85,8 @@ void DS_ProtocolManager::setProtocol (DS_ProtocolBase* protocol)
                     protocol->setTeam         (m_protocol->team());
                     protocol->setRobotAddress (m_protocol->robotAddress());
 
-                    /* Delete the old protocol */
+                    /* De-configure the old protocol */
                     m_protocol->disconnect();
-                    //m_protocol->deleteLater(); <-- Seems to crash the app :/
                 }
 
             /* Re-assign protocol and joysticks */
@@ -95,32 +94,32 @@ void DS_ProtocolManager::setProtocol (DS_ProtocolBase* protocol)
             m_protocol->setJoysticks (m_joysticks);
 
             /* Re-connect protocol signals/slots */
-            connect (m_protocol, SIGNAL (emergencyStopped       (void)),
-                     this,       SIGNAL (emergencyStopped       (void)));
-            connect (m_protocol, SIGNAL (codeChanged            (bool)),
-                     this,       SIGNAL (codeChanged            (bool)));
-            connect (m_protocol, SIGNAL (radioCommChanged       (bool)),
-                     this,       SIGNAL (radioCommChanged       (bool)));
-            connect (m_protocol, SIGNAL (communicationsChanged  (DS_CommStatus)),
-                     this,       SIGNAL (communicationsChanged  (DS_CommStatus)));
-            connect (m_protocol, SIGNAL (robotAddressChanged    (QString)),
-                     this,       SIGNAL (robotAddressChanged    (QString)));
-            connect (m_protocol, SIGNAL (controlModeChanged     (DS_ControlMode)),
-                     this,       SIGNAL (controlModeChanged     (DS_ControlMode)));
-            connect (m_protocol, SIGNAL (diskUsageChanged       (int)),
-                     this,       SIGNAL (diskUsageChanged       (int)));
-            connect (m_protocol, SIGNAL (ramUsageChanged        (int)),
-                     this,       SIGNAL (ramUsageChanged        (int)));
-            connect (m_protocol, SIGNAL (cpuUsageChanged        (int)),
-                     this,       SIGNAL (cpuUsageChanged        (int)));
-            connect (m_protocol, SIGNAL (voltageChanged         (QString)),
-                     this,       SIGNAL (voltageChanged         (QString)));
-            connect (m_protocol, SIGNAL (voltageBrownoutChanged (bool)),
-                     this,       SIGNAL (voltageBrownoutChanged (bool)));
-            connect (m_protocol, SIGNAL (CANInfoReceived        (DS_CAN)),
-                     this,       SIGNAL (CANInfoReceived        (DS_CAN)));
-            connect (m_protocol, SIGNAL (fmsChanged             (bool)),
-                     this,       SIGNAL (fmsChanged             (bool)));
+            connect (m_protocol, &DS_ProtocolBase::emergencyStopped,
+                     this,       &DS_ProtocolManager::emergencyStopped);
+            connect (m_protocol, &DS_ProtocolBase::codeChanged,
+                     this,       &DS_ProtocolManager::codeChanged);
+            connect (m_protocol, &DS_ProtocolBase::radioCommChanged,
+                     this,       &DS_ProtocolManager::radioCommChanged);
+            connect (m_protocol, &DS_ProtocolBase::communicationsChanged,
+                     this,       &DS_ProtocolManager::communicationsChanged);
+            connect (m_protocol, &DS_ProtocolBase::robotAddressChanged,
+                     this,       &DS_ProtocolManager::robotAddressChanged);
+            connect (m_protocol, &DS_ProtocolBase::controlModeChanged,
+                     this,       &DS_ProtocolManager::controlModeChanged);
+            connect (m_protocol, &DS_ProtocolBase::diskUsageChanged,
+                     this,       &DS_ProtocolManager::diskUsageChanged);
+            connect (m_protocol, &DS_ProtocolBase::ramUsageChanged,
+                     this,       &DS_ProtocolManager::ramUsageChanged);
+            connect (m_protocol, &DS_ProtocolBase::cpuUsageChanged,
+                     this,       &DS_ProtocolManager::cpuUsageChanged);
+            connect (m_protocol, &DS_ProtocolBase::voltageChanged,
+                     this,       &DS_ProtocolManager::voltageChanged);
+            connect (m_protocol, &DS_ProtocolBase::voltageBrownoutChanged,
+                     this,       &DS_ProtocolManager::voltageBrownoutChanged);
+            connect (m_protocol, &DS_ProtocolBase::CANInfoReceived,
+                     this,       &DS_ProtocolManager::CANInfoReceived);
+            connect (m_protocol, &DS_ProtocolBase::fmsChanged,
+                     this,       &DS_ProtocolManager::fmsChanged);
         }
 }
 

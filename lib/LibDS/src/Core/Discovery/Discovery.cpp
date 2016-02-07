@@ -28,8 +28,8 @@
 
 NetworkDiscovery::NetworkDiscovery()
 {
-    connect (&m_responder, SIGNAL (ipFound (QString, QString)),
-             this,         SIGNAL (ipFound (QString, QString)));
+    connect (&m_responder, &MDNS_Discovery::ipFound,
+             this,         &NetworkDiscovery::ipFound);
 }
 
 //=============================================================================
@@ -78,8 +78,8 @@ void NetworkDiscovery::getIP (QString address, AddressType type)
             emit ipFound (address, address);
             break;
         default:
-            QHostInfo::lookupHost (address, this,
-                                   SLOT (lookupFinished (QHostInfo)));
+            QHostInfo::lookupHost (address,
+                                   this, SLOT (lookupFinished (QHostInfo)));
             break;
         }
 }

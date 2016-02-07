@@ -91,18 +91,16 @@ MainWindow::MainWindow()
     m_main->setSpacing            (DPI_SCALE (10));
 
     /* Signals/slots */
-    connect (DS(),      SIGNAL    (initialized()),
-             this,        SLOT    (displayWindow()));
-    connect (m_leftTab, SIGNAL    (showDocked()),
-             this,        SLOT    (showDocked()));
-    connect (m_leftTab, SIGNAL    (showUnDocked()),
-             this,        SLOT    (showUnDocked()));
-    connect (m_leftTab, SIGNAL    (requestErrorAnimation()),
-             m_status,    SLOT    (doErrorAnimation()));
-    connect (qApp,      SIGNAL    (aboutToQuit()),
-             this,        SLOT    (quitSound()));
-    connect (m_buttons, SIGNAL    (closeClicked()),
-             this,        SLOT    (close()));
+    connect (DS(),      &DriverStation::initialized,
+             this,      &MainWindow::displayWindow);
+    connect (m_leftTab, &LeftTab::showDocked,
+             this,      &MainWindow::showDocked);
+    connect (m_leftTab, &LeftTab::showUnDocked,
+             this,      &MainWindow::showUnDocked);
+    connect (m_leftTab, &LeftTab::requestErrorAnimation,
+             m_status,  &Status::doErrorAnimation);
+    connect (qApp,      &QApplication::aboutToQuit,
+             this,      &MainWindow::quitSound);
 
     /* Ensure that the 'normal' widgets resize to fit */
     m_dashboard->setVisible       (false);

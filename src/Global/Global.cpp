@@ -104,7 +104,9 @@ QThread* SECONDARY_THREAD()
 {
     static QThread instance;
     instance.start (QThread::HighPriority);
-    QObject::connect (qApp, SIGNAL (aboutToQuit()), &instance, SLOT (quit()));
+    QObject::connect (qApp,      &QApplication::aboutToQuit,
+                      &instance, &QThread::quit);
+
     return &instance;
 }
 

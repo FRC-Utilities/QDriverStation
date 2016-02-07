@@ -35,13 +35,6 @@ class Buttons: public QWidget
 public:
     explicit Buttons (QWidget* parent);
 
-signals:
-    void closeClicked();
-
-private slots:
-    void showSettingsWindow();
-    void showVirtualJoysticks();
-
 private:
     QVBoxLayout* m_layout;
 

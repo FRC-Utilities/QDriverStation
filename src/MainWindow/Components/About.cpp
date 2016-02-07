@@ -74,8 +74,8 @@ About::About (QWidget* parent) : QWidget (parent)
                                       .scaledToHeight (DPI_SCALE (72),
                                               Qt::SmoothTransformation));
 
-    connect (m_site,      SIGNAL (clicked()), this, SLOT (openWebsite()));
-    connect (m_reportBug, SIGNAL (clicked()), this, SLOT (reportBug()));
+    connect (m_site,      &QPushButton::clicked, this, &About::openWebsite);
+    connect (m_reportBug, &QPushButton::clicked, this, &About::reportBug);
 }
 
 //=============================================================================

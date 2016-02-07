@@ -65,14 +65,14 @@ void Messages::createWidgets()
     m_copyButton->setFont   (AWESOME()->font (DPI_SCALE (12)));
     m_clearButton->setFont  (AWESOME()->font (DPI_SCALE (12)));
 
-    connect (m_copyButton,                    SIGNAL (clicked           (void)),
-             INFORMATION_WINDOW()->console(),   SLOT (copy              (void)));
-    connect (m_clearButton,                   SIGNAL (clicked           (void)),
-             INFORMATION_WINDOW()->console(),   SLOT (clear             (void)));
-    connect (m_clearButton,                   SIGNAL (clicked           (void)),
-             m_console,                         SLOT (clear             (void)));
-    connect (INFORMATION_WINDOW()->console(), SIGNAL (messageRegistered (QString)),
-             this,                              SLOT (registerMessage   (QString)));
+    connect (m_copyButton,                    &QPushButton::clicked,
+             INFORMATION_WINDOW()->console(), &Console::copy);
+    connect (m_clearButton,                   &QPushButton::clicked,
+             INFORMATION_WINDOW()->console(), &Console::clear);
+    connect (m_clearButton,                   &QPushButton::clicked,
+             m_console,                       &QPlainTextEdit::clear);
+    connect (INFORMATION_WINDOW()->console(), &Console::messageRegistered,
+             this,                            &Messages::registerMessage);
 }
 
 //=============================================================================

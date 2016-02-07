@@ -28,7 +28,7 @@
 
 DS_Watchdog::DS_Watchdog()
 {
-    connect (&m_timer, SIGNAL (timeout()), this, SIGNAL (timeout()));
+    connect (&m_timer, &QTimer::timeout, this, &DS_Watchdog::timeout);
 
     m_timer.setInterval (1000);
     m_timer.start();

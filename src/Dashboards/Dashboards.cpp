@@ -55,7 +55,8 @@
 
 Dashboards::Dashboards()
 {
-    connect (qApp, SIGNAL (aboutToQuit()), this, SLOT (closeDashboard()));
+    connect (qApp, &QApplication::aboutToQuit,
+             this, &Dashboards::closeDashboard);
     openDashboard();
 }
 

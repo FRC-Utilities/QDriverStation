@@ -26,6 +26,8 @@
 
 #include <QPointer>
 #include <QGroupBox>
+#include <QShowEvent>
+#include <QHideEvent>
 #include <QListWidget>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -121,24 +123,44 @@ Joysticks::Joysticks (QWidget* parent) : QWidget (parent)
     m_mainLayout->addSpacerItem          (SPACER());
     m_joystickBox->addWidget             (m_joystickNames);
 
-    /* Connect slots */
-    connect (JOYSTICK_MANAGER(), SIGNAL  (countChanged      (void)),
-             this,                 SLOT  (onCountChanged    (void)));
-    connect (JOYSTICK_MANAGER(), SIGNAL  (POVEvent          (QDS_POVEvent)),
-             this,                 SLOT  (onPOVEvent        (QDS_POVEvent)));
-    connect (JOYSTICK_MANAGER(), SIGNAL  (axisEvent         (QDS_AxisEvent)),
-             this,                 SLOT  (onAxisEvent       (QDS_AxisEvent)));
-    connect (JOYSTICK_MANAGER(), SIGNAL  (buttonEvent       (QDS_ButtonEvent)),
-             this,                 SLOT  (onButtonEvent     (QDS_ButtonEvent)));
-    connect (m_joystickNames,    SIGNAL  (currentRowChanged (int)),
-             this,                 SLOT  (setupIndicators   (int)));
-
     /* Update UI config */
     m_POVIndicators->setVisible          (false);
     m_axisIndicators->setVisible         (false);
     m_buttonIndicators->setVisible       (false);
     m_buttonIndicators->setStyleSheet    (BUTTON_CSS);
     onCountChanged();
+
+    /* Connect slots */
+    connect (JOYSTICK_MANAGER(), &JoystickManager::countChanged,
+             this,               &Joysticks::onCountChanged);
+    connect (JOYSTICK_MANAGER(), &JoystickManager::POVEvent,
+             this,               &Joysticks::onPOVEvent);
+    connect (JOYSTICK_MANAGER(), &JoystickManager::axisEvent,
+             this,               &Joysticks::onAxisEvent);
+    connect (JOYSTICK_MANAGER(), &JoystickManager::buttonEvent,
+             this,               &Joysticks::onButtonEvent);
+    connect (m_joystickNames,    &QListWidget::currentRowChanged,
+             this,               &Joysticks::setupIndicators);
+}
+
+//=============================================================================
+// Joysticks::showEvent
+//=============================================================================
+
+void Joysticks::showEvent (QShowEvent* event)
+{
+    onCountChanged();
+    event->accept();
+}
+
+//=============================================================================
+// Joysticks::hideEvent
+//=============================================================================
+
+void Joysticks::hideEvent (QHideEvent* event)
+{
+    setupIndicators (-1);
+    event->accept();
 }
 
 //=============================================================================
@@ -256,7 +278,7 @@ void Joysticks::setTipsVisible (bool visible)
 
 void Joysticks::onPOVEvent (QDS_POVEvent event)
 {
-    if (m_joystickNames->currentRow() != event.joystick.id)
+    if (m_joystickNames->currentRow() != event.joystick.id || !isVisible())
         return;
 
     if (event.pov < m_povs.count())
@@ -269,7 +291,7 @@ void Joysticks::onPOVEvent (QDS_POVEvent event)
 
 void Joysticks::onAxisEvent (QDS_AxisEvent event)
 {
-    if (m_joystickNames->currentRow() != event.joystick.id)
+    if (m_joystickNames->currentRow() != event.joystick.id || !isVisible())
         return;
 
     if (event.axis < m_axes.count())
@@ -282,7 +304,7 @@ void Joysticks::onAxisEvent (QDS_AxisEvent event)
 
 void Joysticks::onButtonEvent (QDS_ButtonEvent event)
 {
-    if (m_joystickNames->currentRow() != event.joystick.id)
+    if (m_joystickNames->currentRow() != event.joystick.id || !isVisible())
         return;
 
     if (event.button < m_buttons.count())

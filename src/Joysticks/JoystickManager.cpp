@@ -40,32 +40,32 @@ JoystickManager::JoystickManager()
     m_virtualJoystick = new VirtualJoystick();
 
     /* Setup SDL joystick signals/slots */
-    connect (sdlJoysticks(),    SIGNAL (POVEvent         (QDS_POVEvent)),
-             this,              SIGNAL (POVEvent         (QDS_POVEvent)));
-    connect (sdlJoysticks(),    SIGNAL (axisEvent        (QDS_AxisEvent)),
-             this,              SIGNAL (axisEvent        (QDS_AxisEvent)));
-    connect (sdlJoysticks(),    SIGNAL (buttonEvent      (QDS_ButtonEvent)),
-             this,              SIGNAL (buttonEvent      (QDS_ButtonEvent)));
-    connect (sdlJoysticks(),    SIGNAL (countChanged     (void)),
-             this,                SLOT (updateInterfaces (void)));
+    connect (sdlJoysticks(),    &SDL_Joysticks::POVEvent,
+             this,              &JoystickManager::POVEvent);
+    connect (sdlJoysticks(),    &SDL_Joysticks::axisEvent,
+             this,              &JoystickManager::axisEvent);
+    connect (sdlJoysticks(),    &SDL_Joysticks::buttonEvent,
+             this,              &JoystickManager::buttonEvent);
+    connect (sdlJoysticks(),    &SDL_Joysticks::countChanged,
+             this,              &JoystickManager::updateInterfaces);
 
     /* Setup virtual joystick signals/slots */
-    connect (virtualJoystick(), SIGNAL (axisEvent        (QDS_AxisEvent)),
-             this,              SIGNAL (axisEvent        (QDS_AxisEvent)));
-    connect (virtualJoystick(), SIGNAL (buttonEvent      (QDS_ButtonEvent)),
-             this,              SIGNAL (buttonEvent      (QDS_ButtonEvent)));
-    connect (virtualJoystick(), SIGNAL (enabledChanged   (void)),
-             this,                SLOT (updateInterfaces (void)));
+    connect (virtualJoystick(), &VirtualJoystick::axisEvent,
+             this,              &JoystickManager::axisEvent);
+    connect (virtualJoystick(), &VirtualJoystick::buttonEvent,
+             this,              &JoystickManager::buttonEvent);
+    connect (virtualJoystick(), &VirtualJoystick::enabledChanged,
+             this,              &JoystickManager::updateInterfaces);
 
     /* Send all joystick input to DS */
-    connect (this,              SIGNAL (POVEvent         (QDS_POVEvent)),
-             this,                SLOT (onPOVEvent       (QDS_POVEvent)));
-    connect (this,              SIGNAL (axisEvent        (QDS_AxisEvent)),
-             this,                SLOT (onAxisEvent      (QDS_AxisEvent)));
-    connect (this,              SIGNAL (buttonEvent      (QDS_ButtonEvent)),
-             this,                SLOT (onButtonEvent    (QDS_ButtonEvent)));
-    connect (DS(),              SIGNAL (protocolChanged  (void)),
-             this,                SLOT (updateInterfaces (void)));
+    connect (this,              &JoystickManager::POVEvent,
+             this,              &JoystickManager::onPOVEvent);
+    connect (this,              &JoystickManager::axisEvent,
+             this,              &JoystickManager::onAxisEvent);
+    connect (this,              &JoystickManager::buttonEvent,
+             this,              &JoystickManager::onButtonEvent);
+    connect (DS(),              &DriverStation::protocolChanged,
+             this,              &JoystickManager::updateInterfaces);
 }
 
 //=============================================================================

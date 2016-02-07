@@ -91,8 +91,11 @@ InfoWidget::InfoWidget (QWidget* parent) : QWidget (parent)
     m_console->layout()->setContentsMargins (MAIN_MARGINS());
 
     /* Connect signals/slots */
-    connect (m_cameraOptions, SIGNAL (currentIndexChanged (int)),
-             m_camera,          SLOT (setCameraOption     (int)));
+    connect (m_cameraOptions,
+             static_cast<void (QComboBox::*) (int)
+             > (&QComboBox::currentIndexChanged),
+             m_camera,
+             &Camera::setCameraOption);
 }
 
 //=============================================================================

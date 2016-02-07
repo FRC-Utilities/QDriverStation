@@ -69,6 +69,19 @@ Status::Status (QWidget* parent) : QWidget (parent)
 }
 
 //=============================================================================
+// Status::doErrorAnimation
+//=============================================================================
+
+void Status::doErrorAnimation()
+{
+    for (int i = 0; i < 8; ++i)
+        QTimer::singleShot (100 * i, Qt::PreciseTimer,
+                            this, &Status::toggleStatusColors);
+
+    MORSE_BEEP ("..-", 550);
+}
+
+//=============================================================================
 // Status::createWidgets
 //=============================================================================
 
@@ -213,20 +226,20 @@ void Status::configureStyles()
 
 void Status::connectSlots()
 {
-    connect (DS(), SIGNAL (joystickCountChanged  (void)),
-             this,   SLOT (updateJoysticks       (void)));
-    connect (DS(), SIGNAL (communicationsChanged (DS_CommStatus)),
-             this,   SLOT (updateCommStatus      (DS_CommStatus)));
-    connect (DS(), SIGNAL (codeChanged           (bool)),
-             this,   SLOT (updateCodeStatus      (bool)));
-    connect (DS(), SIGNAL (voltageChanged        (QString)),
-             this,   SLOT (updateVoltage         (QString)));
-    connect (DS(), SIGNAL (robotStatusChanged    (QString)),
-             this,   SLOT (updateStatus          (QString)));
-    connect (DS(), SIGNAL (teamChanged           (int)),
-             this,   SLOT (updateTeam            (int)));
-    connect (DS(), SIGNAL (emergencyStopped      (void)),
-             this,   SLOT (updateEmergencyStop   (void)));
+    connect (DS(), &DriverStation::joystickCountChanged,
+             this, &Status::updateJoysticks);
+    connect (DS(), &DriverStation::communicationsChanged,
+             this, &Status::updateCommStatus);
+    connect (DS(), &DriverStation::codeChanged,
+             this, &Status::updateCodeStatus);
+    connect (DS(), &DriverStation::voltageChanged,
+             this, &Status::updateVoltage);
+    connect (DS(), &DriverStation::robotStatusChanged,
+             this, &Status::updateStatus);
+    connect (DS(), &DriverStation::teamChanged,
+             this, &Status::updateTeam);
+    connect (DS(), &DriverStation::emergencyStopped,
+             this, &Status::updateEmergencyStop);
 }
 
 //=============================================================================
@@ -280,19 +293,6 @@ void Status::updateVoltage (QString voltage)
 
     else
         m_voltage->setText (NO_DATA);
-}
-
-//=============================================================================
-// Status::doErrorAnimation
-//=============================================================================
-
-void Status::doErrorAnimation()
-{
-    for (int i = 0; i < 8; ++i)
-        QTimer::singleShot (100 * i, Qt::PreciseTimer,
-                            this, SLOT (toggleStatusColors()));
-
-    MORSE_BEEP ("..-", 550);
 }
 
 //=============================================================================

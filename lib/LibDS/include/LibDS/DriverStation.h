@@ -306,12 +306,6 @@ signals:
     void fmsChanged (bool attached);
 
     /**
-     * Emitted when the client detects that the availability of the robot
-     * network communications are changed
-     */
-    void communicationsChanged (bool available);
-
-    /**
      * Emitted when the state of the network communications with the robot
      * has been changed. Unlike the other signals with a \c bool value, this
      * signal contains more information about the communication status, such
@@ -476,20 +470,6 @@ private slots:
      * Sends the received robot packet to the current protocol for further processing
      */
     void readRobotPacket (QByteArray response);
-
-    /**
-     * Notifies other object when the status of the user code or the robot
-     * communications changed. The \a ignore_me variable is ignored because
-     * we use the \c getStatus() function to construct the status string
-     * of the robot.
-     */
-    void updateRobotStatus (bool ignored);
-
-    /**
-     * Notifies other object when the status of the user code or the robot
-     * communications changed.
-     */
-    void updateRobotStatus (DS_CommStatus status);
 
     /**
      * Updates the elapsed time when the control mode is changed

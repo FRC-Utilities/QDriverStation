@@ -86,7 +86,6 @@ win32-msvc* {
 # Other compilation flags
 #-------------------------------------------------------------------------------
 
-QMAKE_CXXFLAGS += -Werror  # Haha
 QMAKE_CXXFLAGS += -Wunused
 
 #-------------------------------------------------------------------------------
@@ -111,7 +110,6 @@ HEADERS += \
     $$PWD/src/Global/Global.h \
     $$PWD/src/Global/Languages.h \
     $$PWD/src/Global/Settings.h \
-    $$PWD/src/Global/SoundPlayer.h \
     $$PWD/src/InfoWindow/Widgets/Camera.h \
     $$PWD/src/InfoWindow/Widgets/Checklist.h \
     $$PWD/src/InfoWindow/Widgets/Console.h \
@@ -140,7 +138,7 @@ HEADERS += \
     $$PWD/src/SettingsWindow/SettingsWindow.h \
     $$PWD/src/Updater/Updater.h \
     $$PWD/src/VJoystickWindow/VJoystickWindow.h \
-    src/InfoWindow/InfoWidget.h
+    $$PWD/src/InfoWindow/InfoWidget.h
 
 SOURCES += \
     $$PWD/src/Dashboards/Dashboards.cpp \
@@ -149,7 +147,6 @@ SOURCES += \
     $$PWD/src/Global/Global.cpp \
     $$PWD/src/Global/Languages.cpp \
     $$PWD/src/Global/Settings.cpp \
-    $$PWD/src/Global/SoundPlayer.cpp \
     $$PWD/src/InfoWindow/Widgets/Camera.cpp \
     $$PWD/src/InfoWindow/Widgets/Checklist.cpp \
     $$PWD/src/InfoWindow/Widgets/Console.cpp \
@@ -178,7 +175,7 @@ SOURCES += \
     $$PWD/src/Updater/Updater.cpp \
     $$PWD/src/VJoystickWindow/VJoystickWindow.cpp \
     $$PWD/src/main.cpp \
-    src/InfoWindow/InfoWidget.cpp
+    $$PWD/src/InfoWindow/InfoWidget.cpp
 
 
 #-------------------------------------------------------------------------------

@@ -38,6 +38,9 @@ class Status : public QWidget
 public:
     explicit Status (QWidget* parent);
 
+public slots:
+    void doErrorAnimation();
+
 private slots:
     void createWidgets();
     void createLayouts();
@@ -52,7 +55,6 @@ private slots:
     void updateCodeStatus    (bool codeAvailable);
     void updateCommStatus    (DS_CommStatus status);
 
-    void doErrorAnimation();
     void toggleStatusColors();
 
 private:

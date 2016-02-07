@@ -43,8 +43,8 @@ CAN_Metrics::CAN_Metrics (QWidget* parent) : QWidget (parent)
     createWidgets();
     createLayouts();
 
-    connect (DS(), SIGNAL (CANInfoReceived   (DS_CAN)),
-             this,   SLOT (onMetricsReceived (DS_CAN)));
+    connect (DS(), &DriverStation::CANInfoReceived,
+             this, &CAN_Metrics::onMetricsReceived);
 }
 
 //=============================================================================

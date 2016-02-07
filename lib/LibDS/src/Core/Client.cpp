@@ -28,10 +28,10 @@
 
 DS_Client::DS_Client (QObject* parent) : QObject (parent)
 {
-    connect (&m_fmsReceiver,   SIGNAL (readyRead       (void)),
-             this,               SLOT (readFmsPacket   (void)));
-    connect (&m_robotReceiver, SIGNAL (readyRead       (void)),
-             this,               SLOT (readRobotPacket (void)));
+    connect (&m_fmsReceiver,   &QUdpSocket::readyRead,
+             this,             &DS_Client::readFmsPacket);
+    connect (&m_robotReceiver, &QUdpSocket::readyRead,
+             this,             &DS_Client::readRobotPacket);
 }
 
 //=============================================================================

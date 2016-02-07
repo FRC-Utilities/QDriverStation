@@ -189,12 +189,14 @@ void VJoystickWindow::connectSlots()
 {
     VirtualJoystick* vJoystick = JOYSTICK_MANAGER()->virtualJoystick();
 
-    connect (m_closeButton,           SIGNAL (clicked()),
-             this,                      SLOT (hide()));
-    connect (m_useKeyboardAsJoystick, SIGNAL (toggled            (bool)),
-             vJoystick,                 SLOT (setJoystickEnabled (bool)));
-    connect (m_axisRange,             SIGNAL (valueChanged       (double)),
-             vJoystick,                 SLOT (setAxisRange       (double)));
+    connect (m_closeButton,           &QPushButton::clicked,
+             this,                    &VJoystickWindow::hide);
+    connect (m_useKeyboardAsJoystick, &QCheckBox::toggled,
+             vJoystick,               &VirtualJoystick::setJoystickEnabled);
+    connect (m_axisRange,
+             static_cast<void (QDoubleSpinBox::*) (double)
+             > (&QDoubleSpinBox::valueChanged),
+             vJoystick, &VirtualJoystick::setAxisRange);
 }
 
 //=============================================================================

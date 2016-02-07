@@ -43,6 +43,10 @@ class Joysticks : public QWidget
 public:
     explicit Joysticks (QWidget* parent);
 
+protected:
+    void showEvent (QShowEvent* event);
+    void hideEvent (QHideEvent* event);
+
 private slots:
     void onCountChanged();
     void setupIndicators (int row);

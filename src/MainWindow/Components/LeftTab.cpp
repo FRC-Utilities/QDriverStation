@@ -52,10 +52,10 @@ LeftTab::LeftTab (QWidget* parent) : QTabWidget (parent)
     tabBar()->setStyle (new CustomTabStyle);
     tabBar()->setFont  (AWESOME()->font (DPI_SCALE (16)));
 
-    connect (m_operator, SIGNAL (showDocked()),
-             this,       SIGNAL (showDocked()));
-    connect (m_operator, SIGNAL (showUnDocked()),
-             this,       SIGNAL (showUnDocked()));
-    connect (m_operator, SIGNAL (requestErrorAnimation()),
-             this,       SIGNAL (requestErrorAnimation()));
+    connect (m_operator, &Operator::showDocked,
+             this,       &LeftTab::showDocked);
+    connect (m_operator, &Operator::showUnDocked,
+             this,       &LeftTab::showUnDocked);
+    connect (m_operator, &Operator::requestErrorAnimation,
+             this,       &LeftTab::requestErrorAnimation);
 }

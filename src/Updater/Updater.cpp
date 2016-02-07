@@ -59,8 +59,8 @@ Updater::Updater()
     m_platform = "ios";
 #endif
 
-    connect (&m_accessManager, SIGNAL (finished   (QNetworkReply*)),
-             this,               SLOT (onServerReply (QNetworkReply*)));
+    connect (&m_accessManager, &QNetworkAccessManager::finished,
+             this,             &Updater::onServerReply);
 
     if (Settings::get ("Auto Updater", true).toBool())
         {

@@ -78,68 +78,67 @@ DriverStation::DriverStation()
     m_protocol    = Q_NULLPTR;
 
     /* Update internal values and notify object on robot status events */
-    connect (m_manager, SIGNAL (codeChanged            (bool)),
-             this,        SLOT (updateRobotStatus      (bool)));
-    connect (m_manager, SIGNAL (communicationsChanged  (DS_CommStatus)),
-             this,        SLOT (updateRobotStatus      (DS_CommStatus)));
-    connect (m_manager, SIGNAL (controlModeChanged     (DS_ControlMode)),
-             this,        SLOT (resetElapsedTimer      (DS_ControlMode)));
-    connect (m_manager, SIGNAL (codeChanged            (bool)),
-             this,      SIGNAL (codeChanged            (bool)));
-    connect (m_manager, SIGNAL (communicationsChanged  (DS_CommStatus)),
-             this,      SIGNAL (communicationsChanged  (DS_CommStatus)));
-    connect (m_manager, SIGNAL (controlModeChanged     (DS_ControlMode)),
-             this,      SIGNAL (controlModeChanged     (DS_ControlMode)));
-    connect (m_manager, SIGNAL (diskUsageChanged       (int)),
-             this,      SIGNAL (diskUsageChanged       (int)));
-    connect (m_manager, SIGNAL (ramUsageChanged        (int)),
-             this,      SIGNAL (ramUsageChanged        (int)));
-    connect (m_manager, SIGNAL (cpuUsageChanged        (int)),
-             this,      SIGNAL (cpuUsageChanged        (int)));
-    connect (m_manager, SIGNAL (voltageChanged         (QString)),
-             this,      SIGNAL (voltageChanged         (QString)));
-    connect (m_manager, SIGNAL (voltageBrownoutChanged (bool)),
-             this,      SIGNAL (voltageBrownoutChanged (bool)));
-    connect (m_manager, SIGNAL (CANInfoReceived        (DS_CAN)),
-             this,      SIGNAL (CANInfoReceived        (DS_CAN)));
-    connect (m_manager, SIGNAL (emergencyStopped       (void)),
-             this,      SIGNAL (emergencyStopped       (void)));
-    connect (m_manager, SIGNAL (fmsChanged             (bool)),
-             this,      SIGNAL (fmsChanged             (bool)));
+    connect (m_manager,     &DS_ProtocolManager::controlModeChanged,
+             this,          &DriverStation::resetElapsedTimer);
+    connect (m_manager,     &DS_ProtocolManager::codeChanged,
+             this,          &DriverStation::codeChanged);
+    connect (m_manager,     &DS_ProtocolManager::controlModeChanged,
+             this,          &DriverStation::controlModeChanged);
+    connect (m_manager,     &DS_ProtocolManager::diskUsageChanged,
+             this,          &DriverStation::diskUsageChanged);
+    connect (m_manager,     &DS_ProtocolManager::ramUsageChanged,
+             this,          &DriverStation::ramUsageChanged);
+    connect (m_manager,     &DS_ProtocolManager::cpuUsageChanged,
+             this,          &DriverStation::cpuUsageChanged);
+    connect (m_manager,     &DS_ProtocolManager::voltageChanged,
+             this,          &DriverStation::voltageChanged);
+    connect (m_manager,     &DS_ProtocolManager::voltageBrownoutChanged,
+             this,          &DriverStation::voltageBrownoutChanged);
+    connect (m_manager,     &DS_ProtocolManager::CANInfoReceived,
+             this,          &DriverStation::CANInfoReceived);
+    connect (m_manager,     &DS_ProtocolManager::emergencyStopped,
+             this,          &DriverStation::emergencyStopped);
+    connect (m_manager,     &DS_ProtocolManager::fmsChanged,
+             this,          &DriverStation::fmsChanged);
+    connect (m_manager,     &DS_ProtocolManager::communicationsChanged,
+             m_elapsedTime, &DS_ElapsedTime::stopTimer);
+    connect (m_manager,     &DS_ProtocolManager::libVersionChanged,
+             this,          &DriverStation::libVersionChanged);
+    connect (m_manager,     &DS_ProtocolManager::rioVersionChanged,
+             this,          &DriverStation::rioVersionChanged);
+    connect (m_manager,     &DS_ProtocolManager::pcmVersionChanged,
+             this,          &DriverStation::pcmVersionChanged);
+    connect (m_manager,     &DS_ProtocolManager::pdpVersionChanged,
+             this,          &DriverStation::pdpVersionChanged);
+    connect (m_manager,     &DS_ProtocolManager::robotAddressChanged,
+             m_client,      &DS_Client::setRobotAddress);
+    connect (m_elapsedTime, &DS_ElapsedTime::elapsedTimeChanged,
+             this,          &DriverStation::elapsedTimeChanged);
+    connect (m_netConsole,  &DS_NetConsole::newMessage,
+             this,          &DriverStation::newMessage);
+    connect (m_client,      &DS_Client::robotPacketReceived,
+             this,          &DriverStation::readRobotPacket);
+    connect (m_client,      &DS_Client::fmsPacketReceived,
+             this,          &DriverStation::readFmsPacket);
 
-    /* Stop timer when the communications status changes */
-    connect (m_manager,     SIGNAL (communicationsChanged (DS_CommStatus)),
-             m_elapsedTime,   SLOT (stopTimer()));
-
-    /* Robot information has changed */
-    connect (m_manager, SIGNAL (libVersionChanged (QString)),
-             this,      SIGNAL (libVersionChanged (QString)));
-    connect (m_manager, SIGNAL (rioVersionChanged (QString)),
-             this,      SIGNAL (rioVersionChanged (QString)));
-    connect (m_manager, SIGNAL (pcmVersionChanged (QString)),
-             this,      SIGNAL (pcmVersionChanged (QString)));
-    connect (m_manager, SIGNAL (pdpVersionChanged (QString)),
-             this,      SIGNAL (pdpVersionChanged (QString)));
-
-    /* Sync robot address and calculated IPs automatically */
-    connect (m_manager, SIGNAL (robotAddressChanged (QString)),
-             m_client,    SLOT (setRobotAddress     (QString)));
-
-    /* Update the elapsed time text automatically */
-    connect (m_elapsedTime, SIGNAL (elapsedTimeChanged (QString)),
-             this,          SIGNAL (elapsedTimeChanged (QString)));
-
-    /* New NetConsole message received */
-    connect (m_netConsole,  SIGNAL (newMessage (QString)),
-             this,          SIGNAL (newMessage (QString)));
-
-    /* Send and read robot packets */
-    connect (m_client,  SIGNAL (robotPacketReceived (QByteArray)),
-             this,        SLOT (readRobotPacket     (QByteArray)));
-
-    /* Send and read FMS packets */
-    connect (m_client,  SIGNAL (fmsPacketReceived   (QByteArray)),
-             this,        SLOT (readFmsPacket       (QByteArray)));
+    /* Lamda-functions */
+    connect (m_manager, &DS_ProtocolManager::codeChanged,
+             [ = ] (bool ignored)
+    {
+        Q_UNUSED (ignored);
+        emit robotStatusChanged (getRobotStatus());
+    });
+    connect (m_manager, &DS_ProtocolManager::communicationsChanged,
+             [ = ] (DS_CommStatus status)
+    {
+        emit communicationsChanged (status);
+    });
+    connect (m_manager, &DS_ProtocolManager::communicationsChanged,
+             [ = ] (DS_CommStatus status)
+    {
+        emit communicationsChanged (status);
+        emit robotStatusChanged (getRobotStatus());
+    });
 }
 
 //=============================================================================
@@ -153,7 +152,7 @@ DriverStation* DriverStation::getInstance()
 
     instance.moveToThread (&thread);
     thread.start (QThread::TimeCriticalPriority);
-    connect (qApp, SIGNAL (aboutToQuit()), &thread, SLOT (quit()));
+    connect (qApp, &QApplication::aboutToQuit, &thread, &QThread::quit);
 
     return &instance;
 }
@@ -349,8 +348,8 @@ void DriverStation::init()
         {
             m_init = true;
 
-            QTimer::singleShot (500, this, SIGNAL (initialized()));
-            QTimer::singleShot (500, this,   SLOT (resetEverything()));
+            QTimer::singleShot (500, this, &DriverStation::initialized);
+            QTimer::singleShot (500, this, &DriverStation::resetEverything);
         }
 }
 
@@ -677,26 +676,6 @@ void DriverStation::readRobotPacket (QByteArray response)
 {
     if (m_manager->isValid())
         m_manager->currentProtocol()->readRobotPacket (response);
-}
-
-//=============================================================================
-// DriverStation::updateRobotStatus
-//=============================================================================
-
-void DriverStation::updateRobotStatus (bool ignored)
-{
-    Q_UNUSED (ignored);
-    emit robotStatusChanged (getRobotStatus());
-}
-
-//=============================================================================
-// DriverStation::updateRobotStatus
-//=============================================================================
-
-void DriverStation::updateRobotStatus (DS_CommStatus status)
-{
-    emit robotStatusChanged (getRobotStatus());
-    emit communicationsChanged (status == kFull);
 }
 
 //=============================================================================

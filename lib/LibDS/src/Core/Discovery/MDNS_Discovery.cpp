@@ -38,15 +38,16 @@
 
 MDNS_Discovery::MDNS_Discovery()
 {
-    connect (&m_receiver, SIGNAL (readyRead()), this, SLOT (readData()));
+    connect (&m_receiver,   &QUdpSocket::readyRead,
+             this,          &MDNS_Discovery::readData);
+    connect (&m_cacheTimer, &QTimer::timeout,
+             this,          &MDNS_Discovery::clearCache);
 
     m_receiver.bind (QHostAddress::AnyIPv4, PORT, BIND_MODE);
 
     m_receiver.joinMulticastGroup (IPv4_IP);
     m_receiver.setSocketOption (QAbstractSocket::MulticastTtlOption, 255);
     m_receiver.setSocketOption (QAbstractSocket::MulticastLoopbackOption, 1);
-
-    connect (&m_cacheTimer, SIGNAL (timeout()), this, SLOT (clearCache()));
 
     m_cacheTimer.setInterval (120 * 1000);
     m_cacheTimer.start();

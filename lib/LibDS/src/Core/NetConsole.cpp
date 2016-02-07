@@ -31,7 +31,8 @@ DS_NetConsole::DS_NetConsole (QObject* parent) : QObject (parent)
 {
     m_outPort = 0;
     m_acceptsInput = false;
-    connect (&m_socket, SIGNAL (readyRead()), this, SLOT (readSocket()));
+    connect (&m_socket, &QUdpSocket::readyRead,
+             this,      &DS_NetConsole::readSocket);
 }
 
 //=============================================================================

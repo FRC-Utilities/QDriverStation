@@ -121,14 +121,14 @@ void Console::createLayouts()
 
 void Console::connectSlots()
 {
-    connect (m_commandEdit, SIGNAL (returnPressed()),
-             this,            SLOT (sendCommand()));
-    connect (m_sendButton,  SIGNAL (clicked()),
-             this,            SLOT (sendCommand()));
-    connect (DS(),          SIGNAL (newMessage        (QString)),
-             this,            SLOT (registerMessage   (QString)));
-    connect (DS(),          SIGNAL (protocolChanged   (void)),
-             this,            SLOT (onProtocolChanged (void)));
+    connect (m_commandEdit, &QLineEdit::returnPressed,
+             this,          &Console::sendCommand);
+    connect (m_sendButton,  &QPushButton::clicked,
+             this,          &Console::sendCommand);
+    connect (DS(),          &DriverStation::newMessage,
+             this,          &Console::registerMessage);
+    connect (DS(),          &DriverStation::protocolChanged,
+             this,          &Console::onProtocolChanged);
 }
 
 //=============================================================================
