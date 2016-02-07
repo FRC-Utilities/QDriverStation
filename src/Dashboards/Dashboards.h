@@ -34,8 +34,12 @@ public:
     {
         kNone           = 0x00,
         kBuiltin        = 0x01,
-        kSmartDashboard = 0x02,
-        kLabVIEW        = 0x03,
+        kSFXDashboard   = 0x02,
+        kSmartDashboard = 0x03,
+
+#if defined Q_OS_WIN
+        kLabVIEW        = 0x04,
+#endif
     };
 
     static Dashboards* getInstance();

@@ -45,7 +45,6 @@ const QString PARTIAL_COMM   = "<p>"
 DS_ProtocolBase::DS_ProtocolBase()
 {
     m_team                = 0;
-    m_resetCount          = 0;
     m_radioIterator       = 0;
     m_robotIterator       = 0;
     m_sentFMSPackets      = 0;
@@ -257,29 +256,17 @@ QByteArray DS_ProtocolBase::createRobotPacket()
 
 void DS_ProtocolBase::reset()
 {
-    m_resetCount += 1;
+    /* Try another robot address */
+    if (m_robotIterator >= defaultRobotAddress().count() - 1)
+        m_robotIterator = 0;
+    else
+        m_robotIterator += 1;
 
-    /* Notify user that communication is partial */
-    if (m_resetCount == 3 && communicationStatus() == kPartial)
-        DS_SendMessage (PARTIAL_COMM.arg (robotAddress()));
-
-    /* Warn user that we cannot communicate with robot */
-    if (m_resetCount >= 3)
-        {
-            m_resetCount = 0;
-
-            /* Try another robot address */
-            if (m_robotIterator >= defaultRobotAddress().count() - 1)
-                m_robotIterator = 0;
-            else
-                m_robotIterator += 1;
-
-            /* Try another radio address */
-            if (m_radioIterator >= defaultRadioAddress().count() - 1)
-                m_radioIterator = 0;
-            else
-                m_radioIterator += 1;
-        }
+    /* Try another radio address */
+    if (m_radioIterator >= defaultRadioAddress().count() - 1)
+        m_radioIterator = 0;
+    else
+        m_radioIterator += 1;
 
     /* Custom reset procedures for each protocol */
     _resetProtocol();

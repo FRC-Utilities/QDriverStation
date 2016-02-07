@@ -580,13 +580,6 @@ private:
     int m_team;
 
     /**
-     * Holds the number of times the \c reset() function was called.
-     * We use it to toggle the usage of the fallback robot address every certain
-     * number of protocol resets.
-     */
-    int m_resetCount;
-
-    /**
      * Represents the number of packets sent to the FMS
      */
     int m_sentFMSPackets;

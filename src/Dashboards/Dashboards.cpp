@@ -47,6 +47,19 @@
 #undef  IS_64_BIT
 #define IS_64_BIT GetProcAddress (GetModuleHandle (TEXT ("kernel32")), "IsWow64Process")
 #endif
+#define PF IS_64_BIT ? "C:/Program Files (x86)" : "C:/Program Files"
+#endif
+
+//=============================================================================
+// Define the command to open Java JAR applications
+//=============================================================================
+
+#if defined Q_OS_WIN
+#define JAVA_OPEN "java -jar"
+#elif defined Q_OS_LINUX
+#define JAVA_OPEN "xdg-open"
+#elif defined Q_OS_MAC
+#define JAVA_OPEN "open"
 #endif
 
 //=============================================================================
@@ -88,9 +101,10 @@ QStringList Dashboards::dashboardList()
     QStringList list;
     list.append (tr ("None"));
     list.append (tr ("Built-in Dashboard"));
+    list.append (tr ("SFX Dashboard"));
     list.append (tr ("SmartDashboard"));
 
-#if defined _WIN32 || defined _WIN64
+#if defined Q_OS_WIN
     list.append (tr ("LabVIEW Dashboard"));
 #endif
 
@@ -113,21 +127,24 @@ void Dashboards::openDashboard()
     /* Open an external dashboard */
     else
         {
-            /* Open the SmartDashboard, easy as cake */
-            if (m_current == kSmartDashboard)
+            /* Open the SFX Dashboard */
+            if (m_current == kSFXDashboard)
                 {
-                    path = QString ("java -jar \"%1/wpilib/tools/SmartDashboard.jar\"")
-                           .arg (QDir::homePath());
+                    path = QString ("%1 \"%2/wpilib/tools/sfx.jar\"")
+                           .arg (JAVA_OPEN , QDir::homePath());
+                }
+
+            /* Open the SmartDashboard */
+            else if (m_current == kSmartDashboard)
+                {
+                    path = QString ("%1 \"%2/wpilib/tools/SmartDashboard.jar\"")
+                           .arg (JAVA_OPEN , QDir::homePath());
                 }
 
             /* Open the LabVIEW Dashboard */
-#if defined _WIN32 || defined _WIN64
+#if defined Q_OS_WIN
             else if (m_current == kLabVIEW)
-                {
-                    QString pF = IS_64_BIT ? "C:/Program Files (x86)" : "C:/Program Files";
-                    path = QString ("%1/FRC Dashboard/Dashboard.exe").arg (pF);
-                    path = "\"" + path + "\"";
-                }
+                    path = QString ("\"%1/FRC Dashboard/Dashboard.exe\"").arg (PF);
 #endif
 
             m_process.start (path);
