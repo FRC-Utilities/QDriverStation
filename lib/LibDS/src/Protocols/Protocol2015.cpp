@@ -362,7 +362,7 @@ QByteArray DS_Protocol2015::_getJoystickData()
 {
     QByteArray data;
 
-    /* Do not send JS data on DS init */
+    /* Do not send joystick data on DS init */
     if (sentRobotPackets() <= 5)
         return data;
 
