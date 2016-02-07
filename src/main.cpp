@@ -84,41 +84,41 @@ int main (int argc, char* argv[])
     Q_UNUSED (mainwindow);
 
     /* Beep whenever a button or checkbox is clicked */
-    foreach (QWidget* widget, app.allWidgets())
-        {
-            /* Do the conversions */
-            QSpinBox*    spin   = qobject_cast<QSpinBox*> (widget);
-            QCheckBox*   check  = qobject_cast<QCheckBox*> (widget);
-            QComboBox*   combo  = qobject_cast<QComboBox*> (widget);
-            QTabWidget*  tabwid = qobject_cast<QTabWidget*> (widget);
-            QPushButton* button = qobject_cast<QPushButton*> (widget);
+    foreach (QWidget * widget, app.allWidgets())
+    {
+        /* Do the conversions */
+        QSpinBox*    spin   = qobject_cast<QSpinBox*> (widget);
+        QCheckBox*   check  = qobject_cast<QCheckBox*> (widget);
+        QComboBox*   combo  = qobject_cast<QComboBox*> (widget);
+        QTabWidget*  tabwid = qobject_cast<QTabWidget*> (widget);
+        QPushButton* button = qobject_cast<QPushButton*> (widget);
 
-            /* The widget is a spin box */
-            if (spin != Q_NULLPTR)
-                QObject::connect (spin,
-                                  static_cast<void (QSpinBox::*) (int)
-                                  > (&QSpinBox::valueChanged),
-                                  BEEP);
+        /* The widget is a spin box */
+        if (spin != Q_NULLPTR)
+            QObject::connect (spin,
+                              static_cast<void (QSpinBox::*) (int)
+                              > (&QSpinBox::valueChanged),
+                              BEEP);
 
-            /* The widget is a combo box */
-            else if (combo != Q_NULLPTR)
-                QObject::connect (combo,
-                                  static_cast<void (QComboBox::*) (int)
-                                  > (&QComboBox::currentIndexChanged),
-                                  BEEP);
+        /* The widget is a combo box */
+        else if (combo != Q_NULLPTR)
+            QObject::connect (combo,
+                              static_cast<void (QComboBox::*) (int)
+                              > (&QComboBox::currentIndexChanged),
+                              BEEP);
 
-            /* The widget is a check box */
-            else if (check != Q_NULLPTR)
-                QObject::connect (check, &QCheckBox::clicked, BEEP);
+        /* The widget is a check box */
+        else if (check != Q_NULLPTR)
+            QObject::connect (check, &QCheckBox::clicked, BEEP);
 
-            /* The widget is a tab widget */
-            else if (tabwid != Q_NULLPTR)
-                QObject::connect (tabwid, &QTabWidget::currentChanged, BEEP);
+        /* The widget is a tab widget */
+        else if (tabwid != Q_NULLPTR)
+            QObject::connect (tabwid, &QTabWidget::currentChanged, BEEP);
 
-            /* The widget is a button */
-            else if (button != Q_NULLPTR)
-                QObject::connect (button, &QPushButton::clicked, BEEP);
-        }
+        /* The widget is a button */
+        else if (button != Q_NULLPTR)
+            QObject::connect (button, &QPushButton::clicked, BEEP);
+    }
 
     /* Ask for team number on first launch */
     if (Settings::get ("First launch", true).toBool())

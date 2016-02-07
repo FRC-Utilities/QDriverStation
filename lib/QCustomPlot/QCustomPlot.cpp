@@ -819,24 +819,24 @@ void QCPLayoutElement::update (UpdatePhase phase)
                     QList<QCP::MarginSide>allMarginSides = QList<QCP::MarginSide>() << QCP::msLeft
                                                            << QCP::msRight << QCP::msTop << QCP::msBottom;
                     foreach (QCP::MarginSide side, allMarginSides)
-                        {
-                            if (mAutoMargins.testFlag (
-                                        side))
-                                {
-                                    if (mMarginGroups.contains (side))
-                                        QCP::setMarginValue (newMargins, side,
-                                                             mMarginGroups[side]->commonMargin (
-                                                                 side));
-                                    else
-                                        QCP::setMarginValue (newMargins, side,
-                                                             calculateAutoMargin (
-                                                                 side));
-                                    if (QCP::getMarginValue (newMargins,
-                                                             side) < QCP::getMarginValue (mMinimumMargins, side))
-                                        QCP::setMarginValue (newMargins, side, QCP::getMarginValue (mMinimumMargins,
+                    {
+                        if (mAutoMargins.testFlag (
+                                    side))
+                            {
+                                if (mMarginGroups.contains (side))
+                                    QCP::setMarginValue (newMargins, side,
+                                                         mMarginGroups[side]->commonMargin (
                                                              side));
-                                }
-                        }
+                                else
+                                    QCP::setMarginValue (newMargins, side,
+                                                         calculateAutoMargin (
+                                                             side));
+                                if (QCP::getMarginValue (newMargins,
+                                                         side) < QCP::getMarginValue (mMinimumMargins, side))
+                                    QCP::setMarginValue (newMargins, side, QCP::getMarginValue (mMinimumMargins,
+                                                         side));
+                            }
+                    }
                     setMargins (newMargins);
                 }
         }
@@ -875,11 +875,11 @@ double QCPLayoutElement::selectTest (const QPointF& pos, bool onlySelectable,
 }
 void QCPLayoutElement::parentPlotInitialized (QCustomPlot* parentPlot)
 {
-    foreach (QCPLayoutElement* el, elements (false))
-        {
-            if (!el->parentPlot())
-                el->initializeParentPlot (parentPlot);
-        }
+    foreach (QCPLayoutElement * el, elements (false))
+    {
+        if (!el->parentPlot())
+            el->initializeParentPlot (parentPlot);
+    }
 }
 int QCPLayoutElement::calculateAutoMargin (QCP::MarginSide side)
 {
@@ -4363,18 +4363,18 @@ QCPItemAnchor::QCPItemAnchor (QCustomPlot* parentPlot,
 }
 QCPItemAnchor::~QCPItemAnchor()
 {
-    foreach (QCPItemPosition* child, mChildrenX.toList())
-        {
-            if (child->parentAnchorX() == this)
-                child->setParentAnchorX (
-                    0);
-        }
-    foreach (QCPItemPosition* child, mChildrenY.toList())
-        {
-            if (child->parentAnchorY() == this)
-                child->setParentAnchorY (
-                    0);
-        }
+    foreach (QCPItemPosition * child, mChildrenX.toList())
+    {
+        if (child->parentAnchorX() == this)
+            child->setParentAnchorX (
+                0);
+    }
+    foreach (QCPItemPosition * child, mChildrenY.toList())
+    {
+        if (child->parentAnchorY() == this)
+            child->setParentAnchorY (
+                0);
+    }
 }
 QPointF QCPItemAnchor::pixelPoint()const
 {
@@ -4435,18 +4435,18 @@ QCPItemPosition::QCPItemPosition (QCustomPlot* parentPlot,
 }
 QCPItemPosition::~QCPItemPosition()
 {
-    foreach (QCPItemPosition* child, mChildrenX.toList())
-        {
-            if (child->parentAnchorX() == this)
-                child->setParentAnchorX (
-                    0);
-        }
-    foreach (QCPItemPosition* child, mChildrenY.toList())
-        {
-            if (child->parentAnchorY() == this)
-                child->setParentAnchorY (
-                    0);
-        }
+    foreach (QCPItemPosition * child, mChildrenX.toList())
+    {
+        if (child->parentAnchorX() == this)
+            child->setParentAnchorX (
+                0);
+    }
+    foreach (QCPItemPosition * child, mChildrenY.toList())
+    {
+        if (child->parentAnchorY() == this)
+            child->setParentAnchorY (
+                0);
+    }
     if (mParentAnchorX)
         mParentAnchorX->removeChildX (this);
     if (mParentAnchorY)
@@ -5271,11 +5271,11 @@ int QCustomPlot::plottableCount()const
 QList<QCPAbstractPlottable*>QCustomPlot::selectedPlottables()const
 {
     QList<QCPAbstractPlottable*>result;
-    foreach (QCPAbstractPlottable* plottable, mPlottables)
-        {
-            if (plottable->selected())
-                result.append (plottable);
-        }
+    foreach (QCPAbstractPlottable * plottable, mPlottables)
+    {
+        if (plottable->selected())
+            result.append (plottable);
+    }
     return result;
 }
 QCPAbstractPlottable* QCustomPlot::plottableAt (const QPointF& pos,
@@ -5284,23 +5284,23 @@ QCPAbstractPlottable* QCustomPlot::plottableAt (const QPointF& pos,
     QCPAbstractPlottable* resultPlottable = 0;
     double resultDistance =
         mSelectionTolerance;
-    foreach (QCPAbstractPlottable* plottable, mPlottables)
-        {
-            if (onlySelectable
-                    && !plottable->selectable())
-                continue;
-            if ((plottable->keyAxis()->axisRect()->rect()&
-                    plottable->valueAxis()->axisRect()->rect()).contains (
-                        pos.toPoint()))
-                {
-                    double currentDistance = plottable->selectTest (pos, false);
-                    if (currentDistance >= 0 && currentDistance < resultDistance)
-                        {
-                            resultPlottable = plottable;
-                            resultDistance = currentDistance;
-                        }
-                }
-        }
+    foreach (QCPAbstractPlottable * plottable, mPlottables)
+    {
+        if (onlySelectable
+                && !plottable->selectable())
+            continue;
+        if ((plottable->keyAxis()->axisRect()->rect()&
+                plottable->valueAxis()->axisRect()->rect()).contains (
+                    pos.toPoint()))
+            {
+                double currentDistance = plottable->selectTest (pos, false);
+                if (currentDistance >= 0 && currentDistance < resultDistance)
+                    {
+                        resultPlottable = plottable;
+                        resultDistance = currentDistance;
+                    }
+            }
+    }
     return resultPlottable;
 }
 bool QCustomPlot::hasPlottable (QCPAbstractPlottable* plottable)const
@@ -5377,11 +5377,11 @@ int QCustomPlot::graphCount()const
 QList<QCPGraph*>QCustomPlot::selectedGraphs()const
 {
     QList<QCPGraph*>result;
-    foreach (QCPGraph* graph, mGraphs)
-        {
-            if (graph->selected())
-                result.append (graph);
-        }
+    foreach (QCPGraph * graph, mGraphs)
+    {
+        if (graph->selected())
+            result.append (graph);
+    }
     return result;
 }
 QCPAbstractItem* QCustomPlot::item (int index)const
@@ -5455,11 +5455,11 @@ int QCustomPlot::itemCount()const
 QList<QCPAbstractItem*>QCustomPlot::selectedItems()const
 {
     QList<QCPAbstractItem*>result;
-    foreach (QCPAbstractItem* item, mItems)
-        {
-            if (item->selected())
-                result.append (item);
-        }
+    foreach (QCPAbstractItem * item, mItems)
+    {
+        if (item->selected())
+            result.append (item);
+    }
     return result;
 }
 QCPAbstractItem* QCustomPlot::itemAt (const QPointF& pos,
@@ -5468,23 +5468,23 @@ QCPAbstractItem* QCustomPlot::itemAt (const QPointF& pos,
     QCPAbstractItem* resultItem = 0;
     double resultDistance =
         mSelectionTolerance;
-    foreach (QCPAbstractItem* item, mItems)
-        {
-            if (onlySelectable
-                    && !item->selectable())
-                continue;
-            if (!item->clipToAxisRect()
-                    || item->clipRect().contains (
-                        pos.toPoint()))
-                {
-                    double currentDistance = item->selectTest (pos, false);
-                    if (currentDistance >= 0 && currentDistance < resultDistance)
-                        {
-                            resultItem = item;
-                            resultDistance = currentDistance;
-                        }
-                }
-        }
+    foreach (QCPAbstractItem * item, mItems)
+    {
+        if (onlySelectable
+                && !item->selectable())
+            continue;
+        if (!item->clipToAxisRect()
+                || item->clipRect().contains (
+                    pos.toPoint()))
+            {
+                double currentDistance = item->selectTest (pos, false);
+                if (currentDistance >= 0 && currentDistance < resultDistance)
+                    {
+                        resultItem = item;
+                        resultDistance = currentDistance;
+                    }
+            }
+    }
     return resultItem;
 }
 bool QCustomPlot::hasItem (QCPAbstractItem* item)const
@@ -5493,11 +5493,11 @@ bool QCustomPlot::hasItem (QCPAbstractItem* item)const
 }
 QCPLayer* QCustomPlot::layer (const QString& name)const
 {
-    foreach (QCPLayer* layer, mLayers)
-        {
-            if (layer->name() == name)
-                return layer;
-        }
+    foreach (QCPLayer * layer, mLayers)
+    {
+        if (layer->name() == name)
+            return layer;
+    }
     return 0;
 }
 QCPLayer* QCustomPlot::layer (int index)const
@@ -5643,15 +5643,15 @@ QList<QCPAxisRect*>QCustomPlot::axisRects()const
         elementStack.push (mPlotLayout);
     while (!elementStack.isEmpty())
         {
-            foreach (QCPLayoutElement* element, elementStack.pop()->elements (false))
-                {
-                    if (element)
-                        {
-                            elementStack.push (element);
-                            if (QCPAxisRect* ar = qobject_cast<QCPAxisRect*> (element))
-                                result.append (ar);
-                        }
-                }
+            foreach (QCPLayoutElement * element, elementStack.pop()->elements (false))
+            {
+                if (element)
+                    {
+                        elementStack.push (element);
+                        if (QCPAxisRect* ar = qobject_cast<QCPAxisRect*> (element))
+                            result.append (ar);
+                    }
+            }
         }
     return result;
 }
@@ -5662,29 +5662,29 @@ QCPLayoutElement* QCustomPlot::layoutElementAt (const QPointF& pos)const
     while (searchSubElements && currentElement)
         {
             searchSubElements = false;
-            foreach (QCPLayoutElement* subElement, currentElement->elements (false))
-                {
-                    if (subElement && subElement->realVisibility()
-                            && subElement->selectTest (pos, false) >= 0)
-                        {
-                            currentElement = subElement;
-                            searchSubElements = true;
-                            break;
-                        }
-                }
+            foreach (QCPLayoutElement * subElement, currentElement->elements (false))
+            {
+                if (subElement && subElement->realVisibility()
+                        && subElement->selectTest (pos, false) >= 0)
+                    {
+                        currentElement = subElement;
+                        searchSubElements = true;
+                        break;
+                    }
+            }
         }
     return currentElement;
 }
 QList<QCPAxis*>QCustomPlot::selectedAxes()const
 {
     QList<QCPAxis*>result, allAxes;
-    foreach (QCPAxisRect* rect, axisRects())
-        allAxes << rect->axes();
-    foreach (QCPAxis* axis, allAxes)
-        {
-            if (axis->selectedParts() != QCPAxis::spNone)
-                result.append (axis);
-        }
+    foreach (QCPAxisRect * rect, axisRects())
+    allAxes << rect->axes();
+    foreach (QCPAxis * axis, allAxes)
+    {
+        if (axis->selectedParts() != QCPAxis::spNone)
+            result.append (axis);
+    }
     return result;
 }
 QList<QCPLegend*>QCustomPlot::selectedLegends()const
@@ -5695,28 +5695,28 @@ QList<QCPLegend*>QCustomPlot::selectedLegends()const
         elementStack.push (mPlotLayout);
     while (!elementStack.isEmpty())
         {
-            foreach (QCPLayoutElement* subElement, elementStack.pop()->elements (false))
-                {
-                    if (subElement)
-                        {
-                            elementStack.push (subElement);
-                            if (QCPLegend* leg = qobject_cast<QCPLegend*> (subElement))
-                                {
-                                    if (leg->selectedParts() != QCPLegend::spNone)
-                                        result.append (leg);
-                                }
-                        }
-                }
+            foreach (QCPLayoutElement * subElement, elementStack.pop()->elements (false))
+            {
+                if (subElement)
+                    {
+                        elementStack.push (subElement);
+                        if (QCPLegend* leg = qobject_cast<QCPLegend*> (subElement))
+                            {
+                                if (leg->selectedParts() != QCPLegend::spNone)
+                                    result.append (leg);
+                            }
+                    }
+            }
         }
     return result;
 }
 void QCustomPlot::deselectAll()
 {
-    foreach (QCPLayer* layer, mLayers)
-        {
-            foreach (QCPLayerable* layerable, layer->children())
-                layerable->deselectEvent (0);
-        }
+    foreach (QCPLayer * layer, mLayers)
+    {
+        foreach (QCPLayerable * layerable, layer->children())
+        layerable->deselectEvent (0);
+    }
 }
 void QCustomPlot::replot (QCustomPlot::RefreshPriority refreshPriority)
 {
@@ -5753,10 +5753,10 @@ void QCustomPlot::replot (QCustomPlot::RefreshPriority refreshPriority)
 void QCustomPlot::rescaleAxes (bool onlyVisiblePlottables)
 {
     QList<QCPAxis*>allAxes;
-    foreach (QCPAxisRect* rect, axisRects())
-        allAxes << rect->axes();
-    foreach (QCPAxis* axis, allAxes)
-        axis->rescale (onlyVisiblePlottables);
+    foreach (QCPAxisRect * rect, axisRects())
+    allAxes << rect->axes();
+    foreach (QCPAxis * axis, allAxes)
+    axis->rescale (onlyVisiblePlottables);
 }
 bool QCustomPlot::savePdf (const QString& fileName, bool noCosmeticPen,
                            int width, int height, const QString& pdfCreator, const QString& pdfTitle)
@@ -5920,19 +5920,19 @@ void QCustomPlot::mouseReleaseEvent (QMouseEvent* event)
                                     && event->modifiers().testFlag (mMultiSelectModifier);
                     if (!additive)
                         {
-                            foreach (QCPLayer* layer, mLayers)
+                            foreach (QCPLayer * layer, mLayers)
+                            {
+                                foreach (QCPLayerable * layerable, layer->children())
                                 {
-                                    foreach (QCPLayerable* layerable, layer->children())
+                                    if (layerable != clickedLayerable
+                                            && mInteractions.testFlag (layerable->selectionCategory()))
                                         {
-                                            if (layerable != clickedLayerable
-                                                    && mInteractions.testFlag (layerable->selectionCategory()))
-                                                {
-                                                    bool selChanged = false;
-                                                    layerable->deselectEvent (&selChanged);
-                                                    selectionStateChanged |= selChanged;
-                                                }
+                                            bool selChanged = false;
+                                            layerable->deselectEvent (&selChanged);
+                                            selectionStateChanged |= selChanged;
                                         }
                                 }
+                            }
                         }
                     if (clickedLayerable
                             && mInteractions.testFlag (clickedLayerable->selectionCategory()))
@@ -5988,20 +5988,20 @@ void QCustomPlot::draw (QCPPainter* painter)
     mPlotLayout->update (QCPLayoutElement::upMargins);
     mPlotLayout->update (QCPLayoutElement::upLayout);
     drawBackground (painter);
-    foreach (QCPLayer* layer, mLayers)
+    foreach (QCPLayer * layer, mLayers)
+    {
+        foreach (QCPLayerable * child, layer->children())
         {
-            foreach (QCPLayerable* child, layer->children())
+            if (child->realVisibility())
                 {
-                    if (child->realVisibility())
-                        {
-                            painter->save();
-                            painter->setClipRect (child->clipRect().translated (0, -1));
-                            child->applyDefaultAntialiasingHint (painter);
-                            child->draw (painter);
-                            painter->restore();
-                        }
+                    painter->save();
+                    painter->setClipRect (child->clipRect().translated (0, -1));
+                    child->applyDefaultAntialiasingHint (painter);
+                    child->draw (painter);
+                    painter->restore();
                 }
         }
+    }
 }
 void QCustomPlot::drawBackground (QCPPainter* painter)
 {
@@ -7686,10 +7686,10 @@ void QCPColorScale::setType (QCPAxis::AxisType type)
             QList<QCPAxis::AxisType>allAxisTypes = QList<QCPAxis::AxisType>() <<
                                                    QCPAxis::atLeft << QCPAxis::atRight << QCPAxis::atBottom << QCPAxis::atTop;
             foreach (QCPAxis::AxisType atype, allAxisTypes)
-                {
-                    mAxisRect.data()->axis (atype)->setTicks (atype == mType);
-                    mAxisRect.data()->axis (atype)->setTickLabels (atype == mType);
-                }
+            {
+                mAxisRect.data()->axis (atype)->setTicks (atype == mType);
+                mAxisRect.data()->axis (atype)->setTickLabels (atype == mType);
+            }
             mColorAxis = mAxisRect.data()->axis (mType);
             mColorAxis.data()->setRange (
                 rangeTransfer);
@@ -7939,15 +7939,15 @@ QCPColorScaleAxisRectPrivate::QCPColorScaleAxisRectPrivate (
     QList<QCPAxis::AxisType>allAxisTypes = QList<QCPAxis::AxisType>() <<
                                            QCPAxis::atBottom << QCPAxis::atTop << QCPAxis::atLeft << QCPAxis::atRight;
     foreach (QCPAxis::AxisType type, allAxisTypes)
-        {
-            axis (type)->setVisible (true);
-            axis (type)->grid()->setVisible (false);
-            axis (type)->setPadding (0);
-            connect (axis (type), SIGNAL (selectionChanged (QCPAxis::SelectableParts)),
-                     this, SLOT (axisSelectionChanged (QCPAxis::SelectableParts)));
-            connect (axis (type), SIGNAL (selectableChanged (QCPAxis::SelectableParts)),
-                     this, SLOT (axisSelectableChanged (QCPAxis::SelectableParts)));
-        }
+    {
+        axis (type)->setVisible (true);
+        axis (type)->grid()->setVisible (false);
+        axis (type)->setPadding (0);
+        connect (axis (type), SIGNAL (selectionChanged (QCPAxis::SelectableParts)),
+                 this, SLOT (axisSelectionChanged (QCPAxis::SelectableParts)));
+        connect (axis (type), SIGNAL (selectableChanged (QCPAxis::SelectableParts)),
+                 this, SLOT (axisSelectableChanged (QCPAxis::SelectableParts)));
+    }
     connect (axis (QCPAxis::atLeft), SIGNAL (rangeChanged (QCPRange)),
              axis (QCPAxis::atRight), SLOT (setRange (QCPRange)));
     connect (axis (QCPAxis::atRight), SIGNAL (rangeChanged (QCPRange)),
@@ -7969,8 +7969,8 @@ QCPColorScaleAxisRectPrivate::QCPColorScaleAxisRectPrivate (
     connect (parentColorScale, SIGNAL (layerChanged (QCPLayer*)), this,
              SLOT (setLayer (QCPLayer*)));
     foreach (QCPAxis::AxisType type, allAxisTypes)
-        connect (parentColorScale, SIGNAL (layerChanged (QCPLayer*)), axis (type),
-                 SLOT (setLayer (QCPLayer*)));
+    connect (parentColorScale, SIGNAL (layerChanged (QCPLayer*)), axis (type),
+             SLOT (setLayer (QCPLayer*)));
 }
 void QCPColorScaleAxisRectPrivate::draw (QCPPainter* painter)
 {
@@ -8036,18 +8036,18 @@ void QCPColorScaleAxisRectPrivate::axisSelectionChanged (
     QList<QCPAxis::AxisType>allAxisTypes = QList<QCPAxis::AxisType>() <<
                                            QCPAxis::atBottom << QCPAxis::atTop << QCPAxis::atLeft << QCPAxis::atRight;
     foreach (QCPAxis::AxisType type, allAxisTypes)
-        {
-            if (QCPAxis* senderAxis = qobject_cast<QCPAxis*> (sender()))
-                if (senderAxis->axisType() == type)
-                    continue;
-            if (axis (type)->selectableParts().testFlag (QCPAxis::spAxis))
-                {
-                    if (selectedParts.testFlag (QCPAxis::spAxis))
-                        axis (type)->setSelectedParts (axis (type)->selectedParts() | QCPAxis::spAxis);
-                    else
-                        axis (type)->setSelectedParts (axis (type)->selectedParts() & ~QCPAxis::spAxis);
-                }
-        }
+    {
+        if (QCPAxis* senderAxis = qobject_cast<QCPAxis*> (sender()))
+            if (senderAxis->axisType() == type)
+                continue;
+        if (axis (type)->selectableParts().testFlag (QCPAxis::spAxis))
+            {
+                if (selectedParts.testFlag (QCPAxis::spAxis))
+                    axis (type)->setSelectedParts (axis (type)->selectedParts() | QCPAxis::spAxis);
+                else
+                    axis (type)->setSelectedParts (axis (type)->selectedParts() & ~QCPAxis::spAxis);
+            }
+    }
 }
 void QCPColorScaleAxisRectPrivate::axisSelectableChanged (
     QCPAxis::SelectableParts selectableParts)
@@ -8055,20 +8055,20 @@ void QCPColorScaleAxisRectPrivate::axisSelectableChanged (
     QList<QCPAxis::AxisType>allAxisTypes = QList<QCPAxis::AxisType>() <<
                                            QCPAxis::atBottom << QCPAxis::atTop << QCPAxis::atLeft << QCPAxis::atRight;
     foreach (QCPAxis::AxisType type, allAxisTypes)
-        {
-            if (QCPAxis* senderAxis = qobject_cast<QCPAxis*> (sender()))
-                if (senderAxis->axisType() == type)
-                    continue;
-            if (axis (type)->selectableParts().testFlag (QCPAxis::spAxis))
-                {
-                    if (selectableParts.testFlag (QCPAxis::spAxis))
-                        axis (type)->setSelectableParts (axis (type)->selectableParts() |
-                                                         QCPAxis::spAxis);
-                    else
-                        axis (type)->setSelectableParts (axis (type)->selectableParts() &
-                                                         ~QCPAxis::spAxis);
-                }
-        }
+    {
+        if (QCPAxis* senderAxis = qobject_cast<QCPAxis*> (sender()))
+            if (senderAxis->axisType() == type)
+                continue;
+        if (axis (type)->selectableParts().testFlag (QCPAxis::spAxis))
+            {
+                if (selectableParts.testFlag (QCPAxis::spAxis))
+                    axis (type)->setSelectableParts (axis (type)->selectableParts() |
+                                                     QCPAxis::spAxis);
+                else
+                    axis (type)->setSelectableParts (axis (type)->selectableParts() &
+                                                     ~QCPAxis::spAxis);
+            }
+    }
 }
 QCPData::QCPData():
     key (0),
@@ -11392,9 +11392,9 @@ QCPBars* QCPBarsGroup::bars (int index)const
 }
 void QCPBarsGroup::clear()
 {
-    foreach (QCPBars* bars,
+    foreach (QCPBars * bars,
              mBars)
-        bars->setBarsGroup (0);
+    bars->setBarsGroup (0);
 }
 void QCPBarsGroup::append (QCPBars* bars)
 {
@@ -11445,13 +11445,13 @@ void QCPBarsGroup::unregisterBars (QCPBars* bars)
 double QCPBarsGroup::keyPixelOffset (const QCPBars* bars, double keyCoord)
 {
     QList<const QCPBars*>baseBars;
-    foreach (const QCPBars* b, mBars)
-        {
-            while (b->barBelow())
-                b = b->barBelow();
-            if (!baseBars.contains (b))
-                baseBars.append (b);
-        }
+    foreach (const QCPBars * b, mBars)
+    {
+        while (b->barBelow())
+            b = b->barBelow();
+        if (!baseBars.contains (b))
+            baseBars.append (b);
+    }
     const QCPBars* thisBase = bars;
     while (thisBase->barBelow())
         thisBase = thisBase->barBelow();

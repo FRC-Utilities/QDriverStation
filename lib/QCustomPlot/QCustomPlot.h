@@ -81,42 +81,42 @@ class QCPBars;
 namespace QCP
 {
 enum MarginSide {msLeft = 0x01
-, msRight = 0x02
-, msTop = 0x04
-, msBottom = 0x08
-, msAll = 0xFF
-, msNone = 0x00
+                          , msRight = 0x02
+                                      , msTop = 0x04
+                                              , msBottom = 0x08
+                                                      , msAll = 0xFF
+                                                              , msNone = 0x00
                 };
 Q_DECLARE_FLAGS (MarginSides, MarginSide)
 enum AntialiasedElement {aeAxes = 0x0001
-, aeGrid = 0x0002
-, aeSubGrid = 0x0004
-, aeLegend = 0x0008
-, aeLegendItems = 0x0010
-, aePlottables = 0x0020
-, aeItems = 0x0040
-, aeScatters = 0x0080
-, aeErrorBars = 0x0100
-, aeFills = 0x0200
-, aeZeroLine = 0x0400
-, aeAll = 0xFFFF
-, aeNone = 0x0000
+                                  , aeGrid = 0x0002
+                                          , aeSubGrid = 0x0004
+                                                  , aeLegend = 0x0008
+                                                          , aeLegendItems = 0x0010
+                                                                  , aePlottables = 0x0020
+                                                                          , aeItems = 0x0040
+                                                                                  , aeScatters = 0x0080
+                                                                                          , aeErrorBars = 0x0100
+                                                                                                  , aeFills = 0x0200
+                                                                                                          , aeZeroLine = 0x0400
+                                                                                                                  , aeAll = 0xFFFF
+                                                                                                                          , aeNone = 0x0000
                         };
 Q_DECLARE_FLAGS (AntialiasedElements, AntialiasedElement)
 enum PlottingHint {phNone = 0x000
-, phFastPolylines = 0x001
-, phForceRepaint = 0x002
-, phCacheLabels = 0x004
+                            , phFastPolylines = 0x001
+                                    , phForceRepaint = 0x002
+                                            , phCacheLabels = 0x004
                   };
 Q_DECLARE_FLAGS (PlottingHints, PlottingHint)
 enum Interaction {iRangeDrag = 0x001
-, iRangeZoom = 0x002
-, iMultiSelect = 0x004
-, iSelectPlottables = 0x008
-, iSelectAxes = 0x010
-, iSelectLegend = 0x020
-, iSelectItems = 0x040
-, iSelectOther = 0x080
+                               , iRangeZoom = 0x002
+                                       , iMultiSelect = 0x004
+                                               , iSelectPlottables = 0x008
+                                                       , iSelectAxes = 0x010
+                                                               , iSelectLegend = 0x020
+                                                                       , iSelectItems = 0x040
+                                                                               , iSelectOther = 0x080
                  };
 Q_DECLARE_FLAGS (Interactions, Interaction)
 inline bool isInvalidData (double value)
@@ -178,23 +178,23 @@ class QCP_LIB_DECL QCPScatterStyle
 public:
     Q_ENUMS (ScatterShape)
     enum ScatterShape {ssNone
-    , ssDot
-    , ssCross
-    , ssPlus
-    , ssCircle
-    , ssDisc
-    , ssSquare
-    , ssDiamond
-    , ssStar
-    , ssTriangle
-    , ssTriangleInverted
-    , ssCrossSquare
-    , ssPlusSquare
-    , ssCrossCircle
-    , ssPlusCircle
-    , ssPeace
-    , ssPixmap
-    , ssCustom
+                       , ssDot
+                       , ssCross
+                       , ssPlus
+                       , ssCircle
+                       , ssDisc
+                       , ssSquare
+                       , ssDiamond
+                       , ssStar
+                       , ssTriangle
+                       , ssTriangleInverted
+                       , ssCrossSquare
+                       , ssPlusSquare
+                       , ssCrossCircle
+                       , ssPlusCircle
+                       , ssPeace
+                       , ssPixmap
+                       , ssCustom
                       };
     QCPScatterStyle();
     QCPScatterStyle (ScatterShape shape, double size = 6);
@@ -262,9 +262,9 @@ class QCP_LIB_DECL QCPPainter: public QPainter
     Q_GADGET
 public:
     enum PainterMode {pmDefault = 0x00
-    , pmVectorized = 0x01
-    , pmNoCaching = 0x02
-    , pmNonCosmetic = 0x04
+                                  , pmVectorized = 0x01
+                                          , pmNoCaching = 0x02
+                                                  , pmNonCosmetic = 0x04
                      };
     Q_FLAGS (PainterMode PainterModes)
     Q_DECLARE_FLAGS (PainterModes, PainterMode)
@@ -538,8 +538,8 @@ class QCP_LIB_DECL QCPLayoutElement: public QCPLayerable
     Q_PROPERTY (QSize maximumSize READ maximumSize WRITE setMaximumSize)
 public:
     enum UpdatePhase {upPreparation
-    , upMargins
-    , upLayout
+                      , upMargins
+                      , upLayout
                      };
     Q_ENUMS (UpdatePhase)
     explicit QCPLayoutElement (QCustomPlot* parentPlot = 0);
@@ -738,7 +738,7 @@ class QCP_LIB_DECL QCPLayoutInset: public QCPLayout
     Q_OBJECT
 public:
     enum InsetPlacement {ipFree
-    , ipBorderAligned
+                         , ipBorderAligned
                         };
     explicit QCPLayoutInset();
     virtual~QCPLayoutInset();
@@ -772,15 +772,15 @@ class QCP_LIB_DECL QCPLineEnding
 public:
     Q_ENUMS (EndingStyle)
     enum EndingStyle {esNone
-    , esFlatArrow
-    , esSpikeArrow
-    , esLineArrow
-    , esDisc
-    , esSquare
-    , esDiamond
-    , esBar
-    , esHalfBar
-    , esSkewedBar
+                      , esFlatArrow
+                      , esSpikeArrow
+                      , esLineArrow
+                      , esDisc
+                      , esSquare
+                      , esDiamond
+                      , esBar
+                      , esHalfBar
+                      , esSkewedBar
                      };
     QCPLineEnding();
     QCPLineEnding (EndingStyle style, double width = 8, double length = 10,
@@ -939,28 +939,28 @@ class QCP_LIB_DECL QCPAxis: public QCPLayerable
     Q_PROPERTY (QCPGrid* grid READ grid)
 public:
     enum AxisType {atLeft = 0x01
-    , atRight = 0x02
-    , atTop = 0x04
-    , atBottom = 0x08
+                            , atRight = 0x02
+                                        , atTop = 0x04
+                                                , atBottom = 0x08
                   };
     Q_FLAGS (AxisType AxisTypes)
     Q_DECLARE_FLAGS (AxisTypes, AxisType)
     enum LabelType {ltNumber
-    , ltDateTime
+                    , ltDateTime
                    };
     Q_ENUMS (LabelType)
     enum LabelSide {lsInside
-    , lsOutside
+                    , lsOutside
                    };
     Q_ENUMS (LabelSide)
     enum ScaleType {stLinear
-    , stLogarithmic
+                    , stLogarithmic
                    };
     Q_ENUMS (ScaleType)
     enum SelectablePart {spNone = 0
-    , spAxis = 0x001
-    , spTickLabels = 0x002
-    , spAxisLabel = 0x004
+                                  , spAxis = 0x001
+                                          , spTickLabels = 0x002
+                                                  , spAxisLabel = 0x004
                         };
     Q_FLAGS (SelectablePart SelectableParts)
     Q_DECLARE_FLAGS (SelectableParts, SelectablePart)
@@ -1457,8 +1457,8 @@ signals:
     void selectableChanged (bool selectable);
 protected:
     enum SignDomain {sdNegative
-    , sdBoth
-    , sdPositive
+                     , sdBoth
+                     , sdPositive
                     };
     QString mName;
     bool mAntialiasedFill, mAntialiasedScatters, mAntialiasedErrorBars;
@@ -1532,9 +1532,9 @@ class QCP_LIB_DECL QCPItemPosition: public QCPItemAnchor
 {
 public:
     enum PositionType {ptAbsolute
-    , ptViewportRatio
-    , ptAxisRectRatio
-    , ptPlotCoords
+                       , ptViewportRatio
+                       , ptAxisRectRatio
+                       , ptPlotCoords
                       };
     QCPItemPosition (QCustomPlot* parentPlot, QCPAbstractItem* parentItem,
                      const QString name);
@@ -1702,12 +1702,12 @@ class QCP_LIB_DECL QCustomPlot: public QWidget
                 WRITE setMultiSelectModifier)
 public:
     enum LayerInsertMode {limBelow
-    , limAbove
+                          , limAbove
                          };
     Q_ENUMS (LayerInsertMode)
     enum RefreshPriority {rpImmediate
-    , rpQueued
-    , rpHint
+                          , rpQueued
+                          , rpHint
                          };
     explicit QCustomPlot (QWidget* parent = 0);
     virtual~QCustomPlot();
@@ -1925,21 +1925,21 @@ class QCP_LIB_DECL QCPColorGradient
     Q_GADGET
 public:
     enum ColorInterpolation {ciRGB
-    , ciHSV
+                             , ciHSV
                             };
     Q_ENUMS (ColorInterpolation)
     enum GradientPreset {gpGrayscale
-    , gpHot
-    , gpCold
-    , gpNight
-    , gpCandy
-    , gpGeography
-    , gpIon
-    , gpThermal
-    , gpPolar
-    , gpSpectrum
-    , gpJet
-    , gpHues
+                         , gpHot
+                         , gpCold
+                         , gpNight
+                         , gpCandy
+                         , gpGeography
+                         , gpIon
+                         , gpThermal
+                         , gpPolar
+                         , gpSpectrum
+                         , gpJet
+                         , gpHues
                         };
     Q_ENUMS (GradientPreset)
     QCPColorGradient (GradientPreset preset = gpCold);
@@ -2239,8 +2239,8 @@ class QCP_LIB_DECL QCPLegend: public QCPLayoutGrid
                 setSelectedTextColor)
 public:
     enum SelectablePart {spNone = 0x000
-    , spLegendBox = 0x001
-    , spItems = 0x002
+                                  , spLegendBox = 0x001
+                                          , spItems = 0x002
                         };
     Q_FLAGS (SelectablePart SelectableParts)
     Q_DECLARE_FLAGS (SelectableParts, SelectablePart)
@@ -2561,17 +2561,17 @@ class QCP_LIB_DECL QCPGraph: public QCPAbstractPlottable
                 setAdaptiveSampling)
 public:
     enum LineStyle {lsNone
-    , lsLine
-    , lsStepLeft
-    , lsStepRight
-    , lsStepCenter
-    , lsImpulse
+                    , lsLine
+                    , lsStepLeft
+                    , lsStepRight
+                    , lsStepCenter
+                    , lsImpulse
                    };
     Q_ENUMS (LineStyle)
     enum ErrorType {etNone
-    , etKey
-    , etValue
-    , etBoth
+                    , etKey
+                    , etValue
+                    , etBoth
                    };
     Q_ENUMS (ErrorType)
     explicit QCPGraph (QCPAxis* keyAxis, QCPAxis* valueAxis);
@@ -2737,7 +2737,7 @@ class QCP_LIB_DECL QCPCurve: public QCPAbstractPlottable
     Q_PROPERTY (LineStyle lineStyle READ lineStyle WRITE setLineStyle)
 public:
     enum LineStyle {lsNone
-    , lsLine
+                    , lsLine
                    };
     explicit QCPCurve (QCPAxis* keyAxis, QCPAxis* valueAxis);
     virtual~QCPCurve();
@@ -2811,8 +2811,8 @@ class QCP_LIB_DECL QCPBarsGroup: public QObject
     Q_PROPERTY (double spacing READ spacing WRITE setSpacing)
 public:
     enum SpacingType {stAbsolute
-    , stAxisRectRatio
-    , stPlotCoords
+                      , stAxisRectRatio
+                      , stPlotCoords
                      };
     QCPBarsGroup (QCustomPlot* parentPlot);
     ~QCPBarsGroup();
@@ -2882,8 +2882,8 @@ class QCP_LIB_DECL QCPBars: public QCPAbstractPlottable
     Q_PROPERTY (QCPBars* barAbove READ barAbove)
 public:
     enum WidthType {wtAbsolute
-    , wtAxisRectRatio
-    , wtPlotCoords
+                    , wtAxisRectRatio
+                    , wtPlotCoords
                    };
     Q_ENUMS (WidthType)
     explicit QCPBars (QCPAxis* keyAxis, QCPAxis* valueAxis);
@@ -3232,7 +3232,7 @@ class QCP_LIB_DECL QCPFinancial: public QCPAbstractPlottable
     Q_PROPERTY (QPen penNegative READ penNegative WRITE setPenNegative)
 public:
     enum ChartStyle {csOhlc
-    , csCandlestick
+                     , csCandlestick
                     };
     Q_ENUMS (ChartStyle)
     explicit QCPFinancial (QCPAxis* keyAxis, QCPAxis* valueAxis);
@@ -3740,10 +3740,10 @@ class QCP_LIB_DECL QCPItemTracer: public QCPAbstractItem
     Q_PROPERTY (bool interpolating READ interpolating WRITE setInterpolating)
 public:
     enum TracerStyle {tsNone
-    , tsPlus
-    , tsCrosshair
-    , tsCircle
-    , tsSquare
+                      , tsPlus
+                      , tsCrosshair
+                      , tsCircle
+                      , tsSquare
                      };
     Q_ENUMS (TracerStyle)
     QCPItemTracer (QCustomPlot* parentPlot);
@@ -3818,9 +3818,9 @@ class QCP_LIB_DECL QCPItemBracket: public QCPAbstractItem
     Q_PROPERTY (BracketStyle style READ style WRITE setStyle)
 public:
     enum BracketStyle {bsSquare
-    , bsRound
-    , bsCurly
-    , bsCalligraphic
+                       , bsRound
+                       , bsCurly
+                       , bsCalligraphic
                       };
     QCPItemBracket (QCustomPlot* parentPlot);
     virtual~QCPItemBracket();
