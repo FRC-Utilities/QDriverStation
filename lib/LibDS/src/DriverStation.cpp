@@ -348,8 +348,8 @@ void DriverStation::init()
         {
             m_init = true;
 
-            QTimer::singleShot (500, this, &DriverStation::initialized);
-            QTimer::singleShot (500, this, &DriverStation::resetEverything);
+            QTimer::singleShot (500, this, SIGNAL (initialized()));
+            QTimer::singleShot (500, this, SIGNAL (resetEverything()));
         }
 }
 

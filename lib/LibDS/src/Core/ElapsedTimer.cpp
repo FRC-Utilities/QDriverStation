@@ -72,6 +72,5 @@ void DS_ElapsedTime::getElapsedTime()
                                      .arg (QString::number (msec).at (0)));
         }
 
-    QTimer::singleShot (100, Qt::PreciseTimer,
-                        this, &DS_ElapsedTime::getElapsedTime);
+    QTimer::singleShot (100, Qt::PreciseTimer, this, SLOT (getElapsedTime()));
 }
