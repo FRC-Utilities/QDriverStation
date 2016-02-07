@@ -76,7 +76,7 @@ void Status::doErrorAnimation()
 {
     for (int i = 0; i < 8; ++i)
         QTimer::singleShot (100 * i, Qt::PreciseTimer,
-                            this, &Status::toggleStatusColors);
+                            this, SLOT (toggleStatusColors()));
 
     MORSE_BEEP ("..-", 550);
 }
