@@ -39,6 +39,7 @@ class Diagnostics : public QWidget
 
 public:
     explicit Diagnostics (QWidget* parent);
+    ~Diagnostics();
 
 private slots:
     void createWidgets();

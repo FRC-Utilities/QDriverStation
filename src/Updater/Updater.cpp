@@ -149,9 +149,9 @@ void Updater::getApplicationVersion (QByteArray data)
                          QString ("latest-%1").arg (m_platform));
 
     DS_LogMessage (kInfoLevel,
-                   QString ("Server version is: %1").arg (m_version));
+                   QString ("Updater: Server version is: %1").arg (m_version));
     DS_LogMessage (kInfoLevel,
-                   QString ("Local version is: %1")
+                   QString ("Updater: Local version is: %1")
                    .arg (qApp->applicationVersion()));
 
     QStringList online = m_version.split (".");

@@ -35,6 +35,7 @@ class CAN_Metrics : public QWidget
 
 public:
     explicit CAN_Metrics (QWidget* parent);
+    ~CAN_Metrics();
 
 private slots:
     void createWidgets();

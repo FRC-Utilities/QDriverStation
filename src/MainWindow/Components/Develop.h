@@ -24,6 +24,7 @@
 #define _QDS_MW_DEVELOP_H
 
 #include <QWidget>
+#include <Global/Global.h>
 
 class Develop: public QWidget
 {
@@ -31,6 +32,7 @@ class Develop: public QWidget
 
 public:
     explicit Develop (QWidget* parent);
+    ~Develop();
 };
 
 #endif

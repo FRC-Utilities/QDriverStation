@@ -47,8 +47,7 @@ HEADERS += \
     $$PWD/include/LibDS/Core/Discovery/Discovery.h \
     $$PWD/include/LibDS/Protocols/Protocol2016.h \
     $$PWD/include/LibDS/Core/Discovery/MDNS_Discovery.h \
-    $$PWD/include/LibDS/Protocols/Protocol2014.h \
-    $$PWD/include/LibDS/NetworkTables/NetworkTables.h
+    $$PWD/include/LibDS/Protocols/Protocol2014.h
 
 SOURCES += \
     $$PWD/src/DriverStation.cpp \
@@ -63,7 +62,6 @@ SOURCES += \
     $$PWD/src/Protocols/Protocol2015.cpp \
     $$PWD/src/Protocols/Protocol2016.cpp \
     $$PWD/src/Core/Discovery/MDNS_Discovery.cpp \
-    $$PWD/src/Protocols/Protocol2014.cpp \
-    $$PWD/src/NetworkTables/NetworkTables.cpp
+    $$PWD/src/Protocols/Protocol2014.cpp
 
 RESOURCES += $$PWD/etc/sounds/libds-sounds.qrc

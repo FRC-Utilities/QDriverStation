@@ -56,6 +56,7 @@ VJoystickWindow::VJoystickWindow()
     readSettings();
 
     setFixedSize (minimumSizeHint());
+    DS_LogMessage (kInfoLevel, "Virtual joysticks window created");
 }
 
 //=============================================================================

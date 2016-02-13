@@ -141,6 +141,17 @@ Joysticks::Joysticks (QWidget* parent) : QWidget (parent)
              this,               &Joysticks::onButtonEvent);
     connect (m_joystickNames,    &QListWidget::currentRowChanged,
              this,               &Joysticks::setupIndicators);
+
+    DS_LogMessage (kInfoLevel, "MainWindow: Joysticks widget created");
+}
+
+//=============================================================================
+// Joysticks::~Joysticks
+//=============================================================================
+
+Joysticks::~Joysticks()
+{
+    DS_LogMessage (kInfoLevel, "MainWindow: Joysticks widget destroyed");
 }
 
 //=============================================================================

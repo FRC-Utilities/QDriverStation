@@ -37,6 +37,7 @@ class Status : public QWidget
 
 public:
     explicit Status (QWidget* parent);
+    ~Status();
 
 public slots:
     void doErrorAnimation();

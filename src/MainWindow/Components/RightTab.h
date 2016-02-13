@@ -33,6 +33,7 @@ class RightTab : public QTabWidget
 {
 public:
     explicit RightTab (QWidget* parent);
+    ~RightTab();
 
 private:
     About* m_about;

@@ -40,6 +40,7 @@ class Operator : public QWidget
 
 public:
     explicit Operator (QWidget* parent);
+    ~Operator();
 
 private slots:
     void createWidgets();

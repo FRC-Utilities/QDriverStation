@@ -45,6 +45,17 @@ CAN_Metrics::CAN_Metrics (QWidget* parent) : QWidget (parent)
 
     connect (DS(), &DriverStation::CANInfoReceived,
              this, &CAN_Metrics::onMetricsReceived);
+
+    DS_LogMessage (kInfoLevel, "MainWindow: CAN Metrics widget created");
+}
+
+//=============================================================================
+// CAN_Metrics::~CAN_Metrics
+//=============================================================================
+
+CAN_Metrics::~CAN_Metrics()
+{
+    DS_LogMessage (kInfoLevel, "MainWindow: CAN Metrics widget destroyed");
 }
 
 //=============================================================================

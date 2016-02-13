@@ -165,6 +165,10 @@ void JoystickManager::updateInterfaces()
                                joystick.numButtons,
                                joystick.numPOVs);
         }
+
+    DS_LogMessage (kInfoLevel, "Input/joystick interfaces updated");
+    DS_LogMessage (kInfoLevel, "New joystick count: "
+                   + QString::number (m_devices.count()));
 }
 
 //=============================================================================

@@ -40,6 +40,7 @@ class Preferences : public QWidget
 
 public:
     explicit Preferences (QWidget* parent);
+    ~Preferences();
 
 private slots:
     void createWidgets();

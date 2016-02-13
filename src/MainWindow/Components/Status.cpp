@@ -66,6 +66,17 @@ Status::Status (QWidget* parent) : QWidget (parent)
     createLayouts();
     configureStyles();
     connectSlots();
+
+    DS_LogMessage (kInfoLevel, "MainWindow: Status/Central widget created");
+}
+
+//=============================================================================
+// Status::~Status
+//=============================================================================
+
+Status::~Status()
+{
+    DS_LogMessage (kInfoLevel, "MainWindow: Status/Central widget destroyed");
 }
 
 //=============================================================================

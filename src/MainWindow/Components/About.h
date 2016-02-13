@@ -36,6 +36,7 @@ class About : public QWidget
 
 public:
     explicit About (QWidget* parent);
+    ~About();
 
 private slots:
     void reportBug();

@@ -80,6 +80,17 @@ Operator::Operator (QWidget* parent) : QWidget (parent)
 
     connectSlots();
     updateProgressbars();
+
+    DS_LogMessage (kInfoLevel, "MainWindow: Operator widget created");
+}
+
+//=============================================================================
+// Operator::~Operator
+//=============================================================================
+
+Operator::~Operator()
+{
+    DS_LogMessage (kInfoLevel, "MainWindow: Operator widget destroyed");
 }
 
 //=============================================================================

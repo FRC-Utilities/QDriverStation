@@ -92,4 +92,15 @@ Buttons::Buttons (QWidget* parent) : QWidget (parent)
     connect (m_close,    &QPushButton::clicked, &QApplication::closeAllWindows);
     connect (m_settings, &QPushButton::clicked, SHOW_SETTINGS_WINDOW);
     connect (m_virtualJ, &QPushButton::clicked, SHOW_VIRTUAL_JOYSTICKS);
+
+    DS_LogMessage (kInfoLevel, "MainWindow: Buttons widget created");
+}
+
+//=============================================================================
+// Buttons::~Buttons
+//=============================================================================
+
+Buttons::~Buttons()
+{
+    DS_LogMessage (kInfoLevel, "MainWindow: Buttons widget destroyed");
 }

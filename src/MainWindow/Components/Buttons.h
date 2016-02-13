@@ -34,6 +34,7 @@ class Buttons: public QWidget
 
 public:
     explicit Buttons (QWidget* parent);
+    ~Buttons();
 
 private:
     QVBoxLayout* m_layout;

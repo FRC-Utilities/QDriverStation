@@ -36,6 +36,7 @@ class LeftTab : public QTabWidget
 
 public:
     explicit LeftTab (QWidget* parent);
+    ~LeftTab();
 
 signals:
     void showDocked();

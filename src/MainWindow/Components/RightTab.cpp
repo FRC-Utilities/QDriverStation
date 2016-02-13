@@ -45,4 +45,15 @@ RightTab::RightTab (QWidget* parent) : QTabWidget (parent)
 
     tabBar()->setStyle          (new CustomTabStyle);
     tabBar()->setFont           (AWESOME()->font (DPI_SCALE (16)));
+
+    DS_LogMessage (kInfoLevel, "MainWindow: Right Tab created");
+}
+
+//=============================================================================
+// RightTab::~RightTab
+//=============================================================================
+
+RightTab::~RightTab()
+{
+    DS_LogMessage (kInfoLevel, "MainWindow: RightTab widget destroyed");
 }

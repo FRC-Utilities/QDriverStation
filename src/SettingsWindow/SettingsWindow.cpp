@@ -70,6 +70,8 @@ SettingsWindow::SettingsWindow()
 
     readSettings();
     applySettings();
+
+    DS_LogMessage (kInfoLevel, "Settings window created");
 }
 
 //=============================================================================

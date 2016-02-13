@@ -51,6 +51,15 @@ Diagnostics::Diagnostics (QWidget* parent) : QWidget (parent)
 }
 
 //=============================================================================
+// Diagnostics::~Diagnostics
+//=============================================================================
+
+Diagnostics::~Diagnostics()
+{
+    DS_LogMessage (kInfoLevel, "MainWindow: Diagnostics widget destroyed");
+}
+
+//=============================================================================
 // Diagnostics::createWidgets
 //=============================================================================
 

@@ -45,6 +45,17 @@ Messages::Messages (QWidget* parent) : QWidget (parent)
 {
     createWidgets();
     createLayouts();
+
+    DS_LogMessage (kInfoLevel, "MainWindow: Messages widget created");
+}
+
+//=============================================================================
+// Messages::~Messages
+//=============================================================================
+
+Messages::~Messages()
+{
+    DS_LogMessage (kInfoLevel, "MainWindow: Messages widget destroyed");
 }
 
 //=============================================================================

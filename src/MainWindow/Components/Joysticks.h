@@ -42,6 +42,7 @@ class Joysticks : public QWidget
 
 public:
     explicit Joysticks (QWidget* parent);
+    ~Joysticks();
 
 protected:
     void showEvent (QShowEvent* event);

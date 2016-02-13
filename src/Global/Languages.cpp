@@ -137,7 +137,7 @@ QTranslator* Languages::translator()
 
 Languages::LanguageType Languages::currentLanguage()
 {
-    return (LanguageType) Settings::get ("Language", kAuto).toInt();
+    return (LanguageType) Settings::get ("Language", kEnglish).toInt();
 }
 
 //=============================================================================
@@ -162,6 +162,9 @@ QStringList Languages::getAvailableLanguages()
 
 void Languages::setLanguage (LanguageType language)
 {
+    DS_LogMessage (kInfoLevel,
+                   "Setting language to: " + QString::number (language));
+
     if (language != currentLanguage())
         {
             Settings::set ("Language", language);

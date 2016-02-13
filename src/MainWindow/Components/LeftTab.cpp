@@ -58,4 +58,15 @@ LeftTab::LeftTab (QWidget* parent) : QTabWidget (parent)
              this,       &LeftTab::showUnDocked);
     connect (m_operator, &Operator::requestErrorAnimation,
              this,       &LeftTab::requestErrorAnimation);
+
+    DS_LogMessage (kInfoLevel, "MainWindow: Left Tab created");
+}
+
+//=============================================================================
+// LeftTab::~LeftTab
+//=============================================================================
+
+LeftTab::~LeftTab()
+{
+    DS_LogMessage (kInfoLevel, "MainWindow: Left Tab destroyed");
 }

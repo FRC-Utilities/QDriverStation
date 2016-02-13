@@ -36,6 +36,7 @@ class Messages : public QWidget
 
 public:
     explicit Messages (QWidget* parent);
+    ~Messages();
 
 private slots:
     void createWidgets();
