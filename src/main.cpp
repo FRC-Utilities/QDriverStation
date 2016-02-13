@@ -135,8 +135,12 @@ int main (int argc, char* argv[])
             Settings::set ("First launch", false);
         }
 
-    DS_LogMessage (kInfoLevel, "Everything looks OK, may the force be with you");
 
-    /* May the force be with you */
-    return app.exec();
+    /* Start the application loop */
+    DS_LogMessage (kInfoLevel, "Everything good, may the force be with you");
+    int exit_code = app.exec();
+
+    /* Exit */
+    DS_LogMessage (kInfoLevel, "Goodbye!");
+    return exit_code;
 }

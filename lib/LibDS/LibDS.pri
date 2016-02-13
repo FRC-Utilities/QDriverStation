@@ -24,6 +24,7 @@
 
 CODECFORTR = UTF-8
 CODECFORSRC = UTF-8
+CONFIG += debug_and_release
 
 CONFIG += c++11
 INCLUDEPATH += $$PWD/include
@@ -32,6 +33,10 @@ QT += core
 QT += network
 QT += widgets
 QT += multimedia
+
+CONFIG (debug, debug|release) {
+    CONFIG += console
+}
 
 HEADERS += \
     $$PWD/include/LibDS/DriverStation.h \
