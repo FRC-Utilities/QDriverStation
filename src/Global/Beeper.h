@@ -11,7 +11,7 @@
 
 struct BeepObject
 {
-    double freq;
+    float freq;
     int samplesLeft;
 };
 
@@ -20,11 +20,11 @@ class Beeper : public QObject
 public:
     Beeper();
     ~Beeper();
-    void beep (double freq, int duration);
+    void beep (float freq, int duration);
     void generateSamples (qint16* stream, int length);
 
 private:
-    double v;
+    float v;
     std::queue<BeepObject> beeps;
 };
 

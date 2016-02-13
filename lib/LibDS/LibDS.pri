@@ -25,14 +25,13 @@
 CODECFORTR = UTF-8
 CODECFORSRC = UTF-8
 
+CONFIG += c++11
+INCLUDEPATH += $$PWD/include
+
 QT += core
 QT += network
 QT += widgets
 QT += multimedia
-
-CONFIG += c++11
-
-INCLUDEPATH += $$PWD/include
 
 HEADERS += \
     $$PWD/include/LibDS/DriverStation.h \

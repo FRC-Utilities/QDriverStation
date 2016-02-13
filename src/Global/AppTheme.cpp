@@ -38,9 +38,7 @@ void AppTheme::init()
 {
     /* Load the application fonts */
     QFontDatabase::addApplicationFont (":/fonts/Inconsolata.otf");
-    QFontDatabase::addApplicationFont (":/fonts/Aurebesh-Bold.ttf");
     QFontDatabase::addApplicationFont (":/fonts/Quicksand-Bold.ttf");
-    QFontDatabase::addApplicationFont (":/fonts/Aurebesh-Regular.ttf");
     QFontDatabase::addApplicationFont (":/fonts/Quicksand-Regular.ttf");
 
     /* Configure appearance options */

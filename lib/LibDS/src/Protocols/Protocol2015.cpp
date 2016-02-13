@@ -285,27 +285,23 @@ bool DS_Protocol2015::_readRobotPacket (QByteArray data)
 
             /* Packet contains roboRIO RAM info */
             else if (id == pRIOHeaderRAMInformation)
-                emit ramUsageChanged (extended.at (5));
+                {
+                    int a = (quint8) extended.at (6);
+                    int b = (quint8) extended.at (7);
+                    emit ramUsageChanged (a + b);
+                }
 
             /* Packet contains roboRIO disk info */
             else if (id == pRIOHeaderDiskInformation)
-                emit diskUsageChanged (extended.at (5));
+                {
+                    int a = (quint8) extended.at (6);
+                    int b = (quint8) extended.at (7);
+                    emit diskUsageChanged (a + b);
+                }
 
             /* Packet contains CAN metrics data */
             else if (id == pRIOHeaderCANMetrics)
-                {
-                    DS_CAN can;
-
-                    int skip = 9;
-
-                    can.util     = (uint) extended.at (skip + 1);
-                    can.busOff   = (uint) extended.at (skip + 2);
-                    can.txFull   = (uint) extended.at (skip + 3);
-                    can.receive  = (uint) extended.at (skip + 4);
-                    can.transmit = (uint) extended.at (skip + 5);
-
-                    emit CANInfoReceived (can);
-                }
+                qDebug() << Q_FUNC_INFO << "TODO: CPU information" << extended.toHex();
         }
 
     /* Packet was successfully read, reset watchdog */

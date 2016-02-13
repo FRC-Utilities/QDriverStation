@@ -54,7 +54,7 @@ VirtualJoystick::~VirtualJoystick()
 // VirtualJoystick::axisRange
 //=============================================================================
 
-double VirtualJoystick::axisRange() const
+float VirtualJoystick::axisRange() const
 {
     return m_axisRange;
 }
@@ -90,7 +90,7 @@ void VirtualJoystick::setJoystickID (int id)
 // VirtualJoystick::setAxisRange
 //=============================================================================
 
-void VirtualJoystick::setAxisRange (double range)
+void VirtualJoystick::setAxisRange (float range)
 {
     m_axisRange = range;
     Settings::set ("Axis Range", range);
@@ -115,7 +115,7 @@ void VirtualJoystick::setJoystickEnabled (bool enabled)
 void VirtualJoystick::readAxes (int key, bool pressed)
 {
     int axis = -1;
-    double value = axisRange() * (pressed ? 1 : 0);
+    float value = axisRange() * (pressed ? 1 : 0);
 
     /* Horizontal axis on thumb 1 */
     if (key == Qt::Key_D)

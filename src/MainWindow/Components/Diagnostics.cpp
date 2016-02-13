@@ -246,7 +246,7 @@ void Diagnostics::updateCpuUsage (int usage)
 
 void Diagnostics::updateRamUsage (int usage)
 {
-    m_ramUsage->setText (tr ("%1 %").arg (usage));
+    m_ramUsage->setText (tr ("%1 MB").arg (usage));
 }
 
 //=============================================================================
@@ -255,5 +255,5 @@ void Diagnostics::updateRamUsage (int usage)
 
 void Diagnostics::updateDiskUsage (int usage)
 {
-    m_diskUsage->setText (tr ("%1 %").arg (usage));
+    m_diskUsage->setText (tr ("%1 MB").arg (usage));
 }

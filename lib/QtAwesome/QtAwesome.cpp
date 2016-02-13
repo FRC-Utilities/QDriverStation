@@ -225,10 +225,10 @@ bool QtAwesome::initFontAwesome( )
     m.insert ("anchor", fa::anchor );
     m.insert ("android", fa::android );
     m.insert ("angellist", fa::angellist );
-    m.insert ("angledoubledown", fa::angledoubledown );
-    m.insert ("angledoubleleft", fa::angledoubleleft );
-    m.insert ("angledoubleright", fa::angledoubleright );
-    m.insert ("angledoubleup", fa::angledoubleup );
+    m.insert ("anglefloatdown", fa::anglefloatdown );
+    m.insert ("anglefloatleft", fa::anglefloatleft );
+    m.insert ("anglefloatright", fa::anglefloatright );
+    m.insert ("anglefloatup", fa::anglefloatup );
     m.insert ("angledown", fa::angledown );
     m.insert ("angleleft", fa::angleleft );
     m.insert ("angleright", fa::angleright );
@@ -604,7 +604,7 @@ bool QtAwesome::initFontAwesome( )
     m.insert ("mappin", fa::mappin );
     m.insert ("mapsigns", fa::mapsigns );
     m.insert ("mars", fa::mars );
-    m.insert ("marsdouble", fa::marsdouble );
+    m.insert ("marsfloat", fa::marsfloat );
     m.insert ("marsstroke", fa::marsstroke );
     m.insert ("marsstrokeh", fa::marsstrokeh );
     m.insert ("marsstrokev", fa::marsstrokev );
@@ -852,7 +852,7 @@ bool QtAwesome::initFontAwesome( )
     m.insert ("usertimes", fa::usertimes );
     m.insert ("users", fa::users );
     m.insert ("venus", fa::venus );
-    m.insert ("venusdouble", fa::venusdouble );
+    m.insert ("venusfloat", fa::venusfloat );
     m.insert ("venusmars", fa::venusmars );
     m.insert ("viacoin", fa::viacoin );
     m.insert ("videocamera", fa::videocamera );

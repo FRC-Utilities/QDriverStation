@@ -116,12 +116,17 @@ private:
     /**
      * We send data to the robot through this socket
      */
-    QUdpSocket m_sender;
+    QUdpSocket m_robotSender;
+
+    /**
+     * We send data to the FMS through this port
+     */
+    QTcpSocket m_fmsSender;
 
     /**
      * We receive data from the robot through this socket
      */
-    QUdpSocket m_fmsReceiver;
+    QTcpSocket m_fmsReceiver;
 
     /**
      * We receive data from the robot through this socket

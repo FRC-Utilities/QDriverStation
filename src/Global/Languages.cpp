@@ -56,24 +56,25 @@ void Languages::init()
     switch (currentLanguage())
         {
         case kAuto:
-            locale    = systemLanguage();
+            locale = systemLanguage();
             break;
         case kGerman:
-            locale    = "de";
+            locale = "de";
             break;
         case kEnglish:
-            locale    = "en";
+            locale = "en";
             break;
         case kSpanish:
-            locale    = "es";
+            locale = "es";
             break;
         default:
-            locale    = "en";
+            locale = "en";
             break;
         }
 
     /* Load translations */
     translator()->load (":/languages/qds_" + locale);
+    DS_LogMessage (kInfoLevel, "Locale set to: " + locale);
 }
 
 //=============================================================================

@@ -33,7 +33,6 @@
 
 #include "Global/Global.h"
 #include "Global/Settings.h"
-#include "InfoWindow/InfoWindow.h"
 #include "Dashboards/Dashboards.h"
 
 //=============================================================================
@@ -100,7 +99,6 @@ QStringList Dashboards::dashboardList()
 {
     QStringList list;
     list.append (tr ("None"));
-    list.append (tr ("Built-in Dashboard"));
     list.append (tr ("SFX Dashboard"));
     list.append (tr ("SmartDashboard"));
 
@@ -120,37 +118,29 @@ void Dashboards::openDashboard()
     QString path;
     m_current = (DashboardTypes) Settings::get ("Dashboard", kNone).toInt();
 
-    /* Open the 'internal' dashboard */
-    if (m_current == kBuiltin)
-        INFORMATION_WINDOW()->show();
+    DS_LogMessage (kInfoLevel, QString ("Loading dashboard %1").arg (m_current));
 
-    /* Open an external dashboard */
-    else
+    /* Open the SFX Dashboard */
+    if (m_current == kSFXDashboard)
         {
-            /* Open the SFX Dashboard */
-            if (m_current == kSFXDashboard)
-                {
-                    path = QString ("%1 \"%2/wpilib/tools/sfx.jar\"")
-                           .arg (JAVA_OPEN , QDir::homePath());
-                }
-
-            /* Open the SmartDashboard */
-            else if (m_current == kSmartDashboard)
-                {
-                    path = QString ("%1 \"%2/wpilib/tools/SmartDashboard.jar\"")
-                           .arg (JAVA_OPEN , QDir::homePath());
-                }
-
-            /* Open the LabVIEW Dashboard */
-#if defined Q_OS_WIN
-            else if (m_current == kLabVIEW)
-                    path = QString ("\"%1/FRC Dashboard/Dashboard.exe\"").arg (PF);
-#endif
-
-            m_process.start (path);
+            path = QString ("%1 \"%2/wpilib/tools/sfx.jar\"")
+                   .arg (JAVA_OPEN , QDir::homePath());
         }
 
-    emit dashboardChanged();
+    /* Open the SmartDashboard */
+    else if (m_current == kSmartDashboard)
+        {
+            path = QString ("%1 \"%2/wpilib/tools/SmartDashboard.jar\"")
+                   .arg (JAVA_OPEN , QDir::homePath());
+        }
+
+    /* Open the LabVIEW Dashboard */
+#if defined Q_OS_WIN
+    else if (m_current == kLabVIEW)
+        path = QString ("\"%1/FRC Dashboard/Dashboard.exe\"").arg (PF);
+#endif
+
+    m_process.start (path);
 }
 
 //=============================================================================
@@ -159,11 +149,7 @@ void Dashboards::openDashboard()
 
 void Dashboards::closeDashboard()
 {
-    if (m_current != kBuiltin)
-        m_process.close();
-
-    else
-        INFORMATION_WINDOW()->hide();
+    m_process.close();
 }
 
 //=============================================================================

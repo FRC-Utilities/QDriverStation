@@ -148,12 +148,6 @@ DriverStation::DriverStation()
 DriverStation* DriverStation::getInstance()
 {
     static DriverStation instance;
-    static QThread thread;
-
-    instance.moveToThread (&thread);
-    thread.start (QThread::TimeCriticalPriority);
-    connect (qApp, &QApplication::aboutToQuit, &thread, &QThread::quit);
-
     return &instance;
 }
 
@@ -350,6 +344,8 @@ void DriverStation::init()
 
             QTimer::singleShot (500, this, SIGNAL (initialized()));
             QTimer::singleShot (500, this,   SLOT (resetEverything()));
+
+            DS_LogMessage (kLibLevel, "DS Initialized");
         }
 }
 
@@ -574,7 +570,7 @@ void DriverStation::addJoystick (int axes, int buttons, int povHats)
 // DriverStation::updateJoystickAxis
 //=============================================================================
 
-void DriverStation::updateJoystickAxis (int js, int axis, double value)
+void DriverStation::updateJoystickAxis (int js, int axis, float value)
 {
     if (m_manager->isValid())
         m_manager->updateJoystickAxis (js, axis, value);
@@ -656,6 +652,8 @@ void DriverStation::resetEverything()
     emit voltageChanged (QString (""));
     emit elapsedTimeChanged ("00:00.0");
     emit communicationsChanged (kFailing);
+
+    DS_LogMessage (kLibLevel, "Reseting to initial values...");
 }
 
 //=============================================================================

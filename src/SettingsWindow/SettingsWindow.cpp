@@ -93,8 +93,8 @@ void SettingsWindow::createWidgets()
 
     /* Buttons */
     m_buttonsWidget     = new QWidget (m_container);
-    m_reset             = new QPushButton (tr ("Reset"),  m_container);
     m_ok                = new QPushButton (tr ("OK"),     m_container);
+    m_reset             = new QPushButton (tr ("Reset"),  m_container);
     m_cancel            = new QPushButton (tr ("Cancel"), m_container);
 
     /* That crap that allows you to change the application's theme */
@@ -141,6 +141,8 @@ void SettingsWindow::createWidgets()
 
     /* Add 'General' tab and apply settings when user presses <ENTER> */
     m_ok->setDefault                 (true);
+    m_reset->setDefault              (false);
+    m_cancel->setDefault             (false);
     m_container->addTab              (m_containerWidget, tr ("General"));
 
     /* Change size of the color rectanles */

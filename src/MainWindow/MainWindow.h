@@ -29,7 +29,6 @@ class Status;
 class Buttons;
 class LeftTab;
 class RightTab;
-class InfoWidget;
 class QHBoxLayout;
 class QVBoxLayout;
 
@@ -54,21 +53,14 @@ private slots:
     void updateSize();
 
 private:
-    bool usesBuiltinDashboard();
-
     bool m_docked;
     bool m_closing;
 
     QWidget* m_central;
-    QWidget* m_container;
-    InfoWidget* m_dashboard;
-
     Status* m_status;
     Buttons* m_buttons;
     LeftTab* m_leftTab;
     RightTab* m_rightTab;
-
-    QVBoxLayout* m_main;
     QHBoxLayout* m_layout;
 };
 

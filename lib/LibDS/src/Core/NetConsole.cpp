@@ -43,6 +43,9 @@ void DS_NetConsole::setInputPort (int port)
 {
     m_socket.disconnectFromHost();
     m_socket.bind (QHostAddress::Any, port, QUdpSocket::ShareAddress);
+
+    DS_LogMessage (kLibLevel,
+                   "NetConsole input port set to: " + QString::number (port));
 }
 
 //=============================================================================
@@ -52,6 +55,8 @@ void DS_NetConsole::setInputPort (int port)
 void DS_NetConsole::setOutputPort (int port)
 {
     m_outPort = port;
+    DS_LogMessage (kLibLevel,
+                   "NetConsole output port set to: " + QString::number (port));
 }
 
 //=============================================================================

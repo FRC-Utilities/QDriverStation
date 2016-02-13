@@ -255,7 +255,7 @@ void Operator::configureStyles()
     /* Configure default checked buttons */
     m_teleop->setChecked          (true);
     m_dsable->setChecked          (true);
-    m_windowDocked->setChecked    (Settings::get ("Fullscreen", false).toBool());
+    m_windowDocked->setChecked    (Settings::get ("Docked", false).toBool());
     m_windowNormal->setChecked    (!m_windowDocked->isChecked());
 
     /* Put the available alliances & positions in the station combo */

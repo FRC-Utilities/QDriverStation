@@ -42,7 +42,7 @@ int CPU::getUsage()
 {
     int usage = 0;
 
-#if defined Q_OS_WIN
+#if defined Q_OSw_WIN
     PDH_FMT_COUNTERVALUE counterVal;
     PdhCollectQueryData (cpuQuery);
     PdhGetFormattedCounterValue (cpuTotal, PDH_FMT_DOUBLE, 0, &counterVal);

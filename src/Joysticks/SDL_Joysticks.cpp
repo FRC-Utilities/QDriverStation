@@ -221,7 +221,7 @@ QDS_AxisEvent SDL_Joysticks::getAxisEvent (const SDL_Event* sdl_event)
     QDS_AxisEvent event;
 
     event.axis     = sdl_event->jaxis.axis;
-    event.value    = (double) sdl_event->jaxis.value / 32767;
+    event.value    = (float) sdl_event->jaxis.value / 32767;
     event.joystick = getJoystick (sdl_event->jdevice.which);
 
     return event;

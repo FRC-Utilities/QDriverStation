@@ -20,7 +20,18 @@
  * THE SOFTWARE.
  */
 
+#include <QDir>
+#include <QApplication>
+
 #include "LibDS/Core/Common.h"
+
+//=============================================================================
+// Ugly logger hacks
+//=============================================================================
+
+static bool _LOG_INIT = false;
+#define _FORMAT "%-26s %-12s %-10s\n"
+const QString _TIME_FORMAT = "dd/MMM/yyyy hh:mm:ss::zzz";
 
 //=============================================================================
 // DS_GetTimezoneCode
@@ -120,6 +131,50 @@ void DS_SendMessage (QString message)
 }
 
 //=============================================================================
+// DS_LogMessage
+//=============================================================================
+
+void DS_LogMessage (DS_MessageType type,  QString message)
+{
+    /* Get level & time */
+    QString level;
+    QString time = QDateTime::currentDateTime().toString (_TIME_FORMAT);
+
+    /* Open log output file */
+    if (!_LOG_INIT)
+        {
+            _LOG_INIT = true;
+            printf (_FORMAT, "DATE/TIME", "ERROR LEVEL", "MESSAGE");
+        }
+
+    /* Get the error level */
+    switch (type)
+        {
+        case kLibLevel:
+            level = "DS_LIB";
+            break;
+        case kInfoLevel:
+            level = "DS_CLIENT";
+            break;
+        case kWarnLevel:
+            level = "DS_WARN";
+            break;
+        case kErrorLevel:
+            level = "DS_ERROR";
+            break;
+        case kCriticalLevel:
+            level = "DS_CRITICAL";
+            break;
+        }
+
+    /* Write log message */
+    printf (_FORMAT,
+            time.toStdString().c_str(),
+            level.toStdString().c_str(),
+            message.toStdString().c_str());
+}
+
+//=============================================================================
 // DS_GetStaticIp
 //=============================================================================
 
@@ -201,6 +256,15 @@ QByteArray DS_GetSocketData (QUdpSocket* socket)
     socket->readDatagram (buffer.data(), buffer.size());
 
     return buffer;
+}
+
+//=============================================================================
+// DS_GetSocketData
+//=============================================================================
+
+QByteArray DS_GetSocketData (QTcpSocket* socket)
+{
+    return socket->readAll();;
 }
 
 //=============================================================================

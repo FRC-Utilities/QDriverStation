@@ -248,7 +248,7 @@ public slots:
     /**
      * Updates the \a value of the selected \a axis in the specified \a josytick
      */
-    Q_INVOKABLE void updateJoystickAxis (int js, int axis, double value);
+    Q_INVOKABLE void updateJoystickAxis (int js, int axis, float value);
 
     /**
      * Updates the \a state of the selected \a button in the specified \a josytick

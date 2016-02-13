@@ -326,6 +326,7 @@ void Status::toggleStatusColors()
 
 void Status::updateCodeStatus (bool codeAvailable)
 {
+    m_comm->setChecked (DS()->isConnected());
     m_code->setChecked (codeAvailable);
 }
 

@@ -83,7 +83,7 @@ public slots:
     /**
      * Updates the state of the axes in the selected joystick
      */
-    void updateJoystickAxis (int js, int axis, double value);
+    void updateJoystickAxis (int js, int axis, float value);
 
     /**
      * Updates the state of the buttons in the selected joystick

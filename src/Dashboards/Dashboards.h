@@ -33,12 +33,10 @@ public:
     enum DashboardTypes
     {
         kNone           = 0x00,
-        kBuiltin        = 0x01,
-        kSFXDashboard   = 0x02,
-        kSmartDashboard = 0x03,
-
+        kSFXDashboard   = 0x01,
+        kSmartDashboard = 0x02,
 #if defined Q_OS_WIN
-        kLabVIEW        = 0x04,
+        kLabVIEW        = 0x03,
 #endif
     };
 

@@ -36,8 +36,6 @@
 #include "Messages.h"
 #include "Global/Global.h"
 #include "Global/Languages.h"
-#include "InfoWindow/InfoWindow.h"
-#include "InfoWindow/Widgets/Console.h"
 
 //=============================================================================
 // Console::Console
@@ -64,15 +62,6 @@ void Messages::createWidgets()
     m_console->setFont      (Languages::monoFont());
     m_copyButton->setFont   (AWESOME()->font (DPI_SCALE (12)));
     m_clearButton->setFont  (AWESOME()->font (DPI_SCALE (12)));
-
-    connect (m_copyButton,                    &QPushButton::clicked,
-             INFORMATION_WINDOW()->console(), &Console::copy);
-    connect (m_clearButton,                   &QPushButton::clicked,
-             INFORMATION_WINDOW()->console(), &Console::clear);
-    connect (m_clearButton,                   &QPushButton::clicked,
-             m_console,                       &QPlainTextEdit::clear);
-    connect (INFORMATION_WINDOW()->console(), &Console::messageRegistered,
-             this,                            &Messages::registerMessage);
 }
 
 //=============================================================================
@@ -99,9 +88,27 @@ void Messages::createLayouts()
     m_mainLayout->setStretch            (1, 1);
 
     /* Set widget sizes */
-    m_console->setMinimumSize           (DPI_SCALE (288), DPI_SCALE (96));
+    m_console->setMinimumSize           (DPI_SCALE (360), DPI_SCALE (96));
     m_copyButton->setFixedSize          (DPI_SCALE  (74), DPI_SCALE (24));
     m_clearButton->setFixedSize         (DPI_SCALE  (74), DPI_SCALE (24));
+}
+
+//=============================================================================
+// Console::copy
+//=============================================================================
+
+void Messages::copy()
+{
+
+}
+
+//=============================================================================
+// Console::clear
+//=============================================================================
+
+void Messages::clear()
+{
+
 }
 
 //=============================================================================

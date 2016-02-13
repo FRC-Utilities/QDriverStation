@@ -126,7 +126,7 @@ void Beeper::generateSamples (qint16* stream, int length)
 // Beeper::beep
 //=============================================================================
 
-void Beeper::beep (double freq, int duration)
+void Beeper::beep (float freq, int duration)
 {
     if (Settings::get ("UI Sounds", true).toBool())
         {

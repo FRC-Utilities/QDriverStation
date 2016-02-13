@@ -46,13 +46,13 @@ public:
     explicit VirtualJoystick();
     ~VirtualJoystick();
 
-    double axisRange() const;
+    float axisRange() const;
     bool joystickEnabled() const;
     QDS_InputDevice* joystick() const;
 
 public slots:
     void setJoystickID (int id);
-    void setAxisRange (double range);
+    void setAxisRange (float range);
     void setJoystickEnabled (bool enabled);
 
 signals:
@@ -70,7 +70,7 @@ protected:
     bool eventFilter (QObject* object, QEvent* event);
 
 private:
-    double m_axisRange;
+    float m_axisRange;
     bool m_joystickEnabled;
     QDS_InputDevice* m_joystick;
 };

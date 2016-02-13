@@ -27,6 +27,7 @@
 #include <QString>
 #include <QDateTime>
 #include <QUdpSocket>
+#include <QTcpSocket>
 #include <QStringList>
 
 #include "LibDS/Core/Library.h"
@@ -73,6 +74,19 @@ typedef enum
 } DS_CommStatus;
 
 /**
+ * Used for the library's logger function
+ */
+typedef enum
+{
+    kLibLevel      = 0, /** Look! A plane */
+    kInfoLevel     = 1, /** I am dangerous, I like it */
+    kWarnLevel     = 2, /** Watch the birdie */
+    kErrorLevel    = 3, /** I can't shoot, so let's have a little fun */
+    kCriticalLevel = 4, /** Is this your idea of fun? */
+
+} DS_MessageType;
+
+/**
  * Represents a joystick in the DS
  */
 typedef struct
@@ -84,7 +98,7 @@ typedef struct
     int numButtons;
 
     int* POVs;
-    double* axes;
+    float* axes;
     bool* buttons;
 } DS_Joystick;
 
@@ -122,6 +136,11 @@ QString LIB_DS_DECL DS_GetTimezoneCode();
 void LIB_DS_DECL DS_SendMessage (QString message);
 
 /**
+ * Logs a message to the console and a logging file
+ */
+void LIB_DS_DECL DS_LogMessage (DS_MessageType type, QString message);
+
+/**
  * Returns a calculated IP address based on the team address.
  *
  * For example:
@@ -152,6 +171,11 @@ QString LIB_DS_DECL DS_GetControlModeString (DS_ControlMode mode);
  * Reads the contents of the \a socket and returns its data
  */
 QByteArray LIB_DS_DECL DS_GetSocketData (QUdpSocket* socket);
+
+/**
+ * Reads the contents of the \a socket and returns its data
+ */
+QByteArray LIB_DS_DECL DS_GetSocketData (QTcpSocket* socket);
 
 /**
  * Parses the input \a data into two bytes

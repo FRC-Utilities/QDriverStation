@@ -52,11 +52,6 @@ linux:!android {
 # Make options
 #-------------------------------------------------------------------------------
 
-CODECFORTR = UTF-8
-CODECFORSRC = UTF-8
-
-CONFIG += c++11
-
 UI_DIR = uic
 MOC_DIR = moc
 RCC_DIR = qrc
@@ -95,7 +90,6 @@ QMAKE_CXXFLAGS += -Wunused
 include ($$PWD/lib/SDL/SDL.pri)
 include ($$PWD/lib/LibDS/LibDS.pri)
 include ($$PWD/lib/QtAwesome/QtAwesome.pri)
-include ($$PWD/lib/QCustomPlot/QCustomPlot.pri)
 
 #-------------------------------------------------------------------------------
 # Import headers, forms and sources
@@ -110,11 +104,6 @@ HEADERS += \
     $$PWD/src/Global/Global.h \
     $$PWD/src/Global/Languages.h \
     $$PWD/src/Global/Settings.h \
-    $$PWD/src/InfoWindow/Widgets/Camera.h \
-    $$PWD/src/InfoWindow/Widgets/Checklist.h \
-    $$PWD/src/InfoWindow/Widgets/Console.h \
-    $$PWD/src/InfoWindow/Widgets/Drive.h \
-    $$PWD/src/InfoWindow/InfoWindow.h \
     $$PWD/src/Joysticks/JoystickManager.h \
     $$PWD/src/Joysticks/JoysticksCommon.h \
     $$PWD/src/Joysticks/SDL_Joysticks.h \
@@ -137,8 +126,7 @@ HEADERS += \
     $$PWD/src/MainWindow/MainWindow.h \
     $$PWD/src/SettingsWindow/SettingsWindow.h \
     $$PWD/src/Updater/Updater.h \
-    $$PWD/src/VJoystickWindow/VJoystickWindow.h \
-    $$PWD/src/InfoWindow/InfoWidget.h
+    $$PWD/src/VJoystickWindow/VJoystickWindow.h
 
 SOURCES += \
     $$PWD/src/Dashboards/Dashboards.cpp \
@@ -147,11 +135,6 @@ SOURCES += \
     $$PWD/src/Global/Global.cpp \
     $$PWD/src/Global/Languages.cpp \
     $$PWD/src/Global/Settings.cpp \
-    $$PWD/src/InfoWindow/Widgets/Camera.cpp \
-    $$PWD/src/InfoWindow/Widgets/Checklist.cpp \
-    $$PWD/src/InfoWindow/Widgets/Console.cpp \
-    $$PWD/src/InfoWindow/Widgets/Drive.cpp \
-    $$PWD/src/InfoWindow/InfoWindow.cpp \
     $$PWD/src/Joysticks/JoystickManager.cpp \
     $$PWD/src/Joysticks/SDL_Joysticks.cpp \
     $$PWD/src/Joysticks/VirtualJoystick.cpp \
@@ -174,8 +157,7 @@ SOURCES += \
     $$PWD/src/SettingsWindow/SettingsWindow.cpp \
     $$PWD/src/Updater/Updater.cpp \
     $$PWD/src/VJoystickWindow/VJoystickWindow.cpp \
-    $$PWD/src/main.cpp \
-    $$PWD/src/InfoWindow/InfoWidget.cpp
+    $$PWD/src/main.cpp
 
 
 #-------------------------------------------------------------------------------

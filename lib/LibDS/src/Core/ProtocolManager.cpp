@@ -120,7 +120,16 @@ void DS_ProtocolManager::setProtocol (DS_ProtocolBase* protocol)
                      this,       &DS_ProtocolManager::CANInfoReceived);
             connect (m_protocol, &DS_ProtocolBase::fmsChanged,
                      this,       &DS_ProtocolManager::fmsChanged);
+
+
+            DS_LogMessage (kLibLevel,
+                           QString ("Protocol 0x%1 loaded into memory")
+                           .arg ((quintptr)protocol,
+                                 QT_POINTER_SIZE * 2, 16, QChar ('0')));
         }
+
+    else
+        DS_LogMessage (kWarnLevel, "Input protocol pointer is NULL");
 }
 
 //=============================================================================
@@ -147,7 +156,7 @@ void DS_ProtocolManager::addJoystick (int axes, int buttons, int POVs)
     js->numPOVs = POVs;
     js->numButtons = buttons;
 
-    js->axes = new double  [axes];
+    js->axes = new float  [axes];
     js->POVs = new int  [POVs];
     js->buttons = new bool [buttons];
 
@@ -164,6 +173,17 @@ void DS_ProtocolManager::addJoystick (int axes, int buttons, int POVs)
 
     if (isValid())
         currentProtocol()->_onJoysticksChanged();
+
+    DS_LogMessage (kLibLevel, QString ("Registered joystick with: "
+                                       "%1 axes, "
+                                       "%2 buttons and "
+                                       "%3 POVs")
+                   .arg (QString::number (js->numAxes))
+                   .arg (QString::number (js->numButtons))
+                   .arg (QString::number (js->numPOVs)));
+
+    DS_LogMessage (kLibLevel, QString ("Current number of joysticks is %1")
+                   .arg (QString::number (m_joysticks->count())));
 }
 
 //=============================================================================
@@ -180,7 +200,7 @@ void DS_ProtocolManager::updateJoystickPOV (int js, int hat, int angle)
 // DS_ProtocolManager::updateJoystickAxis
 //=============================================================================
 
-void DS_ProtocolManager::updateJoystickAxis (int js, int axis, double value)
+void DS_ProtocolManager::updateJoystickAxis (int js, int axis, float value)
 {
     if (joystickExists (js))
         m_joysticks->at (js)->axes [axis] = value;

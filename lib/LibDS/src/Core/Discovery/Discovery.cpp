@@ -91,12 +91,12 @@ void NetworkDiscovery::getIP (QString address, AddressType type)
 void NetworkDiscovery::lookupFinished (QHostInfo info)
 {
     foreach (QHostAddress address, info.addresses())
-    {
-        QString ip = address.toString();
-        if (getAddressType (ip) == kIPv4 || getAddressType (ip) == kIPv6)
-            {
-                emit ipFound (info.hostName(), ip);
-                return;
-            }
-    }
+        {
+            QString ip = address.toString();
+            if (getAddressType (ip) == kIPv4 || getAddressType (ip) == kIPv6)
+                {
+                    emit ipFound (info.hostName(), ip);
+                    return;
+                }
+        }
 }

@@ -41,6 +41,8 @@ private slots:
     void createWidgets();
     void createLayouts();
 
+    void copy();
+    void clear();
     void registerMessage (QString text);
 
 private:

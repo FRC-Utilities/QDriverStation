@@ -70,7 +70,7 @@ struct QDS_AxisEvent
     QDS_InputDevice joystick;
 
     int axis;
-    double value;
+    float value;
 };
 
 /**

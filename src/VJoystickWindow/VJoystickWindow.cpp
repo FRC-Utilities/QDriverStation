@@ -64,8 +64,8 @@ VJoystickWindow::VJoystickWindow()
 
 VJoystickWindow::~VJoystickWindow()
 {
-    foreach (QWidget * widget, findChildren<QWidget*>())
-    widget->deleteLater();
+    foreach (QWidget* widget, findChildren<QWidget*>())
+        widget->deleteLater();
 }
 
 //=============================================================================
@@ -205,7 +205,7 @@ void VJoystickWindow::connectSlots()
 
 void VJoystickWindow::readSettings()
 {
-    double range = Settings::get ("Axis Range", 0.8).toDouble();
+    float range = Settings::get ("Axis Range", 0.8).toFloat();
     bool useVJoystick = Settings::get ("Virtual Joystick", false).toBool();
 
     m_axisRange->setValue (range);

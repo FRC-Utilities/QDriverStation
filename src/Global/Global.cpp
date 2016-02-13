@@ -40,7 +40,6 @@
 #include "Settings.h"
 #include "AppTheme.h"
 #include "Joysticks/JoystickManager.h"
-#include "InfoWindow/InfoWindow.h"
 #include "SettingsWindow/SettingsWindow.h"
 #include "VJoystickWindow/VJoystickWindow.h"
 
@@ -107,16 +106,6 @@ QThread* SECONDARY_THREAD()
     QObject::connect (qApp,      &QApplication::aboutToQuit,
                       &instance, &QThread::quit);
 
-    return &instance;
-}
-
-//=============================================================================
-// MESSAGES_WINDOW
-//=============================================================================
-
-InfoWindow* INFORMATION_WINDOW()
-{
-    static InfoWindow instance;
     return &instance;
 }
 
@@ -196,6 +185,9 @@ qreal DPI_SCALE (qreal input)
 
             if (RATIO < 1.2)
                 RATIO = 1;
+
+            DS_LogMessage (kInfoLevel,
+                           QString ("UI Scale Ratio set to: %1").arg (RATIO));
         }
 
     return input * RATIO;
@@ -207,6 +199,8 @@ qreal DPI_SCALE (qreal input)
 
 void SDL_INIT()
 {
+    DS_LogMessage (kInfoLevel, "Initializing SDL...");
+
     SDL_JoystickEventState (SDL_ENABLE);
     SDL_SetHint (SDL_HINT_XINPUT_ENABLED, "0");
     SDL_SetHint (SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
@@ -225,6 +219,8 @@ void SDL_INIT()
                                                "MUST be VERY careful while using "
                                                "an external joystick!"));
         }
+
+    DS_LogMessage (kInfoLevel, "SDL Initialized");
 }
 
 //=============================================================================
@@ -234,7 +230,6 @@ void SDL_INIT()
 void GLOBAL_INIT()
 {
     SDL_INIT();
-    DS()->init();
 
     Q_UNUSED (SETTINGS_WINDOW());
     Q_UNUSED (VJOYSTICK_WINDOW());
@@ -265,20 +260,20 @@ void SHOW_VIRTUAL_JOYSTICKS()
 void MORSE_BEEP (QString input, int frequency)
 {
     foreach (QString character, input.split (""))
-    {
-        int time = 0;
-        int base = 50;
+        {
+            int time = 0;
+            int base = 50;
 
-        if (character == ".")
-            time = base;
-        else if (character == "-")
-            time = base * 3;
-        else if (character == " ")
-            time = base * 3;
-        else if (character == "/")
-            time = base * 7;
+            if (character == ".")
+                time = base;
+            else if (character == "-")
+                time = base * 3;
+            else if (character == " ")
+                time = base * 3;
+            else if (character == "/")
+                time = base * 7;
 
-        BEEPER()->beep (frequency, time);
-        BEEPER()->beep (0, base);
-    }
+            BEEPER()->beep (frequency, time);
+            BEEPER()->beep (0, base);
+        }
 }

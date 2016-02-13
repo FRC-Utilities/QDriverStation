@@ -293,8 +293,14 @@ void DS_ProtocolBase::reset()
 
 void DS_ProtocolBase::setTeam (int team)
 {
-    m_team = team;
-    emit robotAddressChanged (robotAddress());
+    if (team != m_team)
+        {
+            m_team = team;
+            emit robotAddressChanged (robotAddress());
+
+            DS_LogMessage (kLibLevel,
+                           "Team number set to: " + QString::number (m_team));
+        }
 }
 
 //=============================================================================
@@ -319,6 +325,9 @@ void DS_ProtocolBase::setEmergencyStop (bool emergency_stop)
     /* Stop sending e-stop packets after 1 second */
     if (m_emergencyStop)
         QTimer::singleShot (1000, this, SLOT (disableEmergencyStop()));
+
+    DS_LogMessage (kWarnLevel,
+                   QString ("E-STOP set to: %1").arg (isEmergencyStopped()));
 
     emit emergencyStopped();
 }
@@ -406,11 +415,18 @@ void DS_ProtocolBase::updateRobotCode (bool available)
 {
     /* Robot code just crashed/failed */
     if (m_robotCode && !available)
-        setEnabled (false);
+        {
+            setEnabled (false);
+            DS_LogMessage (kWarnLevel, "Probable robot code crash");
+        }
 
     /* Update DS information */
     m_robotCode = available;
     emit codeChanged (m_robotCode);
+
+    if (communicationStatus() == kFull)
+        DS_LogMessage (kLibLevel, "Robot code set to: "
+                       + QString::number (available));
 }
 
 //=============================================================================
@@ -510,7 +526,10 @@ void DS_ProtocolBase::disableEmergencyStop()
 void DS_ProtocolBase::updateRobotIP (QString address, QString ip)
 {
     if (address.toLower() == robotAddress().toLower() && address != ip)
-        emit robotAddressChanged (ip);
+        {
+            DS_LogMessage (kLibLevel, "Robot IP set from " + address + " to " + ip);
+            emit robotAddressChanged (ip);
+        }
 
     pingRobot();
 }

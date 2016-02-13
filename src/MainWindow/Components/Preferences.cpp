@@ -168,13 +168,9 @@ void Preferences::connectSlots()
 
 void Preferences::readSettings()
 {
-    /* Load saved values in widgets */
-    m_teamNumber->setValue       (Settings::get ("Team",     0).toInt());
-    m_protocols->setCurrentIndex (Settings::get ("Protocol", 0).toInt());
-
-    /* Redundant but safer, configure DS again directly */
-    setProtocol (m_protocols->currentIndex());
-    setTeamNumber (m_teamNumber->value());
+    /* Load protocol version & team number */
+    setProtocol   (Settings::get ("Protocol", 0).toInt());
+    setTeamNumber (Settings::get ("Team",     0).toInt());
 
     /* Load the practice timings into the UI */
     loadPracticeValues();

@@ -24,9 +24,10 @@
 // System includes
 //=============================================================================
 
-#include <SDL.h>
 #include <QTimer>
 #include <QScreen>
+#include <QMoveEvent>
+#include <QCloseEvent>
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QApplication>
@@ -40,8 +41,6 @@
 #include "Global/Beeper.h"
 #include "Global/Settings.h"
 #include "Dashboards/Dashboards.h"
-#include "InfoWindow/InfoWidget.h"
-#include "InfoWindow/InfoWindow.h"
 
 #include "Components/Status.h"
 #include "Components/Buttons.h"
@@ -55,20 +54,19 @@
 
 MainWindow::MainWindow()
 {
+    DS_LogMessage (kInfoLevel, "Creating MainWindow....");
+
     /* Configure internal variables */
     m_docked   = false;
     m_closing  = false;
 
     /* Create widgets */
     m_central   = new QWidget     (this);
-    m_dashboard = new InfoWidget  (this);
-    m_container = new QWidget     (m_central);
-    m_status    = new Status      (m_container);
-    m_buttons   = new Buttons     (m_container);
-    m_leftTab   = new LeftTab     (m_container);
-    m_rightTab  = new RightTab    (m_container);
-    m_layout    = new QHBoxLayout (m_container);
-    m_main      = new QVBoxLayout (m_central);
+    m_status    = new Status      (m_central);
+    m_buttons   = new Buttons     (m_central);
+    m_leftTab   = new LeftTab     (m_central);
+    m_rightTab  = new RightTab    (m_central);
+    m_layout    = new QHBoxLayout (m_central);
 
     /* Add the common widgets */
     m_layout->addWidget           (m_leftTab);
@@ -80,15 +78,15 @@ MainWindow::MainWindow()
     m_layout->setStretch          (2, 1);
     m_layout->setStretch          (3, 0);
     m_layout->setSpacing          (DPI_SCALE (5));
-    m_layout->setContentsMargins  (NULL_MARGINS());
+    m_layout->setContentsMargins  (MAIN_MARGINS());
 
-    /* Configure the main layout, which also contains the dashboard */
-    m_main->addWidget             (m_dashboard);
-    m_main->addWidget             (m_container);
-    m_main->setStretch            (0, 1);
-    m_main->setStretch            (1, 0);
-    m_main->setContentsMargins    (MAIN_MARGINS());
-    m_main->setSpacing            (DPI_SCALE (10));
+    /* Configure window options */
+    setCentralWidget              (m_central);
+    m_central->setMinimumWidth    (m_central->minimumSizeHint().width());
+    m_central->setFixedHeight     (m_central->minimumSizeHint().height());
+    setWindowTitle                (QApplication::applicationName()
+                                   + QString (" ")
+                                   + QApplication::applicationVersion());
 
     /* Signals/slots */
     connect (DS(),      &DriverStation::initialized,
@@ -102,18 +100,14 @@ MainWindow::MainWindow()
     connect (qApp,      &QApplication::aboutToQuit,
              this,      &MainWindow::quitSound);
 
-    /* Ensure that the 'normal' widgets resize to fit */
-    m_dashboard->setVisible       (false);
-    m_container->setFixedHeight   (m_container->minimumSizeHint().height());
-
-    /* Configure window options */
-    setCentralWidget              (m_central);
-    setWindowTitle                (QApplication::applicationName()
-                                   + QString (" ")
-                                   + QApplication::applicationVersion());
-
+    /* Move window to saved position */
     move (Settings::get ("MainWindow X", 100).toInt(),
           Settings::get ("MainWindow Y", 100).toInt());
+
+    DS_LogMessage (kInfoLevel, "MainWindow OK");
+
+    /* Finally, init the Driver Station */
+    DS()->init();
 }
 
 //=============================================================================
@@ -166,18 +160,15 @@ void MainWindow::closeEvent (QCloseEvent* event)
 void MainWindow::showUnDocked()
 {
     m_docked = false;
-    m_dashboard->setVisible (false);
-    setWindowFlags (Qt::WindowCloseButtonHint);
-
-    if (usesBuiltinDashboard())
-        INFORMATION_WINDOW()->show();
+    setWindowFlags (Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint);
 
     move (Settings::get ("MainWindow X", 100).toInt(),
           Settings::get ("MainWindow Y", 100).toInt());
 
-    showNormal();
     setFixedSize (0, 0);
-    Settings::set ("Fullscreen", false);
+    Settings::set ("Docked", false);
+
+    showNormal();
 }
 
 //=============================================================================
@@ -186,7 +177,6 @@ void MainWindow::showUnDocked()
 
 void MainWindow::quitSound()
 {
-    SDL_Delay (500);
     BEEPER()->beep (220, 100);
     BEEPER()->beep (440, 100);;
 }
@@ -198,12 +188,10 @@ void MainWindow::quitSound()
 void MainWindow::showDocked()
 {
     m_docked = true;
-    INFORMATION_WINDOW()->hide();
     setWindowFlags (Qt::FramelessWindowHint);
-    m_dashboard->setVisible (usesBuiltinDashboard());
 
     showNormal();
-    Settings::set ("Fullscreen", true);
+    Settings::set ("Docked", true);
 }
 
 //=============================================================================
@@ -223,7 +211,7 @@ void MainWindow::startUpSound()
 void MainWindow::displayWindow()
 {
     showNormal();
-    Settings::get ("Fullscreen", false).toBool() ? showDocked() : showUnDocked();
+    Settings::get ("Docked", false).toBool() ? showDocked() : showUnDocked();
 
     QTimer::singleShot (100, Qt::CoarseTimer, this, SLOT (updateSize()));
     QTimer::singleShot (100, Qt::CoarseTimer, this, SLOT (startUpSound()));
@@ -237,34 +225,16 @@ void MainWindow::updateSize()
 {
     if (m_docked)
         {
-            if (usesBuiltinDashboard())
-                {
-                    move (0, 0);
-                    setFixedSize (QApplication::primaryScreen()->availableSize());
-                }
+            QSize desktop = QApplication::primaryScreen()->availableSize();
 
-            else
-                {
-                    QSize desktop = QApplication::primaryScreen()->availableSize();
+            setFixedWidth  (desktop.width());
+            setFixedHeight (minimumSizeHint().height());
 
-                    setFixedWidth  (desktop.width());
-                    setFixedHeight (minimumSizeHint().height());
-
-                    move (0, desktop.height() - height());
-                }
+            move (0, desktop.height() - height());
         }
 
     else
         setFixedSize (minimumSizeHint());
 
     QTimer::singleShot (100, Qt::CoarseTimer, this, SLOT (updateSize()));
-}
-
-//=============================================================================
-// MainWindow::usesBuiltinDashboard
-//=============================================================================
-
-bool MainWindow::usesBuiltinDashboard()
-{
-    return Dashboards::getInstance()->currentDashboard() == Dashboards::kBuiltin;
 }

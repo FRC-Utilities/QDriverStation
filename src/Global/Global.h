@@ -38,7 +38,6 @@
 class Beeper;
 class Settings;
 class AppTheme;
-class InfoWindow;
 class QSpacerItem;
 class SettingsWindow;
 class VJoystickWindow;
@@ -60,7 +59,6 @@ extern DriverStation* DS();
 extern QtAwesome* AWESOME();
 extern QSpacerItem* SPACER();
 extern QThread* SECONDARY_THREAD();
-extern InfoWindow* INFORMATION_WINDOW();
 extern SettingsWindow* SETTINGS_WINDOW();
 extern VJoystickWindow* VJOYSTICK_WINDOW();
 extern JoystickManager* JOYSTICK_MANAGER();
