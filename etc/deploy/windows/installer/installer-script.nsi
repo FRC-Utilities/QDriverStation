@@ -26,8 +26,8 @@
 !define DESCRIPTION                  "Open source alternative to the FRC DriverStation"
 !define VERSIONMAJOR                 0
 !define VERSIONMINOR                 1
-!define VERSIONBUILD                 4
-!define ESTIMATED_SIZE               46000
+!define VERSIONBUILD                 5
+!define ESTIMATED_SIZE               49000
 !define MUI_ABORTWARNING
 !define INSTALL_DIR                  "$PROGRAMFILES\${APPNAME}"
 !define MUI_FINISHPAGE_RUN
