@@ -33,9 +33,6 @@
 #include <QApplication>
 #include <QInputDialog>
 
-#include <qlogging.h>
-#include <QtMessageHandler>
-
 //=============================================================================
 // Application includes
 //=============================================================================
@@ -78,14 +75,6 @@ void messageHandler (QtMsgType type,
                      context.line,
                      context.function);
             break;
-        case QtInfoMsg:
-            fprintf (stderr,
-                     "INFO: %s (%s:%u, %s)\n",
-                     localMsg.constData(),
-                     context.file,
-                     context.line,
-                     context.function);
-            break;
         case QtWarningMsg:
             break;
         case QtCriticalMsg:
@@ -98,6 +87,14 @@ void messageHandler (QtMsgType type,
         case QtFatalMsg:
             fprintf (stderr,
                      "FATAL: %s (%s:%u, %s)\n",
+                     localMsg.constData(),
+                     context.file,
+                     context.line,
+                     context.function);
+            break;
+        default:
+            fprintf (stderr,
+                     "INFO: %s (%s:%u, %s)\n",
                      localMsg.constData(),
                      context.file,
                      context.line,
