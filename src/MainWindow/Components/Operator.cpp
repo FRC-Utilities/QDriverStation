@@ -293,10 +293,10 @@ void Operator::configureStyles()
 
     /* Resize the buttons to fit */
     QFontMetrics metrics (font);
-    int dsableWidth = metrics.width (m_dsable->text()) * 1.15;
-    int enableWidth = metrics.width (m_enable->text()) * 1.15;
-    int buttonWidth = dsableWidth > enableWidth ? dsableWidth : enableWidth;
-    buttonWidth = buttonWidth < DPI_SCALE (74) ? DPI_SCALE (74) : buttonWidth;
+    int dsableWidth    = metrics.width (m_dsable->text()) * 1.15;
+    int enableWidth    = metrics.width (m_enable->text()) * 1.15;
+    double buttonWidth = qMax (enableWidth, dsableWidth);
+    buttonWidth        = qMax (buttonWidth, DPI_SCALE (85));
     m_dsable->setFixedWidth (buttonWidth);
     m_enable->setFixedWidth (buttonWidth);
 

@@ -33,6 +33,9 @@
 #include <QApplication>
 #include <QInputDialog>
 
+#include <qlogging.h>
+#include <QtMessageHandler>
+
 //=============================================================================
 // Application includes
 //=============================================================================
