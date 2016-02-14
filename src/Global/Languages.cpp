@@ -113,7 +113,11 @@ QFont Languages::monoFont()
 
 QString Languages::systemLanguage()
 {
-    return QLocale::system().name().split ("_").at (0);
+    if (QLocale::system().name().split ("_").count() > 0)
+        return QLocale::system().name().split ("_").at (0);
+
+    else
+        return "en";
 }
 
 //=============================================================================

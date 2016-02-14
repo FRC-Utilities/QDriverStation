@@ -85,8 +85,6 @@ int main (int argc, char* argv[])
     Q_UNUSED (updater);
     Q_UNUSED (mainwindow);
 
-    DS_LogMessage (kInfoLevel, "Configuring beep-able widgets...");
-
     /* Beep whenever a button or checkbox is clicked */
     foreach (QWidget* widget, app.allWidgets())
         {

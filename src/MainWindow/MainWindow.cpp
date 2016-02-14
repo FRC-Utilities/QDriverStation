@@ -134,12 +134,14 @@ void MainWindow::closeEvent (QCloseEvent* event)
 {
     if (!m_closing && Settings::get ("Prompt on Quit", true).toBool())
         {
-            int ans = QMessageBox::question (Q_NULLPTR,
-                                             tr ("QDriverStation"),
-                                             tr ("Are you sure you want to "
-                                                 "exit the QDriverStation?"));
+            QMessageBox box;
+            box.setIcon (QMessageBox::Question);
+            box.setStandardButtons (QMessageBox::Yes | QMessageBox::No);
+            box.setDefaultButton (QMessageBox::Yes);
+            box.setText (tr ("Are you sure you want to exit the "
+                             "QDriverStation?"));
 
-            if (ans == QMessageBox::No)
+            if (box.exec() == QMessageBox::No)
                 {
                     event->ignore();
                     return;
@@ -188,7 +190,11 @@ void MainWindow::quitSound()
 void MainWindow::showDocked()
 {
     m_docked = true;
+
+    /* Frameless windows are a headache for some window managers */
+#if defined Q_OS_WIN
     setWindowFlags (Qt::FramelessWindowHint);
+#endif
 
     showNormal();
     Settings::set ("Docked", true);
