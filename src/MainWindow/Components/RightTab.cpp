@@ -35,7 +35,7 @@
 RightTab::RightTab (QWidget* parent) : QTabWidget (parent)
 {
     m_about    = new About       (this);
-    m_messages = new Messages     (this);
+    m_messages = new Messages    (this);
     m_metrics  = new CAN_Metrics (this);
 
     setTabPosition              (East);
@@ -44,9 +44,9 @@ RightTab::RightTab (QWidget* parent) : QTabWidget (parent)
     addTab                      (m_about,    QIcon(), QChar (fa::infocircle));
 
     tabBar()->setStyle          (new CustomTabStyle);
-    tabBar()->setFont           (AWESOME()->font (DPI_SCALE (16)));
+    tabBar()->setFont           (AWESOME()->font (DPI_SCALE (14)));
 
-    DS_LogMessage (kInfoLevel, "MainWindow: Right Tab created");
+    DS_LogMessage (kInfoLevel, "MainWindow: Right tab created");
 }
 
 //=============================================================================

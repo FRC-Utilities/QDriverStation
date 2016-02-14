@@ -43,10 +43,7 @@ QSize CustomTabStyle::sizeFromContents (ContentsType type,
     QSize _size = QProxyStyle::sizeFromContents (type, option, size, widget);
 
     if (type == QStyle::CT_TabBarTab)
-        {
-            _size.transpose();
-            _size.setHeight (_size.width());
-        }
+        _size = QSize (DPI_SCALE (42), DPI_SCALE (36));
 
     return _size;
 }

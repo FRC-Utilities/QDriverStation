@@ -69,7 +69,6 @@ SettingsWindow::SettingsWindow()
     connectSlots();
 
     readSettings();
-    applySettings();
 
     DS_LogMessage (kInfoLevel, "Settings window created");
 }

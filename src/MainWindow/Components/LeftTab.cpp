@@ -50,7 +50,7 @@ LeftTab::LeftTab (QWidget* parent) : QTabWidget (parent)
     addTab             (m_joysticks,   QIcon(), QChar (fa::usb));
 
     tabBar()->setStyle (new CustomTabStyle);
-    tabBar()->setFont  (AWESOME()->font (DPI_SCALE (16)));
+    tabBar()->setFont  (AWESOME()->font (DPI_SCALE (14)));
 
     connect (m_operator, &Operator::showDocked,
              this,       &LeftTab::showDocked);
@@ -59,7 +59,7 @@ LeftTab::LeftTab (QWidget* parent) : QTabWidget (parent)
     connect (m_operator, &Operator::requestErrorAnimation,
              this,       &LeftTab::requestErrorAnimation);
 
-    DS_LogMessage (kInfoLevel, "MainWindow: Left Tab created");
+    DS_LogMessage (kInfoLevel, "MainWindow: Left tab created");
 }
 
 //=============================================================================
@@ -68,5 +68,5 @@ LeftTab::LeftTab (QWidget* parent) : QTabWidget (parent)
 
 LeftTab::~LeftTab()
 {
-    DS_LogMessage (kInfoLevel, "MainWindow: Left Tab destroyed");
+    DS_LogMessage (kInfoLevel, "MainWindow: Left tab destroyed");
 }
