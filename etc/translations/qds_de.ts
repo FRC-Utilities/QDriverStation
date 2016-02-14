@@ -40,32 +40,32 @@
 <context>
     <name>CAN_Metrics</name>
     <message>
-        <location filename="../../src/MainWindow/Components/CAN_Metrics.cpp" line="72"/>
+        <location filename="../../src/MainWindow/Components/CAN_Metrics.cpp" line="73"/>
         <source>CAN Metrics</source>
         <translation>CAN-Metrik</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/CAN_Metrics.cpp" line="73"/>
+        <location filename="../../src/MainWindow/Components/CAN_Metrics.cpp" line="74"/>
         <source>% Bus Utilization</source>
         <translation>Bus-Verwendung Porzent</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/CAN_Metrics.cpp" line="74"/>
+        <location filename="../../src/MainWindow/Components/CAN_Metrics.cpp" line="75"/>
         <source>Bus Off (count)</source>
         <translation>Bus-Aus (Zahl)</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/CAN_Metrics.cpp" line="75"/>
+        <location filename="../../src/MainWindow/Components/CAN_Metrics.cpp" line="76"/>
         <source>TX_FIFO Full (count)</source>
         <translation>TX_FIFO Full (Zahl)</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/CAN_Metrics.cpp" line="76"/>
+        <location filename="../../src/MainWindow/Components/CAN_Metrics.cpp" line="77"/>
         <source>Receive Error (count)</source>
         <translation>Empfangs-Fehler (Zahl)</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/CAN_Metrics.cpp" line="77"/>
+        <location filename="../../src/MainWindow/Components/CAN_Metrics.cpp" line="78"/>
         <source>Transmit Error (count)</source>
         <translation>Transmit-Fehler (Zahl)</translation>
     </message>
@@ -96,98 +96,98 @@
 <context>
     <name>Diagnostics</name>
     <message>
-        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="68"/>
+        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="69"/>
         <source>Enet Link</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="69"/>
+        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="70"/>
         <source>DS Radio</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="70"/>
+        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="71"/>
         <source>Bridge</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="71"/>
+        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="72"/>
         <source>Robot</source>
         <translation>Roboter</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="72"/>
+        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="73"/>
         <source>FMS</source>
         <translation>FMS</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="73"/>
+        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="74"/>
         <source>Network Diagnostics</source>
         <translation>Netzwerkdiagnose</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="80"/>
+        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="81"/>
         <source>System Monitor</source>
         <translation>System-Monitor</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="81"/>
+        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="82"/>
         <source>Software Versions</source>
         <translation>Software-Versionen</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="93"/>
+        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="94"/>
         <source>CPU</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="94"/>
+        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="95"/>
         <source>RAM</source>
         <translation>RAM</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="95"/>
+        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="96"/>
         <source>Disk</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="96"/>
+        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="97"/>
         <source>PDB/PDP</source>
         <translation>PDB/PDP</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="97"/>
+        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="98"/>
         <source>PCM</source>
         <translation>PCM</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="98"/>
+        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="99"/>
         <source>LIB</source>
         <translation>LIB</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="99"/>
+        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="100"/>
         <source>RIO</source>
         <translation>RIO</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="102"/>
+        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="103"/>
         <source>Reboot RIO</source>
         <translation>RIO neu starten</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="103"/>
+        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="104"/>
         <source>Restart Code</source>
         <translation>Code neu starten</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="248"/>
+        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="249"/>
         <source>%1 %</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="257"/>
-        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="266"/>
+        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="258"/>
+        <location filename="../../src/MainWindow/Components/Diagnostics.cpp" line="267"/>
         <source>%1 MB</source>
         <translation></translation>
     </message>
@@ -288,12 +288,12 @@
         <translation>Tasten</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Joysticks.cpp" line="246"/>
+        <location filename="../../src/MainWindow/Components/Joysticks.cpp" line="247"/>
         <source>Axis %1</source>
         <translation>Achse %1</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Joysticks.cpp" line="260"/>
+        <location filename="../../src/MainWindow/Components/Joysticks.cpp" line="261"/>
         <source>Button %1</source>
         <translation>Taste %1</translation>
     </message>
@@ -301,70 +301,73 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../src/MainWindow/MainWindow.cpp" line="138"/>
-        <source>QDriverStation</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../src/MainWindow/MainWindow.cpp" line="139"/>
+        <location filename="../../src/MainWindow/MainWindow.cpp" line="141"/>
         <source>Are you sure you want to exit the QDriverStation?</source>
         <translation>Wollen Sie, um der QDriverStation zu beenden?</translation>
     </message>
 </context>
 <context>
+    <name>Messages</name>
+    <message>
+        <location filename="../../src/MainWindow/Components/Messages.cpp" line="122"/>
+        <source>INFO: Console output copied to clipboard</source>
+        <translation>INFO: Die Konsolenausgabe wurde in die Zwischenablage kopiert</translation>
+    </message>
+</context>
+<context>
     <name>Operator</name>
     <message>
-        <location filename="../../src/MainWindow/Components/Operator.cpp" line="108"/>
+        <location filename="../../src/MainWindow/Components/Operator.cpp" line="109"/>
         <source>Enable</source>
         <translation>Aktivieren</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Operator.cpp" line="109"/>
+        <location filename="../../src/MainWindow/Components/Operator.cpp" line="110"/>
         <source>Disable</source>
         <translation>Deaktivieren</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Operator.cpp" line="114"/>
+        <location filename="../../src/MainWindow/Components/Operator.cpp" line="115"/>
         <source>Test</source>
         <translation>Test</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Operator.cpp" line="115"/>
+        <location filename="../../src/MainWindow/Components/Operator.cpp" line="116"/>
         <source>Teleoperated</source>
         <translation>Telebetriebenen</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Operator.cpp" line="116"/>
+        <location filename="../../src/MainWindow/Components/Operator.cpp" line="117"/>
         <source>Practice</source>
         <translation>Praxis</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Operator.cpp" line="117"/>
+        <location filename="../../src/MainWindow/Components/Operator.cpp" line="118"/>
         <source>Autonomous</source>
         <translation>Autonom</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Operator.cpp" line="127"/>
+        <location filename="../../src/MainWindow/Components/Operator.cpp" line="128"/>
         <source>PC CPU</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Operator.cpp" line="128"/>
+        <location filename="../../src/MainWindow/Components/Operator.cpp" line="129"/>
         <source>PC Battery</source>
         <translation>PC Batterie</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Operator.cpp" line="129"/>
+        <location filename="../../src/MainWindow/Components/Operator.cpp" line="130"/>
         <source>Window Mode</source>
         <translation>Fenstermodus</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Operator.cpp" line="130"/>
+        <location filename="../../src/MainWindow/Components/Operator.cpp" line="131"/>
         <source>Elapsed Time</source>
         <translation>Zeit</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Operator.cpp" line="131"/>
+        <location filename="../../src/MainWindow/Components/Operator.cpp" line="132"/>
         <source>Team Station</source>
         <translation>Teamstation</translation>
     </message>
@@ -372,47 +375,47 @@
 <context>
     <name>Preferences</name>
     <message>
-        <location filename="../../src/MainWindow/Components/Preferences.cpp" line="73"/>
+        <location filename="../../src/MainWindow/Components/Preferences.cpp" line="74"/>
         <source>Protocol</source>
         <translation>Protokoll</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Preferences.cpp" line="74"/>
+        <location filename="../../src/MainWindow/Components/Preferences.cpp" line="75"/>
         <source>Dashboard</source>
         <translation>Armaturenbrett</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Preferences.cpp" line="75"/>
+        <location filename="../../src/MainWindow/Components/Preferences.cpp" line="76"/>
         <source>Team Number</source>
         <translation>Teamnummer</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Preferences.cpp" line="81"/>
+        <location filename="../../src/MainWindow/Components/Preferences.cpp" line="82"/>
         <source>Practice Timings</source>
         <translation>Praxiszeiten</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Preferences.cpp" line="83"/>
+        <location filename="../../src/MainWindow/Components/Preferences.cpp" line="84"/>
         <source>Delay</source>
         <translation>Verzögern</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Preferences.cpp" line="84"/>
+        <location filename="../../src/MainWindow/Components/Preferences.cpp" line="85"/>
         <source>Teleop</source>
         <translation>Telebetriebenen</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Preferences.cpp" line="85"/>
+        <location filename="../../src/MainWindow/Components/Preferences.cpp" line="86"/>
         <source>End game</source>
         <translation>Endspiel</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Preferences.cpp" line="86"/>
+        <location filename="../../src/MainWindow/Components/Preferences.cpp" line="87"/>
         <source>Countdown</source>
         <translation>Countdown</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Preferences.cpp" line="87"/>
+        <location filename="../../src/MainWindow/Components/Preferences.cpp" line="88"/>
         <source>Autonomous</source>
         <translation>Autonom</translation>
     </message>
@@ -422,7 +425,7 @@
     <message>
         <location filename="../../src/Global/Global.cpp" line="211"/>
         <location filename="../../src/Global/Global.cpp" line="216"/>
-        <location filename="../../src/main.cpp" line="131"/>
+        <location filename="../../src/main.cpp" line="178"/>
         <source>QDriverStation</source>
         <translation></translation>
     </message>
@@ -437,17 +440,17 @@
         <translation>Sehr vorsichtig sein bei Verwendung eines externen Joysticks!</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="132"/>
+        <location filename="../../src/main.cpp" line="179"/>
         <source>Please input your team number:</source>
         <translation>Bitte geben Sie Ihre Teamnummer:</translation>
     </message>
     <message>
-        <location filename="../../src/Global/Languages.cpp" line="172"/>
+        <location filename="../../src/Global/Languages.cpp" line="176"/>
         <source>Change language</source>
         <translation>Sprache ändern</translation>
     </message>
     <message>
-        <location filename="../../src/Global/Languages.cpp" line="173"/>
+        <location filename="../../src/Global/Languages.cpp" line="177"/>
         <source>You must restart the application in order for the changes to take effect</source>
         <translation>Sie müssen die Anwendung neu starten, damit die Änderungen wirksam werden</translation>
     </message>
@@ -455,92 +458,92 @@
 <context>
     <name>SettingsWindow</name>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="92"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="91"/>
         <source>Networking</source>
         <translation>Netzwerk</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="93"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="92"/>
         <source>Use custom robot address</source>
         <translation>Benutzerdefinierte Roboter-Addresse</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="99"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="98"/>
         <source>Reset</source>
         <translation>Rücksetzen</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="98"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="97"/>
         <source>OK</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="100"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="99"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="103"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="102"/>
         <source>Colors</source>
         <translation>Farben</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="106"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="105"/>
         <source>Base</source>
         <translation>Grundfarbe</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="107"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="106"/>
         <source>Highlight</source>
         <translation>Markierung</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="108"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="107"/>
         <source>Background</source>
         <translation>Hintergrund</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="109"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="108"/>
         <source>Foreground</source>
         <translation>Vordergrund</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="132"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="131"/>
         <source>Language</source>
         <translation>Sprache</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="133"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="132"/>
         <source>Other Settings</source>
         <translation>Andere Einstellungen</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="134"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="133"/>
         <source>Check for updates automatically</source>
         <translation>Automatisch nach Updates suchen</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="136"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="135"/>
         <source>Enable UI sound effects</source>
         <translation>Aktivieren die UI Sound-Effekte</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="138"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="137"/>
         <source>Prompt on quit</source>
         <translation>Fragen auf Beenden</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="148"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="147"/>
         <source>General</source>
         <translation>Allgemeine</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="340"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="339"/>
         <source>Reset Settings</source>
         <translation>Einstellungen zürucksetzen</translation>
     </message>
     <message>
-        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="341"/>
+        <location filename="../../src/SettingsWindow/SettingsWindow.cpp" line="340"/>
         <source>Are you sure you want to reset these settings?</source>
         <translation>Sind Sie sicher, dass Sie diese Einstellungen zürucksetzen möchten?</translation>
     </message>
@@ -548,27 +551,27 @@
 <context>
     <name>Status</name>
     <message>
-        <location filename="../../src/MainWindow/Components/Status.cpp" line="104"/>
+        <location filename="../../src/MainWindow/Components/Status.cpp" line="105"/>
         <source>No Robot Communication</source>
         <translation>Kein Roboter Kommunikations</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Status.cpp" line="112"/>
+        <location filename="../../src/MainWindow/Components/Status.cpp" line="113"/>
         <source>Team #</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Status.cpp" line="113"/>
+        <location filename="../../src/MainWindow/Components/Status.cpp" line="114"/>
         <source>Communications</source>
         <translation>Kommunikation</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Status.cpp" line="114"/>
+        <location filename="../../src/MainWindow/Components/Status.cpp" line="115"/>
         <source>Robot Code</source>
         <translation>Roboter Code</translation>
     </message>
     <message>
-        <location filename="../../src/MainWindow/Components/Status.cpp" line="115"/>
+        <location filename="../../src/MainWindow/Components/Status.cpp" line="116"/>
         <source>Joysticks</source>
         <translation>Joysticks</translation>
     </message>

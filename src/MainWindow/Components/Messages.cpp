@@ -24,9 +24,11 @@
 // System includes
 //=============================================================================
 
+#include <QClipboard>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <QApplication>
 #include <QPlainTextEdit>
 
 //=============================================================================
@@ -73,6 +75,11 @@ void Messages::createWidgets()
     m_console->setFont      (Languages::monoFont());
     m_copyButton->setFont   (AWESOME()->font (DPI_SCALE (12)));
     m_clearButton->setFont  (AWESOME()->font (DPI_SCALE (12)));
+
+    connect (m_copyButton,  &QPushButton::clicked, this, &Messages::copy);
+    connect (m_clearButton, &QPushButton::clicked, this, &Messages::clear);
+    connect (DS(),          &DriverStation::newMessage,
+             this,          &Messages::registerMessage);
 }
 
 //=============================================================================
@@ -110,7 +117,10 @@ void Messages::createLayouts()
 
 void Messages::copy()
 {
-
+    qApp->clipboard()->setText (m_console->toPlainText());
+    registerMessage (QString   ("<font color=\"#aaa\"><p>")
+                     + tr      ("INFO: Console output copied to clipboard")
+                     + QString ("</p></font>"));
 }
 
 //=============================================================================
@@ -119,7 +129,7 @@ void Messages::copy()
 
 void Messages::clear()
 {
-
+    m_console->clear();
 }
 
 //=============================================================================
