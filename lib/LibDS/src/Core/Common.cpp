@@ -144,7 +144,7 @@ void DS_LogMessage (DS_MessageType type,  QString message)
     if (!_LOG_INIT)
         {
             _LOG_INIT = true;
-            printf (_FORMAT, "DATE/TIME", "ERROR LEVEL", "MESSAGE");
+            fprintf (stderr, _FORMAT, "DATE/TIME", "ERROR LEVEL", "MESSAGE");
         }
 
     /* Get the error level */
@@ -168,10 +168,11 @@ void DS_LogMessage (DS_MessageType type,  QString message)
         }
 
     /* Write log message */
-    printf (_FORMAT,
-            time.toStdString().c_str(),
-            level.toStdString().c_str(),
-            message.toStdString().c_str());
+    fprintf (stderr,
+             _FORMAT,
+             time.toStdString().c_str(),
+             level.toStdString().c_str(),
+             message.toStdString().c_str());
 }
 
 //=============================================================================

@@ -43,6 +43,9 @@ signals:
     void showUnDocked();
     void requestErrorAnimation();
 
+private slots:
+    void resizeToMinimum();
+
 private:
     Operator* m_operator;
     Joysticks* m_joysticks;

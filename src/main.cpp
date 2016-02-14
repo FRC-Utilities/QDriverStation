@@ -56,11 +56,60 @@ void BEEP()
 }
 
 //=============================================================================
+// Avoid logging Qt warnings about our UI hacks
+//=============================================================================
+
+void messageHandler (QtMsgType type,
+                     const QMessageLogContext& context,
+                     const QString& msg)
+{
+    QByteArray localMsg = msg.toLocal8Bit();
+
+    switch (type)
+        {
+        case QtDebugMsg:
+            fprintf (stderr,
+                     "DEBUG: %s (%s:%u, %s)\n",
+                     localMsg.constData(),
+                     context.file,
+                     context.line,
+                     context.function);
+            break;
+        case QtInfoMsg:
+            fprintf (stderr,
+                     "INFO: %s (%s:%u, %s)\n",
+                     localMsg.constData(),
+                     context.file,
+                     context.line,
+                     context.function);
+            break;
+        case QtWarningMsg:
+            break;
+        case QtCriticalMsg:
+            fprintf (stderr,
+                     "CRITICAL: %s (%s:%u, %s)\n",
+                     localMsg.constData(),
+                     context.file,
+                     context.line,
+                     context.function);
+        case QtFatalMsg:
+            fprintf (stderr,
+                     "FATAL: %s (%s:%u, %s)\n",
+                     localMsg.constData(),
+                     context.file,
+                     context.line,
+                     context.function);
+            break;
+        }
+}
+
+//=============================================================================
 // Main entry-point of the application
 //=============================================================================
 
 int main (int argc, char* argv[])
 {
+    qInstallMessageHandler (messageHandler);
     DS_LogMessage (kInfoLevel, "Starting application....");
 
     /* Configure application information */

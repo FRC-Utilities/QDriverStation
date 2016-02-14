@@ -21,6 +21,12 @@
  */
 
 //=============================================================================
+// System includes
+//=============================================================================
+
+#include <QTimer>
+
+//=============================================================================
 // Application includes
 //=============================================================================
 
@@ -59,6 +65,7 @@ LeftTab::LeftTab (QWidget* parent) : QTabWidget (parent)
     connect (m_operator, &Operator::requestErrorAnimation,
              this,       &LeftTab::requestErrorAnimation);
 
+    resizeToMinimum();
     DS_LogMessage (kInfoLevel, "MainWindow: Left tab created");
 }
 
@@ -69,4 +76,14 @@ LeftTab::LeftTab (QWidget* parent) : QTabWidget (parent)
 LeftTab::~LeftTab()
 {
     DS_LogMessage (kInfoLevel, "MainWindow: Left tab destroyed");
+}
+
+//=============================================================================
+// LeftTab::resizeToMinimum
+//=============================================================================
+
+void LeftTab::resizeToMinimum()
+{
+    setFixedWidth (minimumSizeHint().width());
+    QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (resizeToMinimum()));
 }
