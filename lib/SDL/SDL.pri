@@ -30,6 +30,7 @@ macx* {
     LIBS += -framework CoreFoundation
     LIBS += -framework Carbon
     LIBS += -framework ForceFeedback
+    LIBS += -framework CoreVideo
 
     QMAKE_LFLAGS += -F /System/Library/Frameworks/AudioToolbox.framework/
     QMAKE_LFLAGS += -F /System/Library/Frameworks/AudioUnit.framework/
@@ -40,6 +41,7 @@ macx* {
     QMAKE_LFLAGS += -F /System/Library/Frameworks/CoreFoundation.framework/
     QMAKE_LFLAGS += -F /System/Library/Frameworks/Carbon.framework/
     QMAKE_LFLAGS += -F /System/Library/Frameworks/ForceFeedback.framework/
+    QMAKE_LFLAGS += -F /System/Library/Frameworks/CoreVideo.framework/
 }
 
 linux:!android {
