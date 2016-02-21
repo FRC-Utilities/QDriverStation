@@ -177,6 +177,9 @@ void Preferences::readSettings() {
     setProtocol   (Settings::get ("Protocol", 0).toInt());
     setTeamNumber (Settings::get ("Team",     0).toInt());
 
+    m_teamNumber->setValue       (Settings::get ("Team",     0).toInt());
+    m_protocols->setCurrentIndex (Settings::get ("Protocol", 0).toInt());
+
     /* Load the practice timings into the UI */
     loadPracticeValues();
 }

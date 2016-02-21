@@ -45,7 +45,12 @@ enum ProtocolStandards {
 //=============================================================================
 
 DS_Protocol2014::DS_Protocol2014() {
+    m_reboot = false;
+    m_restartCode = false;
     m_dsVersion = "090210a3";
+
+    QTimer::singleShot (1000, Qt::CoarseTimer,
+                        this, SLOT (_showProtocolWarning()));
 }
 
 //=============================================================================
@@ -154,6 +159,7 @@ QStringList DS_Protocol2014::defaultRobotAddress() {
 //=============================================================================
 
 void DS_Protocol2014::reboot() {
+    m_reboot = true;
 }
 
 //=============================================================================
@@ -161,6 +167,7 @@ void DS_Protocol2014::reboot() {
 //=============================================================================
 
 void DS_Protocol2014::restartCode() {
+    m_restartCode = true;
 }
 
 //=============================================================================
@@ -168,6 +175,21 @@ void DS_Protocol2014::restartCode() {
 //=============================================================================
 
 void DS_Protocol2014::_resetProtocol() {
+    m_reboot = false;
+    m_restartCode = false;
+}
+
+//=============================================================================
+// DS_Protocol2014::_showProtocolWarning
+//=============================================================================
+
+void DS_Protocol2014::_showProtocolWarning() {
+    DS_SendMessage ("<p><b><font color=#FF7722>WARNING: </font></b>"
+                    "<font color=#FFFFFF>"
+                    "This protocol is under heavy development and you WILL "
+                    "encounter bugs. If using a real robot, limit its area of "
+                    "movement by placing it over a box or something. "
+                    "<b>Safety is your number one priority!</b></font></p>");
 }
 
 //=============================================================================

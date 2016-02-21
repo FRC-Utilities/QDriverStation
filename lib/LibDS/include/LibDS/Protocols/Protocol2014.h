@@ -59,6 +59,7 @@ class LIB_DS_DECL DS_Protocol2014 : public DS_ProtocolBase {
 
   private slots:
     virtual void _resetProtocol();
+    virtual void _showProtocolWarning();
 
   private:
     virtual bool _readFMSPacket (QByteArray data);
@@ -70,6 +71,9 @@ class LIB_DS_DECL DS_Protocol2014 : public DS_ProtocolBase {
 
     QString m_dsVersion;
     QString m_robotMacAddress;
+
+    bool m_reboot;
+    bool m_restartCode;
 };
 
 #endif

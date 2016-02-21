@@ -53,6 +53,16 @@
 #include "LibDS/DriverStation.h"
 
 //=============================================================================
+// Ugly hacks
+//=============================================================================
+
+template <typename T>
+T* GET_INSTANCE() {
+    static T instance;
+    return &instance;
+}
+
+//=============================================================================
 // DriverStation::DriverStation
 //=============================================================================
 
@@ -441,13 +451,13 @@ void DriverStation::setProtocol (DS_ProtocolBase* protocol) {
 
 void DriverStation::setProtocol (ProtocolType protocol) {
     if (protocol == kProtocol2016)
-        setProtocol (new DS_Protocol2016);
+        setProtocol (GET_INSTANCE<DS_Protocol2016>());
 
     if (protocol == kProtocol2015)
-        setProtocol (new DS_Protocol2015);
+        setProtocol (GET_INSTANCE<DS_Protocol2015>());
 
     if (protocol == kProtocol2014)
-        setProtocol (new DS_Protocol2014);
+        setProtocol (GET_INSTANCE<DS_Protocol2014>());
 }
 
 //=============================================================================

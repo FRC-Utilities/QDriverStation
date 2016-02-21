@@ -27,29 +27,29 @@
 //=============================================================================
 
 const QString CHECK_FIREWALL = "<p>"
-                               "<font color=#FE755C>ERROR: </font>"
+                               "<font color=#FE755C><b>ERROR:</b></font> "
                                "<font color=#FFFFFF>Cannot connect to robot</font><br/>"
                                "<font color=#20C9FF>FRC: The robot is slow to respond. "
                                "Check firewall settings.</font>"
                                "</p>";
 const QString PARTIAL_COMM   = "<p>"
-                               "<font color=#FFF959>WARNING: </font>"
+                               "<font color=#FFF959><b>WARNING:</b></font> "
                                "<font color=#FFFFFF>%1 responds to ping requests, "
                                "but does not respond to DS packets.</font>"
                                "</p>";
 const QString INFO_NOTE      = "<p>"
-                               "<font color=#20C9FF>NOTE: </font>"
+                               "<font color=#20C9FF><b>NOTE:</b></font> "
                                "<font color=#FFFFFF>"
                                "The DS may take up to 20 seconds to detect "
                                "your robot, please be patient.</font>"
                                "</p>";
 const QString CODE_CRASH     = "<p>"
-                               "<font color=#FFF959>WARNING: </font>"
+                               "<font color=#FFF959><b>WARNING:</b></font> "
                                "<font color=#FFFFFF>"
                                "The robot code seems to have crashed.</font>"
                                "</p>";
 const QString COMM_ESTABLISH = "<p>"
-                               "<font color=#59FF59>INFO: </font>"
+                               "<font color=#59FF59><b>INFO:</b></font> "
                                "<font color=#FFFFFF>"
                                "Robot communications established</font></p>";
 
