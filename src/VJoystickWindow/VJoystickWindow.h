@@ -35,21 +35,20 @@ class QVBoxLayout;
 class QHBoxLayout;
 class QDoubleSpinBox;
 
-class VJoystickWindow : public QDialog
-{
+class VJoystickWindow : public QDialog {
     Q_OBJECT
 
-public:
+  public:
     explicit VJoystickWindow();
     ~VJoystickWindow();
 
-private slots:
+  private slots:
     void createWidgets();
     void createLayouts();
     void connectSlots();
     void readSettings();
 
-private:
+  private:
     QTabWidget* m_tab;
     QGroupBox* m_keysBox;
     QWidget* m_generalTab;

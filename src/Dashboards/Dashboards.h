@@ -25,13 +25,11 @@
 
 #include <QProcess>
 
-class Dashboards : public QObject
-{
+class Dashboards : public QObject {
     Q_OBJECT
 
-public:
-    enum DashboardTypes
-    {
+  public:
+    enum DashboardTypes {
         kNone           = 0x00,
         kSFXDashboard   = 0x01,
         kSmartDashboard = 0x02,
@@ -45,18 +43,18 @@ public:
     QStringList dashboardList();
     DashboardTypes currentDashboard();
 
-public slots:
+  public slots:
     void openDashboard();
     void closeDashboard();
     void reloadDashboard();
 
-signals:
+  signals:
     void dashboardChanged();
 
-protected:
+  protected:
     explicit Dashboards();
 
-private:
+  private:
     QProcess m_process;
     DashboardTypes m_current;
 };

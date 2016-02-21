@@ -47,30 +47,28 @@ static QTranslator* _translator = Q_NULLPTR;
 // Languages::init
 //=============================================================================
 
-void Languages::init()
-{
+void Languages::init() {
     QString locale;
     QTextCodec::setCodecForLocale (QTextCodec::codecForName ("UTF-8"));
 
     /* Get which translation file and font to open */
-    switch (currentLanguage())
-        {
-        case kAuto:
-            locale = systemLanguage();
-            break;
-        case kGerman:
-            locale = "de";
-            break;
-        case kEnglish:
-            locale = "en";
-            break;
-        case kSpanish:
-            locale = "es";
-            break;
-        default:
-            locale = "en";
-            break;
-        }
+    switch (currentLanguage()) {
+    case kAuto:
+        locale = systemLanguage();
+        break;
+    case kGerman:
+        locale = "de";
+        break;
+    case kEnglish:
+        locale = "en";
+        break;
+    case kSpanish:
+        locale = "es";
+        break;
+    default:
+        locale = "en";
+        break;
+    }
 
     /* Load translations */
     translator()->load (":/languages/qds_" + locale);
@@ -81,8 +79,7 @@ void Languages::init()
 // Languages::appFont
 //=============================================================================
 
-QFont Languages::appFont()
-{
+QFont Languages::appFont() {
     QFont font;
     font.setFamily ("QuickSand");
     font.setPixelSize (DPI_SCALE (12));
@@ -93,8 +90,7 @@ QFont Languages::appFont()
 // Languages::monoFont
 //=============================================================================
 
-QFont Languages::monoFont()
-{
+QFont Languages::monoFont() {
     QFont font;
 #if defined Q_OS_WIN
     font.setFamily     ("Consolas");
@@ -111,8 +107,7 @@ QFont Languages::monoFont()
 // Languages::systemLanguage
 //=============================================================================
 
-QString Languages::systemLanguage()
-{
+QString Languages::systemLanguage() {
     if (QLocale::system().name().split ("_").count() > 0)
         return QLocale::system().name().split ("_").at (0);
 
@@ -124,13 +119,11 @@ QString Languages::systemLanguage()
 // Languages::getTranslator
 //=============================================================================
 
-QTranslator* Languages::translator()
-{
-    if (_translator == Q_NULLPTR)
-        {
-            _translator = new QTranslator;
-            init();
-        }
+QTranslator* Languages::translator() {
+    if (_translator == Q_NULLPTR) {
+        _translator = new QTranslator;
+        init();
+    }
 
     return _translator;
 }
@@ -139,8 +132,7 @@ QTranslator* Languages::translator()
 // Languages::currentLanguage
 //=============================================================================
 
-Languages::LanguageType Languages::currentLanguage()
-{
+Languages::LanguageType Languages::currentLanguage() {
     return (LanguageType) Settings::get ("Language", kEnglish).toInt();
 }
 
@@ -148,8 +140,7 @@ Languages::LanguageType Languages::currentLanguage()
 // Languages::getAvailableLanguages
 //=============================================================================
 
-QStringList Languages::getAvailableLanguages()
-{
+QStringList Languages::getAvailableLanguages() {
     QStringList list;
 
     list.append ("Auto");
@@ -164,18 +155,16 @@ QStringList Languages::getAvailableLanguages()
 // Languages::setLanguage
 //=============================================================================
 
-void Languages::setLanguage (LanguageType language)
-{
+void Languages::setLanguage (LanguageType language) {
     DS_LogMessage (kInfoLevel,
                    "Setting language to: " + QString::number (language));
 
-    if (language != currentLanguage())
-        {
-            Settings::set ("Language", language);
-            QMessageBox::information (Q_NULLPTR,
-                                      QObject::tr ("Change language"),
-                                      QObject::tr ("You must restart the application "
-                                                   "in order for the changes to take "
-                                                   "effect"));
-        }
+    if (language != currentLanguage()) {
+        Settings::set ("Language", language);
+        QMessageBox::information (Q_NULLPTR,
+                                  QObject::tr ("Change language"),
+                                  QObject::tr ("You must restart the application "
+                                               "in order for the changes to take "
+                                               "effect"));
+    }
 }

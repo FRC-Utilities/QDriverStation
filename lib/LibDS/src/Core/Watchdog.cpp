@@ -26,20 +26,21 @@
 // DS_Watchdog::DS_Watchdog
 //=============================================================================
 
-DS_Watchdog::DS_Watchdog()
-{
-    connect (&m_timer, &QTimer::timeout, this, &DS_Watchdog::timeout);
-
-    m_timer.setInterval (1000);
-    m_timer.start();
+DS_Watchdog::DS_Watchdog() {
+    setTimeout (125);
+    connect    (&m_timer, &QTimer::timeout, this, &DS_Watchdog::timeout);
 }
 
 //=============================================================================
 // DS_Watchdog::restart
 //=============================================================================
 
-void DS_Watchdog::restart()
-{
+void DS_Watchdog::restart() {
     m_timer.stop();
+    m_timer.start();
+}
+
+void DS_Watchdog::setTimeout (int time) {
+    m_timer.setInterval (time);
     m_timer.start();
 }

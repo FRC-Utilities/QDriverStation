@@ -52,8 +52,7 @@
 // MainWindow::MainWindow
 //=============================================================================
 
-MainWindow::MainWindow()
-{
+MainWindow::MainWindow() {
     DS_LogMessage (kInfoLevel, "Creating MainWindow....");
 
     /* Configure internal variables */
@@ -114,15 +113,13 @@ MainWindow::MainWindow()
 // MainWindow::moveEvent
 //=============================================================================
 
-void MainWindow::moveEvent (QMoveEvent* event)
-{
+void MainWindow::moveEvent (QMoveEvent* event) {
     event->accept();
 
-    if (!m_docked)
-        {
-            Settings::set ("MainWindow X", x());
-            Settings::set ("MainWindow Y", y());
-        }
+    if (!m_docked) {
+        Settings::set ("MainWindow X", x());
+        Settings::set ("MainWindow Y", y());
+    }
 }
 
 
@@ -130,26 +127,23 @@ void MainWindow::moveEvent (QMoveEvent* event)
 // MainWindow::closeEvent
 //=============================================================================
 
-void MainWindow::closeEvent (QCloseEvent* event)
-{
-    if (!m_closing && Settings::get ("Prompt on Quit", true).toBool())
-        {
-            QMessageBox box;
-            box.setIcon (QMessageBox::Question);
-            box.setStandardButtons (QMessageBox::Yes | QMessageBox::No);
-            box.setDefaultButton (QMessageBox::Yes);
-            box.setText (tr ("Are you sure you want to exit the "
-                             "QDriverStation?"));
+void MainWindow::closeEvent (QCloseEvent* event) {
+    if (!m_closing && Settings::get ("Prompt on Quit", true).toBool()) {
+        QMessageBox box;
+        box.setIcon (QMessageBox::Question);
+        box.setStandardButtons (QMessageBox::Yes | QMessageBox::No);
+        box.setDefaultButton (QMessageBox::Yes);
+        box.setText (tr ("Are you sure you want to exit the "
+                         "QDriverStation?"));
 
-            if (box.exec() == QMessageBox::No)
-                {
-                    event->ignore();
-                    return;
-                }
-
-            else
-                m_closing = true;
+        if (box.exec() == QMessageBox::No) {
+            event->ignore();
+            return;
         }
+
+        else
+            m_closing = true;
+    }
 
     event->accept();
     QApplication::closeAllWindows();
@@ -159,8 +153,7 @@ void MainWindow::closeEvent (QCloseEvent* event)
 // MainWindow::showNormal
 //=============================================================================
 
-void MainWindow::showUnDocked()
-{
+void MainWindow::showUnDocked() {
     m_docked = false;
     setWindowFlags (Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint);
 
@@ -177,8 +170,7 @@ void MainWindow::showUnDocked()
 // MainWindow::quitSound
 //=============================================================================
 
-void MainWindow::quitSound()
-{
+void MainWindow::quitSound() {
     BEEPER()->beep (220, 100);
     BEEPER()->beep (440, 100);;
 }
@@ -187,8 +179,7 @@ void MainWindow::quitSound()
 // MainWindow::showDocked
 //=============================================================================
 
-void MainWindow::showDocked()
-{
+void MainWindow::showDocked() {
     m_docked = true;
 
     /* Frameless windows are a headache for some window managers */
@@ -204,8 +195,7 @@ void MainWindow::showDocked()
 // MainWindow::startUpSound
 //=============================================================================
 
-void MainWindow::startUpSound()
-{
+void MainWindow::startUpSound() {
     BEEPER()->beep (440, 100);
     BEEPER()->beep (220, 100);
 }
@@ -214,8 +204,7 @@ void MainWindow::startUpSound()
 // MainWindow::displayWindow
 //=============================================================================
 
-void MainWindow::displayWindow()
-{
+void MainWindow::displayWindow() {
     showNormal();
     Settings::get ("Docked", false).toBool() ? showDocked() : showUnDocked();
 
@@ -227,17 +216,15 @@ void MainWindow::displayWindow()
 // MainWindow::updateSize
 //=============================================================================
 
-void MainWindow::updateSize()
-{
-    if (m_docked)
-        {
-            QSize desktop = QApplication::primaryScreen()->availableSize();
+void MainWindow::updateSize() {
+    if (m_docked) {
+        QSize desktop = QApplication::primaryScreen()->availableSize();
 
-            setFixedWidth  (desktop.width());
-            setFixedHeight (minimumSizeHint().height());
+        setFixedWidth  (desktop.width());
+        setFixedHeight (minimumSizeHint().height());
 
-            move (0, desktop.height() - height());
-        }
+        move (0, desktop.height() - height());
+    }
 
     else
         setFixedSize (minimumSizeHint());

@@ -34,8 +34,7 @@
 // AppTheme::Init
 //=============================================================================
 
-void AppTheme::init()
-{
+void AppTheme::init() {
     /* Load the application fonts */
     QFontDatabase::addApplicationFont (":/fonts/Inconsolata.otf");
     QFontDatabase::addApplicationFont (":/fonts/Quicksand-Bold.ttf");
@@ -54,8 +53,7 @@ void AppTheme::init()
 // AppTheme::LoadTheme
 //=============================================================================
 
-void AppTheme::loadTheme()
-{
+void AppTheme::loadTheme() {
     /* Get the saved colors and modify the application palette */
     Theme theme = current();
     QPalette palette = QApplication::palette();
@@ -81,8 +79,7 @@ void AppTheme::loadTheme()
 // AppTheme::resetTheme
 //=============================================================================
 
-void AppTheme::resetTheme()
-{
+void AppTheme::resetTheme() {
     Theme theme;
 
     theme.base       = "#2a2a2a";
@@ -97,8 +94,7 @@ void AppTheme::resetTheme()
 // AppTheme::applyTheme
 //=============================================================================
 
-void AppTheme::apply (const Theme& theme)
-{
+void AppTheme::apply (const Theme& theme) {
     Settings::set ("Base",       theme.base);
     Settings::set ("Highlight",  theme.highlight);
     Settings::set ("Background", theme.background);
@@ -112,8 +108,7 @@ void AppTheme::apply (const Theme& theme)
 // AppTheme::current
 //=============================================================================
 
-AppTheme::Theme AppTheme::current()
-{
+AppTheme::Theme AppTheme::current() {
     Theme theme;
 
     theme.base       = Settings::get ("Base",       "#2a2a2a").toString();

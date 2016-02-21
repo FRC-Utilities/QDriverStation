@@ -48,8 +48,7 @@
 // VJoystickWindow::VJoystickWindow
 //=============================================================================
 
-VJoystickWindow::VJoystickWindow()
-{
+VJoystickWindow::VJoystickWindow() {
     createWidgets();
     createLayouts();
     connectSlots();
@@ -63,8 +62,7 @@ VJoystickWindow::VJoystickWindow()
 // VJoystickWindow::~VJoystickWindow
 //=============================================================================
 
-VJoystickWindow::~VJoystickWindow()
-{
+VJoystickWindow::~VJoystickWindow() {
     foreach (QWidget* widget, findChildren<QWidget*>())
         widget->deleteLater();
 }
@@ -73,8 +71,7 @@ VJoystickWindow::~VJoystickWindow()
 // VJoystickWindow::createWidgets
 //=============================================================================
 
-void VJoystickWindow::createWidgets()
-{
+void VJoystickWindow::createWidgets() {
     /* Tabs and keys group box */
     m_generalTab            = new QWidget (this);
     m_tab                   = new QTabWidget (this);
@@ -107,16 +104,14 @@ void VJoystickWindow::createWidgets()
     m_meanings->setEnabled     (false);
 
     /* Generate the content of the list widgets */
-    QStringList keys =
-    {
+    QStringList keys = {
         "W, A, S, D",
         "Up, Down",
         "Page Up, Page down",
         "I, J, K, L",
         "1, 2, 3, 4, 5, 6, 7, 8, 9",
     };
-    QStringList meanings =
-    {
+    QStringList meanings = {
         tr ("Primary Thumb (axes 0 & 1)"),
         tr ("Trigger 1 (axis 2)"),
         tr ("Trigger 2 (axis 3)"),
@@ -137,8 +132,7 @@ void VJoystickWindow::createWidgets()
 // VJoystickWindow::createLayouts
 //=============================================================================
 
-void VJoystickWindow::createLayouts()
-{
+void VJoystickWindow::createLayouts() {
     /* Keyboard keys layout */
     m_keysLayout = new QHBoxLayout        (m_keysBox);
     m_keysLayout->setContentsMargins      (MAIN_MARGINS());
@@ -186,8 +180,7 @@ void VJoystickWindow::createLayouts()
 // VJoystickWindow::connectSlots
 //=============================================================================
 
-void VJoystickWindow::connectSlots()
-{
+void VJoystickWindow::connectSlots() {
     VirtualJoystick* vJoystick = JOYSTICK_MANAGER()->virtualJoystick();
 
     connect (m_closeButton,           &QPushButton::clicked,
@@ -204,8 +197,7 @@ void VJoystickWindow::connectSlots()
 // VJoystickWindow::readSettings
 //=============================================================================
 
-void VJoystickWindow::readSettings()
-{
+void VJoystickWindow::readSettings() {
     float range = Settings::get ("Axis Range", 0.8).toFloat();
     bool useVJoystick = Settings::get ("Virtual Joystick", false).toBool();
 

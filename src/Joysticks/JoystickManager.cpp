@@ -28,8 +28,7 @@
 // JoystickManager::JoystickManager
 //=============================================================================
 
-JoystickManager::JoystickManager()
-{
+JoystickManager::JoystickManager() {
     /* Multu-threading signalling magic */
     qRegisterMetaType <QDS_POVEvent>    ("QDS_POVEvent");
     qRegisterMetaType <QDS_AxisEvent>   ("QDS_AxisEvent");
@@ -72,8 +71,7 @@ JoystickManager::JoystickManager()
 // JoystickManager::joystickNames
 //=============================================================================
 
-QStringList JoystickManager::deviceNames()
-{
+QStringList JoystickManager::deviceNames() {
     QStringList names;
 
     foreach (QDS_InputDevice joystick, inputDevices())
@@ -86,8 +84,7 @@ QStringList JoystickManager::deviceNames()
 // JoystickManager::joysticks
 //=============================================================================
 
-QList<QDS_InputDevice> JoystickManager::inputDevices()
-{
+QList<QDS_InputDevice> JoystickManager::inputDevices() {
     return m_devices;
 }
 
@@ -95,8 +92,7 @@ QList<QDS_InputDevice> JoystickManager::inputDevices()
 // JoystickManager::getJoystick
 //=============================================================================
 
-QDS_InputDevice JoystickManager::getInputDevice (int id)
-{
+QDS_InputDevice JoystickManager::getInputDevice (int id) {
     if (inputDevices().count() > id)
         return inputDevices().at (id);
 
@@ -115,8 +111,7 @@ QDS_InputDevice JoystickManager::getInputDevice (int id)
 // JoystickManager::sdlJoystick
 //=============================================================================
 
-SDL_Joysticks* JoystickManager::sdlJoysticks()
-{
+SDL_Joysticks* JoystickManager::sdlJoysticks() {
     return m_sdlJoysticks;
 }
 
@@ -125,8 +120,7 @@ SDL_Joysticks* JoystickManager::sdlJoysticks()
 // JoystickManager::virtualJoystick
 //=============================================================================
 
-VirtualJoystick* JoystickManager::virtualJoystick()
-{
+VirtualJoystick* JoystickManager::virtualJoystick() {
     return m_virtualJoystick;
 }
 
@@ -134,8 +128,7 @@ VirtualJoystick* JoystickManager::virtualJoystick()
 // JoystickManager::resetJoysticks
 //=============================================================================
 
-void JoystickManager::resetJoysticks()
-{
+void JoystickManager::resetJoysticks() {
     m_devices.clear();
     DS()->resetJoysticks();
 
@@ -146,25 +139,22 @@ void JoystickManager::resetJoysticks()
 // JoystickManager::updateInterfaces
 //=============================================================================
 
-void JoystickManager::updateInterfaces()
-{
+void JoystickManager::updateInterfaces() {
     resetJoysticks();
 
     foreach (QDS_InputDevice joystick, sdlJoysticks()->joysticks())
         addInputDevice (joystick);
 
-    if (virtualJoystick()->joystickEnabled())
-        {
-            addInputDevice (*virtualJoystick()->joystick());
-            virtualJoystick()->setJoystickID (inputDevices().count() - 1);
-        }
+    if (virtualJoystick()->joystickEnabled()) {
+        addInputDevice (*virtualJoystick()->joystick());
+        virtualJoystick()->setJoystickID (inputDevices().count() - 1);
+    }
 
-    foreach (QDS_InputDevice joystick, inputDevices())
-        {
-            DS()->addJoystick (joystick.numAxes,
-                               joystick.numButtons,
-                               joystick.numPOVs);
-        }
+    foreach (QDS_InputDevice joystick, inputDevices()) {
+        DS()->addJoystick (joystick.numAxes,
+                           joystick.numButtons,
+                           joystick.numPOVs);
+    }
 
     DS_LogMessage (kInfoLevel, "Input/joystick interfaces updated");
     DS_LogMessage (kInfoLevel, "New joystick count: "
@@ -175,8 +165,7 @@ void JoystickManager::updateInterfaces()
 // JoystickManager::addJoystick
 //=============================================================================
 
-void JoystickManager::addInputDevice (QDS_InputDevice device)
-{
+void JoystickManager::addInputDevice (QDS_InputDevice device) {
     m_devices.append (device);
     emit countChanged();
 }
@@ -185,8 +174,7 @@ void JoystickManager::addInputDevice (QDS_InputDevice device)
 // JoystickManager::onPOVEvent
 //=============================================================================
 
-void JoystickManager::onPOVEvent (QDS_POVEvent event)
-{
+void JoystickManager::onPOVEvent (QDS_POVEvent event) {
     DS()->updateJoystickPOV (event.joystick.id,
                              event.pov,
                              event.angle);
@@ -196,8 +184,7 @@ void JoystickManager::onPOVEvent (QDS_POVEvent event)
 // JoystickManager::onAxisEvent
 //=============================================================================
 
-void JoystickManager::onAxisEvent (QDS_AxisEvent event)
-{
+void JoystickManager::onAxisEvent (QDS_AxisEvent event) {
     DS()->updateJoystickAxis (event.joystick.id,
                               event.axis,
                               event.value);
@@ -207,8 +194,7 @@ void JoystickManager::onAxisEvent (QDS_AxisEvent event)
 // JoystickManager::onButtonEvent
 //=============================================================================
 
-void JoystickManager::onButtonEvent (QDS_ButtonEvent event)
-{
+void JoystickManager::onButtonEvent (QDS_ButtonEvent event) {
     DS()->updateJoystickButton (event.joystick.id,
                                 event.button,
                                 event.pressed);

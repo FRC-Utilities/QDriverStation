@@ -27,11 +27,9 @@
 #include <QTranslator>
 #include <QStringList>
 
-class Languages
-{
-public:
-    typedef enum
-    {
+class Languages {
+  public:
+    typedef enum {
         kAuto     = 0,
         kGerman   = 1,
         kEnglish  = 2,

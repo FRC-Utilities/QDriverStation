@@ -72,8 +72,7 @@ typedef void  (*SDLTest_TestCaseTearDownFp) (void* arg);
 /**
  * Holds information about a single test case.
  */
-typedef struct SDLTest_TestCaseReference
-{
+typedef struct SDLTest_TestCaseReference {
     /* !< Func2Stress */
     SDLTest_TestCaseFp testCase;
     /* !< Short name (or function name) "Func2Stress" */
@@ -87,8 +86,7 @@ typedef struct SDLTest_TestCaseReference
 /**
  * Holds information about a test suite (multiple test cases).
  */
-typedef struct SDLTest_TestSuiteReference
-{
+typedef struct SDLTest_TestSuiteReference {
     /* !< "PlatformSuite" */
     char* name;
     /* !< The function that is run before each test. NULL skips. */

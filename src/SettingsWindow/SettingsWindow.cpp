@@ -62,8 +62,7 @@ const QString COLOR_RECTANGLE     = "background-color: %1;";
 // SettingsWindow::SettingsWindow
 //=============================================================================
 
-SettingsWindow::SettingsWindow()
-{
+SettingsWindow::SettingsWindow() {
     createWidgets();
     createLayouts();
     connectSlots();
@@ -77,8 +76,7 @@ SettingsWindow::SettingsWindow()
 // SettingsWindow::createWidgets
 //=============================================================================
 
-void SettingsWindow::createWidgets()
-{
+void SettingsWindow::createWidgets() {
     /* Tab widget */
     m_container         = new QTabWidget;
     m_containerWidget   = new QWidget    (m_container);
@@ -206,8 +204,7 @@ void SettingsWindow::createWidgets()
 // SettingsWindow::createLayouts
 //=============================================================================
 
-void SettingsWindow::createLayouts()
-{
+void SettingsWindow::createLayouts() {
     QSpacerItem* smallSpacer = new QSpacerItem (DPI_SCALE (15),
             DPI_SCALE (15),
             QSizePolicy::Minimum,
@@ -291,8 +288,7 @@ void SettingsWindow::createLayouts()
 // SettingsWindow::connectSlots
 //=============================================================================
 
-void SettingsWindow::connectSlots()
-{
+void SettingsWindow::connectSlots() {
     connect (m_ok,     SIGNAL (clicked()),         this, SLOT (apply()));
     connect (m_reset,  SIGNAL (clicked()),         this, SLOT (reset()));
     connect (m_cancel, SIGNAL (clicked()),         this, SLOT (cancel()));
@@ -323,8 +319,7 @@ void SettingsWindow::connectSlots()
 // SettingsWindow::apply
 //=============================================================================
 
-void SettingsWindow::apply()
-{
+void SettingsWindow::apply() {
     applySettings();
     hide();
 }
@@ -333,29 +328,26 @@ void SettingsWindow::apply()
 // SettingsWindow::reset
 //=============================================================================
 
-void SettingsWindow::reset()
-{
+void SettingsWindow::reset() {
     int answer = QMessageBox::question (this,
                                         tr ("Reset Settings"),
                                         tr ("Are you sure you want to reset "
                                             "these settings?"),
                                         QMessageBox::Yes,
                                         QMessageBox::No);
-    if (answer == QMessageBox::Yes)
-        {
-            AppTheme::resetTheme();
-            Settings::set ("Robot Address", "");
+    if (answer == QMessageBox::Yes) {
+        AppTheme::resetTheme();
+        Settings::set ("Robot Address", "");
 
-            readSettings();
-        }
+        readSettings();
+    }
 }
 
 //=============================================================================
 // SettingsWindow::cancel
 //=============================================================================
 
-void SettingsWindow::cancel()
-{
+void SettingsWindow::cancel() {
     hide();
     readSettings();
 }
@@ -364,8 +356,7 @@ void SettingsWindow::cancel()
 // SettingsWindow::readSettings
 //=============================================================================
 
-void SettingsWindow::readSettings()
-{
+void SettingsWindow::readSettings() {
     /* Get saved robot address */
     QString address = Settings::get ("Robot Address", "").toString();
 
@@ -402,8 +393,7 @@ void SettingsWindow::readSettings()
 // SettingsWindow::applySettings
 //=============================================================================
 
-void SettingsWindow::applySettings()
-{
+void SettingsWindow::applySettings() {
     /* Set the team number to be sure the address placeholder is good */
     DS()->setTeamNumber (Settings::get ("Team", 0).toInt());
 
@@ -436,8 +426,7 @@ void SettingsWindow::applySettings()
 // SettingsDialog::updateTeamNumber
 //=============================================================================
 
-void SettingsWindow::updateTeam (int team)
-{
+void SettingsWindow::updateTeam (int team) {
     Q_UNUSED (team);
     m_robotAddress->setPlaceholderText (DS()->defaultRobotAddress());
 }
@@ -446,8 +435,7 @@ void SettingsWindow::updateTeam (int team)
 // SettingsDialog::onSelectorClicked
 //=============================================================================
 
-void SettingsWindow::onSelectorClicked()
-{
+void SettingsWindow::onSelectorClicked() {
     Colors emitter = getColorType (QObject::sender());
 
     /* Configure the color dialog */
@@ -465,29 +453,27 @@ void SettingsWindow::onSelectorClicked()
         return;
 
     /* Update the line edit that matches the button that called this function */
-    switch (emitter)
-        {
-        case Base:
-            m_baseEdit->setText (color);
-            break;
-        case Highlight:
-            m_highlightEdit->setText (color);
-            break;
-        case Background:
-            m_backgroundEdit->setText (color);
-            break;
-        case Foreground:
-            m_foregroundEdit->setText (color);
-            break;
-        }
+    switch (emitter) {
+    case Base:
+        m_baseEdit->setText (color);
+        break;
+    case Highlight:
+        m_highlightEdit->setText (color);
+        break;
+    case Background:
+        m_backgroundEdit->setText (color);
+        break;
+    case Foreground:
+        m_foregroundEdit->setText (color);
+        break;
+    }
 }
 
 //=============================================================================
 // SettingsDialog::OnColorChanged
 //=============================================================================
 
-void SettingsWindow::onColorChanged (QString color)
-{
+void SettingsWindow::onColorChanged (QString color) {
     Colors emitter = getColorType (QObject::sender());
 
     /* The color is empty, use the previous value */
@@ -502,49 +488,46 @@ void SettingsWindow::onColorChanged (QString color)
     QString style = COLOR_RECTANGLE.arg (color);
 
     /* Update the preview box that matches the line edit that was changed */
-    switch (emitter)
-        {
-        case Base:
-            m_baseEdit->setText (color);
-            m_baseColor->setStyleSheet (style);
-            break;
-        case Highlight:
-            m_highlightEdit->setText (color);
-            m_highlightColor->setStyleSheet (style);
-            break;
-        case Background:
-            m_backgroundEdit->setText (color);
-            m_backgroundColor->setStyleSheet (style);
-            break;
-        case Foreground:
-            m_foregroundEdit->setText (color);
-            m_foregroundColor->setStyleSheet (style);
-            break;
-        }
+    switch (emitter) {
+    case Base:
+        m_baseEdit->setText (color);
+        m_baseColor->setStyleSheet (style);
+        break;
+    case Highlight:
+        m_highlightEdit->setText (color);
+        m_highlightColor->setStyleSheet (style);
+        break;
+    case Background:
+        m_backgroundEdit->setText (color);
+        m_backgroundColor->setStyleSheet (style);
+        break;
+    case Foreground:
+        m_foregroundEdit->setText (color);
+        m_foregroundColor->setStyleSheet (style);
+        break;
+    }
 }
 
 //=============================================================================
 // SettingsDialog::getColorValue
 //=============================================================================
 
-QColor SettingsWindow::getColorValue (Colors type)
-{
+QColor SettingsWindow::getColorValue (Colors type) {
     QColor color;
-    switch (type)
-        {
-        case Base:
-            color = (QColor) m_baseEdit->text();
-            break;
-        case Highlight:
-            color = (QColor) m_highlightEdit->text();
-            break;
-        case Background:
-            color = (QColor) m_backgroundEdit->text();
-            break;
-        case Foreground:
-            color = (QColor) m_foregroundEdit->text();
-            break;
-        }
+    switch (type) {
+    case Base:
+        color = (QColor) m_baseEdit->text();
+        break;
+    case Highlight:
+        color = (QColor) m_highlightEdit->text();
+        break;
+    case Background:
+        color = (QColor) m_backgroundEdit->text();
+        break;
+    case Foreground:
+        color = (QColor) m_foregroundEdit->text();
+        break;
+    }
 
     return color;
 }
@@ -553,8 +536,7 @@ QColor SettingsWindow::getColorValue (Colors type)
 // SettingsDialog::getColorType
 //=============================================================================
 
-SettingsWindow::Colors SettingsWindow::getColorType (const QObject* object)
-{
+SettingsWindow::Colors SettingsWindow::getColorType (const QObject* object) {
     Colors emitter = Base;
     QString name = object->objectName();
 

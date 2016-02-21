@@ -41,12 +41,11 @@ class DS_ProtocolManager;
  * manage the user input, protocol versions and operate the robot in a
  * straigthforward way.
  */
-class LIB_DS_DECL DriverStation : public QObject
-{
+class LIB_DS_DECL DriverStation : public QObject {
     Q_OBJECT
     Q_ENUMS (ProtocolType)
 
-public:
+  public:
     static DriverStation* getInstance();
 
     /**
@@ -56,8 +55,7 @@ public:
      * \note We assign a value to the enums so that they can be used
      * with a list-based object
      */
-    enum ProtocolType
-    {
+    enum ProtocolType {
         kProtocol2016 = 0,
         kProtocol2015 = 1,
         kProtocol2014 = 2
@@ -148,7 +146,7 @@ public:
      */
     Q_INVOKABLE bool acceptsConsoleCommands();
 
-public slots:
+  public slots:
     /**
      * Initializes the class and the interlal loop/refresh system
      */
@@ -255,10 +253,10 @@ public slots:
      */
     Q_INVOKABLE void updateJoystickButton (int js, int button, bool pressed);
 
-protected:
+  protected:
     explicit DriverStation();
 
-signals:
+  signals:
     /**
      * Emitted when \a Init() was called and the DS engine is started
      */
@@ -395,7 +393,7 @@ signals:
      */
     void elapsedTimeChanged (QString time);
 
-private:
+  private:
     /**
      * This variable allows (or disallows) us to receive joystick
      * data and perform most of the operations of the Driver Station.
@@ -444,7 +442,7 @@ private:
      */
     QString getRobotStatus();
 
-private slots:
+  private slots:
     /**
      * Sends a generated client packet to the robot
      */

@@ -45,8 +45,7 @@
 // SDL_Joysticks::SDL_Joysticks
 //=============================================================================
 
-SDL_Joysticks::SDL_Joysticks()
-{
+SDL_Joysticks::SDL_Joysticks() {
     m_tracker = -1;
     connect (DS(), &DriverStation::initialized, this, &SDL_Joysticks::update);
 }
@@ -55,8 +54,7 @@ SDL_Joysticks::SDL_Joysticks()
 // SDL_Joysticks::~SDL_Joysticks
 //=============================================================================
 
-SDL_Joysticks::~SDL_Joysticks()
-{
+SDL_Joysticks::~SDL_Joysticks() {
     for (int i = 0; i < SDL_NumJoysticks(); ++i)
         SDL_GameControllerClose (SDL_GameControllerOpen (i));
 
@@ -67,8 +65,7 @@ SDL_Joysticks::~SDL_Joysticks()
 // SDL_Joysticks::joysticks
 //=============================================================================
 
-QList<QDS_InputDevice> SDL_Joysticks::joysticks()
-{
+QList<QDS_InputDevice> SDL_Joysticks::joysticks() {
     QList<QDS_InputDevice> list;
 
     for (int i = 0; i < SDL_NumJoysticks(); ++i)
@@ -81,50 +78,45 @@ QList<QDS_InputDevice> SDL_Joysticks::joysticks()
 // SDL_Joysticks::rumble
 //=============================================================================
 
-void SDL_Joysticks::rumble (QDS_RumbleRequest request)
-{
+void SDL_Joysticks::rumble (QDS_RumbleRequest request) {
     SDL_Haptic* haptic = SDL_HapticOpen (request.joystick->id);
 
-    if (haptic != Q_NULLPTR)
-        {
-            SDL_HapticRumbleInit (haptic);
-            SDL_HapticRumblePlay (haptic, 1, 1000);
-        }
+    if (haptic != Q_NULLPTR) {
+        SDL_HapticRumbleInit (haptic);
+        SDL_HapticRumblePlay (haptic, 1, 1000);
+    }
 }
 
 //=============================================================================
 // SDL_Joysticks::update
 //=============================================================================
 
-void SDL_Joysticks::update()
-{
+void SDL_Joysticks::update() {
     SDL_Event event;
 
-    while (SDL_PollEvent (&event))
-        {
-            switch (event.type)
-                {
-                case SDL_JOYDEVICEADDED:
-                    ++m_tracker;
-                    emit countChanged();
-                    break;
-                case SDL_JOYDEVICEREMOVED:
-                    emit countChanged();
-                    break;
-                case SDL_JOYAXISMOTION:
-                    emit axisEvent (getAxisEvent (&event));
-                    break;
-                case SDL_JOYBUTTONUP:
-                    emit buttonEvent (getButtonEvent (&event));
-                    break;
-                case SDL_JOYBUTTONDOWN:
-                    emit buttonEvent (getButtonEvent (&event));
-                    break;
-                case SDL_JOYHATMOTION:
-                    emit POVEvent (getPOVEvent (&event));
-                    break;
-                }
+    while (SDL_PollEvent (&event)) {
+        switch (event.type) {
+        case SDL_JOYDEVICEADDED:
+            ++m_tracker;
+            emit countChanged();
+            break;
+        case SDL_JOYDEVICEREMOVED:
+            emit countChanged();
+            break;
+        case SDL_JOYAXISMOTION:
+            emit axisEvent (getAxisEvent (&event));
+            break;
+        case SDL_JOYBUTTONUP:
+            emit buttonEvent (getButtonEvent (&event));
+            break;
+        case SDL_JOYBUTTONDOWN:
+            emit buttonEvent (getButtonEvent (&event));
+            break;
+        case SDL_JOYHATMOTION:
+            emit POVEvent (getPOVEvent (&event));
+            break;
         }
+    }
 
     QTimer::singleShot (20, this, SLOT (update()));
 }
@@ -133,8 +125,7 @@ void SDL_Joysticks::update()
 // SDL_Joysticks::getDynamicID
 //=============================================================================
 
-int SDL_Joysticks::getDynamicID (int id)
-{
+int SDL_Joysticks::getDynamicID (int id) {
     id = m_tracker - (id + 1);
 
     if (id < 0)
@@ -150,20 +141,18 @@ int SDL_Joysticks::getDynamicID (int id)
 // SDL_Joysticks::getJoystick
 //=============================================================================
 
-QDS_InputDevice SDL_Joysticks::getJoystick (int id)
-{
+QDS_InputDevice SDL_Joysticks::getJoystick (int id) {
     QDS_InputDevice joystick;
     SDL_Joystick* sdl_joystick = SDL_JoystickOpen (id);
 
     joystick.id = getDynamicID (id);
 
-    if (sdl_joystick != Q_NULLPTR)
-        {
-            joystick.name       = SDL_JoystickNameForIndex (id);
-            joystick.numPOVs    = SDL_JoystickNumHats      (sdl_joystick);
-            joystick.numAxes    = SDL_JoystickNumAxes      (sdl_joystick);
-            joystick.numButtons = SDL_JoystickNumButtons   (sdl_joystick);
-        }
+    if (sdl_joystick != Q_NULLPTR) {
+        joystick.name       = SDL_JoystickNameForIndex (id);
+        joystick.numPOVs    = SDL_JoystickNumHats      (sdl_joystick);
+        joystick.numAxes    = SDL_JoystickNumAxes      (sdl_joystick);
+        joystick.numButtons = SDL_JoystickNumButtons   (sdl_joystick);
+    }
 
     return joystick;
 }
@@ -172,42 +161,40 @@ QDS_InputDevice SDL_Joysticks::getJoystick (int id)
 // SDL_Joysticks::getPOVEvent
 //=============================================================================
 
-QDS_POVEvent SDL_Joysticks::getPOVEvent (const SDL_Event* sdl_event)
-{
+QDS_POVEvent SDL_Joysticks::getPOVEvent (const SDL_Event* sdl_event) {
     QDS_POVEvent event;
     event.pov      = sdl_event->jhat.hat;
     event.joystick = getJoystick (sdl_event->jdevice.which);
 
-    switch (sdl_event->jhat.value)
-        {
-        case SDL_HAT_RIGHTUP:
-            event.angle = 45;
-            break;
-        case SDL_HAT_RIGHTDOWN:
-            event.angle = 135;
-            break;
-        case SDL_HAT_LEFTDOWN:
-            event.angle = 225;
-            break;
-        case SDL_HAT_LEFTUP:
-            event.angle = 315;
-            break;
-        case SDL_HAT_UP:
-            event.angle = 0;
-            break;
-        case SDL_HAT_RIGHT:
-            event.angle = 90;
-            break;
-        case SDL_HAT_DOWN:
-            event.angle = 180;
-            break;
-        case SDL_HAT_LEFT:
-            event.angle = 270;
-            break;
-        default:
-            event.angle = -1;
-            break;
-        }
+    switch (sdl_event->jhat.value) {
+    case SDL_HAT_RIGHTUP:
+        event.angle = 45;
+        break;
+    case SDL_HAT_RIGHTDOWN:
+        event.angle = 135;
+        break;
+    case SDL_HAT_LEFTDOWN:
+        event.angle = 225;
+        break;
+    case SDL_HAT_LEFTUP:
+        event.angle = 315;
+        break;
+    case SDL_HAT_UP:
+        event.angle = 0;
+        break;
+    case SDL_HAT_RIGHT:
+        event.angle = 90;
+        break;
+    case SDL_HAT_DOWN:
+        event.angle = 180;
+        break;
+    case SDL_HAT_LEFT:
+        event.angle = 270;
+        break;
+    default:
+        event.angle = -1;
+        break;
+    }
 
     return event;
 }
@@ -216,8 +203,7 @@ QDS_POVEvent SDL_Joysticks::getPOVEvent (const SDL_Event* sdl_event)
 // SDL_Joysticks::getAxisEvent
 //=============================================================================
 
-QDS_AxisEvent SDL_Joysticks::getAxisEvent (const SDL_Event* sdl_event)
-{
+QDS_AxisEvent SDL_Joysticks::getAxisEvent (const SDL_Event* sdl_event) {
     QDS_AxisEvent event;
 
     event.axis     = sdl_event->jaxis.axis;
@@ -231,8 +217,7 @@ QDS_AxisEvent SDL_Joysticks::getAxisEvent (const SDL_Event* sdl_event)
 // SDL_Joysticks::getButtonEvent
 //=============================================================================
 
-QDS_ButtonEvent SDL_Joysticks::getButtonEvent (const SDL_Event* sdl_event)
-{
+QDS_ButtonEvent SDL_Joysticks::getButtonEvent (const SDL_Event* sdl_event) {
     QDS_ButtonEvent event;
 
     event.button   = sdl_event->jbutton.button;

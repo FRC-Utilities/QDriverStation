@@ -26,14 +26,13 @@
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 
-class Updater : public QObject
-{
+class Updater : public QObject {
     Q_OBJECT
 
-public:
+  public:
     explicit Updater();
 
-private slots:
+  private slots:
     void showUpdateMessages();
     void checkForUpdates (QString url);
     void onServerReply (QNetworkReply* reply);
@@ -42,7 +41,7 @@ private slots:
 
     QString readKey (QString data, QString key);
 
-private:
+  private:
     bool m_updateAvailable;
 
     QString m_version;

@@ -36,19 +36,18 @@ class QHBoxLayout;
 class QVBoxLayout;
 class QGridLayout;
 
-class Joysticks : public QWidget
-{
+class Joysticks : public QWidget {
     Q_OBJECT
 
-public:
+  public:
     explicit Joysticks (QWidget* parent);
     ~Joysticks();
 
-protected:
+  protected:
     void showEvent (QShowEvent* event);
     void hideEvent (QHideEvent* event);
 
-private slots:
+  private slots:
     void onCountChanged();
     void setupIndicators (int row);
     void setTipsVisible (bool visible);
@@ -56,7 +55,7 @@ private slots:
     void onAxisEvent (QDS_AxisEvent event);
     void onButtonEvent (QDS_ButtonEvent event);
 
-private:
+  private:
     QHBoxLayout* m_mainLayout;
     QListWidget* m_joystickNames;
 

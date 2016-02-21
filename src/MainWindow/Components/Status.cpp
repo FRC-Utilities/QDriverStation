@@ -60,8 +60,7 @@ const QString CUSTM_LED = "QPushButton {"
 // Status::Status
 //=============================================================================
 
-Status::Status (QWidget* parent) : QWidget (parent)
-{
+Status::Status (QWidget* parent) : QWidget (parent) {
     createWidgets();
     createLayouts();
     configureStyles();
@@ -74,8 +73,7 @@ Status::Status (QWidget* parent) : QWidget (parent)
 // Status::~Status
 //=============================================================================
 
-Status::~Status()
-{
+Status::~Status() {
     DS_LogMessage (kInfoLevel, "MainWindow: Status/Central widget destroyed");
 }
 
@@ -83,8 +81,7 @@ Status::~Status()
 // Status::doErrorAnimation
 //=============================================================================
 
-void Status::doErrorAnimation()
-{
+void Status::doErrorAnimation() {
     for (int i = 0; i < 8; ++i)
         QTimer::singleShot (100 * i, Qt::PreciseTimer,
                             this, SLOT (toggleStatusColors()));
@@ -96,8 +93,7 @@ void Status::doErrorAnimation()
 // Status::createWidgets
 //=============================================================================
 
-void Status::createWidgets()
-{
+void Status::createWidgets() {
     /* Create the indicator labels */
     m_estop        = false;
     m_team         = new QLabel (NO_DATA, this);
@@ -130,8 +126,7 @@ void Status::createWidgets()
 // Status::createLayouts
 //=============================================================================
 
-void Status::createLayouts()
-{
+void Status::createLayouts() {
     /* Configure layout of LED indicators & captions */
     m_LEDsLayout = new QGridLayout      (m_LEDsWidget);
     m_LEDsLayout->addWidget             (m_commLabel,   0, 0);
@@ -180,8 +175,7 @@ void Status::createLayouts()
 // Status::configureStyles
 //=============================================================================
 
-void Status::configureStyles()
-{
+void Status::configureStyles() {
     /* Set style of LEDs*/
     m_comm->setFlat               (true);
     m_code->setFlat               (true);
@@ -235,8 +229,7 @@ void Status::configureStyles()
 // Status::connectSlots
 //=============================================================================
 
-void Status::connectSlots()
-{
+void Status::connectSlots() {
     connect (DS(), &DriverStation::joystickCountChanged,
              this, &Status::updateJoysticks);
     connect (DS(), &DriverStation::communicationsChanged,
@@ -257,8 +250,7 @@ void Status::connectSlots()
 // Status::updateJoysticks
 //=============================================================================
 
-void Status::updateJoysticks (void)
-{
+void Status::updateJoysticks (void) {
     m_sticks->setChecked (DS()->joystickCount() > 0);
 }
 
@@ -266,21 +258,18 @@ void Status::updateJoysticks (void)
 // Status::updateEmergencyStop
 //=============================================================================
 
-void Status::updateEmergencyStop (void)
-{
-    if (DS()->isEmergencyStopped() && !m_estop)
-        {
-            m_estop = true;
-            BEEPER()->beep (660, 800);
-        }
+void Status::updateEmergencyStop (void) {
+    if (DS()->isEmergencyStopped() && !m_estop) {
+        m_estop = true;
+        BEEPER()->beep (660, 800);
+    }
 }
 
 //=============================================================================
 // Status::updateTeam
 //=============================================================================
 
-void Status::updateTeam (int team)
-{
+void Status::updateTeam (int team) {
     m_team->setText (QString::number (team));
 }
 
@@ -288,8 +277,7 @@ void Status::updateTeam (int team)
 // Status::updateStatus
 //=============================================================================
 
-void Status::updateStatus (QString status)
-{
+void Status::updateStatus (QString status) {
     m_robotStatus->setText (status);
 }
 
@@ -297,8 +285,7 @@ void Status::updateStatus (QString status)
 // Status::updateVoltage
 //=============================================================================
 
-void Status::updateVoltage (QString voltage)
-{
+void Status::updateVoltage (QString voltage) {
     if (!voltage.isEmpty() && DS()->isConnected())
         m_voltage->setText (QString ("%1 V").arg (voltage));
 
@@ -310,8 +297,7 @@ void Status::updateVoltage (QString voltage)
 // Status::toggleStatusColors
 //=============================================================================
 
-void Status::toggleStatusColors()
-{
+void Status::toggleStatusColors() {
     QPalette palette;
     QColor redColor = QColor (255, 8, 21);
 
@@ -335,8 +321,7 @@ void Status::toggleStatusColors()
 // Status::updateCodeStatus
 //=============================================================================
 
-void Status::updateCodeStatus (bool codeAvailable)
-{
+void Status::updateCodeStatus (bool codeAvailable) {
     m_comm->setChecked (DS()->isConnected());
     m_code->setChecked (codeAvailable);
 }
@@ -345,8 +330,7 @@ void Status::updateCodeStatus (bool codeAvailable)
 // Status::updateCommStatus
 //=============================================================================
 
-void Status::updateCommStatus (DS_CommStatus status)
-{
+void Status::updateCommStatus (DS_CommStatus status) {
     m_comm->setChecked (status != kFailing);
     m_comm->setStyleSheet (status != kPartial ? NORMAL_LED : CUSTM_LED);
 }

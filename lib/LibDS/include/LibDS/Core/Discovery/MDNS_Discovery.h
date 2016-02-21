@@ -36,27 +36,26 @@
  * allows us to get the IP of any mDNS device in the
  * local network.
  */
-class LIB_DS_DECL MDNS_Discovery : public QObject
-{
+class LIB_DS_DECL MDNS_Discovery : public QObject {
     Q_OBJECT
 
-public:
+  public:
     explicit MDNS_Discovery();
 
-public slots:
+  public slots:
     /**
      * Looks for the given \a host, the class will emit
      * the \c ipFound() \c SIGNAL when the domain is resolved
      */
     void query (QString host);
 
-signals:
+  signals:
     /**
      * Emitted when the \a ip of the \a address is resolved
      */
     void ipFound (QString address, QString ip);
 
-private slots:
+  private slots:
     /**
      * Interprets and decodes a response when one of our
      * sockets recieves data
@@ -81,7 +80,7 @@ private slots:
      */
     void addToCache (QString address, QString ip);
 
-private:
+  private:
     /**
      * Used to multicast data to the reserved IPv4 address
      */

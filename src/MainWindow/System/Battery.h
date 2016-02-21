@@ -23,9 +23,8 @@
 #ifndef _QDS_MW_BATTERY_H
 #define _QDS_MW_BATTERY_H
 
-class Battery
-{
-public:
+class Battery {
+  public:
     static int currentLevel();
     static bool isConenctedToPowerSupply();
 };

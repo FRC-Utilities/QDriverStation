@@ -37,11 +37,10 @@ class VirtualJoystick;
  * the rest of the application, such as when a joystick
  * axis event is triggered.
  */
-class JoystickManager : public QObject
-{
+class JoystickManager : public QObject {
     Q_OBJECT
 
-public:
+  public:
     explicit JoystickManager();
 
     /**
@@ -69,7 +68,7 @@ public:
      */
     VirtualJoystick* virtualJoystick();
 
-signals:
+  signals:
     /**
      * Emitted when an interface is added or removed
      */
@@ -93,7 +92,7 @@ signals:
      */
     void buttonEvent (QDS_ButtonEvent event);
 
-private slots:
+  private slots:
     /**
      * Removes/unregisters all interfaces from the system
      */
@@ -124,7 +123,7 @@ private slots:
      */
     void onButtonEvent (QDS_ButtonEvent event);
 
-private:
+  private:
     SDL_Joysticks* m_sdlJoysticks;
     QList<QDS_InputDevice> m_devices;
     VirtualJoystick* m_virtualJoystick;

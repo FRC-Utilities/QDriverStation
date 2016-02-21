@@ -38,11 +38,10 @@
  * Implements an abstract class to be used as a base for any protocol that
  * will be used to drive an FRC robot.
  */
-class LIB_DS_DECL DS_ProtocolBase : public QObject
-{
+class LIB_DS_DECL DS_ProtocolBase : public QObject {
     Q_OBJECT
 
-public:
+  public:
     explicit DS_ProtocolBase();
 
     /**
@@ -96,6 +95,11 @@ public:
     bool isEmergencyStopped() const;
 
     /**
+     * Returns the current battery voltage of the robot
+     */
+    float batteryVoltage() const;
+
+    /**
      * Returns the current alliance of the robot
      */
     DS_Alliance alliance() const;
@@ -144,8 +148,7 @@ public:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual int fmsFrequency()
-    {
+    virtual int fmsFrequency() {
         return 0;
     }
 
@@ -154,8 +157,7 @@ public:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual int robotFrequency()
-    {
+    virtual int robotFrequency() {
         return 0;
     }
 
@@ -164,8 +166,7 @@ public:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual int fmsInputPort()
-    {
+    virtual int fmsInputPort() {
         return DS_PROTOCOL_NO_PORT;
     }
 
@@ -174,8 +175,7 @@ public:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual int fmsOutputPort()
-    {
+    virtual int fmsOutputPort() {
         return DS_PROTOCOL_NO_PORT;
     }
 
@@ -184,8 +184,7 @@ public:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual int robotInputPort()
-    {
+    virtual int robotInputPort() {
         return DS_PROTOCOL_NO_PORT;
     }
 
@@ -194,8 +193,7 @@ public:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual int robotOutputPort()
-    {
+    virtual int robotOutputPort() {
         return DS_PROTOCOL_NO_PORT;
     }
 
@@ -204,8 +202,7 @@ public:
      * This is used to check if we can communicate with the robot controller
      * itself and obtain the 'partial' communication status
      */
-    virtual int tcpProbesPort()
-    {
+    virtual int tcpProbesPort() {
         return DS_PROTOCOL_NO_PORT;
     }
 
@@ -214,8 +211,7 @@ public:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual int netConsoleInputPort()
-    {
+    virtual int netConsoleInputPort() {
         return DS_PROTOCOL_NO_PORT;
     }
 
@@ -224,8 +220,7 @@ public:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual int netConsoleOutputPort()
-    {
+    virtual int netConsoleOutputPort() {
         return DS_PROTOCOL_NO_PORT;
     }
 
@@ -234,8 +229,7 @@ public:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual bool acceptsConsoleCommands()
-    {
+    virtual bool acceptsConsoleCommands() {
         return false;
     }
 
@@ -244,8 +238,7 @@ public:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual QStringList defaultRadioAddress()
-    {
+    virtual QStringList defaultRadioAddress() {
         return QStringList ("");
     }
 
@@ -254,12 +247,11 @@ public:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual QStringList defaultRobotAddress()
-    {
+    virtual QStringList defaultRobotAddress() {
         return QStringList ("");
     }
 
-public slots:
+  public slots:
     /**
      * Resets the internal values of the protocol and emits the appropiate
      * signals when the robot communication is lost.
@@ -333,7 +325,7 @@ public slots:
      */
     virtual void _onJoysticksChanged() {}
 
-signals:
+  signals:
     /**
      * Emitted when the protocol detects that the status of the
      * user code has changed
@@ -461,7 +453,7 @@ signals:
      */
     void packetReceived();
 
-protected slots:
+  protected slots:
     /**
      * Implements the necessary steps to reset the internal values of a protocol
      *
@@ -476,14 +468,13 @@ protected slots:
      */
     virtual void _getRobotInformation()  {}
 
-protected:
+  protected:
     /**
      * Interprets the received FMS \a data
      *
      * \note This function must be implemented by each protocol
      */
-    virtual bool _readFMSPacket (QByteArray data)
-    {
+    virtual bool _readFMSPacket (QByteArray data) {
         Q_UNUSED (data);
         return false;
     }
@@ -493,8 +484,7 @@ protected:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual bool _readRobotPacket (QByteArray data)
-    {
+    virtual bool _readRobotPacket (QByteArray data) {
         Q_UNUSED (data);
         return false;
     }
@@ -505,8 +495,7 @@ protected:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual QByteArray _getJoystickData()
-    {
+    virtual QByteArray _getJoystickData() {
         return QByteArray ("");
     }
 
@@ -516,8 +505,7 @@ protected:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual QByteArray _getTimezoneData()
-    {
+    virtual QByteArray _getTimezoneData() {
         return QByteArray ("");
     }
 
@@ -526,8 +514,7 @@ protected:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual QByteArray _getFmsPacket()
-    {
+    virtual QByteArray _getFmsPacket() {
         return QByteArray ("");
     }
 
@@ -536,8 +523,7 @@ protected:
      *
      * \note This function must be implemented by each protocol
      */
-    virtual QByteArray _getClientPacket()
-    {
+    virtual QByteArray _getClientPacket() {
         return QByteArray ("");
     }
 
@@ -572,7 +558,7 @@ protected:
      */
     void updateVoltage (int major, int minor);
 
-private:
+  private:
     /**
      * This is the team number, you may use it for a variety of purposes
      * This variable is changed with the \c setTeamNumber() function.
@@ -638,6 +624,11 @@ private:
     bool m_sendDateTime;
 
     /**
+     * Represents the battery voltage of the robot
+     */
+    float m_voltage;
+
+    /**
      * The IP address of the robot, calculate it with the \c QHostInfo class
      */
     QString m_robotIp;
@@ -692,7 +683,7 @@ private:
      */
     QTcpSocket m_radioPing;
 
-private slots:
+  private slots:
     /**
      * Pings the robot using a TCP socket
      */
@@ -702,6 +693,11 @@ private slots:
      * Pings the radio using a TCP socket
      */
     void pingRadio();
+
+    /**
+     * Tells the user to be patient
+     */
+    void showInfoMsg();
 
     /**
      * Tells the client to stop sending E-Stop packets after

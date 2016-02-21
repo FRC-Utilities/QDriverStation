@@ -178,8 +178,7 @@ extern DECLSPEC void SDLCALL SDL_MemoryBarrierAcquire();
  * \brief A type representing an atomic integer value.  It is a struct
  *        so people don't accidentally use numeric operations on it.
  */
-typedef struct
-{
+typedef struct {
     int value;
 } SDL_atomic_t;
 

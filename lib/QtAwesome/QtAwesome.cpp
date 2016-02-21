@@ -17,12 +17,10 @@
 
 
 /// The font-awesome icon painter
-class QtAwesomeCharIconPainter: public QtAwesomeIconPainter
-{
-public:
+class QtAwesomeCharIconPainter: public QtAwesomeIconPainter {
+  public:
     virtual void paint ( QtAwesome* awesome, QPainter* painter, const QRect& rect,
-                         QIcon::Mode mode, QIcon::State state, const QVariantMap& options  )
-    {
+                         QIcon::Mode mode, QIcon::State state, const QVariantMap& options  ) {
         Q_UNUSED (mode);
         Q_UNUSED (state);
         Q_UNUSED (options);
@@ -39,27 +37,22 @@ public:
         QColor color = options.value ("color").value<QColor>();
         QString text = options.value ("text").toString();
 
-        if ( mode == QIcon::Disabled )
-            {
-                color = options.value ("color-disabled").value<QColor>();
-                QVariant alt = options.value ("text-disabled");
-                if ( alt.isValid() )
-                    text = alt.toString();
-            }
-        else if ( mode == QIcon::Active )
-            {
-                color = options.value ("color-active").value<QColor>();
-                QVariant alt = options.value ("text-active");
-                if ( alt.isValid() )
-                    text = alt.toString();
-            }
-        else if ( mode == QIcon::Selected )
-            {
-                color = options.value ("color-selected").value<QColor>();
-                QVariant alt = options.value ("text-selected");
-                if ( alt.isValid() )
-                    text = alt.toString();
-            }
+        if ( mode == QIcon::Disabled ) {
+            color = options.value ("color-disabled").value<QColor>();
+            QVariant alt = options.value ("text-disabled");
+            if ( alt.isValid() )
+                text = alt.toString();
+        } else if ( mode == QIcon::Active ) {
+            color = options.value ("color-active").value<QColor>();
+            QVariant alt = options.value ("text-active");
+            if ( alt.isValid() )
+                text = alt.toString();
+        } else if ( mode == QIcon::Selected ) {
+            color = options.value ("color-selected").value<QColor>();
+            QVariant alt = options.value ("text-selected");
+            if ( alt.isValid() )
+                text = alt.toString();
+        }
         painter->setPen (color);
 
         // add some 'padding' around the icon
@@ -79,38 +72,33 @@ public:
 
 
 /// The painter icon engine.
-class QtAwesomeIconPainterIconEngine : public QIconEngine
-{
+class QtAwesomeIconPainterIconEngine : public QIconEngine {
 
-public:
+  public:
 
     QtAwesomeIconPainterIconEngine ( QtAwesome* awesome,
                                      QtAwesomeIconPainter* painter, const QVariantMap& options  )
         : awesomeRef_ (awesome)
         , iconPainterRef_ (painter)
-        , options_ (options)
-    {
+        , options_ (options) {
     }
 
     virtual ~QtAwesomeIconPainterIconEngine() {}
 
-    QtAwesomeIconPainterIconEngine* clone() const
-    {
+    QtAwesomeIconPainterIconEngine* clone() const {
         return new QtAwesomeIconPainterIconEngine ( awesomeRef_, iconPainterRef_,
                 options_ );
     }
 
     virtual void paint (QPainter* painter, const QRect& rect, QIcon::Mode mode,
-                        QIcon::State state)
-    {
+                        QIcon::State state) {
         Q_UNUSED ( mode );
         Q_UNUSED ( state );
         iconPainterRef_->paint ( awesomeRef_, painter, rect, mode, state, options_ );
     }
 
     virtual QPixmap pixmap (const QSize& size, QIcon::Mode mode,
-                            QIcon::State state)
-    {
+                            QIcon::State state) {
         QPixmap pm (size);
         pm.fill ( Qt::transparent ); // we need transparency
         {
@@ -120,7 +108,7 @@ public:
         return pm;
     }
 
-private:
+  private:
 
     QtAwesome*
     awesomeRef_;                  ///< a reference to the QtAwesome instance
@@ -134,8 +122,7 @@ private:
 /// The default icon colors
 QtAwesome::QtAwesome ( QObject* parent )
     : QObject ( parent )
-    , namedCodepoints_()
-{
+    , namedCodepoints_() {
     // initialize the default options
     setDefaultOption ( "color", QColor (50, 50, 50) );
     setDefaultOption ( "color-disabled", QColor (70, 70, 70, 60));
@@ -153,16 +140,14 @@ QtAwesome::QtAwesome ( QObject* parent )
 }
 
 
-QtAwesome::~QtAwesome()
-{
+QtAwesome::~QtAwesome() {
     delete fontIconPainter_;
 //    delete errorIconPainter_;
     qDeleteAll (painterMap_);
 }
 
 /// initializes the QtAwesome icon factory with the given fontname
-void QtAwesome::init (const QString& fontname)
-{
+void QtAwesome::init (const QString& fontname) {
     fontName_ = fontname;
 }
 
@@ -170,46 +155,42 @@ void QtAwesome::init (const QString& fontname)
 /// a specialized init function so font-awesome is loaded and initialized
 /// this method return true on success, it will return false if the fnot cannot be initialized
 /// To initialize QtAwesome with font-awesome you need to call this method
-bool QtAwesome::initFontAwesome( )
-{
+bool QtAwesome::initFontAwesome( ) {
     static int fontAwesomeFontId = -1;
 
     // only load font-awesome once
-    if ( fontAwesomeFontId < 0 )
-        {
+    if ( fontAwesomeFontId < 0 ) {
 
-            // The macro below internally calls "qInitResources_QtAwesome()". this initializes
-            // the resource system. For a .pri project this isn't required, but when building and using a
-            // static library the resource need to initialized first.
-            ///
-            // I've checked th qInitResource_* code and calling this method mutliple times shouldn't be any problem
-            // (More info about this subject:  http://qt-project.org/wiki/QtResources)
-            Q_INIT_RESOURCE (QtAwesome);
+        // The macro below internally calls "qInitResources_QtAwesome()". this initializes
+        // the resource system. For a .pri project this isn't required, but when building and using a
+        // static library the resource need to initialized first.
+        ///
+        // I've checked th qInitResource_* code and calling this method mutliple times shouldn't be any problem
+        // (More info about this subject:  http://qt-project.org/wiki/QtResources)
+        Q_INIT_RESOURCE (QtAwesome);
 
-            // load the font file
-            QFile res (":/fonts/fontawesome-4.5.0.otf");
-            if (!res.open (QIODevice::ReadOnly))
-                {
-                    qDebug() << "Font awesome font could not be loaded!";
-                    return false;
-                }
-            QByteArray fontData ( res.readAll() );
-            res.close();
-
-            // fetch the given font
-            fontAwesomeFontId = QFontDatabase::addApplicationFontFromData (fontData);
+        // load the font file
+        QFile res (":/fonts/fontawesome-4.5.0.otf");
+        if (!res.open (QIODevice::ReadOnly)) {
+            qDebug() << "Font awesome font could not be loaded!";
+            return false;
         }
+        QByteArray fontData ( res.readAll() );
+        res.close();
+
+        // fetch the given font
+        fontAwesomeFontId = QFontDatabase::addApplicationFontFromData (fontData);
+    }
 
     QStringList loadedFontFamilies = QFontDatabase::applicationFontFamilies (
                                          fontAwesomeFontId);
     if ( !loadedFontFamilies.empty() )
         fontName_ = loadedFontFamilies.at (0);
-    else
-        {
-            qDebug() << "Font awesome font is empty?!";
-            fontAwesomeFontId = -1; // restore the font-awesome id
-            return false;
-        }
+    else {
+        qDebug() << "Font awesome font is empty?!";
+        fontAwesomeFontId = -1; // restore the font-awesome id
+        return false;
+    }
 
     // intialize the map
     QHash<QString, int>& m = namedCodepoints_;
@@ -891,40 +872,34 @@ bool QtAwesome::initFontAwesome( )
     return true;
 }
 
-void QtAwesome::addNamedCodepoint ( const QString& name, int codePoint)
-{
+void QtAwesome::addNamedCodepoint ( const QString& name, int codePoint) {
     namedCodepoints_.insert ( name, codePoint);
 }
 
 
 /// Sets a default option. These options are passed on to the icon painters
-void QtAwesome::setDefaultOption (const QString& name, const QVariant& value)
-{
+void QtAwesome::setDefaultOption (const QString& name, const QVariant& value) {
     defaultOptions_.insert ( name, value );
 }
 
 
 /// Returns the default option for the given name
-QVariant QtAwesome::defaultOption (const QString& name)
-{
+QVariant QtAwesome::defaultOption (const QString& name) {
     return defaultOptions_.value ( name );
 }
 
 
 // internal helper method to merge to option amps
 static QVariantMap mergeOptions ( const QVariantMap& defaults,
-                                  const QVariantMap& override )
-{
+                                  const QVariantMap& override ) {
     QVariantMap result = defaults;
-    if ( !override.isEmpty() )
-        {
-            QMapIterator<QString, QVariant> itr (override);
-            while ( itr.hasNext() )
-                {
-                    itr.next();
-                    result.insert ( itr.key(), itr.value() );
-                }
+    if ( !override.isEmpty() ) {
+        QMapIterator<QString, QVariant> itr (override);
+        while ( itr.hasNext() ) {
+            itr.next();
+            result.insert ( itr.key(), itr.value() );
         }
+    }
     return result;
 }
 
@@ -933,8 +908,7 @@ static QVariantMap mergeOptions ( const QVariantMap& defaults,
 /// <code>
 ///     awesome->icon( icon_group )
 /// </code>
-QIcon QtAwesome::icon (int character, const QVariantMap& options)
-{
+QIcon QtAwesome::icon (int character, const QVariantMap& options) {
     // create a merged QVariantMap to have default options and icon-specific options
     QVariantMap optionMap = mergeOptions ( defaultOptions_, options );
     optionMap.insert ("text", QString ( QChar (static_cast<int> (character)) ) );
@@ -949,8 +923,7 @@ QIcon QtAwesome::icon (int character, const QVariantMap& options)
 /// You can use the icon names as defined on http://fortawesome.github.io/Font-Awesome/design.html  withour the 'icon-' prefix
 /// @param name the name of the icon
 /// @param options extra option to pass to the icon renderer
-QIcon QtAwesome::icon (const QString& name, const QVariantMap& options)
-{
+QIcon QtAwesome::icon (const QString& name, const QVariantMap& options) {
     // when it's a named codepoint
     if ( namedCodepoints_.count (name) )
         return icon ( namedCodepoints_.value (name), options );
@@ -972,8 +945,7 @@ QIcon QtAwesome::icon (const QString& name, const QVariantMap& options)
 /// @param painter a dynamic painter that is going to paint the icon
 /// @param optionmap the options to pass to the painter
 QIcon QtAwesome::icon (QtAwesomeIconPainter* painter,
-                       const QVariantMap& optionMap )
-{
+                       const QVariantMap& optionMap ) {
     // Warning, when you use memoryleak detection. You should turn it of for the next call
     // QIcon's placed in gui items are often cached and not deleted when my memory-leak detection checks for leaks.
     // I'm not sure if it's a Qt bug or something I do wrong
@@ -987,8 +959,7 @@ QIcon QtAwesome::icon (QtAwesomeIconPainter* painter,
 ///
 /// @param name the name of the icon
 /// @param painter the icon painter to add for this name
-void QtAwesome::give (const QString& name, QtAwesomeIconPainter* painter)
-{
+void QtAwesome::give (const QString& name, QtAwesomeIconPainter* painter) {
     delete painterMap_.value ( name );  // delete the old one
     painterMap_.insert ( name, painter );
 }
@@ -998,8 +969,7 @@ void QtAwesome::give (const QString& name, QtAwesomeIconPainter* painter)
 ///
 ///    QLabel* label = new QLabel( QChar( icon_group ) );
 ///    label->setFont( awesome->font(16) )
-QFont QtAwesome::font ( int size )
-{
+QFont QtAwesome::font ( int size ) {
     QFont font ( fontName_);
     font.setPixelSize (size);
     return font;

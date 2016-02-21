@@ -42,8 +42,7 @@
 // About::About
 //=============================================================================
 
-About::About (QWidget* parent) : QWidget (parent)
-{
+About::About (QWidget* parent) : QWidget (parent) {
     m_buttonContainer   = new QWidget     (this);
     m_appIcon           = new QLabel      (this);
     m_site              = new QPushButton (tr ("Visit Website"), this);
@@ -84,8 +83,7 @@ About::About (QWidget* parent) : QWidget (parent)
 // About::~About
 //=============================================================================
 
-About::~About()
-{
+About::~About() {
     DS_LogMessage (kInfoLevel, "MainWindow: About widget destroyed");
 }
 
@@ -93,8 +91,7 @@ About::~About()
 // About::reportBug
 //=============================================================================
 
-void About::reportBug()
-{
+void About::reportBug() {
     QDesktopServices::openUrl (
         QUrl ("https://github.com/wint-3794/qdriverstation/issues"));
 }
@@ -103,7 +100,6 @@ void About::reportBug()
 // About::openWebsite
 //=============================================================================
 
-void About::openWebsite()
-{
+void About::openWebsite() {
     QDesktopServices::openUrl (QUrl ("http://qdriverstation.sf.net"));
 }

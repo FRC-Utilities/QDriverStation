@@ -40,20 +40,20 @@
  * The corrective actions typically include placing the computer system in a
  * safe state and restoring normal system operation.
  */
-class LIB_DS_DECL DS_Watchdog : public QObject
-{
+class LIB_DS_DECL DS_Watchdog : public QObject {
     Q_OBJECT
 
-public:
+  public:
     explicit DS_Watchdog();
 
-public slots:
+  public slots:
     void restart();
+    void setTimeout (int time);
 
-signals:
+  signals:
     void timeout();
 
-private:
+  private:
     QTimer m_timer;
 };
 

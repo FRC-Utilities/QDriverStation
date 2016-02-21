@@ -113,8 +113,7 @@
  */
 /* @{ */
 
-typedef enum
-{
+typedef enum {
     SDL_FALSE = 0,
     SDL_TRUE = 1
 } SDL_bool;
@@ -181,8 +180,7 @@ SDL_COMPILE_TIME_ASSERT (sint64, sizeof (Sint64) == 8);
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS
 #if !defined(__ANDROID__)
 /* TODO: include/SDL_stdinc.h:174: error: size of array 'SDL_dummy_enum' is negative */
-typedef enum
-{
+typedef enum {
     DUMMY_ENUM_VALUE
 } SDL_DUMMY_ENUM;
 
@@ -257,8 +255,7 @@ extern DECLSPEC void* SDLCALL SDL_memset (void* dst, int c, size_t len);
 #define SDL_zerop(x) SDL_memset((x), 0, sizeof(*(x)))
 
 /* Note that memset() is a byte assignment and this is a 32-bit assignment, so they're not directly equivalent. */
-SDL_FORCE_INLINE void SDL_memset4 (void* dst, Uint32 val, size_t dwords)
-{
+SDL_FORCE_INLINE void SDL_memset4 (void* dst, Uint32 val, size_t dwords) {
 #if defined(__GNUC__) && defined(i386)
     int u0, u1, u2;
     __asm__ __volatile__ (
@@ -274,21 +271,18 @@ SDL_FORCE_INLINE void SDL_memset4 (void* dst, Uint32 val, size_t dwords)
     Uint32 _val = (val);
     if (dwords == 0)
         return;
-    switch (dwords % 4)
-        {
-        case 0:
-            do
-                {
-                    *_p++ = _val;
-                case 3:
-                    *_p++ = _val;
-                case 2:
-                    *_p++ = _val;
-                case 1:
-                    *_p++ = _val;
-                }
-            while ( --_n );
-        }
+    switch (dwords % 4) {
+    case 0:
+        do {
+            *_p++ = _val;
+        case 3:
+            *_p++ = _val;
+        case 2:
+            *_p++ = _val;
+        case 1:
+            *_p++ = _val;
+        } while ( --_n );
+    }
 #endif
 }
 
@@ -296,8 +290,7 @@ SDL_FORCE_INLINE void SDL_memset4 (void* dst, Uint32 val, size_t dwords)
 extern DECLSPEC void* SDLCALL SDL_memcpy (void* dst, const void* src,
         size_t len);
 
-SDL_FORCE_INLINE void* SDL_memcpy4 (void* dst, const void* src, size_t dwords)
-{
+SDL_FORCE_INLINE void* SDL_memcpy4 (void* dst, const void* src, size_t dwords) {
     return SDL_memcpy (dst, src, dwords * 4);
 }
 

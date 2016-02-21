@@ -32,8 +32,7 @@
 // RightTab::RightTab
 //=============================================================================
 
-RightTab::RightTab (QWidget* parent) : QTabWidget (parent)
-{
+RightTab::RightTab (QWidget* parent) : QTabWidget (parent) {
     m_about    = new About       (this);
     m_messages = new Messages    (this);
     m_metrics  = new CAN_Metrics (this);
@@ -53,7 +52,6 @@ RightTab::RightTab (QWidget* parent) : QTabWidget (parent)
 // RightTab::~RightTab
 //=============================================================================
 
-RightTab::~RightTab()
-{
+RightTab::~RightTab() {
     DS_LogMessage (kInfoLevel, "MainWindow: RightTab widget destroyed");
 }

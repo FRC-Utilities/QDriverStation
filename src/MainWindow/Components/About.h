@@ -30,19 +30,18 @@ class QPushButton;
 class QVBoxLayout;
 class QHBoxLayout;
 
-class About : public QWidget
-{
+class About : public QWidget {
     Q_OBJECT
 
-public:
+  public:
     explicit About (QWidget* parent);
     ~About();
 
-private slots:
+  private slots:
     void reportBug();
     void openWebsite();
 
-private:
+  private:
     QLabel* m_appIcon;
     QLabel* m_version;
 

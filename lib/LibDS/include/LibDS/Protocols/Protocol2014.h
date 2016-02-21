@@ -31,11 +31,11 @@
  * \note  the virtual functions are already documented in the
  *        \c DS_ProtocolBase class
  */
-class LIB_DS_DECL DS_Protocol2014 : public DS_ProtocolBase
-{
+class LIB_DS_DECL DS_Protocol2014 : public DS_ProtocolBase {
     Q_OBJECT
 
-public:
+  public:
+    explicit DS_Protocol2014();
     virtual int fmsFrequency();
     virtual int robotFrequency();
 
@@ -53,21 +53,23 @@ public:
     virtual QStringList defaultRadioAddress();
     virtual QStringList defaultRobotAddress();
 
-public slots:
+  public slots:
     virtual void reboot();
     virtual void restartCode();
 
-private slots:
+  private slots:
     virtual void _resetProtocol();
 
-private:
+  private:
     virtual bool _readFMSPacket (QByteArray data);
     virtual bool _readRobotPacket (QByteArray data);
 
     virtual QByteArray _getFmsPacket();
     virtual QByteArray _getClientPacket();
     virtual QByteArray _getJoystickData();
-    virtual QByteArray _getTimezoneData();
+
+    QString m_dsVersion;
+    QString m_robotMacAddress;
 };
 
 #endif

@@ -32,18 +32,17 @@ class RightTab;
 class QHBoxLayout;
 class QVBoxLayout;
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
-public:
+  public:
     explicit MainWindow();
 
-protected:
+  protected:
     void moveEvent (QMoveEvent* event);
     void closeEvent (QCloseEvent* event);
 
-private slots:
+  private slots:
     void quitSound();
     void showDocked();
     void showUnDocked();
@@ -52,7 +51,7 @@ private slots:
 
     void updateSize();
 
-private:
+  private:
     bool m_docked;
     bool m_closing;
 

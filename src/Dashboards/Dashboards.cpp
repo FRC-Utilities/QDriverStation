@@ -65,8 +65,7 @@
 // Dashboard::Dashboard
 //=============================================================================
 
-Dashboards::Dashboards()
-{
+Dashboards::Dashboards() {
     connect (qApp, &QApplication::aboutToQuit,
              this, &Dashboards::closeDashboard);
     openDashboard();
@@ -76,8 +75,7 @@ Dashboards::Dashboards()
 // Dashboard::getInstance
 //=============================================================================
 
-Dashboards* Dashboards::getInstance()
-{
+Dashboards* Dashboards::getInstance() {
     static Dashboards instance;
     return &instance;
 }
@@ -86,8 +84,7 @@ Dashboards* Dashboards::getInstance()
 // Dashboard::currentDashboard
 //=============================================================================
 
-Dashboards::DashboardTypes Dashboards::currentDashboard()
-{
+Dashboards::DashboardTypes Dashboards::currentDashboard() {
     return m_current;
 }
 
@@ -95,8 +92,7 @@ Dashboards::DashboardTypes Dashboards::currentDashboard()
 // Dashboard::dashboardList
 //=============================================================================
 
-QStringList Dashboards::dashboardList()
-{
+QStringList Dashboards::dashboardList() {
     QStringList list;
     list.append (tr ("None"));
     list.append (tr ("SFX Dashboard"));
@@ -113,8 +109,7 @@ QStringList Dashboards::dashboardList()
 // Dashboard::openDashboard
 //=============================================================================
 
-void Dashboards::openDashboard()
-{
+void Dashboards::openDashboard() {
     QString path;
     m_current = (DashboardTypes) Settings::get ("Dashboard", kNone).toInt();
 
@@ -122,18 +117,16 @@ void Dashboards::openDashboard()
                    + QString::number (m_current));
 
     /* Open the SFX Dashboard */
-    if (m_current == kSFXDashboard)
-        {
-            path = QString ("%1 \"%2/wpilib/tools/sfx.jar\"")
-                   .arg (JAVA_OPEN , QDir::homePath());
-        }
+    if (m_current == kSFXDashboard) {
+        path = QString ("%1 \"%2/wpilib/tools/sfx.jar\"")
+               .arg (JAVA_OPEN , QDir::homePath());
+    }
 
     /* Open the SmartDashboard */
-    else if (m_current == kSmartDashboard)
-        {
-            path = QString ("%1 \"%2/wpilib/tools/SmartDashboard.jar\"")
-                   .arg (JAVA_OPEN , QDir::homePath());
-        }
+    else if (m_current == kSmartDashboard) {
+        path = QString ("%1 \"%2/wpilib/tools/SmartDashboard.jar\"")
+               .arg (JAVA_OPEN , QDir::homePath());
+    }
 
     /* Open the LabVIEW Dashboard */
 #if defined Q_OS_WIN
@@ -148,8 +141,7 @@ void Dashboards::openDashboard()
 // Dashboard::closeDashboard
 //=============================================================================
 
-void Dashboards::closeDashboard()
-{
+void Dashboards::closeDashboard() {
     m_process.close();
     DS_LogMessage (kInfoLevel, "Dashboards: Closing current dashboard...");
 }
@@ -158,8 +150,7 @@ void Dashboards::closeDashboard()
 // Dashboard::reloadDashboard
 //=============================================================================
 
-void Dashboards::reloadDashboard()
-{
+void Dashboards::reloadDashboard() {
     closeDashboard();
     openDashboard();
 }

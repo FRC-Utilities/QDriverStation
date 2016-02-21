@@ -40,8 +40,7 @@
 /**
  * Represents the available operation modes of the robot.
  */
-typedef enum
-{
+typedef enum {
     kControlTest         =  1, /**< Individual actuators can be moved */
     kControlAutonomous   =  2, /**< Robot takes over the world */
     kControlTeleoperated =  3, /**< User moves the robot */
@@ -53,8 +52,7 @@ typedef enum
  * Its important to specify which alliance we use in order to tell
  * the robot program 'where it is' and communicate with the FMS correctly
  */
-typedef enum
-{
+typedef enum {
     kAllianceRed1  = 0,  /** Red alliance, position 1 */
     kAllianceRed2  = 1,  /** Red alliance, position 2 */
     kAllianceRed3  = 2,  /** Red alliance, position 3 */
@@ -66,8 +64,7 @@ typedef enum
 /**
  * Represents the current status of the communications
  */
-typedef enum
-{
+typedef enum {
     kFull    = 0, /** The DS is communicating with the robot */
     kPartial = 1, /** The robot responds ping requests, but does not respond to DS */
     kFailing = 2, /** The robot does not respond to ping requests */
@@ -76,8 +73,7 @@ typedef enum
 /**
  * Used for the library's logger function
  */
-typedef enum
-{
+typedef enum {
     kLibLevel      = 0, /** Look! A plane */
     kInfoLevel     = 1, /** I am dangerous, I like it */
     kWarnLevel     = 2, /** Watch the birdie */
@@ -89,8 +85,7 @@ typedef enum
 /**
  * Represents a joystick in the DS
  */
-typedef struct
-{
+typedef struct {
     QString name;
 
     int numAxes;
@@ -105,8 +100,7 @@ typedef struct
 /**
  * Represents a rumble request event
  */
-typedef struct
-{
+typedef struct {
     int joystickID;
     bool leftRumble;
     bool rightRumble;
@@ -115,8 +109,7 @@ typedef struct
 /**
  * Represents a set of CAN information
  */
-typedef struct
-{
+typedef struct {
     quint8 util;
     quint8 busOff;
     quint8 txFull;

@@ -31,18 +31,17 @@ class QPushButton;
 class QVBoxLayout;
 class QGridLayout;
 
-class Status : public QWidget
-{
+class Status : public QWidget {
     Q_OBJECT
 
-public:
+  public:
     explicit Status (QWidget* parent);
     ~Status();
 
-public slots:
+  public slots:
     void doErrorAnimation();
 
-private slots:
+  private slots:
     void createWidgets();
     void createLayouts();
     void configureStyles();
@@ -58,7 +57,7 @@ private slots:
 
     void toggleStatusColors();
 
-private:
+  private:
     bool m_estop;
 
     QLabel* m_team;

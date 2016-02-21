@@ -38,8 +38,7 @@
 // CAN_Metrics::CAN_Metrics
 //=============================================================================
 
-CAN_Metrics::CAN_Metrics (QWidget* parent) : QWidget (parent)
-{
+CAN_Metrics::CAN_Metrics (QWidget* parent) : QWidget (parent) {
     createWidgets();
     createLayouts();
 
@@ -53,8 +52,7 @@ CAN_Metrics::CAN_Metrics (QWidget* parent) : QWidget (parent)
 // CAN_Metrics::~CAN_Metrics
 //=============================================================================
 
-CAN_Metrics::~CAN_Metrics()
-{
+CAN_Metrics::~CAN_Metrics() {
     DS_LogMessage (kInfoLevel, "MainWindow: CAN Metrics widget destroyed");
 }
 
@@ -62,8 +60,7 @@ CAN_Metrics::~CAN_Metrics()
 // CAN_Metrics::createWidgets
 //=============================================================================
 
-void CAN_Metrics::createWidgets()
-{
+void CAN_Metrics::createWidgets() {
     m_util          = new QLabel ("0", this);
     m_busOff        = new QLabel ("0", this);
     m_txFull        = new QLabel ("0", this);
@@ -82,8 +79,7 @@ void CAN_Metrics::createWidgets()
 // CAN_Metrics::createLayouts
 //=============================================================================
 
-void CAN_Metrics::createLayouts()
-{
+void CAN_Metrics::createLayouts() {
     m_layout = new QGridLayout    (this);
     m_layout->setSpacing          (DPI_SCALE (5));
     m_layout->addWidget           (m_titleLabel,    0, 0);
@@ -120,8 +116,7 @@ void CAN_Metrics::createLayouts()
 // CAN_Metrics::onMetricsReceived
 //=============================================================================
 
-void CAN_Metrics::onMetricsReceived (DS_CAN can)
-{
+void CAN_Metrics::onMetricsReceived (DS_CAN can) {
     m_util->setText     (QString::number (can.util));
     m_busOff->setText   (QString::number (can.busOff));
     m_txFull->setText   (QString::number (can.txFull));

@@ -30,23 +30,22 @@ class Joysticks;
 class Diagnostics;
 class Preferences;
 
-class LeftTab : public QTabWidget
-{
+class LeftTab : public QTabWidget {
     Q_OBJECT
 
-public:
+  public:
     explicit LeftTab (QWidget* parent);
     ~LeftTab();
 
-signals:
+  signals:
     void showDocked();
     void showUnDocked();
     void requestErrorAnimation();
 
-private slots:
+  private slots:
     void resizeToMinimum();
 
-private:
+  private:
     Operator* m_operator;
     Joysticks* m_joysticks;
     Diagnostics* m_diagnostics;

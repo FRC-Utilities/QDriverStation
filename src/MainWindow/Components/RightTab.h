@@ -29,13 +29,12 @@ class About;
 class Messages;
 class CAN_Metrics;
 
-class RightTab : public QTabWidget
-{
-public:
+class RightTab : public QTabWidget {
+  public:
     explicit RightTab (QWidget* parent);
     ~RightTab();
 
-private:
+  private:
     About* m_about;
     Messages* m_messages;
     CAN_Metrics* m_metrics;

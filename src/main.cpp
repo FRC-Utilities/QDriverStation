@@ -50,8 +50,7 @@
 // Called when a widget is clicked
 //=============================================================================
 
-void BEEP()
-{
+void BEEP() {
     BEEPER()->beep (440, 100);
 }
 
@@ -61,54 +60,51 @@ void BEEP()
 
 void messageHandler (QtMsgType type,
                      const QMessageLogContext& context,
-                     const QString& msg)
-{
+                     const QString& msg) {
     QByteArray localMsg = msg.toLocal8Bit();
 
-    switch (type)
-        {
-        case QtDebugMsg:
-            fprintf (stderr,
-                     "DEBUG: %s (%s:%u, %s)\n",
-                     localMsg.constData(),
-                     context.file,
-                     context.line,
-                     context.function);
-            break;
-        case QtWarningMsg:
-            break;
-        case QtCriticalMsg:
-            fprintf (stderr,
-                     "CRITICAL: %s (%s:%u, %s)\n",
-                     localMsg.constData(),
-                     context.file,
-                     context.line,
-                     context.function);
-        case QtFatalMsg:
-            fprintf (stderr,
-                     "FATAL: %s (%s:%u, %s)\n",
-                     localMsg.constData(),
-                     context.file,
-                     context.line,
-                     context.function);
-            break;
-        default:
-            fprintf (stderr,
-                     "INFO: %s (%s:%u, %s)\n",
-                     localMsg.constData(),
-                     context.file,
-                     context.line,
-                     context.function);
-            break;
-        }
+    switch (type) {
+    case QtDebugMsg:
+        fprintf (stderr,
+                 "DEBUG: %s (%s:%u, %s)\n",
+                 localMsg.constData(),
+                 context.file,
+                 context.line,
+                 context.function);
+        break;
+    case QtWarningMsg:
+        break;
+    case QtCriticalMsg:
+        fprintf (stderr,
+                 "CRITICAL: %s (%s:%u, %s)\n",
+                 localMsg.constData(),
+                 context.file,
+                 context.line,
+                 context.function);
+    case QtFatalMsg:
+        fprintf (stderr,
+                 "FATAL: %s (%s:%u, %s)\n",
+                 localMsg.constData(),
+                 context.file,
+                 context.line,
+                 context.function);
+        break;
+    default:
+        fprintf (stderr,
+                 "INFO: %s (%s:%u, %s)\n",
+                 localMsg.constData(),
+                 context.file,
+                 context.line,
+                 context.function);
+        break;
+    }
 }
 
 //=============================================================================
 // Main entry-point of the application
 //=============================================================================
 
-int main (int argc, char* argv[])
-{
+int main (int argc, char* argv[]) {
     qInstallMessageHandler (messageHandler);
     DS_LogMessage (kInfoLevel, "Starting application....");
 
@@ -135,52 +131,50 @@ int main (int argc, char* argv[])
     Q_UNUSED (mainwindow);
 
     /* Beep whenever a button or checkbox is clicked */
-    foreach (QWidget* widget, app.allWidgets())
-        {
-            /* Do the conversions */
-            QSpinBox*    spin   = qobject_cast<QSpinBox*> (widget);
-            QCheckBox*   check  = qobject_cast<QCheckBox*> (widget);
-            QComboBox*   combo  = qobject_cast<QComboBox*> (widget);
-            QTabWidget*  tabwid = qobject_cast<QTabWidget*> (widget);
-            QPushButton* button = qobject_cast<QPushButton*> (widget);
+    foreach (QWidget* widget, app.allWidgets()) {
+        /* Do the conversions */
+        QSpinBox*    spin   = qobject_cast<QSpinBox*> (widget);
+        QCheckBox*   check  = qobject_cast<QCheckBox*> (widget);
+        QComboBox*   combo  = qobject_cast<QComboBox*> (widget);
+        QTabWidget*  tabwid = qobject_cast<QTabWidget*> (widget);
+        QPushButton* button = qobject_cast<QPushButton*> (widget);
 
-            /* The widget is a spin box */
-            if (spin != Q_NULLPTR)
-                QObject::connect (spin,
-                                  static_cast<void (QSpinBox::*) (int)
-                                  > (&QSpinBox::valueChanged),
-                                  BEEP);
+        /* The widget is a spin box */
+        if (spin != Q_NULLPTR)
+            QObject::connect (spin,
+                              static_cast<void (QSpinBox::*) (int)
+                              > (&QSpinBox::valueChanged),
+                              BEEP);
 
-            /* The widget is a combo box */
-            else if (combo != Q_NULLPTR)
-                QObject::connect (combo,
-                                  static_cast<void (QComboBox::*) (int)
-                                  > (&QComboBox::currentIndexChanged),
-                                  BEEP);
+        /* The widget is a combo box */
+        else if (combo != Q_NULLPTR)
+            QObject::connect (combo,
+                              static_cast<void (QComboBox::*) (int)
+                              > (&QComboBox::currentIndexChanged),
+                              BEEP);
 
-            /* The widget is a check box */
-            else if (check != Q_NULLPTR)
-                QObject::connect (check, &QCheckBox::clicked, BEEP);
+        /* The widget is a check box */
+        else if (check != Q_NULLPTR)
+            QObject::connect (check, &QCheckBox::clicked, BEEP);
 
-            /* The widget is a tab widget */
-            else if (tabwid != Q_NULLPTR)
-                QObject::connect (tabwid, &QTabWidget::currentChanged, BEEP);
+        /* The widget is a tab widget */
+        else if (tabwid != Q_NULLPTR)
+            QObject::connect (tabwid, &QTabWidget::currentChanged, BEEP);
 
-            /* The widget is a button */
-            else if (button != Q_NULLPTR)
-                QObject::connect (button, &QPushButton::clicked, BEEP);
-        }
+        /* The widget is a button */
+        else if (button != Q_NULLPTR)
+            QObject::connect (button, &QPushButton::clicked, BEEP);
+    }
 
     /* Ask for team number on first launch */
-    if (Settings::get ("First launch", true).toBool())
-        {
-            DS()->setTeamNumber (QInputDialog::getInt (Q_NULLPTR,
-                                 QObject::tr ("QDriverStation"),
-                                 QObject::tr ("Please input your team number:"),
-                                 0, 0, 9999, 1, 0,
-                                 Qt::WindowStaysOnTopHint));
-            Settings::set ("First launch", false);
-        }
+    if (Settings::get ("First launch", true).toBool()) {
+        DS()->setTeamNumber (QInputDialog::getInt (Q_NULLPTR,
+                             QObject::tr ("QDriverStation"),
+                             QObject::tr ("Please input your team number:"),
+                             0, 0, 9999, 1, 0,
+                             Qt::WindowStaysOnTopHint));
+        Settings::set ("First launch", false);
+    }
 
     return app.exec();
 }

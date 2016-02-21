@@ -25,11 +25,9 @@
 
 #include <QString>
 
-class AppTheme
-{
-public:
-    typedef struct
-    {
+class AppTheme {
+  public:
+    typedef struct {
         QString base;
         QString highlight;
         QString background;

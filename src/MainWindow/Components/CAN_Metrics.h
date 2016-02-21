@@ -29,20 +29,19 @@
 class QLabel;
 class QGridLayout;
 
-class CAN_Metrics : public QWidget
-{
+class CAN_Metrics : public QWidget {
     Q_OBJECT
 
-public:
+  public:
     explicit CAN_Metrics (QWidget* parent);
     ~CAN_Metrics();
 
-private slots:
+  private slots:
     void createWidgets();
     void createLayouts();
     void onMetricsReceived (DS_CAN can);
 
-private:
+  private:
     QLabel* m_titleLabel;
     QLabel* m_utilLabel;
     QLabel* m_busOffLabel;

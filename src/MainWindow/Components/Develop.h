@@ -26,11 +26,10 @@
 #include <QWidget>
 #include <Global/Global.h>
 
-class Develop: public QWidget
-{
+class Develop: public QWidget {
     Q_OBJECT
 
-public:
+  public:
     explicit Develop (QWidget* parent);
     ~Develop();
 };

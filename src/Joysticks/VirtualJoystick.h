@@ -38,11 +38,10 @@
  * This class also implements the keyboard shortcuts of
  * the application, such as pressing <space> to E-stop the robot.
  */
-class VirtualJoystick : public QObject
-{
+class VirtualJoystick : public QObject {
     Q_OBJECT
 
-public:
+  public:
     explicit VirtualJoystick();
     ~VirtualJoystick();
 
@@ -50,26 +49,26 @@ public:
     bool joystickEnabled() const;
     QDS_InputDevice* joystick() const;
 
-public slots:
+  public slots:
     void setJoystickID (int id);
     void setAxisRange (float range);
     void setJoystickEnabled (bool enabled);
 
-signals:
+  signals:
     void enabledChanged();
     void axisEvent (QDS_AxisEvent event);
     void buttonEvent (QDS_ButtonEvent event);
 
-private slots:
+  private slots:
     void readAxes (int key, bool pressed);
     void readButtons (int key, bool pressed);
     void readShortcuts (int key, bool pressed);
     void processKeyEvent (QKeyEvent* event, bool pressed);
 
-protected:
+  protected:
     bool eventFilter (QObject* object, QEvent* event);
 
-private:
+  private:
     float m_axisRange;
     bool m_joystickEnabled;
     QDS_InputDevice* m_joystick;

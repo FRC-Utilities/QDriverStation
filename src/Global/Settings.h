@@ -26,14 +26,13 @@
 #include <QVariant>
 
 class QSettings;
-class Settings
-{
-public:
+class Settings {
+  public:
     static void clear();
     static void set (QString key, const QVariant& value);
     static QVariant get (QString key, const QVariant& defaultValue);
 
-private:
+  private:
     static QSettings* m_settings;
 };
 

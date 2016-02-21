@@ -32,8 +32,7 @@
  *   - Display name
  *   - Number of axes, buttons and POV hats
  */
-struct QDS_InputDevice
-{
+struct QDS_InputDevice {
     int id;
 
     int numAxes;
@@ -50,8 +49,7 @@ struct QDS_InputDevice
  *   - A pointer to the target joystick
  *   - The rumble type (left, right or both)
  */
-struct QDS_RumbleRequest
-{
+struct QDS_RumbleRequest {
     QDS_InputDevice* joystick;
 
     bool leftRumble;
@@ -65,8 +63,7 @@ struct QDS_RumbleRequest
  *    - The axis ID
  *    - The axis value
  */
-struct QDS_AxisEvent
-{
+struct QDS_AxisEvent {
     QDS_InputDevice joystick;
 
     int axis;
@@ -80,8 +77,7 @@ struct QDS_AxisEvent
  *    - The button ID
  *    - The 'pressed' state of the button
  */
-struct QDS_ButtonEvent
-{
+struct QDS_ButtonEvent {
     QDS_InputDevice joystick;
 
     int button;
@@ -95,8 +91,7 @@ struct QDS_ButtonEvent
  *    - The POV id
  *    - The angle value of the POV hat
  */
-struct QDS_POVEvent
-{
+struct QDS_POVEvent {
     QDS_InputDevice joystick;
 
     int pov;

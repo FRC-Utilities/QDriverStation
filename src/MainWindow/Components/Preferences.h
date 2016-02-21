@@ -34,15 +34,14 @@ class QVBoxLayout;
 class QHBoxLayout;
 class QGridLayout;
 
-class Preferences : public QWidget
-{
+class Preferences : public QWidget {
     Q_OBJECT
 
-public:
+  public:
     explicit Preferences (QWidget* parent);
     ~Preferences();
 
-private slots:
+  private slots:
     void createWidgets();
     void createLayouts();
     void connectSlots();
@@ -56,7 +55,7 @@ private slots:
     void loadPracticeValues();
     void savePracticeValues (int unused);
 
-private:
+  private:
     QLabel* m_protocolLabel;
     QLabel* m_dashboardLabel;
     QLabel* m_teamNumberLabel;

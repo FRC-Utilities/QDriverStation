@@ -45,8 +45,7 @@
 // Preferences::Preferences
 //=============================================================================
 
-Preferences::Preferences (QWidget* parent) : QWidget (parent)
-{
+Preferences::Preferences (QWidget* parent) : QWidget (parent) {
     createWidgets();
     createLayouts();
 
@@ -60,8 +59,7 @@ Preferences::Preferences (QWidget* parent) : QWidget (parent)
 // Preferences::~Preferences
 //=============================================================================
 
-Preferences::~Preferences()
-{
+Preferences::~Preferences() {
     DS_LogMessage (kInfoLevel, "MainWindow: Preferences widget destroyed");
 }
 
@@ -69,8 +67,7 @@ Preferences::~Preferences()
 // Preferences::createWidgets
 //=============================================================================
 
-void Preferences::createWidgets()
-{
+void Preferences::createWidgets() {
     m_protocolLabel   = new QLabel (tr ("Protocol"),    this);
     m_dashboardLabel  = new QLabel (tr ("Dashboard"),   this);
     m_teamNumberLabel = new QLabel (tr ("Team Number"), this);
@@ -109,8 +106,7 @@ void Preferences::createWidgets()
 // Preferences::createLayouts
 //=============================================================================
 
-void Preferences::createLayouts()
-{
+void Preferences::createLayouts() {
     /* Left widgets */
     m_leftContainer  = new QWidget         (this);
     m_leftLayout     = new QVBoxLayout     (m_leftContainer);
@@ -151,8 +147,7 @@ void Preferences::createLayouts()
 // Preferences::connectSlots
 //=============================================================================
 
-void Preferences::connectSlots()
-{
+void Preferences::connectSlots() {
     connect (m_protocols,  SIGNAL (currentIndexChanged (int)),
              this,           SLOT (setProtocol         (int)));
     connect (m_dashboards, SIGNAL (currentIndexChanged (int)),
@@ -177,8 +172,7 @@ void Preferences::connectSlots()
 // Preferences::readSettings
 //=============================================================================
 
-void Preferences::readSettings()
-{
+void Preferences::readSettings() {
     /* Load protocol version & team number */
     setProtocol   (Settings::get ("Protocol", 0).toInt());
     setTeamNumber (Settings::get ("Team",     0).toInt());
@@ -191,8 +185,7 @@ void Preferences::readSettings()
 // Preferences::setProtocol
 //=============================================================================
 
-void Preferences::setProtocol (int index)
-{
+void Preferences::setProtocol (int index) {
     Settings::set ("Protocol", index);
     DS()->setProtocol ((DriverStation::ProtocolType) index);
 }
@@ -201,8 +194,7 @@ void Preferences::setProtocol (int index)
 // Preferences::setDashboard
 //=============================================================================
 
-void Preferences::setDashboard (int index)
-{
+void Preferences::setDashboard (int index) {
     Settings::set ("Dashboard", index);
     Dashboards::getInstance()->reloadDashboard();
 }
@@ -211,8 +203,7 @@ void Preferences::setDashboard (int index)
 // Preferences::setTeamNumber
 //=============================================================================
 
-void Preferences::setTeamNumber (int team)
-{
+void Preferences::setTeamNumber (int team) {
     DS()->setTeamNumber (team);
     Settings::set ("Team", team);
 }
@@ -221,8 +212,7 @@ void Preferences::setTeamNumber (int team)
 // Preferences::loadPracticeValues
 //=============================================================================
 
-void Preferences::loadPracticeValues()
-{
+void Preferences::loadPracticeValues() {
     m_delay->setValue      (Settings::get ("Practice delay",       1).toInt());
     m_teleop->setValue     (Settings::get ("Practice teleop",    100).toInt());
     m_endGame->setValue    (Settings::get ("Practice end game",   20).toInt());
@@ -234,8 +224,7 @@ void Preferences::loadPracticeValues()
 // Preferences::savePracticeValues
 //=============================================================================
 
-void Preferences::savePracticeValues (int unused)
-{
+void Preferences::savePracticeValues (int unused) {
     Q_UNUSED (unused);
     Settings::set ("Practice delay",       m_delay->value());
     Settings::set ("Practice teleop",      m_teleop->value());

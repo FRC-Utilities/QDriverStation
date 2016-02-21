@@ -43,8 +43,7 @@
 // Console::Console
 //=============================================================================
 
-Messages::Messages (QWidget* parent) : QWidget (parent)
-{
+Messages::Messages (QWidget* parent) : QWidget (parent) {
     createWidgets();
     createLayouts();
 
@@ -55,8 +54,7 @@ Messages::Messages (QWidget* parent) : QWidget (parent)
 // Messages::~Messages
 //=============================================================================
 
-Messages::~Messages()
-{
+Messages::~Messages() {
     DS_LogMessage (kInfoLevel, "MainWindow: Messages widget destroyed");
 }
 
@@ -64,8 +62,7 @@ Messages::~Messages()
 // Console::createWidgets
 //=============================================================================
 
-void Messages::createWidgets()
-{
+void Messages::createWidgets() {
     m_buttonsWidget  = new QWidget        (this);
     m_console        = new QPlainTextEdit (this);
     m_copyButton     = new QPushButton    (QChar (fa::copy),   this);
@@ -86,8 +83,7 @@ void Messages::createWidgets()
 // Console::createLayouts
 //=============================================================================
 
-void Messages::createLayouts()
-{
+void Messages::createLayouts() {
     /* Configure buttons layout */
     m_buttonsLayout = new QHBoxLayout   (m_buttonsWidget);
     m_buttonsLayout->setSpacing         (DPI_SCALE (5));
@@ -115,8 +111,7 @@ void Messages::createLayouts()
 // Console::copy
 //=============================================================================
 
-void Messages::copy()
-{
+void Messages::copy() {
     qApp->clipboard()->setText (m_console->toPlainText());
     registerMessage (QString   ("<font color=\"#aaa\"><p>")
                      + tr      ("INFO: Console output copied to clipboard")
@@ -127,8 +122,7 @@ void Messages::copy()
 // Console::clear
 //=============================================================================
 
-void Messages::clear()
-{
+void Messages::clear() {
     m_console->clear();
 }
 
@@ -136,8 +130,7 @@ void Messages::clear()
 // Console::registerMessage
 //=============================================================================
 
-void Messages::registerMessage (QString text)
-{
+void Messages::registerMessage (QString text) {
     m_console->appendHtml (text);
     m_console->ensureCursorVisible();
 }

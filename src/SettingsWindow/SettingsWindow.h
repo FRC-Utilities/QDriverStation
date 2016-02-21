@@ -37,22 +37,20 @@ class QHBoxLayout;
 class QVBoxLayout;
 class QGridLayout;
 
-class SettingsWindow : public QDialog
-{
+class SettingsWindow : public QDialog {
     Q_OBJECT
 
-public:
+  public:
     explicit SettingsWindow();
 
-    enum Colors
-    {
+    enum Colors {
         Base,
         Highlight,
         Background,
         Foreground
     };
 
-private slots:
+  private slots:
     void createWidgets();
     void createLayouts();
     void connectSlots();
@@ -70,7 +68,7 @@ private slots:
     QColor getColorValue (Colors type);
     Colors getColorType (const QObject* object);
 
-private:
+  private:
     QLabel* m_networkingIcon;
     QWidget* m_addressWidget;
     QLineEdit* m_robotAddress;

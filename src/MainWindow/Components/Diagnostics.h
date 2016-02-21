@@ -33,15 +33,14 @@ class QHBoxLayout;
 class QPushButton;
 class QGridLayout;
 
-class Diagnostics : public QWidget
-{
+class Diagnostics : public QWidget {
     Q_OBJECT
 
-public:
+  public:
     explicit Diagnostics (QWidget* parent);
     ~Diagnostics();
 
-private slots:
+  private slots:
     void createWidgets();
     void createLayouts();
     void connectSlots();
@@ -50,7 +49,7 @@ private slots:
     void updateRamUsage (int usage);
     void updateDiskUsage (int usage);
 
-private:
+  private:
     QLabel* m_networkDiagnostics;
     QCheckBox* m_ethernetLink;
     QCheckBox* m_radio;

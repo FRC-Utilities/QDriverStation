@@ -28,15 +28,14 @@
 class QPushButton;
 class QVBoxLayout;
 
-class Buttons: public QWidget
-{
+class Buttons: public QWidget {
     Q_OBJECT
 
-public:
+  public:
     explicit Buttons (QWidget* parent);
     ~Buttons();
 
-private:
+  private:
     QVBoxLayout* m_layout;
 
     QPushButton* m_close;

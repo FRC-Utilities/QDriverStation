@@ -39,8 +39,7 @@
 // Buttons::Buttons
 //=============================================================================
 
-Buttons::Buttons (QWidget* parent) : QWidget (parent)
-{
+Buttons::Buttons (QWidget* parent) : QWidget (parent) {
     /* Create the buttons */
     m_close             = new QPushButton (QChar (fa::close),     this);
     m_settings          = new QPushButton (QChar (fa::wrench),    this);
@@ -100,7 +99,6 @@ Buttons::Buttons (QWidget* parent) : QWidget (parent)
 // Buttons::~Buttons
 //=============================================================================
 
-Buttons::~Buttons()
-{
+Buttons::~Buttons() {
     DS_LogMessage (kInfoLevel, "MainWindow: Buttons widget destroyed");
 }

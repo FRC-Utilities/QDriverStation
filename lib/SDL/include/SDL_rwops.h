@@ -49,8 +49,7 @@ extern "C" {
 /**
  * This is the read/write operation structure -- very basic.
  */
-typedef struct SDL_RWops
-{
+typedef struct SDL_RWops {
     /**
      *  Return the size of the file in this rwops, or -1 if unknown
      */
@@ -91,11 +90,9 @@ typedef struct SDL_RWops
     int (SDLCALL* close) (struct SDL_RWops* context);
 
     Uint32 type;
-    union
-    {
+    union {
 #if defined(ANDROID)
-        struct
-        {
+        struct {
             void* fileNameRef;
             void* inputStreamRef;
             void* readableByteChannelRef;
@@ -107,12 +104,10 @@ typedef struct SDL_RWops
             int fd;
         } androidio;
 #elif defined(__WIN32__)
-        struct
-        {
+        struct {
             SDL_bool append;
             void* h;
-            struct
-            {
+            struct {
                 void* data;
                 size_t size;
                 size_t left;
@@ -121,20 +116,17 @@ typedef struct SDL_RWops
 #endif
 
 #ifdef HAVE_STDIO_H
-        struct
-        {
+        struct {
             SDL_bool autoclose;
             FILE* fp;
         } stdio;
 #endif
-        struct
-        {
+        struct {
             Uint8* base;
             Uint8* here;
             Uint8* stop;
         } mem;
-        struct
-        {
+        struct {
             void* data1;
             void* data2;
         } unknown;

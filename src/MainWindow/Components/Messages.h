@@ -30,15 +30,14 @@ class QHBoxLayout;
 class QPushButton;
 class QPlainTextEdit;
 
-class Messages : public QWidget
-{
+class Messages : public QWidget {
     Q_OBJECT
 
-public:
+  public:
     explicit Messages (QWidget* parent);
     ~Messages();
 
-private slots:
+  private slots:
     void createWidgets();
     void createLayouts();
 
@@ -46,7 +45,7 @@ private slots:
     void clear();
     void registerMessage (QString text);
 
-private:
+  private:
     QVBoxLayout* m_mainLayout;
     QHBoxLayout* m_buttonsLayout;
 

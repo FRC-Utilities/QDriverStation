@@ -23,9 +23,8 @@
 #ifndef _QDS_MW_CPU_USAGE_H
 #define _QDS_MW_CPU_USAGE_H
 
-class CPU
-{
-public:
+class CPU {
+  public:
     static int getUsage();
     static void initQueryProcess();
 };

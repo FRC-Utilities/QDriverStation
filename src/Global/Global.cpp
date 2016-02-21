@@ -53,8 +53,7 @@ static qreal RATIO = -1;
 // BEEPER
 //=============================================================================
 
-Beeper* BEEPER()
-{
+Beeper* BEEPER() {
     static Beeper instance;
     instance.moveToThread (SECONDARY_THREAD());
     return &instance;
@@ -64,8 +63,7 @@ Beeper* BEEPER()
 // DS
 //=============================================================================
 
-DriverStation* DS()
-{
+DriverStation* DS() {
     return DriverStation::getInstance();
 }
 
@@ -73,8 +71,7 @@ DriverStation* DS()
 // AWESOME
 //=============================================================================
 
-QtAwesome* AWESOME()
-{
+QtAwesome* AWESOME() {
     static QtAwesome instance;
 
     instance.initFontAwesome();
@@ -88,8 +85,7 @@ QtAwesome* AWESOME()
 // SPACER
 //=============================================================================
 
-QSpacerItem* SPACER()
-{
+QSpacerItem* SPACER() {
     return new QSpacerItem (0, 0,
                             QSizePolicy::MinimumExpanding,
                             QSizePolicy::MinimumExpanding);
@@ -99,8 +95,7 @@ QSpacerItem* SPACER()
 // SECONDARY_THREAD
 //=============================================================================
 
-QThread* SECONDARY_THREAD()
-{
+QThread* SECONDARY_THREAD() {
     static QThread instance;
     instance.start (QThread::HighPriority);
     QObject::connect (qApp,      &QApplication::aboutToQuit,
@@ -113,8 +108,7 @@ QThread* SECONDARY_THREAD()
 // JOYSTICK_MANAGER
 //=============================================================================
 
-JoystickManager* JOYSTICK_MANAGER()
-{
+JoystickManager* JOYSTICK_MANAGER() {
     static JoystickManager instance;
     instance.moveToThread (SECONDARY_THREAD());
     return &instance;
@@ -124,8 +118,7 @@ JoystickManager* JOYSTICK_MANAGER()
 // SETTINGS_WINDOW
 //=============================================================================
 
-SettingsWindow* SETTINGS_WINDOW()
-{
+SettingsWindow* SETTINGS_WINDOW() {
     static SettingsWindow instance;
     return &instance;
 }
@@ -134,8 +127,7 @@ SettingsWindow* SETTINGS_WINDOW()
 // VJOYSTICK_WINDOW
 //=============================================================================
 
-VJoystickWindow* VJOYSTICK_WINDOW()
-{
+VJoystickWindow* VJOYSTICK_WINDOW() {
     static VJoystickWindow instance;
     return &instance;
 }
@@ -144,8 +136,7 @@ VJoystickWindow* VJOYSTICK_WINDOW()
 // NULL_MARGINS
 //=============================================================================
 
-QMargins NULL_MARGINS()
-{
+QMargins NULL_MARGINS() {
     return QMargins (0, 0, 0, 0);
 }
 
@@ -153,8 +144,7 @@ QMargins NULL_MARGINS()
 // MAIN_MARGINS
 //=============================================================================
 
-QMargins MAIN_MARGINS()
-{
+QMargins MAIN_MARGINS() {
     return QMargins (DPI_SCALE (10),
                      DPI_SCALE (10),
                      DPI_SCALE (10),
@@ -165,8 +155,7 @@ QMargins MAIN_MARGINS()
 // SMALL_MARGINS
 //=============================================================================
 
-QMargins SMALL_MARGINS()
-{
+QMargins SMALL_MARGINS() {
     return QMargins (DPI_SCALE (1),
                      DPI_SCALE (1),
                      DPI_SCALE (1),
@@ -177,18 +166,16 @@ QMargins SMALL_MARGINS()
 // DPI_SCALE
 //=============================================================================
 
-qreal DPI_SCALE (qreal input)
-{
-    if (RATIO == -1)
-        {
-            RATIO = (qApp->primaryScreen()->physicalDotsPerInch() / 100) * 0.9;
+qreal DPI_SCALE (qreal input) {
+    if (RATIO == -1) {
+        RATIO = (qApp->primaryScreen()->physicalDotsPerInch() / 100) * 0.9;
 
-            if (RATIO < 1.2)
-                RATIO = 1;
+        if (RATIO < 1.2)
+            RATIO = 1;
 
-            DS_LogMessage (kInfoLevel,
-                           QString ("UI Scale Ratio set to: %1").arg (RATIO));
-        }
+        DS_LogMessage (kInfoLevel,
+                       QString ("UI Scale Ratio set to: %1").arg (RATIO));
+    }
 
     return input * RATIO;
 }
@@ -197,28 +184,26 @@ qreal DPI_SCALE (qreal input)
 // SDL_INIT
 //=============================================================================
 
-void SDL_INIT()
-{
+void SDL_INIT() {
     DS_LogMessage (kInfoLevel, "Initializing SDL...");
 
     SDL_JoystickEventState (SDL_ENABLE);
     SDL_SetHint (SDL_HINT_XINPUT_ENABLED, "0");
     SDL_SetHint (SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
 
-    if (SDL_Init (SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC | SDL_INIT_AUDIO) != 0)
-        {
-            QMessageBox::warning (Q_NULLPTR,
-                                  QObject::tr ("QDriverStation"),
-                                  QObject::tr ("SDL initailization error: %1")
-                                  .arg (SDL_GetError()));
+    if (SDL_Init (SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC | SDL_INIT_AUDIO) != 0) {
+        QMessageBox::warning (Q_NULLPTR,
+                              QObject::tr ("QDriverStation"),
+                              QObject::tr ("SDL initailization error: %1")
+                              .arg (SDL_GetError()));
 
-            QMessageBox::warning (Q_NULLPTR,
-                                  QObject::tr ("QDriverStation"),
-                                  QObject::tr ("You will still be able to use "
-                                               "the QDriverStation, however, you "
-                                               "MUST be VERY careful while using "
-                                               "an external joystick!"));
-        }
+        QMessageBox::warning (Q_NULLPTR,
+                              QObject::tr ("QDriverStation"),
+                              QObject::tr ("You will still be able to use "
+                                           "the QDriverStation, however, you "
+                                           "MUST be VERY careful while using "
+                                           "an external joystick!"));
+    }
 
     DS_LogMessage (kInfoLevel, "SDL Initialized");
 }
@@ -227,8 +212,7 @@ void SDL_INIT()
 // GLOBAL_INIT
 //=============================================================================
 
-void GLOBAL_INIT()
-{
+void GLOBAL_INIT() {
     SDL_INIT();
 
     Q_UNUSED (SETTINGS_WINDOW());
@@ -239,8 +223,7 @@ void GLOBAL_INIT()
 // SHOW_SETTINGS_WINDOW
 //=============================================================================
 
-void SHOW_SETTINGS_WINDOW()
-{
+void SHOW_SETTINGS_WINDOW() {
     SETTINGS_WINDOW()->show();
 }
 
@@ -248,8 +231,7 @@ void SHOW_SETTINGS_WINDOW()
 // SHOW_VIRTUAL_JOYSTICKS
 //=============================================================================
 
-void SHOW_VIRTUAL_JOYSTICKS()
-{
+void SHOW_VIRTUAL_JOYSTICKS() {
     VJOYSTICK_WINDOW()->show();
 }
 
@@ -257,23 +239,21 @@ void SHOW_VIRTUAL_JOYSTICKS()
 // MORSE_BEEP
 //=============================================================================
 
-void MORSE_BEEP (QString input, int frequency)
-{
-    foreach (QString character, input.split (""))
-        {
-            int time = 0;
-            int base = 50;
+void MORSE_BEEP (QString input, int frequency) {
+    foreach (QString character, input.split ("")) {
+        int time = 0;
+        int base = 50;
 
-            if (character == ".")
-                time = base;
-            else if (character == "-")
-                time = base * 3;
-            else if (character == " ")
-                time = base * 3;
-            else if (character == "/")
-                time = base * 7;
+        if (character == ".")
+            time = base;
+        else if (character == "-")
+            time = base * 3;
+        else if (character == " ")
+            time = base * 3;
+        else if (character == "/")
+            time = base * 7;
 
-            BEEPER()->beep (frequency, time);
-            BEEPER()->beep (0, base);
-        }
+        BEEPER()->beep (frequency, time);
+        BEEPER()->beep (0, base);
+    }
 }

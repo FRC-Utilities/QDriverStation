@@ -26,14 +26,17 @@
 // DS_Protocol2016::defaultRobotAddress
 //=============================================================================
 
-QStringList DS_Protocol2016::defaultRobotAddress()
-{
+QStringList DS_Protocol2016::defaultRobotAddress() {
     QStringList list;
 
     list.append (QString ("roboRIO-%1-FRC.local").arg (team()));
-    list.append (QString ("roboRIO-%1-FRC").arg (team()));
+    list.append (QString ("roboRIO-%1.local").arg (team()));
     list.append (QString ("172.22.11.2"));
     list.append (QString ("127.0.0.1"));
+
+    /* Try all the DHCP ranges, it's faster than waiting for the mDNS to work */
+    for (int i = 20; i < 100; ++i)
+        list.append (QString (DS_GetStaticIp (10, team(), i)));
 
     return list;
 }

@@ -21,10 +21,8 @@
 
 /// A list of all icon-names with the codepoint (unicode-value) on the right
 /// You can use the names on the page  http://fortawesome.github.io/Font-Awesome/design.html
-namespace fa
-{
-enum icon
-{
+namespace fa {
+enum icon {
     fa_500px             = 0xf26e,
     adjust               = 0xf042,
     adn                  = 0xf170,
@@ -711,11 +709,10 @@ class QtAwesomeIconPainter;
 
 /// The main class for managing icons
 /// This class requires a 2-phase construction. You must first create the class and then initialize it via an init* method
-class QtAwesome : public QObject
-{
+class QtAwesome : public QObject {
     Q_OBJECT
 
-public:
+  public:
     explicit QtAwesome (QObject* parent = 0);
     virtual ~QtAwesome();
 
@@ -723,8 +720,7 @@ public:
     bool initFontAwesome();
 
     void addNamedCodepoint ( const QString& name, int codePoint );
-    QHash<QString, int> namedCodePoints()
-    {
+    QHash<QString, int> namedCodePoints() {
         return namedCodepoints_;
     }
 
@@ -741,12 +737,11 @@ public:
     QFont font ( int size );
 
     /// Returns the font-name that is used as icon-map
-    QString fontName()
-    {
+    QString fontName() {
         return fontName_ ;
     }
 
-private:
+  private:
     QString fontName_;                                     ///< The font name used for this map
     QHash<QString, int>
     namedCodepoints_;                  ///< A map with names mapped to code-points
@@ -765,9 +760,8 @@ private:
 
 /// The QtAwesomeIconPainter is a specialized painter for painting icons
 /// your can implement an iconpainter to create custom font-icon code
-class QtAwesomeIconPainter
-{
-public:
+class QtAwesomeIconPainter {
+  public:
     virtual ~QtAwesomeIconPainter() {}
     virtual void paint ( QtAwesome* awesome, QPainter* painter, const QRect& rect,
                          QIcon::Mode mode, QIcon::State state, const QVariantMap& options ) = 0;

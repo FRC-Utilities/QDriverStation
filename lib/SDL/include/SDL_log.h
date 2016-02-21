@@ -61,8 +61,7 @@ extern "C" {
  *  at the VERBOSE level and all other categories are enabled at the
  *  CRITICAL level.
  */
-enum
-{
+enum {
     SDL_LOG_CATEGORY_APPLICATION,
     SDL_LOG_CATEGORY_ERROR,
     SDL_LOG_CATEGORY_ASSERT,
@@ -99,8 +98,7 @@ enum
 /**
  *  \brief The predefined log priorities
  */
-typedef enum
-{
+typedef enum {
     SDL_LOG_PRIORITY_VERBOSE = 1,
     SDL_LOG_PRIORITY_DEBUG,
     SDL_LOG_PRIORITY_INFO,

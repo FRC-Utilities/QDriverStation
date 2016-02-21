@@ -57,8 +57,7 @@ QString BUTTON_CSS = "QPushButton {"
 // Joysticks::Joysticks
 //=============================================================================
 
-Joysticks::Joysticks (QWidget* parent) : QWidget (parent)
-{
+Joysticks::Joysticks (QWidget* parent) : QWidget (parent) {
     /* Create Widgets */
     m_joystickNames    = new QListWidget (this);
     m_JSIndicators     = new QGroupBox   (tr ("USB"),     this);
@@ -149,8 +148,7 @@ Joysticks::Joysticks (QWidget* parent) : QWidget (parent)
 // Joysticks::~Joysticks
 //=============================================================================
 
-Joysticks::~Joysticks()
-{
+Joysticks::~Joysticks() {
     DS_LogMessage (kInfoLevel, "MainWindow: Joysticks widget destroyed");
 }
 
@@ -158,8 +156,7 @@ Joysticks::~Joysticks()
 // Joysticks::showEvent
 //=============================================================================
 
-void Joysticks::showEvent (QShowEvent* event)
-{
+void Joysticks::showEvent (QShowEvent* event) {
     /* Load joystick indicators */
     onCountChanged();
 
@@ -171,8 +168,7 @@ void Joysticks::showEvent (QShowEvent* event)
 // Joysticks::hideEvent
 //=============================================================================
 
-void Joysticks::hideEvent (QHideEvent* event)
-{
+void Joysticks::hideEvent (QHideEvent* event) {
     /* Remove joystick indicators and resize to avoid ugly shit */
     setupIndicators (-1);
     resize (minimumSizeHint());
@@ -185,31 +181,27 @@ void Joysticks::hideEvent (QHideEvent* event)
 // Joysticks::onCountChanged
 //=============================================================================
 
-void Joysticks::onCountChanged()
-{
+void Joysticks::onCountChanged() {
     m_joystickNames->clear();
     m_joystickNames->addItems (JOYSTICK_MANAGER()->deviceNames());
 
-    if (m_joystickNames->count() > 0)
-        {
-            setupIndicators (0);
-            m_joystickNames->setCurrentRow (0);
-        }
+    if (m_joystickNames->count() > 0) {
+        setupIndicators (0);
+        m_joystickNames->setCurrentRow (0);
+    }
 
-    else
-        {
-            m_POVIndicators->setVisible (false);
-            m_axisIndicators->setVisible (false);
-            m_buttonIndicators->setVisible (false);
-        }
+    else {
+        m_POVIndicators->setVisible (false);
+        m_axisIndicators->setVisible (false);
+        m_buttonIndicators->setVisible (false);
+    }
 }
 
 //=============================================================================
 // Joysticks::setupIndicators
 //=============================================================================
 
-void Joysticks::setupIndicators (int row)
-{
+void Joysticks::setupIndicators (int row) {
     /* Remove all joystick indicators in the widget */
     foreach (QSpinBox *     b, findChildren<QSpinBox*>())     delete b;
     foreach (QPushButton *  c, findChildren<QPushButton*>())  delete c;
@@ -235,58 +227,54 @@ void Joysticks::setupIndicators (int row)
     m_buttonIndicators->setVisible (buttonCount > 0);
 
     /* Create a progress bar for each axis */
-    for (int i = 0; i < axisCount; ++i)
-        {
-            QProgressBar* bar = new QProgressBar (this);
+    for (int i = 0; i < axisCount; ++i) {
+        QProgressBar* bar = new QProgressBar (this);
 
-            bar->setFixedHeight (DPI_SCALE (19));
+        bar->setFixedHeight (DPI_SCALE (19));
 
-            bar->setValue (0);
-            bar->setMaximum (100);
-            bar->setMinimum (-100);
-            bar->setFormat  (tr ("Axis %1").arg (i));
+        bar->setValue (0);
+        bar->setMaximum (100);
+        bar->setMinimum (-100);
+        bar->setFormat  (tr ("Axis %1").arg (i));
 
-            m_axes.append (bar);
-            m_axesBox->addWidget (bar);
-        }
+        m_axes.append (bar);
+        m_axesBox->addWidget (bar);
+    }
 
     /* Create a button for each joystick button */
-    for (int i = 0; i < buttonCount; ++i)
-        {
-            QPushButton* button = new QPushButton (this);
+    for (int i = 0; i < buttonCount; ++i) {
+        QPushButton* button = new QPushButton (this);
 
-            button->setEnabled (false);
-            button->setCheckable (true);
-            button->setFixedSize (DPI_SCALE (18), DPI_SCALE (12));
-            button->setToolTip     (tr ("Button %1").arg (i));
+        button->setEnabled (false);
+        button->setCheckable (true);
+        button->setFixedSize (DPI_SCALE (18), DPI_SCALE (12));
+        button->setToolTip     (tr ("Button %1").arg (i));
 
-            /* Distribute the button items in a nice layout */
-            int row = (i <= 7) ? i : i - 8;
-            int column = (i <= 7) ? 0 : (i / 8);
+        /* Distribute the button items in a nice layout */
+        int row = (i <= 7) ? i : i - 8;
+        int column = (i <= 7) ? 0 : (i / 8);
 
-            m_buttons.append (button);
-            m_buttonsBox->addWidget (button, row, column);
-        }
+        m_buttons.append (button);
+        m_buttonsBox->addWidget (button, row, column);
+    }
 
     /* Create a spinbox for each joystick hat */
-    for (int i = 0; i < povCount; ++i)
-        {
-            QSpinBox* box = new QSpinBox (this);
+    for (int i = 0; i < povCount; ++i) {
+        QSpinBox* box = new QSpinBox (this);
 
-            box->setRange (0, 360);
-            box->setEnabled (false);
+        box->setRange (0, 360);
+        box->setEnabled (false);
 
-            m_povs.append (box);
-            m_povsBox->addWidget (box);
-        }
+        m_povs.append (box);
+        m_povsBox->addWidget (box);
+    }
 }
 
 //=============================================================================
 // Joysticks::setTipsVisible
 //=============================================================================
 
-void Joysticks::setTipsVisible (bool visible)
-{
+void Joysticks::setTipsVisible (bool visible) {
     Q_UNUSED (visible);
 }
 
@@ -294,8 +282,7 @@ void Joysticks::setTipsVisible (bool visible)
 // Joysticks::onPOVEvent
 //=============================================================================
 
-void Joysticks::onPOVEvent (QDS_POVEvent event)
-{
+void Joysticks::onPOVEvent (QDS_POVEvent event) {
     if (m_joystickNames->currentRow() != event.joystick.id || !isVisible())
         return;
 
@@ -307,8 +294,7 @@ void Joysticks::onPOVEvent (QDS_POVEvent event)
 // Joysticks::onAxisEvent
 //=============================================================================
 
-void Joysticks::onAxisEvent (QDS_AxisEvent event)
-{
+void Joysticks::onAxisEvent (QDS_AxisEvent event) {
     if (m_joystickNames->currentRow() != event.joystick.id || !isVisible())
         return;
 
@@ -320,8 +306,7 @@ void Joysticks::onAxisEvent (QDS_AxisEvent event)
 // Joysticks::onButtonEvent
 //=============================================================================
 
-void Joysticks::onButtonEvent (QDS_ButtonEvent event)
-{
+void Joysticks::onButtonEvent (QDS_ButtonEvent event) {
     if (m_joystickNames->currentRow() != event.joystick.id || !isVisible())
         return;
 

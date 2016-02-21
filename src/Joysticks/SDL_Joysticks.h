@@ -36,30 +36,29 @@
  *     and/or hardware. If possible, use the same mappings as
  *     the official FRC Driver Station
  */
-class SDL_Joysticks : public QObject
-{
+class SDL_Joysticks : public QObject {
     Q_OBJECT
 
-public:
+  public:
     explicit SDL_Joysticks();
     ~SDL_Joysticks();
 
     QStringList joystickNames();
     QList<QDS_InputDevice> joysticks();
 
-public slots:
+  public slots:
     void rumble (QDS_RumbleRequest request);
 
-signals:
+  signals:
     void countChanged();
     void POVEvent (QDS_POVEvent event);
     void axisEvent (QDS_AxisEvent event);
     void buttonEvent (QDS_ButtonEvent event);
 
-private slots:
+  private slots:
     void update();
 
-private:
+  private:
     int getDynamicID (int id);
 
     QDS_InputDevice getJoystick (int id);

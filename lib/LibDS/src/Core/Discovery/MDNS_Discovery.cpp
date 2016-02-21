@@ -36,8 +36,7 @@
 // MDNS::MDNS
 //=============================================================================
 
-MDNS_Discovery::MDNS_Discovery()
-{
+MDNS_Discovery::MDNS_Discovery() {
     connect (&m_receiver,   &QUdpSocket::readyRead,
              this,          &MDNS_Discovery::readData);
     connect (&m_cacheTimer, &QTimer::timeout,
@@ -57,8 +56,7 @@ MDNS_Discovery::MDNS_Discovery()
 // MDNS::Query
 //=============================================================================
 
-void MDNS_Discovery::query (QString host)
-{
+void MDNS_Discovery::query (QString host) {
     /* The device may support mDNS, try to use the native implementation */
     QHostInfo::lookupHost (host, this, SLOT (lookupFinished (QHostInfo)));
 
@@ -67,69 +65,67 @@ void MDNS_Discovery::query (QString host)
         emit ipFound (host, m_cache.object (host)->toLower());
 
     /* Host is not on cache, find it! */
-    else
-        {
-            QByteArray data;
-            QByteArray header;
-            QByteArray packet;
+    else {
+        QByteArray data;
+        QByteArray header;
+        QByteArray packet;
 
-            /* Ensure that the domain is valid */
-            host = host.replace (".local.", "");
-            host = host.replace (".local",  "");
+        /* Ensure that the domain is valid */
+        host = host.replace (".local.", "");
+        host = host.replace (".local",  "");
 
-            /* Check that domain length is valid */
-            if (host.length() > 0xFF)
-                return;
+        /* Check that domain length is valid */
+        if (host.length() > 0xFF)
+            return;
 
-            /* Create header & flags */
-            header.append ((char) 0x00);
-            header.append ((char) 0x00);
-            header.append ((char) 0x00);
-            header.append ((char) 0x00);
-            header.append ((char) 0x00);
-            header.append ((char) 0x01);
-            header.append ((char) 0x00);
-            header.append ((char) 0x00);
-            header.append ((char) 0x00);
-            header.append ((char) 0x00);
-            header.append ((char) 0x00);
-            header.append ((char) 0x00);
+        /* Create header & flags */
+        header.append ((char) 0x00);
+        header.append ((char) 0x00);
+        header.append ((char) 0x00);
+        header.append ((char) 0x00);
+        header.append ((char) 0x00);
+        header.append ((char) 0x01);
+        header.append ((char) 0x00);
+        header.append ((char) 0x00);
+        header.append ((char) 0x00);
+        header.append ((char) 0x00);
+        header.append ((char) 0x00);
+        header.append ((char) 0x00);
 
-            /* Add domain data */
-            data.append (host.length());
-            data.append (host.toUtf8());
+        /* Add domain data */
+        data.append (host.length());
+        data.append (host.toUtf8());
 
-            /* Add '.local' section */
-            QString local = "local";
-            data.append (local.length());
-            data.append (local.toUtf8());
-            data.append ((char) 0x00);
-            data.append ((char) 0x00);
-            data.append ((char) 0x01);
-            data.append ((char) 0x00);
-            data.append ((char) 0x01);
-            data.append ((char) 0xC0);
-            data.append ((char) 0x0C);
-            data.append ((char) 0x00);
-            data.append ((char) 0x1C);
-            data.append ((char) 0x00);
-            data.append ((char) 0x01);
+        /* Add '.local' section */
+        QString local = "local";
+        data.append (local.length());
+        data.append (local.toUtf8());
+        data.append ((char) 0x00);
+        data.append ((char) 0x00);
+        data.append ((char) 0x01);
+        data.append ((char) 0x00);
+        data.append ((char) 0x01);
+        data.append ((char) 0xC0);
+        data.append ((char) 0x0C);
+        data.append ((char) 0x00);
+        data.append ((char) 0x1C);
+        data.append ((char) 0x00);
+        data.append ((char) 0x01);
 
-            /* Create the complete packet */
-            packet.append (header);
-            packet.append (data);
+        /* Create the complete packet */
+        packet.append (header);
+        packet.append (data);
 
-            /* Send the generated packet */
-            m_sender.writeDatagram (packet, IPv4_IP, PORT);
-        }
+        /* Send the generated packet */
+        m_sender.writeDatagram (packet, IPv4_IP, PORT);
+    }
 }
 
 //=============================================================================
 // MDNS::ReadData
 //=============================================================================
 
-void MDNS_Discovery::readData()
-{
+void MDNS_Discovery::readData() {
     /* Read socket data */
     QByteArray data = DS_GetSocketData (&m_receiver);
 
@@ -150,8 +146,7 @@ void MDNS_Discovery::readData()
 // MDNS::ClearCache
 //=============================================================================
 
-void MDNS_Discovery::clearCache()
-{
+void MDNS_Discovery::clearCache() {
     m_cache.clear();
 }
 
@@ -159,25 +154,21 @@ void MDNS_Discovery::clearCache()
 // MDNS::OnLookupFinished
 //=============================================================================
 
-void MDNS_Discovery::lookupFinished (QHostInfo info)
-{
-    foreach (QHostAddress address, info.addresses())
-        {
-            if (address.protocol() == QAbstractSocket::AnyIPProtocol)
-                {
-                    addToCache (info.hostName(), address.toString());
-                    emit ipFound (info.hostName(), address.toString());
-                    return;
-                }
+void MDNS_Discovery::lookupFinished (QHostInfo info) {
+    foreach (QHostAddress address, info.addresses()) {
+        if (address.protocol() == QAbstractSocket::AnyIPProtocol) {
+            addToCache (info.hostName(), address.toString());
+            emit ipFound (info.hostName(), address.toString());
+            return;
         }
+    }
 }
 
 //=============================================================================
 // MDNS::AddToCache
 //=============================================================================
 
-void MDNS_Discovery::addToCache (QString address, QString ip)
-{
+void MDNS_Discovery::addToCache (QString address, QString ip) {
     if (m_cache.contains (address))
         m_cache.remove (address);
 
@@ -188,19 +179,17 @@ void MDNS_Discovery::addToCache (QString address, QString ip)
 // MDNS::GetHostName
 //=============================================================================
 
-QString MDNS_Discovery::getHostName (QByteArray data)
-{
+QString MDNS_Discovery::getHostName (QByteArray data) {
     int i = 12;
     QString rawData;
     QString address;
 
     /* The host name starts when the packet flags end (byte #12) and ends
      * with a (obligatory) null character */
-    while (data.at (i) != (char) 0x00)
-        {
-            ++i;
-            rawData.append (data.at (i));
-        }
+    while (data.at (i) != (char) 0x00) {
+        ++i;
+        rawData.append (data.at (i));
+    }
 
     /* The '.local' section cannot be used when obtained directly from the
      * packet, since it contains additional characters.
@@ -222,8 +211,7 @@ QString MDNS_Discovery::getHostName (QByteArray data)
 // MDNS::GetIPv4Address
 //=============================================================================
 
-void MDNS_Discovery::getIPv4Address (QByteArray data, QString host)
-{
+void MDNS_Discovery::getIPv4Address (QByteArray data, QString host) {
     int iterator = 12 + host.length();
 
     /* We cannot obtain IP of non-existent host */
@@ -247,9 +235,8 @@ void MDNS_Discovery::getIPv4Address (QByteArray data, QString host)
                  .arg (QString::number ((quint8) data.at (iterator + 3)));
 
     /* If the obtained IP is valid, notify other objects */
-    if (QHostAddress (ip).protocol() == QAbstractSocket::IPv4Protocol)
-        {
-            addToCache (host, ip);
-            emit ipFound (host, ip);
-        }
+    if (QHostAddress (ip).protocol() == QAbstractSocket::IPv4Protocol) {
+        addToCache (host, ip);
+        emit ipFound (host, ip);
+    }
 }

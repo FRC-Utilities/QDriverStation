@@ -9,21 +9,19 @@
 #include <queue>
 #include <QObject>
 
-struct BeepObject
-{
+struct BeepObject {
     float freq;
     int samplesLeft;
 };
 
-class Beeper : public QObject
-{
-public:
+class Beeper : public QObject {
+  public:
     Beeper();
     ~Beeper();
     void beep (float freq, int duration);
     void generateSamples (qint16* stream, int length);
 
-private:
+  private:
     float v;
     std::queue<BeepObject> beeps;
 };

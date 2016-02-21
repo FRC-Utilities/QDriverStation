@@ -29,9 +29,8 @@
 
 #include "Global/Global.h"
 
-class CustomTabStyle : public QProxyStyle
-{
-public:
+class CustomTabStyle : public QProxyStyle {
+  public:
     explicit CustomTabStyle();
 
     QSize sizeFromContents (ContentsType type,

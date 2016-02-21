@@ -32,11 +32,10 @@
  * The only thing that changed (as far as we know) is
  * the default robot addresses.
  */
-class LIB_DS_DECL DS_Protocol2016 : public DS_Protocol2015
-{
+class LIB_DS_DECL DS_Protocol2016 : public DS_Protocol2015 {
     Q_OBJECT
 
-public:
+  public:
     virtual QStringList defaultRobotAddress();
 };
 

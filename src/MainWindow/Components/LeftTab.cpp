@@ -42,8 +42,7 @@
 // LeftTab::LeftTab
 //=============================================================================
 
-LeftTab::LeftTab (QWidget* parent) : QTabWidget (parent)
-{
+LeftTab::LeftTab (QWidget* parent) : QTabWidget (parent) {
     m_operator    = new Operator    (this);
     m_joysticks   = new Joysticks   (this);
     m_preferences = new Preferences (this);
@@ -73,8 +72,7 @@ LeftTab::LeftTab (QWidget* parent) : QTabWidget (parent)
 // LeftTab::~LeftTab
 //=============================================================================
 
-LeftTab::~LeftTab()
-{
+LeftTab::~LeftTab() {
     DS_LogMessage (kInfoLevel, "MainWindow: Left tab destroyed");
 }
 
@@ -82,8 +80,7 @@ LeftTab::~LeftTab()
 // LeftTab::resizeToMinimum
 //=============================================================================
 
-void LeftTab::resizeToMinimum()
-{
+void LeftTab::resizeToMinimum() {
     setFixedWidth (minimumSizeHint().width());
     QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (resizeToMinimum()));
 }

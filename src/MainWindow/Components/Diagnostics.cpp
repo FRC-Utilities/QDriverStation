@@ -43,8 +43,7 @@
 // Diagnostics::Diagnostics
 //=============================================================================
 
-Diagnostics::Diagnostics (QWidget* parent) : QWidget (parent)
-{
+Diagnostics::Diagnostics (QWidget* parent) : QWidget (parent) {
     createWidgets();
     createLayouts();
     connectSlots();
@@ -54,8 +53,7 @@ Diagnostics::Diagnostics (QWidget* parent) : QWidget (parent)
 // Diagnostics::~Diagnostics
 //=============================================================================
 
-Diagnostics::~Diagnostics()
-{
+Diagnostics::~Diagnostics() {
     DS_LogMessage (kInfoLevel, "MainWindow: Diagnostics widget destroyed");
 }
 
@@ -63,8 +61,7 @@ Diagnostics::~Diagnostics()
 // Diagnostics::createWidgets
 //=============================================================================
 
-void Diagnostics::createWidgets()
-{
+void Diagnostics::createWidgets() {
     /* Diagnostic checkboxes */
     m_ethernetLink           = new QCheckBox (tr ("Enet Link"), this);
     m_radio                  = new QCheckBox (tr ("DS Radio"), this);
@@ -133,8 +130,7 @@ void Diagnostics::createWidgets()
 // Diagnostics::createLayouts
 //=============================================================================
 
-void Diagnostics::createLayouts()
-{
+void Diagnostics::createLayouts() {
     /* Arrange network diagnostics widgets */
     m_networkDiagLayout = new QVBoxLayout          (m_networkDiagWidget);
     m_networkDiagLayout->setSpacing                (DPI_SCALE (1));
@@ -205,8 +201,7 @@ void Diagnostics::createLayouts()
 // Diagnostics::connectsSlots
 //=============================================================================
 
-void Diagnostics::connectSlots()
-{
+void Diagnostics::connectSlots() {
     connect (DS(),         &DriverStation::radioChanged,
              m_radio,      &QCheckBox::setChecked);
     connect (DS(),         &DriverStation::radioChanged,
@@ -234,8 +229,7 @@ void Diagnostics::connectSlots()
 
     /* Lambda-functions */
     connect (DS(), &DriverStation::communicationsChanged,
-             [ = ] (DS_CommStatus status)
-    {
+    [ = ] (DS_CommStatus status) {
         m_robot->setChecked (status == kFull);
     });
 }
@@ -244,8 +238,7 @@ void Diagnostics::connectSlots()
 // Diagnostics::updateCpuUsage
 //=============================================================================
 
-void Diagnostics::updateCpuUsage (int usage)
-{
+void Diagnostics::updateCpuUsage (int usage) {
     m_cpuUsage->setText (tr ("%1 %").arg (usage));
 }
 
@@ -253,8 +246,7 @@ void Diagnostics::updateCpuUsage (int usage)
 // Diagnostics::updateRamUsage
 //=============================================================================
 
-void Diagnostics::updateRamUsage (int usage)
-{
+void Diagnostics::updateRamUsage (int usage) {
     m_ramUsage->setText (tr ("%1 MB").arg (usage));
 }
 
@@ -262,7 +254,6 @@ void Diagnostics::updateRamUsage (int usage)
 // Diagnostics::updateDiskUsage
 //=============================================================================
 
-void Diagnostics::updateDiskUsage (int usage)
-{
+void Diagnostics::updateDiskUsage (int usage) {
     m_diskUsage->setText (tr ("%1 MB").arg (usage));
 }

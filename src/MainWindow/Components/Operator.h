@@ -34,15 +34,14 @@ class QHBoxLayout;
 class QProgressBar;
 class QButtonGroup;
 
-class Operator : public QWidget
-{
+class Operator : public QWidget {
     Q_OBJECT
 
-public:
+  public:
     explicit Operator (QWidget* parent);
     ~Operator();
 
-private slots:
+  private slots:
     void createWidgets();
     void createLayouts();
     void configureStyles();
@@ -53,12 +52,12 @@ private slots:
     void updateProgressbars();
     void updateControlMode (int index);
 
-signals:
+  signals:
     void showDocked();
     void showUnDocked();
     void requestErrorAnimation();
 
-private:
+  private:
     QPushButton* m_enable;
     QPushButton* m_dsable;
     QWidget* m_stateWidget;

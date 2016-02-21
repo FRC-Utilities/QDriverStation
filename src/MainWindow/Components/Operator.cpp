@@ -72,8 +72,7 @@ const QString OPERATOR_CSS     = "QPushButton {"
 // Operator::Operator
 //=============================================================================
 
-Operator::Operator (QWidget* parent) : QWidget (parent)
-{
+Operator::Operator (QWidget* parent) : QWidget (parent) {
     createWidgets();
     createLayouts();
     configureStyles();
@@ -88,8 +87,7 @@ Operator::Operator (QWidget* parent) : QWidget (parent)
 // Operator::~Operator
 //=============================================================================
 
-Operator::~Operator()
-{
+Operator::~Operator() {
     DS_LogMessage (kInfoLevel, "MainWindow: Operator widget destroyed");
 }
 
@@ -97,8 +95,7 @@ Operator::~Operator()
 // Operator::createWidgets
 //=============================================================================
 
-void Operator::createWidgets()
-{
+void Operator::createWidgets() {
     /* Create main container widgets */
     m_operationWidget  = new QWidget (this);
     m_indicatorsWidget = new QWidget (this);
@@ -156,8 +153,7 @@ void Operator::createWidgets()
 // Operator::createLayouts
 //=============================================================================
 
-void Operator::createLayouts()
-{
+void Operator::createLayouts() {
     /* Configure enable/disable buttons layout */
     m_stateLayout = new QHBoxLayout          (m_stateWidget);
     m_stateLayout->setSpacing                (DPI_SCALE (0));
@@ -232,8 +228,7 @@ void Operator::createLayouts()
 // Operator::configureStyles
 //=============================================================================
 
-void Operator::configureStyles()
-{
+void Operator::configureStyles() {
     /* Change the font to FontAwesome in some widgets */
     m_plugIcon->setFont           (AWESOME()->font (DPI_SCALE (12)));
     m_windowDocked->setFont       (AWESOME()->font (DPI_SCALE (14)));
@@ -311,8 +306,7 @@ void Operator::configureStyles()
 // Operator::connectSlots
 //=============================================================================
 
-void Operator::connectSlots()
-{
+void Operator::connectSlots() {
     connect (m_enable,                  SIGNAL (clicked             (void)),
              this,                        SLOT (updateEnableState   (void)));
     connect (m_dsable,                  SIGNAL (clicked             (void)),
@@ -335,42 +329,36 @@ void Operator::connectSlots()
 // Operator::updateEnableState
 //=============================================================================
 
-void Operator::updateEnableState()
-{
+void Operator::updateEnableState() {
     bool enabled = m_enable->isChecked() && DS()->canBeEnabled();
     DS()->setEnabled (enabled);
 
     /* Make the enable button light green */
-    if (enabled)
-        {
-            m_enable->setStyleSheet (ENABLED_CHECK);
-            m_dsable->setStyleSheet (DISABLED_UNCHECK);
-        }
+    if (enabled) {
+        m_enable->setStyleSheet (ENABLED_CHECK);
+        m_dsable->setStyleSheet (DISABLED_UNCHECK);
+    }
 
     /* Make the disable button light red */
-    else
-        {
-            m_dsable->setStyleSheet (DSABLED_CHECK);
-            m_enable->setStyleSheet (ENABLED_UNCHECK);
-        }
+    else {
+        m_dsable->setStyleSheet (DSABLED_CHECK);
+        m_enable->setStyleSheet (ENABLED_UNCHECK);
+    }
 
     /* Error animation if user clicked on enabled and something is f*cked up */
-    if (sender() != Q_NULLPTR)
-        {
-            if (!enabled && sender()->objectName() == m_enable->objectName())
-                {
-                    m_dsable->setChecked (true);
-                    emit requestErrorAnimation();
-                }
+    if (sender() != Q_NULLPTR) {
+        if (!enabled && sender()->objectName() == m_enable->objectName()) {
+            m_dsable->setChecked (true);
+            emit requestErrorAnimation();
         }
+    }
 }
 
 //=============================================================================
 // Operator::updateWindowState
 //=============================================================================
 
-void Operator::updateWindowState()
-{
+void Operator::updateWindowState() {
     if (m_windowDocked->isChecked())
         emit showDocked();
 
@@ -382,30 +370,28 @@ void Operator::updateWindowState()
 // Operator::updateProgressbars
 //=============================================================================
 
-void Operator::updateProgressbars()
-{
-    if (m_cpu && m_battery && m_plugIcon)
-        {
-            m_cpu->setValue (CPU::getUsage());
-            m_battery->setValue (Battery::currentLevel());
-            m_plugIcon->setVisible (Battery::isConenctedToPowerSupply());
+void Operator::updateProgressbars() {
+    if (m_cpu && m_battery && m_plugIcon) {
+        m_cpu->setValue (CPU::getUsage());
+        m_battery->setValue (Battery::currentLevel());
+        m_plugIcon->setVisible (Battery::isConenctedToPowerSupply());
 
-            /* Create CPU palette */
-            QPalette cpuPalette;
-            cpuPalette.setColor (QPalette::Highlight, QColor ("#dcae00"));
+        /* Create CPU palette */
+        QPalette cpuPalette;
+        cpuPalette.setColor (QPalette::Highlight, QColor ("#dcae00"));
 
-            /* Create battery palette */
-            QPalette batteryPalette;
-            batteryPalette.setColor (QPalette::Highlight,
-                                     QColor (m_battery->value() <= 25 ?
-                                             "#ee141a" :
-                                             "#deae00"));
+        /* Create battery palette */
+        QPalette batteryPalette;
+        batteryPalette.setColor (QPalette::Highlight,
+                                 QColor (m_battery->value() <= 25 ?
+                                         "#ee141a" :
+                                         "#deae00"));
 
 
-            /* Apply palettes */
-            m_cpu->setPalette (cpuPalette);
-            m_battery->setPalette (batteryPalette);
-        }
+        /* Apply palettes */
+        m_cpu->setPalette (cpuPalette);
+        m_battery->setPalette (batteryPalette);
+    }
 
     /* Start a timer */
     QTimer::singleShot (1000, Qt::CoarseTimer, this, SLOT (updateProgressbars()));
@@ -415,8 +401,7 @@ void Operator::updateProgressbars()
 // Operator::updateControlMode
 //=============================================================================
 
-void Operator::updateControlMode (int index)
-{
+void Operator::updateControlMode (int index) {
     Q_UNUSED (index);
     DS_ControlMode mode = kControlInvalid;
 

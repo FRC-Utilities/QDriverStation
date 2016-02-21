@@ -11,19 +11,18 @@ class QWidget;
 ///
 /// Basic Animation Support for QtAwesome (Inspired by https://github.com/spyder-ide/qtawesome)
 ///
-class QtAwesomeAnimation : public QObject
-{
+class QtAwesomeAnimation : public QObject {
     Q_OBJECT
 
-public:
+  public:
     QtAwesomeAnimation ( QWidget* parentWidget, int interval = 10, int step = 1);
 
     void setup ( QPainter& painter, const QRect& rect );
 
-public slots:
+  public slots:
     void update();
 
-private:
+  private:
     QWidget* parentWidgetRef_;
     QTimer* timer_;
     int interval_;

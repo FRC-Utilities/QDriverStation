@@ -46,8 +46,7 @@ const int FREQUENCY = 44100;
 // audio_callback
 //=============================================================================
 
-void audio_callback (void* _beeper, Uint8* _stream, int _length)
-{
+void audio_callback (void* _beeper, Uint8* _stream, int _length) {
     int length = _length / 2;
     Sint16* stream = (Sint16*) _stream;
     Beeper* beeper = (Beeper*) _beeper;
@@ -59,8 +58,7 @@ void audio_callback (void* _beeper, Uint8* _stream, int _length)
 // Beeper::Beeper
 //=============================================================================
 
-Beeper::Beeper()
-{
+Beeper::Beeper() {
     v = 0;
 
     SDL_AudioSpec desiredSpec;
@@ -80,8 +78,7 @@ Beeper::Beeper()
 // Beeper::~Beeper
 //=============================================================================
 
-Beeper::~Beeper()
-{
+Beeper::~Beeper() {
     SDL_CloseAudio();
 }
 
@@ -89,51 +86,44 @@ Beeper::~Beeper()
 // Beeper::generateSamples
 //=============================================================================
 
-void Beeper::generateSamples (qint16* stream, int length)
-{
+void Beeper::generateSamples (qint16* stream, int length) {
     int i = 0;
-    while (i < length)
-        {
+    while (i < length) {
 
-            if (beeps.empty())
-                {
-                    while (i < length)
-                        {
-                            stream[i] = 0;
-                            i++;
-                        }
-                    return;
-                }
-
-            BeepObject& bo = beeps.front();
-
-            int samplesToDo = std::min (i + bo.samplesLeft, length);
-            bo.samplesLeft -= samplesToDo - i;
-
-            while (i < samplesToDo)
-                {
-                    stream[i] = AMPLITUDE * std::sin (v * 2 * M_PI / FREQUENCY);
-                    i++;
-                    v += bo.freq;
-                }
-
-            if (bo.samplesLeft == 0)
-                beeps.pop();
+        if (beeps.empty()) {
+            while (i < length) {
+                stream[i] = 0;
+                i++;
+            }
+            return;
         }
+
+        BeepObject& bo = beeps.front();
+
+        int samplesToDo = std::min (i + bo.samplesLeft, length);
+        bo.samplesLeft -= samplesToDo - i;
+
+        while (i < samplesToDo) {
+            stream[i] = AMPLITUDE * std::sin (v * 2 * M_PI / FREQUENCY);
+            i++;
+            v += bo.freq;
+        }
+
+        if (bo.samplesLeft == 0)
+            beeps.pop();
+    }
 }
 
 //=============================================================================
 // Beeper::beep
 //=============================================================================
 
-void Beeper::beep (float freq, int duration)
-{
-    if (Settings::get ("UI Sounds", true).toBool())
-        {
-            BeepObject beep_object;
-            beep_object.freq = freq;
-            beep_object.samplesLeft = duration * FREQUENCY / 1000;
+void Beeper::beep (float freq, int duration) {
+    if (Settings::get ("UI Sounds", true).toBool()) {
+        BeepObject beep_object;
+        beep_object.freq = freq;
+        beep_object.samplesLeft = duration * FREQUENCY / 1000;
 
-            beeps.push (beep_object);
-        }
+        beeps.push (beep_object);
+    }
 }

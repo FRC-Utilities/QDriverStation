@@ -29,8 +29,7 @@ QSettings* Settings::m_settings = new QSettings ("WinT 3794", "QDriverStation");
 // Settings::Clear
 //=============================================================================
 
-void Settings::clear()
-{
+void Settings::clear() {
     m_settings->clear();
 }
 
@@ -38,8 +37,7 @@ void Settings::clear()
 // Settings::Set
 //=============================================================================
 
-void Settings::set (QString key, const QVariant& value)
-{
+void Settings::set (QString key, const QVariant& value) {
     m_settings->setValue (key, value);
 }
 
@@ -47,7 +45,6 @@ void Settings::set (QString key, const QVariant& value)
 // Settings::Get
 //=============================================================================
 
-QVariant Settings::get (QString key, const QVariant& defaultValue)
-{
+QVariant Settings::get (QString key, const QVariant& defaultValue) {
     return m_settings->value (key, defaultValue);
 }
