@@ -24,6 +24,7 @@
 #define _QDS_MW_CONSOLE_H
 
 #include <QWidget>
+#include <QPointer>
 
 class QVBoxLayout;
 class QHBoxLayout;
@@ -46,14 +47,14 @@ class Messages : public QWidget {
     void registerMessage (QString text);
 
   private:
-    QVBoxLayout* m_mainLayout;
-    QHBoxLayout* m_buttonsLayout;
+    QPointer<QVBoxLayout> m_mainLayout;
+    QPointer<QHBoxLayout> m_buttonsLayout;
 
-    QWidget* m_buttonsWidget;
-    QPushButton* m_copyButton;
-    QPushButton* m_clearButton;
+    QPointer<QWidget> m_buttonsWidget;
+    QPointer<QPushButton> m_copyButton;
+    QPointer<QPushButton> m_clearButton;
 
-    QPlainTextEdit* m_console;
+    QPointer<QPlainTextEdit> m_console;
 };
 
 #endif

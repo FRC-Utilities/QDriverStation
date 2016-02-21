@@ -203,7 +203,7 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
     /**
      * The current protocol being used
      */
-    DS_ProtocolBase* m_protocol;
+    QPointer<DS_ProtocolBase> m_protocol;
 
     /**
      * The joystick data, we only have one instance for the whole library

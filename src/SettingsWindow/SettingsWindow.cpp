@@ -69,7 +69,16 @@ SettingsWindow::SettingsWindow() {
 
     readSettings();
 
+    setAttribute  (Qt::WA_QuitOnClose);
     DS_LogMessage (kInfoLevel, "Settings window created");
+}
+
+//=============================================================================
+// SettingsWindow::~SettingsWindow
+//=============================================================================
+
+SettingsWindow::~SettingsWindow() {
+    DS_LogMessage (kInfoLevel, "Settings Window: SW destroyed");
 }
 
 //=============================================================================

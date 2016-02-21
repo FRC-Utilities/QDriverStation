@@ -23,6 +23,7 @@
 #ifndef _QDS_JOYSTICK_MANAGER_H
 #define _QDS_JOYSTICK_MANAGER_H
 
+#include <QPointer>
 #include "JoysticksCommon.h"
 
 class SDL_Joysticks;
@@ -124,9 +125,9 @@ class JoystickManager : public QObject {
     void onButtonEvent (QDS_ButtonEvent event);
 
   private:
-    SDL_Joysticks* m_sdlJoysticks;
     QList<QDS_InputDevice> m_devices;
-    VirtualJoystick* m_virtualJoystick;
+    QPointer<SDL_Joysticks> m_sdlJoysticks;
+    QPointer<VirtualJoystick> m_virtualJoystick;
 };
 
 #endif

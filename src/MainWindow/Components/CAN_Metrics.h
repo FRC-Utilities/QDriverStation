@@ -24,6 +24,8 @@
 #define _QDS_MW_CAN_METRICS_H
 
 #include <QWidget>
+#include <QPointer>
+
 #include <LibDS/DriverStation.h>
 
 class QLabel;
@@ -42,20 +44,20 @@ class CAN_Metrics : public QWidget {
     void onMetricsReceived (DS_CAN can);
 
   private:
-    QLabel* m_titleLabel;
-    QLabel* m_utilLabel;
-    QLabel* m_busOffLabel;
-    QLabel* m_txFullLabel;
-    QLabel* m_receiveLabel;
-    QLabel* m_transmitLabel;
+    QPointer<QLabel> m_titleLabel;
+    QPointer<QLabel> m_utilLabel;
+    QPointer<QLabel> m_busOffLabel;
+    QPointer<QLabel> m_txFullLabel;
+    QPointer<QLabel> m_receiveLabel;
+    QPointer<QLabel> m_transmitLabel;
 
-    QLabel* m_util;
-    QLabel* m_busOff;
-    QLabel* m_txFull;
-    QLabel* m_receive;
-    QLabel* m_transmit;
+    QPointer<QLabel> m_util;
+    QPointer<QLabel> m_busOff;
+    QPointer<QLabel> m_txFull;
+    QPointer<QLabel> m_receive;
+    QPointer<QLabel> m_transmit;
 
-    QGridLayout* m_layout;
+    QPointer<QGridLayout> m_layout;
 };
 
 #endif

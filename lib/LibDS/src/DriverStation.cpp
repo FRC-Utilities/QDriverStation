@@ -26,7 +26,6 @@
 
 #include <QTimer>
 #include <QSound>
-#include <QThread>
 #include <QApplication>
 
 //=============================================================================
@@ -67,7 +66,6 @@ T* GET_INSTANCE() {
 //=============================================================================
 
 DriverStation::DriverStation() {
-    /* Register the DS types so that Qt does not bitch about the connections */
     qRegisterMetaType <DS_CAN>           ("DS_CAN");
     qRegisterMetaType <DS_Joystick>      ("DS_Joystick");
     qRegisterMetaType <DS_Alliance>      ("DS_Alliance");

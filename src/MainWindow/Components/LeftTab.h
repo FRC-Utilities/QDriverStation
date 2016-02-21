@@ -23,6 +23,7 @@
 #ifndef _QDS_MW_LEFT_TAB_H
 #define _QDS_MW_LEFT_TAB_H
 
+#include <QPointer>
 #include <QTabWidget>
 
 class Operator;
@@ -46,10 +47,10 @@ class LeftTab : public QTabWidget {
     void resizeToMinimum();
 
   private:
-    Operator* m_operator;
-    Joysticks* m_joysticks;
-    Diagnostics* m_diagnostics;
-    Preferences* m_preferences;
+    QPointer<Operator> m_operator;
+    QPointer<Joysticks> m_joysticks;
+    QPointer<Diagnostics> m_diagnostics;
+    QPointer<Preferences> m_preferences;
 };
 
 #endif

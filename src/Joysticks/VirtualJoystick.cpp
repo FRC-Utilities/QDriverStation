@@ -33,19 +33,10 @@ VirtualJoystick::VirtualJoystick() {
     m_axisRange            = 1;
     m_joystickEnabled      = false;
 
-    m_joystick             = new QDS_InputDevice;
-    m_joystick->numAxes    = 6;
-    m_joystick->numPOVs    = 0;
-    m_joystick->numButtons = 10;
-    m_joystick->name       = tr ("Virtual Joystick");
-}
-
-//=============================================================================
-// VirtualJoystick::~VirtualJoystick
-//=============================================================================
-
-VirtualJoystick::~VirtualJoystick() {
-    delete m_joystick;
+    m_joystick.numAxes    = 6;
+    m_joystick.numPOVs    = 0;
+    m_joystick.numButtons = 10;
+    m_joystick.name       = tr ("Virtual Joystick");
 }
 
 //=============================================================================
@@ -68,8 +59,8 @@ bool VirtualJoystick::joystickEnabled() const {
 // VirtualJoystick::joystick
 //=============================================================================
 
-QDS_InputDevice* VirtualJoystick::joystick() const {
-    return m_joystick;
+QDS_InputDevice* VirtualJoystick::joystick() {
+    return &m_joystick;
 }
 
 //=============================================================================
@@ -77,7 +68,7 @@ QDS_InputDevice* VirtualJoystick::joystick() const {
 //=============================================================================
 
 void VirtualJoystick::setJoystickID (int id) {
-    m_joystick->id = id;
+    m_joystick.id = id;
 }
 
 //=============================================================================

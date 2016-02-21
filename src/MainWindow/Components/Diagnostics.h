@@ -24,6 +24,7 @@
 #define _QDS_MW_DIAGNOSTICS_H
 
 #include <QWidget>
+#include <QPointer>
 
 class QLabel;
 class QCheckBox;
@@ -50,46 +51,46 @@ class Diagnostics : public QWidget {
     void updateDiskUsage (int usage);
 
   private:
-    QLabel* m_networkDiagnostics;
-    QCheckBox* m_ethernetLink;
-    QCheckBox* m_radio;
-    QCheckBox* m_bridge;
-    QCheckBox* m_robot;
-    QCheckBox* m_fms;
+    QPointer<QLabel> m_networkDiagnostics;
+    QPointer<QCheckBox> m_ethernetLink;
+    QPointer<QCheckBox> m_radio;
+    QPointer<QCheckBox> m_bridge;
+    QPointer<QCheckBox> m_robot;
+    QPointer<QCheckBox> m_fms;
 
-    QGroupBox* m_systemMonitor;
-    QWidget* m_resetButtons;
-    QWidget* m_indicatorsWidget;
-    QWidget* m_diagnosticsWidget;
-    QWidget* m_networkDiagWidget;
-    QGroupBox* m_softwareVersions;
+    QPointer<QGroupBox> m_systemMonitor;
+    QPointer<QWidget> m_resetButtons;
+    QPointer<QWidget> m_indicatorsWidget;
+    QPointer<QWidget> m_diagnosticsWidget;
+    QPointer<QWidget> m_networkDiagWidget;
+    QPointer<QGroupBox> m_softwareVersions;
 
-    QLabel* m_cpuUsage;
-    QLabel* m_ramUsage;
-    QLabel* m_diskUsage;
-    QLabel* m_pdpVersion;
-    QLabel* m_pcmVersion;
-    QLabel* m_libVersion;
-    QLabel* m_rioVersion;
+    QPointer<QLabel> m_cpuUsage;
+    QPointer<QLabel> m_ramUsage;
+    QPointer<QLabel> m_diskUsage;
+    QPointer<QLabel> m_pdpVersion;
+    QPointer<QLabel> m_pcmVersion;
+    QPointer<QLabel> m_libVersion;
+    QPointer<QLabel> m_rioVersion;
 
-    QLabel* m_cpuUsageLabel;
-    QLabel* m_ramUsageLabel;
-    QLabel* m_diskUsageLabel;
-    QLabel* m_pdpVersionLabel;
-    QLabel* m_pcmVersionLabel;
-    QLabel* m_libraryVersionLabel;
-    QLabel* m_controllerVersionLabel;
+    QPointer<QLabel> m_cpuUsageLabel;
+    QPointer<QLabel> m_ramUsageLabel;
+    QPointer<QLabel> m_diskUsageLabel;
+    QPointer<QLabel> m_pdpVersionLabel;
+    QPointer<QLabel> m_pcmVersionLabel;
+    QPointer<QLabel> m_libraryVersionLabel;
+    QPointer<QLabel> m_controllerVersionLabel;
 
-    QPushButton* m_reboot;
-    QPushButton* m_restart;
+    QPointer<QPushButton> m_reboot;
+    QPointer<QPushButton> m_restart;
 
-    QHBoxLayout* m_mainLayout;
-    QVBoxLayout* m_resetLayout;
-    QVBoxLayout* m_indicatorsLayout;
-    QVBoxLayout* m_diagnosticsLayout;
-    QVBoxLayout* m_networkDiagLayout;
-    QGridLayout* m_systemMonitorLayout;
-    QGridLayout* m_softwareVersionsLayout;
+    QPointer<QHBoxLayout> m_mainLayout;
+    QPointer<QVBoxLayout> m_resetLayout;
+    QPointer<QVBoxLayout> m_indicatorsLayout;
+    QPointer<QVBoxLayout> m_diagnosticsLayout;
+    QPointer<QVBoxLayout> m_networkDiagLayout;
+    QPointer<QGridLayout> m_systemMonitorLayout;
+    QPointer<QGridLayout> m_softwareVersionsLayout;
 };
 
 #endif

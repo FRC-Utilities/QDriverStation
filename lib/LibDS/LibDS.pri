@@ -44,9 +44,7 @@ HEADERS += \
     $$PWD/include/LibDS/Core/ProtocolBase.h \
     $$PWD/include/LibDS/Core/ProtocolManager.h \
     $$PWD/include/LibDS/Core/Watchdog.h \
-    $$PWD/include/LibDS/Core/Discovery/Discovery.h \
     $$PWD/include/LibDS/Protocols/Protocol2016.h \
-    $$PWD/include/LibDS/Core/Discovery/MDNS_Discovery.h \
     $$PWD/include/LibDS/Protocols/Protocol2014.h
 
 SOURCES += \
@@ -58,10 +56,8 @@ SOURCES += \
     $$PWD/src/Core/ProtocolBase.cpp \
     $$PWD/src/Core/ProtocolManager.cpp \
     $$PWD/src/Core/Watchdog.cpp \
-    $$PWD/src/Core/Discovery/Discovery.cpp \
     $$PWD/src/Protocols/Protocol2015.cpp \
     $$PWD/src/Protocols/Protocol2016.cpp \
-    $$PWD/src/Core/Discovery/MDNS_Discovery.cpp \
     $$PWD/src/Protocols/Protocol2014.cpp
 
 RESOURCES += $$PWD/etc/sounds/libds-sounds.qrc

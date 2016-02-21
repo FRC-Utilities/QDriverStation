@@ -24,6 +24,7 @@
 #define _QDS_SETTINGS_WINDOW_H
 
 #include <QDialog>
+#include <QPointer>
 
 class QLabel;
 class QWidget;
@@ -42,6 +43,7 @@ class SettingsWindow : public QDialog {
 
   public:
     explicit SettingsWindow();
+    ~SettingsWindow();
 
     enum Colors {
         Base,
@@ -69,60 +71,60 @@ class SettingsWindow : public QDialog {
     Colors getColorType (const QObject* object);
 
   private:
-    QLabel* m_networkingIcon;
-    QWidget* m_addressWidget;
-    QLineEdit* m_robotAddress;
-    QGroupBox* m_networkingBox;
-    QCheckBox* m_useCustomAddress;
+    QPointer<QLabel> m_networkingIcon;
+    QPointer<QWidget> m_addressWidget;
+    QPointer<QLineEdit> m_robotAddress;
+    QPointer<QGroupBox> m_networkingBox;
+    QPointer<QCheckBox> m_useCustomAddress;
 
-    QTabWidget* m_container;
-    QWidget* m_containerWidget;
-    QGroupBox* m_appearanceBox;
+    QPointer<QTabWidget> m_container;
+    QPointer<QWidget> m_containerWidget;
+    QPointer<QGroupBox> m_appearanceBox;
 
-    QCheckBox* m_autoUpdater;
-    QCheckBox* m_soundEffects;
-    QCheckBox* m_promptOnQuit;
-    QLabel* m_otherSettingsIcon;
-    QGroupBox* m_otherSettingsBox;
-    QWidget* m_othersContainer;
+    QPointer<QCheckBox> m_autoUpdater;
+    QPointer<QCheckBox> m_soundEffects;
+    QPointer<QCheckBox> m_promptOnQuit;
+    QPointer<QLabel> m_otherSettingsIcon;
+    QPointer<QGroupBox> m_otherSettingsBox;
+    QPointer<QWidget> m_othersContainer;
 
-    QLabel* m_languageLabel;
-    QComboBox* m_languageBox;
+    QPointer<QLabel> m_languageLabel;
+    QPointer<QComboBox> m_languageBox;
 
-    QLabel* m_baseLabel;
-    QLabel* m_highlightLabel;
-    QLabel* m_backgroundLabel;
-    QLabel* m_foregroundLabel;
+    QPointer<QLabel> m_baseLabel;
+    QPointer<QLabel> m_highlightLabel;
+    QPointer<QLabel> m_backgroundLabel;
+    QPointer<QLabel> m_foregroundLabel;
 
-    QWidget* m_baseColor;
-    QWidget* m_highlightColor;
-    QWidget* m_backgroundColor;
-    QWidget* m_foregroundColor;
+    QPointer<QWidget> m_baseColor;
+    QPointer<QWidget> m_highlightColor;
+    QPointer<QWidget> m_backgroundColor;
+    QPointer<QWidget> m_foregroundColor;
 
-    QPushButton* m_baseButton;
-    QPushButton* m_highlightButton;
-    QPushButton* m_backgroundButton;
-    QPushButton* m_foregroundButton;
+    QPointer<QPushButton> m_baseButton;
+    QPointer<QPushButton> m_highlightButton;
+    QPointer<QPushButton> m_backgroundButton;
+    QPointer<QPushButton> m_foregroundButton;
 
-    QLineEdit* m_baseEdit;
-    QLineEdit* m_highlightEdit;
-    QLineEdit* m_backgroundEdit;
-    QLineEdit* m_foregroundEdit;
+    QPointer<QLineEdit> m_baseEdit;
+    QPointer<QLineEdit> m_highlightEdit;
+    QPointer<QLineEdit> m_backgroundEdit;
+    QPointer<QLineEdit> m_foregroundEdit;
 
-    QPushButton* m_reset;
-    QPushButton* m_ok;
-    QPushButton* m_cancel;
-    QWidget* m_buttonsWidget;
+    QPointer<QPushButton> m_reset;
+    QPointer<QPushButton> m_ok;
+    QPointer<QPushButton> m_cancel;
+    QPointer<QWidget> m_buttonsWidget;
 
-    QVBoxLayout* m_mainLayout;
-    QVBoxLayout* m_addressLayout;
-    QHBoxLayout* m_networkLayout;
-    QHBoxLayout* m_buttonsLayout;
-    QVBoxLayout* m_containerLayout;
-    QHBoxLayout* m_networkingLayout;
-    QGridLayout* m_appearanceLayout;
-    QHBoxLayout* m_otherSettingsLayout;
-    QVBoxLayout* m_otherSettingsWidgets;
+    QPointer<QVBoxLayout> m_mainLayout;
+    QPointer<QVBoxLayout> m_addressLayout;
+    QPointer<QHBoxLayout> m_networkLayout;
+    QPointer<QHBoxLayout> m_buttonsLayout;
+    QPointer<QVBoxLayout> m_containerLayout;
+    QPointer<QHBoxLayout> m_networkingLayout;
+    QPointer<QGridLayout> m_appearanceLayout;
+    QPointer<QHBoxLayout> m_otherSettingsLayout;
+    QPointer<QVBoxLayout> m_otherSettingsWidgets;
 };
 
 #endif

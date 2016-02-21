@@ -25,7 +25,6 @@
 //=============================================================================
 
 #include <SDL.h>
-#include <QThread>
 #include <QScreen>
 #include <QSpacerItem>
 #include <QMessageBox>
@@ -55,7 +54,6 @@ static qreal RATIO = -1;
 
 Beeper* BEEPER() {
     static Beeper instance;
-    instance.moveToThread (SECONDARY_THREAD());
     return &instance;
 }
 
@@ -92,25 +90,11 @@ QSpacerItem* SPACER() {
 }
 
 //=============================================================================
-// SECONDARY_THREAD
-//=============================================================================
-
-QThread* SECONDARY_THREAD() {
-    static QThread instance;
-    instance.start (QThread::HighPriority);
-    QObject::connect (qApp,      &QApplication::aboutToQuit,
-                      &instance, &QThread::quit);
-
-    return &instance;
-}
-
-//=============================================================================
 // JOYSTICK_MANAGER
 //=============================================================================
 
 JoystickManager* JOYSTICK_MANAGER() {
     static JoystickManager instance;
-    instance.moveToThread (SECONDARY_THREAD());
     return &instance;
 }
 

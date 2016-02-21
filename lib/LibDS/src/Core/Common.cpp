@@ -252,7 +252,7 @@ QByteArray DS_GetSocketData (QUdpSocket* socket) {
 //=============================================================================
 
 QByteArray DS_GetSocketData (QTcpSocket* socket) {
-    return socket->readAll();;
+    return socket->readAll();
 }
 
 //=============================================================================

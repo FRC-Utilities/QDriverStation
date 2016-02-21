@@ -23,6 +23,7 @@
 #ifndef _QDS_MW_RIGHT_TAB_H
 #define _QDS_MW_RIGHT_TAB_H
 
+#include <QPointer>
 #include <QTabWidget>
 
 class About;
@@ -35,9 +36,9 @@ class RightTab : public QTabWidget {
     ~RightTab();
 
   private:
-    About* m_about;
-    Messages* m_messages;
-    CAN_Metrics* m_metrics;
+    QPointer<About> m_about;
+    QPointer<Messages> m_messages;
+    QPointer<CAN_Metrics> m_metrics;
 };
 
 #endif

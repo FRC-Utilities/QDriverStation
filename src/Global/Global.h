@@ -58,7 +58,6 @@ extern Beeper* BEEPER();
 extern DriverStation* DS();
 extern QtAwesome* AWESOME();
 extern QSpacerItem* SPACER();
-extern QThread* SECONDARY_THREAD();
 extern SettingsWindow* SETTINGS_WINDOW();
 extern VJoystickWindow* VJOYSTICK_WINDOW();
 extern JoystickManager* JOYSTICK_MANAGER();

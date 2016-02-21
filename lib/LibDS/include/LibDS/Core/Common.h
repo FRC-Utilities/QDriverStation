@@ -25,6 +25,7 @@
 
 #include <QtMath>
 #include <QString>
+#include <QPointer>
 #include <QDateTime>
 #include <QUdpSocket>
 #include <QTcpSocket>
@@ -41,9 +42,9 @@
  * Represents the available operation modes of the robot.
  */
 typedef enum {
-    kControlTest         =  1, /**< Individual actuators can be moved */
-    kControlAutonomous   =  2, /**< Robot takes over the world */
-    kControlTeleoperated =  3, /**< User moves the robot */
+    kControlTest         =  0, /**< Individual actuators can be moved */
+    kControlAutonomous   =  1, /**< Robot takes over the world */
+    kControlTeleoperated =  2, /**< User moves the robot */
     kControlInvalid      = -1, /**< Blame the programmers if this is used */
 } DS_ControlMode;
 

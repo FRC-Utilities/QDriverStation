@@ -54,7 +54,8 @@ VJoystickWindow::VJoystickWindow() {
     connectSlots();
     readSettings();
 
-    setFixedSize (minimumSizeHint());
+    setFixedSize  (minimumSizeHint());
+    setAttribute  (Qt::WA_QuitOnClose);
     DS_LogMessage (kInfoLevel, "Virtual joysticks window created");
 }
 
@@ -63,8 +64,7 @@ VJoystickWindow::VJoystickWindow() {
 //=============================================================================
 
 VJoystickWindow::~VJoystickWindow() {
-    foreach (QWidget* widget, findChildren<QWidget*>())
-        widget->deleteLater();
+    DS_LogMessage (kInfoLevel, "VJoystickWindow: VJW destroyed");
 }
 
 //=============================================================================

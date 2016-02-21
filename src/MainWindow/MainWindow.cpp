@@ -42,6 +42,9 @@
 #include "Global/Settings.h"
 #include "Dashboards/Dashboards.h"
 
+#include "SettingsWindow/SettingsWindow.h"
+#include "VJoystickWindow/VJoystickWindow.h"
+
 #include "Components/Status.h"
 #include "Components/Buttons.h"
 #include "Components/LeftTab.h"
@@ -53,6 +56,7 @@
 //=============================================================================
 
 MainWindow::MainWindow() {
+    setAttribute  (Qt::WA_QuitOnClose);
     DS_LogMessage (kInfoLevel, "Creating MainWindow....");
 
     /* Configure internal variables */
@@ -110,6 +114,14 @@ MainWindow::MainWindow() {
 }
 
 //=============================================================================
+// MainWindow::~MainWindow
+//=============================================================================
+
+MainWindow::~MainWindow() {
+    DS_LogMessage (kInfoLevel, "MainWindow: MW destroyed");
+}
+
+//=============================================================================
 // MainWindow::moveEvent
 //=============================================================================
 
@@ -146,7 +158,7 @@ void MainWindow::closeEvent (QCloseEvent* event) {
     }
 
     event->accept();
-    QApplication::closeAllWindows();
+    qApp->exit (EXIT_SUCCESS);
 }
 
 //=============================================================================

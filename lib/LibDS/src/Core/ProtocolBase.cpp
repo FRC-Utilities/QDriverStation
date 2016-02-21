@@ -29,7 +29,7 @@
 const QString CHECK_FIREWALL = "<p>"
                                "<font color=#FE755C><b>ERROR:</b></font> "
                                "<font color=#FFFFFF>Cannot connect to robot</font><br/>"
-                               "<font color=#20C9FF>FRC: The robot is slow to respond. "
+                               "<font color=#20C9FF>The robot is slow to respond. "
                                "Check firewall settings.</font>"
                                "</p>";
 const QString PARTIAL_COMM   = "<p>"
@@ -88,11 +88,8 @@ DS_ProtocolBase::DS_ProtocolBase() {
              this,         &DS_ProtocolBase::onPingResponse);
     connect (&m_radioPing, &QTcpSocket::stateChanged,
              this,         &DS_ProtocolBase::onPingResponse);
-    connect (&m_discovery, &NetworkDiscovery::ipFound,
-             this,         &DS_ProtocolBase::updateRobotIP);
 
     reset();
-
     QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (showInfoMsg()));
 }
 
@@ -284,15 +281,16 @@ void DS_ProtocolBase::reset() {
     updateCommStatus   (kFailing);
 
     /* Figure out the robot address and ping the robot */
-    m_discovery.getIP        (robotAddress());
-    emit robotAddressChanged (robotAddress());
+    QHostInfo::lookupHost (robotAddress(),
+                           this, SLOT (lookupFinished (QHostInfo)));
 
     /* Ping robot & radio */
     pingRadio();
     pingRobot();
 
     /* Lower the watchdog tolerance time to try more robot addresses faster */
-    m_watchdog.setTimeout (125);
+    emit robotAddressChanged (robotAddress());
+    m_watchdog.setTimeout (1250);
 }
 
 //=============================================================================
@@ -504,11 +502,9 @@ void DS_ProtocolBase::disableEmergencyStop() {
 // DS_ProtocolBase::updateRobotIP
 //=============================================================================
 
-void DS_ProtocolBase::updateRobotIP (QString address, QString ip) {
-    if (address.toLower() == robotAddress().toLower() && address != ip) {
-        DS_LogMessage (kLibLevel, "Robot IP set from " + address + " to " + ip);
-        emit robotAddressChanged (ip);
-    }
+void DS_ProtocolBase::lookupFinished (QHostInfo info) {
+    if (!info.addresses().isEmpty())
+        emit robotAddressChanged (info.addresses().first().toString());
 
     pingRobot();
 }

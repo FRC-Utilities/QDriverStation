@@ -24,6 +24,7 @@
 #define _QDS_MW_BUTTONS_H
 
 #include <QWidget>
+#include <QPointer>
 
 class QPushButton;
 class QVBoxLayout;
@@ -36,11 +37,10 @@ class Buttons: public QWidget {
     ~Buttons();
 
   private:
-    QVBoxLayout* m_layout;
-
-    QPushButton* m_close;
-    QPushButton* m_settings;
-    QPushButton* m_virtualJ;
+    QPointer<QVBoxLayout> m_layout;
+    QPointer<QPushButton> m_close;
+    QPointer<QPushButton> m_settings;
+    QPointer<QPushButton> m_virtualJ;
 };
 
 #endif

@@ -30,7 +30,6 @@
 
 #include "LibDS/Core/Common.h"
 #include "LibDS/Core/Watchdog.h"
-#include "LibDS/Core/Discovery/Discovery.h"
 
 /**
  * \class DS_Protocol
@@ -657,11 +656,6 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     DS_Watchdog m_watchdog;
 
     /**
-     * Finds out the IP of the robot address in a cross-platform way
-     */
-    NetworkDiscovery m_discovery;
-
-    /**
      * The current control mode of the robot.
      * This variable is changed with the \c setControlMode() function.
      */
@@ -706,10 +700,9 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     void disableEmergencyStop();
 
     /**
-     * Changes the address of the robot to the robot's IP and then tries to
-     * ping the robot to get the connection status
+     * Extracts the IP from a host address
      */
-    void updateRobotIP (QString address, QString ip);
+    void lookupFinished (QHostInfo info);
 
     /**
      * Called when the connection state between the robot TCP connection and

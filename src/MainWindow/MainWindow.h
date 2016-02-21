@@ -23,6 +23,7 @@
 #ifndef _QDS_MAIN_WINDOW_H
 #define _QDS_MAIN_WINDOW_H
 
+#include <QPointer>
 #include <QMainWindow>
 
 class Status;
@@ -37,6 +38,7 @@ class MainWindow : public QMainWindow {
 
   public:
     explicit MainWindow();
+    ~MainWindow();
 
   protected:
     void moveEvent (QMoveEvent* event);
@@ -55,12 +57,12 @@ class MainWindow : public QMainWindow {
     bool m_docked;
     bool m_closing;
 
-    QWidget* m_central;
-    Status* m_status;
-    Buttons* m_buttons;
-    LeftTab* m_leftTab;
-    RightTab* m_rightTab;
-    QHBoxLayout* m_layout;
+    QPointer<QWidget> m_central;
+    QPointer<Status> m_status;
+    QPointer<Buttons> m_buttons;
+    QPointer<LeftTab> m_leftTab;
+    QPointer<RightTab> m_rightTab;
+    QPointer<QHBoxLayout> m_layout;
 };
 
 #endif

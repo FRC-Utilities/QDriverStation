@@ -27,8 +27,8 @@
 #include <QKeyEvent>
 #include <QApplication>
 
-#include "JoysticksCommon.h"
 #include "Global/Global.h"
+#include "JoysticksCommon.h"
 
 /**
  * This class implements the code necessary to capture
@@ -43,11 +43,10 @@ class VirtualJoystick : public QObject {
 
   public:
     explicit VirtualJoystick();
-    ~VirtualJoystick();
 
     float axisRange() const;
     bool joystickEnabled() const;
-    QDS_InputDevice* joystick() const;
+    QDS_InputDevice* joystick();
 
   public slots:
     void setJoystickID (int id);
@@ -71,7 +70,7 @@ class VirtualJoystick : public QObject {
   private:
     float m_axisRange;
     bool m_joystickEnabled;
-    QDS_InputDevice* m_joystick;
+    QDS_InputDevice m_joystick;
 };
 
 #endif

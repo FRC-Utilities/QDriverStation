@@ -29,7 +29,6 @@
 //=============================================================================
 
 JoystickManager::JoystickManager() {
-    /* Multu-threading signalling magic */
     qRegisterMetaType <QDS_POVEvent>    ("QDS_POVEvent");
     qRegisterMetaType <QDS_AxisEvent>   ("QDS_AxisEvent");
     qRegisterMetaType <QDS_ButtonEvent> ("QDS_ButtonEvent");

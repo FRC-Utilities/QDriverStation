@@ -24,6 +24,7 @@
 #define _QDS_MW_OPERATOR_H
 
 #include <QWidget>
+#include <QPointer>
 
 class QLabel;
 class QComboBox;
@@ -58,45 +59,45 @@ class Operator : public QWidget {
     void requestErrorAnimation();
 
   private:
-    QPushButton* m_enable;
-    QPushButton* m_dsable;
-    QWidget* m_stateWidget;
-    QButtonGroup* m_stateGroup;
-    QHBoxLayout* m_stateLayout;
+    QPointer<QPushButton> m_enable;
+    QPointer<QPushButton> m_dsable;
+    QPointer<QWidget> m_stateWidget;
+    QPointer<QButtonGroup> m_stateGroup;
+    QPointer<QHBoxLayout> m_stateLayout;
 
-    QPushButton* m_test;
-    QPushButton* m_teleop;
-    QPushButton* m_practice;
-    QPushButton* m_autonomous;
-    QWidget* m_modesWidget;
-    QButtonGroup* m_modesGroup;
-    QVBoxLayout* m_modesLayout;
+    QPointer<QPushButton> m_test;
+    QPointer<QPushButton> m_teleop;
+    QPointer<QPushButton> m_practice;
+    QPointer<QPushButton> m_autonomous;
+    QPointer<QWidget> m_modesWidget;
+    QPointer<QButtonGroup> m_modesGroup;
+    QPointer<QVBoxLayout> m_modesLayout;
 
-    QLabel* m_plugIcon;
-    QLabel* m_elapsedTime;
-    QProgressBar* m_cpu;
-    QProgressBar* m_battery;
+    QPointer<QLabel> m_plugIcon;
+    QPointer<QLabel> m_elapsedTime;
+    QPointer<QProgressBar> m_cpu;
+    QPointer<QProgressBar> m_battery;
 
-    QLabel* m_cpuLabel;
-    QLabel* m_batteryLabel;
-    QLabel* m_windowModeLabel;
-    QLabel* m_elapsedTimeLabel;
-    QLabel* m_teamStationLabel;
+    QPointer<QLabel> m_cpuLabel;
+    QPointer<QLabel> m_batteryLabel;
+    QPointer<QLabel> m_windowModeLabel;
+    QPointer<QLabel> m_elapsedTimeLabel;
+    QPointer<QLabel> m_teamStationLabel;
 
-    QComboBox* m_teamStation;
+    QPointer<QComboBox> m_teamStation;
 
-    QPushButton* m_windowNormal;
-    QPushButton* m_windowDocked;
-    QButtonGroup* m_windowGroup;
-    QWidget* m_windowWidget;
-    QHBoxLayout* m_windowModeLayout;
+    QPointer<QPushButton> m_windowNormal;
+    QPointer<QPushButton> m_windowDocked;
+    QPointer<QButtonGroup> m_windowGroup;
+    QPointer<QWidget> m_windowWidget;
+    QPointer<QHBoxLayout> m_windowModeLayout;
 
-    QWidget* m_operationWidget;
-    QWidget* m_indicatorsWidget;
+    QPointer<QWidget> m_operationWidget;
+    QPointer<QWidget> m_indicatorsWidget;
 
-    QHBoxLayout* m_mainLayout;
-    QVBoxLayout* m_operationLayout;
-    QGridLayout* m_indicatorsLayout;
+    QPointer<QHBoxLayout> m_mainLayout;
+    QPointer<QVBoxLayout> m_operationLayout;
+    QPointer<QGridLayout> m_indicatorsLayout;
 };
 
 #endif
