@@ -23,3 +23,14 @@
 - Scalable UI to any pixel density
 - Implement UI sound effects
 - More options in the preferences window
+
+### QDriverStation 0.15
+
+- Support for 2014 protocol
+- Support for multiple languages (Spanish, English and German)
+- Better robot detection code (by looping through all DHCP addresses in less than 20 seconds). Beat that FRC DS!
+- Dynamic control of the Watchdog timer
+- Fix crash issue on Mac OS X
+- Implement a simple logger
+- Fix some minor issues in the UI
+- Add base framework for implementing FMS protocols
