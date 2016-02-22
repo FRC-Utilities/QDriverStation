@@ -115,7 +115,6 @@ int main (int argc, char* argv[]) {
     app.setApplicationName    ("QDriverStation");
     app.setOrganizationDomain ("www.wint3794.org");
     app.installTranslator     (Languages::translator());
-    app.setAttribute          (Qt::AA_Use96Dpi);
 
     /* Create the main window and check for updates */
     app.setFont (Languages::appFont());

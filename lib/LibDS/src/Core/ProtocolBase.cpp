@@ -290,7 +290,7 @@ void DS_ProtocolBase::reset() {
 
     /* Lower the watchdog tolerance time to try more robot addresses faster */
     emit robotAddressChanged (robotAddress());
-    m_watchdog.setTimeout (1250);
+    m_watchdog.setTimeout (125);
 }
 
 //=============================================================================
