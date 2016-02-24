@@ -16,9 +16,9 @@ We are also developing a **mobile version** of the QDriverStation. [Check it her
 
 ### Download
 
-You can download the QDriverStation from GitHub or SourceForge. If you got the QDriverStation from another website, it was probably modified by another person and may contain adware or some nasty junk in it.
+You can download the QDriverStation from GitHub or SourceForge. If you got the QDriverStation from another website, it was probably modified by another person and may contain adware or some nasty junk in it. Be advised that SourceForge is known for serving misleading advertisements.
 
-We strongly recommend you to download the installers from GitHub and **not** from SourceForge.
+We strongly recommend you to download the installers from GitHub and **not from SourceForge**.
 
 **Download Links:**
 
@@ -27,7 +27,7 @@ We strongly recommend you to download the installers from GitHub and **not** fro
 
 ###### Note for Linux users
 
-While for the moment we don't build Linux packages, there are some packages of the QDriverStation made available some members of the FRC community:
+While for the moment we don't build Linux packages, there are some packages of the QDriverStation made available by some members of the FRC community:
 
 - [ArchLinux package by lopsided98](https://aur.archlinux.org/packages/qdriverstation-git/)
 - [Launchpad/Ubuntu PPA by team 5256](https://launchpad.net/~bearzrobotics/+archive/ubuntu/ppaqdriverstation)
