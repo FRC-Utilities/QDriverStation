@@ -30,7 +30,7 @@ We strongly recommend you to download the installers from GitHub and **not** fro
 While for the moment we don't build Linux packages, there are some packages of the QDriverStation made available some members of the FRC community:
 
 - [ArchLinux package by lopsided98](https://aur.archlinux.org/packages/qdriverstation-git/)
-- [Launchpad/Ubuntu PPA by team 5256)(https://launchpad.net/~bearzrobotics/+archive/ubuntu/ppaqdriverstation])
+- [Launchpad/Ubuntu PPA by team 5256](https://launchpad.net/~bearzrobotics/+archive/ubuntu/ppaqdriverstation)
 
 For more information regarding Linux installers, check [this issue](https://github.com/WinT-3794/QDriverStation/issues/9).
 
