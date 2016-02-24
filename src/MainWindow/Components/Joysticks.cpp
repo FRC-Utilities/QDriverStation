@@ -283,7 +283,7 @@ void Joysticks::setTipsVisible (bool visible) {
 //=============================================================================
 
 void Joysticks::onPOVEvent (QDS_POVEvent event) {
-    if (m_joystickNames->currentRow() != event.joystick.id || !isVisible())
+    if (m_joystickNames->currentRow() != event.joystick.device_number || !isVisible())
         return;
 
     if (event.pov < m_povs.count())
@@ -295,7 +295,7 @@ void Joysticks::onPOVEvent (QDS_POVEvent event) {
 //=============================================================================
 
 void Joysticks::onAxisEvent (QDS_AxisEvent event) {
-    if (m_joystickNames->currentRow() != event.joystick.id || !isVisible())
+    if (m_joystickNames->currentRow() != event.joystick.device_number || !isVisible())
         return;
 
     if (event.axis < m_axes.count())
@@ -307,7 +307,7 @@ void Joysticks::onAxisEvent (QDS_AxisEvent event) {
 //=============================================================================
 
 void Joysticks::onButtonEvent (QDS_ButtonEvent event) {
-    if (m_joystickNames->currentRow() != event.joystick.id || !isVisible())
+    if (m_joystickNames->currentRow() != event.joystick.device_number || !isVisible())
         return;
 
     if (event.button < m_buttons.count())

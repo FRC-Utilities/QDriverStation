@@ -97,7 +97,7 @@ QDS_InputDevice JoystickManager::getInputDevice (int id) {
 
     QDS_InputDevice device;
 
-    device.id         = -1;
+    device.device_number         = -1;
     device.numAxes    = -1;
     device.numPOVs    = -1;
     device.numButtons = -1;
@@ -174,7 +174,7 @@ void JoystickManager::addInputDevice (QDS_InputDevice device) {
 //=============================================================================
 
 void JoystickManager::onPOVEvent (QDS_POVEvent event) {
-    DS()->updateJoystickPOV (event.joystick.id,
+    DS()->updateJoystickPOV (event.joystick.device_number,
                              event.pov,
                              event.angle);
 }
@@ -184,7 +184,7 @@ void JoystickManager::onPOVEvent (QDS_POVEvent event) {
 //=============================================================================
 
 void JoystickManager::onAxisEvent (QDS_AxisEvent event) {
-    DS()->updateJoystickAxis (event.joystick.id,
+    DS()->updateJoystickAxis (event.joystick.device_number,
                               event.axis,
                               event.value);
 }
@@ -194,7 +194,7 @@ void JoystickManager::onAxisEvent (QDS_AxisEvent event) {
 //=============================================================================
 
 void JoystickManager::onButtonEvent (QDS_ButtonEvent event) {
-    DS()->updateJoystickButton (event.joystick.id,
+    DS()->updateJoystickButton (event.joystick.device_number,
                                 event.button,
                                 event.pressed);
 }

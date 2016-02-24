@@ -240,29 +240,24 @@ QByteArray DS_Protocol2014::_getFmsPacket() {
     quint8 _unknown_header = pFMS_UnknownHeader;
 
     /* Get robot IP and split it */
-    {
-        QStringList ip = robotAddress().split (".");
-
-        if (ip.count() == 4) {
-            _ip_a = ip.at (0).toInt();
-            _ip_b = ip.at (1).toInt();
-            _ip_c = ip.at (2).toInt();
-            _ip_d = ip.at (3).toInt();
-        }
+    QStringList ip = robotAddress().split (".");
+    if (ip.count() == 4) {
+        _ip_a = ip.at (0).toInt();
+        _ip_b = ip.at (1).toInt();
+        _ip_c = ip.at (2).toInt();
+        _ip_d = ip.at (3).toInt();
     }
 
     /* Get robot mode and state */
-    {
-        if (controlMode() == kControlTeleoperated)
-            _state = isConnectedToRobot() ? pFMS_Teleoperated_RobotPresent :
-                     pFMS_Teleoperated_NoRobotPresent;
+    if (controlMode() == kControlTeleoperated)
+        _state = isConnectedToRobot() ? pFMS_Teleoperated_RobotPresent :
+                 pFMS_Teleoperated_NoRobotPresent;
 
-        else if (controlMode() == kControlAutonomous)
-            _state = isConnectedToRobot() ? pFMS_Autonomous_RobotPresent :
-                     pFMS_Autonomous_NoRobotPresent;
+    else if (controlMode() == kControlAutonomous)
+        _state = isConnectedToRobot() ? pFMS_Autonomous_RobotPresent :
+                 pFMS_Autonomous_NoRobotPresent;
 
-        _state += isEnabled() ? pFMS_RobotEnabled : 0;
-    }
+    _state += isEnabled() ? pFMS_RobotEnabled : 0;
 
     /* Get alliance and station */
     switch (alliance()) {
@@ -293,68 +288,41 @@ QByteArray DS_Protocol2014::_getFmsPacket() {
     }
 
     /* Construct the packet */
-    {
-        /* Add number of sent FMS packets */
-        data.append (DS_ToBytes (sentFmsPackets()));
+    data.append (DS_ToBytes (sentFmsPackets()));
+    data.append (_state);
+    data.append (_unknown_header);
+    data.append (DS_ToBytes (team()));
+    data.append (_ip_a);
+    data.append (_ip_b);
+    data.append (_ip_c);
+    data.append (_ip_d);
+    data.append (_alliance);
+    data.append (_station);
+    data.append (m_robotMacAddress);
+    data.append (m_dsVersion);
+    data.append (DS_ToBytes (_missed_packets));
+    data.append (DS_ToBytes (sentRobotPackets()));
+    data.append (DS_ToBytes (1000 / robotFrequency()));
+    data.append (DS_ToBytes (12));
+    data.append (0xFF);
+    data.append (0xFF);
+    data.append (0xFF);
+    data.append (0xFF);
+    data.append (0xFF);
+    data.append (0xFF);
+    data.append (DS_ToBytes (batteryVoltage()));
 
-        /* Add robot state (teleop or auto, enabled or disabled, etc) */
-        data.append (_state);
+    /* Add CRC padding (4 bytes) */
+    data.append ((char) 0x00);
+    data.append ((char) 0x00);
+    data.append ((char) 0x00);
+    data.append ((char) 0x00);
 
-        /* Add FMS header code */
-        data.append (_unknown_header);
-
-        /* Add team number */
-        data.append (DS_ToBytes (team()));
-
-        /* Add robot IP */
-        data.append (_ip_a);
-        data.append (_ip_b);
-        data.append (_ip_c);
-        data.append (_ip_d);
-
-        /* Add alliance & station */
-        data.append (_alliance);
-        data.append (_station);
-
-        /* Add robot MAC address */
-        data.append (m_robotMacAddress);
-
-        /* Add DS version */
-        data.append (m_dsVersion);
-
-        /* Add missed robot packets & sent robot packets */
-        data.append (DS_ToBytes (_missed_packets));
-        data.append (DS_ToBytes (sentRobotPackets()));
-
-        /* Add average robot frequency */
-        data.append (DS_ToBytes (1000 / robotFrequency()));
-
-        /* Add an unknown number that seems to be random */
-        data.append (DS_ToBytes (12));
-
-        /* Unknown field (always 0xFF) */
-        data.append (0xFF);
-        data.append (0xFF);
-        data.append (0xFF);
-        data.append (0xFF);
-        data.append (0xFF);
-        data.append (0xFF);
-
-        /* Add battery voltage */
-        data.append (DS_ToBytes (batteryVoltage()));
-
-        /* Add CRC padding (4 bytes) */
-        data.append ((char) 0x00);
-        data.append ((char) 0x00);
-        data.append ((char) 0x00);
-        data.append ((char) 0x00);
-
-        /* Add CRC checksum */
-        data.append ((char) 0x00);
-        data.append ((char) 0x00);
-        data.append ((char) 0x00);
-        data.append ((char) 0x00);
-    }
+    /* Add CRC checksum */
+    data.append ((char) 0x00);
+    data.append ((char) 0x00);
+    data.append ((char) 0x00);
+    data.append ((char) 0x00);
 
     return data;
 }

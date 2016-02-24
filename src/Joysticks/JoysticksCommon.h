@@ -33,13 +33,13 @@
  *   - Number of axes, buttons and POV hats
  */
 struct QDS_InputDevice {
-    int id;
-
     int numAxes;
     int numPOVs;
     int numButtons;
+    int device_number;
 
     QString name;
+    QString device_id;
 };
 
 /**

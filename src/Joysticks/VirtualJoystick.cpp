@@ -68,7 +68,7 @@ QDS_InputDevice* VirtualJoystick::joystick() {
 //=============================================================================
 
 void VirtualJoystick::setJoystickID (int id) {
-    m_joystick.id = id;
+    m_joystick.device_number = id;
 }
 
 //=============================================================================

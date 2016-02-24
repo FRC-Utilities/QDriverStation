@@ -79,7 +79,7 @@ QList<QDS_InputDevice> SDL_Joysticks::joysticks() {
 //=============================================================================
 
 void SDL_Joysticks::rumble (QDS_RumbleRequest request) {
-    SDL_Haptic* haptic = SDL_HapticOpen (request.joystick->id);
+    SDL_Haptic* haptic = SDL_HapticOpen (request.joystick->device_number);
 
     if (haptic != Q_NULLPTR) {
         SDL_HapticRumbleInit (haptic);
@@ -145,7 +145,7 @@ QDS_InputDevice SDL_Joysticks::getJoystick (int id) {
     QDS_InputDevice joystick;
     SDL_Joystick* sdl_joystick = SDL_JoystickOpen (id);
 
-    joystick.id = getDynamicID (id);
+    joystick.device_number = getDynamicID (id);
 
     if (sdl_joystick != Q_NULLPTR) {
         joystick.name       = SDL_JoystickNameForIndex (id);
