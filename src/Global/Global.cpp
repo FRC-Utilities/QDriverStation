@@ -175,7 +175,8 @@ void SDL_INIT() {
     SDL_SetHint (SDL_HINT_XINPUT_ENABLED, "0");
     SDL_SetHint (SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
 
-    if (SDL_Init (SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC | SDL_INIT_AUDIO) != 0) {
+    if (SDL_Init (SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_HAPTIC | SDL_INIT_AUDIO) !=
+            0) {
         QMessageBox::warning (Q_NULLPTR,
                               QObject::tr ("QDriverStation"),
                               QObject::tr ("SDL initailization error: %1")

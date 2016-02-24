@@ -110,7 +110,7 @@ int main (int argc, char* argv[]) {
 
     /* Configure application information */
     QApplication app (argc, argv);
-    app.setApplicationVersion ("0.15");
+    app.setApplicationVersion ("1.0.0");
     app.setOrganizationName   ("WinT 3794");
     app.setApplicationName    ("QDriverStation");
     app.setOrganizationDomain ("www.wint3794.org");
