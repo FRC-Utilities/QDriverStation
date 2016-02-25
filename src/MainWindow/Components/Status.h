@@ -24,7 +24,6 @@
 #define _QDS_MW_STATUS_H
 
 #include <QWidget>
-#include <QPointer>
 #include <LibDS/DriverStation.h>
 
 class QLabel;
@@ -61,26 +60,26 @@ class Status : public QWidget {
   private:
     bool m_estop;
 
-    QPointer<QLabel> m_team;
-    QPointer<QLabel> m_voltage;
-    QPointer<QLabel> m_robotStatus;
+    QLabel* m_team;
+    QLabel* m_voltage;
+    QLabel* m_robotStatus;
 
-    QPointer<QPushButton> m_comm;
-    QPointer<QPushButton> m_code;
-    QPointer<QPushButton> m_sticks;
+    QPushButton* m_comm;
+    QPushButton* m_code;
+    QPushButton* m_sticks;
 
-    QPointer<QLabel> m_teamLabel;
-    QPointer<QLabel> m_commLabel;
-    QPointer<QLabel> m_codeLabel;
-    QPointer<QLabel> m_sticksLabel;
-    QPointer<QLabel> m_voltageLabel;
+    QLabel* m_teamLabel;
+    QLabel* m_commLabel;
+    QLabel* m_codeLabel;
+    QLabel* m_sticksLabel;
+    QLabel* m_voltageLabel;
 
-    QPointer<QVBoxLayout> m_mainLayout;
-    QPointer<QGridLayout> m_LEDsLayout;
-    QPointer<QGridLayout> m_upperLayout;
+    QVBoxLayout* m_mainLayout;
+    QGridLayout* m_LEDsLayout;
+    QGridLayout* m_upperLayout;
 
-    QPointer<QWidget> m_LEDsWidget;
-    QPointer<QWidget> m_upperWidget;
+    QWidget* m_LEDsWidget;
+    QWidget* m_upperWidget;
 };
 
 #endif

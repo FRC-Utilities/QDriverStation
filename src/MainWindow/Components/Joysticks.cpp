@@ -24,7 +24,7 @@
 // System includes
 //=============================================================================
 
-#include <QPointer>
+
 #include <QGroupBox>
 #include <QShowEvent>
 #include <QHideEvent>

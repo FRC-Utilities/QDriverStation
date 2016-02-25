@@ -407,32 +407,32 @@ class LIB_DS_DECL DriverStation : public QObject {
      * from a specified network address and port, go on
      * and crash the school's server if you wish
      */
-    QPointer<DS_Client> m_client;
+    DS_Client* m_client;
 
     /**
      * Used for receiving messages broadcasted by the
      * robot over the network
      */
-    QPointer<DS_NetConsole> m_netConsole;
+    DS_NetConsole* m_netConsole;
 
     /**
      * Allows us to select an operation protocol and
      * configure it automatically to fit the librarie's
      * standards
      */
-    QPointer<DS_ProtocolManager> m_manager;
+    DS_ProtocolManager* m_manager;
 
     /**
      * Represents the current protocol in operation
      */
-    QPointer<DS_ProtocolBase> m_protocol;
+    DS_ProtocolBase* m_protocol;
 
     /**
      * Counts the elapsed time since the robot was
      * enabled. When the robot is disabled, the elapsed
      * time is stopped (just as in the official Driver Station)
      */
-    QPointer<DS_ElapsedTime> m_elapsedTime;
+    DS_ElapsedTime* m_elapsedTime;
 
     /**
      * Changes the status string when:

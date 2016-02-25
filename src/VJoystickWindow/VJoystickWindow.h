@@ -24,7 +24,6 @@
 #define _QDS_VJOYSTICK_WINDOW_H
 
 #include <QDialog>
-#include <QPointer>
 
 class QLabel;
 class QGroupBox;
@@ -50,26 +49,26 @@ class VJoystickWindow : public QDialog {
     void readSettings();
 
   private:
-    QPointer<QTabWidget> m_tab;
-    QPointer<QGroupBox> m_keysBox;
-    QPointer<QWidget> m_generalTab;
+    QTabWidget* m_tab;
+    QGroupBox* m_keysBox;
+    QWidget* m_generalTab;
 
-    QPointer<QListWidget> m_keys;
-    QPointer<QListWidget> m_meanings;
+    QListWidget* m_keys;
+    QListWidget* m_meanings;
 
-    QPointer<QLabel> m_axisRangeLabel;
-    QPointer<QDoubleSpinBox> m_axisRange;
-    QPointer<QWidget> m_axisRangeContainer;
+    QLabel* m_axisRangeLabel;
+    QDoubleSpinBox* m_axisRange;
+    QWidget* m_axisRangeContainer;
 
-    QPointer<QWidget> m_bottomWidget;
-    QPointer<QPushButton> m_closeButton;
-    QPointer<QCheckBox> m_useKeyboardAsJoystick;
+    QWidget* m_bottomWidget;
+    QPushButton* m_closeButton;
+    QCheckBox* m_useKeyboardAsJoystick;
 
-    QPointer<QVBoxLayout> m_mainLayout;
-    QPointer<QVBoxLayout> m_tabsLayout;
-    QPointer<QHBoxLayout> m_keysLayout;
-    QPointer<QHBoxLayout> m_bottomLayout;
-    QPointer<QVBoxLayout> m_axisRangeLayout;
+    QVBoxLayout* m_mainLayout;
+    QVBoxLayout* m_tabsLayout;
+    QHBoxLayout* m_keysLayout;
+    QHBoxLayout* m_bottomLayout;
+    QVBoxLayout* m_axisRangeLayout;
 };
 
 #endif

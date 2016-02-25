@@ -24,7 +24,6 @@
 #define _QDS_MW_ABOUT_H
 
 #include <QWidget>
-#include <QPointer>
 
 class QLabel;
 class QPushButton;
@@ -43,15 +42,15 @@ class About : public QWidget {
     void openWebsite();
 
   private:
-    QPointer<QLabel> m_appIcon;
-    QPointer<QLabel> m_version;
+    QLabel* m_appIcon;
+    QLabel* m_version;
 
-    QPointer<QVBoxLayout> m_mainLayout;
-    QPointer<QHBoxLayout> m_buttonLayout;
+    QVBoxLayout* m_mainLayout;
+    QHBoxLayout* m_buttonLayout;
 
-    QPointer<QPushButton> m_site;
-    QPointer<QPushButton> m_reportBug;
-    QPointer<QWidget> m_buttonContainer;
+    QPushButton* m_site;
+    QPushButton* m_reportBug;
+    QWidget* m_buttonContainer;
 };
 
 #endif

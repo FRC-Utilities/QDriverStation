@@ -25,7 +25,7 @@
 
 #include <QtMath>
 #include <QString>
-#include <QPointer>
+
 #include <QDateTime>
 #include <QUdpSocket>
 #include <QTcpSocket>

@@ -24,7 +24,6 @@
 #define _QDS_MW_PREFERENCES_H
 
 #include <QWidget>
-#include <QPointer>
 
 class QLabel;
 class QSpinBox;
@@ -57,33 +56,33 @@ class Preferences : public QWidget {
     void savePracticeValues (int unused);
 
   private:
-    QPointer<QLabel> m_protocolLabel;
-    QPointer<QLabel> m_dashboardLabel;
-    QPointer<QLabel> m_teamNumberLabel;
+    QLabel* m_protocolLabel;
+    QLabel* m_dashboardLabel;
+    QLabel* m_teamNumberLabel;
 
-    QPointer<QSpinBox> m_teamNumber;
-    QPointer<QComboBox> m_protocols;
-    QPointer<QComboBox> m_dashboards;
+    QSpinBox* m_teamNumber;
+    QComboBox* m_protocols;
+    QComboBox* m_dashboards;
 
-    QPointer<QGroupBox> m_practiceTimings;
+    QGroupBox* m_practiceTimings;
 
-    QPointer<QLabel> m_delayLabel;
-    QPointer<QLabel> m_teleopLabel;
-    QPointer<QLabel> m_endGameLabel;
-    QPointer<QLabel> m_countdownLabel;
-    QPointer<QLabel> m_autonomousLabel;
+    QLabel* m_delayLabel;
+    QLabel* m_teleopLabel;
+    QLabel* m_endGameLabel;
+    QLabel* m_countdownLabel;
+    QLabel* m_autonomousLabel;
 
-    QPointer<QSpinBox> m_delay;
-    QPointer<QSpinBox> m_teleop;
-    QPointer<QSpinBox> m_endGame;
-    QPointer<QSpinBox> m_countdown;
-    QPointer<QSpinBox> m_autonomous;
+    QSpinBox* m_delay;
+    QSpinBox* m_teleop;
+    QSpinBox* m_endGame;
+    QSpinBox* m_countdown;
+    QSpinBox* m_autonomous;
 
-    QPointer<QWidget> m_leftContainer;
+    QWidget* m_leftContainer;
 
-    QPointer<QVBoxLayout> m_leftLayout;
-    QPointer<QHBoxLayout> m_mainLayout;
-    QPointer<QGridLayout> m_practiceLayout;
+    QVBoxLayout* m_leftLayout;
+    QHBoxLayout* m_mainLayout;
+    QGridLayout* m_practiceLayout;
 };
 
 #endif

@@ -24,7 +24,7 @@
 #define _QDS_MW_JOYSTICKS_H
 
 #include <QWidget>
-#include <QPointer>
+
 #include <QSpinBox>
 #include <QPushButton>
 #include <QProgressBar>
@@ -57,26 +57,26 @@ class Joysticks : public QWidget {
     void onButtonEvent (QDS_ButtonEvent event);
 
   private:
-    QPointer<QHBoxLayout> m_mainLayout;
-    QPointer<QListWidget> m_joystickNames;
+    QHBoxLayout* m_mainLayout;
+    QListWidget* m_joystickNames;
 
-    QPointer<QWidget> m_axesContainer;
-    QPointer<QWidget> m_povsContainer;
-    QPointer<QWidget> m_buttonsContainer;
+    QWidget* m_axesContainer;
+    QWidget* m_povsContainer;
+    QWidget* m_buttonsContainer;
 
-    QPointer<QGroupBox> m_JSIndicators;
-    QPointer<QGroupBox> m_POVIndicators;
-    QPointer<QGroupBox> m_axisIndicators;
-    QPointer<QGroupBox> m_buttonIndicators;
+    QGroupBox* m_JSIndicators;
+    QGroupBox* m_POVIndicators;
+    QGroupBox* m_axisIndicators;
+    QGroupBox* m_buttonIndicators;
 
-    QPointer<QVBoxLayout> m_joystickBox;
-    QPointer<QVBoxLayout> m_povGroupBox;
-    QPointer<QVBoxLayout> m_axisGroupBox;
-    QPointer<QVBoxLayout> m_buttonGroupBox;
+    QVBoxLayout* m_joystickBox;
+    QVBoxLayout* m_povGroupBox;
+    QVBoxLayout* m_axisGroupBox;
+    QVBoxLayout* m_buttonGroupBox;
 
-    QPointer<QVBoxLayout> m_axesBox;
-    QPointer<QVBoxLayout> m_povsBox;
-    QPointer<QGridLayout> m_buttonsBox;
+    QVBoxLayout* m_axesBox;
+    QVBoxLayout* m_povsBox;
+    QGridLayout* m_buttonsBox;
 
     QList<QSpinBox*> m_povs;
     QList<QProgressBar*> m_axes;
