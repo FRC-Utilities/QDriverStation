@@ -204,7 +204,7 @@ void VirtualJoystick::readShortcuts (int key, bool pressed) {
     Q_UNUSED (pressed);
 
     if (key == Qt::Key_Space || key == Qt::Key_Shift)
-        DS()->setEmergencyStop (true);
+        QDS()->setEmergencyStop (true);
 }
 
 //=============================================================================

@@ -58,10 +58,10 @@ Beeper* BEEPER() {
 }
 
 //=============================================================================
-// DS
+// QDS
 //=============================================================================
 
-DriverStation* DS() {
+DriverStation* QDS() {
     return DriverStation::getInstance();
 }
 
@@ -157,8 +157,8 @@ qreal DPI_SCALE (qreal input) {
         if (RATIO < 1.2)
             RATIO = 1;
 
-        DS_LogMessage (kInfoLevel,
-                       QString ("UI Scale Ratio set to: %1").arg (RATIO));
+        DS::Log (DS::kInfoLevel,
+                 QString ("UI Scale Ratio set to: %1").arg (RATIO));
     }
 
     return input * RATIO;
@@ -169,7 +169,7 @@ qreal DPI_SCALE (qreal input) {
 //=============================================================================
 
 void SDL_INIT() {
-    DS_LogMessage (kInfoLevel, "Initializing SDL...");
+    DS::Log (DS::kInfoLevel, "Initializing SDL...");
 
     SDL_JoystickEventState (SDL_ENABLE);
     SDL_SetHint (SDL_HINT_XINPUT_ENABLED, "0");
@@ -190,7 +190,7 @@ void SDL_INIT() {
                                            "an external joystick!"));
     }
 
-    DS_LogMessage (kInfoLevel, "SDL Initialized");
+    DS::Log (DS::kInfoLevel, "SDL Initialized");
 }
 
 //=============================================================================

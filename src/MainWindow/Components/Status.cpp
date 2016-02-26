@@ -66,7 +66,7 @@ Status::Status (QWidget* parent) : QWidget (parent) {
     configureStyles();
     connectSlots();
 
-    DS_LogMessage (kInfoLevel, "MainWindow: Status/Central widget created");
+    DS::Log (DS::kInfoLevel, "MainWindow: Status/Central widget created");
 }
 
 //=============================================================================
@@ -74,7 +74,7 @@ Status::Status (QWidget* parent) : QWidget (parent) {
 //=============================================================================
 
 Status::~Status() {
-    DS_LogMessage (kInfoLevel, "MainWindow: Status/Central widget destroyed");
+    DS::Log (DS::kInfoLevel, "MainWindow: Status/Central widget destroyed");
 }
 
 //=============================================================================
@@ -230,19 +230,19 @@ void Status::configureStyles() {
 //=============================================================================
 
 void Status::connectSlots() {
-    connect (DS(), &DriverStation::joystickCountChanged,
+    connect (QDS(), &DriverStation::joystickCountChanged,
              this, &Status::updateJoysticks);
-    connect (DS(), &DriverStation::communicationsChanged,
+    connect (QDS(), &DriverStation::communicationsChanged,
              this, &Status::updateCommStatus);
-    connect (DS(), &DriverStation::codeChanged,
+    connect (QDS(), &DriverStation::codeChanged,
              this, &Status::updateCodeStatus);
-    connect (DS(), &DriverStation::voltageChanged,
+    connect (QDS(), &DriverStation::voltageChanged,
              this, &Status::updateVoltage);
-    connect (DS(), &DriverStation::robotStatusChanged,
+    connect (QDS(), &DriverStation::robotStatusChanged,
              this, &Status::updateStatus);
-    connect (DS(), &DriverStation::teamChanged,
+    connect (QDS(), &DriverStation::teamChanged,
              this, &Status::updateTeam);
-    connect (DS(), &DriverStation::emergencyStopped,
+    connect (QDS(), &DriverStation::emergencyStopped,
              this, &Status::updateEmergencyStop);
 }
 
@@ -251,7 +251,7 @@ void Status::connectSlots() {
 //=============================================================================
 
 void Status::updateJoysticks (void) {
-    m_sticks->setChecked (DS()->joystickCount() > 0);
+    m_sticks->setChecked (QDS()->joystickCount() > 0);
 }
 
 //=============================================================================
@@ -259,7 +259,7 @@ void Status::updateJoysticks (void) {
 //=============================================================================
 
 void Status::updateEmergencyStop (void) {
-    if (DS()->isEmergencyStopped() && !m_estop) {
+    if (QDS()->isEmergencyStopped() && !m_estop) {
         m_estop = true;
         BEEPER()->beep (660, 800);
     }
@@ -286,7 +286,7 @@ void Status::updateStatus (QString status) {
 //=============================================================================
 
 void Status::updateVoltage (QString voltage) {
-    if (!voltage.isEmpty() && DS()->isConnected())
+    if (!voltage.isEmpty() && QDS()->isConnected())
         m_voltage->setText (QString ("%1 V").arg (voltage));
 
     else
@@ -322,7 +322,7 @@ void Status::toggleStatusColors() {
 //=============================================================================
 
 void Status::updateCodeStatus (bool codeAvailable) {
-    m_comm->setChecked (DS()->isConnected());
+    m_comm->setChecked (QDS()->isConnected());
     m_code->setChecked (codeAvailable);
 }
 
@@ -330,7 +330,7 @@ void Status::updateCodeStatus (bool codeAvailable) {
 // Status::updateCommStatus
 //=============================================================================
 
-void Status::updateCommStatus (DS_CommStatus status) {
-    m_comm->setChecked (status != kFailing);
-    m_comm->setStyleSheet (status != kPartial ? NORMAL_LED : CUSTM_LED);
+void Status::updateCommStatus (DS::DS_CommStatus status) {
+    m_comm->setChecked (status != DS::kFailing);
+    m_comm->setStyleSheet (status != DS::kPartial ? NORMAL_LED : CUSTM_LED);
 }

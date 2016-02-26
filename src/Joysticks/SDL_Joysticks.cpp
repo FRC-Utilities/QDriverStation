@@ -47,7 +47,7 @@
 
 SDL_Joysticks::SDL_Joysticks() {
     m_tracker = -1;
-    connect (DS(), &DriverStation::initialized, this, &SDL_Joysticks::update);
+    connect (QDS(), &DriverStation::initialized, this, &SDL_Joysticks::update);
 }
 
 //=============================================================================

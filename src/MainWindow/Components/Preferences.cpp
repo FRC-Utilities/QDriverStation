@@ -52,7 +52,7 @@ Preferences::Preferences (QWidget* parent) : QWidget (parent) {
     readSettings();
     connectSlots();
 
-    DS_LogMessage (kInfoLevel, "MainWindow: Preferences widget created");
+    DS::Log (DS::kInfoLevel, "MainWindow: Preferences widget created");
 }
 
 //=============================================================================
@@ -60,7 +60,7 @@ Preferences::Preferences (QWidget* parent) : QWidget (parent) {
 //=============================================================================
 
 Preferences::~Preferences() {
-    DS_LogMessage (kInfoLevel, "MainWindow: Preferences widget destroyed");
+    DS::Log (DS::kInfoLevel, "MainWindow: Preferences widget destroyed");
 }
 
 //=============================================================================
@@ -97,7 +97,7 @@ void Preferences::createWidgets() {
     m_autonomous->setRange (0, 500);
     m_teamNumber->setRange (0, 9999);
 
-    m_protocols->addItems  (DS()->protocols());
+    m_protocols->addItems  (QDS()->protocols());
     m_dashboards->addItems (Dashboards::getInstance()->dashboardList());
     m_dashboards->setCurrentIndex (Settings::get ("Dashboard", 0).toInt());
 }
@@ -164,7 +164,7 @@ void Preferences::connectSlots() {
              this,           SLOT (savePracticeValues  (int)));
     connect (m_autonomous, SIGNAL (valueChanged        (int)),
              this,           SLOT (savePracticeValues  (int)));
-    connect (DS(),         SIGNAL (teamChanged         (int)),
+    connect (QDS(),         SIGNAL (teamChanged         (int)),
              m_teamNumber,   SLOT (setValue            (int)));
 }
 
@@ -190,7 +190,7 @@ void Preferences::readSettings() {
 
 void Preferences::setProtocol (int index) {
     Settings::set ("Protocol", index);
-    DS()->setProtocol ((DriverStation::ProtocolType) index);
+    QDS()->setProtocol ((DriverStation::ProtocolType) index);
 }
 
 //=============================================================================
@@ -207,7 +207,7 @@ void Preferences::setDashboard (int index) {
 //=============================================================================
 
 void Preferences::setTeamNumber (int team) {
-    DS()->setTeamNumber (team);
+    QDS()->setTeamNumber (team);
     Settings::set ("Team", team);
 }
 

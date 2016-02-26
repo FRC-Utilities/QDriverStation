@@ -33,147 +33,167 @@
 
 #include "LibDS/Core/Library.h"
 
-/**
- * Use this when the protocol itself is not bound to a specific port
- */
-#define DS_PROTOCOL_NO_PORT -1
+namespace DS {
+///
+/// Use this value when you have no idea which port to use on a protocol
+///
+const int INVALID_PORT = 0;
 
-/**
- * Represents the available operation modes of the robot.
- */
+///
+/// Represents the available operation modes of the robot.
+/// Note that this values are meant for the library and client to
+/// use and do not represent in any way the 'raw' bytes sent to the robot.
+///
 typedef enum {
-    kControlTest         =  0, /**< Individual actuators can be moved */
-    kControlAutonomous   =  1, /**< Robot takes over the world */
-    kControlTeleoperated =  2, /**< User moves the robot */
-    kControlInvalid      = -1, /**< Blame the programmers if this is used */
-} DS_ControlMode;
+    kControlTest         = 0, /// Test
+    kControlAutonomous   = 1, /// Autonomous
+    kControlTeleoperated = 2, /// Operator control
+    kControlInvalid      = 3, /// Reserved for internal use
+} ControlMode;
 
-/**
- * Represents the available alliances that the robot can have.
- * Its important to specify which alliance we use in order to tell
- * the robot program 'where it is' and communicate with the FMS correctly
- */
+///
+/// Represents the available alliances and positions during a match
+///
 typedef enum {
-    kAllianceRed1  = 0,  /** Red alliance, position 1 */
-    kAllianceRed2  = 1,  /** Red alliance, position 2 */
-    kAllianceRed3  = 2,  /** Red alliance, position 3 */
-    kAllianceBlue1 = 3,  /** Blue alliance, position 1 */
-    kAllianceBlue2 = 4,  /** Blue alliance, position 2 */
-    kAllianceBlue3 = 5,  /** Blue alliance, position 3 */
-} DS_Alliance;
+    kAllianceRed1        = 0, /// Red 1
+    kAllianceRed2        = 1, /// Red 2
+    kAllianceRed3        = 2, /// Red 3
+    kAllianceBlue1       = 3, /// Blue 1
+    kAllianceBlue2       = 4, /// Blue 2
+    kAllianceBlue3       = 5, /// Blue 3
+} Alliance;
 
-/**
- * Represents the current status of the communications
- */
+///
+/// Represents the status of the DS <--> Robot communications
+///
 typedef enum {
-    kFull    = 0, /** The DS is communicating with the robot */
-    kPartial = 1, /** The robot responds ping requests, but does not respond to DS */
-    kFailing = 2, /** The robot does not respond to ping requests */
+    kFull                = 0, /// We can move the robot
+    kPartial             = 1, /// We can ping the robot, but not move it
+    kFailing             = 2, /// We cannot ping nor move the robot
 } DS_CommStatus;
 
-/**
- * Used for the library's logger function
- */
+///
+/// Used to differentiate between the different error levels of log messages
+///
 typedef enum {
-    kLibLevel      = 0, /** Look! A plane */
-    kInfoLevel     = 1, /** I am dangerous, I like it */
-    kWarnLevel     = 2, /** Watch the birdie */
-    kErrorLevel    = 3, /** I can't shoot, so let's have a little fun */
-    kCriticalLevel = 4, /** Is this your idea of fun? */
+    kLibLevel            = 0, /// Used exclusively by the LibDS, do not use it on the client
+    kInfoLevel           = 1, /// Indicates normal operations (e.g. open a window)
+    kWarnLevel           = 2, /// Indicates a condition in which we should take some care
+    kErrorLevel          = 3, /// Indicates a non-fatal error
+    kCriticalLevel       = 4, /// Indicates a fatal error
+} ErrorLevel;
 
-} DS_MessageType;
-
-/**
- * Represents a joystick in the DS
- */
+///
+/// Used by the library to store information about a joystick or any other
+/// input device used to control the robot.
+///
+/// Please note that the LibDS only deals with the "networking" part of
+/// a FRC Driver Station, the rest must be implemented by the client.
+///
 typedef struct {
-    QString name;
+    QString name;             /// Display name          [Optional]
+    int     numAxes;          /// Number of axes        [Required]
+    int     numPOVs;          /// Number of POVs        [Required]
+    int     numButtons;       /// Number of buttons     [Required]
+    int*    POVs;             /// Stores POV values     [Updated automatically]
+    float*  axes;             /// Stores axis values    [Updated automatically]
+    bool*   buttons;          /// Stores button values  [Updated automatically]
+} Joystick;
 
-    int numAxes;
-    int numPOVs;
-    int numButtons;
-
-    int* POVs;
-    float* axes;
-    bool* buttons;
-} DS_Joystick;
-
-/**
- * Represents a rumble request event
- */
+///
+/// Represents a joystick rumble request issued by the robot code
+///
 typedef struct {
-    int joystickID;
-    bool leftRumble;
-    bool rightRumble;
-} DS_RumbleRequest;
 
-/**
- * Represents a set of CAN information
- */
+} RumbleRequest;
+
+///
+/// Represents the received CAN status information from a robot packet
+///
 typedef struct {
-    quint8 util;
-    quint8 busOff;
-    quint8 txFull;
-    quint8 receive;
-    quint8 transmit;
-} DS_CAN;
+    quint8 util;              /// Utilization %
+    quint8 busOff;            /// Bus off (error count)
+    quint8 txFull;            /// TX Full
+    quint8 receive;           /// Recieve %
+    quint8 transmit;          /// Transmission %
+} CAN;
 
-/**
- * Returns the current timezone code by calculating the difference between
- * the system timezone and the UTC timezone
- */
-QString LIB_DS_DECL DS_GetTimezoneCode();
+///
+/// Returns the current timezone code by calculating the difference between
+/// the system timezone and the UTC timezone
+///
+QString LIB_DS_DECL Timezone();
 
-/**
- * Sends a message, which will be interpreted by the NetConsole
- */
-void LIB_DS_DECL DS_SendMessage (QString message);
+///
+/// Sends a message through the DriverStation to the Client, which should interpret
+/// it as a message from the NetConsole.
+///
+/// This is used by the library to send warnings and status messages to the
+/// user through a simple and integrated manner.
+///
+void LIB_DS_DECL SendMessage (QString message);
 
-/**
- * Logs a message to the console and a logging file
- */
-void LIB_DS_DECL DS_LogMessage (DS_MessageType type, QString message);
+///
+/// Logs the message according to its \a type or error level
+///
+void LIB_DS_DECL Log (ErrorLevel type, QString message);
 
-/**
- * Returns a calculated IP address based on the team address.
- *
- * For example:
- *     - \c DS_GetStaticIp(3794, 1) would return \c 10.37.94.1
- *     - \c DS_GetStaticIp(3794, 2) would return \c 10.37.94.2
- *     - \c DS_GetStaticIp( 118, 3) would return \c 10.01.18.3
- *     - And so on...
- */
-QString LIB_DS_DECL DS_GetStaticIp (int team, int host);
+///
+/// Returns a calculated IP address based on the team address.
+///
+/// For example:
+///    - \c DS_GetStaticIp(3794, 1) would return \c 10.37.94.1
+///    - \c DS_GetStaticIp(3794, 2) would return \c 10.37.94.2
+///    - \c DS_GetStaticIp( 118, 3) would return \c 10.01.18.3
+///    - And so on...
+///
+QString LIB_DS_DECL StaticIP (int team, int host);
 
-/**
- * Returns a calculated IP address based on the team address.
- *
- * For example:
- *     - \c DS_GetStaticIp(10, 3794, 1) would return \c 10.37.94.1
- *     - \c DS_GetStaticIp(177, 3794, 2) would return \c 177.37.94.2
- *     - \c DS_GetStaticIp(10m 118, 3) would return \c 10.01.18.3
- *     - And so on...
- */
-QString LIB_DS_DECL DS_GetStaticIp (int net, int team, int host);
+///
+/// Returns a calculated IP address based on the team address.
+///
+/// For example:
+///    - \c DS_GetStaticIp(10, 3794, 1) would return \c 10.37.94.1
+///    - \c DS_GetStaticIp(177, 3794, 2) would return \c 177.37.94.2
+///    - \c DS_GetStaticIp(10m 118, 3) would return \c 10.01.18.3
+///    - And so on...
+///
+QString LIB_DS_DECL StaticIP (int net, int team, int host);
 
-/**
- * Returns an user-friendly string given the inputed robot control mode
- */
-QString LIB_DS_DECL DS_GetControlModeString (DS_ControlMode mode);
+///
+/// Returns an user-friendly string given the inputed robot control mode.
+/// You can use this function to update the status widget of the
+/// client implementation.
+///
+QString LIB_DS_DECL CM_String (ControlMode mode);
 
-/**
- * Reads the contents of the \a socket and returns its data
- */
-QByteArray LIB_DS_DECL DS_GetSocketData (QUdpSocket* socket);
+///
+/// Reads the stored data in the \a socket.
+/// This function is used internaly by the library, however, you may use
+/// this function for anything that your client may need.
+///
+QByteArray LIB_DS_DECL ReadSocket (QUdpSocket* socket);
 
-/**
- * Reads the contents of the \a socket and returns its data
- */
-QByteArray LIB_DS_DECL DS_GetSocketData (QTcpSocket* socket);
+///
+/// Reads the stored data in the \a socket.
+/// This function is used internaly by the library, however, you may use
+/// this function for anything that your client may need.
+///
+QByteArray LIB_DS_DECL ReadSocket (QTcpSocket* socket);
 
-/**
- * Parses the input \a data into two bytes
- */
-QByteArray LIB_DS_DECL DS_ToBytes (int data);
+///
+/// Parses the input number into two bytes. This function is used
+/// by several protocols during the packet generation process.
+///
+/// Example I/O of this function would be:
+///
+/// | Input | Output    |
+/// |-------|-----------|
+/// |  255  | 0xFF 0x00 |
+/// |    1  | 0x00 0x01 |
+/// |  256  | 0xFF 0x01 |
+///
+QByteArray LIB_DS_DECL ToBytes (int data);
+}
 
 #endif

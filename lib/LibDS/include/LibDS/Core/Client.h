@@ -25,18 +25,23 @@
 
 #include "LibDS/Core/Common.h"
 
+namespace DS_CORE {
+
 /**
  * \class DS_Client
  *
  * Sends and receives data between the robot and the Driver Station.
  * The class "redirects" the received data from the robot to the current
  * protocol that is in use by the Driver Station and vice-versa.
+ *
+ * All networking operations between the DS, the robot and the FMS are
+ * interfaced through this object.
  */
-class LIB_DS_DECL DS_Client : public QObject {
+class LIB_DS_DECL Client : public QObject {
     Q_OBJECT
 
   public:
-    explicit DS_Client (QObject* parent);
+    explicit Client (QObject* parent);
 
   public slots:
     /**
@@ -132,5 +137,7 @@ class LIB_DS_DECL DS_Client : public QObject {
      */
     QUdpSocket m_robotReceiver;
 };
+
+}
 
 #endif

@@ -106,7 +106,7 @@ void messageHandler (QtMsgType type,
 
 int main (int argc, char* argv[]) {
     qInstallMessageHandler (messageHandler);
-    DS_LogMessage (kInfoLevel, "Starting application....");
+    DS::Log (DS::kInfoLevel, "Starting application....");
 
     /* Configure application information */
     QApplication app (argc, argv);
@@ -168,11 +168,11 @@ int main (int argc, char* argv[]) {
 
     /* Ask for team number on first launch */
     if (Settings::get ("First launch", true).toBool()) {
-        DS()->setTeamNumber (QInputDialog::getInt (Q_NULLPTR,
-                             QObject::tr ("QDriverStation"),
-                             QObject::tr ("Please input your team number:"),
-                             0, 0, 9999, 1, 0,
-                             Qt::WindowStaysOnTopHint));
+        QDS()->setTeamNumber (QInputDialog::getInt (Q_NULLPTR,
+                              QObject::tr ("QDriverStation"),
+                              QObject::tr ("Please input your team number:"),
+                              0, 0, 9999, 1, 0,
+                              Qt::WindowStaysOnTopHint));
         Settings::set ("First launch", false);
     }
 

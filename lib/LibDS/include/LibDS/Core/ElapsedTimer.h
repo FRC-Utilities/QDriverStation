@@ -28,18 +28,20 @@
 
 #include "LibDS/Core/Common.h"
 
+namespace DS_CORE {
+
 /**
  * \class DS_ElapsedTime
  *
- * The DS_ElapsedTime class calculates the elapsed time since a specified
+ * The LibDS::DS_ElapsedTime class calculates the elapsed time since a specified
  * time in the execution of the application and presents it in human-readable
  * format (mm::ss.ms).
  */
-class LIB_DS_DECL DS_ElapsedTime : public QObject {
+class LIB_DS_DECL ElapsedTime : public QObject {
     Q_OBJECT
 
   public:
-    explicit DS_ElapsedTime (QObject* parent);
+    explicit ElapsedTime (QObject* parent);
 
   public slots:
     /**
@@ -79,6 +81,8 @@ class LIB_DS_DECL DS_ElapsedTime : public QObject {
      */
     void getElapsedTime();
 };
+
+}
 
 #endif
 

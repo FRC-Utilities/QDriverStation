@@ -22,6 +22,8 @@
 
 #include "LibDS/Protocols/Protocol2014.h"
 
+using namespace DS_CORE;
+
 //=============================================================================
 // Protocol codes/standards
 //=============================================================================
@@ -41,10 +43,10 @@ enum ProtocolStandards {
 };
 
 //=============================================================================
-// DS_Protocol2014::DS_Protocol2014
+//Protocol2014::DS_Protocol2014
 //=============================================================================
 
-DS_Protocol2014::DS_Protocol2014() {
+Protocol2014::Protocol2014() {
     m_reboot = false;
     m_restartCode = false;
     m_dsVersion = "090210a3";
@@ -54,149 +56,149 @@ DS_Protocol2014::DS_Protocol2014() {
 }
 
 //=============================================================================
-// DS_Protocol2014::fmsFrequency
+//Protocol2014::fmsFrequency
 //=============================================================================
 
-int DS_Protocol2014::fmsFrequency() {
+int Protocol2014::fmsFrequency() {
     return 10;
 }
 
 //=============================================================================
-// DS_Protocol2014::robotFrequency
+//Protocol2014::robotFrequency
 //=============================================================================
 
-int DS_Protocol2014::robotFrequency() {
+int Protocol2014::robotFrequency() {
     return 50;
 }
 
 //=============================================================================
-// DS_Protocol2014::fmsInputPort
+//Protocol2014::fmsInputPort
 //=============================================================================
 
-int DS_Protocol2014::fmsInputPort() {
+int Protocol2014::fmsInputPort() {
     return 1120;
 }
 
 //=============================================================================
-// DS_Protocol2014::fmsOutputPort
+//Protocol2014::fmsOutputPort
 //=============================================================================
 
-int DS_Protocol2014::fmsOutputPort() {
+int Protocol2014::fmsOutputPort() {
     return 1160;
 }
 
 //=============================================================================
-// DS_Protocol2014::clientPort
+//Protocol2014::clientPort
 //=============================================================================
 
-int DS_Protocol2014::robotInputPort() {
+int Protocol2014::robotInputPort() {
     return 1110;
 }
 
 //=============================================================================
-// DS_Protocol2014::robotPort
+//Protocol2014::robotPort
 //=============================================================================
 
-int DS_Protocol2014::robotOutputPort() {
+int Protocol2014::robotOutputPort() {
     return 1150;
 }
 
 //=============================================================================
-// DS_Protocol2014::tcpProbePort
+//Protocol2014::tcpProbePort
 //=============================================================================
 
-int DS_Protocol2014::tcpProbesPort() {
+int Protocol2014::tcpProbesPort() {
     return 80;
 }
 
 //=============================================================================
-// DS_Protocol2014::netConsoleInputPort
+//Protocol2014::netConsoleInputPort
 //=============================================================================
 
-int DS_Protocol2014::netConsoleInputPort() {
+int Protocol2014::netConsoleInputPort() {
     return 6666;
 }
 
 //=============================================================================
-// DS_Protocol2014::netConsoleOutputPort
+//Protocol2014::netConsoleOutputPort
 //=============================================================================
 
-int DS_Protocol2014::netConsoleOutputPort() {
+int Protocol2014::netConsoleOutputPort() {
     return 6668;
 }
 
 //=============================================================================
-// DS_Protocol2014::acceptsConsoleCommnds
+//Protocol2014::acceptsConsoleCommnds
 //=============================================================================
 
-bool DS_Protocol2014::acceptsConsoleCommands() {
+bool Protocol2014::acceptsConsoleCommands() {
     return true;
 }
 
 //=============================================================================
-// DS_Protocol2014::defaultRadioAddress
+//Protocol2014::defaultRadioAddress
 //=============================================================================
 
-QStringList DS_Protocol2014::defaultRadioAddress() {
-    return QStringList (DS_GetStaticIp (10, team(), 1));
+QStringList Protocol2014::defaultRadioAddress() {
+    return QStringList (DS::StaticIP (10, team(), 1));
 }
 
 //=============================================================================
-// DS_Protocol2014::defaultRobotAddress
+//Protocol2014::defaultRobotAddress
 //=============================================================================
 
-QStringList DS_Protocol2014::defaultRobotAddress() {
+QStringList Protocol2014::defaultRobotAddress() {
     QStringList list;
 
-    list.append (QString (DS_GetStaticIp (10, team(), 2)));
+    list.append (QString (DS::StaticIP (10, team(), 2)));
     list.append (QString ("127.0.0.1"));
 
     return list;
 }
 
 //=============================================================================
-// DS_Protocol2014::reboot
+//Protocol2014::reboot
 //=============================================================================
 
-void DS_Protocol2014::reboot() {
+void Protocol2014::reboot() {
     m_reboot = true;
 }
 
 //=============================================================================
-// DS_Protocol2014::restartCode
+//Protocol2014::restartCode
 //=============================================================================
 
-void DS_Protocol2014::restartCode() {
+void Protocol2014::restartCode() {
     m_restartCode = true;
 }
 
 //=============================================================================
-// DS_Protocol2014::resetProtocol
+//Protocol2014::resetProtocol
 //=============================================================================
 
-void DS_Protocol2014::_resetProtocol() {
+void Protocol2014::_resetProtocol() {
     m_reboot = false;
     m_restartCode = false;
 }
 
 //=============================================================================
-// DS_Protocol2014::_showProtocolWarning
+//Protocol2014::_showProtocolWarning
 //=============================================================================
 
-void DS_Protocol2014::_showProtocolWarning() {
-    DS_SendMessage ("<p><b><font color=#FF7722>WARNING: </font></b>"
-                    "<font color=#FFFFFF>"
-                    "This protocol is under heavy development and you WILL "
-                    "encounter bugs. If using a real robot, limit its area of "
-                    "movement by placing it over a box or something. "
-                    "<b>Safety is your number one priority!</b></font></p>");
+void Protocol2014::_showProtocolWarning() {
+    DS::SendMessage ("<p><b><font color=#FF7722>WARNING: </font></b>"
+                     "<font color=#FFFFFF>"
+                     "This protocol is under heavy development and you WILL "
+                     "encounter bugs. If using a real robot, limit its area of "
+                     "movement by placing it over a box or something. "
+                     "<b>Safety is your number one priority!</b></font></p>");
 }
 
 //=============================================================================
-// DS_Protocol2014::readFMSPacket
+//Protocol2014::readFMSPacket
 //=============================================================================
 
-bool DS_Protocol2014::_readFMSPacket (QByteArray data) {
+bool Protocol2014::_readFMSPacket (QByteArray data) {
     int packet_num     = data.at (0) * 0xFF + data.at (1);
     int robot_state    = data.at (2);
     int robot_alliance = data.at (3);
@@ -211,19 +213,19 @@ bool DS_Protocol2014::_readFMSPacket (QByteArray data) {
 }
 
 //=============================================================================
-// DS_Protocol2014::readPacket
+//Protocol2014::readPacket
 //=============================================================================
 
-bool DS_Protocol2014::_readRobotPacket (QByteArray data) {
+bool Protocol2014::_readRobotPacket (QByteArray data) {
     Q_UNUSED (data);
     return true;
 }
 
 //=============================================================================
-// DS_Protocol2014::getFMSPacket
+//Protocol2014::getFMSPacket
 //=============================================================================
 
-QByteArray DS_Protocol2014::_getFmsPacket() {
+QByteArray Protocol2014::_getFmsPacket() {
     QByteArray data;
 
     /* Create 'dynamic' variables */
@@ -249,11 +251,11 @@ QByteArray DS_Protocol2014::_getFmsPacket() {
     }
 
     /* Get robot mode and state */
-    if (controlMode() == kControlTeleoperated)
+    if (controlMode() == DS::kControlTeleoperated)
         _state = isConnectedToRobot() ? pFMS_Teleoperated_RobotPresent :
                  pFMS_Teleoperated_NoRobotPresent;
 
-    else if (controlMode() == kControlAutonomous)
+    else if (controlMode() == DS::kControlAutonomous)
         _state = isConnectedToRobot() ? pFMS_Autonomous_RobotPresent :
                  pFMS_Autonomous_NoRobotPresent;
 
@@ -261,37 +263,37 @@ QByteArray DS_Protocol2014::_getFmsPacket() {
 
     /* Get alliance and station */
     switch (alliance()) {
-    case kAllianceRed1:
+    case DS::kAllianceRed1:
         _station  = pFMS_Station_1;
         _alliance = pFMS_Alliance_Red;
         break;
-    case kAllianceRed2:
+    case DS::kAllianceRed2:
         _station  = pFMS_Station_2;
         _alliance = pFMS_Alliance_Red;
         break;
-    case kAllianceRed3:
+    case DS::kAllianceRed3:
         _station  = pFMS_Station_3;
         _alliance = pFMS_Alliance_Red;
         break;
-    case kAllianceBlue1:
+    case DS::kAllianceBlue1:
         _station  = pFMS_Station_1;
         _alliance = pFMS_Alliance_Blue;
         break;
-    case kAllianceBlue2:
+    case DS::kAllianceBlue2:
         _station  = pFMS_Station_2;
         _alliance = pFMS_Alliance_Blue;
         break;
-    case kAllianceBlue3:
+    case DS::kAllianceBlue3:
         _station  = pFMS_Station_3;
         _alliance = pFMS_Alliance_Blue;
         break;
     }
 
     /* Construct the packet */
-    data.append (DS_ToBytes (sentFmsPackets()));
+    data.append (DS::ToBytes (sentFmsPackets()));
     data.append (_state);
     data.append (_unknown_header);
-    data.append (DS_ToBytes (team()));
+    data.append (DS::ToBytes (team()));
     data.append (_ip_a);
     data.append (_ip_b);
     data.append (_ip_c);
@@ -300,17 +302,17 @@ QByteArray DS_Protocol2014::_getFmsPacket() {
     data.append (_station);
     data.append (m_robotMacAddress);
     data.append (m_dsVersion);
-    data.append (DS_ToBytes (_missed_packets));
-    data.append (DS_ToBytes (sentRobotPackets()));
-    data.append (DS_ToBytes (1000 / robotFrequency()));
-    data.append (DS_ToBytes (12));
+    data.append (DS::ToBytes (_missed_packets));
+    data.append (DS::ToBytes (sentRobotPackets()));
+    data.append (DS::ToBytes (1000 / robotFrequency()));
+    data.append (DS::ToBytes (12));
     data.append (0xFF);
     data.append (0xFF);
     data.append (0xFF);
     data.append (0xFF);
     data.append (0xFF);
     data.append (0xFF);
-    data.append (DS_ToBytes (batteryVoltage()));
+    data.append (DS::ToBytes (batteryVoltage()));
 
     /* Add CRC padding (4 bytes) */
     data.append ((char) 0x00);
@@ -328,19 +330,19 @@ QByteArray DS_Protocol2014::_getFmsPacket() {
 }
 
 //=============================================================================
-// DS_Protocol2014::getClientPacket
+//Protocol2014::getClientPacket
 //=============================================================================
 
-QByteArray DS_Protocol2014::_getClientPacket() {
+QByteArray Protocol2014::_getClientPacket() {
     QByteArray data;
     return data;
 }
 
 //=============================================================================
-// DS_Protocol2014::getJoystickData
+//Protocol2014::getJoystickData
 //=============================================================================
 
-QByteArray DS_Protocol2014::_getJoystickData() {
+QByteArray Protocol2014::_getJoystickData() {
     QByteArray data;
     return data;
 }

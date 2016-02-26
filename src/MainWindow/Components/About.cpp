@@ -76,7 +76,7 @@ About::About (QWidget* parent) : QWidget (parent) {
     connect (m_site,      &QPushButton::clicked, this, &About::openWebsite);
     connect (m_reportBug, &QPushButton::clicked, this, &About::reportBug);
 
-    DS_LogMessage (kInfoLevel, "MainWindow: About widget created");
+    DS::Log (DS::kInfoLevel, "MainWindow: About widget created");
 }
 
 //=============================================================================
@@ -84,7 +84,7 @@ About::About (QWidget* parent) : QWidget (parent) {
 //=============================================================================
 
 About::~About() {
-    DS_LogMessage (kInfoLevel, "MainWindow: About widget destroyed");
+    DS::Log (DS::kInfoLevel, "MainWindow: About widget destroyed");
 }
 
 //=============================================================================

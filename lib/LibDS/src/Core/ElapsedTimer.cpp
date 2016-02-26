@@ -22,37 +22,39 @@
 
 #include "LibDS/Core/ElapsedTimer.h"
 
+using namespace DS_CORE;
+
 //=============================================================================
-// DS_ElapsedTime::DS_ElapsedTime
+//ElapsedTime::DS_ElapsedTime
 //=============================================================================
 
-DS_ElapsedTime::DS_ElapsedTime (QObject* parent) : QObject (parent) {
+ElapsedTime::ElapsedTime (QObject* parent) : QObject (parent) {
     stopTimer();
     getElapsedTime();
 }
 
 //=============================================================================
-// DS_ElapsedTime::Stop
+//ElapsedTime::Stop
 //=============================================================================
 
-void DS_ElapsedTime::stopTimer() {
+void ElapsedTime::stopTimer() {
     m_enabled = false;
 }
 
 //=============================================================================
-// DS_ElapsedTime:Reset
+//ElapsedTime:Reset
 //=============================================================================
 
-void DS_ElapsedTime::resetTimer() {
+void ElapsedTime::resetTimer() {
     m_enabled = true;
     m_time.restart();
 }
 
 //=============================================================================
-// DS_ElapsedTime::GetElapsedTime
+//ElapsedTime::GetElapsedTime
 //=============================================================================
 
-void DS_ElapsedTime::getElapsedTime() {
+void ElapsedTime::getElapsedTime() {
     if (m_enabled) {
         quint32 msec = m_time.elapsed();
         quint32 secs = (msec / 1000);

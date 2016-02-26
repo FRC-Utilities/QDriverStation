@@ -25,7 +25,9 @@
 
 #include "LibDS/Core/Common.h"
 
-class DS_ProtocolBase;
+namespace DS_CORE {
+
+class ProtocolBase;
 
 /**
  * \class DS_RobotManager
@@ -35,18 +37,18 @@ class DS_ProtocolBase;
  *
  * The class also implements functions to register and condifure joystick input
  * automatically. Please note that you should implement a way to read joystick
- * input by yourself (be it a software-based or hardware based).
+ * input by yourself (be it a software-based or hardware based) in your own client.
  */
-class LIB_DS_DECL DS_ProtocolManager : public QObject {
+class LIB_DS_DECL ProtocolManager : public QObject {
     Q_OBJECT
 
   public:
-    explicit DS_ProtocolManager (QObject* parent);
+    explicit ProtocolManager (QObject* parent);
 
     /**
      * Returns the current protocol in use
      */
-    DS_ProtocolBase* currentProtocol() const;
+    ProtocolBase* currentProtocol() const;
 
     /**
      * Returns \c true if the current protocol is initialized
@@ -62,7 +64,7 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
     /**
      * Changes the protocol that we use to communicate with the robot
      */
-    void setProtocol (DS_ProtocolBase* currentProtocol);
+    void setProtocol (ProtocolBase* currentProtocol);
 
     /**
      * Un-registeres all the joysticks from the Driver Station
@@ -128,7 +130,7 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
      *     - The robot responds to ping requests and DS
      *     - The robot does not respond to ping requests nor the DS
      */
-    void communicationsChanged (DS_CommStatus);
+    void communicationsChanged (DS::DS_CommStatus);
 
     /**
      * Emitted when the protocol detects that the robot voltage has changed
@@ -158,7 +160,7 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
      * Note: this signal can be emitted when the user changes the control mode
      * or when the robot itself changes its mode (e.g. e-stop)
      */
-    void controlModeChanged (DS_ControlMode);
+    void controlModeChanged (DS::ControlMode);
 
     /**
      * Emitted when the robot detects a possible voltage brownout
@@ -168,7 +170,7 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
     /**
      * Emitted when the protocol receives and decodes a CAN data structure
      */
-    void CANInfoReceived (DS_CAN);
+    void CANInfoReceived (DS::CAN);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
@@ -203,17 +205,19 @@ class LIB_DS_DECL DS_ProtocolManager : public QObject {
     /**
      * The current protocol being used
      */
-    DS_ProtocolBase* m_protocol;
+    ProtocolBase* m_protocol;
 
     /**
      * The joystick data, we only have one instance for the whole library
      */
-    QList<DS_Joystick*>* m_joysticks;
+    QList<DS::Joystick*>* m_joysticks;
 
     /**
      * Returns \c true if the \a js is registered with the joystick list
      */
     bool joystickExists (int js) const;
 };
+
+}
 
 #endif

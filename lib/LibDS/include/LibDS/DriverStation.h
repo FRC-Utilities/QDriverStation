@@ -25,11 +25,13 @@
 
 #include "LibDS/Core/Common.h"
 
-class DS_Client;
-class DS_ProtocolBase;
-class DS_NetConsole;
-class DS_ElapsedTime;
-class DS_ProtocolManager;
+namespace DS_CORE {
+class Client;
+class ProtocolBase;
+class NetConsole;
+class ElapsedTime;
+class ProtocolManager;
+}
 
 /**
  * \class DriverStation
@@ -108,7 +110,7 @@ class LIB_DS_DECL DriverStation : public QObject {
     /**
      * Returns the current control mode of the robot
      */
-    Q_INVOKABLE DS_ControlMode controlMode();
+    Q_INVOKABLE DS::ControlMode controlMode();
 
     /**
      * Returns \c true if the robot reports that the user code is loaded
@@ -190,7 +192,7 @@ class LIB_DS_DECL DriverStation : public QObject {
     /**
      * Changes the protocol that we use to control the robot
      */
-    Q_INVOKABLE void setProtocol (DS_ProtocolBase* protocol);
+    Q_INVOKABLE void setProtocol (DS_CORE::ProtocolBase* protocol);
 
     /**
      * Changes the protocol that we use to control the robot
@@ -210,7 +212,7 @@ class LIB_DS_DECL DriverStation : public QObject {
     /**
      * Changes the alliance of the robot using the specified protocol
      */
-    Q_INVOKABLE void setAlliance (DS_Alliance alliance);
+    Q_INVOKABLE void setAlliance (DS::Alliance alliance);
 
     /**
      * Changes the control mode of the robot, available options are:
@@ -220,7 +222,7 @@ class LIB_DS_DECL DriverStation : public QObject {
      *     - \c kTest
      *     - \c kEmergencyStop
      */
-    Q_INVOKABLE void setControlMode (DS_ControlMode mode);
+    Q_INVOKABLE void setControlMode (DS::ControlMode mode);
 
     /**
      * Changes the network address of the robot
@@ -296,7 +298,7 @@ class LIB_DS_DECL DriverStation : public QObject {
     /**
      * Emitted when the DS receives and decodes a CAN data structure
      */
-    void CANInfoReceived (DS_CAN information);
+    void CANInfoReceived (DS::CAN information);
 
     /**
      * Emitted when the state of the FMS connection is changed
@@ -312,7 +314,7 @@ class LIB_DS_DECL DriverStation : public QObject {
      *     - The robot responds to ping requests and DS
      *     - The robot does not respond to ping requests nor the DS
      */
-    void communicationsChanged (DS_CommStatus status);
+    void communicationsChanged (DS::DS_CommStatus status);
 
     /**
      * Emitted when the client detects that the availability of the robot radio
@@ -367,7 +369,7 @@ class LIB_DS_DECL DriverStation : public QObject {
     /**
      * Emitted when the control mode is changed
      */
-    void controlModeChanged (DS_ControlMode mode);
+    void controlModeChanged (DS::ControlMode mode);
 
     /**
      * Emitted when the libary detects that the RAM usage of the robot has
@@ -407,32 +409,32 @@ class LIB_DS_DECL DriverStation : public QObject {
      * from a specified network address and port, go on
      * and crash the school's server if you wish
      */
-    DS_Client* m_client;
+    DS_CORE::Client* m_client;
 
     /**
      * Used for receiving messages broadcasted by the
      * robot over the network
      */
-    DS_NetConsole* m_netConsole;
+    DS_CORE::NetConsole* m_netConsole;
 
     /**
      * Allows us to select an operation protocol and
      * configure it automatically to fit the librarie's
      * standards
      */
-    DS_ProtocolManager* m_manager;
+    DS_CORE::ProtocolManager* m_manager;
 
     /**
      * Represents the current protocol in operation
      */
-    DS_ProtocolBase* m_protocol;
+    DS_CORE::ProtocolBase* m_protocol;
 
     /**
      * Counts the elapsed time since the robot was
      * enabled. When the robot is disabled, the elapsed
      * time is stopped (just as in the official Driver Station)
      */
-    DS_ElapsedTime* m_elapsedTime;
+    DS_CORE::ElapsedTime* m_elapsedTime;
 
     /**
      * Changes the status string when:
@@ -472,7 +474,7 @@ class LIB_DS_DECL DriverStation : public QObject {
     /**
      * Updates the elapsed time when the control mode is changed
      */
-    void resetElapsedTimer (DS_ControlMode mode);
+    void resetElapsedTimer (DS::ControlMode mode);
 
     /**
      * Plays a sound that indicates the upcomming end of a match

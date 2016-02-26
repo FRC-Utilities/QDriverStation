@@ -42,10 +42,11 @@ CAN_Metrics::CAN_Metrics (QWidget* parent) : QWidget (parent) {
     createWidgets();
     createLayouts();
 
-    connect (DS(), &DriverStation::CANInfoReceived,
+    connect (QDS(), &DriverStation::CANInfoReceived,
              this, &CAN_Metrics::onMetricsReceived);
 
-    DS_LogMessage (kInfoLevel, "MainWindow: CAN Metrics widget created");
+    DS::Log (DS::kInfoLevel,
+             "MainWindow: CAN Metrics widget created");
 }
 
 //=============================================================================
@@ -53,7 +54,8 @@ CAN_Metrics::CAN_Metrics (QWidget* parent) : QWidget (parent) {
 //=============================================================================
 
 CAN_Metrics::~CAN_Metrics() {
-    DS_LogMessage (kInfoLevel, "MainWindow: CAN Metrics widget destroyed");
+    DS::Log (DS::kInfoLevel,
+             "MainWindow: CAN Metrics widget destroyed");
 }
 
 //=============================================================================
@@ -116,7 +118,7 @@ void CAN_Metrics::createLayouts() {
 // CAN_Metrics::onMetricsReceived
 //=============================================================================
 
-void CAN_Metrics::onMetricsReceived (DS_CAN can) {
+void CAN_Metrics::onMetricsReceived (DS::CAN can) {
     m_util->setText     (QString::number (can.util));
     m_busOff->setText   (QString::number (can.busOff));
     m_txFull->setText   (QString::number (can.txFull));

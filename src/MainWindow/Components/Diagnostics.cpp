@@ -54,7 +54,7 @@ Diagnostics::Diagnostics (QWidget* parent) : QWidget (parent) {
 //=============================================================================
 
 Diagnostics::~Diagnostics() {
-    DS_LogMessage (kInfoLevel, "MainWindow: Diagnostics widget destroyed");
+    DS::Log (DS::kInfoLevel, "MainWindow: Diagnostics widget destroyed");
 }
 
 //=============================================================================
@@ -202,35 +202,35 @@ void Diagnostics::createLayouts() {
 //=============================================================================
 
 void Diagnostics::connectSlots() {
-    connect (DS(),         &DriverStation::radioChanged,
+    connect (QDS(),         &DriverStation::radioChanged,
              m_radio,      &QCheckBox::setChecked);
-    connect (DS(),         &DriverStation::radioChanged,
+    connect (QDS(),         &DriverStation::radioChanged,
              m_bridge,     &QCheckBox::setChecked);
-    connect (DS(),         &DriverStation::fmsChanged,
+    connect (QDS(),         &DriverStation::fmsChanged,
              m_fms,        &QCheckBox::setChecked);
-    connect (DS(),         &DriverStation::rioVersionChanged,
+    connect (QDS(),         &DriverStation::rioVersionChanged,
              m_rioVersion, &QLabel::setText);
-    connect (DS(),         &DriverStation::pdpVersionChanged,
+    connect (QDS(),         &DriverStation::pdpVersionChanged,
              m_pdpVersion, &QLabel::setText);
-    connect (DS(),         &DriverStation::pcmVersionChanged,
+    connect (QDS(),         &DriverStation::pcmVersionChanged,
              m_pcmVersion, &QLabel::setText);
-    connect (DS(),         &DriverStation::libVersionChanged,
+    connect (QDS(),         &DriverStation::libVersionChanged,
              m_libVersion, &QLabel::setText);
-    connect (DS(),         &DriverStation::cpuUsageChanged,
+    connect (QDS(),         &DriverStation::cpuUsageChanged,
              this,         &Diagnostics::updateCpuUsage);
-    connect (DS(),         &DriverStation::ramUsageChanged,
+    connect (QDS(),         &DriverStation::ramUsageChanged,
              this,         &Diagnostics::updateRamUsage);
-    connect (DS(),         &DriverStation::diskUsageChanged,
+    connect (QDS(),         &DriverStation::diskUsageChanged,
              this,         &Diagnostics::updateDiskUsage);
     connect (m_reboot,     &QPushButton::clicked,
-             DS(),         &DriverStation::rebootRobot);
+             QDS(),         &DriverStation::rebootRobot);
     connect (m_restart,    &QPushButton::clicked,
-             DS(),         &DriverStation::restartCode);
+             QDS(),         &DriverStation::restartCode);
 
     /* Lambda-functions */
-    connect (DS(), &DriverStation::communicationsChanged,
-    [ = ] (DS_CommStatus status) {
-        m_robot->setChecked (status == kFull);
+    connect (QDS(), &DriverStation::communicationsChanged,
+    [ = ] (DS::DS_CommStatus status) {
+        m_robot->setChecked (status == DS::kFull);
     });
 }
 

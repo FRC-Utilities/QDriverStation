@@ -39,7 +39,7 @@ class CAN_Metrics : public QWidget {
   private slots:
     void createWidgets();
     void createLayouts();
-    void onMetricsReceived (DS_CAN can);
+    void onMetricsReceived (DS::CAN can);
 
   private:
     QLabel* m_titleLabel;

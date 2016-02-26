@@ -80,7 +80,7 @@ Operator::Operator (QWidget* parent) : QWidget (parent) {
     connectSlots();
     updateProgressbars();
 
-    DS_LogMessage (kInfoLevel, "MainWindow: Operator widget created");
+    DS::Log (DS::kInfoLevel, "MainWindow: Operator widget created");
 }
 
 //=============================================================================
@@ -88,7 +88,7 @@ Operator::Operator (QWidget* parent) : QWidget (parent) {
 //=============================================================================
 
 Operator::~Operator() {
-    DS_LogMessage (kInfoLevel, "MainWindow: Operator widget destroyed");
+    DS::Log (DS::kInfoLevel, "MainWindow: Operator widget destroyed");
 }
 
 //=============================================================================
@@ -265,7 +265,7 @@ void Operator::configureStyles() {
     m_windowNormal->setChecked    (!m_windowDocked->isChecked());
 
     /* Put the available alliances & positions in the station combo */
-    m_teamStation->insertItems    (0, DS()->alliances());
+    m_teamStation->insertItems    (0, QDS()->alliances());
 
     /* Setup le CSS */
     setStyleSheet (OPERATOR_CSS);
@@ -315,12 +315,12 @@ void Operator::connectSlots() {
              this,                      SIGNAL (showDocked          (void)));
     connect (m_windowNormal,            SIGNAL (clicked             (void)),
              this,                      SIGNAL (showUnDocked        (void)));
-    connect (DS(),                      SIGNAL (elapsedTimeChanged  (QString)),
+    connect (QDS(),                      SIGNAL (elapsedTimeChanged  (QString)),
              m_elapsedTime,               SLOT (setText             (QString)));
     connect (m_modesGroup,              SIGNAL (buttonClicked       (int)),
              this,                        SLOT (updateControlMode   (int)));
     connect (m_teamStation,             SIGNAL (currentIndexChanged (int)),
-             DS(),                        SLOT (setAlliance         (int)));
+             QDS(),                        SLOT (setAlliance         (int)));
     connect (Dashboards::getInstance(), SIGNAL (dashboardChanged    (void)),
              this,                        SLOT (updateWindowState   (void)));
 }
@@ -330,8 +330,8 @@ void Operator::connectSlots() {
 //=============================================================================
 
 void Operator::updateEnableState() {
-    bool enabled = m_enable->isChecked() && DS()->canBeEnabled();
-    DS()->setEnabled (enabled);
+    bool enabled = m_enable->isChecked() && QDS()->canBeEnabled();
+    QDS()->setEnabled (enabled);
 
     /* Make the enable button light green */
     if (enabled) {
@@ -403,16 +403,16 @@ void Operator::updateProgressbars() {
 
 void Operator::updateControlMode (int index) {
     Q_UNUSED (index);
-    DS_ControlMode mode = kControlInvalid;
+    DS::ControlMode mode = DS::kControlInvalid;
 
     if (m_teleop->isChecked())
-        mode = kControlTeleoperated;
+        mode = DS::kControlTeleoperated;
 
     else if (m_autonomous->isChecked())
-        mode = kControlAutonomous;
+        mode = DS::kControlAutonomous;
 
     else if (m_test->isChecked())
-        mode = kControlTest;
+        mode = DS::kControlTest;
 
-    DS()->setControlMode (mode);
+    QDS()->setControlMode (mode);
 }

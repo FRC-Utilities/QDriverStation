@@ -26,6 +26,8 @@
 #include <QTimer>
 #include "LibDS/Core/Common.h"
 
+namespace DS_CORE {
+
 /**
  * \class DS_Watchdog
  *
@@ -40,11 +42,11 @@
  * The corrective actions typically include placing the computer system in a
  * safe state and restoring normal system operation.
  */
-class LIB_DS_DECL DS_Watchdog : public QObject {
+class LIB_DS_DECL Watchdog : public QObject {
     Q_OBJECT
 
   public:
-    explicit DS_Watchdog();
+    explicit Watchdog();
 
   public slots:
     void restart();
@@ -56,5 +58,7 @@ class LIB_DS_DECL DS_Watchdog : public QObject {
   private:
     QTimer m_timer;
 };
+
+}
 
 #endif

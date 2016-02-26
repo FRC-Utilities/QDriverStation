@@ -22,6 +22,8 @@
 
 #include "LibDS/Protocols/Protocol2015.h"
 
+using namespace DS_CORE;
+
 //=============================================================================
 // FTP locations
 //=============================================================================
@@ -83,90 +85,90 @@ enum ProtocolStandards {
 };
 
 //=============================================================================
-// DS_Protocol2015::fmsFrequency
+//Protocol2015::fmsFrequency
 //=============================================================================
 
-int DS_Protocol2015::fmsFrequency() {
+int Protocol2015::fmsFrequency() {
     return 2;
 }
 
 //=============================================================================
-// DS_Protocol2015::robotFrequency
+//Protocol2015::robotFrequency
 //=============================================================================
 
-int DS_Protocol2015::robotFrequency() {
+int Protocol2015::robotFrequency() {
     return 50;
 }
 
 //=============================================================================
-// DS_Protocol2015::fmsInputPort
+//Protocol2015::fmsInputPort
 //=============================================================================
 
-int DS_Protocol2015::fmsInputPort() {
+int Protocol2015::fmsInputPort() {
     return 1120;
 }
 
 //=============================================================================
-// DS_Protocol2015::fmsOutputPort
+//Protocol2015::fmsOutputPort
 //=============================================================================
 
-int DS_Protocol2015::fmsOutputPort() {
+int Protocol2015::fmsOutputPort() {
     return 1160;
 }
 
 //=============================================================================
-// DS_Protocol2015::clientPort
+//Protocol2015::clientPort
 //=============================================================================
 
-int DS_Protocol2015::robotInputPort() {
+int Protocol2015::robotInputPort() {
     return 1150;
 }
 
 //=============================================================================
-// DS_Protocol2015::robotPort
+//Protocol2015::robotPort
 //=============================================================================
 
-int DS_Protocol2015::robotOutputPort() {
+int Protocol2015::robotOutputPort() {
     return 1110;
 }
 
 //=============================================================================
-// DS_Protocol2015::tcpProbePort
+//Protocol2015::tcpProbePort
 //=============================================================================
 
-int DS_Protocol2015::tcpProbesPort() {
+int Protocol2015::tcpProbesPort() {
     return 80;
 }
 
 //=============================================================================
-// DS_Protocol2015::netConsoleInputPort
+//Protocol2015::netConsoleInputPort
 //=============================================================================
 
-int DS_Protocol2015::netConsoleInputPort() {
+int Protocol2015::netConsoleInputPort() {
     return 6666;
 }
 
 //=============================================================================
-// DS_Protocol2015::acceptsConsoleCommnds
+//Protocol2015::acceptsConsoleCommnds
 //=============================================================================
 
-bool DS_Protocol2015::acceptsConsoleCommands() {
+bool Protocol2015::acceptsConsoleCommands() {
     return false;
 }
 
 //=============================================================================
-// DS_Protocol2015::defaultRadioAddress
+//Protocol2015::defaultRadioAddress
 //=============================================================================
 
-QStringList DS_Protocol2015::defaultRadioAddress() {
-    return QStringList (DS_GetStaticIp (10, team(), 1));
+QStringList Protocol2015::defaultRadioAddress() {
+    return QStringList (DS::StaticIP (10, team(), 1));
 }
 
 //=============================================================================
-// DS_Protocol2015::defaultRobotAddress
+//Protocol2015::defaultRobotAddress
 //=============================================================================
 
-QStringList DS_Protocol2015::defaultRobotAddress() {
+QStringList Protocol2015::defaultRobotAddress() {
     QStringList list;
 
     list.append (QString ("roboRIO-%1.local").arg (team()));
@@ -175,49 +177,49 @@ QStringList DS_Protocol2015::defaultRobotAddress() {
 
     /* Try all the DHCP ranges, it's faster than waiting for the mDNS to work */
     for (int i = 20; i < 100; ++i)
-        list.append (QString (DS_GetStaticIp (10, team(), i)));
+        list.append (QString (DS::StaticIP (10, team(), i)));
 
     return list;
 }
 
 //=============================================================================
-// DS_Protocol2015::reboot
+//Protocol2015::reboot
 //=============================================================================
 
-void DS_Protocol2015::reboot() {
+void Protocol2015::reboot() {
     m_instructionCode = pInstructionRebootRIO;
 }
 
 //=============================================================================
-// DS_Protocol2015::restartCode
+//Protocol2015::restartCode
 //=============================================================================
 
-void DS_Protocol2015::restartCode() {
+void Protocol2015::restartCode() {
     m_instructionCode  = pInstructionRestartCode;
 }
 
 //=============================================================================
-// DS_Protocol2015::resetProtocol
+//Protocol2015::resetProtocol
 //=============================================================================
 
-void DS_Protocol2015::_resetProtocol() {
+void Protocol2015::_resetProtocol() {
     m_instructionCode = pInstructionInvalid;
 }
 
 //=============================================================================
-// DS_Protocol2015::readFMSPacket
+//Protocol2015::readFMSPacket
 //=============================================================================
 
-bool DS_Protocol2015::_readFMSPacket (QByteArray data) {
+bool Protocol2015::_readFMSPacket (QByteArray data) {
     Q_UNUSED (data);
     return true;
 }
 
 //=============================================================================
-// DS_Protocol2015::readPacket
+//Protocol2015::readPacket
 //=============================================================================
 
-bool DS_Protocol2015::_readRobotPacket (QByteArray data) {
+bool Protocol2015::_readRobotPacket (QByteArray data) {
     int offset = 8;
 
     /* Packet length is invalid, watchdog will not be reset */
@@ -284,19 +286,19 @@ bool DS_Protocol2015::_readRobotPacket (QByteArray data) {
 }
 
 //=============================================================================
-// DS_Protocol2015::getFMSPacket
+//Protocol2015::getFMSPacket
 //============================================================================
 
-QByteArray DS_Protocol2015::_getFmsPacket() {
+QByteArray Protocol2015::_getFmsPacket() {
     QByteArray data;
     return data;
 }
 
 //=============================================================================
-// DS_Protocol2015::getClientPacket
+//Protocol2015::getClientPacket
 //=============================================================================
 
-QByteArray DS_Protocol2015::_getClientPacket() {
+QByteArray Protocol2015::_getClientPacket() {
     QByteArray data;
 
     /* Used for rebooting the robot and restarting its code */
@@ -313,7 +315,7 @@ QByteArray DS_Protocol2015::_getClientPacket() {
                             _getJoystickData();
 
     /* Construct the packet */
-    data.append (DS_ToBytes (sentRobotPackets())); // Ping data
+    data.append (DS::ToBytes (sentRobotPackets()));
     data.append (pHeaderGeneral);                  // Protocol version code
     data.append (opcode);                          // Operation code
     data.append (instruction);                     // Special instructions
@@ -324,10 +326,10 @@ QByteArray DS_Protocol2015::_getClientPacket() {
 }
 
 //=============================================================================
-// DS_Protocol2015::getJoystickData
+//Protocol2015::getJoystickData
 //=============================================================================
 
-QByteArray DS_Protocol2015::_getJoystickData() {
+QByteArray Protocol2015::_getJoystickData() {
     QByteArray data;
 
     /* Do not send joystick data on DS init */
@@ -358,22 +360,22 @@ QByteArray DS_Protocol2015::_getJoystickData() {
 
         /* Add button data */
         data.append (_num_buttons);
-        data.append (DS_ToBytes (_button_data));
+        data.append (DS::ToBytes (_button_data));
 
         /* Add hat/pov data */
         data.append (_num_pov_hats);
         for (int hat = 0; hat < _num_pov_hats; ++hat)
-            data.append (DS_ToBytes (joysticks()->at (i)->POVs [hat]));
+            data.append (DS::ToBytes (joysticks()->at (i)->POVs [hat]));
     }
 
     return data;
 }
 
 //=============================================================================
-// DS_Protocol2015::getTimezoneData
+//Protocol2015::getTimezoneData
 //=============================================================================
 
-QByteArray DS_Protocol2015::_getTimezoneData() {
+QByteArray Protocol2015::_getTimezoneData() {
     QByteArray data;
 
     /* Add size (always 11) */
@@ -386,7 +388,7 @@ QByteArray DS_Protocol2015::_getTimezoneData() {
 
     /* Add current date/time */
     data.append (pHeaderTime);
-    data.append (DS_ToBytes (time.msec()));
+    data.append (DS::ToBytes (time.msec()));
     data.append (time.second());
     data.append (time.minute());
     data.append (time.hour());
@@ -395,61 +397,61 @@ QByteArray DS_Protocol2015::_getTimezoneData() {
     data.append (date.year() - 1900);
 
     /* Add timezone data */
-    data.append (DS_GetTimezoneCode().length() + 1);
+    data.append (DS::Timezone().length() + 1);
     data.append (pHeaderTimezone);
-    data.append (DS_GetTimezoneCode());
+    data.append (DS::Timezone());
 
     return data;
 }
 
 //=============================================================================
-// DS_Protocol2015::getControlCode
+//Protocol2015::getControlCode
 //=============================================================================
 
-int DS_Protocol2015::getControlCode() {
-    if (controlMode() == kControlTest)
+int Protocol2015::getControlCode() {
+    if (controlMode() == DS::kControlTest)
         return pControlTest;
 
-    else if (controlMode() == kControlAutonomous)
+    else if (controlMode() == DS::kControlAutonomous)
         return pControlAutonomous;
 
-    else if (controlMode() == kControlTeleoperated)
+    else if (controlMode() == DS::kControlTeleoperated)
         return pControlTeleoperated;
 
     return pControlTeleoperated;
 }
 
 //=============================================================================
-// DS_Protocol2015::getAllianceCode
+//Protocol2015::getAllianceCode
 //=============================================================================
 
-int DS_Protocol2015::getAllianceCode() {
-    if (alliance() == kAllianceRed1)
+int Protocol2015::getAllianceCode() {
+    if (alliance() == DS::kAllianceRed1)
         return pRed1;
 
-    else if (alliance() == kAllianceRed2)
+    else if (alliance() == DS::kAllianceRed2)
         return pRed2;
 
-    else if (alliance() == kAllianceRed3)
+    else if (alliance() == DS::kAllianceRed3)
         return pRed3;
 
-    else if (alliance() == kAllianceBlue1)
+    else if (alliance() == DS::kAllianceBlue1)
         return pBlue1;
 
-    else if (alliance() == kAllianceBlue2)
+    else if (alliance() == DS::kAllianceBlue2)
         return pBlue2;
 
-    else if (alliance() == kAllianceBlue3)
+    else if (alliance() == DS::kAllianceBlue3)
         return pBlue3;
 
     return pRed1;
 }
 
 //=============================================================================
-// DS_Protocol2015::getJoystickSize
+//Protocol2015::getJoystickSize
 //=============================================================================
 
-int DS_Protocol2015::getJoystickSize (DS_Joystick* joystick) {
+int Protocol2015::getJoystickSize (DS::Joystick* joystick) {
     return  5
             + (joystick->numAxes > 0 ? joystick->numAxes : 0)
             + (joystick->numButtons / 8)

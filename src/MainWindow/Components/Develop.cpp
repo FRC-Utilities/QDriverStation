@@ -27,7 +27,7 @@
 //=============================================================================
 
 Develop::Develop (QWidget* parent) : QWidget (parent) {
-    DS_LogMessage (kInfoLevel, "MainWindow: Develop widget created");
+    DS::Log (DS::kInfoLevel, "MainWindow: Develop widget created");
 }
 
 //=============================================================================
@@ -35,5 +35,5 @@ Develop::Develop (QWidget* parent) : QWidget (parent) {
 //=============================================================================
 
 Develop::~Develop() {
-    DS_LogMessage (kInfoLevel, "MainWindow: Develop widget destroyed");
+    DS::Log (DS::kInfoLevel, "MainWindow: Develop widget destroyed");
 }

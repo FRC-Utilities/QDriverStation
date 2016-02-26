@@ -70,7 +70,7 @@ SettingsWindow::SettingsWindow() {
     readSettings();
 
     setAttribute  (Qt::WA_QuitOnClose);
-    DS_LogMessage (kInfoLevel, "Settings window created");
+    DS::Log (DS::kInfoLevel, "Settings window created");
 }
 
 //=============================================================================
@@ -78,7 +78,7 @@ SettingsWindow::SettingsWindow() {
 //=============================================================================
 
 SettingsWindow::~SettingsWindow() {
-    DS_LogMessage (kInfoLevel, "Settings Window: SW destroyed");
+    DS::Log (DS::kInfoLevel, "Settings Window: SW destroyed");
 }
 
 //=============================================================================
@@ -301,8 +301,8 @@ void SettingsWindow::connectSlots() {
     connect (m_ok,     SIGNAL (clicked()),         this, SLOT (apply()));
     connect (m_reset,  SIGNAL (clicked()),         this, SLOT (reset()));
     connect (m_cancel, SIGNAL (clicked()),         this, SLOT (cancel()));
-    connect (DS(),     SIGNAL (teamChanged (int)), this, SLOT (updateTeam (int)));
-    connect (DS(),     SIGNAL (protocolChanged()), this, SLOT (readSettings()));
+    connect (QDS(),     SIGNAL (teamChanged (int)), this, SLOT (updateTeam (int)));
+    connect (QDS(),     SIGNAL (protocolChanged()), this, SLOT (readSettings()));
 
     connect (m_useCustomAddress, SIGNAL (toggled    (bool)),
              m_robotAddress,       SLOT (setEnabled (bool)));
@@ -404,16 +404,16 @@ void SettingsWindow::readSettings() {
 
 void SettingsWindow::applySettings() {
     /* Set the team number to be sure the address placeholder is good */
-    DS()->setTeamNumber (Settings::get ("Team", 0).toInt());
+    QDS()->setTeamNumber (Settings::get ("Team", 0).toInt());
 
     /* Only use a custom robot address if the checkbox is checked */
     QString ip = m_useCustomAddress->isChecked() ? m_robotAddress->text() : "";
     Settings::set ("Robot Address", ip);
 
     /* Apply the robot address */
-    DS()->setRobotAddress (ip);
+    QDS()->setRobotAddress (ip);
     m_robotAddress->setText (ip);
-    m_robotAddress->setPlaceholderText (DS()->defaultRobotAddress());
+    m_robotAddress->setPlaceholderText (QDS()->defaultRobotAddress());
 
     /* Apply other settings */
     Settings::set ("Auto Updater",   m_autoUpdater->isChecked());
@@ -437,7 +437,7 @@ void SettingsWindow::applySettings() {
 
 void SettingsWindow::updateTeam (int team) {
     Q_UNUSED (team);
-    m_robotAddress->setPlaceholderText (DS()->defaultRobotAddress());
+    m_robotAddress->setPlaceholderText (QDS()->defaultRobotAddress());
 }
 
 //=============================================================================

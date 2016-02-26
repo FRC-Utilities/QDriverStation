@@ -47,7 +47,7 @@ Messages::Messages (QWidget* parent) : QWidget (parent) {
     createWidgets();
     createLayouts();
 
-    DS_LogMessage (kInfoLevel, "MainWindow: Messages widget created");
+    DS::Log (DS::kInfoLevel, "MainWindow: Messages widget created");
 }
 
 //=============================================================================
@@ -55,7 +55,7 @@ Messages::Messages (QWidget* parent) : QWidget (parent) {
 //=============================================================================
 
 Messages::~Messages() {
-    DS_LogMessage (kInfoLevel, "MainWindow: Messages widget destroyed");
+    DS::Log (DS::kInfoLevel, "MainWindow: Messages widget destroyed");
 }
 
 //=============================================================================
@@ -75,7 +75,7 @@ void Messages::createWidgets() {
 
     connect (m_copyButton,  &QPushButton::clicked, this, &Messages::copy);
     connect (m_clearButton, &QPushButton::clicked, this, &Messages::clear);
-    connect (DS(),          &DriverStation::newMessage,
+    connect (QDS(),          &DriverStation::newMessage,
              this,          &Messages::registerMessage);
 }
 

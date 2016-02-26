@@ -62,7 +62,7 @@ JoystickManager::JoystickManager() {
              this,              &JoystickManager::onAxisEvent);
     connect (this,              &JoystickManager::buttonEvent,
              this,              &JoystickManager::onButtonEvent);
-    connect (DS(),              &DriverStation::protocolChanged,
+    connect (QDS(),              &DriverStation::protocolChanged,
              this,              &JoystickManager::updateInterfaces);
 }
 
@@ -136,6 +136,8 @@ VirtualJoystick* JoystickManager::virtualJoystick() {
 //=============================================================================
 
 void JoystickManager::setBlacklisted (int index, bool blacklisted) {
+    Q_UNUSED (index);
+    Q_UNUSED (blacklisted);
     //inputDevices().at (index).blacklisted = blacklisted;
 }
 
@@ -145,7 +147,7 @@ void JoystickManager::setBlacklisted (int index, bool blacklisted) {
 
 void JoystickManager::resetJoysticks() {
     m_devices.clear();
-    DS()->resetJoysticks();
+    QDS()->resetJoysticks();
 
     emit countChanged();
 }
@@ -167,19 +169,19 @@ void JoystickManager::updateInterfaces() {
 
     foreach (QDS_InputDevice joystick, inputDevices()) {
         if (!joystick.blacklisted) {
-            DS()->addJoystick (joystick.numAxes,
-                               joystick.numButtons,
-                               joystick.numPOVs);
+            QDS()->addJoystick (joystick.numAxes,
+                                joystick.numButtons,
+                                joystick.numPOVs);
         } else {
-            DS_LogMessage (kInfoLevel, "Ignoring joystick "
-                           + QString::number (joystick.device_number)
-                           + " because its blacklisted");
+            DS::Log (DS::kInfoLevel, "Ignoring joystick "
+                     + QString::number (joystick.device_number)
+                     + " because its blacklisted");
         }
     }
 
-    DS_LogMessage (kInfoLevel, "Input/joystick interfaces updated");
-    DS_LogMessage (kInfoLevel, "New joystick count: "
-                   + QString::number (m_devices.count()));
+    DS::Log (DS::kInfoLevel, "Input/joystick interfaces updated");
+    DS::Log (DS::kInfoLevel, "New joystick count: "
+             + QString::number (m_devices.count()));
 }
 
 //=============================================================================
@@ -197,9 +199,9 @@ void JoystickManager::addInputDevice (QDS_InputDevice device) {
 
 void JoystickManager::onPOVEvent (QDS_POVEvent event) {
     if (!event.joystick.blacklisted) {
-        DS()->updateJoystickPOV (event.joystick.device_number,
-                                 event.pov,
-                                 event.angle);
+        QDS()->updateJoystickPOV (event.joystick.device_number,
+                                  event.pov,
+                                  event.angle);
     }
 }
 
@@ -209,9 +211,9 @@ void JoystickManager::onPOVEvent (QDS_POVEvent event) {
 
 void JoystickManager::onAxisEvent (QDS_AxisEvent event) {
     if (!event.joystick.blacklisted) {
-        DS()->updateJoystickAxis (event.joystick.device_number,
-                                  event.axis,
-                                  event.value);
+        QDS()->updateJoystickAxis (event.joystick.device_number,
+                                   event.axis,
+                                   event.value);
     }
 }
 
@@ -221,8 +223,8 @@ void JoystickManager::onAxisEvent (QDS_AxisEvent event) {
 
 void JoystickManager::onButtonEvent (QDS_ButtonEvent event) {
     if (!event.joystick.blacklisted) {
-        DS()->updateJoystickButton (event.joystick.device_number,
-                                    event.button,
-                                    event.pressed);
+        QDS()->updateJoystickButton (event.joystick.device_number,
+                                     event.button,
+                                     event.pressed);
     }
 }

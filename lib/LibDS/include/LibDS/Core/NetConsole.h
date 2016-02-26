@@ -25,17 +25,19 @@
 
 #include "LibDS/Core/Common.h"
 
+namespace DS_CORE {
+
 /**
  * \class DS_NetConsole
  *
- * The DS_NetConsole class receives and decodes messages broadcasted
+ * The LibDS::DS_NetConsole class receives and decodes messages broadcasted
  * by the robot over the local area network.
  */
-class LIB_DS_DECL DS_NetConsole : public QObject {
+class LIB_DS_DECL NetConsole : public QObject {
     Q_OBJECT
 
   public:
-    explicit DS_NetConsole (QObject* parent);
+    explicit NetConsole (QObject* parent);
 
   public slots:
     /**
@@ -89,5 +91,7 @@ class LIB_DS_DECL DS_NetConsole : public QObject {
      */
     void readSocket();
 };
+
+}
 
 #endif

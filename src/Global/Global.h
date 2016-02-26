@@ -55,7 +55,7 @@ class JoystickManager;
 //=============================================================================
 
 extern Beeper* BEEPER();
-extern DriverStation* DS();
+extern DriverStation* QDS();
 extern QtAwesome* AWESOME();
 extern QSpacerItem* SPACER();
 extern SettingsWindow* SETTINGS_WINDOW();

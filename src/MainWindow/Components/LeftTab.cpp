@@ -65,7 +65,7 @@ LeftTab::LeftTab (QWidget* parent) : QTabWidget (parent) {
              this,       &LeftTab::requestErrorAnimation);
 
     resizeToMinimum();
-    DS_LogMessage (kInfoLevel, "MainWindow: Left tab created");
+    DS::Log (DS::kInfoLevel, "MainWindow: Left tab created");
 }
 
 //=============================================================================
@@ -73,7 +73,7 @@ LeftTab::LeftTab (QWidget* parent) : QTabWidget (parent) {
 //=============================================================================
 
 LeftTab::~LeftTab() {
-    DS_LogMessage (kInfoLevel, "MainWindow: Left tab destroyed");
+    DS::Log (DS::kInfoLevel, "MainWindow: Left tab destroyed");
 }
 
 //=============================================================================

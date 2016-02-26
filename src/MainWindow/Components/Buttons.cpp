@@ -92,7 +92,7 @@ Buttons::Buttons (QWidget* parent) : QWidget (parent) {
     connect (m_settings, &QPushButton::clicked, SHOW_SETTINGS_WINDOW);
     connect (m_virtualJ, &QPushButton::clicked, SHOW_VIRTUAL_JOYSTICKS);
 
-    DS_LogMessage (kInfoLevel, "MainWindow: Buttons widget created");
+    DS::Log (DS::kInfoLevel, "MainWindow: Buttons widget created");
 }
 
 //=============================================================================
@@ -100,5 +100,5 @@ Buttons::Buttons (QWidget* parent) : QWidget (parent) {
 //=============================================================================
 
 Buttons::~Buttons() {
-    DS_LogMessage (kInfoLevel, "MainWindow: Buttons widget destroyed");
+    DS::Log (DS::kInfoLevel, "MainWindow: Buttons widget destroyed");
 }

@@ -31,17 +31,19 @@
 #include "LibDS/Core/Common.h"
 #include "LibDS/Core/Watchdog.h"
 
+namespace DS_CORE {
+
 /**
- * \class DS_Protocol
+ * \class DS_ProtocolBase
  *
  * Implements an abstract class to be used as a base for any protocol that
  * will be used to drive an FRC robot.
  */
-class LIB_DS_DECL DS_ProtocolBase : public QObject {
+class LIB_DS_DECL ProtocolBase : public QObject {
     Q_OBJECT
 
   public:
-    explicit DS_ProtocolBase();
+    explicit ProtocolBase();
 
     /**
      * Returns the current team number
@@ -101,23 +103,23 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     /**
      * Returns the current alliance of the robot
      */
-    DS_Alliance alliance() const;
+    DS::Alliance alliance() const;
 
     /**
      * Returns the current control mode of the robot
      */
-    DS_ControlMode controlMode() const;
+    DS::ControlMode controlMode() const;
 
     /**
      * Returns the current communication status
      */
-    DS_CommStatus communicationStatus() const;
+    DS::DS_CommStatus communicationStatus() const;
 
     /**
      * A list with the input data of the joysticks. This is just a reference
      * to the joystick list in the protocol manager.
      */
-    QList<DS_Joystick*>* joysticks() const;
+    QList<DS::Joystick*>* joysticks() const;
 
     /**
      * Returns the default radio address or the custom radio address
@@ -166,7 +168,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * \note This function must be implemented by each protocol
      */
     virtual int fmsInputPort() {
-        return DS_PROTOCOL_NO_PORT;
+        return DS::INVALID_PORT;
     }
 
     /**
@@ -175,7 +177,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * \note This function must be implemented by each protocol
      */
     virtual int fmsOutputPort() {
-        return DS_PROTOCOL_NO_PORT;
+        return DS::INVALID_PORT;
     }
 
     /**
@@ -184,7 +186,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * \note This function must be implemented by each protocol
      */
     virtual int robotInputPort() {
-        return DS_PROTOCOL_NO_PORT;
+        return DS::INVALID_PORT;
     }
 
     /**
@@ -193,7 +195,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * \note This function must be implemented by each protocol
      */
     virtual int robotOutputPort() {
-        return DS_PROTOCOL_NO_PORT;
+        return DS::INVALID_PORT;
     }
 
     /**
@@ -202,7 +204,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * itself and obtain the 'partial' communication status
      */
     virtual int tcpProbesPort() {
-        return DS_PROTOCOL_NO_PORT;
+        return DS::INVALID_PORT;
     }
 
     /**
@@ -211,7 +213,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * \note This function must be implemented by each protocol
      */
     virtual int netConsoleInputPort() {
-        return DS_PROTOCOL_NO_PORT;
+        return DS::INVALID_PORT;
     }
 
     /**
@@ -220,7 +222,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * \note This function must be implemented by each protocol
      */
     virtual int netConsoleOutputPort() {
-        return DS_PROTOCOL_NO_PORT;
+        return DS::INVALID_PORT;
     }
 
     /**
@@ -283,17 +285,17 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     /**
      * Updates the \a alliance of the robot
      */
-    void setAlliance (DS_Alliance alliance);
+    void setAlliance (DS::Alliance alliance);
 
     /**
      * Updates the control \a mode of the robot
      */
-    void setControlMode (DS_ControlMode mode);
+    void setControlMode (DS::ControlMode mode);
 
     /**
      * Indicates the protocol from where to read input from the \a joysticks
      */
-    void setJoysticks (QList<DS_Joystick*>* joysticks);
+    void setJoysticks (QList<DS::Joystick*>* joysticks);
 
     /**
      * Reads the FMS packet and calls the appropiate functions to interpret it
@@ -351,7 +353,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * Emitted when the protocol figures out that we need to
      * rumble one of the joysticks...
      */
-    void rumbleRequest (DS_RumbleRequest request);
+    void rumbleRequest (DS::RumbleRequest request);
 
     /**
      * Emitted when the state of the network communications with the robot
@@ -362,7 +364,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      *     - The robot responds to ping requests and DS
      *     - The robot does not respond to ping requests nor the DS
      */
-    void communicationsChanged (DS_CommStatus);
+    void communicationsChanged (DS::DS_CommStatus);
 
     /**
      * Emitted when the robot detects a possible voltage brownout
@@ -395,7 +397,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     /**
      * Emitted when the protocol receives and decodes a CAN data structure
      */
-    void CANInfoReceived (DS_CAN);
+    void CANInfoReceived (DS::CAN);
 
     /**
      * Emitted when the protocol detects that the enabled state of the robot
@@ -414,7 +416,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * Note: this signal can be emitted when the user changes the control mode
      * or when the robot itself changes its mode (e.g. e-stop)
      */
-    void controlModeChanged (DS_ControlMode);
+    void controlModeChanged (DS::ControlMode);
 
     /**
      * Emitted when the client has just connected to the robot and downloaded
@@ -544,7 +546,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     /**
      * Changes the state of the communications and emits the appropiate signals
      */
-    void updateCommStatus (DS_CommStatus statusCode);
+    void updateCommStatus (DS::DS_CommStatus statusCode);
 
     /**
      * Changes the voltage brownout state and emits the appropiate signals
@@ -599,7 +601,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
     /**
      * Holds the communication status of the robot
      */
-    DS_CommStatus m_communicationStatus;
+    DS::DS_CommStatus m_communicationStatus;
 
     /**
      * If set to \c true, robot is emergency stopped
@@ -647,25 +649,25 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      * The current alliance of the robot.
      * This variable is changed with the \c setAlliance() function.
      */
-    DS_Alliance m_alliance;
+    DS::Alliance m_alliance;
 
     /**
      * The watchdog, used to reset internal values and refresh data when
      * robot is not present or does not respond
      */
-    DS_Watchdog m_watchdog;
+    Watchdog m_watchdog;
 
     /**
      * The current control mode of the robot.
      * This variable is changed with the \c setControlMode() function.
      */
-    DS_ControlMode m_controlMode;
+    DS::ControlMode m_controlMode;
 
     /**
      * A list with the input data of the joysticks. This is just a reference
      * to the joystick list in the protocol manager.
      */
-    QList<DS_Joystick*>* m_joysticks;
+    QList<DS::Joystick*>* m_joysticks;
 
     /**
      * Used for pinging the robot
@@ -710,5 +712,7 @@ class LIB_DS_DECL DS_ProtocolBase : public QObject {
      */
     void onPingResponse (QAbstractSocket::SocketState state);
 };
+
+}
 
 #endif

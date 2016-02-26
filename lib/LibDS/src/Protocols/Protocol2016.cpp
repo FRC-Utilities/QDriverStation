@@ -22,11 +22,13 @@
 
 #include "LibDS/Protocols/Protocol2016.h"
 
+using namespace DS_CORE;
+
 //=============================================================================
-// DS_Protocol2016::defaultRobotAddress
+//Protocol2016::defaultRobotAddress
 //=============================================================================
 
-QStringList DS_Protocol2016::defaultRobotAddress() {
+QStringList Protocol2016::defaultRobotAddress() {
     QStringList list;
 
     list.append (QString ("roboRIO-%1-FRC.local").arg (team()));
@@ -36,7 +38,7 @@ QStringList DS_Protocol2016::defaultRobotAddress() {
 
     /* Try all the DHCP ranges, it's faster than waiting for the mDNS to work */
     for (int i = 20; i < 100; ++i)
-        list.append (QString (DS_GetStaticIp (10, team(), i)));
+        list.append (QString (DS::StaticIP (10, team(), i)));
 
     return list;
 }

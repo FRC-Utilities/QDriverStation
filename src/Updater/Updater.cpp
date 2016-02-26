@@ -41,7 +41,7 @@
 //=============================================================================
 
 Updater::Updater() {
-    DS_LogMessage (kInfoLevel, "Creating Updater....");
+    DS::Log (DS::kInfoLevel, "Creating Updater....");
 
     m_version = "";
     m_platform = "";
@@ -68,7 +68,7 @@ Updater::Updater() {
                          "WinT-3794/QDriverStation/updater/current");
     }
 
-    DS_LogMessage (kInfoLevel, "Updater Initialized");
+    DS::Log (DS::kInfoLevel, "Updater Initialized");
 }
 
 //=============================================================================
@@ -140,11 +140,11 @@ void Updater::getApplicationVersion (QByteArray data) {
     m_version = readKey (QString::fromUtf8 (data),
                          QString ("latest-%1").arg (m_platform));
 
-    DS_LogMessage (kInfoLevel,
-                   QString ("Updater: Server version is: %1").arg (m_version));
-    DS_LogMessage (kInfoLevel,
-                   QString ("Updater: Local version is: %1")
-                   .arg (qApp->applicationVersion()));
+    DS::Log (DS::kInfoLevel,
+             QString ("Updater: Server version is: %1").arg (m_version));
+    DS::Log (DS::kInfoLevel,
+             QString ("Updater: Local version is: %1")
+             .arg (qApp->applicationVersion()));
 
     QStringList online = m_version.split (".");
     QStringList local  = QApplication::applicationVersion().split (".");

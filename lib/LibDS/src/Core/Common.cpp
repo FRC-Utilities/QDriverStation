@@ -24,20 +24,21 @@
 #include <QApplication>
 
 #include "LibDS/Core/Common.h"
+#include "LibDS/DriverStation.h"
 
 //=============================================================================
 // Ugly logger hacks
 //=============================================================================
 
-static bool _LOG_INIT = false;
-#define _FORMAT "%-26s %-12s %-10s\n"
+static bool _LOG_INIT      = false;
+const char* _PRINT_FMT     = "%-26s %-12s %-10s\n";
 const QString _TIME_FORMAT = "dd/MMM/yyyy hh:mm:ss::zzz";
 
 //=============================================================================
-// DS_GetTimezoneCode
+//GetTimezoneCode
 //=============================================================================
 
-QString DS_GetTimezoneCode() {
+QString DS::Timezone() {
     switch (QDateTime::currentDateTime().offsetFromUtc() / 3600) {
     case -11:
         return "BST11BDT";
@@ -117,21 +118,18 @@ QString DS_GetTimezoneCode() {
 }
 
 //=============================================================================
-// DS_SendMessage
+//SendMessage
 //=============================================================================
 
-void DS_SendMessage (QString message) {
-    QUdpSocket* socket = new QUdpSocket;
-    socket->writeDatagram (message.toUtf8(), QHostAddress::LocalHost, 6666);
-
-    delete socket;
+void DS::SendMessage (QString message) {
+    DriverStation::getInstance()->newMessage (message);
 }
 
 //=============================================================================
-// DS_LogMessage
+//LogMessage
 //=============================================================================
 
-void DS_LogMessage (DS_MessageType type,  QString message) {
+void DS::Log (ErrorLevel type,  QString message) {
     /* Get level & time */
     QString level;
     QString time = QDateTime::currentDateTime().toString (_TIME_FORMAT);
@@ -139,7 +137,7 @@ void DS_LogMessage (DS_MessageType type,  QString message) {
     /* Open log output file */
     if (!_LOG_INIT) {
         _LOG_INIT = true;
-        fprintf (stderr, _FORMAT, "DATE/TIME", "ERROR LEVEL", "MESSAGE");
+        fprintf (stderr, _PRINT_FMT, "DATE/TIME", "ERROR LEVEL", "MESSAGE");
     }
 
     /* Get the error level */
@@ -163,25 +161,25 @@ void DS_LogMessage (DS_MessageType type,  QString message) {
 
     /* Write log message */
     fprintf (stderr,
-             _FORMAT,
+             _PRINT_FMT,
              time.toStdString().c_str(),
              level.toStdString().c_str(),
              message.toStdString().c_str());
 }
 
 //=============================================================================
-// DS_GetStaticIp
+//GetStaticIp
 //=============================================================================
 
-QString DS_GetStaticIp (int team, int host) {
-    return DS_GetStaticIp (10, team, host);
+QString DS::StaticIP (int team, int host) {
+    return DS::StaticIP (10, team, host);
 }
 
 //=============================================================================
-// DS_GetStaticIp
+//GetStaticIp
 //=============================================================================
 
-QString DS_GetStaticIp (int net, int team, int host) {
+QString DS::StaticIP (int net, int team, int host) {
     QString string = QString ("%1").arg (team);
 
     switch (string.length()) {
@@ -210,10 +208,10 @@ QString DS_GetStaticIp (int net, int team, int host) {
 }
 
 //=============================================================================
-// DS_GetControlModeString
+//GetControlModeString
 //=============================================================================
 
-QString DS_GetControlModeString (DS_ControlMode mode) {
+QString DS::CM_String (ControlMode mode) {
     QString string;
 
     switch (mode) {
@@ -235,10 +233,10 @@ QString DS_GetControlModeString (DS_ControlMode mode) {
 }
 
 //=============================================================================
-// DS_GetSocketData
+//GetSocketData
 //=============================================================================
 
-QByteArray DS_GetSocketData (QUdpSocket* socket) {
+QByteArray DS::ReadSocket (QUdpSocket* socket) {
     QByteArray buffer;
 
     buffer.resize (socket->pendingDatagramSize());
@@ -248,18 +246,18 @@ QByteArray DS_GetSocketData (QUdpSocket* socket) {
 }
 
 //=============================================================================
-// DS_GetSocketData
+//GetSocketData
 //=============================================================================
 
-QByteArray DS_GetSocketData (QTcpSocket* socket) {
+QByteArray DS::ReadSocket (QTcpSocket* socket) {
     return socket->readAll();
 }
 
 //=============================================================================
-// DS_ToBytes
+//ToBytes
 //=============================================================================
 
-QByteArray DS_ToBytes (int data) {
+QByteArray DS::ToBytes (int data) {
     QByteArray array;
 
     if (data == -1) {
