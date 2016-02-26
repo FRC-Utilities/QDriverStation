@@ -227,13 +227,13 @@ QByteArray DS_Protocol2014::_getFmsPacket() {
     QByteArray data;
 
     /* Create 'dynamic' variables */
-    quint8 _ip_a;
-    quint8 _ip_b;
-    quint8 _ip_c;
-    quint8 _ip_d;
-    quint8 _state;
-    quint8 _station;
-    quint8 _alliance;
+    quint8 _ip_a     = 0x00;
+    quint8 _ip_b     = 0x00;
+    quint8 _ip_c     = 0x00;
+    quint8 _ip_d     = 0x00;
+    quint8 _state    = 0x00;
+    quint8 _station  = 0x00;
+    quint8 _alliance = 0x00;
 
     /* Create 'static' variables */
     quint8 _missed_packets = 0;

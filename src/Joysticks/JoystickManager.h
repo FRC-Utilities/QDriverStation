@@ -54,6 +54,12 @@ class JoystickManager : public QObject {
     QList<QDS_InputDevice> inputDevices();
 
     /**
+     * Returns \c true if the device in the \a index is set to
+     * be ignored by the application.
+     */
+    bool isBlacklisted (int index);
+
+    /**
      * Returns the input interface with the given \a id
      */
     QDS_InputDevice getInputDevice (int id);
@@ -67,6 +73,12 @@ class JoystickManager : public QObject {
      * Gives us direct access to the virtual joystick
      */
     VirtualJoystick* virtualJoystick();
+
+  public slots:
+    /**
+     * Tells the system to ignore the selected joystick
+     */
+    void setBlacklisted (int index, bool blacklist);
 
   signals:
     /**

@@ -40,6 +40,7 @@ enum ProtocolStandards {
     pEmStopOff                = 0x00, /**< Emergency stop disabled */
     pEnabled                  = 0x04, /**< Robot Enabled */
     pDisabled                 = 0x00, /**< Robot Disabled */
+    pFMSAttached              = 0x01, /**< DS is attached to the FMS */
 
     /* Client -> RoboRIO operation modes */
     pControlTest              = 0x01, /**< Individual actuators can be moved */
@@ -340,36 +341,29 @@ QByteArray DS_Protocol2015::_getJoystickData() {
         quint8 _num_pov_hats = joysticks()->at (i)->numPOVs;
 
         /* Add joystick information and put the section header */
-        {
-            data.append (getJoystickSize (joysticks()->at (i)) - 1);
-            data.append (pHeaderJoystick);
-        }
+        data.append (getJoystickSize (joysticks()->at (i)) - 1);
+        data.append (pHeaderJoystick);
 
         /* Add axis data */
-        {
-            data.append (_num_axes);
-            for (int axis = 0; axis < _num_axes; ++axis)
-                data.append (joysticks()->at (i)->axes [axis] * 127);
-        }
+        data.append (_num_axes);
+        for (int axis = 0; axis < _num_axes; ++axis)
+            data.append (joysticks()->at (i)->axes [axis] * 127);
 
         /* Generate button data */
-        {
-            int _button_data = 0;
-            for (int button = 0; button < _num_buttons; ++button) {
-                bool pressed = joysticks()->at (i)->buttons [button];
-                _button_data += pressed ? qPow (2, button) : 0;
-            }
-
-            data.append (_num_buttons);
-            data.append (DS_ToBytes (_button_data));
+        int _button_data = 0;
+        for (int button = 0; button < _num_buttons; ++button) {
+            bool pressed = joysticks()->at (i)->buttons [button];
+            _button_data += pressed ? qPow (2, button) : 0;
         }
+
+        /* Add button data */
+        data.append (_num_buttons);
+        data.append (DS_ToBytes (_button_data));
 
         /* Add hat/pov data */
-        {
-            data.append (_num_pov_hats);
-            for (int hat = 0; hat < _num_pov_hats; ++hat)
-                data.append (DS_ToBytes (joysticks()->at (i)->POVs [hat]));
-        }
+        data.append (_num_pov_hats);
+        for (int hat = 0; hat < _num_pov_hats; ++hat)
+            data.append (DS_ToBytes (joysticks()->at (i)->POVs [hat]));
     }
 
     return data;

@@ -33,10 +33,11 @@ VirtualJoystick::VirtualJoystick() {
     m_axisRange            = 1;
     m_joystickEnabled      = false;
 
-    m_joystick.numAxes    = 6;
-    m_joystick.numPOVs    = 0;
-    m_joystick.numButtons = 10;
-    m_joystick.name       = tr ("Virtual Joystick");
+    m_joystick.numAxes     = 6;
+    m_joystick.numPOVs     = 0;
+    m_joystick.numButtons  = 10;
+    m_joystick.blacklisted = false;
+    m_joystick.name        = tr ("Virtual Joystick");
 }
 
 //=============================================================================

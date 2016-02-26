@@ -34,6 +34,44 @@
 #include "LibDS/Core/ProtocolManager.h"
 
 //=============================================================================
+// Joystick requirements
+//=============================================================================
+
+const int MAX_AXES      = 12;
+const int MAX_POVS      = 12;
+const int MAX_BUTTONS   = 24;
+const int MAX_JOYSTICKS =  6;
+
+//=============================================================================
+// Joystick error messages/warnings
+//=============================================================================
+
+const QString ERR_POV_CNT     = "<p>"
+                                "<font color=#FFF959><b>WARNING:</b></font> "
+                                "<font color=#FFFFFF>Joystick %1 has exceed "
+                                "the POV range (0 to %2 POVs). "
+                                "Joystick %1 has %3 POVs.</font>"
+                                "</p>";
+const QString ERR_AXIS_CNT    = "<p>"
+                                "<font color=#FFF959><b>WARNING:</b></font> "
+                                "<font color=#FFFFFF>Joystick %1 has exceed "
+                                "the axis range (0 to %2 axes). "
+                                "Joystick %1 has %3 axes.</font>"
+                                "</p>";
+const QString ERR_BUTTON_CNT  = "<p>"
+                                "<font color=#FFF959><b>WARNING:</b></font> "
+                                "<font color=#FFFFFF>Joystick %1 has exceed "
+                                "the button range (0 to %2 buttons). "
+                                "Joystick %1 has %3 buttons.</font>"
+                                "</p>";
+const QString ERR_JOYSTICKS   = "<p>"
+                                "<font color=#FFF959><b>WARNING:</b></font> "
+                                "<font color=#FFFFFF>Reached maximum number of "
+                                "joysticks (%1), further joysticks will be "
+                                "ignored.</font>"
+                                "</p>";
+
+//=============================================================================
 // DS_ProtocolManager::DS_ProtocolManager
 //=============================================================================
 
@@ -141,40 +179,81 @@ void DS_ProtocolManager::resetJoysticks() {
 //=============================================================================
 
 void DS_ProtocolManager::addJoystick (int axes, int buttons, int POVs) {
-    DS_Joystick* js = new DS_Joystick;
+    /* The DS has exceeded the supported number of joysticks */
+    if (m_joysticks->count() >= MAX_JOYSTICKS) {
+        DS_LogMessage  (kLibLevel, "Reached maximum number of joysticks");
+        DS_LogMessage  (kLibLevel, "Ignoring future joysticks");
+        DS_SendMessage (ERR_JOYSTICKS.arg (MAX_JOYSTICKS));
+        return;
+    }
 
-    js->numAxes = axes;
-    js->numPOVs = POVs;
-    js->numButtons = buttons;
+    /* The input joysticks has too many POVs */
+    else if (POVs > MAX_POVS) {
+        DS_LogMessage (kLibLevel, "Input device has exceeded POV range");
+        DS_SendMessage (ERR_POV_CNT
+                        .arg (m_joysticks->count())
+                        .arg (MAX_POVS)
+                        .arg (POVs));
+        return;
+    }
 
-    js->axes = new float  [axes];
-    js->POVs = new int  [POVs];
-    js->buttons = new bool [buttons];
+    /* The input joysticks has too many axes */
+    else if (axes > MAX_AXES) {
+        DS_LogMessage  (kLibLevel, "Input device has exceeded axis range");
+        DS_SendMessage (ERR_AXIS_CNT
+                        .arg (m_joysticks->count())
+                        .arg (MAX_AXES)
+                        .arg (axes));
+        return;
+    }
 
-    for (int i = 0; i < js->numAxes; i++)
-        js->axes [i] = 0;
+    /* The input joysticks has too many buttons */
+    else if (buttons > MAX_BUTTONS) {
+        DS_LogMessage  (kLibLevel, "Input device has exceeded button range");
+        DS_SendMessage (ERR_AXIS_CNT
+                        .arg (m_joysticks->count())
+                        .arg (MAX_BUTTONS)
+                        .arg (buttons));
+        return;
+    }
 
-    for (int i = 0; i < js->numPOVs; i++)
-        js->POVs [i] = -1;
+    /* Everything OK, register the joystick */
+    else {
+        DS_Joystick* js = new DS_Joystick;
 
-    for (int i = 0; i < js->numButtons; i++)
-        js->buttons [i] = false;
+        js->numAxes = axes;
+        js->numPOVs = POVs;
+        js->numButtons = buttons;
 
-    m_joysticks->append (js);
+        js->axes = new float  [axes];
+        js->POVs = new int  [POVs];
+        js->buttons = new bool [buttons];
 
-    if (isValid())
-        currentProtocol()->_onJoysticksChanged();
+        for (int i = 0; i < js->numAxes; i++)
+            js->axes [i] = 0;
 
-    DS_LogMessage (kLibLevel, QString ("Registered joystick with: "
-                                       "%1 axes, "
-                                       "%2 buttons and "
-                                       "%3 POVs")
-                   .arg (QString::number (js->numAxes))
-                   .arg (QString::number (js->numButtons))
-                   .arg (QString::number (js->numPOVs)));
+        for (int i = 0; i < js->numPOVs; i++)
+            js->POVs [i] = -1;
 
-    DS_LogMessage (kLibLevel, QString ("Current number of joysticks is %1")
-                   .arg (QString::number (m_joysticks->count())));
+        for (int i = 0; i < js->numButtons; i++)
+            js->buttons [i] = false;
+
+        m_joysticks->append (js);
+
+        if (isValid())
+            currentProtocol()->_onJoysticksChanged();
+
+        DS_LogMessage (kLibLevel, QString ("Registered joystick with: "
+                                           "%1 axes, "
+                                           "%2 buttons and "
+                                           "%3 POVs")
+                       .arg (QString::number (js->numAxes))
+                       .arg (QString::number (js->numButtons))
+                       .arg (QString::number (js->numPOVs)));
+
+        DS_LogMessage (kLibLevel, QString ("Current number of joysticks is %1")
+                       .arg (QString::number (m_joysticks->count())));
+    }
 }
 
 //=============================================================================
