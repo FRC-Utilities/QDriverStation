@@ -47,7 +47,7 @@ Messages::Messages (QWidget* parent) : QWidget (parent) {
     createWidgets();
     createLayouts();
 
-    DS::Log (DS::kInfoLevel, "MainWindow: Messages widget created");
+    DS::log (DS::kInfoLevel, "MainWindow: Messages widget created");
 }
 
 //=============================================================================
@@ -55,7 +55,7 @@ Messages::Messages (QWidget* parent) : QWidget (parent) {
 //=============================================================================
 
 Messages::~Messages() {
-    DS::Log (DS::kInfoLevel, "MainWindow: Messages widget destroyed");
+    DS::log (DS::kInfoLevel, "MainWindow: Messages widget destroyed");
 }
 
 //=============================================================================

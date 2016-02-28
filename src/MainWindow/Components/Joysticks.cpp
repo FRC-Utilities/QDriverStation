@@ -141,7 +141,7 @@ Joysticks::Joysticks (QWidget* parent) : QWidget (parent) {
     connect (m_joystickNames,    &QListWidget::currentRowChanged,
              this,               &Joysticks::setupIndicators);
 
-    DS::Log (DS::kInfoLevel, "MainWindow: Joysticks widget created");
+    DS::log (DS::kInfoLevel, "MainWindow: Joysticks widget created");
 }
 
 //=============================================================================
@@ -149,7 +149,7 @@ Joysticks::Joysticks (QWidget* parent) : QWidget (parent) {
 //=============================================================================
 
 Joysticks::~Joysticks() {
-    DS::Log (DS::kInfoLevel, "MainWindow: Joysticks widget destroyed");
+    DS::log (DS::kInfoLevel, "MainWindow: Joysticks widget destroyed");
 }
 
 //=============================================================================
@@ -157,10 +157,7 @@ Joysticks::~Joysticks() {
 //=============================================================================
 
 void Joysticks::showEvent (QShowEvent* event) {
-    /* Load joystick indicators */
     onCountChanged();
-
-    /* Actually show the widget */
     event->accept();
 }
 
@@ -169,11 +166,8 @@ void Joysticks::showEvent (QShowEvent* event) {
 //=============================================================================
 
 void Joysticks::hideEvent (QHideEvent* event) {
-    /* Remove joystick indicators and resize to avoid ugly shit */
     setupIndicators (-1);
     resize (minimumSizeHint());
-
-    /* Allow Qt to hide the widget */
     event->accept();
 }
 

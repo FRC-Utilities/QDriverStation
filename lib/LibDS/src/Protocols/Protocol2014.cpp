@@ -22,7 +22,7 @@
 
 #include "LibDS/Protocols/Protocol2014.h"
 
-using namespace DS_CORE;
+using namespace DS_Protocols;
 
 //=============================================================================
 // Protocol codes/standards
@@ -140,7 +140,7 @@ bool Protocol2014::acceptsConsoleCommands() {
 //=============================================================================
 
 QStringList Protocol2014::defaultRadioAddress() {
-    return QStringList (DS::StaticIP (10, team(), 1));
+    return QStringList (DS::getStaticIP (10, team(), 1));
 }
 
 //=============================================================================
@@ -150,7 +150,7 @@ QStringList Protocol2014::defaultRadioAddress() {
 QStringList Protocol2014::defaultRobotAddress() {
     QStringList list;
 
-    list.append (QString (DS::StaticIP (10, team(), 2)));
+    list.append (QString (DS::getStaticIP (10, team(), 2)));
     list.append (QString ("127.0.0.1"));
 
     return list;
@@ -186,7 +186,7 @@ void Protocol2014::_resetProtocol() {
 //=============================================================================
 
 void Protocol2014::_showProtocolWarning() {
-    DS::SendMessage ("<p><b><font color=#FF7722>WARNING: </font></b>"
+    DS::sendMessage ("<p><b><font color=#FF7722>WARNING: </font></b>"
                      "<font color=#FFFFFF>"
                      "This protocol is under heavy development and you WILL "
                      "encounter bugs. If using a real robot, limit its area of "
@@ -290,10 +290,10 @@ QByteArray Protocol2014::_getFmsPacket() {
     }
 
     /* Construct the packet */
-    data.append (DS::ToBytes (sentFmsPackets()));
+    data.append (DS::intToBytes (sentFmsPackets()));
     data.append (_state);
     data.append (_unknown_header);
-    data.append (DS::ToBytes (team()));
+    data.append (DS::intToBytes (team()));
     data.append (_ip_a);
     data.append (_ip_b);
     data.append (_ip_c);
@@ -302,17 +302,17 @@ QByteArray Protocol2014::_getFmsPacket() {
     data.append (_station);
     data.append (m_robotMacAddress);
     data.append (m_dsVersion);
-    data.append (DS::ToBytes (_missed_packets));
-    data.append (DS::ToBytes (sentRobotPackets()));
-    data.append (DS::ToBytes (1000 / robotFrequency()));
-    data.append (DS::ToBytes (12));
+    data.append (DS::intToBytes (_missed_packets));
+    data.append (DS::intToBytes (sentRobotPackets()));
+    data.append (DS::intToBytes (1000 / robotFrequency()));
+    data.append (DS::intToBytes (12));
     data.append (0xFF);
     data.append (0xFF);
     data.append (0xFF);
     data.append (0xFF);
     data.append (0xFF);
     data.append (0xFF);
-    data.append (DS::ToBytes (batteryVoltage()));
+    data.append (DS::intToBytes (batteryVoltage()));
 
     /* Add CRC padding (4 bytes) */
     data.append ((char) 0x00);

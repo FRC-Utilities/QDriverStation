@@ -25,70 +25,65 @@
 
 #include "LibDS/Core/Common.h"
 
-namespace DS_CORE {
+namespace DS_Core {
 
-/**
- * \class DS_NetConsole
- *
- * The LibDS::DS_NetConsole class receives and decodes messages broadcasted
- * by the robot over the local area network.
- */
+///
+/// This class recieves and sends broadcasted messages over the LAN.
+/// The parameters of the NetConsole (such as I/O ports) are specified
+/// by each protocol.
+///
 class LIB_DS_DECL NetConsole : public QObject {
     Q_OBJECT
+
+  public slots:
+    ///
+    /// Changes the local port in which we listen for robot/DS messages
+    ///
+    void setInputPort (int port);
+
+    ///
+    /// Changes the remote port in which we send commands to the robot.
+    /// Please note that this feature is not supported by all protocols,
+    /// for example, 2014 robots accept NetConsole commands, while
+    /// 2015 robots do not accept NetConsole commands.
+    ///
+    /// You can know if the current protocol supports NetConsole commands
+    /// by calling the \c acceptsConsoleCommands function from the
+    /// \c DriverStation class.
+    ///
+    void setOutputPort (int port);
+
+    ///
+    /// Sends the given \a command to the robot.
+    /// In the case that the current protocol does not support sending
+    /// NetConsole commands, the function will do nothing.
+    ///
+    void sendCommand (QString command);
+
+    ///
+    /// Allows or inhibits sending commands to the robot based on the
+    /// value of the \a accepts_input parameter.
+    ///
+    /// This function is called by the \c DriverStation when a protocol
+    /// is loaded.
+    ///
+    void setAcceptsInput (bool accepts_input);
+
+  signals:
+    ///
+    /// Emitted when the NetConsole captures a broadcasted message
+    ///
+    void newMessage (QString);
 
   public:
     explicit NetConsole (QObject* parent);
 
-  public slots:
-    /**
-     * Changes the port used by the net console to get robot data
-     */
-    void setInputPort (int port);
-
-    /**
-     * Changes the port used by the net console to send robot data
-     */
-    void setOutputPort (int port);
-
-    /**
-     * Sends a command to the robot through the Console network
-     */
-    void sendCommand (QString command);
-
-    /**
-     * Enables or disables the option to send commands through the NetConsole
-     */
-    void setAcceptsInput (bool acceptsInput);
-
-  signals:
-    /**
-     * Emitted when a message is received from the robot or the
-     * internal Driver Station system
-     */
-    void newMessage (QString);
-
   private:
-    /**
-     * The UDP port of the NetConsole
-     */
     int m_outPort;
-
-    /**
-     * Controls 'write' access to the console
-     */
     bool m_acceptsInput;
-
-    /**
-     * The network socket in which we receive data from the robot
-     */
     QUdpSocket m_socket;
 
   private slots:
-    /**
-     * @internal
-     * Called when we receive data in the network socket.
-     * Used to read the input data and process it.
-     */
     void readSocket();
 };
 

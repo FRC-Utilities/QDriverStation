@@ -22,7 +22,7 @@
 
 #include "LibDS/Core/ProtocolBase.h"
 
-using namespace DS_CORE;
+using namespace DS_Core;
 
 //=============================================================================
 // NetConsole warnings/information texts
@@ -66,7 +66,7 @@ ProtocolBase::ProtocolBase() {
     m_sentFMSPackets      = 0;
     m_sentRobotPackets    = 0;
 
-    m_robotAddress        = QString ("");
+    m_robotAddress        = "";
 
     m_alliance            = DS::kAllianceRed1;
     m_controlMode         = DS::kControlInvalid;
@@ -77,7 +77,7 @@ ProtocolBase::ProtocolBase() {
     m_emergencyStop       = false;
     m_radioConnected      = false;
 
-    m_joysticks           = new QList<DS::Joystick*>;
+    m_joysticks           = new QList<DS::Joystick>;
 
     m_radioPing.setObjectName ("Radio Ping");
     m_robotPing.setObjectName ("Robot Ping");
@@ -92,7 +92,7 @@ ProtocolBase::ProtocolBase() {
              this,         &ProtocolBase::onPingResponse);
 
     reset();
-    QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (showInfoMsg()));
+    QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (bePatientMotherfucker()));
 }
 
 //=============================================================================
@@ -211,7 +211,7 @@ DS::DS_CommStatus ProtocolBase::communicationStatus() const {
 //ProtocolBase::joysticks
 //=============================================================================
 
-QList<DS::Joystick*>* ProtocolBase::joysticks() const {
+QList<DS::Joystick>* ProtocolBase::joysticks() const {
     return m_joysticks;
 }
 
@@ -304,7 +304,7 @@ void ProtocolBase::setTeam (int team) {
         m_team = team;
         emit robotAddressChanged (robotAddress());
 
-        DS::Log (DS::kLibLevel,
+        DS::log (DS::kLibLevel,
                  "Team number set to: " + QString::number (m_team));
     }
 }
@@ -365,7 +365,7 @@ void ProtocolBase::setControlMode (DS::ControlMode mode) {
 //ProtocolBase::setJoysticks
 //=============================================================================
 
-void ProtocolBase::setJoysticks (QList<DS::Joystick*>* joysticks) {
+void ProtocolBase::setJoysticks (QList<DS::Joystick>* joysticks) {
     m_joysticks = joysticks;
 }
 
@@ -391,8 +391,8 @@ void ProtocolBase::readRobotPacket (QByteArray data) {
             setEnabled              (false);
             updateCommStatus        (DS::kFull);
             setControlMode          (DS::kControlTeleoperated);
-            DS::SendMessage   (COMM_ESTABLISH);
-            DS::Log    (DS::kLibLevel,
+            DS::sendMessage   (COMM_ESTABLISH);
+            DS::log    (DS::kLibLevel,
                         "Robot/DS connection established!");
 
             /* Make the watchdog tolerance higher to avoid temporary resets */
@@ -413,8 +413,8 @@ void ProtocolBase::updateRobotCode (bool available) {
     /* Robot code just crashed/failed */
     if (m_robotCode && !available) {
         setEnabled    (false);
-        DS::SendMessage (CODE_CRASH);
-        DS::Log  (DS::kWarnLevel,
+        DS::sendMessage (CODE_CRASH);
+        DS::log  (DS::kWarnLevel,
                   "It seems that the robot code crashed");
     }
 
@@ -487,11 +487,11 @@ void ProtocolBase::pingRadio() {
 }
 
 //=============================================================================
-//ProtocolBase::showInfoMsg
+//ProtocolBase::showPatienceMsg
 //=============================================================================
 
-void ProtocolBase::showInfoMsg() {
-    DS::SendMessage (INFO_NOTE);
+void ProtocolBase::showPatienceMsg() {
+    DS::sendMessage (INFO_NOTE);
 }
 
 //=============================================================================

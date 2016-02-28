@@ -57,7 +57,7 @@
 
 MainWindow::MainWindow() {
     setAttribute  (Qt::WA_QuitOnClose);
-    DS::Log (DS::kInfoLevel, "Creating MainWindow....");
+    DS::log (DS::kInfoLevel, "Creating MainWindow....");
 
     /* Configure internal variables */
     m_docked   = false;
@@ -107,7 +107,7 @@ MainWindow::MainWindow() {
     move (Settings::get ("MainWindow X", 100).toInt(),
           Settings::get ("MainWindow Y", 100).toInt());
 
-    DS::Log (DS::kInfoLevel, "MainWindow OK");
+    DS::log (DS::kInfoLevel, "MainWindow OK");
 
     /* Finally, init the Driver Station */
     QDS()->init();
@@ -118,7 +118,7 @@ MainWindow::MainWindow() {
 //=============================================================================
 
 MainWindow::~MainWindow() {
-    DS::Log (DS::kInfoLevel, "MainWindow: MW destroyed");
+    DS::log (DS::kInfoLevel, "MainWindow: MW destroyed");
 }
 
 //=============================================================================

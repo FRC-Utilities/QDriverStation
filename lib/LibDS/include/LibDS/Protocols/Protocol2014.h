@@ -25,15 +25,9 @@
 
 #include "LibDS/Core/ProtocolBase.h"
 
-namespace DS_CORE {
+namespace DS_Protocols {
 
-/**
- * \class DS_Protocol2014
- * \brief Implements the 2014 communication protocol
- * \note  the virtual functions are already documented in the
- *        \c DS_ProtocolBase class
- */
-class LIB_DS_DECL Protocol2014 : public ProtocolBase {
+class LIB_DS_DECL Protocol2014 : public DS_Core::ProtocolBase {
     Q_OBJECT
 
   public:

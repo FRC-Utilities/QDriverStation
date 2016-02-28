@@ -22,7 +22,7 @@
 
 #include "LibDS/Core/Client.h"
 
-using namespace DS_CORE;
+using namespace DS_Core;
 
 //=============================================================================
 //Client::DS_Client
@@ -40,7 +40,8 @@ Client::Client (QObject* parent) : QObject (parent) {
 //=============================================================================
 
 void Client::sendToFms (QByteArray data) {
-    m_fmsSender.write (data);
+    if (m_fmsPort != DS::INVALID_PORT)
+        m_fmsSender.write (data);
 }
 
 //=============================================================================
@@ -48,7 +49,11 @@ void Client::sendToFms (QByteArray data) {
 //=============================================================================
 
 void Client::sendToRobot (QByteArray data) {
-    m_robotSender.writeDatagram (data, QHostAddress (m_robotAddress), m_robotPort);
+    if (m_robotPort != DS::INVALID_PORT) {
+        m_robotSender.writeDatagram (data,
+                                     QHostAddress (m_robotAddress),
+                                     m_robotPort);
+    }
 }
 
 //=============================================================================
@@ -60,7 +65,7 @@ void Client::setFmsInputPort (int port) {
     m_fmsReceiver.bind (QHostAddress::Any, port, QTcpSocket::ShareAddress);
     m_fmsReceiver.setSocketOption (QAbstractSocket::MulticastLoopbackOption, 0);
 
-    DS::Log (DS::kLibLevel,
+    DS::log (DS::kLibLevel,
              "FMS input port set to: " + QString::number (port));
 }
 
@@ -73,7 +78,7 @@ void Client::setFmsOutputPort (int port) {
     m_fmsSender.disconnectFromHost();
     m_fmsSender.connectToHost (QHostAddress::Any, port);
 
-    DS::Log (DS::kLibLevel,
+    DS::log (DS::kLibLevel,
              "FMS output port set to: " + QString::number (port));
 }
 
@@ -86,8 +91,8 @@ void Client::setRobotInputPort (int port) {
     m_robotReceiver.bind (QHostAddress::Any, port, QUdpSocket::ShareAddress);
     m_robotReceiver.setSocketOption (QAbstractSocket::MulticastLoopbackOption, 0);
 
-    DS::Log (DS::kLibLevel,
-             "RIO input port set to: " + QString::number (port));
+    DS::log (DS::kLibLevel,
+             "Robot input port set to: " + QString::number (port));
 }
 
 //=============================================================================
@@ -96,8 +101,8 @@ void Client::setRobotInputPort (int port) {
 
 void Client::setRobotOutputPort (int port) {
     m_robotPort = port;
-    DS::Log (DS::kLibLevel,
-             "RIO output port set to: " + QString::number (port));
+    DS::log (DS::kLibLevel,
+             "Robot output port set to: " + QString::number (port));
 }
 
 //=============================================================================
@@ -113,7 +118,8 @@ void Client::setRobotAddress (QString address) {
 //=============================================================================
 
 void Client::readFmsPacket() {
-    emit fmsPacketReceived (DS::ReadSocket (&m_fmsReceiver));
+    if (m_fmsReceiver.peerPort() != DS::INVALID_PORT)
+        emit fmsPacketReceived (DS::readSocket (&m_fmsReceiver));
 }
 
 //=============================================================================
@@ -121,5 +127,6 @@ void Client::readFmsPacket() {
 //=============================================================================
 
 void Client::readRobotPacket() {
-    emit robotPacketReceived (DS::ReadSocket (&m_robotReceiver));
+    if (m_robotReceiver.peerPort() != DS::INVALID_PORT)
+        emit robotPacketReceived (DS::readSocket (&m_robotReceiver));
 }

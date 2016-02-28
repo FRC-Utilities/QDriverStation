@@ -22,7 +22,7 @@
 
 #include "LibDS/Protocols/Protocol2015.h"
 
-using namespace DS_CORE;
+using namespace DS_Protocols;
 
 //=============================================================================
 // FTP locations
@@ -161,7 +161,7 @@ bool Protocol2015::acceptsConsoleCommands() {
 //=============================================================================
 
 QStringList Protocol2015::defaultRadioAddress() {
-    return QStringList (DS::StaticIP (10, team(), 1));
+    return QStringList (DS::getStaticIP (10, team(), 1));
 }
 
 //=============================================================================
@@ -175,9 +175,9 @@ QStringList Protocol2015::defaultRobotAddress() {
     list.append (QString ("172.22.11.2"));
     list.append (QString ("127.0.0.1"));
 
-    /* Try all the DHCP ranges, it's faster than waiting for the mDNS to work */
+    /* Try all the DHCP ranges */
     for (int i = 20; i < 100; ++i)
-        list.append (QString (DS::StaticIP (10, team(), i)));
+        list.append (QString (DS::getStaticIP (10, team(), i)));
 
     return list;
 }
@@ -315,7 +315,7 @@ QByteArray Protocol2015::_getClientPacket() {
                             _getJoystickData();
 
     /* Construct the packet */
-    data.append (DS::ToBytes (sentRobotPackets()));
+    data.append (DS::intToBytes (sentRobotPackets()));
     data.append (pHeaderGeneral);                  // Protocol version code
     data.append (opcode);                          // Operation code
     data.append (instruction);                     // Special instructions
@@ -338,9 +338,9 @@ QByteArray Protocol2015::_getJoystickData() {
 
     /* Generate data for each joystick */
     for (int i = 0; i < joysticks()->count(); ++i) {
-        quint8 _num_axes     = joysticks()->at (i)->numAxes;
-        quint8 _num_buttons  = joysticks()->at (i)->numButtons;
-        quint8 _num_pov_hats = joysticks()->at (i)->numPOVs;
+        quint8 _num_axes     = joysticks()->at (i).numAxes;
+        quint8 _num_buttons  = joysticks()->at (i).numButtons;
+        quint8 _num_pov_hats = joysticks()->at (i).numPOVs;
 
         /* Add joystick information and put the section header */
         data.append (getJoystickSize (joysticks()->at (i)) - 1);
@@ -349,23 +349,23 @@ QByteArray Protocol2015::_getJoystickData() {
         /* Add axis data */
         data.append (_num_axes);
         for (int axis = 0; axis < _num_axes; ++axis)
-            data.append (joysticks()->at (i)->axes [axis] * 127);
+            data.append (joysticks()->at (i).axes [axis] * 127);
 
         /* Generate button data */
         int _button_data = 0;
         for (int button = 0; button < _num_buttons; ++button) {
-            bool pressed = joysticks()->at (i)->buttons [button];
+            bool pressed = joysticks()->at (i).buttons [button];
             _button_data += pressed ? qPow (2, button) : 0;
         }
 
         /* Add button data */
         data.append (_num_buttons);
-        data.append (DS::ToBytes (_button_data));
+        data.append (DS::intToBytes (_button_data));
 
         /* Add hat/pov data */
         data.append (_num_pov_hats);
         for (int hat = 0; hat < _num_pov_hats; ++hat)
-            data.append (DS::ToBytes (joysticks()->at (i)->POVs [hat]));
+            data.append (DS::intToBytes (joysticks()->at (i).POVs [hat]));
     }
 
     return data;
@@ -388,7 +388,7 @@ QByteArray Protocol2015::_getTimezoneData() {
 
     /* Add current date/time */
     data.append (pHeaderTime);
-    data.append (DS::ToBytes (time.msec()));
+    data.append (DS::intToBytes (time.msec()));
     data.append (time.second());
     data.append (time.minute());
     data.append (time.hour());
@@ -451,10 +451,10 @@ int Protocol2015::getAllianceCode() {
 //Protocol2015::getJoystickSize
 //=============================================================================
 
-int Protocol2015::getJoystickSize (DS::Joystick* joystick) {
+int Protocol2015::getJoystickSize (DS::Joystick joystick) {
     return  5
-            + (joystick->numAxes > 0 ? joystick->numAxes : 0)
-            + (joystick->numButtons / 8)
-            + (joystick->numButtons % 8 == 0 ? 0 : 1)
-            + (joystick->numPOVs > 0 ? joystick->numPOVs * 2 : 0);
+            + (joystick.numAxes > 0 ? joystick.numAxes : 0)
+            + (joystick.numButtons / 8)
+            + (joystick.numButtons % 8 == 0 ? 0 : 1)
+            + (joystick.numPOVs > 0 ? joystick.numPOVs * 2 : 0);
 }

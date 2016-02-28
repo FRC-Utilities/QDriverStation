@@ -173,15 +173,11 @@ void JoystickManager::updateInterfaces() {
                                 joystick.numButtons,
                                 joystick.numPOVs);
         } else {
-            DS::Log (DS::kInfoLevel, "Ignoring joystick "
+            DS::log (DS::kInfoLevel, "Ignoring joystick "
                      + QString::number (joystick.device_number)
                      + " because its blacklisted");
         }
     }
-
-    DS::Log (DS::kInfoLevel, "Input/joystick interfaces updated");
-    DS::Log (DS::kInfoLevel, "New joystick count: "
-             + QString::number (m_devices.count()));
 }
 
 //=============================================================================

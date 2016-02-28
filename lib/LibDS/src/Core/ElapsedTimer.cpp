@@ -22,7 +22,7 @@
 
 #include "LibDS/Core/ElapsedTimer.h"
 
-using namespace DS_CORE;
+using namespace DS_Core;
 
 //=============================================================================
 //ElapsedTime::DS_ElapsedTime

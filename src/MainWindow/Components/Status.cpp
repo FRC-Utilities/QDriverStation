@@ -66,7 +66,7 @@ Status::Status (QWidget* parent) : QWidget (parent) {
     configureStyles();
     connectSlots();
 
-    DS::Log (DS::kInfoLevel, "MainWindow: Status/Central widget created");
+    DS::log (DS::kInfoLevel, "MainWindow: Status/Central widget created");
 }
 
 //=============================================================================
@@ -74,7 +74,7 @@ Status::Status (QWidget* parent) : QWidget (parent) {
 //=============================================================================
 
 Status::~Status() {
-    DS::Log (DS::kInfoLevel, "MainWindow: Status/Central widget destroyed");
+    DS::log (DS::kInfoLevel, "MainWindow: Status/Central widget destroyed");
 }
 
 //=============================================================================

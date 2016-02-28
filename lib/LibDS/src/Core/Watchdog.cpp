@@ -22,7 +22,7 @@
 
 #include "LibDS/Core/Watchdog.h"
 
-using namespace DS_CORE;
+using namespace DS_Core;
 
 //=============================================================================
 //Watchdog::DS_Watchdog

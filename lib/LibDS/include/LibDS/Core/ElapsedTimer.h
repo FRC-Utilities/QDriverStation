@@ -28,57 +28,50 @@
 
 #include "LibDS/Core/Common.h"
 
-namespace DS_CORE {
+namespace DS_Core {
 
-/**
- * \class DS_ElapsedTime
- *
- * The LibDS::DS_ElapsedTime class calculates the elapsed time since a specified
- * time in the execution of the application and presents it in human-readable
- * format (mm::ss.ms).
- */
+///
+/// This class calculates the elapsed time since the robot was enabled, disabled
+/// and/or changed control modes.
+///
+/// After the elapsed time is obtained, the class formats the data as a human-readable
+/// string and calls the appropiate signals to notify the \c DriverStation.
+///
+/// While the library does not make use of this class, you can use the information provided
+/// to update the user interface controls of the application (e.g. like the QDriverStation does).
+///
 class LIB_DS_DECL ElapsedTime : public QObject {
     Q_OBJECT
+
+  public slots:
+    ///
+    /// Pauses the timer.
+    /// This function is called when the user disables the robot
+    ///
+    void stopTimer();
+
+    ///
+    /// Clears the elapsed time and starts counting again.
+    /// This function is called when the user switches operation modes.
+    ///
+    void resetTimer();
+
+  signals:
+    ///
+    /// Emitted periodically containing the human-readable time format.
+    /// This signal is received by the \c DriverStation, which, in turn, sends it
+    /// to the rest of the application for further use.
+    ///
+    void elapsedTimeChanged (QString);
 
   public:
     explicit ElapsedTime (QObject* parent);
 
-  public slots:
-    /**
-     * Pauses the elapsed time refresh process
-     */
-    void stopTimer();
-
-    /**
-     * Resets the elapsed timer and starts the refresh process again
-     */
-    void resetTimer();
-
-  signals:
-    /**
-     * Emitted when the elapsed time is calculated and processed
-     * in a human-readable format
-     */
-    void elapsedTimeChanged (QString);
-
   private:
-    /**
-     * If set to \c true, the timer will be enabled and the class
-     * will emit the \a elapsedTimeChanged() signal periodically
-     */
     bool m_enabled;
-
-    /**
-     * The timer that is used to calculate the elapsed time and
-     * provide it in a more human-friendly format
-     */
     QElapsedTimer m_time;
 
   private slots:
-    /**
-     * Uses the value given by the internal timer and processes its
-     * information into a human-readable format (mm::ss.ms)
-     */
     void getElapsedTime();
 };
 

@@ -33,7 +33,7 @@
 #include "LibDS/Core/ProtocolBase.h"
 #include "LibDS/Core/ProtocolManager.h"
 
-using namespace DS_CORE;
+using namespace DS_Core;
 
 //=============================================================================
 // Joystick requirements
@@ -79,7 +79,7 @@ const QString ERR_JOYSTICKS   = "<p>"
 
 ProtocolManager::ProtocolManager (QObject* parent) : QObject (parent) {
     m_protocol = Q_NULLPTR;
-    m_joysticks = new QList<DS::Joystick*>;
+    m_joysticks = new QList<DS::Joystick>;
 }
 
 //=============================================================================
@@ -155,14 +155,14 @@ void ProtocolManager::setProtocol (ProtocolBase* protocol) {
                  this,       &ProtocolManager::fmsChanged);
 
 
-        DS::Log (DS::kLibLevel,
+        DS::log (DS::kLibLevel,
                  QString ("Protocol 0x%1 loaded into memory")
                  .arg ((quintptr)protocol,
                        QT_POINTER_SIZE * 2, 16, QChar ('0')));
     }
 
     else
-        DS::Log (DS::kWarnLevel, "Input protocol pointer is NULL");
+        DS::log (DS::kWarnLevel, "Input protocol pointer is NULL");
 }
 
 //=============================================================================
@@ -181,18 +181,22 @@ void ProtocolManager::resetJoysticks() {
 //=============================================================================
 
 void ProtocolManager::addJoystick (int axes, int buttons, int POVs) {
+    /* The protocol is not valid, do not try to change joysticks */
+    if (!isValid())
+        return;
+
     /* The DS has exceeded the supported number of joysticks */
     if (m_joysticks->count() >= MAX_JOYSTICKS) {
-        DS::Log  (DS::kLibLevel, "Reached maximum number of joysticks");
-        DS::Log  (DS::kLibLevel, "Ignoring future joysticks");
-        DS::SendMessage (ERR_JOYSTICKS.arg (MAX_JOYSTICKS));
+        DS::log  (DS::kLibLevel, "Reached maximum number of joysticks");
+        DS::log  (DS::kLibLevel, "Ignoring future joysticks");
+        DS::sendMessage (ERR_JOYSTICKS.arg (MAX_JOYSTICKS));
         return;
     }
 
     /* The input joysticks has too many POVs */
     else if (POVs > MAX_POVS) {
-        DS::Log (DS::kLibLevel, "Input device has exceeded POV range");
-        DS::SendMessage (ERR_POV_CNT
+        DS::log (DS::kLibLevel, "Input device has exceeded POV range");
+        DS::sendMessage (ERR_POV_CNT
                          .arg (m_joysticks->count())
                          .arg (MAX_POVS)
                          .arg (POVs));
@@ -201,8 +205,8 @@ void ProtocolManager::addJoystick (int axes, int buttons, int POVs) {
 
     /* The input joysticks has too many axes */
     else if (axes > MAX_AXES) {
-        DS::Log  (DS::kLibLevel, "Input device has exceeded axis range");
-        DS::SendMessage (ERR_AXIS_CNT
+        DS::log  (DS::kLibLevel, "Input device has exceeded axis range");
+        DS::sendMessage (ERR_AXIS_CNT
                          .arg (m_joysticks->count())
                          .arg (MAX_AXES)
                          .arg (axes));
@@ -211,8 +215,8 @@ void ProtocolManager::addJoystick (int axes, int buttons, int POVs) {
 
     /* The input joysticks has too many buttons */
     else if (buttons > MAX_BUTTONS) {
-        DS::Log  (DS::kLibLevel, "Input device has exceeded button range");
-        DS::SendMessage (ERR_AXIS_CNT
+        DS::log  (DS::kLibLevel, "Input device has exceeded button range");
+        DS::sendMessage (ERR_AXIS_CNT
                          .arg (m_joysticks->count())
                          .arg (MAX_BUTTONS)
                          .arg (buttons));
@@ -221,39 +225,39 @@ void ProtocolManager::addJoystick (int axes, int buttons, int POVs) {
 
     /* Everything OK, register the joystick */
     else {
-        DS::Joystick* js = new DS::Joystick;
+        DS::Joystick js;
 
-        js->numAxes = axes;
-        js->numPOVs = POVs;
-        js->numButtons = buttons;
+        js.numAxes = axes;
+        js.numPOVs = POVs;
+        js.numButtons = buttons;
 
-        js->axes = new float  [axes];
-        js->POVs = new int  [POVs];
-        js->buttons = new bool [buttons];
+        js.axes = new float  [axes];
+        js.POVs = new int  [POVs];
+        js.buttons = new bool [buttons];
 
-        for (int i = 0; i < js->numAxes; i++)
-            js->axes [i] = 0;
+        for (int i = 0; i < js.numAxes; i++)
+            js.axes [i] = 0;
 
-        for (int i = 0; i < js->numPOVs; i++)
-            js->POVs [i] = -1;
+        for (int i = 0; i < js.numPOVs; i++)
+            js.POVs [i] = -1;
 
-        for (int i = 0; i < js->numButtons; i++)
-            js->buttons [i] = false;
+        for (int i = 0; i < js.numButtons; i++)
+            js.buttons [i] = false;
 
         m_joysticks->append (js);
 
         if (isValid())
             currentProtocol()->_onJoysticksChanged();
 
-        DS::Log (DS::kLibLevel, QString ("Registered joystick with: "
+        DS::log (DS::kLibLevel, QString ("Registered joystick with: "
                                          "%1 axes, "
                                          "%2 buttons and "
                                          "%3 POVs")
-                 .arg (QString::number (js->numAxes))
-                 .arg (QString::number (js->numButtons))
-                 .arg (QString::number (js->numPOVs)));
+                 .arg (QString::number (js.numAxes))
+                 .arg (QString::number (js.numButtons))
+                 .arg (QString::number (js.numPOVs)));
 
-        DS::Log (DS::kLibLevel, QString ("Current number of joysticks is %1")
+        DS::log (DS::kLibLevel, QString ("Current number of joysticks is %1")
                  .arg (QString::number (m_joysticks->count())));
     }
 }
@@ -264,7 +268,7 @@ void ProtocolManager::addJoystick (int axes, int buttons, int POVs) {
 
 void ProtocolManager::updateJoystickPOV (int js, int hat, int angle) {
     if (joystickExists (js))
-        m_joysticks->at (js)->POVs [hat] = angle;
+        m_joysticks->at (js).POVs [hat] = angle;
 }
 
 //=============================================================================
@@ -273,7 +277,7 @@ void ProtocolManager::updateJoystickPOV (int js, int hat, int angle) {
 
 void ProtocolManager::updateJoystickAxis (int js, int axis, float value) {
     if (joystickExists (js))
-        m_joysticks->at (js)->axes [axis] = value;
+        m_joysticks->at (js).axes [axis] = value;
 }
 
 //=============================================================================
@@ -282,7 +286,7 @@ void ProtocolManager::updateJoystickAxis (int js, int axis, float value) {
 
 void ProtocolManager::updateJoystickButton (int js, int bt, bool status) {
     if (joystickExists (js))
-        m_joysticks->at (js)->buttons [bt] = status;
+        m_joysticks->at (js).buttons [bt] = status;
 }
 
 //=============================================================================

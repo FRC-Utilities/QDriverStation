@@ -22,7 +22,7 @@
 
 #include "LibDS/Protocols/Protocol2016.h"
 
-using namespace DS_CORE;
+using namespace DS_Protocols;
 
 //=============================================================================
 //Protocol2016::defaultRobotAddress
@@ -36,9 +36,9 @@ QStringList Protocol2016::defaultRobotAddress() {
     list.append (QString ("172.22.11.2"));
     list.append (QString ("127.0.0.1"));
 
-    /* Try all the DHCP ranges, it's faster than waiting for the mDNS to work */
+    /* Try all the DHCP ranges */
     for (int i = 20; i < 100; ++i)
-        list.append (QString (DS::StaticIP (10, team(), i)));
+        list.append (QString (DS::getStaticIP (10, team(), i)));
 
     return list;
 }

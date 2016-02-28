@@ -157,7 +157,7 @@ qreal DPI_SCALE (qreal input) {
         if (RATIO < 1.2)
             RATIO = 1;
 
-        DS::Log (DS::kInfoLevel,
+        DS::log (DS::kInfoLevel,
                  QString ("UI Scale Ratio set to: %1").arg (RATIO));
     }
 
@@ -169,7 +169,7 @@ qreal DPI_SCALE (qreal input) {
 //=============================================================================
 
 void SDL_INIT() {
-    DS::Log (DS::kInfoLevel, "Initializing SDL...");
+    DS::log (DS::kInfoLevel, "Initializing SDL...");
 
     SDL_JoystickEventState (SDL_ENABLE);
     SDL_SetHint (SDL_HINT_XINPUT_ENABLED, "0");
@@ -190,7 +190,7 @@ void SDL_INIT() {
                                            "an external joystick!"));
     }
 
-    DS::Log (DS::kInfoLevel, "SDL Initialized");
+    DS::log (DS::kInfoLevel, "SDL Initialized");
 }
 
 //=============================================================================

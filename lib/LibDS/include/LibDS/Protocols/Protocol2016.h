@@ -25,15 +25,8 @@
 
 #include "Protocol2015.h"
 
-namespace DS_CORE {
+namespace DS_Protocols {
 
-/**
- * Implements the 2016 communication protocol, which is
- * based on the 2015 protocol.
- *
- * The only thing that changed (as far as we know) is
- * the default robot addresses.
- */
 class LIB_DS_DECL Protocol2016 : public Protocol2015 {
     Q_OBJECT
 

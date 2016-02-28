@@ -121,7 +121,7 @@ QString DS::Timezone() {
 //SendMessage
 //=============================================================================
 
-void DS::SendMessage (QString message) {
+void DS::sendMessage (QString message) {
     DriverStation::getInstance()->newMessage (message);
 }
 
@@ -129,7 +129,7 @@ void DS::SendMessage (QString message) {
 //LogMessage
 //=============================================================================
 
-void DS::Log (ErrorLevel type,  QString message) {
+void DS::log (ErrorLevel type,  QString message) {
     /* Get level & time */
     QString level;
     QString time = QDateTime::currentDateTime().toString (_TIME_FORMAT);
@@ -171,15 +171,15 @@ void DS::Log (ErrorLevel type,  QString message) {
 //GetStaticIp
 //=============================================================================
 
-QString DS::StaticIP (int team, int host) {
-    return DS::StaticIP (10, team, host);
+QString DS::getStaticIP (int team, int host) {
+    return DS::getStaticIP (10, team, host);
 }
 
 //=============================================================================
 //GetStaticIp
 //=============================================================================
 
-QString DS::StaticIP (int net, int team, int host) {
+QString DS::getStaticIP (int net, int team, int host) {
     QString string = QString ("%1").arg (team);
 
     switch (string.length()) {
@@ -211,7 +211,7 @@ QString DS::StaticIP (int net, int team, int host) {
 //GetControlModeString
 //=============================================================================
 
-QString DS::CM_String (ControlMode mode) {
+QString DS::controlModeString (ControlMode mode) {
     QString string;
 
     switch (mode) {
@@ -236,7 +236,7 @@ QString DS::CM_String (ControlMode mode) {
 //GetSocketData
 //=============================================================================
 
-QByteArray DS::ReadSocket (QUdpSocket* socket) {
+QByteArray DS::readSocket (QUdpSocket* socket) {
     QByteArray buffer;
 
     buffer.resize (socket->pendingDatagramSize());
@@ -249,7 +249,7 @@ QByteArray DS::ReadSocket (QUdpSocket* socket) {
 //GetSocketData
 //=============================================================================
 
-QByteArray DS::ReadSocket (QTcpSocket* socket) {
+QByteArray DS::readSocket (QTcpSocket* socket) {
     return socket->readAll();
 }
 
@@ -257,17 +257,17 @@ QByteArray DS::ReadSocket (QTcpSocket* socket) {
 //ToBytes
 //=============================================================================
 
-QByteArray DS::ToBytes (int data) {
+QByteArray DS::intToBytes (int number) {
     QByteArray array;
 
-    if (data == -1) {
+    if (number == -1) {
         array.append (char (0xFF));
         array.append (char (0xFF));
     }
 
     else {
-        array.append (char ((data >> 8) & 0xFF));
-        array.append (char (data & 0xFF));
+        array.append (char ((number >> 8) & 0xFF));
+        array.append (char (number & 0xFF));
     }
 
     return array;

@@ -23,7 +23,7 @@
 #include "LibDS/Core/Common.h"
 #include "LibDS/Core/NetConsole.h"
 
-using namespace DS_CORE;
+using namespace DS_Core;
 
 //=============================================================================
 //NetConsole::DS_NetConsole
@@ -44,7 +44,7 @@ void NetConsole::setInputPort (int port) {
     m_socket.disconnectFromHost();
     m_socket.bind (QHostAddress::Any, port, QUdpSocket::ShareAddress);
 
-    DS::Log (DS::kLibLevel,
+    DS::log (DS::kLibLevel,
              "NetConsole input port set to: " + QString::number (port));
 }
 
@@ -54,7 +54,7 @@ void NetConsole::setInputPort (int port) {
 
 void NetConsole::setOutputPort (int port) {
     m_outPort = port;
-    DS::Log (DS::kLibLevel,
+    DS::log (DS::kLibLevel,
              "NetConsole output port set to: " + QString::number (port));
 }
 
@@ -71,8 +71,8 @@ void NetConsole::sendCommand (QString command) {
 //NetConsole::setAcceptsInput
 //=============================================================================
 
-void NetConsole::setAcceptsInput (bool acceptsInput) {
-    m_acceptsInput = acceptsInput;
+void NetConsole::setAcceptsInput (bool accepts_input) {
+    m_acceptsInput = accepts_input;
 }
 
 //=============================================================================
@@ -80,5 +80,5 @@ void NetConsole::setAcceptsInput (bool acceptsInput) {
 //=============================================================================
 
 void NetConsole::readSocket() {
-    emit newMessage (QString::fromUtf8 (DS::ReadSocket (&m_socket)));
+    emit newMessage (QString::fromUtf8 (DS::readSocket (&m_socket)));
 }

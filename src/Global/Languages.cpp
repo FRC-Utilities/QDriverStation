@@ -72,7 +72,7 @@ void Languages::init() {
 
     /* Load translations */
     translator()->load (":/languages/qds_" + locale);
-    DS::Log (DS::kInfoLevel, "Locale set to: " + locale);
+    DS::log (DS::kInfoLevel, "Locale set to: " + locale);
 }
 
 //=============================================================================
@@ -156,7 +156,7 @@ QStringList Languages::getAvailableLanguages() {
 //=============================================================================
 
 void Languages::setLanguage (LanguageType language) {
-    DS::Log (DS::kInfoLevel,
+    DS::log (DS::kInfoLevel,
              "Setting language to: " + QString::number (language));
 
     if (language != currentLanguage()) {

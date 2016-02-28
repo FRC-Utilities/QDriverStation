@@ -113,7 +113,7 @@ void Dashboards::openDashboard() {
     QString path;
     m_current = (DashboardTypes) Settings::get ("Dashboard", kNone).toInt();
 
-    DS::Log (DS::kInfoLevel, "Dashboards: Loading dashboard "
+    DS::log (DS::kInfoLevel, "Dashboards: Loading dashboard "
              + QString::number (m_current));
 
     /* Open the SFX Dashboard */
@@ -143,7 +143,7 @@ void Dashboards::openDashboard() {
 
 void Dashboards::closeDashboard() {
     m_process.close();
-    DS::Log (DS::kInfoLevel, "Dashboards: Closing current dashboard...");
+    DS::log (DS::kInfoLevel, "Dashboards: Closing current dashboard...");
 }
 
 //=============================================================================

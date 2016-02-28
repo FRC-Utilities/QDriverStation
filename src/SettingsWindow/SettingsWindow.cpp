@@ -70,7 +70,7 @@ SettingsWindow::SettingsWindow() {
     readSettings();
 
     setAttribute  (Qt::WA_QuitOnClose);
-    DS::Log (DS::kInfoLevel, "Settings window created");
+    DS::log (DS::kInfoLevel, "Settings window created");
 }
 
 //=============================================================================
@@ -78,7 +78,7 @@ SettingsWindow::SettingsWindow() {
 //=============================================================================
 
 SettingsWindow::~SettingsWindow() {
-    DS::Log (DS::kInfoLevel, "Settings Window: SW destroyed");
+    DS::log (DS::kInfoLevel, "Settings Window: SW destroyed");
 }
 
 //=============================================================================

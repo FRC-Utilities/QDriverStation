@@ -25,8 +25,16 @@
 
 #include <QString>
 
+///
+/// This class manages the appearance and colors used by
+/// the QDriverStation, nothing more, nothing less.
+///
 class AppTheme {
   public:
+    ///
+    /// Allows us to create a "theme" by defining the different
+    /// color types and values used by the application UI.
+    ///
     typedef struct {
         QString base;
         QString highlight;
@@ -34,11 +42,31 @@ class AppTheme {
         QString foreground;
     } Theme;
 
+    ///
+    /// Configures the widget style and loads the saved theme.
+    /// This function should be called only once during
+    /// the application startup.
+    ///
     static void init();
+
+    ///
+    /// Loads and applies the saved theme from the settings.
+    ///
     static void loadTheme();
+
+    ///
+    /// Loads and applies the default (grey with green) theme.
+    ///
     static void resetTheme();
+
+    ///
+    /// Loads, applies and saves the given \a theme.
+    ///
     static void apply (const Theme& theme);
 
+    ///
+    /// Returns the current theme and its different colors.
+    ///
     static Theme current();
 };
 

@@ -106,7 +106,7 @@ void messageHandler (QtMsgType type,
 
 int main (int argc, char* argv[]) {
     qInstallMessageHandler (messageHandler);
-    DS::Log (DS::kInfoLevel, "Starting application....");
+    DS::log (DS::kInfoLevel, "Starting application....");
 
     /* Configure application information */
     QApplication app (argc, argv);
@@ -176,5 +176,5 @@ int main (int argc, char* argv[]) {
         Settings::set ("First launch", false);
     }
 
-    return app.exec();
+    return QApplication::exec();
 }

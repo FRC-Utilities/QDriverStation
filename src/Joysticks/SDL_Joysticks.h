@@ -41,7 +41,6 @@ class SDL_Joysticks : public QObject {
 
   public:
     explicit SDL_Joysticks();
-    ~SDL_Joysticks();
 
     QStringList joystickNames();
     QList<QDS_InputDevice> joysticks();

@@ -25,196 +25,99 @@
 
 #include "LibDS/Core/Common.h"
 
-namespace DS_CORE {
+namespace DS_Core {
 
 class ProtocolBase;
 
-/**
- * \class DS_RobotManager
- *
- * Manages the avaiable protocols and configures them correctly, so that
- * the Driver Station can safely send commands and joystick input to the robot.
- *
- * The class also implements functions to register and condifure joystick input
- * automatically. Please note that you should implement a way to read joystick
- * input by yourself (be it a software-based or hardware based) in your own client.
- */
+///
+/// Allows the dynamic loading and usage of different protocols by configuring them
+/// so that the \c DriverStation can send and recieve information from the protocol.
+///
+/// This class is also in charge of registering, configuring and updating joystick
+/// values automatically.
+///
 class LIB_DS_DECL ProtocolManager : public QObject {
     Q_OBJECT
 
   public:
-    explicit ProtocolManager (QObject* parent);
-
-    /**
-     * Returns the current protocol in use
-     */
+    ///
+    /// Returns a pointer to the current protocol in use by the DS
+    ///
     ProtocolBase* currentProtocol() const;
 
-    /**
-     * Returns \c true if the current protocol is initialized
-     */
+    ///
+    /// Returns \c true if the current protocol is not pointing to a
+    /// NULL address
+    ///
     bool isValid() const;
 
-    /**
-     * Returns the number of joysticks registered with the protocol
-     */
+    ///
+    /// Returns the number of joysticks registered in the \c LibDS system
+    ///
     int joystickCount() const;
 
   public slots:
-    /**
-     * Changes the protocol that we use to communicate with the robot
-     */
-    void setProtocol (ProtocolBase* currentProtocol);
+    ///
+    /// Loads and configures the given \a protocol
+    ///
+    void setProtocol (ProtocolBase* protocol);
 
-    /**
-     * Un-registeres all the joysticks from the Driver Station
-     */
+    ///
+    /// Deletes all the registered joysticks from the system
+    ///
     void resetJoysticks();
 
-    /**
-     * Registers a new joystick and its characteristics to the Driver Station
-     */
+    ///
+    /// Registers a new joystick and its input devices
+    ///
     void addJoystick (int axes, int buttons, int POVs);
 
-    /**
-     * Updates the state of the POV hats in the selected joystick
-     */
+    ///
+    /// Updates the \a anagle of the seleted \a hat in the given joystick
+    ///
     void updateJoystickPOV (int js, int hat, int angle);
 
-    /**
-     * Updates the state of the axes in the selected joystick
-     */
+    ///
+    /// Updates the \a value of the selected \a axis in the given joystick
+    ///
     void updateJoystickAxis (int js, int axis, float value);
 
-    /**
-     * Updates the state of the buttons in the selected joystick
-     */
+    ///
+    /// Updates the \a status of the selected \a button in the given joystick
+    ///
     void updateJoystickButton (int js, int bt, bool status);
 
-    /**
-     * Sends the input \a data to the current protocol to decode
-     */
+    ///
+    /// Instructs the current protocol to interpret the given robot \a data
+    ///
     void readRobotPacket (QByteArray data);
 
+  public:
+    explicit ProtocolManager (QObject* parent);
+
   signals:
-    /**
-     * Emitted when the protocol detects that the status of the
-     * user code has changed
-     */
+    void fmsChanged (bool);
     void codeChanged (bool);
-
-    /**
-     * Emitted when the protocol changes its address.
-     * This can be triggered by the user (or programmer) or the protocol
-     * itself, when it figures out the IP address of the robot.
-     */
-    void robotAddressChanged (QString);
-
-    /**
-     * Emitted when the connection state between the computer and the
-     * robot radio is changed
-     */
+    void emergencyStopped();
+    void cpuUsageChanged (int);
+    void ramUsageChanged (int);
+    void diskUsageChanged (int);
     void radioCommChanged (bool);
-
-    /**
-     * Emitted when the state of the FMS connection is changed
-     */
-    void fmsChanged (bool attached);
-
-    /**
-     * Emitted when the state of the network communications with the robot
-     * has been changed. Unlike the other signals with a \c bool value, this
-     * signal contains more information about the communication status, such
-     * as:
-     *     - The robot responds ping requests, but does not respond to DS
-     *     - The robot responds to ping requests and DS
-     *     - The robot does not respond to ping requests nor the DS
-     */
+    void voltageChanged (QString);
+    void CANInfoReceived (DS::CAN);
+    void libVersionChanged (QString);
+    void rioVersionChanged (QString);
+    void pdpVersionChanged (QString);
+    void pcmVersionChanged (QString);
+    void robotAddressChanged (QString);
+    void voltageBrownoutChanged (bool);
+    void controlModeChanged (DS::ControlMode);
     void communicationsChanged (DS::DS_CommStatus);
 
-    /**
-     * Emitted when the protocol detects that the robot voltage has changed
-     */
-    void voltageChanged (QString);
-
-    /**
-     * Emitted when the protocol detects that the RAM usage of the robot
-     * has changed
-     */
-    void cpuUsageChanged (int);
-
-    /**
-     * Emitted when the protocol detects that the RAM usage of the robot
-     * has changed
-     */
-    void ramUsageChanged (int);
-
-    /**
-     * Emitted when the protocol detects that the disk usage of the robot
-     * has changed
-     */
-    void diskUsageChanged (int);
-
-    /**
-     * Emitted when the protocol detects that the control mode has changed.
-     * Note: this signal can be emitted when the user changes the control mode
-     * or when the robot itself changes its mode (e.g. e-stop)
-     */
-    void controlModeChanged (DS::ControlMode);
-
-    /**
-     * Emitted when the robot detects a possible voltage brownout
-     */
-    void voltageBrownoutChanged (bool);
-
-    /**
-     * Emitted when the protocol receives and decodes a CAN data structure
-     */
-    void CANInfoReceived (DS::CAN);
-
-    /**
-     * Emitted when the client has just connected to the robot and downloaded
-     * its library INI files and analyzed them
-     */
-    void libVersionChanged (QString);
-
-    /**
-     * Emitted when the client has just connected to the robot and downloaded
-     * its PCM INI files and analyzed them
-     */
-    void rioVersionChanged (QString);
-
-    /**
-     * Emitted when the client has just connected to the robot and downloaded
-     * its PDP information and analyzed them
-     */
-    void pdpVersionChanged (QString);
-
-    /**
-     * Emitted when the client has just connected to the robot and downloaded
-     * the PCM information files and analyzed them
-     */
-    void pcmVersionChanged (QString);
-
-    /**
-     * Emitted when the robot is e-stopped
-     */
-    void emergencyStopped();
-
   private:
-    /**
-     * The current protocol being used
-     */
     ProtocolBase* m_protocol;
+    QList<DS::Joystick>* m_joysticks;
 
-    /**
-     * The joystick data, we only have one instance for the whole library
-     */
-    QList<DS::Joystick*>* m_joysticks;
-
-    /**
-     * Returns \c true if the \a js is registered with the joystick list
-     */
     bool joystickExists (int js) const;
 };
 

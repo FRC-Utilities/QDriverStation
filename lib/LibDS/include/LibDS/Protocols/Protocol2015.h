@@ -25,15 +25,9 @@
 
 #include "LibDS/Core/ProtocolBase.h"
 
-namespace DS_CORE {
+namespace DS_Protocols {
 
-/**
- * \class DS_Protocol2015
- * \brief Implements the 2015 communication protocol
- * \note  the virtual functions are already documented in the
- *        \c DS_ProtocolBase class
- */
-class LIB_DS_DECL Protocol2015 : public ProtocolBase {
+class LIB_DS_DECL Protocol2015 : public DS_Core::ProtocolBase {
     Q_OBJECT
 
   public:
@@ -71,7 +65,7 @@ class LIB_DS_DECL Protocol2015 : public ProtocolBase {
 
     virtual int getControlCode();
     virtual int getAllianceCode();
-    virtual int getJoystickSize (DS::Joystick* joystick);
+    virtual int getJoystickSize (DS::Joystick joystick);
 
     int m_instructionCode;
 };

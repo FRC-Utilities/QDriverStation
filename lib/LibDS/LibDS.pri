@@ -34,6 +34,7 @@ QT += widgets
 QT += multimedia
 
 HEADERS += \
+    $$PWD/include/LibDS.h \
     $$PWD/include/LibDS/DriverStation.h \
     $$PWD/include/LibDS/Protocols/Protocol2015.h \
     $$PWD/include/LibDS/Core/Client.h \

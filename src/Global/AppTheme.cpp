@@ -20,12 +20,20 @@
  * THE SOFTWARE.
  */
 
+//=============================================================================
+// System includes
+//=============================================================================
+
 #include <QFont>
 #include <QIcon>
 #include <QPalette>
 #include <QApplication>
 #include <QFontDatabase>
 #include <QStyleFactory>
+
+//=============================================================================
+// Application includes
+//=============================================================================
 
 #include "AppTheme.h"
 #include "Global/Settings.h"

@@ -45,42 +45,42 @@ const int INVALID_PORT = 0;
 /// use and do not represent in any way the 'raw' bytes sent to the robot.
 ///
 typedef enum {
-    kControlTest         = 0, /// Test
-    kControlAutonomous   = 1, /// Autonomous
-    kControlTeleoperated = 2, /// Operator control
-    kControlInvalid      = 3, /// Reserved for internal use
+    kControlTest         = 0,
+    kControlAutonomous   = 1,
+    kControlTeleoperated = 2,
+    kControlInvalid      = 3,
 } ControlMode;
 
 ///
 /// Represents the available alliances and positions during a match
 ///
 typedef enum {
-    kAllianceRed1        = 0, /// Red 1
-    kAllianceRed2        = 1, /// Red 2
-    kAllianceRed3        = 2, /// Red 3
-    kAllianceBlue1       = 3, /// Blue 1
-    kAllianceBlue2       = 4, /// Blue 2
-    kAllianceBlue3       = 5, /// Blue 3
+    kAllianceRed1        = 0,
+    kAllianceRed2        = 1,
+    kAllianceRed3        = 2,
+    kAllianceBlue1       = 3,
+    kAllianceBlue2       = 4,
+    kAllianceBlue3       = 5,
 } Alliance;
 
 ///
 /// Represents the status of the DS <--> Robot communications
 ///
 typedef enum {
-    kFull                = 0, /// We can move the robot
-    kPartial             = 1, /// We can ping the robot, but not move it
-    kFailing             = 2, /// We cannot ping nor move the robot
+    kFull                = 0,
+    kPartial             = 1,
+    kFailing             = 2,
 } DS_CommStatus;
 
 ///
 /// Used to differentiate between the different error levels of log messages
 ///
 typedef enum {
-    kLibLevel            = 0, /// Used exclusively by the LibDS, do not use it on the client
-    kInfoLevel           = 1, /// Indicates normal operations (e.g. open a window)
-    kWarnLevel           = 2, /// Indicates a condition in which we should take some care
-    kErrorLevel          = 3, /// Indicates a non-fatal error
-    kCriticalLevel       = 4, /// Indicates a fatal error
+    kLibLevel            = 0,
+    kInfoLevel           = 1,
+    kWarnLevel           = 2,
+    kErrorLevel          = 3,
+    kCriticalLevel       = 4,
 } ErrorLevel;
 
 ///
@@ -91,31 +91,33 @@ typedef enum {
 /// a FRC Driver Station, the rest must be implemented by the client.
 ///
 typedef struct {
-    QString name;             /// Display name          [Optional]
-    int     numAxes;          /// Number of axes        [Required]
-    int     numPOVs;          /// Number of POVs        [Required]
-    int     numButtons;       /// Number of buttons     [Required]
-    int*    POVs;             /// Stores POV values     [Updated automatically]
-    float*  axes;             /// Stores axis values    [Updated automatically]
-    bool*   buttons;          /// Stores button values  [Updated automatically]
+    QString name;
+    int     numAxes;
+    int     numPOVs;
+    int     numButtons;
+    int*    POVs;
+    float*  axes;
+    bool*   buttons;
 } Joystick;
 
 ///
 /// Represents a joystick rumble request issued by the robot code
 ///
 typedef struct {
-
+    int  joystick;
+    bool left;
+    bool right;
 } RumbleRequest;
 
 ///
 /// Represents the received CAN status information from a robot packet
 ///
 typedef struct {
-    quint8 util;              /// Utilization %
-    quint8 busOff;            /// Bus off (error count)
-    quint8 txFull;            /// TX Full
-    quint8 receive;           /// Recieve %
-    quint8 transmit;          /// Transmission %
+    quint8 util;
+    quint8 busOff;
+    quint8 txFull;
+    quint8 receive;
+    quint8 transmit;
 } CAN;
 
 ///
@@ -131,12 +133,12 @@ QString LIB_DS_DECL Timezone();
 /// This is used by the library to send warnings and status messages to the
 /// user through a simple and integrated manner.
 ///
-void LIB_DS_DECL SendMessage (QString message);
+void LIB_DS_DECL sendMessage (QString message);
 
 ///
 /// Logs the message according to its \a type or error level
 ///
-void LIB_DS_DECL Log (ErrorLevel type, QString message);
+void LIB_DS_DECL log (ErrorLevel type, QString message);
 
 ///
 /// Returns a calculated IP address based on the team address.
@@ -147,7 +149,7 @@ void LIB_DS_DECL Log (ErrorLevel type, QString message);
 ///    - \c DS_GetStaticIp( 118, 3) would return \c 10.01.18.3
 ///    - And so on...
 ///
-QString LIB_DS_DECL StaticIP (int team, int host);
+QString LIB_DS_DECL getStaticIP (int team, int host);
 
 ///
 /// Returns a calculated IP address based on the team address.
@@ -158,28 +160,28 @@ QString LIB_DS_DECL StaticIP (int team, int host);
 ///    - \c DS_GetStaticIp(10m 118, 3) would return \c 10.01.18.3
 ///    - And so on...
 ///
-QString LIB_DS_DECL StaticIP (int net, int team, int host);
+QString LIB_DS_DECL getStaticIP (int net, int team, int host);
 
 ///
 /// Returns an user-friendly string given the inputed robot control mode.
 /// You can use this function to update the status widget of the
 /// client implementation.
 ///
-QString LIB_DS_DECL CM_String (ControlMode mode);
+QString LIB_DS_DECL controlModeString (ControlMode mode);
 
 ///
 /// Reads the stored data in the \a socket.
 /// This function is used internaly by the library, however, you may use
 /// this function for anything that your client may need.
 ///
-QByteArray LIB_DS_DECL ReadSocket (QUdpSocket* socket);
+QByteArray LIB_DS_DECL readSocket (QUdpSocket* socket);
 
 ///
 /// Reads the stored data in the \a socket.
 /// This function is used internaly by the library, however, you may use
 /// this function for anything that your client may need.
 ///
-QByteArray LIB_DS_DECL ReadSocket (QTcpSocket* socket);
+QByteArray LIB_DS_DECL readSocket (QTcpSocket* socket);
 
 ///
 /// Parses the input number into two bytes. This function is used
@@ -193,7 +195,7 @@ QByteArray LIB_DS_DECL ReadSocket (QTcpSocket* socket);
 /// |    1  | 0x00 0x01 |
 /// |  256  | 0xFF 0x01 |
 ///
-QByteArray LIB_DS_DECL ToBytes (int data);
+QByteArray LIB_DS_DECL intToBytes (int number);
 }
 
 #endif

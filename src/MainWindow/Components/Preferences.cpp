@@ -52,7 +52,7 @@ Preferences::Preferences (QWidget* parent) : QWidget (parent) {
     readSettings();
     connectSlots();
 
-    DS::Log (DS::kInfoLevel, "MainWindow: Preferences widget created");
+    DS::log (DS::kInfoLevel, "MainWindow: Preferences widget created");
 }
 
 //=============================================================================
@@ -60,7 +60,7 @@ Preferences::Preferences (QWidget* parent) : QWidget (parent) {
 //=============================================================================
 
 Preferences::~Preferences() {
-    DS::Log (DS::kInfoLevel, "MainWindow: Preferences widget destroyed");
+    DS::log (DS::kInfoLevel, "MainWindow: Preferences widget destroyed");
 }
 
 //=============================================================================

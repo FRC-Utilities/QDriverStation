@@ -25,15 +25,33 @@
 
 #include <QVariant>
 
-class QSettings;
+///
+/// Implements a simple-to-use class that gives us access to
+/// the global settings of the application using static functions.
+///
 class Settings {
   public:
-    static void clear();
-    static void set (QString key, const QVariant& value);
-    static QVariant get (QString key, const QVariant& defaultValue);
+    ///
+    /// Initializes the class
+    ///
+    static void init();
 
-  private:
-    static QSettings* m_settings;
+    ///
+    /// Deletes the saved settings.
+    ///
+    static void clear();
+
+    ///
+    /// Changes the stored \a value of the given \a key.
+    ///
+    static void set (QString key, const QVariant& value);
+
+    ///
+    /// Reads the stored value of the given \a key.
+    /// If the \a key has no stored value (e.g. settings have not been
+    /// saved before), the function will return the given \a default_value.
+    ///
+    static QVariant get (QString key, const QVariant& default_value);
 };
 
 #endif

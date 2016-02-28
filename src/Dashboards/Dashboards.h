@@ -25,30 +25,72 @@
 
 #include <QProcess>
 
+///
+/// This class is in charge of opening, managing and closing
+/// an FRC dashboard process.
+///
+/// There is no hidden magic here, we just use the \c QProcess
+/// class to open and close each Dashboard.
+///
 class Dashboards : public QObject {
     Q_OBJECT
 
   public:
+    ///
+    /// Defines the available dashboards to the QDriverStation
+    ///
     enum DashboardTypes {
-        kNone           = 0x00,
-        kSFXDashboard   = 0x01,
-        kSmartDashboard = 0x02,
+        kNone           = 0,
+        kSFXDashboard   = 1,
+        kSmartDashboard = 2,
 #if defined Q_OS_WIN
-        kLabVIEW        = 0x03,
+        kLabVIEW        = 3,
 #endif
     };
 
+    ///
+    /// Returns the only instance of this class
+    ///
     static Dashboards* getInstance();
 
+    ///
+    /// Returns a list with the available dashboards.
+    /// This list must have the same order as the
+    /// values specified in the \c DashboardTypes enum.
+    ///
     QStringList dashboardList();
+
+    ///
+    /// Returns the current dashboard being used.
+    ///
     DashboardTypes currentDashboard();
 
   public slots:
+    ///
+    /// Uses \c QProcess to open the selected dashboard
+    /// process.
+    ///
+    /// Note that the dashboard to open is determined based
+    /// on the saved settings.
+    ///
     void openDashboard();
+
+    ///
+    /// Closes the current dashboard process.
+    ///
     void closeDashboard();
+
+    ///
+    /// Calls \c closeDashboard() and subsequently \c openDashboard().
+    /// This function is called after the user selected another
+    /// dashboard in the QDriverStation UI.
+    ///
     void reloadDashboard();
 
   signals:
+    ///
+    /// Emitted when the dashboard process is reloaded (duh)
+    ///
     void dashboardChanged();
 
   protected:

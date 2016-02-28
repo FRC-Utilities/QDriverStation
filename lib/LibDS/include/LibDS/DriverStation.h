@@ -25,7 +25,7 @@
 
 #include "LibDS/Core/Common.h"
 
-namespace DS_CORE {
+namespace DS_Core {
 class Client;
 class ProtocolBase;
 class NetConsole;
@@ -33,467 +33,489 @@ class ElapsedTime;
 class ProtocolManager;
 }
 
-/**
- * \class DriverStation
- *
- * Implements all the functions and features of the LibDS library into a single,
- * compact and simple to use class.
- *
- * The \c DriverStation class also provides all the methods necessary to
- * manage the user input, protocol versions and operate the robot in a
- * straigthforward way.
- */
+///
+/// This class implements all the functions and external features of the LibDS
+/// library into a single, compact and easy to use class.
+///
+/// Aside from presenting the LibDS features to the user, this class is also
+/// in charge of regulating and syncronizing each component of the LibDS so
+/// that everything works together.
+///
+/// Please note that this class contains some reduntant functions to ease its
+/// usage for both C++ and QML clients.
+///
 class LIB_DS_DECL DriverStation : public QObject {
     Q_OBJECT
     Q_ENUMS (ProtocolType)
 
   public:
+    ///
+    /// Returns the only instance of the \c DriverStation.
+    /// Initiating more than one instance of the Driver Station at
+    /// a given time will result in loss of communication with the robot
+    /// and (possibly) slow network performance.
+    ///
     static DriverStation* getInstance();
 
-    /**
-     * The available protocols for the user.
-     * The order must be set from the most recent to the oldest version
-     *
-     * \note We assign a value to the enums so that they can be used
-     * with a list-based object
-     */
+    ///
+    /// Represents the protocols that have been already implemented by
+    /// the library. Note that you can implement your own protocol by
+    /// subclassing the \c ProtocolBase library.
+    ///
+    /// We need to assign a value to each \c enum in order to be able
+    /// to use the library with QML projects.
+    ///
     enum ProtocolType {
         kProtocol2016 = 0,
         kProtocol2015 = 1,
         kProtocol2014 = 2
     };
 
-    /**
-     * Returns \c true if the robot has communication and the code is loaded.
-     * This function is useful in the case that you want to warn the user
-     * when he/she clicks the 'Enable' button and something is not working
-     */
+    ///
+    /// Returns \c true if the DS has full communications with the robot and
+    /// the user code is already loaded on the robot.
+    ///
+    /// This function is useful for client implementations to know if its safe
+    /// (and possible) to enable the robot.
+    ///
     Q_INVOKABLE bool canBeEnabled();
 
-    /**
-     * Returns a list with the available alliances and positions that the robot
-     * can have.
-     *
-     * This is used by the robot program to change its behaviour depending on
-     * the alliance (Blue or Red) and position (1, 2 & 3) of the robot.
-     */
+    ///
+    /// Returns a list with the available alliances that the robot can have.
+    ///
+    /// \todo Let each protocol define the available alliances and positions,
+    ///       as this architecture could change in future seasons.
+    ///
     Q_INVOKABLE QStringList alliances();
 
-    /**
-     * Returns a list with the available protocols that we can use to drive
-     * a FRC robot.
-     *
-     * The order must be set from the most recent to the oldest version
-     */
+    ///
+    /// Returns a list with the protocols that have been already implemented
+    /// in the LibDS library. Please note that the order of the protocols
+    /// MUST be the same as the values presented in the \c ProtocolType enum.
+    ///
     Q_INVOKABLE QStringList protocols();
 
-    /**
-     * Returns the IP address of the robot radio
-     */
+    ///
+    /// Returns the current IP address of the robot radio/modem.
+    ///
     Q_INVOKABLE QString radioAddress();
 
-    /**
-     * Returns the network address of the robot
-     */
+    ///
+    /// Returns the current IP address of the robot controller.
+    ///
     Q_INVOKABLE QString robotAddress();
 
-    /**
-     * Returns the default network address of the robot
-     */
+    ///
+    /// Returns the default network address of the robot
+    ///
     Q_INVOKABLE QString defaultRobotAddress();
 
-    /**
-     * Returns the list of the default robot addresses
-     */
+    ///
+    /// Returns the list of the default robot addresses
+    ///
     Q_INVOKABLE QStringList defaultRobotAddresses();
 
-    /**
-     * Returns the current control mode of the robot
-     */
+    ///
+    /// Returns the current control mode of the robot
+    ///
     Q_INVOKABLE DS::ControlMode controlMode();
 
-    /**
-     * Returns \c true if the robot reports that the user code is loaded
-     */
+    ///
+    /// Returns \c true if the robot reports that the user code is loaded
+    ///
     Q_INVOKABLE bool robotHasCode();
 
-    /**
-     * Returns \c true if the robot is enabled
-     */
+    ///
+    /// Returns \c true if the robot is enabled
+    ///
     Q_INVOKABLE bool isEnabled();
 
-    /**
-     * Returns \c true if the robot mode is \c kControlEmergencyStop
-     */
+    ///
+    /// Returns \c true if the robot is in test mode
+    ///
+    Q_INVOKABLE bool isTest();
+
+    ///
+    /// Returns \c true if the robot is in autonomous
+    ///
+    Q_INVOKABLE bool isAutonomous();
+
+    ///
+    /// Returns \c true if the robot is in teleoperated
+    ///
+    Q_INVOKABLE bool isTeleoperated();
+
+    ///
+    /// Returns \c true if the robot mode is \c kControlEmergencyStop
+    ///
     Q_INVOKABLE bool isEmergencyStopped();
 
-    /**
-     * Returns \c true if the DS is connected to the robot
-     */
+    ///
+    /// Returns \c true if the DS is connected to the robot
+    ///
     Q_INVOKABLE bool isConnected();
 
-    /**
-     * Returns the number of joystick registered with the DS
-     */
+    ///
+    /// Returns the number of joystick registered with the DS
+    ///
     Q_INVOKABLE int joystickCount();
 
-    /**
-     * Returns the current team number
-     */
+    ///
+    /// Returns the current team number
+    ///
     Q_INVOKABLE int team();
 
-    /**
-     * Returns \c true if the current protocol allows us to send
-     * commands through the NetConsole
-     */
+    ///
+    /// Returns \c true if the current protocol allows us to send
+    /// commands through the NetConsole
+    ///
     Q_INVOKABLE bool acceptsConsoleCommands();
 
   public slots:
-    /**
-     * Initializes the class and the interlal loop/refresh system
-     */
+    ///
+    /// Initializes the class and the interlal loop/refresh system
+    ///
     Q_INVOKABLE void init();
 
-    /**
-     * Reboots the robot using the specified protocol
-     */
+    ///
+    /// Reboots the robot using the specified protocol
+    ///
     Q_INVOKABLE void rebootRobot();
 
-    /**
-     * Restarts the robot code using the specified protocol
-     */
+    ///
+    /// Restarts the robot code using the specified protocol
+    ///
     Q_INVOKABLE void restartCode();
 
-    /**
-     * Changes the \a enabled state of the robot
-     */
+    ///
+    /// Changes the \a enabled state of the robot
+    ///
     Q_INVOKABLE void setEnabled (bool enabled);
 
-    /**
-     * Sends a command through the net console
-     */
+    ///
+    /// Sends a command through the net console
+    ///
     Q_INVOKABLE void sendCommand (QString command);
 
-    /**
-     * If \a emergency_stop is set to \c true, the robot will stop moving
-     * almost immediatly after this value is changed
-     */
+    ///
+    /// If \a emergency_stop is set to \c true, the robot will stop moving
+    /// almost immediatly after this value is changed
+    ///
     Q_INVOKABLE void setEmergencyStop (bool emergency_stop);
 
-    /**
-     * Simulates a timed match with the input time values (in seconds)
-     */
+    ///
+    /// Simulates a timed match with the input time values (in seconds)
+    ///
     Q_INVOKABLE void startPractice (int countdown,
                                     int autonomous,
                                     int delay,
                                     int teleop,
                                     int endgame);
 
-    /**
-     * Changes the protocol that we use to control the robot
-     */
-    Q_INVOKABLE void setProtocol (DS_CORE::ProtocolBase* protocol);
+    ///
+    /// Changes the protocol that we use to control the robot
+    ///
+    Q_INVOKABLE void setProtocol (DS_Core::ProtocolBase* protocol);
 
-    /**
-     * Changes the protocol that we use to control the robot
-     */
+    ///
+    /// Changes the protocol that we use to control the robot
+    ///
     Q_INVOKABLE void setProtocol (ProtocolType protocol);
 
-    /**
-     * Changes the team number used by the protocol and network diagnostics
-     */
+    ///
+    /// Changes the team number used by the protocol and network diagnostics
+    ///
     Q_INVOKABLE void setTeamNumber (int team);
 
-    /**
-     * Changes the alliance of the robot using the specified protocol
-     */
+    ///
+    /// Changes the alliance of the robot using the specified protocol
+    ///
     Q_INVOKABLE void setAlliance (int alliance);
 
-    /**
-     * Changes the alliance of the robot using the specified protocol
-     */
+    ///
+    /// Changes the alliance of the robot using the specified protocol
+    ///
     Q_INVOKABLE void setAlliance (DS::Alliance alliance);
 
-    /**
-     * Changes the control mode of the robot, available options are:
-     *     - \c kDisabled
-     *     - \c kTeleoperated
-     *     - \c kAutonomous
-     *     - \c kTest
-     *     - \c kEmergencyStop
-     */
+    ///
+    /// Changes the control mode of the robot, available options are:
+    ///     - \c kDisabled
+    ///     - \c kTeleoperated
+    ///     - \c kAutonomous
+    ///     - \c kTest
+    ///     - \c kEmergencyStop
+    ///
     Q_INVOKABLE void setControlMode (DS::ControlMode mode);
 
-    /**
-     * Changes the network address of the robot
-     */
+    ///
+    /// Changes the network address of the robot
+    ///
     Q_INVOKABLE void setRobotAddress (QString address);
 
-    /**
-     * Un-registers all the joysticks from the Driver Station
-     */
+    ///
+    /// Un-registers all the joysticks from the Driver Station
+    ///
     Q_INVOKABLE void resetJoysticks();
 
-    /**
-     * Updates the \a angle of the selected \a hat in the specified \a josytick
-     */
+    ///
+    /// Updates the \a angle of the selected \a hat in the specified \a josytick
+    ///
     Q_INVOKABLE void updateJoystickPOV (int js, int hat, int angle);
 
-    /**
-     * Registers a new joystick to the Driver Station with the specified number
-     * of \a axes, \a buttons and \a povHats
-     */
+    ///
+    /// Registers a new joystick to the Driver Station with the specified number
+    /// of \a axes, \a buttons and \a povHats
+    ///
     Q_INVOKABLE void addJoystick (int axes, int buttons, int povHats);
 
-    /**
-     * Updates the \a value of the selected \a axis in the specified \a josytick
-     */
+    ///
+    /// Updates the \a value of the selected \a axis in the specified \a josytick
+    ///
     Q_INVOKABLE void updateJoystickAxis (int js, int axis, float value);
 
-    /**
-     * Updates the \a state of the selected \a button in the specified \a josytick
-     */
+    ///
+    /// Updates the \a state of the selected \a button in the specified \a josytick
+    ///
     Q_INVOKABLE void updateJoystickButton (int js, int button, bool pressed);
 
   protected:
     explicit DriverStation();
 
   signals:
-    /**
-     * Emitted when \a Init() was called and the DS engine is started
-     */
+    ///
+    /// Emitted when \a Init() was called and the DS engine is started
+    ///
     void initialized();
 
-    /**
-     * Emitted when a joystick is added or removed from the DS system
-     */
+    ///
+    /// Emitted when a joystick is added or removed from the DS system
+    ///
     void joystickCountChanged();
 
-    /**
-     * Emitted when the robot is e-stopped
-     */
+    ///
+    /// Emitted when the robot is e-stopped
+    ///
     void emergencyStopped();
 
-    /**
-     * Emitted when a protocol was set and initialized
-     */
+    ///
+    /// Emitted when a protocol was set and initialized
+    ///
     void protocolChanged();
 
-    /**
-     * Emitted when the \a SetTeam() function is called
-     */
+    ///
+    /// Emitted when the \a SetTeam() function is called
+    ///
     void teamChanged (int team);
 
-    /**
-     * Emitted when the client detects that the availability of the robot
-     * software/code has changed
-     */
+    ///
+    /// Emitted when the client detects that the availability of the robot
+    /// software/code has changed
+    ///
     void codeChanged (bool available);
 
-    /**
-     * Emitted when the robot detects a possible voltage brownout
-     */
+    ///
+    /// Emitted when the robot detects a possible voltage brownout
+    ///
     void voltageBrownoutChanged (bool hasBrownout);
 
-    /**
-     * Emitted when the DS receives and decodes a CAN data structure
-     */
+    ///
+    /// Emitted when the DS receives and decodes a CAN data structure
+    ///
     void CANInfoReceived (DS::CAN information);
 
-    /**
-     * Emitted when the state of the FMS connection is changed
-     */
+    ///
+    /// Emitted when the state of the FMS connection is changed
+    ///
     void fmsChanged (bool attached);
 
-    /**
-     * Emitted when the state of the network communications with the robot
-     * has been changed. Unlike the other signals with a \c bool value, this
-     * signal contains more information about the communication status, such
-     * as:
-     *     - The robot responds ping requests, but does not respond to DS
-     *     - The robot responds to ping requests and DS
-     *     - The robot does not respond to ping requests nor the DS
-     */
+    ///
+    /// Emitted when the state of the network communications with the robot
+    /// has been changed. Unlike the other signals with a \c bool value, this
+    /// signal contains more information about the communication status, such
+    /// as:
+    ///     - The robot responds ping requests, but does not respond to DS
+    ///     - The robot responds to ping requests and DS
+    ///     - The robot does not respond to ping requests nor the DS
+    ///
     void communicationsChanged (DS::DS_CommStatus status);
 
-    /**
-     * Emitted when the client detects that the availability of the robot radio
-     * has changed (eg. when the robot is powered off with the breaker)
-     */
+    ///
+    /// Emitted when the client detects that the availability of the robot radio
+    /// has changed (eg. when the robot is powered off with the breaker)
+    ///
     void radioChanged (bool available);
 
-    /**
-     * Emitted when the client analyzes a packet from the robot and extracts
-     * the battery voltage of the robot.
-     */
+    ///
+    /// Emitted when the client analyzes a packet from the robot and extracts
+    /// the battery voltage of the robot.
+    ///
     void voltageChanged (QString voltage);
 
-    /**
-     * Emitted when the NetConsole receives and decodes a message from the
-     * robot
-     */
+    ///
+    /// Emitted when the NetConsole receives and decodes a message from the
+    /// robot
+    ///
     void newMessage (QString message);
 
-    /**
-     * Emitted when the client has just connected to the robot and downloaded
-     * its library INI files and analyzed them
-     */
+    ///
+    /// Emitted when the client has just connected to the robot and downloaded
+    /// its library INI files and analyzed them
+    ///
     void libVersionChanged (QString version);
 
-    /**
-     * Emitted when the client has just connected to the robot and downloaded
-     * its PCM INI files and analyzed them
-     */
+    ///
+    /// Emitted when the client has just connected to the robot and downloaded
+    /// its PCM INI files and analyzed them
+    ///
     void rioVersionChanged (QString version);
 
-    /**
-     * Emitted when the client has just connected to the robot and downloaded
-     * its PDP information and analyzed them
-     */
+    ///
+    /// Emitted when the client has just connected to the robot and downloaded
+    /// its PDP information and analyzed them
+    ///
     void pdpVersionChanged (QString version);
 
-    /**
-     * Emitted when the client has just connected to the robot and downloaded
-     * the PCM information files and analyzed them
-     */
+    ///
+    /// Emitted when the client has just connected to the robot and downloaded
+    /// the PCM information files and analyzed them
+    ///
     void pcmVersionChanged (QString version);
 
-    /**
-     * Emitted when one of the following happens:
-     *     - The code status changes
-     *     - The communication status changes
-     *     - The control mode of the robot is changed
-     */
+    ///
+    /// Emitted when one of the following happens:
+    ///     - The code status changes
+    ///     - The communication status changes
+    ///     - The control mode of the robot is changed
+    ///
     void robotStatusChanged (QString status);
 
-    /**
-     * Emitted when the control mode is changed
-     */
+    ///
+    /// Emitted when the control mode is changed
+    ///
     void controlModeChanged (DS::ControlMode mode);
 
-    /**
-     * Emitted when the libary detects that the RAM usage of the robot has
-     * changed since the last update.
-     */
+    ///
+    /// Emitted when the libary detects that the RAM usage of the robot has
+    /// changed since the last update.
+    ///
     void ramUsageChanged (int percent);
 
-    /**
-     * Emitted when the library detects that the CPU usage of the robot has
-     * changed
-     */
+    ///
+    /// Emitted when the library detects that the CPU usage of the robot has
+    /// changed
+    ///
     void cpuUsageChanged (int percent);
 
-    /**
-     * Emitted when the libary detects that the disk usage of the robot has
-     * changed since the last update.
-     */
+    ///
+    /// Emitted when the libary detects that the disk usage of the robot has
+    /// changed since the last update.
+    ///
     void diskUsageChanged (int percent);
 
-    /**
-     * Emitted when the robot is enabled and the elapsed time
-     * has been updated by the library.
-     */
+    ///
+    /// Emitted when the robot is enabled and the elapsed time
+    /// has been updated by the library.
+    ///
     void elapsedTimeChanged (QString time);
 
   private:
-    /**
-     * This variable allows (or disallows) us to receive joystick
-     * data and perform most of the operations of the Driver Station.
-     *
-     * This variable is set to \c true when the \c init() function is called
-     */
+    ///
+    /// This variable allows (or disallows) us to receive joystick
+    /// data and perform most of the operations of the Driver Station.
+    /// This variable is set to \c true when the \c init() function is called
+    ///
     bool m_init;
 
-    /**
-     * The client, used for sending and receiving data
-     * from a specified network address and port, go on
-     * and crash the school's server if you wish
-     */
-    DS_CORE::Client* m_client;
+    ///
+    /// The client, used for sending and receiving data
+    /// from a specified network address and port, go on
+    /// and crash the school's server if you wish
+    ///
+    DS_Core::Client* m_client;
 
-    /**
-     * Used for receiving messages broadcasted by the
-     * robot over the network
-     */
-    DS_CORE::NetConsole* m_netConsole;
+    ///
+    /// Used for receiving messages broadcasted by the
+    /// robot over the network
+    ///
+    DS_Core::NetConsole* m_netConsole;
 
-    /**
-     * Allows us to select an operation protocol and
-     * configure it automatically to fit the librarie's
-     * standards
-     */
-    DS_CORE::ProtocolManager* m_manager;
+    ///
+    /// Allows us to select an operation protocol and
+    /// configure it automatically to fit the librarie's
+    /// standards
+    ///
+    DS_Core::ProtocolManager* m_manager;
 
-    /**
-     * Represents the current protocol in operation
-     */
-    DS_CORE::ProtocolBase* m_protocol;
+    ///
+    /// Represents the current protocol in operation
+    ///
+    DS_Core::ProtocolBase* m_protocol;
 
-    /**
-     * Counts the elapsed time since the robot was
-     * enabled. When the robot is disabled, the elapsed
-     * time is stopped (just as in the official Driver Station)
-     */
-    DS_CORE::ElapsedTime* m_elapsedTime;
+    ///
+    /// Counts the elapsed time since the robot was
+    /// enabled. When the robot is disabled, the elapsed
+    /// time is stopped (just as in the official Driver Station)
+    ///
+    DS_Core::ElapsedTime* m_elapsedTime;
 
-    /**
-     * Changes the status string when:
-     *     - The communications status has changed
-     *     - The robot code status has changed
-     *     - The control mode of the robot has changed
-     */
+    ///
+    /// Changes the status string when:
+    ///     - The communications status has changed
+    ///     - The robot code status has changed
+    ///     - The control mode of the robot has changed
+    ///
     QString getRobotStatus();
 
   private slots:
-    /**
-     * Sends a generated client packet to the robot
-     */
+    ///
+    /// Sends a generated client packet to the robot
+    ///
     void sendToFms();
 
-    /**
-     * Sends a generated client packet to the robot
-     */
+    ///
+    /// Sends a generated client packet to the robot
+    ///
     void sendToRobot();
 
-    /**
-     * Resets the internal values of the library when we disconnect from the
-     * robot.
-     */
+    ///
+    /// Resets the internal values of the library when we disconnect from the
+    /// robot.
+    ///
     void resetEverything();
 
-    /**
-     * Sends the received FMS packet to the current protocol for further processing
-     */
+    ///
+    /// Sends the received FMS packet to the current protocol for further processing
+    ///
     void readFmsPacket (QByteArray response);
 
-    /**
-     * Sends the received robot packet to the current protocol for further processing
-     */
+    ///
+    /// Sends the received robot packet to the current protocol for further processing
+    ///
     void readRobotPacket (QByteArray response);
 
-    /**
-     * Updates the elapsed time when the control mode is changed
-     */
+    ///
+    /// Updates the elapsed time when the control mode is changed
+    ///
     void resetElapsedTimer (DS::ControlMode mode);
 
-    /**
-     * Plays a sound that indicates the upcomming end of a match
-     */
+    ///
+    /// Plays a sound that indicates the upcomming end of a match
+    ///
     void playEndGameApproaching();
 
-    /**
-     * Plays a sound that indicates the end of a match
-     */
+    ///
+    /// Plays a sound that indicates the end of a match
+    ///
     void playEndGame();
 
-    /**
-     * Plays a sound that indicates the start of the operator control
-     */
+    ///
+    /// Plays a sound that indicates the start of the operator control
+    ///
     void playTeleopStart();
 
-    /**
-     * Plays a sound that indicates the start of the autonomous period
-     */
+    ///
+    /// Plays a sound that indicates the start of the autonomous period
+    ///
     void playAutonomousStart();
 };
 

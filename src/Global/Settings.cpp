@@ -21,30 +21,40 @@
  */
 
 #include "Settings.h"
-#include <QSettings>
 
-QSettings* Settings::m_settings = new QSettings ("WinT 3794", "QDriverStation");
+#include <QSettings>
+#include <QApplication>
 
 //=============================================================================
-// Settings::Clear
+// SETTINGS
+//=============================================================================
+
+QSettings* SETTINGS() {
+    static QSettings settings (QApplication::organizationName(),
+                               QApplication::applicationName());
+    return &settings;
+}
+
+//=============================================================================
+// Settings::clear
 //=============================================================================
 
 void Settings::clear() {
-    m_settings->clear();
+    SETTINGS()->clear();
 }
 
 //=============================================================================
-// Settings::Set
+// Settings::set
 //=============================================================================
 
 void Settings::set (QString key, const QVariant& value) {
-    m_settings->setValue (key, value);
+    SETTINGS()->setValue (key, value);
 }
 
 //=============================================================================
-// Settings::Get
+// Settings::get
 //=============================================================================
 
-QVariant Settings::get (QString key, const QVariant& defaultValue) {
-    return m_settings->value (key, defaultValue);
+QVariant Settings::get (QString key, const QVariant& default_value) {
+    return SETTINGS()->value (key, default_value);
 }

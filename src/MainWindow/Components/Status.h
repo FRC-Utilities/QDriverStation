@@ -24,7 +24,7 @@
 #define _QDS_MW_STATUS_H
 
 #include <QWidget>
-#include <LibDS/DriverStation.h>
+#include <LibDS.h>
 
 class QLabel;
 class QPushButton;
