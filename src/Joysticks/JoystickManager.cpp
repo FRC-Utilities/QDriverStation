@@ -62,7 +62,7 @@ JoystickManager::JoystickManager() {
              this,              &JoystickManager::onAxisEvent);
     connect (this,              &JoystickManager::buttonEvent,
              this,              &JoystickManager::onButtonEvent);
-    connect (QDS(),              &DriverStation::protocolChanged,
+    connect (QDS(),             &DriverStation::protocolChanged,
              this,              &JoystickManager::updateInterfaces);
 }
 
@@ -138,7 +138,7 @@ VirtualJoystick* JoystickManager::virtualJoystick() {
 void JoystickManager::setBlacklisted (int index, bool blacklisted) {
     Q_UNUSED (index);
     Q_UNUSED (blacklisted);
-    //inputDevices().at (index).blacklisted = blacklisted;
+    // TODO
 }
 
 //=============================================================================
@@ -159,14 +159,17 @@ void JoystickManager::resetJoysticks() {
 void JoystickManager::updateInterfaces() {
     resetJoysticks();
 
+    /* Register every SDL joystick */
     foreach (QDS_InputDevice joystick, sdlJoysticks()->joysticks())
         addInputDevice (joystick);
 
+    /* Register the virtual joystick (if the virtual joystick is enabled) */
     if (virtualJoystick()->joystickEnabled()) {
         addInputDevice (*virtualJoystick()->joystick());
         virtualJoystick()->setJoystickID (inputDevices().count() - 1);
     }
 
+    /* Add the registered joysticks to the DriverStation */
     foreach (QDS_InputDevice joystick, inputDevices()) {
         if (!joystick.blacklisted) {
             QDS()->addJoystick (joystick.numAxes,
