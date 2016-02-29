@@ -583,6 +583,8 @@ void DriverStation::resetJoysticks() {
 
     if (m_manager->isValid())
         m_manager->currentProtocol()->_onJoysticksChanged();
+
+    emit joystickCountChanged();
 }
 
 //=============================================================================
