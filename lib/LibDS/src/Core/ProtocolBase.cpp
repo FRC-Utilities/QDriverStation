@@ -92,7 +92,7 @@ ProtocolBase::ProtocolBase() {
              this,         &ProtocolBase::onPingResponse);
 
     reset();
-    QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (bePatientMotherfucker()));
+    QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (showPatienceMsg()));
 }
 
 //=============================================================================
@@ -396,7 +396,7 @@ void ProtocolBase::readRobotPacket (QByteArray data) {
                         "Robot/DS connection established!");
 
             /* Make the watchdog tolerance higher to avoid temporary resets */
-            m_watchdog.setTimeout (1000);
+            m_watchdog.setTimeout (2000);
         }
 
         /* Let the protocol implementation read the rest of the data */

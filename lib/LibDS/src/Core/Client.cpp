@@ -40,8 +40,7 @@ Client::Client (QObject* parent) : QObject (parent) {
 //=============================================================================
 
 void Client::sendToFms (QByteArray data) {
-    if (m_fmsPort != DS::INVALID_PORT)
-        m_fmsSender.write (data);
+    m_fmsSender.write (data);
 }
 
 //=============================================================================
@@ -49,11 +48,9 @@ void Client::sendToFms (QByteArray data) {
 //=============================================================================
 
 void Client::sendToRobot (QByteArray data) {
-    if (m_robotPort != DS::INVALID_PORT) {
-        m_robotSender.writeDatagram (data,
-                                     QHostAddress (m_robotAddress),
-                                     m_robotPort);
-    }
+    m_robotSender.writeDatagram (data,
+                                 QHostAddress (m_robotAddress),
+                                 m_robotPort);
 }
 
 //=============================================================================
@@ -118,8 +115,7 @@ void Client::setRobotAddress (QString address) {
 //=============================================================================
 
 void Client::readFmsPacket() {
-    if (m_fmsReceiver.peerPort() != DS::INVALID_PORT)
-        emit fmsPacketReceived (DS::readSocket (&m_fmsReceiver));
+    emit fmsPacketReceived (DS::readSocket (&m_fmsReceiver));
 }
 
 //=============================================================================
@@ -127,6 +123,5 @@ void Client::readFmsPacket() {
 //=============================================================================
 
 void Client::readRobotPacket() {
-    if (m_robotReceiver.peerPort() != DS::INVALID_PORT)
-        emit robotPacketReceived (DS::readSocket (&m_robotReceiver));
+    emit robotPacketReceived (DS::readSocket (&m_robotReceiver));
 }
