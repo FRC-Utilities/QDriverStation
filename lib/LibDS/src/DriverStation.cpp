@@ -41,9 +41,9 @@
 // Protocols
 //=============================================================================
 
-#include "LibDS/Protocols/Protocol2014.h"
-#include "LibDS/Protocols/Protocol2015.h"
-#include "LibDS/Protocols/Protocol2016.h"
+#include "LibDS/Protocols/FRC/Protocol2014.h"
+#include "LibDS/Protocols/FRC/Protocol2015.h"
+#include "LibDS/Protocols/FRC/Protocol2016.h"
 
 //=============================================================================
 // Library class
@@ -223,9 +223,9 @@ QStringList DriverStation::alliances() {
 
 QStringList DriverStation::protocols() {
     QStringList list;
-    list.append (tr ("2016 Protocol"));
-    list.append (tr ("2015 Protocol"));
-    list.append (tr ("2014 Protocol"));
+    list.append (tr ("FRC 2016"));
+    list.append (tr ("FRC 2015"));
+    list.append (tr ("FRC 2014"));
     return list;
 }
 
@@ -518,14 +518,14 @@ void DriverStation::setProtocol (DS_Core::ProtocolBase* protocol) {
 //=============================================================================
 
 void DriverStation::setProtocol (ProtocolType protocol) {
-    if (protocol == kProtocol2016)
-        setProtocol (GET_INSTANCE<DS_Protocols::Protocol2016>());
+    if (protocol == kFRCProtocol2016)
+        setProtocol (GET_INSTANCE<DS_Protocols::FRC_Protocol2016>());
 
-    if (protocol == kProtocol2015)
-        setProtocol (GET_INSTANCE<DS_Protocols::Protocol2015>());
+    if (protocol == kFRCProtocol2015)
+        setProtocol (GET_INSTANCE<DS_Protocols::FRC_Protocol2015>());
 
-    if (protocol == kProtocol2014)
-        setProtocol (GET_INSTANCE<DS_Protocols::Protocol2014>());
+    if (protocol == kFRCProtocol2014)
+        setProtocol (GET_INSTANCE<DS_Protocols::FRC_Protocol2014>());
 }
 
 //=============================================================================

@@ -66,9 +66,9 @@ class LIB_DS_DECL DriverStation : public QObject {
     /// to use the library with QML projects.
     ///
     enum ProtocolType {
-        kProtocol2016 = 0,
-        kProtocol2015 = 1,
-        kProtocol2014 = 2
+        kFRCProtocol2016 = 0,
+        kFRCProtocol2015 = 1,
+        kFRCProtocol2014 = 2
     };
 
     ///

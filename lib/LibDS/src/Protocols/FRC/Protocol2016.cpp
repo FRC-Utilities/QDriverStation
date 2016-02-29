@@ -20,15 +20,15 @@
  * THE SOFTWARE.
  */
 
-#include "LibDS/Protocols/Protocol2016.h"
+#include "LibDS/Protocols/FRC/Protocol2016.h"
 
 using namespace DS_Protocols;
 
 //=============================================================================
-//Protocol2016::defaultRobotAddress
+// FRC_Protocol2016::defaultRobotAddress
 //=============================================================================
 
-QStringList Protocol2016::defaultRobotAddress() {
+QStringList FRC_Protocol2016::defaultRobotAddress() {
     QStringList list;
 
     list.append (QString ("roboRIO-%1-FRC.local").arg (team()));

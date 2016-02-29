@@ -20,54 +20,18 @@
  * THE SOFTWARE.
  */
 
-#ifndef _LDS_PROTOCOL_2015_H
-#define _LDS_PROTOCOL_2015_H
+#ifndef _LDS_PROTOCOL_2016_H
+#define _LDS_PROTOCOL_2016_H
 
-#include "LibDS/Core/ProtocolBase.h"
+#include "Protocol2015.h"
 
 namespace DS_Protocols {
 
-class LIB_DS_DECL Protocol2015 : public DS_Core::ProtocolBase {
+class LIB_DS_DECL FRC_Protocol2016 : public FRC_Protocol2015 {
     Q_OBJECT
 
   public:
-    virtual int fmsFrequency();
-    virtual int robotFrequency();
-
-    virtual int fmsInputPort();
-    virtual int fmsOutputPort();
-    virtual int robotInputPort();
-    virtual int robotOutputPort();
-
-    virtual int tcpProbesPort();
-
-    virtual int netConsoleInputPort();
-    virtual bool acceptsConsoleCommands();
-
-    virtual QStringList defaultRadioAddress();
     virtual QStringList defaultRobotAddress();
-
-  public slots:
-    virtual void reboot();
-    virtual void restartCode();
-
-  private slots:
-    virtual void _resetProtocol();
-
-  private:
-    virtual bool _readFMSPacket (QByteArray data);
-    virtual bool _readRobotPacket (QByteArray data);
-
-    virtual QByteArray _getFmsPacket();
-    virtual QByteArray _getClientPacket();
-    virtual QByteArray _getJoystickData();
-    virtual QByteArray _getTimezoneData();
-
-    virtual int getControlCode();
-    virtual int getAllianceCode();
-    virtual int getJoystickSize (DS::Joystick joystick);
-
-    int m_instructionCode;
 };
 
 }

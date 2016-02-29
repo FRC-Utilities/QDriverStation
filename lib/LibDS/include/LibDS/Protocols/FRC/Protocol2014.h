@@ -20,18 +20,56 @@
  * THE SOFTWARE.
  */
 
-#ifndef _LDS_PROTOCOL_2016_H
-#define _LDS_PROTOCOL_2016_H
+#ifndef _LDS_PROTOCOL_2014_H
+#define _LDS_PROTOCOL_2014_H
 
-#include "Protocol2015.h"
+#include "LibDS/Core/ProtocolBase.h"
 
 namespace DS_Protocols {
 
-class LIB_DS_DECL Protocol2016 : public Protocol2015 {
+class LIB_DS_DECL FRC_Protocol2014 : public DS_Core::ProtocolBase {
     Q_OBJECT
 
   public:
+    explicit FRC_Protocol2014();
+    virtual int fmsFrequency();
+    virtual int robotFrequency();
+
+    virtual int fmsInputPort();
+    virtual int fmsOutputPort();
+    virtual int robotInputPort();
+    virtual int robotOutputPort();
+
+    virtual int tcpProbesPort();
+    virtual int netConsoleInputPort();
+    virtual int netConsoleOutputPort();
+
+    virtual bool acceptsConsoleCommands();
+
+    virtual QStringList defaultRadioAddress();
     virtual QStringList defaultRobotAddress();
+
+  public slots:
+    virtual void reboot();
+    virtual void restartCode();
+
+  private slots:
+    virtual void _resetProtocol();
+    virtual void _showProtocolWarning();
+
+  private:
+    virtual bool _readFMSPacket (QByteArray data);
+    virtual bool _readRobotPacket (QByteArray data);
+
+    virtual QByteArray _getFmsPacket();
+    virtual QByteArray _getClientPacket();
+    virtual QByteArray _getJoystickData();
+
+    QString m_dsVersion;
+    QString m_robotMacAddress;
+
+    bool m_reboot;
+    bool m_restartCode;
 };
 
 }
