@@ -121,6 +121,11 @@ class LIB_DS_DECL DriverStation : public QObject {
     Q_INVOKABLE DS::ControlMode controlMode();
 
     ///
+    /// Returns a list with the current joysticks
+    ///
+    Q_INVOKABLE QList<DS::Joystick>* joysticks();
+
+    ///
     /// Returns \c true if the robot reports that the user code is loaded
     ///
     Q_INVOKABLE bool robotHasCode();
@@ -264,9 +269,9 @@ class LIB_DS_DECL DriverStation : public QObject {
 
     ///
     /// Registers a new joystick to the Driver Station with the specified number
-    /// of \a axes, \a buttons and \a povHats
+    /// of \a axes, \a buttons and \a POVs
     ///
-    Q_INVOKABLE void addJoystick (int axes, int buttons, int povHats);
+    Q_INVOKABLE void addJoystick (int axes, int buttons, int POVs);
 
     ///
     /// Updates the \a value of the selected \a axis in the specified \a josytick
@@ -457,6 +462,11 @@ class LIB_DS_DECL DriverStation : public QObject {
     /// time is stopped (just as in the official Driver Station)
     ///
     DS_Core::ElapsedTime* m_elapsedTime;
+
+    ///
+    /// Registers and manages the joystick inputs
+    ///
+    QList<DS::Joystick> m_joysticks;
 
     ///
     /// Changes the status string when:

@@ -133,8 +133,8 @@ class LIB_DS_DECL ProtocolBase : public QObject {
     DS::DS_CommStatus communicationStatus() const;
 
     ///
-    /// Returns the pointer to the joysticks managed and updated by the
-    /// \c ProtocolManager class.
+    /// Returns a pointer to the joysticks managed by the \c DriverStation
+    /// class.
     ///
     QList<DS::Joystick>* joysticks() const;
 
@@ -326,11 +326,6 @@ class LIB_DS_DECL ProtocolBase : public QObject {
     void setControlMode (DS::ControlMode mode);
 
     ///
-    /// Indicates the protocol from where to read input from the \a joysticks
-    ///
-    void setJoysticks (QList<DS::Joystick>* joysticks);
-
-    ///
     /// Reads the FMS packet and calls the appropiate functions to interpret it
     ///
     void readFmsPacket (QByteArray data);
@@ -489,8 +484,6 @@ class LIB_DS_DECL ProtocolBase : public QObject {
     QString m_robotIp;
     QString m_robotAddress;
     QString m_radioAddress;
-
-    QList<DS::Joystick>* m_joysticks;
 
     Watchdog m_watchdog;
     QTcpSocket m_robotPing;

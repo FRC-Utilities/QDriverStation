@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+#include "LibDS/DriverStation.h"
 #include "LibDS/Core/ProtocolBase.h"
 
 using namespace DS_Core;
@@ -76,8 +77,6 @@ ProtocolBase::ProtocolBase() {
     m_robotCode           = false;
     m_emergencyStop       = false;
     m_radioConnected      = false;
-
-    m_joysticks           = new QList<DS::Joystick>;
 
     m_radioPing.setObjectName ("Radio Ping");
     m_robotPing.setObjectName ("Robot Ping");
@@ -212,7 +211,7 @@ DS::DS_CommStatus ProtocolBase::communicationStatus() const {
 //=============================================================================
 
 QList<DS::Joystick>* ProtocolBase::joysticks() const {
-    return m_joysticks;
+    return DriverStation::getInstance()->joysticks();
 }
 
 //=============================================================================
@@ -359,14 +358,6 @@ void ProtocolBase::setControlMode (DS::ControlMode mode) {
         m_controlMode = mode;
         emit controlModeChanged (controlMode());
     }
-}
-
-//=============================================================================
-//ProtocolBase::setJoysticks
-//=============================================================================
-
-void ProtocolBase::setJoysticks (QList<DS::Joystick>* joysticks) {
-    m_joysticks = joysticks;
 }
 
 //=============================================================================

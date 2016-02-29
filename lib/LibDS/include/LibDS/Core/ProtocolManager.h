@@ -33,9 +33,6 @@ class ProtocolBase;
 /// Allows the dynamic loading and usage of different protocols by configuring them
 /// so that the \c DriverStation can send and recieve information from the protocol.
 ///
-/// This class is also in charge of registering, configuring and updating joystick
-/// values automatically.
-///
 class LIB_DS_DECL ProtocolManager : public QObject {
     Q_OBJECT
 
@@ -61,31 +58,6 @@ class LIB_DS_DECL ProtocolManager : public QObject {
     /// Loads and configures the given \a protocol
     ///
     void setProtocol (ProtocolBase* protocol);
-
-    ///
-    /// Deletes all the registered joysticks from the system
-    ///
-    void resetJoysticks();
-
-    ///
-    /// Registers a new joystick and its input devices
-    ///
-    void addJoystick (int axes, int buttons, int POVs);
-
-    ///
-    /// Updates the \a anagle of the seleted \a hat in the given joystick
-    ///
-    void updateJoystickPOV (int js, int hat, int angle);
-
-    ///
-    /// Updates the \a value of the selected \a axis in the given joystick
-    ///
-    void updateJoystickAxis (int js, int axis, float value);
-
-    ///
-    /// Updates the \a status of the selected \a button in the given joystick
-    ///
-    void updateJoystickButton (int js, int bt, bool status);
 
     ///
     /// Instructs the current protocol to interpret the given robot \a data
@@ -116,9 +88,6 @@ class LIB_DS_DECL ProtocolManager : public QObject {
 
   private:
     ProtocolBase* m_protocol;
-    QList<DS::Joystick>* m_joysticks;
-
-    bool joystickExists (int js) const;
 };
 
 }

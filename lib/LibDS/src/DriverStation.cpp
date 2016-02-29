@@ -52,6 +52,44 @@
 #include "LibDS/DriverStation.h"
 
 //=============================================================================
+// Joystick requirements
+//=============================================================================
+
+const int MAX_AXES      = 12;
+const int MAX_POVS      = 12;
+const int MAX_BUTTONS   = 24;
+const int MAX_JOYSTICKS =  6;
+
+//=============================================================================
+// Joystick error messages/warnings
+//=============================================================================
+
+const QString ERR_POV_CNT     = "<p>"
+                                "<font color=#FFF959><b>WARNING:</b></font> "
+                                "<font color=#FFFFFF>Joystick %1 has exceed "
+                                "the POV range (0 to %2 POVs). "
+                                "Joystick %1 has %3 POVs.</font>"
+                                "</p>";
+const QString ERR_AXIS_CNT    = "<p>"
+                                "<font color=#FFF959><b>WARNING:</b></font> "
+                                "<font color=#FFFFFF>Joystick %1 has exceed "
+                                "the axis range (0 to %2 axes). "
+                                "Joystick %1 has %3 axes.</font>"
+                                "</p>";
+const QString ERR_BUTTON_CNT  = "<p>"
+                                "<font color=#FFF959><b>WARNING:</b></font> "
+                                "<font color=#FFFFFF>Joystick %1 has exceed "
+                                "the button range (0 to %2 buttons). "
+                                "Joystick %1 has %3 buttons.</font>"
+                                "</p>";
+const QString ERR_JOYSTICKS   = "<p>"
+                                "<font color=#FFF959><b>WARNING:</b></font> "
+                                "<font color=#FFFFFF>Reached maximum number of "
+                                "joysticks (%1), further joysticks will be "
+                                "ignored.</font>"
+                                "</p>";
+
+//=============================================================================
 // Ugly hacks
 //=============================================================================
 
@@ -247,6 +285,14 @@ DS::ControlMode DriverStation::controlMode() {
 }
 
 //=============================================================================
+// DriverStation::joysticks
+//=============================================================================
+
+QList<DS::Joystick>* DriverStation::joysticks() {
+    return &m_joysticks;
+}
+
+//=============================================================================
 // DriverStation::robotHasCode
 //=============================================================================
 
@@ -319,7 +365,7 @@ bool DriverStation::isConnected() {
 //=============================================================================
 
 int DriverStation::joystickCount() {
-    return m_manager->joystickCount();
+    return joysticks()->count();
 }
 
 //=============================================================================
@@ -533,8 +579,10 @@ void DriverStation::setRobotAddress (QString address) {
 //=============================================================================
 
 void DriverStation::resetJoysticks() {
-    m_manager->resetJoysticks();
-    emit joystickCountChanged();
+    joysticks()->clear();
+
+    if (m_manager->isValid())
+        m_manager->currentProtocol()->_onJoysticksChanged();
 }
 
 //=============================================================================
@@ -542,19 +590,92 @@ void DriverStation::resetJoysticks() {
 //=============================================================================
 
 void DriverStation::updateJoystickPOV (int js, int hat, int angle) {
-    if (m_manager->isValid())
-        m_manager->updateJoystickPOV (js, hat, angle);
+    if (js < joysticks()->count())
+        joysticks()->at (js).POVs [hat] = angle;
 }
 
 //=============================================================================
 // DriverStation::addJoystick
 //=============================================================================
 
-void DriverStation::addJoystick (int axes, int buttons, int povHats) {
-    if (m_manager->isValid()) {
-        m_manager->addJoystick (axes, buttons, povHats);
-        emit joystickCountChanged();
+void DriverStation::addJoystick (int axes, int buttons, int POVs) {
+    /* The DS has exceeded the supported number of joysticks */
+    if (joysticks()->count() >= MAX_JOYSTICKS) {
+        DS::log  (DS::kLibLevel, "Reached maximum number of joysticks");
+        DS::log  (DS::kLibLevel, "Ignoring future joysticks");
+        DS::sendMessage (ERR_JOYSTICKS.arg (MAX_JOYSTICKS));
+        return;
     }
+
+    /* The input joysticks has too many POVs */
+    else if (POVs > MAX_POVS) {
+        DS::log (DS::kLibLevel, "Input device has exceeded POV range");
+        DS::sendMessage (ERR_POV_CNT
+                         .arg (joysticks()->count())
+                         .arg (MAX_POVS)
+                         .arg (POVs));
+        return;
+    }
+
+    /* The input joysticks has too many axes */
+    else if (axes > MAX_AXES) {
+        DS::log  (DS::kLibLevel, "Input device has exceeded axis range");
+        DS::sendMessage (ERR_AXIS_CNT
+                         .arg (joysticks()->count())
+                         .arg (MAX_AXES)
+                         .arg (axes));
+        return;
+    }
+
+    /* The input joysticks has too many buttons */
+    else if (buttons > MAX_BUTTONS) {
+        DS::log  (DS::kLibLevel, "Input device has exceeded button range");
+        DS::sendMessage (ERR_AXIS_CNT
+                         .arg (joysticks()->count())
+                         .arg (MAX_BUTTONS)
+                         .arg (buttons));
+        return;
+    }
+
+    /* Everything OK, register the joystick */
+    else {
+        DS::Joystick js;
+
+        js.numAxes = axes;
+        js.numPOVs = POVs;
+        js.numButtons = buttons;
+
+        js.axes = new float  [axes];
+        js.POVs = new int  [POVs];
+        js.buttons = new bool [buttons];
+
+        for (int i = 0; i < js.numAxes; i++)
+            js.axes [i] = 0;
+
+        for (int i = 0; i < js.numPOVs; i++)
+            js.POVs [i] = -1;
+
+        for (int i = 0; i < js.numButtons; i++)
+            js.buttons [i] = false;
+
+        joysticks()->append (js);
+
+        DS::log (DS::kLibLevel, QString ("Registered joystick with: "
+                                         "%1 axes, "
+                                         "%2 buttons and "
+                                         "%3 POVs")
+                 .arg (QString::number (js.numAxes))
+                 .arg (QString::number (js.numButtons))
+                 .arg (QString::number (js.numPOVs)));
+
+        DS::log (DS::kLibLevel, QString ("Current number of joysticks is %1")
+                 .arg (QString::number (joysticks()->count())));
+    }
+
+    if (m_manager->isValid())
+        m_manager->currentProtocol()->_onJoysticksChanged();
+
+    emit joystickCountChanged();
 }
 
 //=============================================================================
@@ -562,8 +683,8 @@ void DriverStation::addJoystick (int axes, int buttons, int povHats) {
 //=============================================================================
 
 void DriverStation::updateJoystickAxis (int js, int axis, float value) {
-    if (m_manager->isValid())
-        m_manager->updateJoystickAxis (js, axis, value);
+    if (js < joysticks()->count())
+        joysticks()->at (js).axes [axis] = value;
 }
 
 //=============================================================================
@@ -571,8 +692,8 @@ void DriverStation::updateJoystickAxis (int js, int axis, float value) {
 //=============================================================================
 
 void DriverStation::updateJoystickButton (int js, int button, bool pressed) {
-    if (m_manager->isValid())
-        m_manager->updateJoystickButton (js, button, pressed);
+    if (js < joysticks()->count())
+        joysticks()->at (js).buttons [button] = pressed;
 }
 
 //=============================================================================
