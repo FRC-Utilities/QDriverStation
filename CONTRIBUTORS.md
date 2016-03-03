@@ -8,6 +8,6 @@ While [I](https://github.com/alex-spataru) do most of the development of this pr
 - [Ben Wolsieffer](http://www.chiefdelphi.com/forums/member.php?u=46295), for creating an [ArchLinux package](https://aur.archlinux.org/packages/qdriverstation-git/) for the QDriverStation.
 - [Simon Andrews](https://github.com/simon-andrews), for improving the Linux launcher of the QDriverStation.
 - [Thomas Ross](https://github.com/thomassross), for fixing the Travis CI build script.
-- [Bearz](http://www.chiefdelphi.com/forums/member.php?u=91649), for building a [*.deb](https://drive.google.com/file/d/0BwmIj7Fz03lXZ1JjYnhLVVdRR0E/view?usp=sharing) package of the application.
+- [Dakota Keeler](https://github.com/BearzRobotics), for building  [Debian Packages](https://drive.google.com/file/d/0BwmIj7Fz03lXZ1JjYnhLVVdRR0E/view?usp=sharing) of the application, providing feedback and making a video tutorial to compile and run the QDriverStation on Linux systems.
 - [Peter Mitrano](https://github.com/PeterMitrano), for contributing to the .gitignore configuration and thus avoiding possible compilation issues.
 - [SoftwareBug2.0](http://www.chiefdelphi.com/forums/member.php?u=7765), for helping fellow GNU/Linux users using Ubuntu to compile the application.
