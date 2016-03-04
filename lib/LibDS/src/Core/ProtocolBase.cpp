@@ -453,9 +453,25 @@ void ProtocolBase::updateVoltageBrownout (bool brownout) {
 //ProtocolBase::updateVoltage
 //=============================================================================
 
-void ProtocolBase::updateVoltage (int major, int minor) {
-    m_voltage = major + ((float) minor / 10);
-    emit voltageChanged (QString::number (m_voltage));
+void ProtocolBase::updateVoltage (QString digit, QString decimal) {
+    /* Voltage is smaller than 10v, add 0 before the digit (e.g. to 09) */
+    if (digit.length() < 2)
+        digit.prepend ("0");
+
+    /* Decimal voltage is less than 0.1v, add 0 to decimal (e.g 0.01) */
+    if (decimal.length() < 2)
+        decimal.prepend ("0");
+
+    /* Decimal is too detailed, obtain only first two digits */
+    else if (decimal.length() > 2)
+        decimal = QString (decimal.at (0)) + QString (decimal.at (1));
+
+    /* Construct voltage string */
+    QString voltage = QString ("%1.%2").arg (digit, decimal);
+
+    /* Update values & emit signals */
+    m_voltage = voltage.toFloat();
+    emit voltageChanged (voltage);
 }
 
 //=============================================================================

@@ -436,7 +436,7 @@ class LIB_DS_DECL ProtocolBase : public QObject {
     void updateRadioStatus (bool connected);
     void updateCommStatus (DS::DS_CommStatus statusCode);
     void updateVoltageBrownout (bool brownout);
-    void updateVoltage (int major, int minor);
+    void updateVoltage (QString digit, QString decimal);
 
   signals:
     void codeChanged (bool);

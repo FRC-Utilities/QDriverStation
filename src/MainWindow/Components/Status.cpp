@@ -57,6 +57,13 @@ const QString CUSTM_LED = "QPushButton {"
                           "background-color: rgb(244, 255, 43); }";
 
 //=============================================================================
+// Hacks for the voltage indicator
+//=============================================================================
+
+#define _SPACER         "   "
+#define _VOLTAGE_FORMAT "   99.99 V"
+
+//=============================================================================
 // Status::Status
 //=============================================================================
 
@@ -194,7 +201,6 @@ void Status::configureStyles() {
 
     /* Set the alignment the indicator labels */
     m_team->setAlignment          (Qt::AlignCenter);
-    m_voltage->setAlignment       (Qt::AlignCenter);
     m_robotStatus->setAlignment   (Qt::AlignCenter);
     m_robotStatus->setWordWrap    (true);
 
@@ -223,6 +229,12 @@ void Status::configureStyles() {
     m_team->setFont               (indicatorFont);
     m_robotStatus->setFont        (robotStatusFont);
     m_voltageLabel->setFont       (AWESOME()->font (DPI_SCALE (42)));
+
+    /* Set the size of the voltage indicator */
+    QFontMetrics metrics (m_voltage->font());
+    m_voltage->setFixedWidth  (metrics.width (_VOLTAGE_FORMAT));
+    m_voltage->setFixedHeight (DPI_SCALE (24));
+    m_voltage->setAlignment   (Qt::AlignLeft | Qt::AlignVCenter);
 }
 
 //=============================================================================
@@ -287,10 +299,10 @@ void Status::updateStatus (QString status) {
 
 void Status::updateVoltage (QString voltage) {
     if (!voltage.isEmpty() && QDS()->isConnected())
-        m_voltage->setText (QString ("%1 V").arg (voltage));
+        m_voltage->setText (_SPACER + QString ("%1 V").arg (voltage));
 
     else
-        m_voltage->setText (NO_DATA);
+        m_voltage->setText (_SPACER + NO_DATA);
 }
 
 //=============================================================================

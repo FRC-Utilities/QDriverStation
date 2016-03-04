@@ -242,9 +242,10 @@ bool FRC_Protocol2015::_readRobotPacket (QByteArray data) {
 
     /* Update client information */
     updateVoltageBrownout (false);
-    updateVoltage         (majorVoltage, minorVoltage);
     updateSendDateTime    (request == pProgramRequestTime);
     updateRobotCode       ((status & pProgramCodePresent) != 0);
+    updateVoltage         (QString::number (majorVoltage),
+                           QString::number (minorVoltage));
 
     /* Packet contains additional data structures */
     if (data.length() > offset) {
