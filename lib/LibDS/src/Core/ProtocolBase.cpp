@@ -46,11 +46,6 @@ const QString INFO_NOTE      = "<p>"
                                "The DS may take up to 20 seconds to detect "
                                "your robot, please be patient.</font>"
                                "</p>";
-const QString CODE_CRASH     = "<p>"
-                               "<font color=#FFF959><b>WARNING:</b></font> "
-                               "<font color=#FFFFFF>"
-                               "The robot code seems to have crashed.</font>"
-                               "</p>";
 const QString COMM_ESTABLISH = "<p>"
                                "<font color=#59FF59><b>INFO:</b></font> "
                                "<font color=#FFFFFF>"
@@ -402,12 +397,8 @@ void ProtocolBase::readRobotPacket (QByteArray data) {
 
 void ProtocolBase::updateRobotCode (bool available) {
     /* Robot code just crashed/failed */
-    if (m_robotCode && !available) {
-        setEnabled    (false);
-        DS::sendMessage (CODE_CRASH);
-        DS::log  (DS::kWarnLevel,
-                  "It seems that the robot code crashed");
-    }
+    if (m_robotCode && !available)
+        setEnabled (false);
 
     /* Update DS information */
     m_robotCode = available;
