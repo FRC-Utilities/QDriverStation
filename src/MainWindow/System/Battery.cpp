@@ -31,7 +31,6 @@ static SYSTEM_POWER_STATUS power;
 #include <QProcess>
 #endif
 
-
 //=============================================================================
 // Battery::currentLevel
 //=============================================================================
@@ -107,10 +106,7 @@ bool Battery::isConenctedToPowerSupply() {
     while (process.waitForReadyRead())
         data.append (process.readAll());
 
-    if (data.contains ("discharging"))
-        return false;
-
-    return true;
+    return !data.contains ("discharging");
 #endif
 
 #if defined Q_OS_LINUX
@@ -123,9 +119,6 @@ bool Battery::isConenctedToPowerSupply() {
     while (process.waitForReadyRead())
         data.append (process.readAll());
 
-    if (data.contains ("discharging"))
-        return false;
-
-    return true;
+    return !data.contains ("discharging");
 #endif
 }

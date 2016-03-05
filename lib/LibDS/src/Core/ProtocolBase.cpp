@@ -49,7 +49,7 @@ const QString INFO_NOTE      = "<p>"
 const QString COMM_ESTABLISH = "<p>"
                                "<font color=#59FF59><b>INFO:</b></font> "
                                "<font color=#FFFFFF>"
-                               "Robot communications established</font></p>";
+                               "Robot communications established with %1</font></p>";
 
 //=============================================================================
 //ProtocolBase:DS_ProtocolBase
@@ -374,12 +374,12 @@ void ProtocolBase::readRobotPacket (QByteArray data) {
         if (!isConnectedToRobot()) {
             _getRobotInformation();
 
-            setEnabled              (false);
-            updateCommStatus        (DS::kFull);
-            setControlMode          (DS::kControlTeleoperated);
-            DS::sendMessage   (COMM_ESTABLISH);
-            DS::log    (DS::kLibLevel,
-                        "Robot/DS connection established!");
+            setEnabled       (false);
+            updateCommStatus (DS::kFull);
+            setControlMode   (DS::kControlTeleoperated);
+            DS::sendMessage  (COMM_ESTABLISH.arg (robotAddress()));
+            DS::log          (DS::kLibLevel,
+                              "Robot/DS connection established!");
 
             /* Make the watchdog tolerance higher to avoid temporary resets */
             m_watchdog.setTimeout (2000);

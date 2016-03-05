@@ -55,10 +55,10 @@
 // Joystick requirements
 //=============================================================================
 
-const int MAX_AXES      = 12;
-const int MAX_POVS      = 12;
-const int MAX_BUTTONS   = 24;
-const int MAX_JOYSTICKS =  6;
+const int MAX_AXES      = 0x0C;
+const int MAX_POVS      = 0x0C;
+const int MAX_BUTTONS   = 0x18;
+const int MAX_JOYSTICKS = 0x06;
 
 //=============================================================================
 // Joystick error messages/warnings
