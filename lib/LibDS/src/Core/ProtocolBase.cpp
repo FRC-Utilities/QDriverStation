@@ -377,12 +377,13 @@ void ProtocolBase::readRobotPacket (QByteArray data) {
             setEnabled       (false);
             updateCommStatus (DS::kFull);
             setControlMode   (DS::kControlTeleoperated);
+            setRobotAddress  (robotAddress());
             DS::sendMessage  (COMM_ESTABLISH.arg (robotAddress()));
             DS::log          (DS::kLibLevel,
                               "Robot/DS connection established!");
 
             /* Make the watchdog tolerance higher to avoid temporary resets */
-            m_watchdog.setTimeout (2000);
+            m_watchdog.setTimeout (1000);
         }
 
         /* Let the protocol implementation read the rest of the data */

@@ -40,6 +40,13 @@ enum ProtocolStandards {
     pFMS_Station_1                   = 0x31,
     pFMS_Station_2                   = 0x32,
     pFMS_Station_3                   = 0x33,
+
+    pControl_Disabled                = 0x40,
+    pControl_Autonomous              = 0x70,
+    pControl_TeleOperated            = 0x60,
+    pControl_TestMode                = 0x62,
+    pControl_EmergencyStop           = 0x00,
+    pControl_SoftReboot              = 0x80,
 };
 
 //=============================================================================
@@ -335,6 +342,14 @@ QByteArray FRC_Protocol2014::_getFmsPacket() {
 
 QByteArray FRC_Protocol2014::_getClientPacket() {
     QByteArray data;
+
+    data.resize (1024);
+    data.fill   (0x00);
+
+    data.append (DS::intToBytes (sentRobotPackets()));
+
+    // TODO
+
     return data;
 }
 
@@ -344,5 +359,8 @@ QByteArray FRC_Protocol2014::_getClientPacket() {
 
 QByteArray FRC_Protocol2014::_getJoystickData() {
     QByteArray data;
+
+    // TODO
+
     return data;
 }
