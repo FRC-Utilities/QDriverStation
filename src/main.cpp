@@ -120,6 +120,7 @@ int main (int argc, char* argv[]) {
     app.setFont (Languages::appFont());
     Updater updater;
     MainWindow mainwindow;
+    mainwindow.show();
 
     /* Repeat this line to be sure that font is applied on everything */
     GLOBAL_INIT();

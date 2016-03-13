@@ -376,6 +376,7 @@ void ProtocolBase::readRobotPacket (QByteArray data) {
 
             setEnabled       (false);
             updateCommStatus (DS::kFull);
+            setRobotAddress  (robotAddress());
             setControlMode   (DS::kControlTeleoperated);
             setRobotAddress  (robotAddress());
             DS::sendMessage  (COMM_ESTABLISH.arg (robotAddress()));
