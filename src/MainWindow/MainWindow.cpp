@@ -52,12 +52,23 @@
 #include "Components/Operator.h"
 
 //=============================================================================
+// Hacks to get the docked window working
+//=============================================================================
+
+QSize screen;
+QSize desktop;
+
+//=============================================================================
 // MainWindow::MainWindow
 //=============================================================================
 
 MainWindow::MainWindow() {
     setAttribute  (Qt::WA_QuitOnClose);
     DS::log (DS::kInfoLevel, "Creating MainWindow....");
+
+    /* Get screen and desktop sizes */
+    screen  = QApplication::primaryScreen()->size();
+    desktop = QApplication::primaryScreen()->availableSize();
 
     /* Configure internal variables */
     m_docked   = false;
@@ -230,12 +241,9 @@ void MainWindow::displayWindow() {
 
 void MainWindow::updateSize() {
     if (m_docked) {
-        QSize desktop = QApplication::primaryScreen()->availableSize();
-
         setFixedWidth  (desktop.width());
         setFixedHeight (minimumSizeHint().height());
-
-        move (0, desktop.height() - height());
+        move (screen.width() - desktop.width(), desktop.height() - height());
     }
 
     else

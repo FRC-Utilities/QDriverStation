@@ -164,14 +164,14 @@ void Status::createLayouts() {
     m_upperLayout->setHorizontalSpacing (DPI_SCALE (25));
 
     /* Set margins */
-    m_mainLayout->setContentsMargins    (DPI_SCALE (15),
-                                         DPI_SCALE (0),
-                                         DPI_SCALE (15),
-                                         DPI_SCALE (10));
-    m_LEDsLayout->setContentsMargins    (DPI_SCALE (5),
-                                         DPI_SCALE (10),
+    m_mainLayout->setContentsMargins    (DPI_SCALE (5),
                                          DPI_SCALE (5),
-                                         DPI_SCALE (10));
+                                         DPI_SCALE (5),
+                                         DPI_SCALE (5));
+    m_LEDsLayout->setContentsMargins    (DPI_SCALE (5),
+                                         DPI_SCALE (5),
+                                         DPI_SCALE (5),
+                                         DPI_SCALE (5));
     m_upperLayout->setContentsMargins   (DPI_SCALE (5),
                                          DPI_SCALE (5),
                                          DPI_SCALE (5),
