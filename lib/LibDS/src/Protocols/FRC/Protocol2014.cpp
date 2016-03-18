@@ -210,7 +210,8 @@ bool FRC_Protocol2014::_readRobotPacket (QByteArray data) {
 //=============================================================================
 
 QByteArray FRC_Protocol2014::_getFmsPacket() {
-    return QByteArray ('');
+    QByteArray data;
+    return data;
 }
 
 //=============================================================================
