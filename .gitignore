@@ -24,3 +24,6 @@ qrc
 
 # The makefile--duh.
 Makefile
+
+# Idea projects
+.idea

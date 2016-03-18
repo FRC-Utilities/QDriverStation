@@ -25,64 +25,41 @@
 using namespace DS_Protocols;
 
 //=============================================================================
-// FTP locations
+// Protocol bits
 //=============================================================================
 
-const QString PCM_PATH = "/tmp/frc_versions/PCM-0-versions.ini";
-const QString PDP_PATH = "/tmp/frc_versions/PDP-0-versions.ini";
-const QString LIB_PATH = "/tmp/frc_versions/FRC_Lib_Version.ini";
-
-//=============================================================================
-// Protocol codes/standards
-//=============================================================================
-
-enum ProtocolStandards {
-    /* Client -> RoboRIO operation states */
-    pEmStopOn                 = 0x80,
-    pEmStopOff                = 0x00,
-    pEnabled                  = 0x04,
-    pDisabled                 = 0x00,
-    pFMSAttached              = 0x01,
-
-    /* Client -> RoboRIO operation modes */
-    pControlTest              = 0x01,
-    pControlAutonomous        = 0x02,
-    pControlTeleoperated      = 0x00,
-
-    /* Client -> RoboRIO section codes */
-    pHeaderTime               = 0x0f,
-    pHeaderGeneral            = 0x01,
-    pHeaderJoystick           = 0x0c,
-    pHeaderTimezone           = 0x10,
-
-    /* Client -> RoboRIO special instructions */
-    pInstructionNormal        = 0x10,
-    pInstructionInvalid       = 0x00,
-    pInstructionRebootRIO     = 0x14,
-    pInstructionRestartCode   = 0x16,
-
-    /* Client -> RoboRIO alliance & postion */
-    pRed1                     = 0x00,
-    pRed2                     = 0x01,
-    pRed3                     = 0x02,
-    pBlue1                    = 0x03,
-    pBlue2                    = 0x04,
-    pBlue3                    = 0x05,
-
-    /* RoboRIO -> Client extra data */
-    pRIOHeaderJoystickOutput  = 0x01,
-    pRIOHeaderDiskInformation = 0x04,
-    pRIOHeaderCPUInformation  = 0x05,
-    pRIOHeaderRAMInformation  = 0x06,
-    pRIOHeaderCANMetrics      = 0x0e,
-
-    /* RoboRIO -> Client echo codes */
-    pProgramTest              = 0x01,
-    pProgramAutonomous        = 0x02,
-    pProgramCodePresent       = 0x20,
-    pProgramTeleoperated      = 0x00,
-    pProgramRequestTime       = 0x01,
-};
+#define ESTOP_ON             0x80 /* Emergency stop enabled */
+#define ESTOP_OFF            0x00 /* Emergency stop disabled */
+#define ENABLED              0x04 /* Robot enabled */
+#define DISABLED             0x00 /* Robot disabled */
+#define FMS_ATTACHED         0x01 /* FMS Attached bit */
+#define CONTROL_TEST         0x01 /* Test mode */
+#define CONTROL_AUTONOMOUS   0x02 /* Autonomous mode */
+#define CONTROL_TELEOPERATED 0x00 /* Teleop mode */
+#define HEADER_TIME          0x0f /* Indicates start of time section */
+#define HEADER_GENERAL       0x01 /* Indicates start of packet data */
+#define HEADER_JOYSTICK      0x0c /* Indicates start of joystick section */
+#define HEADER_TIMEZONE      0x10 /* Indicates start of timezone code */
+#define NORMAL               0x10 /* Robot operates normally */
+#define INVALID              0x00 /* Sent when there is no communication */
+#define REBOOT               0x14 /* Reboots the robot controller */
+#define RESTART_CODE         0x16 /* Re-launches the robot code */
+#define ALLIANCE_RED_1       0x00 /* Red alliance, position 1 */
+#define ALLIANCE_RED_2       0x01 /* Red alliance, position 2 */
+#define ALLIANCE_RED_3       0x02 /* Red alliance, position 3 */
+#define ALLIANCE_BLUE_1      0x03 /* Blue alliance, position 1 */
+#define ALLIANCE_BLUE_2      0x04 /* Blue alliance, position 2 */
+#define ALLIANCE_BLUE_3      0x05 /* Blue alliance, position 3 */
+#define HEADER_JOYSTICK_OUT  0x01 /* Joystick rumble request (from robot) */
+#define HEADER_DISK_INFO     0x04 /* Robot disk storage information */
+#define HEADER_CPU_INFO      0x05 /* Robot CPU information */
+#define HEADER_RAM_INFO      0x06 /* Robot RAM information */
+#define HEADER_CAN_METRICS   0x0e /* Robot CANBus metrics */
+#define PROGRAM_TEST         0x01 /* Robot test mode echo */
+#define PROGRAM_AUTONOMOUS   0x02 /* Robot autonomous echo */
+#define PROGRAM_CODE_PRESENT 0x20 /* Robot code status */
+#define PROGRAM_TELEOPERATED 0x00 /* Robot teleoperated echo */
+#define PROGRAM_REQUEST_TIME 0x01 /* Robot requests a new time packet */
 
 //=============================================================================
 // FRC_Protocol2015::fmsFrequency
@@ -187,7 +164,7 @@ QStringList FRC_Protocol2015::defaultRobotAddress() {
 //=============================================================================
 
 void FRC_Protocol2015::reboot() {
-    m_instructionCode = pInstructionRebootRIO;
+    m_instructionCode = REBOOT;
 }
 
 //=============================================================================
@@ -195,7 +172,7 @@ void FRC_Protocol2015::reboot() {
 //=============================================================================
 
 void FRC_Protocol2015::restartCode() {
-    m_instructionCode  = pInstructionRestartCode;
+    m_instructionCode = RESTART_CODE;
 }
 
 //=============================================================================
@@ -203,7 +180,7 @@ void FRC_Protocol2015::restartCode() {
 //=============================================================================
 
 void FRC_Protocol2015::_resetProtocol() {
-    m_instructionCode = pInstructionInvalid;
+    m_instructionCode = INVALID;
 }
 
 //=============================================================================
@@ -227,8 +204,8 @@ bool FRC_Protocol2015::_readRobotPacket (QByteArray data) {
         return false;
 
     /* Be sure to reset status bit */
-    if (m_instructionCode  == pInstructionInvalid)
-        m_instructionCode = pInstructionNormal;
+    if (m_instructionCode == INVALID)
+        m_instructionCode = NORMAL;
 
     /* Read robot packet */
     quint8 opcode       = data.at (3);
@@ -238,12 +215,12 @@ bool FRC_Protocol2015::_readRobotPacket (QByteArray data) {
     quint8 minorVoltage = data.at (6);
 
     /* Update e-stop information */
-    setEmergencyStop (opcode == pEmStopOn);
+    setEmergencyStop (opcode == ESTOP_ON);
 
     /* Update client information */
     updateVoltageBrownout (false);
-    updateSendDateTime    (request == pProgramRequestTime);
-    updateRobotCode       ((status & pProgramCodePresent) != 0);
+    updateSendDateTime    (request == PROGRAM_REQUEST_TIME);
+    updateRobotCode       ((status & PROGRAM_CODE_PRESENT) != 0);
     updateVoltage         (QString::number (majorVoltage),
                            QString::number (minorVoltage));
 
@@ -256,31 +233,31 @@ bool FRC_Protocol2015::_readRobotPacket (QByteArray data) {
         int id = extended.at (1);
 
         /* Robot wants us to rumble a joystick */
-        if (id == pRIOHeaderJoystickOutput) {
+        if (id == HEADER_JOYSTICK_OUT) {
             // TODO
         }
 
         /* Packet contains roboRIO CPU info */
-        else if (id == pRIOHeaderCPUInformation) {
+        else if (id == HEADER_CPU_INFO) {
             // TODO
         }
 
         /* Packet contains roboRIO RAM info */
-        else if (id == pRIOHeaderRAMInformation) {
+        else if (id == HEADER_RAM_INFO) {
             int a = (quint8) extended.at (6);
             int b = (quint8) extended.at (7);
             emit ramUsageChanged (a + b);
         }
 
         /* Packet contains roboRIO disk info */
-        else if (id == pRIOHeaderDiskInformation) {
+        else if (id == HEADER_DISK_INFO) {
             int a = (quint8) extended.at (6);
             int b = (quint8) extended.at (7);
             emit diskUsageChanged (a + b);
         }
 
         /* Packet contains CAN metrics data */
-        else if (id == pRIOHeaderCANMetrics) {
+        else if (id == HEADER_CAN_METRICS) {
             // TODO
         }
     }
@@ -307,11 +284,11 @@ QByteArray FRC_Protocol2015::_getClientPacket() {
 
     /* Used for rebooting the robot and restarting its code */
     quint8 instruction = isConnectedToRobot() ? m_instructionCode :
-                         pInstructionInvalid;
+                         INVALID;
 
     /* Defines operation mode, e-stop state & enabled state */
-    quint8 opcode = (isEmergencyStopped() ? pEmStopOn : pEmStopOff) |
-                    (isEnabled() ? pEnabled : pDisabled) |
+    quint8 opcode = (isEmergencyStopped() ? ESTOP_ON : ESTOP_OFF) |
+                    (isEnabled() ? ENABLED : DISABLED) |
                     (getControlCode());
 
     /* Gets timezone data or joystick input */
@@ -320,7 +297,7 @@ QByteArray FRC_Protocol2015::_getClientPacket() {
 
     /* Construct the packet */
     data.append (DS::intToBytes (sentRobotPackets()));
-    data.append (pHeaderGeneral);
+    data.append (HEADER_GENERAL);
     data.append (opcode);
     data.append (instruction);
     data.append (getAllianceCode());
@@ -348,7 +325,7 @@ QByteArray FRC_Protocol2015::_getJoystickData() {
 
         /* Add joystick information and put the section header */
         data.append (getJoystickSize (joysticks()->at (i)) - 1);
-        data.append (pHeaderJoystick);
+        data.append (HEADER_JOYSTICK);
 
         /* Add axis data */
         data.append (_num_axes);
@@ -391,7 +368,7 @@ QByteArray FRC_Protocol2015::_getTimezoneData() {
     QTime time = dt.time();
 
     /* Add current date/time */
-    data.append (pHeaderTime);
+    data.append (HEADER_TIME);
     data.append (DS::intToBytes (time.msec()));
     data.append (time.second());
     data.append (time.minute());
@@ -402,7 +379,7 @@ QByteArray FRC_Protocol2015::_getTimezoneData() {
 
     /* Add timezone data */
     data.append (DS::Timezone().length() + 1);
-    data.append (pHeaderTimezone);
+    data.append (HEADER_TIMEZONE);
     data.append (DS::Timezone());
 
     return data;
@@ -414,15 +391,15 @@ QByteArray FRC_Protocol2015::_getTimezoneData() {
 
 int FRC_Protocol2015::getControlCode() {
     if (controlMode() == DS::kControlTest)
-        return pControlTest;
+        return CONTROL_TEST;
 
     else if (controlMode() == DS::kControlAutonomous)
-        return pControlAutonomous;
+        return CONTROL_AUTONOMOUS;
 
     else if (controlMode() == DS::kControlTeleoperated)
-        return pControlTeleoperated;
+        return CONTROL_TELEOPERATED;
 
-    return pControlTeleoperated;
+    return CONTROL_TELEOPERATED;
 }
 
 //=============================================================================
@@ -431,24 +408,24 @@ int FRC_Protocol2015::getControlCode() {
 
 int FRC_Protocol2015::getAllianceCode() {
     if (alliance() == DS::kAllianceRed1)
-        return pRed1;
+        return ALLIANCE_RED_1;
 
     else if (alliance() == DS::kAllianceRed2)
-        return pRed2;
+        return ALLIANCE_RED_2;
 
     else if (alliance() == DS::kAllianceRed3)
-        return pRed3;
+        return ALLIANCE_RED_3;
 
     else if (alliance() == DS::kAllianceBlue1)
-        return pBlue1;
+        return ALLIANCE_BLUE_1;
 
     else if (alliance() == DS::kAllianceBlue2)
-        return pBlue2;
+        return ALLIANCE_BLUE_2;
 
     else if (alliance() == DS::kAllianceBlue3)
-        return pBlue3;
+        return ALLIANCE_BLUE_3;
 
-    return pRed1;
+    return ALLIANCE_RED_1;
 }
 
 //=============================================================================

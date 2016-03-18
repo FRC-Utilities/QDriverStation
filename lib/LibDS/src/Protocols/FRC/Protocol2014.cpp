@@ -25,32 +25,18 @@
 using namespace DS_Protocols;
 
 //=============================================================================
-// Protocol codes/standards
+// Protocol bytes
 //=============================================================================
 
-enum ProtocolStandards {
-    pFMS_Autonomous_RobotPresent     = 0x53,
-    pFMS_Autonomous_NoRobotPresent   = 0x51,
-    pFMS_Teleoperated_RobotPresent   = 0x43,
-    pFMS_Teleoperated_NoRobotPresent = 0x41,
-    pFMS_RobotEnabled                = 0x20,
-    pFMS_UnknownHeader               = 0x00,
-    pFMS_Alliance_Red                = 0x52,
-    pFMS_Alliance_Blue               = 0x42,
-    pFMS_Station_1                   = 0x31,
-    pFMS_Station_2                   = 0x32,
-    pFMS_Station_3                   = 0x33,
-
-    pControl_Disabled                = 0x40,
-    pControl_Autonomous              = 0x70,
-    pControl_TeleOperated            = 0x60,
-    pControl_TestMode                = 0x62,
-    pControl_EmergencyStop           = 0x00,
-    pControl_SoftReboot              = 0x80,
-};
+#define DS_TO_CRIO_CONTROL_TEST           0x62
+#define DS_TO_CRIO_CONTROL_TELEOP         0x60
+#define DS_TO_CRIO_CONTROL_REBOOT         0x80
+#define DS_TO_CRIO_CONTROL_AUTONOMOUS     0x70
+#define DS_TO_CRIO_CONTROL_DISABLED       0x40
+#define DS_TO_CRIO_CONTROL_EMERGENCY_STOP 0x00
 
 //=============================================================================
-//FRC_Protocol2014::DS_FRC_Protocol2014
+// FRC_Protocol2014::FRC_Protocol2014
 //=============================================================================
 
 FRC_Protocol2014::FRC_Protocol2014() {
@@ -63,7 +49,7 @@ FRC_Protocol2014::FRC_Protocol2014() {
 }
 
 //=============================================================================
-//FRC_Protocol2014::fmsFrequency
+// FRC_Protocol2014::fmsFrequency
 //=============================================================================
 
 int FRC_Protocol2014::fmsFrequency() {
@@ -71,7 +57,7 @@ int FRC_Protocol2014::fmsFrequency() {
 }
 
 //=============================================================================
-//FRC_Protocol2014::robotFrequency
+// FRC_Protocol2014::robotFrequency
 //=============================================================================
 
 int FRC_Protocol2014::robotFrequency() {
@@ -79,7 +65,7 @@ int FRC_Protocol2014::robotFrequency() {
 }
 
 //=============================================================================
-//FRC_Protocol2014::fmsInputPort
+// FRC_Protocol2014::fmsInputPort
 //=============================================================================
 
 int FRC_Protocol2014::fmsInputPort() {
@@ -87,7 +73,7 @@ int FRC_Protocol2014::fmsInputPort() {
 }
 
 //=============================================================================
-//FRC_Protocol2014::fmsOutputPort
+// FRC_Protocol2014::fmsOutputPort
 //=============================================================================
 
 int FRC_Protocol2014::fmsOutputPort() {
@@ -95,7 +81,7 @@ int FRC_Protocol2014::fmsOutputPort() {
 }
 
 //=============================================================================
-//FRC_Protocol2014::clientPort
+// FRC_Protocol2014::clientPort
 //=============================================================================
 
 int FRC_Protocol2014::robotInputPort() {
@@ -103,7 +89,7 @@ int FRC_Protocol2014::robotInputPort() {
 }
 
 //=============================================================================
-//FRC_Protocol2014::robotPort
+// FRC_Protocol2014::robotPort
 //=============================================================================
 
 int FRC_Protocol2014::robotOutputPort() {
@@ -111,7 +97,7 @@ int FRC_Protocol2014::robotOutputPort() {
 }
 
 //=============================================================================
-//FRC_Protocol2014::tcpProbePort
+// FRC_Protocol2014::tcpProbePort
 //=============================================================================
 
 int FRC_Protocol2014::tcpProbesPort() {
@@ -119,7 +105,7 @@ int FRC_Protocol2014::tcpProbesPort() {
 }
 
 //=============================================================================
-//FRC_Protocol2014::netConsoleInputPort
+// FRC_Protocol2014::netConsoleInputPort
 //=============================================================================
 
 int FRC_Protocol2014::netConsoleInputPort() {
@@ -127,7 +113,7 @@ int FRC_Protocol2014::netConsoleInputPort() {
 }
 
 //=============================================================================
-//FRC_Protocol2014::netConsoleOutputPort
+// FRC_Protocol2014::netConsoleOutputPort
 //=============================================================================
 
 int FRC_Protocol2014::netConsoleOutputPort() {
@@ -135,7 +121,7 @@ int FRC_Protocol2014::netConsoleOutputPort() {
 }
 
 //=============================================================================
-//FRC_Protocol2014::acceptsConsoleCommnds
+// FRC_Protocol2014::acceptsConsoleCommnds
 //=============================================================================
 
 bool FRC_Protocol2014::acceptsConsoleCommands() {
@@ -143,7 +129,7 @@ bool FRC_Protocol2014::acceptsConsoleCommands() {
 }
 
 //=============================================================================
-//FRC_Protocol2014::defaultRadioAddress
+// FRC_Protocol2014::defaultRadioAddress
 //=============================================================================
 
 QStringList FRC_Protocol2014::defaultRadioAddress() {
@@ -151,7 +137,7 @@ QStringList FRC_Protocol2014::defaultRadioAddress() {
 }
 
 //=============================================================================
-//FRC_Protocol2014::defaultRobotAddress
+// FRC_Protocol2014::defaultRobotAddress
 //=============================================================================
 
 QStringList FRC_Protocol2014::defaultRobotAddress() {
@@ -164,7 +150,7 @@ QStringList FRC_Protocol2014::defaultRobotAddress() {
 }
 
 //=============================================================================
-//FRC_Protocol2014::reboot
+// FRC_Protocol2014::reboot
 //=============================================================================
 
 void FRC_Protocol2014::reboot() {
@@ -172,7 +158,7 @@ void FRC_Protocol2014::reboot() {
 }
 
 //=============================================================================
-//FRC_Protocol2014::restartCode
+// FRC_Protocol2014::restartCode
 //=============================================================================
 
 void FRC_Protocol2014::restartCode() {
@@ -180,7 +166,7 @@ void FRC_Protocol2014::restartCode() {
 }
 
 //=============================================================================
-//FRC_Protocol2014::resetProtocol
+// FRC_Protocol2014::resetProtocol
 //=============================================================================
 
 void FRC_Protocol2014::_resetProtocol() {
@@ -189,7 +175,7 @@ void FRC_Protocol2014::_resetProtocol() {
 }
 
 //=============================================================================
-//FRC_Protocol2014::_showProtocolWarning
+// FRC_Protocol2014::_showProtocolWarning
 //=============================================================================
 
 void FRC_Protocol2014::_showProtocolWarning() {
@@ -202,25 +188,16 @@ void FRC_Protocol2014::_showProtocolWarning() {
 }
 
 //=============================================================================
-//FRC_Protocol2014::readFMSPacket
+// FRC_Protocol2014::readFMSPacket
 //=============================================================================
 
 bool FRC_Protocol2014::_readFMSPacket (QByteArray data) {
-    int packet_num     = data.at (0) * 0xFF + data.at (1);
-    int robot_state    = data.at (2);
-    int robot_alliance = data.at (3);
-    int robot_dstation = data.at (4);
-
-    Q_UNUSED (packet_num);
-    Q_UNUSED (robot_state);
-    Q_UNUSED (robot_alliance);
-    Q_UNUSED (robot_dstation);
-
+    Q_UNUSED (data);
     return true;
 }
 
 //=============================================================================
-//FRC_Protocol2014::readPacket
+// FRC_Protocol2014::readPacket
 //=============================================================================
 
 bool FRC_Protocol2014::_readRobotPacket (QByteArray data) {
@@ -229,115 +206,15 @@ bool FRC_Protocol2014::_readRobotPacket (QByteArray data) {
 }
 
 //=============================================================================
-//FRC_Protocol2014::getFMSPacket
+// FRC_Protocol2014::getFMSPacket
 //=============================================================================
 
 QByteArray FRC_Protocol2014::_getFmsPacket() {
-    QByteArray data;
-
-    /* Create 'dynamic' variables */
-    quint8 _ip_a     = 0x00;
-    quint8 _ip_b     = 0x00;
-    quint8 _ip_c     = 0x00;
-    quint8 _ip_d     = 0x00;
-    quint8 _state    = 0x00;
-    quint8 _station  = 0x00;
-    quint8 _alliance = 0x00;
-
-    /* Create 'static' variables */
-    quint8 _missed_packets = 0;
-    quint8 _unknown_header = pFMS_UnknownHeader;
-
-    /* Get robot IP and split it */
-    QStringList ip = robotAddress().split (".");
-    if (ip.count() == 4) {
-        _ip_a = ip.at (0).toInt();
-        _ip_b = ip.at (1).toInt();
-        _ip_c = ip.at (2).toInt();
-        _ip_d = ip.at (3).toInt();
-    }
-
-    /* Get robot mode and state */
-    if (controlMode() == DS::kControlTeleoperated)
-        _state = isConnectedToRobot() ? pFMS_Teleoperated_RobotPresent :
-                 pFMS_Teleoperated_NoRobotPresent;
-
-    else if (controlMode() == DS::kControlAutonomous)
-        _state = isConnectedToRobot() ? pFMS_Autonomous_RobotPresent :
-                 pFMS_Autonomous_NoRobotPresent;
-
-    _state += isEnabled() ? pFMS_RobotEnabled : 0;
-
-    /* Get alliance and station */
-    switch (alliance()) {
-    case DS::kAllianceRed1:
-        _station  = pFMS_Station_1;
-        _alliance = pFMS_Alliance_Red;
-        break;
-    case DS::kAllianceRed2:
-        _station  = pFMS_Station_2;
-        _alliance = pFMS_Alliance_Red;
-        break;
-    case DS::kAllianceRed3:
-        _station  = pFMS_Station_3;
-        _alliance = pFMS_Alliance_Red;
-        break;
-    case DS::kAllianceBlue1:
-        _station  = pFMS_Station_1;
-        _alliance = pFMS_Alliance_Blue;
-        break;
-    case DS::kAllianceBlue2:
-        _station  = pFMS_Station_2;
-        _alliance = pFMS_Alliance_Blue;
-        break;
-    case DS::kAllianceBlue3:
-        _station  = pFMS_Station_3;
-        _alliance = pFMS_Alliance_Blue;
-        break;
-    }
-
-    /* Construct the packet */
-    data.append (DS::intToBytes (sentFmsPackets()));
-    data.append (_state);
-    data.append (_unknown_header);
-    data.append (DS::intToBytes (team()));
-    data.append (_ip_a);
-    data.append (_ip_b);
-    data.append (_ip_c);
-    data.append (_ip_d);
-    data.append (_alliance);
-    data.append (_station);
-    data.append (m_robotMacAddress);
-    data.append (m_dsVersion);
-    data.append (DS::intToBytes (_missed_packets));
-    data.append (DS::intToBytes (sentRobotPackets()));
-    data.append (DS::intToBytes (1000 / robotFrequency()));
-    data.append (DS::intToBytes (12));
-    data.append (0xFF);
-    data.append (0xFF);
-    data.append (0xFF);
-    data.append (0xFF);
-    data.append (0xFF);
-    data.append (0xFF);
-    data.append (DS::intToBytes (batteryVoltage()));
-
-    /* Add CRC padding (4 bytes) */
-    data.append ((char) 0x00);
-    data.append ((char) 0x00);
-    data.append ((char) 0x00);
-    data.append ((char) 0x00);
-
-    /* Add CRC checksum */
-    data.append ((char) 0x00);
-    data.append ((char) 0x00);
-    data.append ((char) 0x00);
-    data.append ((char) 0x00);
-
-    return data;
+    return QByteArray ('');
 }
 
 //=============================================================================
-//FRC_Protocol2014::getClientPacket
+// FRC_Protocol2014::getClientPacket
 //=============================================================================
 
 QByteArray FRC_Protocol2014::_getClientPacket() {
@@ -354,7 +231,7 @@ QByteArray FRC_Protocol2014::_getClientPacket() {
 }
 
 //=============================================================================
-//FRC_Protocol2014::getJoystickData
+// FRC_Protocol2014::getJoystickData
 //=============================================================================
 
 QByteArray FRC_Protocol2014::_getJoystickData() {
