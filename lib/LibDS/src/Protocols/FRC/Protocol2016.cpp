@@ -25,19 +25,13 @@
 using namespace DS_Protocols;
 
 //=============================================================================
-// FRC_Protocol2016::defaultRobotAddress
+// FRC_Protocol2016::_extraRobotIPs
 //=============================================================================
 
-QStringList FRC_Protocol2016::defaultRobotAddress() {
+QStringList FRC_Protocol2016::_extraRobotIPs() {
     QStringList list;
-
     list.append (QString ("roboRIO-%1-FRC.local").arg (team()));
     list.append (QString ("roboRIO-%1.local").arg (team()));
     list.append (QString ("172.22.11.2"));
-    list.append (QString ("127.0.0.1"));
-
-    for (int i = 20; i < 100; ++i)
-        list.append (QString (DS::getStaticIP (10, team(), i)));
-
     return list;
 }

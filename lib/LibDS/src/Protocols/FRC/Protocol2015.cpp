@@ -134,32 +134,6 @@ bool FRC_Protocol2015::acceptsConsoleCommands() {
 }
 
 //=============================================================================
-// FRC_Protocol2015::defaultRadioAddress
-//=============================================================================
-
-QStringList FRC_Protocol2015::defaultRadioAddress() {
-    return QStringList (DS::getStaticIP (10, team(), 1));
-}
-
-//=============================================================================
-// FRC_Protocol2015::defaultRobotAddress
-//=============================================================================
-
-QStringList FRC_Protocol2015::defaultRobotAddress() {
-    QStringList list;
-
-    list.append (QString ("roboRIO-%1.local").arg (team()));
-    list.append (QString ("172.22.11.2"));
-    list.append (QString ("127.0.0.1"));
-
-    /* Try all the DHCP ranges */
-    for (int i = 20; i < 100; ++i)
-        list.append (QString (DS::getStaticIP (10, team(), i)));
-
-    return list;
-}
-
-//=============================================================================
 // FRC_Protocol2015::reboot
 //=============================================================================
 
@@ -383,6 +357,17 @@ QByteArray FRC_Protocol2015::_getTimezoneData() {
     data.append (DS::Timezone());
 
     return data;
+}
+
+//=============================================================================
+// FRC_Protocol2015::_extraRobotIPs
+//=============================================================================
+
+QStringList FRC_Protocol2015::_extraRobotIPs() {
+    QStringList list;
+    list.append (QString ("roboRIO-%1.local").arg (team()));
+    list.append (QString ("172.22.11.2"));
+    return list;
 }
 
 //=============================================================================

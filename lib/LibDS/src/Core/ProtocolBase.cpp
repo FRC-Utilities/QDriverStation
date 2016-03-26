@@ -52,7 +52,7 @@ const QString COMM_ESTABLISH = "<p>"
                                "Robot communications established with %1</font></p>";
 
 //=============================================================================
-//ProtocolBase:DS_ProtocolBase
+// ProtocolBase:DS_ProtocolBase
 //=============================================================================
 
 ProtocolBase::ProtocolBase() {
@@ -90,7 +90,7 @@ ProtocolBase::ProtocolBase() {
 }
 
 //=============================================================================
-//ProtocolBase::team
+// ProtocolBase::team
 //=============================================================================
 
 int ProtocolBase::team() const {
@@ -98,7 +98,7 @@ int ProtocolBase::team() const {
 }
 
 //=============================================================================
-//ProtocolBase::hasCode
+// ProtocolBase::hasCode
 //=============================================================================
 
 bool ProtocolBase::hasCode() const {
@@ -106,7 +106,7 @@ bool ProtocolBase::hasCode() const {
 }
 
 //=============================================================================
-//ProtocolBase::sentFMSPackets
+// ProtocolBase::sentFMSPackets
 //=============================================================================
 
 int ProtocolBase::sentFmsPackets() const {
@@ -114,7 +114,7 @@ int ProtocolBase::sentFmsPackets() const {
 }
 
 //=============================================================================
-//ProtocolBase::sentRobotPackets
+// ProtocolBase::sentRobotPackets
 //=============================================================================
 
 int ProtocolBase::sentRobotPackets() const {
@@ -122,7 +122,7 @@ int ProtocolBase::sentRobotPackets() const {
 }
 
 //=============================================================================
-//ProtocolBase::isEnabled
+// ProtocolBase::isEnabled
 //=============================================================================
 
 bool ProtocolBase::isEnabled() const {
@@ -130,7 +130,7 @@ bool ProtocolBase::isEnabled() const {
 }
 
 //=============================================================================
-//ProtocolBase::isConnectedToRobot
+// ProtocolBase::isConnectedToRobot
 //=============================================================================
 
 bool ProtocolBase::isConnectedToRobot() const {
@@ -138,7 +138,7 @@ bool ProtocolBase::isConnectedToRobot() const {
 }
 
 //=============================================================================
-//ProtocolBase::isConnectedToRadio
+// ProtocolBase::isConnectedToRadio
 //=============================================================================
 
 bool ProtocolBase::isConnectedToRadio() const {
@@ -146,7 +146,7 @@ bool ProtocolBase::isConnectedToRadio() const {
 }
 
 //=============================================================================
-//ProtocolBase::sendDateTime
+// ProtocolBase::sendDateTime
 //=============================================================================
 
 bool ProtocolBase::sendDateTime() const {
@@ -154,7 +154,7 @@ bool ProtocolBase::sendDateTime() const {
 }
 
 //=============================================================================
-//ProtocolBase::hasVoltageBrownout
+// ProtocolBase::hasVoltageBrownout
 //=============================================================================
 
 bool ProtocolBase::hasVoltageBrownout() const {
@@ -162,7 +162,7 @@ bool ProtocolBase::hasVoltageBrownout() const {
 }
 
 //=============================================================================
-//ProtocolBase::isEmergencyStopped
+// ProtocolBase::isEmergencyStopped
 //=============================================================================
 
 bool ProtocolBase::isEmergencyStopped() const {
@@ -170,7 +170,7 @@ bool ProtocolBase::isEmergencyStopped() const {
 }
 
 //=============================================================================
-//ProtocolBase::batteryVoltage
+// ProtocolBase::batteryVoltage
 //=============================================================================
 
 float ProtocolBase::batteryVoltage() const {
@@ -178,7 +178,7 @@ float ProtocolBase::batteryVoltage() const {
 }
 
 //=============================================================================
-//ProtocolBase::alliance
+// ProtocolBase::alliance
 //=============================================================================
 
 DS::Alliance ProtocolBase::alliance() const {
@@ -186,7 +186,7 @@ DS::Alliance ProtocolBase::alliance() const {
 }
 
 //=============================================================================
-//ProtocolBase::controlMode
+// ProtocolBase::controlMode
 //=============================================================================
 
 DS::ControlMode ProtocolBase::controlMode() const {
@@ -194,7 +194,7 @@ DS::ControlMode ProtocolBase::controlMode() const {
 }
 
 //=============================================================================
-//ProtocolBase::communicationStatus
+// ProtocolBase::communicationStatus
 //=============================================================================
 
 DS::DS_CommStatus ProtocolBase::communicationStatus() const {
@@ -202,7 +202,7 @@ DS::DS_CommStatus ProtocolBase::communicationStatus() const {
 }
 
 //=============================================================================
-//ProtocolBase::joysticks
+// ProtocolBase::joysticks
 //=============================================================================
 
 QList<DS::Joystick>* ProtocolBase::joysticks() const {
@@ -210,29 +210,29 @@ QList<DS::Joystick>* ProtocolBase::joysticks() const {
 }
 
 //=============================================================================
-//ProtocolBase::radioAddress
+// ProtocolBase::radioAddress
 //=============================================================================
 
 QString ProtocolBase::radioAddress() {
     if (m_radioAddress.isEmpty())
-        return defaultRadioAddress().at (m_radioIterator);
+        return radioIPs().at (m_radioIterator);
 
     return m_radioAddress;
 }
 
 //=============================================================================
-//ProtocolBase::robotAddress
+// ProtocolBase::robotAddress
 //=============================================================================
 
 QString ProtocolBase::robotAddress() {
     if (m_robotAddress.isEmpty())
-        return defaultRobotAddress().at (m_robotIterator);
+        return robotIPs().at (m_robotIterator);
 
     return m_robotAddress;
 }
 
 //=============================================================================
-//ProtocolBase::createFMSPacket
+// ProtocolBase::createFMSPacket
 //=============================================================================
 
 QByteArray ProtocolBase::createFmsPacket() {
@@ -241,7 +241,7 @@ QByteArray ProtocolBase::createFmsPacket() {
 }
 
 //=============================================================================
-//ProtocolBase::createPacket
+// ProtocolBase::createPacket
 //=============================================================================
 
 QByteArray ProtocolBase::createRobotPacket() {
@@ -250,18 +250,66 @@ QByteArray ProtocolBase::createRobotPacket() {
 }
 
 //=============================================================================
-//ProtocolBase::reset
+// ProtocolBase::radioIPs
+//=============================================================================
+
+QStringList ProtocolBase::radioIPs() {
+    QStringList list;
+    list.append (_extraRadioIPs());
+    list.append (DS::getStaticIP (10, team(), 1));
+    return list;
+}
+
+//=============================================================================
+// ProtocolBase::robotIPs
+//=============================================================================
+
+QStringList ProtocolBase::robotIPs() {
+    QStringList list;
+
+    /* Scan the LAN and register all possible IP addresses */
+    if (m_localIPs.isEmpty()) {
+        foreach (const QHostAddress& address, QNetworkInterface::allAddresses()) {
+            QStringList numbers = address.toString().split (".");
+            if (numbers.count() == 4 && address.toString() != "127.0.0.1") {
+                QString base = QString ("%1.%2.%3.")
+                               .arg (numbers.at (0))
+                               .arg (numbers.at (1))
+                               .arg (numbers.at (2));
+
+                for (int i = 1; i < 255; ++i)
+                    m_localIPs.append (base + QString::number (i));
+            }
+        }
+    }
+
+    /* Append the protocol-specific IP list */
+    list.append (_extraRobotIPs());
+
+    /* Append a list with the DCHP range from 10.TE.AM.2 to 10.TE.AM.254 */
+    for (int i = 2; i < 255; ++i)
+        list.append (DS::getStaticIP (10, team(), i));
+
+    /* Append all LAN addresses */
+    list.append (m_localIPs);
+
+    return list;
+
+}
+
+//=============================================================================
+// ProtocolBase::reset
 //=============================================================================
 
 void ProtocolBase::reset() {
     /* Try another robot address */
-    if (m_robotIterator >= defaultRobotAddress().count() - 1)
+    if (m_robotIterator >= robotIPs().count() - 1)
         m_robotIterator = 0;
     else
         m_robotIterator += 1;
 
     /* Try another radio address */
-    if (m_radioIterator >= defaultRadioAddress().count() - 1)
+    if (m_radioIterator >= radioIPs().count() - 1)
         m_radioIterator = 0;
     else
         m_radioIterator += 1;
@@ -290,7 +338,7 @@ void ProtocolBase::reset() {
 }
 
 //=============================================================================
-//ProtocolBase::setTeam
+// ProtocolBase::setTeam
 //=============================================================================
 
 void ProtocolBase::setTeam (int team) {
@@ -304,7 +352,7 @@ void ProtocolBase::setTeam (int team) {
 }
 
 //=============================================================================
-//ProtocolBase::setEnabled
+// ProtocolBase::setEnabled
 //=============================================================================
 
 void ProtocolBase::setEnabled (bool enabled) {
@@ -313,7 +361,7 @@ void ProtocolBase::setEnabled (bool enabled) {
 }
 
 //=============================================================================
-//ProtocolBase::setEmergencyStop
+// ProtocolBase::setEmergencyStop
 //=============================================================================
 
 void ProtocolBase::setEmergencyStop (bool emergency_stop) {
@@ -328,7 +376,7 @@ void ProtocolBase::setEmergencyStop (bool emergency_stop) {
 }
 
 //=============================================================================
-//ProtocolBase::setRobotAddress
+// ProtocolBase::setRobotAddress
 //=============================================================================
 
 void ProtocolBase::setRobotAddress (QString address) {
@@ -337,7 +385,7 @@ void ProtocolBase::setRobotAddress (QString address) {
 }
 
 //=============================================================================
-//ProtocolBase::setAlliance
+// ProtocolBase::setAlliance
 //=============================================================================
 
 void ProtocolBase::setAlliance (DS::Alliance alliance) {
@@ -345,7 +393,7 @@ void ProtocolBase::setAlliance (DS::Alliance alliance) {
 }
 
 //=============================================================================
-//ProtocolBase::setControlMode
+// ProtocolBase::setControlMode
 //=============================================================================
 
 void ProtocolBase::setControlMode (DS::ControlMode mode) {
@@ -356,7 +404,7 @@ void ProtocolBase::setControlMode (DS::ControlMode mode) {
 }
 
 //=============================================================================
-//ProtocolBase::readFMSPacket
+// ProtocolBase::readFMSPacket
 //=============================================================================
 
 void ProtocolBase::readFmsPacket (QByteArray data) {
@@ -365,7 +413,7 @@ void ProtocolBase::readFmsPacket (QByteArray data) {
 }
 
 //=============================================================================
-//ProtocolBase::readRobotPacket
+// ProtocolBase::readRobotPacket
 //=============================================================================
 
 void ProtocolBase::readRobotPacket (QByteArray data) {
@@ -394,7 +442,7 @@ void ProtocolBase::readRobotPacket (QByteArray data) {
 }
 
 //=============================================================================
-//ProtocolBase::updateRobotCode
+// ProtocolBase::updateRobotCode
 //=============================================================================
 
 void ProtocolBase::updateRobotCode (bool available) {
@@ -408,7 +456,7 @@ void ProtocolBase::updateRobotCode (bool available) {
 }
 
 //=============================================================================
-//ProtocolBase::updateSendDateTime
+// ProtocolBase::updateSendDateTime
 //=============================================================================
 
 void ProtocolBase::updateSendDateTime (bool sendDT) {
@@ -416,7 +464,7 @@ void ProtocolBase::updateSendDateTime (bool sendDT) {
 }
 
 //=============================================================================
-//ProtocolBase::updateRadioStatus
+// ProtocolBase::updateRadioStatus
 //=============================================================================
 
 void ProtocolBase::updateRadioStatus (bool connected) {
@@ -425,7 +473,7 @@ void ProtocolBase::updateRadioStatus (bool connected) {
 }
 
 //=============================================================================
-//ProtocolBase::updateCommStatus
+// ProtocolBase::updateCommStatus
 //=============================================================================
 
 void ProtocolBase::updateCommStatus (DS::DS_CommStatus status) {
@@ -434,7 +482,7 @@ void ProtocolBase::updateCommStatus (DS::DS_CommStatus status) {
 }
 
 //=============================================================================
-//ProtocolBase::updateVoltageBrownout
+// ProtocolBase::updateVoltageBrownout
 //=============================================================================
 
 void ProtocolBase::updateVoltageBrownout (bool brownout) {
@@ -443,7 +491,7 @@ void ProtocolBase::updateVoltageBrownout (bool brownout) {
 }
 
 //=============================================================================
-//ProtocolBase::updateVoltage
+// ProtocolBase::updateVoltage
 //=============================================================================
 
 void ProtocolBase::updateVoltage (QString digit, QString decimal) {
@@ -468,7 +516,7 @@ void ProtocolBase::updateVoltage (QString digit, QString decimal) {
 }
 
 //=============================================================================
-//ProtocolBase::pingRobot
+// ProtocolBase::pingRobot
 //=============================================================================
 
 void ProtocolBase::pingRobot() {
@@ -478,7 +526,7 @@ void ProtocolBase::pingRobot() {
 }
 
 //=============================================================================
-//ProtocolBase::pingRadio
+// ProtocolBase::pingRadio
 //=============================================================================
 
 void ProtocolBase::pingRadio() {
@@ -487,7 +535,7 @@ void ProtocolBase::pingRadio() {
 }
 
 //=============================================================================
-//ProtocolBase::showPatienceMsg
+// ProtocolBase::showPatienceMsg
 //=============================================================================
 
 void ProtocolBase::showPatienceMsg() {
@@ -495,7 +543,7 @@ void ProtocolBase::showPatienceMsg() {
 }
 
 //=============================================================================
-//ProtocolBase::disableEmergencyStop
+// ProtocolBase::disableEmergencyStop
 //=============================================================================
 
 void ProtocolBase::disableEmergencyStop() {
@@ -503,7 +551,7 @@ void ProtocolBase::disableEmergencyStop() {
 }
 
 //=============================================================================
-//ProtocolBase::updateRobotIP
+// ProtocolBase::updateRobotIP
 //=============================================================================
 
 void ProtocolBase::lookupFinished (QHostInfo info) {
@@ -514,7 +562,7 @@ void ProtocolBase::lookupFinished (QHostInfo info) {
 }
 
 //=============================================================================
-//ProtocolBase::onPingResponse
+// ProtocolBase::onPingResponse
 //=============================================================================
 
 void ProtocolBase::onPingResponse (QAbstractSocket::SocketState state) {

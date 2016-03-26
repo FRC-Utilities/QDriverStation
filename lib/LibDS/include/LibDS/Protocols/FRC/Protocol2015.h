@@ -44,9 +44,6 @@ class LIB_DS_DECL FRC_Protocol2015 : public DS_Core::ProtocolBase {
     virtual int netConsoleInputPort();
     virtual bool acceptsConsoleCommands();
 
-    virtual QStringList defaultRadioAddress();
-    virtual QStringList defaultRobotAddress();
-
   public slots:
     virtual void reboot();
     virtual void restartCode();
@@ -62,6 +59,8 @@ class LIB_DS_DECL FRC_Protocol2015 : public DS_Core::ProtocolBase {
     virtual QByteArray _getClientPacket();
     virtual QByteArray _getJoystickData();
     virtual QByteArray _getTimezoneData();
+
+    virtual QStringList _extraRobotIPs();
 
     virtual int getControlCode();
     virtual int getAllianceCode();

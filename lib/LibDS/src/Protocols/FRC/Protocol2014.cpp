@@ -129,27 +129,6 @@ bool FRC_Protocol2014::acceptsConsoleCommands() {
 }
 
 //=============================================================================
-// FRC_Protocol2014::defaultRadioAddress
-//=============================================================================
-
-QStringList FRC_Protocol2014::defaultRadioAddress() {
-    return QStringList (DS::getStaticIP (10, team(), 1));
-}
-
-//=============================================================================
-// FRC_Protocol2014::defaultRobotAddress
-//=============================================================================
-
-QStringList FRC_Protocol2014::defaultRobotAddress() {
-    QStringList list;
-
-    list.append (QString (DS::getStaticIP (10, team(), 2)));
-    list.append (QString ("127.0.0.1"));
-
-    return list;
-}
-
-//=============================================================================
 // FRC_Protocol2014::reboot
 //=============================================================================
 

@@ -24,11 +24,11 @@
 - Implement UI sound effects
 - More options in the preferences window
 
-### QDriverStation 0.15
+### QDriverStation 1.0 Beta
 
 - Support for 2014 protocol
 - Support for multiple languages (Spanish, English and German)
-- Better robot detection code (by looping through all DHCP addresses in less than 20 seconds). Beat that FRC DS!
+- Better robot detection code (by looping through all DHCP addresses in less than 20 seconds).
 - Dynamic control of the Watchdog timer
 - Fix crash issue on Mac OS X
 - Implement a simple logger

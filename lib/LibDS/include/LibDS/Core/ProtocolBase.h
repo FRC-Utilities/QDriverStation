@@ -27,6 +27,7 @@
 #include <QHostInfo>
 #include <QTcpSocket>
 #include <QNetworkReply>
+#include <QNetworkInterface>
 
 #include "LibDS/Core/Common.h"
 #include "LibDS/Core/Watchdog.h"
@@ -171,6 +172,18 @@ class LIB_DS_DECL ProtocolBase : public QObject {
     QByteArray createRobotPacket();
 
     ///
+    /// Returns the default radio addresses of the current protocol and
+    /// a generated list of DHCP IPs based on the local IP of the client.
+    ///
+    QStringList radioIPs();
+
+    ///
+    /// Returns the default robot addresses of the current protocol and
+    /// a generated list of DHCP IPs based on the local IP of the client.
+    ///
+    QStringList robotIPs();
+
+    ///
     /// Specifies the frequency rate (in hertz) in which the subclassed
     /// protocol needs to generate a FMS packet.
     ///
@@ -265,24 +278,6 @@ class LIB_DS_DECL ProtocolBase : public QObject {
     ///
     virtual bool acceptsConsoleCommands() {
         return false;
-    }
-
-    ///
-    /// Returns the default radio address
-    ///
-    /// \note This function must be re-implemented by each protocol
-    ///
-    virtual QStringList defaultRadioAddress() {
-        return QStringList ("");
-    }
-
-    ///
-    /// Returns the default robot address
-    ///
-    /// \note This function must be re-implemented by each protocol
-    ///
-    virtual QStringList defaultRobotAddress() {
-        return QStringList ("");
     }
 
   public slots:
@@ -427,6 +422,24 @@ class LIB_DS_DECL ProtocolBase : public QObject {
         return QByteArray ("");
     }
 
+    ///
+    /// Returns the default radio address
+    ///
+    /// \note This function must be re-implemented by each protocol
+    ///
+    virtual QStringList _extraRadioIPs() {
+        return QStringList ("");
+    }
+
+    ///
+    /// Returns the default robot address
+    ///
+    /// \note This function must be re-implemented by each protocol
+    ///
+    virtual QStringList _extraRobotIPs() {
+        return QStringList ("");
+    }
+
   public:
     explicit ProtocolBase();
 
@@ -480,6 +493,8 @@ class LIB_DS_DECL ProtocolBase : public QObject {
     DS::Alliance m_alliance;
     DS::ControlMode m_controlMode;
     DS::DS_CommStatus m_communicationStatus;
+
+    QStringList m_localIPs;
 
     QString m_robotIp;
     QString m_robotAddress;

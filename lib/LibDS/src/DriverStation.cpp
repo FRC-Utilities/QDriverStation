@@ -235,7 +235,7 @@ QStringList DriverStation::protocols() {
 
 QString DriverStation::radioAddress() {
     if (m_manager->isValid())
-        return m_manager->currentProtocol()->defaultRadioAddress().at (0);
+        return m_manager->currentProtocol()->radioIPs().at (0);
 
     return "";
 }
@@ -257,7 +257,7 @@ QString DriverStation::robotAddress() {
 
 QString DriverStation::defaultRobotAddress() {
     if (m_manager->isValid())
-        return m_manager->currentProtocol()->defaultRobotAddress().at (0);
+        return m_manager->currentProtocol()->robotIPs().at (0);
 
     return "";
 }
@@ -268,7 +268,7 @@ QString DriverStation::defaultRobotAddress() {
 
 QStringList DriverStation::defaultRobotAddresses() {
     if (m_manager->isValid())
-        return m_manager->currentProtocol()->defaultRobotAddress();
+        return m_manager->currentProtocol()->robotIPs();
 
     return QStringList ("");
 }

@@ -46,9 +46,6 @@ class LIB_DS_DECL FRC_Protocol2014 : public DS_Core::ProtocolBase {
 
     virtual bool acceptsConsoleCommands();
 
-    virtual QStringList defaultRadioAddress();
-    virtual QStringList defaultRobotAddress();
-
   public slots:
     virtual void reboot();
     virtual void restartCode();
