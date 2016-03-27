@@ -28,8 +28,7 @@ TARGET = QDriverStation
 win32* {
     LIBS += -lPdh
     RC_FILE = $$PWD/etc/deploy/windows/info.rc
-    CONFIG -= windows
-    QMAKE_LFLAGS += $$QMAKE_LFLAGS_WINDOWS
+    CONFIG += windows
 }
 
 macx* {
@@ -77,11 +76,6 @@ win32-msvc* {
     QMAKE_CXXFLAGS_RELEASE *= -Ot
 }
 
-#-------------------------------------------------------------------------------
-# Other compilation flags
-#-------------------------------------------------------------------------------
-
-QMAKE_CXXFLAGS += -Wunused
 
 #-------------------------------------------------------------------------------
 # Include other libraries

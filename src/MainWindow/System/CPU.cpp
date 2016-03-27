@@ -34,9 +34,9 @@ static PDH_HCOUNTER cpuTotal;
 #include <QProcess>
 #endif
 
-//=============================================================================
+//==================================================================================================
 // CPU::getUsage
-//=============================================================================
+//==================================================================================================
 
 int CPU::getUsage() {
     int usage = 0;
@@ -45,7 +45,7 @@ int CPU::getUsage() {
     PDH_FMT_COUNTERVALUE counterVal;
     PdhCollectQueryData (cpuQuery);
     PdhGetFormattedCounterValue (cpuTotal, PDH_FMT_DOUBLE, 0, &counterVal);
-    usage = counterVal.doubleValue;
+    usage = (int) counterVal.doubleValue;
 #endif
 
 #if defined Q_OS_MAC
@@ -98,9 +98,9 @@ int CPU::getUsage() {
     return usage;
 }
 
-//=============================================================================
+//==================================================================================================
 // CPU::initQueryProcess
-//=============================================================================
+//==================================================================================================
 
 void CPU::initQueryProcess() {
 #if defined Q_OS_WIN

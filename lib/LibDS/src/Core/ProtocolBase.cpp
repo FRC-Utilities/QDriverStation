@@ -25,9 +25,9 @@
 
 using namespace DS_Core;
 
-//=============================================================================
+//==================================================================================================
 // NetConsole warnings/information texts
-//=============================================================================
+//==================================================================================================
 
 const QString CHECK_FIREWALL = "<p>"
                                "<font color=#FE755C><b>ERROR:</b></font> "
@@ -43,7 +43,7 @@ const QString PARTIAL_COMM   = "<p>"
 const QString INFO_NOTE      = "<p>"
                                "<font color=#20C9FF><b>NOTE:</b></font> "
                                "<font color=#FFFFFF>"
-                               "The DS may take up to 20 seconds to detect "
+                               "The DS may take up to %1 seconds to detect "
                                "your robot, please be patient.</font>"
                                "</p>";
 const QString COMM_ESTABLISH = "<p>"
@@ -51,9 +51,9 @@ const QString COMM_ESTABLISH = "<p>"
                                "<font color=#FFFFFF>"
                                "Robot communications established with %1</font></p>";
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase:DS_ProtocolBase
-//=============================================================================
+//==================================================================================================
 
 ProtocolBase::ProtocolBase() {
     m_team                = 0;
@@ -85,133 +85,142 @@ ProtocolBase::ProtocolBase() {
     connect (&m_radioPing, &QTcpSocket::stateChanged,
              this,         &ProtocolBase::onPingResponse);
 
-    reset();
+    generateIpLists();
+    QTimer::singleShot (100, Qt::CoarseTimer, this, SLOT (reset()));
     QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (showPatienceMsg()));
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::team
-//=============================================================================
+//==================================================================================================
 
 int ProtocolBase::team() const {
     return m_team;
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::hasCode
-//=============================================================================
+//==================================================================================================
 
 bool ProtocolBase::hasCode() const {
     return m_robotCode;
 }
 
-//=============================================================================
+//==================================================================================================
+// ProtocolBase::expirationTime
+//==================================================================================================
+
+int ProtocolBase::expirationTime() const {
+    return m_watchdog.expirationTime();
+}
+
+//==================================================================================================
 // ProtocolBase::sentFMSPackets
-//=============================================================================
+//==================================================================================================
 
 int ProtocolBase::sentFmsPackets() const {
     return m_sentFMSPackets;
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::sentRobotPackets
-//=============================================================================
+//==================================================================================================
 
 int ProtocolBase::sentRobotPackets() const {
     return m_sentRobotPackets;
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::isEnabled
-//=============================================================================
+//==================================================================================================
 
 bool ProtocolBase::isEnabled() const {
     return m_enabled;
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::isConnectedToRobot
-//=============================================================================
+//==================================================================================================
 
 bool ProtocolBase::isConnectedToRobot() const {
     return communicationStatus() == DS::kFull;
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::isConnectedToRadio
-//=============================================================================
+//==================================================================================================
 
 bool ProtocolBase::isConnectedToRadio() const {
     return m_radioConnected;
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::sendDateTime
-//=============================================================================
+//==================================================================================================
 
 bool ProtocolBase::sendDateTime() const {
     return m_sendDateTime;
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::hasVoltageBrownout
-//=============================================================================
+//==================================================================================================
 
 bool ProtocolBase::hasVoltageBrownout() const {
     return m_voltageBrownout;
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::isEmergencyStopped
-//=============================================================================
+//==================================================================================================
 
 bool ProtocolBase::isEmergencyStopped() const {
     return m_emergencyStop;
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::batteryVoltage
-//=============================================================================
+//==================================================================================================
 
 float ProtocolBase::batteryVoltage() const {
     return m_voltage;
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::alliance
-//=============================================================================
+//==================================================================================================
 
 DS::Alliance ProtocolBase::alliance() const {
     return m_alliance;
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::controlMode
-//=============================================================================
+//==================================================================================================
 
 DS::ControlMode ProtocolBase::controlMode() const {
     return m_controlMode;
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::communicationStatus
-//=============================================================================
+//==================================================================================================
 
 DS::DS_CommStatus ProtocolBase::communicationStatus() const {
     return m_communicationStatus;
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::joysticks
-//=============================================================================
+//==================================================================================================
 
 QList<DS::Joystick>* ProtocolBase::joysticks() const {
     return DriverStation::getInstance()->joysticks();
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::radioAddress
-//=============================================================================
+//==================================================================================================
 
 QString ProtocolBase::radioAddress() {
     if (m_radioAddress.isEmpty())
@@ -220,9 +229,9 @@ QString ProtocolBase::radioAddress() {
     return m_radioAddress;
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::robotAddress
-//=============================================================================
+//==================================================================================================
 
 QString ProtocolBase::robotAddress() {
     if (m_robotAddress.isEmpty())
@@ -231,75 +240,43 @@ QString ProtocolBase::robotAddress() {
     return m_robotAddress;
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::createFMSPacket
-//=============================================================================
+//==================================================================================================
 
 QByteArray ProtocolBase::createFmsPacket() {
     m_sentFMSPackets += 1;
     return _getFmsPacket();
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::createPacket
-//=============================================================================
+//==================================================================================================
 
 QByteArray ProtocolBase::createRobotPacket() {
     m_sentRobotPackets += 1;
     return _getClientPacket();
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::radioIPs
-//=============================================================================
+//==================================================================================================
 
 QStringList ProtocolBase::radioIPs() {
-    QStringList list;
-    list.append (_extraRadioIPs());
-    list.append (DS::getStaticIP (10, team(), 1));
-    return list;
+    return m_radioIPs;
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::robotIPs
-//=============================================================================
+//==================================================================================================
 
 QStringList ProtocolBase::robotIPs() {
-    QStringList list;
-
-    /* Scan the LAN and register all possible IP addresses */
-    if (m_localIPs.isEmpty()) {
-        foreach (const QHostAddress& address, QNetworkInterface::allAddresses()) {
-            QStringList numbers = address.toString().split (".");
-            if (numbers.count() == 4 && address.toString() != "127.0.0.1") {
-                QString base = QString ("%1.%2.%3.")
-                               .arg (numbers.at (0))
-                               .arg (numbers.at (1))
-                               .arg (numbers.at (2));
-
-                for (int i = 1; i < 255; ++i)
-                    m_localIPs.append (base + QString::number (i));
-            }
-        }
-    }
-
-    /* Append the protocol-specific IP list */
-    list.append (_extraRobotIPs());
-
-    /* Append a list with the DCHP range from 10.TE.AM.2 to 10.TE.AM.254 */
-    for (int i = 2; i < 255; ++i)
-        list.append (DS::getStaticIP (10, team(), i));
-
-    /* Append all LAN addresses */
-    list.append (m_localIPs);
-
-    return list;
-
+    return m_robotIPs;
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::reset
-//=============================================================================
+//==================================================================================================
 
 void ProtocolBase::reset() {
     /* Try another robot address */
@@ -325,76 +302,77 @@ void ProtocolBase::reset() {
     updateCommStatus   (DS::kFailing);
 
     /* Figure out the robot address and ping the robot */
-    QHostInfo::lookupHost (robotAddress(),
-                           this, SLOT (lookupFinished (QHostInfo)));
+    QHostInfo::lookupHost (robotAddress(), this, SLOT (lookupFinished (QHostInfo)));
 
     /* Ping robot & radio */
     pingRadio();
     pingRobot();
 
     /* Lower the watchdog tolerance time to try more robot addresses faster */
+    m_watchdog.setTimeout    (200);
     emit robotAddressChanged (robotAddress());
-    m_watchdog.setTimeout (125);
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::setTeam
-//=============================================================================
+//==================================================================================================
 
 void ProtocolBase::setTeam (int team) {
     if (team != m_team) {
         m_team = team;
+
+        generateIpLists();
         emit robotAddressChanged (robotAddress());
 
-        DS::log (DS::kLibLevel,
-                 "Team number set to: " + QString::number (m_team));
+        DS::log (DS::kLibLevel, "Team number set to: " + QString::number (m_team));
     }
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::setEnabled
-//=============================================================================
+//==================================================================================================
 
 void ProtocolBase::setEnabled (bool enabled) {
     m_enabled = enabled;
     emit enabledChanged (isEnabled());
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::setEmergencyStop
-//=============================================================================
+//==================================================================================================
 
 void ProtocolBase::setEmergencyStop (bool emergency_stop) {
     m_emergencyStop = emergency_stop;
     emit emergencyStoppedChanged (isEmergencyStopped());
 
-    /* Stop sending e-stop packets after 1 second */
-    if (m_emergencyStop)
-        QTimer::singleShot (1000, this, SLOT (disableEmergencyStop()));
+    if (isEmergencyStopped())
+        QTimer::singleShot (500, this, SLOT (disableEmergencyStop()));
 
     emit emergencyStopped();
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::setRobotAddress
-//=============================================================================
+//==================================================================================================
 
 void ProtocolBase::setRobotAddress (QString address) {
     m_robotAddress = address;
-    emit robotAddressChanged (robotAddress());
+
+    if (!isConnectedToRobot())
+        emit robotAddressChanged (robotAddress());
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::setAlliance
-//=============================================================================
+//==================================================================================================
 
 void ProtocolBase::setAlliance (DS::Alliance alliance) {
     m_alliance = alliance;
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::setControlMode
-//=============================================================================
+//==================================================================================================
 
 void ProtocolBase::setControlMode (DS::ControlMode mode) {
     if (!isEmergencyStopped()) {
@@ -403,47 +381,42 @@ void ProtocolBase::setControlMode (DS::ControlMode mode) {
     }
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::readFMSPacket
-//=============================================================================
+//==================================================================================================
 
 void ProtocolBase::readFmsPacket (QByteArray data) {
     if (_readFMSPacket (data))
         emit fmsChanged (true);
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::readRobotPacket
-//=============================================================================
+//==================================================================================================
 
 void ProtocolBase::readRobotPacket (QByteArray data) {
-    if (!data.isEmpty()) {
-        /* We just have connected to the robot, update internal values */
-        if (!isConnectedToRobot()) {
-            _getRobotInformation();
+    if (data.isEmpty())
+        return;
 
-            setEnabled       (false);
-            updateCommStatus (DS::kFull);
-            setRobotAddress  (robotAddress());
-            setControlMode   (DS::kControlTeleoperated);
-            setRobotAddress  (robotAddress());
-            DS::sendMessage  (COMM_ESTABLISH.arg (robotAddress()));
-            DS::log          (DS::kLibLevel,
-                              "Robot/DS connection established!");
+    if (!isConnectedToRobot()) {
+        m_watchdog.setTimeout (1000);
 
-            /* Make the watchdog tolerance higher to avoid temporary resets */
-            m_watchdog.setTimeout (1000);
-        }
+        updateCommStatus (DS::kFull);
+        setEnabled       (isEnabled());
+        setRobotAddress  (robotAddress());
+        setControlMode   (DS::kControlTeleoperated);
+        DS::log          (DS::kLibLevel, "Robot/DS connection established!");
 
-        /* Let the protocol implementation read the rest of the data */
-        if (_readRobotPacket (data))
-            emit packetReceived();
+        _getRobotInformation();
     }
+
+    if (_readRobotPacket (data))
+        emit packetReceived();
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::updateRobotCode
-//=============================================================================
+//==================================================================================================
 
 void ProtocolBase::updateRobotCode (bool available) {
     /* Robot code just crashed/failed */
@@ -455,44 +428,44 @@ void ProtocolBase::updateRobotCode (bool available) {
     emit codeChanged (m_robotCode);
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::updateSendDateTime
-//=============================================================================
+//==================================================================================================
 
 void ProtocolBase::updateSendDateTime (bool sendDT) {
     m_sendDateTime = sendDT;
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::updateRadioStatus
-//=============================================================================
+//==================================================================================================
 
 void ProtocolBase::updateRadioStatus (bool connected) {
     m_radioConnected = connected;
     emit radioCommChanged (m_radioConnected);
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::updateCommStatus
-//=============================================================================
+//==================================================================================================
 
 void ProtocolBase::updateCommStatus (DS::DS_CommStatus status) {
     m_communicationStatus = status;
     emit communicationsChanged (m_communicationStatus);
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::updateVoltageBrownout
-//=============================================================================
+//==================================================================================================
 
 void ProtocolBase::updateVoltageBrownout (bool brownout) {
     m_voltageBrownout = brownout;
     emit voltageBrownoutChanged (m_voltageBrownout);
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::updateVoltage
-//=============================================================================
+//==================================================================================================
 
 void ProtocolBase::updateVoltage (QString digit, QString decimal) {
     /* Voltage is smaller than 10v, add 0 before the digit (e.g. to 09) */
@@ -515,44 +488,91 @@ void ProtocolBase::updateVoltage (QString digit, QString decimal) {
     emit voltageChanged (voltage);
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::pingRobot
-//=============================================================================
+//==================================================================================================
 
 void ProtocolBase::pingRobot() {
     m_robotPing.abort();
-    m_robotPing.connectToHost (robotAddress(), tcpProbesPort(),
-                               QTcpSocket::ReadOnly);
+    m_robotPing.connectToHost (robotAddress(), tcpProbesPort(), QTcpSocket::ReadOnly);
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::pingRadio
-//=============================================================================
+//==================================================================================================
 
 void ProtocolBase::pingRadio() {
     m_radioPing.abort();
     m_radioPing.connectToHost (radioAddress(), 80, QTcpSocket::ReadOnly);
 }
 
-//=============================================================================
-// ProtocolBase::showPatienceMsg
-//=============================================================================
+//==================================================================================================
+// ProtocolBase::generateIpLists
+//==================================================================================================
 
-void ProtocolBase::showPatienceMsg() {
-    DS::sendMessage (INFO_NOTE);
+void ProtocolBase::generateIpLists() {
+    /* Clear the IPs lists */
+    m_robotIPs.clear();
+    m_radioIPs.clear();
+
+    /* Generate radio IPs */
+    m_radioIPs.append (_extraRadioIPs());
+    m_radioIPs.append (DS::getStaticIP (10, team(), 1));
+
+    /* Generate robot IPs */
+    m_robotIPs.append (_extraRobotIPs());
+    m_robotIPs.append ("127.0.0.1");
+
+    /* Generate robot IPs based on the current IP(s) of the computer */
+    foreach (const QNetworkInterface& interface, QNetworkInterface::allInterfaces()) {
+        bool isUp       = (bool) (interface.flags() & QNetworkInterface::IsUp);
+        bool isRunning  = (bool) (interface.flags() & QNetworkInterface::IsRunning);
+        bool isLoopBack = (bool) (interface.flags() & QNetworkInterface::IsLoopBack);
+
+        /* Only take into account useful network interfaces */
+        if (isUp && isRunning && !isLoopBack) {
+            foreach (const QNetworkAddressEntry& address, interface.addressEntries()) {
+                QString ip = address.ip().toString();
+                QStringList numbers = ip.split (".");
+                if (numbers.count() == 4 && (ip != "127.0.0.1")) {
+                    QString base = QString ("%1.%2.%3.")
+                                   .arg (numbers.at (0))
+                                   .arg (numbers.at (1))
+                                   .arg (numbers.at (2));
+
+                    for (int i = 1; i < 255; ++i)
+                        m_robotIPs.append (base + QString::number (i));
+                }
+            }
+        }
+    }
+
+    /* Log information */
+    DS::log (DS::kLibLevel, QString ("Generated %1 radio IPs").arg (m_radioIPs.count()));
+    DS::log (DS::kLibLevel, QString ("Generated %1 robot IPs").arg (m_robotIPs.count()));
 }
 
-//=============================================================================
+//==================================================================================================
+// ProtocolBase::showPatienceMsg
+//==================================================================================================
+
+void ProtocolBase::showPatienceMsg() {
+    int ms = robotIPs().count() * expirationTime();
+    int time = std::round (ms / 1000);
+    DS::sendMessage (INFO_NOTE.arg (time));
+}
+
+//==================================================================================================
 // ProtocolBase::disableEmergencyStop
-//=============================================================================
+//==================================================================================================
 
 void ProtocolBase::disableEmergencyStop() {
     setEmergencyStop (false);
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::updateRobotIP
-//=============================================================================
+//==================================================================================================
 
 void ProtocolBase::lookupFinished (QHostInfo info) {
     if (!info.addresses().isEmpty())
@@ -561,9 +581,9 @@ void ProtocolBase::lookupFinished (QHostInfo info) {
     pingRobot();
 }
 
-//=============================================================================
+//==================================================================================================
 // ProtocolBase::onPingResponse
-//=============================================================================
+//==================================================================================================
 
 void ProtocolBase::onPingResponse (QAbstractSocket::SocketState state) {
     bool isAlive = (state == QAbstractSocket::ConnectedState);

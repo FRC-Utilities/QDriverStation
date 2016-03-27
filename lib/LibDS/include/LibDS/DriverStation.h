@@ -432,6 +432,12 @@ class LIB_DS_DECL DriverStation : public QObject {
     bool m_init;
 
     ///
+    /// Represents the time interval (in milliseconds) between two client-to-robot packets.
+    /// This value is updated when we load a protcol in the DS.
+    ///
+    int m_clientPacketInterval;
+
+    ///
     /// The client, used for sending and receiving data
     /// from a specified network address and port, go on
     /// and crash the school's server if you wish

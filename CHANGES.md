@@ -28,9 +28,10 @@
 
 - Support for 2014 protocol
 - Support for multiple languages (Spanish, English and German)
-- Better robot detection code (by looping through all DHCP addresses in less than 20 seconds).
-- Dynamic control of the Watchdog timer
+- Better robot detection code (by looping through all LAN addresses).
+- Better robot voltage reading code
+- Dynamic control of the watchdog
 - Fix crash issue on Mac OS X
 - Implement a simple logger
 - Fix some minor issues in the UI
-- Add base framework for implementing FMS protocols
+- Add base framework for implementing FMS communications

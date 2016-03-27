@@ -45,6 +45,7 @@ class LIB_DS_DECL Watchdog : public QObject {
 
   public:
     explicit Watchdog();
+    int expirationTime() const;
 
   public slots:
     void restart();

@@ -44,9 +44,9 @@ HEADERS += \
     $$PWD/include/LibDS/Core/ProtocolBase.h \
     $$PWD/include/LibDS/Core/ProtocolManager.h \
     $$PWD/include/LibDS/Core/Watchdog.h \
-    $$PWD/include/LibDS/Protocols/FRC/Protocol2016.h \
-    $$PWD/include/LibDS/Protocols/FRC/Protocol2015.h \
-    $$PWD/include/LibDS/Protocols/FRC/Protocol2014.h
+    $$PWD/include/LibDS/Protocols/FRC_2016.h \
+    $$PWD/include/LibDS/Protocols/FRC_2015.h \
+    $$PWD/include/LibDS/Protocols/FRC_2014.h
 
 SOURCES += \
     $$PWD/src/DriverStation.cpp \
@@ -57,8 +57,8 @@ SOURCES += \
     $$PWD/src/Core/ProtocolBase.cpp \
     $$PWD/src/Core/ProtocolManager.cpp \
     $$PWD/src/Core/Watchdog.cpp \
-    $$PWD/src/Protocols/FRC/Protocol2016.cpp \
-    $$PWD/src/Protocols/FRC/Protocol2015.cpp \
-    $$PWD/src/Protocols/FRC/Protocol2014.cpp
+    $$PWD/src/Protocols/FRC_2016.cpp \
+    $$PWD/src/Protocols/FRC_2015.cpp \
+    $$PWD/src/Protocols/FRC_2014.cpp
 
 RESOURCES += $$PWD/etc/sounds/libds-sounds.qrc

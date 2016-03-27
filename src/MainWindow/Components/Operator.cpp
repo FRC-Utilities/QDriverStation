@@ -20,9 +20,9 @@
  * THE SOFTWARE.
  */
 
-//=============================================================================
+//==================================================================================================
 // System includes
-//=============================================================================
+//==================================================================================================
 
 #include <QLabel>
 #include <QTimer>
@@ -35,9 +35,9 @@
 #include <QFontMetrics>
 #include <QButtonGroup>
 
-//=============================================================================
+//==================================================================================================
 // Application includes
-//=============================================================================
+//==================================================================================================
 
 #include "Operator.h"
 #include "Global/Global.h"
@@ -46,9 +46,9 @@
 #include "MainWindow/System/CPU.h"
 #include "MainWindow/System/Battery.h"
 
-//=============================================================================
+//==================================================================================================
 // CSS definitions
-//=============================================================================
+//==================================================================================================
 
 const QString ENABLED_UNCHECK  = "QPushButton { color: rgb(  0,  47,  2); "
                                  "border-right:  0px solid; }";
@@ -68,9 +68,9 @@ const QString OPERATOR_CSS     = "QPushButton {"
                                  "QPushButton:checked { "
                                  "background-color: rgba(0,0,0,80); }";
 
-//=============================================================================
+//==================================================================================================
 // Operator::Operator
-//=============================================================================
+//==================================================================================================
 
 Operator::Operator (QWidget* parent) : QWidget (parent) {
     createWidgets();
@@ -83,17 +83,17 @@ Operator::Operator (QWidget* parent) : QWidget (parent) {
     DS::log (DS::kInfoLevel, "MainWindow: Operator widget created");
 }
 
-//=============================================================================
+//==================================================================================================
 // Operator::~Operator
-//=============================================================================
+//==================================================================================================
 
 Operator::~Operator() {
     DS::log (DS::kInfoLevel, "MainWindow: Operator widget destroyed");
 }
 
-//=============================================================================
+//==================================================================================================
 // Operator::createWidgets
-//=============================================================================
+//==================================================================================================
 
 void Operator::createWidgets() {
     /* Create main container widgets */
@@ -149,9 +149,9 @@ void Operator::createWidgets() {
     m_dsable->setObjectName  ("Dsable button");
 }
 
-//=============================================================================
+//==================================================================================================
 // Operator::createLayouts
-//=============================================================================
+//==================================================================================================
 
 void Operator::createLayouts() {
     /* Configure enable/disable buttons layout */
@@ -224,9 +224,9 @@ void Operator::createLayouts() {
     m_teamStation->setFixedSize              (DPI_SCALE (96), DPI_SCALE (24));
 }
 
-//=============================================================================
+//==================================================================================================
 // Operator::configureStyles
-//=============================================================================
+//==================================================================================================
 
 void Operator::configureStyles() {
     /* Change the font to FontAwesome in some widgets */
@@ -302,32 +302,34 @@ void Operator::configureStyles() {
     m_plugIcon->setVisible        (false);
 }
 
-//=============================================================================
+//==================================================================================================
 // Operator::connectSlots
-//=============================================================================
+//==================================================================================================
 
 void Operator::connectSlots() {
-    connect (m_enable,                  SIGNAL (clicked             (void)),
-             this,                        SLOT (updateEnableState   (void)));
-    connect (m_dsable,                  SIGNAL (clicked             (void)),
-             this,                        SLOT (updateEnableState   (void)));
-    connect (m_windowDocked,            SIGNAL (clicked             (void)),
-             this,                      SIGNAL (showDocked          (void)));
-    connect (m_windowNormal,            SIGNAL (clicked             (void)),
-             this,                      SIGNAL (showUnDocked        (void)));
-    connect (QDS(),                      SIGNAL (elapsedTimeChanged  (QString)),
-             m_elapsedTime,               SLOT (setText             (QString)));
-    connect (m_modesGroup,              SIGNAL (buttonClicked       (int)),
-             this,                        SLOT (updateControlMode   (int)));
-    connect (m_teamStation,             SIGNAL (currentIndexChanged (int)),
-             QDS(),                        SLOT (setAlliance         (int)));
-    connect (Dashboards::getInstance(), SIGNAL (dashboardChanged    (void)),
-             this,                        SLOT (updateWindowState   (void)));
+    connect (m_enable,                  SIGNAL (clicked               (void)),
+             this,                        SLOT (updateEnableState     (void)));
+    connect (m_dsable,                  SIGNAL (clicked               (void)),
+             this,                        SLOT (updateEnableState     (void)));
+    connect (m_windowDocked,            SIGNAL (clicked               (void)),
+             this,                      SIGNAL (showDocked            (void)));
+    connect (m_windowNormal,            SIGNAL (clicked               (void)),
+             this,                      SIGNAL (showUnDocked          (void)));
+    connect (QDS(),                     SIGNAL (elapsedTimeChanged    (QString)),
+             m_elapsedTime,               SLOT (setText               (QString)));
+    connect (m_modesGroup,              SIGNAL (buttonClicked         (int)),
+             this,                        SLOT (updateControlMode     (int)));
+    connect (m_teamStation,             SIGNAL (currentIndexChanged   (int)),
+             QDS(),                       SLOT (setAlliance           (int)));
+    connect (Dashboards::getInstance(), SIGNAL (dashboardChanged      (void)),
+             this,                        SLOT (updateWindowState     (void)));
+    connect (QDS(),                     SIGNAL (communicationsChanged (DS::DS_CommStatus)),
+             this,                        SLOT (updateCommunications  (DS::DS_CommStatus)));
 }
 
-//=============================================================================
+//==================================================================================================
 // Operator::updateEnableState
-//=============================================================================
+//==================================================================================================
 
 void Operator::updateEnableState() {
     bool enabled = m_enable->isChecked() && QDS()->canBeEnabled();
@@ -354,9 +356,9 @@ void Operator::updateEnableState() {
     }
 }
 
-//=============================================================================
+//==================================================================================================
 // Operator::updateWindowState
-//=============================================================================
+//==================================================================================================
 
 void Operator::updateWindowState() {
     if (m_windowDocked->isChecked())
@@ -366,9 +368,9 @@ void Operator::updateWindowState() {
         emit showUnDocked();
 }
 
-//=============================================================================
+//==================================================================================================
 // Operator::updateProgressbars
-//=============================================================================
+//==================================================================================================
 
 void Operator::updateProgressbars() {
     if (m_cpu && m_battery && m_plugIcon) {
@@ -397,9 +399,9 @@ void Operator::updateProgressbars() {
     QTimer::singleShot (1000, Qt::CoarseTimer, this, SLOT (updateProgressbars()));
 }
 
-//=============================================================================
+//==================================================================================================
 // Operator::updateControlMode
-//=============================================================================
+//==================================================================================================
 
 void Operator::updateControlMode (int index) {
     Q_UNUSED (index);
@@ -415,4 +417,18 @@ void Operator::updateControlMode (int index) {
         mode = DS::kControlTest;
 
     QDS()->setControlMode (mode);
+}
+
+//==================================================================================================
+// Operator::updateCommunications
+//==================================================================================================
+
+void Operator::updateCommunications (DS::DS_CommStatus comms) {
+    if (comms == DS::kFailing || comms == DS::kPartial)
+        m_dsable->setChecked (true);
+
+    else if (comms == DS::kFull)
+        m_enable->setChecked (QDS()->isEnabled());
+
+    updateEnableState();
 }

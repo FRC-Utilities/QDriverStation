@@ -24,6 +24,7 @@
 #define _QDS_MW_OPERATOR_H
 
 #include <QWidget>
+#include <LibDS.h>
 
 class QLabel;
 class QComboBox;
@@ -51,6 +52,7 @@ class Operator : public QWidget {
     void updateWindowState();
     void updateProgressbars();
     void updateControlMode (int index);
+    void updateCommunications (DS::DS_CommStatus comms);
 
   signals:
     void showDocked();

@@ -71,6 +71,11 @@ class LIB_DS_DECL ProtocolBase : public QObject {
     bool hasCode() const;
 
     ///
+    /// Returns the expiration time of the watchdog
+    ///
+    int expirationTime() const;
+
+    ///
     /// Returns the number of packets that the DS sent to the FMS.
     ///
     int sentFmsPackets() const;
@@ -494,7 +499,8 @@ class LIB_DS_DECL ProtocolBase : public QObject {
     DS::ControlMode m_controlMode;
     DS::DS_CommStatus m_communicationStatus;
 
-    QStringList m_localIPs;
+    QStringList m_robotIPs;
+    QStringList m_radioIPs;
 
     QString m_robotIp;
     QString m_robotAddress;
@@ -507,6 +513,7 @@ class LIB_DS_DECL ProtocolBase : public QObject {
   private slots:
     void pingRobot();
     void pingRadio();
+    void generateIpLists();
     void showPatienceMsg();
     void disableEmergencyStop();
     void lookupFinished (QHostInfo info);
