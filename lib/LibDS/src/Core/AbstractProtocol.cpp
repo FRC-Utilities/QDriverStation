@@ -562,8 +562,11 @@ void AbstractProtocol::generateIpLists() {
 //==================================================================================================
 
 void AbstractProtocol::showPatienceMsg() {
-    int ms = robotIPs().count() * expirationTime();
-    int time = std::round (ms / 1000);
+    /* Get total scanning time, convert to seconds and round to nearest 10 */
+    int msec = robotIPs().count() * expirationTime();
+    int time = ceil ((msec / 1000) / 10) * 10;
+
+    /* Display the message */
     DS::sendMessage (INFO_NOTE.arg (time));
 }
 
