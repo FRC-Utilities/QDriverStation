@@ -104,7 +104,7 @@ T* GET_INSTANCE() {
 //==================================================================================================
 
 DriverStation::DriverStation() {
-    qRegisterMetaType <DS::CAN>           ("DS_CAN");
+    qRegisterMetaType <DS::CAN_Information>           ("DS_CAN");
     qRegisterMetaType <DS::Joystick>      ("DS_Joystick");
     qRegisterMetaType <DS::Alliance>      ("LibDS::DS_Alliance");
     qRegisterMetaType <DS::DS_CommStatus> ("DS_CommStatus");
@@ -492,7 +492,7 @@ void DriverStation::startPractice (int countdown,
 // DriverStation::setProtocol
 //==================================================================================================
 
-void DriverStation::setProtocol (DS_Core::ProtocolBase* protocol) {
+void DriverStation::setProtocol (DS_Core::AbstractProtocol* protocol) {
     if (protocol != Q_NULLPTR) {
         m_manager->setProtocol        (protocol);
         m_client->setFmsInputPort     (protocol->fmsInputPort());

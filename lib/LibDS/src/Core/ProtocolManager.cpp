@@ -30,7 +30,7 @@
 // Library includes
 //==================================================================================================
 
-#include "LibDS/Core/ProtocolBase.h"
+#include "LibDS/Core/AbstractProtocol.h"
 #include "LibDS/Core/ProtocolManager.h"
 
 using namespace DS_Core;
@@ -47,7 +47,7 @@ ProtocolManager::ProtocolManager (QObject* parent) : QObject (parent) {
 //ProtocolManager::currentProtocol
 //==================================================================================================
 
-ProtocolBase* ProtocolManager::currentProtocol() const {
+AbstractProtocol* ProtocolManager::currentProtocol() const {
     return isValid() ? m_protocol : Q_NULLPTR;
 }
 
@@ -71,7 +71,7 @@ int ProtocolManager::joystickCount() const {
 //ProtocolManager::setProtocol
 //==================================================================================================
 
-void ProtocolManager::setProtocol (ProtocolBase* protocol) {
+void ProtocolManager::setProtocol (AbstractProtocol* protocol) {
     if (protocol != Q_NULLPTR) {
         /* There is already a running protocol */
         if (isValid()) {
@@ -87,31 +87,31 @@ void ProtocolManager::setProtocol (ProtocolBase* protocol) {
         m_protocol = protocol;
 
         /* Re-connect protocol signals/slots */
-        connect (m_protocol, &ProtocolBase::emergencyStopped,
+        connect (m_protocol, &AbstractProtocol::emergencyStopped,
                  this,       &ProtocolManager::emergencyStopped);
-        connect (m_protocol, &ProtocolBase::codeChanged,
+        connect (m_protocol, &AbstractProtocol::codeChanged,
                  this,       &ProtocolManager::codeChanged);
-        connect (m_protocol, &ProtocolBase::radioCommChanged,
+        connect (m_protocol, &AbstractProtocol::radioCommChanged,
                  this,       &ProtocolManager::radioCommChanged);
-        connect (m_protocol, &ProtocolBase::communicationsChanged,
+        connect (m_protocol, &AbstractProtocol::communicationsChanged,
                  this,       &ProtocolManager::communicationsChanged);
-        connect (m_protocol, &ProtocolBase::robotAddressChanged,
+        connect (m_protocol, &AbstractProtocol::robotAddressChanged,
                  this,       &ProtocolManager::robotAddressChanged);
-        connect (m_protocol, &ProtocolBase::controlModeChanged,
+        connect (m_protocol, &AbstractProtocol::controlModeChanged,
                  this,       &ProtocolManager::controlModeChanged);
-        connect (m_protocol, &ProtocolBase::diskUsageChanged,
+        connect (m_protocol, &AbstractProtocol::diskUsageChanged,
                  this,       &ProtocolManager::diskUsageChanged);
-        connect (m_protocol, &ProtocolBase::ramUsageChanged,
+        connect (m_protocol, &AbstractProtocol::ramUsageChanged,
                  this,       &ProtocolManager::ramUsageChanged);
-        connect (m_protocol, &ProtocolBase::cpuUsageChanged,
+        connect (m_protocol, &AbstractProtocol::cpuUsageChanged,
                  this,       &ProtocolManager::cpuUsageChanged);
-        connect (m_protocol, &ProtocolBase::voltageChanged,
+        connect (m_protocol, &AbstractProtocol::voltageChanged,
                  this,       &ProtocolManager::voltageChanged);
-        connect (m_protocol, &ProtocolBase::voltageBrownoutChanged,
+        connect (m_protocol, &AbstractProtocol::voltageBrownoutChanged,
                  this,       &ProtocolManager::voltageBrownoutChanged);
-        connect (m_protocol, &ProtocolBase::CANInfoReceived,
+        connect (m_protocol, &AbstractProtocol::CANInfoReceived,
                  this,       &ProtocolManager::CANInfoReceived);
-        connect (m_protocol, &ProtocolBase::fmsChanged,
+        connect (m_protocol, &AbstractProtocol::fmsChanged,
                  this,       &ProtocolManager::fmsChanged);
 
 

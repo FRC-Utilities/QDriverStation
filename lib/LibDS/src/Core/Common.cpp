@@ -35,10 +35,10 @@ const char* _PRINT_FMT     = "%-26s %-12s %-10s\n";
 const QString _TIME_FORMAT = "dd/MMM/yyyy hh:mm:ss::zzz";
 
 //==================================================================================================
-//GetTimezoneCode
+// DS::timezone
 //==================================================================================================
 
-QString DS::Timezone() {
+QString DS::timezone() {
     switch (QDateTime::currentDateTime().offsetFromUtc() / 3600) {
     case -11:
         return "BST11BDT";
@@ -118,7 +118,7 @@ QString DS::Timezone() {
 }
 
 //==================================================================================================
-//SendMessage
+// DS::sendMessage
 //==================================================================================================
 
 void DS::sendMessage (QString message) {
@@ -126,7 +126,7 @@ void DS::sendMessage (QString message) {
 }
 
 //==================================================================================================
-//LogMessage
+// DS::log
 //==================================================================================================
 
 void DS::log (ErrorLevel type,  QString message) {
@@ -168,7 +168,7 @@ void DS::log (ErrorLevel type,  QString message) {
 }
 
 //==================================================================================================
-//GetStaticIp
+// DS::getStaticIp
 //==================================================================================================
 
 QString DS::getStaticIP (int team, int host) {
@@ -176,7 +176,7 @@ QString DS::getStaticIP (int team, int host) {
 }
 
 //==================================================================================================
-//GetStaticIp
+// DS::getStaticIp
 //==================================================================================================
 
 QString DS::getStaticIP (int net, int team, int host) {
@@ -208,7 +208,7 @@ QString DS::getStaticIP (int net, int team, int host) {
 }
 
 //==================================================================================================
-//GetControlModeString
+// DS::controlModeString
 //==================================================================================================
 
 QString DS::controlModeString (ControlMode mode) {
@@ -233,7 +233,7 @@ QString DS::controlModeString (ControlMode mode) {
 }
 
 //==================================================================================================
-//GetSocketData
+// DS::readSocket
 //==================================================================================================
 
 QByteArray DS::readSocket (QUdpSocket* socket) {
@@ -246,7 +246,7 @@ QByteArray DS::readSocket (QUdpSocket* socket) {
 }
 
 //==================================================================================================
-//GetSocketData
+// DS::readSocket
 //==================================================================================================
 
 QByteArray DS::readSocket (QTcpSocket* socket) {
@@ -254,7 +254,7 @@ QByteArray DS::readSocket (QTcpSocket* socket) {
 }
 
 //==================================================================================================
-//ToBytes
+// DS::intToBytes
 //==================================================================================================
 
 QByteArray DS::intToBytes (int number) {

@@ -23,11 +23,11 @@
 #ifndef _LDS_PROTOCOL_2015_H
 #define _LDS_PROTOCOL_2015_H
 
-#include "LibDS/Core/ProtocolBase.h"
+#include "LibDS/Core/AbstractProtocol.h"
 
 namespace DS_Protocols {
 
-class LIB_DS_DECL FRC_Protocol2015 : public DS_Core::ProtocolBase {
+class LIB_DS_DECL FRC_Protocol2015 : public DS_Core::AbstractProtocol {
     Q_OBJECT
 
   public:

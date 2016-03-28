@@ -41,12 +41,12 @@ HEADERS += \
     $$PWD/include/LibDS/Core/ElapsedTimer.h \
     $$PWD/include/LibDS/Core/Library.h \
     $$PWD/include/LibDS/Core/NetConsole.h \
-    $$PWD/include/LibDS/Core/ProtocolBase.h \
     $$PWD/include/LibDS/Core/ProtocolManager.h \
     $$PWD/include/LibDS/Core/Watchdog.h \
     $$PWD/include/LibDS/Protocols/FRC_2016.h \
     $$PWD/include/LibDS/Protocols/FRC_2015.h \
-    $$PWD/include/LibDS/Protocols/FRC_2014.h
+    $$PWD/include/LibDS/Protocols/FRC_2014.h \
+    $$PWD/include/LibDS/Core/AbstractProtocol.h
 
 SOURCES += \
     $$PWD/src/DriverStation.cpp \
@@ -54,11 +54,11 @@ SOURCES += \
     $$PWD/src/Core/Common.cpp \
     $$PWD/src/Core/ElapsedTimer.cpp \
     $$PWD/src/Core/NetConsole.cpp \
-    $$PWD/src/Core/ProtocolBase.cpp \
     $$PWD/src/Core/ProtocolManager.cpp \
     $$PWD/src/Core/Watchdog.cpp \
     $$PWD/src/Protocols/FRC_2016.cpp \
     $$PWD/src/Protocols/FRC_2015.cpp \
-    $$PWD/src/Protocols/FRC_2014.cpp
+    $$PWD/src/Protocols/FRC_2014.cpp \
+    $$PWD/src/Core/AbstractProtocol.cpp
 
 RESOURCES += $$PWD/etc/sounds/libds-sounds.qrc

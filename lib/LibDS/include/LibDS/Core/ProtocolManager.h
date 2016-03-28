@@ -27,7 +27,7 @@
 
 namespace DS_Core {
 
-class ProtocolBase;
+class AbstractProtocol;
 
 ///
 /// Allows the dynamic loading and usage of different protocols by configuring them
@@ -40,7 +40,7 @@ class LIB_DS_DECL ProtocolManager : public QObject {
     ///
     /// Returns a pointer to the current protocol in use by the DS
     ///
-    ProtocolBase* currentProtocol() const;
+    AbstractProtocol* currentProtocol() const;
 
     ///
     /// Returns \c true if the current protocol is not pointing to a
@@ -57,7 +57,7 @@ class LIB_DS_DECL ProtocolManager : public QObject {
     ///
     /// Loads and configures the given \a protocol
     ///
-    void setProtocol (ProtocolBase* protocol);
+    void setProtocol (AbstractProtocol* protocol);
 
     ///
     /// Instructs the current protocol to interpret the given robot \a data
@@ -76,7 +76,7 @@ class LIB_DS_DECL ProtocolManager : public QObject {
     void diskUsageChanged (int);
     void radioCommChanged (bool);
     void voltageChanged (QString);
-    void CANInfoReceived (DS::CAN);
+    void CANInfoReceived (DS::CAN_Information);
     void libVersionChanged (QString);
     void rioVersionChanged (QString);
     void pdpVersionChanged (QString);
@@ -87,7 +87,7 @@ class LIB_DS_DECL ProtocolManager : public QObject {
     void communicationsChanged (DS::DS_CommStatus);
 
   private:
-    ProtocolBase* m_protocol;
+    AbstractProtocol* m_protocol;
 };
 
 }

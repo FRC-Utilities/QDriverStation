@@ -27,7 +27,7 @@
 
 namespace DS_Core {
 class Client;
-class ProtocolBase;
+class AbstractProtocol;
 class NetConsole;
 class ElapsedTime;
 class ProtocolManager;
@@ -220,7 +220,7 @@ class LIB_DS_DECL DriverStation : public QObject {
     ///
     /// Changes the protocol that we use to control the robot
     ///
-    Q_INVOKABLE void setProtocol (DS_Core::ProtocolBase* protocol);
+    Q_INVOKABLE void setProtocol (DS_Core::AbstractProtocol* protocol);
 
     ///
     /// Changes the protocol that we use to control the robot
@@ -326,7 +326,7 @@ class LIB_DS_DECL DriverStation : public QObject {
     ///
     /// Emitted when the DS receives and decodes a CAN data structure
     ///
-    void CANInfoReceived (DS::CAN information);
+    void CANInfoReceived (DS::CAN_Information information);
 
     ///
     /// Emitted when the state of the FMS connection is changed
@@ -460,7 +460,7 @@ class LIB_DS_DECL DriverStation : public QObject {
     ///
     /// Represents the current protocol in operation
     ///
-    DS_Core::ProtocolBase* m_protocol;
+    DS_Core::AbstractProtocol* m_protocol;
 
     ///
     /// Counts the elapsed time since the robot was

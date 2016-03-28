@@ -350,9 +350,9 @@ QByteArray FRC_Protocol2015::_getTimezoneData() {
     data.append (date.year() - 1900);
 
     /* Add timezone data */
-    data.append (DS::Timezone().length() + 1);
+    data.append (DS::timezone().length() + 1);
     data.append (HEADER_TIMEZONE);
-    data.append (DS::Timezone());
+    data.append (DS::timezone());
 
     return data;
 }

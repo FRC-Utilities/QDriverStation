@@ -118,13 +118,13 @@ typedef struct {
     quint8 txFull;
     quint8 receive;
     quint8 transmit;
-} CAN;
+} CAN_Information;
 
 ///
 /// Returns the current timezone code by calculating the difference between
 /// the system timezone and the UTC timezone
 ///
-QString LIB_DS_DECL Timezone();
+QString LIB_DS_DECL timezone();
 
 ///
 /// Sends a message through the DriverStation to the Client, which should interpret

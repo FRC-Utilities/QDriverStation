@@ -174,6 +174,7 @@ void VJoystickWindow::createLayouts() {
     m_mainLayout->setContentsMargins      (MAIN_MARGINS());
     m_mainLayout->addWidget               (m_tab);
     m_mainLayout->addWidget               (m_bottomWidget);
+    m_useKeyboardAsJoystick->setFixedSize (m_useKeyboardAsJoystick->minimumSizeHint());
 }
 
 //==================================================================================================

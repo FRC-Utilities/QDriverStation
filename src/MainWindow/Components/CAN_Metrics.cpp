@@ -118,7 +118,7 @@ void CAN_Metrics::createLayouts() {
 // CAN_Metrics::onMetricsReceived
 //==================================================================================================
 
-void CAN_Metrics::onMetricsReceived (DS::CAN can) {
+void CAN_Metrics::onMetricsReceived (DS::CAN_Information can) {
     m_util->setText     (QString::number (can.util));
     m_busOff->setText   (QString::number (can.busOff));
     m_txFull->setText   (QString::number (can.txFull));
