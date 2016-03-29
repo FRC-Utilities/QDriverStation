@@ -190,6 +190,16 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     QStringList robotIPs();
 
     ///
+    /// Specifies the name/title of the protocol. This is used in the welcome
+    /// message and to generate the protocol list in the DS.
+    ///
+    /// \note This function must be re-implemented by each protocol
+    ///
+    virtual QString name() {
+        return "Abstract Protocol";
+    }
+
+    ///
     /// Specifies the frequency rate (in hertz) in which the subclassed
     /// protocol needs to generate a FMS packet.
     ///
@@ -482,6 +492,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
 
   private:
     int m_team;
+    int m_interfaces;
     int m_sentFMSPackets;
     int m_sentRobotPackets;
 

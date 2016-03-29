@@ -29,6 +29,9 @@ using namespace DS_Core;
 // NetConsole warnings/information texts
 //==================================================================================================
 
+const QString INIT           = "<p>"
+                               "<font color=#888>** <font color=#AAA>%1</font> Initialized</font>"
+                               "</p>";
 const QString CHECK_FIREWALL = "<p>"
                                "<font color=#FE755C><b>ERROR:</b></font> "
                                "<font color=#FFFFFF>Cannot connect to robot</font><br/>"
@@ -41,10 +44,12 @@ const QString PARTIAL_COMM   = "<p>"
                                "but does not respond to DS packets.</font>"
                                "</p>";
 const QString INFO_NOTE      = "<p>"
-                               "<font color=#20C9FF><b>NOTE:</b></font> "
-                               "<font color=#FFFFFF>"
-                               "The DS may take up to %1 seconds to detect "
-                               "your robot, please be patient.</font>"
+                               "<font color=#888>** <font color=#AAA>Notice:</font> "
+                               "It may take up to %1 secs. to detect your robot</font>"
+                               "</p>";
+const QString IP_INFORMATION = "<p>"
+                               "<font color=#888>** <font color=#AAA>Information:</font> "
+                               "%1 robot IPs generated from %2 interfaces</font>"
                                "</p>";
 const QString COMM_ESTABLISH = "<p>"
                                "<font color=#59FF59><b>INFO:</b></font> "
@@ -57,6 +62,7 @@ const QString COMM_ESTABLISH = "<p>"
 
 AbstractProtocol::AbstractProtocol() {
     m_team                = 0;
+    m_interfaces          = 0;
     m_sentFMSPackets      = 0;
     m_sentRobotPackets    = 0;
 
@@ -86,8 +92,7 @@ AbstractProtocol::AbstractProtocol() {
              this,         &AbstractProtocol::onScannerResponse);
 
     generateIpLists();
-    m_watchdog.setTimeout (200);
-    QTimer::singleShot (100, Qt::CoarseTimer, this, SLOT (reset()));
+    QTimer::singleShot (200, Qt::CoarseTimer, this, SLOT (reset()));
     QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (showPatienceMsg()));
 }
 
@@ -500,6 +505,7 @@ void AbstractProtocol::pingRadio() {
 
 void AbstractProtocol::generateIpLists() {
     /* Clear the IPs lists */
+    m_interfaces = 0;
     m_robotIPs.clear();
     m_radioIPs.clear();
 
@@ -518,6 +524,7 @@ void AbstractProtocol::generateIpLists() {
 
         /* Only take into account useful network interfaces */
         if (isUp && isRunning) {
+            ++m_interfaces;
             foreach (const QNetworkAddressEntry& address, interface.addressEntries()) {
                 QStringList numbers = address.ip().toString().split (".");
                 bool valid = (address.ip() != QHostAddress ("127.0.0.1")) &&
@@ -558,7 +565,9 @@ void AbstractProtocol::showPatienceMsg() {
     double time = ceil ((msec / 1000) / 10) * 10;
 
     /* Display the message */
+    DS::sendMessage (INIT.arg (name()));
     DS::sendMessage (INFO_NOTE.arg (time));
+    DS::sendMessage (IP_INFORMATION.arg (m_robotIPs.count()).arg (m_interfaces));
 }
 
 //==================================================================================================

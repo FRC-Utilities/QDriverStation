@@ -103,7 +103,7 @@ MainWindow::MainWindow() {
                                    + QApplication::applicationVersion());
 
     /* Signals/slots */
-    connect (QDS(),      &DriverStation::initialized,
+    connect (QDS(),     &DriverStation::initialized,
              this,      &MainWindow::displayWindow);
     connect (m_leftTab, &LeftTab::showDocked,
              this,      &MainWindow::showDocked);
@@ -183,7 +183,6 @@ void MainWindow::showUnDocked() {
     move (Settings::get ("MainWindow X", 100).toInt(),
           Settings::get ("MainWindow Y", 100).toInt());
 
-    setFixedSize (0, 0);
     Settings::set ("Docked", false);
 
     showNormal();
@@ -228,7 +227,7 @@ void MainWindow::startUpSound() {
 //==================================================================================================
 
 void MainWindow::displayWindow() {
-    showNormal();
+    show();
     Settings::get ("Docked", false).toBool() ? showDocked() : showUnDocked();
 
     QTimer::singleShot (100, Qt::CoarseTimer, this, SLOT (updateSize()));

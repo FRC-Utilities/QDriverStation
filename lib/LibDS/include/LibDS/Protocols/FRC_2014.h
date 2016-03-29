@@ -32,6 +32,9 @@ class LIB_DS_DECL FRC_Protocol2014 : public DS_Core::AbstractProtocol {
 
   public:
     explicit FRC_Protocol2014();
+
+    virtual QString name();
+
     virtual int fmsFrequency();
     virtual int robotFrequency();
 

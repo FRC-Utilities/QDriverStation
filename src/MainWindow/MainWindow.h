@@ -48,9 +48,8 @@ class MainWindow : public QMainWindow {
     void showDocked();
     void showUnDocked();
     void startUpSound();
-    void displayWindow();
-
     void updateSize();
+    void displayWindow();
 
   private:
     bool m_docked;
