@@ -28,7 +28,6 @@ TARGET = QDriverStation
 win32* {
     LIBS += -lPdh
     RC_FILE = $$PWD/etc/deploy/windows/info.rc
-    CONFIG += windows
 }
 
 macx* {

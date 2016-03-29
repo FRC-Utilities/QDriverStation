@@ -29,7 +29,6 @@ using namespace DS_Core;
 //==================================================================================================
 
 Watchdog::Watchdog() {
-    setTimeout (125);
     connect (&m_timer, &QTimer::timeout, this, &Watchdog::timeout);
 }
 

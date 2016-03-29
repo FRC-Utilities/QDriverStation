@@ -57,8 +57,6 @@ const QString COMM_ESTABLISH = "<p>"
 
 AbstractProtocol::AbstractProtocol() {
     m_team                = 0;
-    m_radioIterator       = 0;
-    m_robotIterator       = 0;
     m_sentFMSPackets      = 0;
     m_sentRobotPackets    = 0;
 
@@ -84,8 +82,11 @@ AbstractProtocol::AbstractProtocol() {
              this,         &AbstractProtocol::onPingResponse);
     connect (&m_radioPing, &QTcpSocket::stateChanged,
              this,         &AbstractProtocol::onPingResponse);
+    connect (&m_scanner,   &NetworkScanner::dataReceived,
+             this,         &AbstractProtocol::onScannerResponse);
 
     generateIpLists();
+    m_watchdog.setTimeout (200);
     QTimer::singleShot (100, Qt::CoarseTimer, this, SLOT (reset()));
     QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (showPatienceMsg()));
 }
@@ -223,9 +224,6 @@ QList<DS::Joystick>* AbstractProtocol::joysticks() const {
 //==================================================================================================
 
 QString AbstractProtocol::radioAddress() {
-    if (m_radioAddress.isEmpty())
-        return radioIPs().at (m_radioIterator);
-
     return m_radioAddress;
 }
 
@@ -234,9 +232,6 @@ QString AbstractProtocol::radioAddress() {
 //==================================================================================================
 
 QString AbstractProtocol::robotAddress() {
-    if (m_robotAddress.isEmpty())
-        return robotIPs().at (m_robotIterator);
-
     return m_robotAddress;
 }
 
@@ -255,7 +250,12 @@ QByteArray AbstractProtocol::createFmsPacket() {
 
 QByteArray AbstractProtocol::createRobotPacket() {
     m_sentRobotPackets += 1;
-    return _getClientPacket();
+    QByteArray packetData = _getClientPacket();
+
+    if (!isConnectedToRobot() && robotAddress().isEmpty())
+        m_scanner.sendData (packetData);
+
+    return packetData;
 }
 
 //==================================================================================================
@@ -279,18 +279,6 @@ QStringList AbstractProtocol::robotIPs() {
 //==================================================================================================
 
 void AbstractProtocol::reset() {
-    /* Try another robot address */
-    if (m_robotIterator >= robotIPs().count() - 1)
-        m_robotIterator = 0;
-    else
-        m_robotIterator += 1;
-
-    /* Try another radio address */
-    if (m_radioIterator >= radioIPs().count() - 1)
-        m_radioIterator = 0;
-    else
-        m_radioIterator += 1;
-
     /* Custom reset procedures for each protocol */
     _resetProtocol();
 
@@ -301,16 +289,18 @@ void AbstractProtocol::reset() {
     updateSendDateTime (false);
     updateCommStatus   (DS::kFailing);
 
-    /* Figure out the robot address and ping the robot */
-    QHostInfo::lookupHost (robotAddress(), this, SLOT (lookupFinished (QHostInfo)));
-
     /* Ping robot & radio */
     pingRadio();
     pingRobot();
 
-    /* Lower the watchdog tolerance time to try more robot addresses faster */
-    m_watchdog.setTimeout    (200);
-    emit robotAddressChanged (robotAddress());
+    /* Lower the watchdog timeout for faster scanning */
+    m_watchdog.setTimeout (200);
+
+    /* Scan the next round of IP addresses */
+    if (robotAddress().isEmpty()) {
+        m_scanner.setEnabled (true);
+        m_scanner.update();
+    }
 }
 
 //==================================================================================================
@@ -320,10 +310,7 @@ void AbstractProtocol::reset() {
 void AbstractProtocol::setTeam (int team) {
     if (team != m_team) {
         m_team = team;
-
         generateIpLists();
-        emit robotAddressChanged (robotAddress());
-
         DS::log (DS::kLibLevel, "Team number set to: " + QString::number (m_team));
     }
 }
@@ -399,6 +386,7 @@ void AbstractProtocol::readRobotPacket (QByteArray data) {
         return;
 
     if (!isConnectedToRobot()) {
+        m_scanner.setEnabled (false);
         m_watchdog.setTimeout (1000);
 
         updateCommStatus (DS::kFull);
@@ -527,11 +515,9 @@ void AbstractProtocol::generateIpLists() {
     foreach (const QNetworkInterface& interface, QNetworkInterface::allInterfaces()) {
         bool isUp       = (bool) (interface.flags() & QNetworkInterface::IsUp);
         bool isRunning  = (bool) (interface.flags() & QNetworkInterface::IsRunning);
-        bool isLoopBack = (bool) (interface.flags() & QNetworkInterface::IsLoopBack);
-        bool isVirtlBox = interface.humanReadableName().contains ("virtualbox", Qt::CaseInsensitive);
 
         /* Only take into account useful network interfaces */
-        if (isUp && isRunning && !isLoopBack && !isVirtlBox) {
+        if (isUp && isRunning) {
             foreach (const QNetworkAddressEntry& address, interface.addressEntries()) {
                 QStringList numbers = address.ip().toString().split (".");
                 bool valid = (address.ip() != QHostAddress ("127.0.0.1")) &&
@@ -552,6 +538,11 @@ void AbstractProtocol::generateIpLists() {
         }
     }
 
+    /* Re-configure the network scanner */
+    m_scanner.setScanningList (m_robotIPs);
+    m_scanner.setInputPort (robotInputPort());
+    m_scanner.setOutputPort (robotOutputPort());
+
     /* Log information */
     DS::log (DS::kLibLevel, QString ("Generated %1 radio IPs").arg (m_radioIPs.count()));
     DS::log (DS::kLibLevel, QString ("Generated %1 robot IPs").arg (m_robotIPs.count()));
@@ -563,8 +554,8 @@ void AbstractProtocol::generateIpLists() {
 
 void AbstractProtocol::showPatienceMsg() {
     /* Get total scanning time, convert to seconds and round to nearest 10 */
-    int msec = robotIPs().count() * expirationTime();
-    int time = ceil ((msec / 1000) / 10) * 10;
+    double msec = (robotIPs().count() * expirationTime()) / m_scanner.scannerCount();
+    double time = ceil ((msec / 1000) / 10) * 10;
 
     /* Display the message */
     DS::sendMessage (INFO_NOTE.arg (time));
@@ -579,14 +570,12 @@ void AbstractProtocol::disableEmergencyStop() {
 }
 
 //==================================================================================================
-// AbstractProtocol::updateRobotIP
+// AbstractProtocol::onScannerResponse
 //==================================================================================================
 
-void AbstractProtocol::lookupFinished (QHostInfo info) {
-    if (!info.addresses().isEmpty())
-        emit robotAddressChanged (info.addresses().first().toString());
-
-    pingRobot();
+void AbstractProtocol::onScannerResponse (QString ip, QByteArray data) {
+    setRobotAddress (ip);
+    readRobotPacket (data);
 }
 
 //==================================================================================================

@@ -112,6 +112,7 @@ DriverStation::DriverStation() {
     qRegisterMetaType <DS::RumbleRequest> ("DS_RumbleRequest");
 
     m_init = false;
+    m_fmsPacketInterval = 9999;
     m_clientPacketInterval = 9999;
 
     /* Initialize private members */
@@ -503,6 +504,7 @@ void DriverStation::setProtocol (DS_Core::AbstractProtocol* protocol) {
         m_netConsole->setOutputPort   (protocol->netConsoleOutputPort());
         m_netConsole->setAcceptsInput (protocol->acceptsConsoleCommands());
 
+        m_fmsPacketInterval = 1000 / protocol->fmsFrequency();
         m_clientPacketInterval = 1000 / protocol->robotFrequency();
 
         sendToFms();
@@ -727,9 +729,7 @@ void DriverStation::sendToFms() {
         return;
 
     m_client->sendToFms (m_manager->currentProtocol()->createFmsPacket());
-    QTimer::singleShot (1000 / m_manager->currentProtocol()->fmsFrequency(),
-                        Qt::PreciseTimer,
-                        this, SLOT (sendToFms()));
+    QTimer::singleShot (m_fmsPacketInterval, Qt::PreciseTimer, this, SLOT (sendToFms()));
 }
 
 //==================================================================================================
