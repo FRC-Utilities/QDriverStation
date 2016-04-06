@@ -31,7 +31,7 @@ namespace DS_Core {
 /// The \c NetworkScanner class allows us to send and detect responses from
 /// the robot controller with a given IP list.
 ///
-/// The idea behind this is to use a multiple I/O sockeT pairs in order to
+/// The idea behind this is to use a multiple I/O socket pairs in order to
 /// make the network scanning process much faster and efficient than if we
 /// were to use a single I/O socket pair to scan the network.
 ///
