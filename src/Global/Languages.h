@@ -31,9 +31,10 @@ class Languages {
   public:
     typedef enum {
         kAuto     = 0,
-        kGerman   = 1,
-        kEnglish  = 2,
+        kEnglish  = 1,
+        kGerman   = 2,
         kSpanish  = 3,
+        kChinese  = 4,
     } LanguageType;
 
     static void init();

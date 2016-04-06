@@ -3,5 +3,6 @@
         <file>qds_de.qm</file>
         <file>qds_en.qm</file>
         <file>qds_es.qm</file>
+		<file>qds_ch.qm</file>
     </qresource>
 </RCC>

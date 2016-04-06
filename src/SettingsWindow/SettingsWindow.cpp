@@ -419,8 +419,7 @@ void SettingsWindow::applySettings() {
     Settings::set ("Auto Updater",   m_autoUpdater->isChecked());
     Settings::set ("UI Sounds",      m_soundEffects->isChecked());
     Settings::set ("Prompt on Quit", m_promptOnQuit->isChecked());
-    Languages::setLanguage ((Languages::LanguageType)
-                            m_languageBox->currentIndex());
+    Languages::setLanguage ((Languages::LanguageType) m_languageBox->currentIndex());
 
     /* Create and apply a theme from UI values */
     AppTheme::Theme theme;

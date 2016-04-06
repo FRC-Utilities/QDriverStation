@@ -164,6 +164,7 @@ RESOURCES += $$PWD/etc/translations/translations.qrc
 # Translations
 #-------------------------------------------------------------------------------
 
+TRANSLATIONS += $$PWD/etc/translations/qds_ch.ts
 TRANSLATIONS += $$PWD/etc/translations/qds_es.ts
 TRANSLATIONS += $$PWD/etc/translations/qds_en.ts
 TRANSLATIONS += $$PWD/etc/translations/qds_de.ts
