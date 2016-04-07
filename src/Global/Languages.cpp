@@ -38,7 +38,7 @@
 #include "Languages.h"
 
 //==================================================================================================
-// Languages::globalVariables
+// Global Variables
 //==================================================================================================
 
 static QTranslator* _translator = Q_NULLPTR;
@@ -84,7 +84,7 @@ void Languages::init() {
 
 QFont Languages::appFont() {
     QFont font;
-    font.setFamily ("QuickSand");
+    font.setFamily ("Quicksand");
     font.setPixelSize (DPI_SCALE (12));
     return font;
 }

@@ -23,6 +23,7 @@
 # Deploy configuration
 #-------------------------------------------------------------------------------
 
+CONFIG += app
 TARGET = QDriverStation
 
 win32* {
