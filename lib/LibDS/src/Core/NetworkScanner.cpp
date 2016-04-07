@@ -33,8 +33,6 @@ NetworkScanner::NetworkScanner() {
     m_output = 0;
     m_enabled = 0;
     m_scannerCount = 0;
-
-    setScannerCount (12);
 }
 
 //==================================================================================================
@@ -168,6 +166,8 @@ void NetworkScanner::setScannerCount (int count) {
 void NetworkScanner::setScanningList (const QStringList& list) {
     m_list = list;
     m_iterator = 0;
+
+    setScannerCount (list.count() / 8);
 }
 
 //==================================================================================================

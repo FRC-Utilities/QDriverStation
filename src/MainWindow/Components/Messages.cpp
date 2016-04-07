@@ -65,8 +65,8 @@ Messages::~Messages() {
 void Messages::createWidgets() {
     m_buttonsWidget  = new QWidget        (this);
     m_console        = new QPlainTextEdit (this);
-    m_copyButton     = new QPushButton    (QChar (fa::copy),   this);
-    m_clearButton    = new QPushButton    (QChar (fa::trash),  this);
+    m_copyButton     = new QPushButton    (QChar (fa::copy),  this);
+    m_clearButton    = new QPushButton    (QChar (fa::trash), this);
 
     m_console->setReadOnly  (true);
     m_console->setFont      (Languages::monoFont());
@@ -75,7 +75,7 @@ void Messages::createWidgets() {
 
     connect (m_copyButton,  &QPushButton::clicked, this, &Messages::copy);
     connect (m_clearButton, &QPushButton::clicked, this, &Messages::clear);
-    connect (QDS(),          &DriverStation::newMessage,
+    connect (QDS(),         &DriverStation::newMessage,
              this,          &Messages::registerMessage);
 }
 
@@ -102,7 +102,7 @@ void Messages::createLayouts() {
     m_mainLayout->setStretch            (1, 1);
 
     /* Set widget sizes */
-    m_console->setMinimumSize           (DPI_SCALE (360), DPI_SCALE (96));
+    m_console->setMinimumSize           (DPI_SCALE (380), DPI_SCALE (96));
     m_copyButton->setFixedSize          (DPI_SCALE  (74), DPI_SCALE (24));
     m_clearButton->setFixedSize         (DPI_SCALE  (74), DPI_SCALE (24));
 }
@@ -113,9 +113,14 @@ void Messages::createLayouts() {
 
 void Messages::copy() {
     qApp->clipboard()->setText (m_console->toPlainText());
-    registerMessage (QString   ("<font color=\"#aaa\"><p>")
-                     + tr      ("INFO: Console output copied to clipboard")
-                     + QString ("</p></font>"));
+
+    QString message = "<p>"
+                      "<font color=#888>**</font> "
+                      "<font color=#AAA>Information:</font> "
+                      "<font color=#888>Console output copied to clipboard</font>"
+                      "</p>";
+
+    registerMessage (message);
 }
 
 //==================================================================================================

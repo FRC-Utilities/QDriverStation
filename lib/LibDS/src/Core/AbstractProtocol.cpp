@@ -32,20 +32,9 @@ using namespace DS_Core;
 const QString INIT           = "<p>"
                                "<font color=#888>** <font color=#AAA>%1</font> Initialized</font>"
                                "</p>";
-const QString CHECK_FIREWALL = "<p>"
-                               "<font color=#FE755C><b>ERROR:</b></font> "
-                               "<font color=#FFFFFF>Cannot connect to robot</font><br/>"
-                               "<font color=#20C9FF>The robot is slow to respond. "
-                               "Check firewall settings.</font>"
-                               "</p>";
-const QString PARTIAL_COMM   = "<p>"
-                               "<font color=#FFF959><b>WARNING:</b></font> "
-                               "<font color=#FFFFFF>%1 responds to ping requests, "
-                               "but does not respond to DS packets.</font>"
-                               "</p>";
 const QString INFO_NOTE      = "<p>"
                                "<font color=#888>** <font color=#AAA>Notice:</font> "
-                               "It may take up to %1 secs. to detect your robot</font>"
+                               "It may take up to %1 seconds to detect the robot</font>"
                                "</p>";
 const QString IP_INFORMATION = "<p>"
                                "<font color=#888>** <font color=#AAA>Information:</font> "
@@ -93,7 +82,7 @@ AbstractProtocol::AbstractProtocol() {
 
     generateIpLists();
     QTimer::singleShot (200, Qt::CoarseTimer, this, SLOT (reset()));
-    QTimer::singleShot (500, Qt::CoarseTimer, this, SLOT (showPatienceMsg()));
+    QTimer::singleShot (800, Qt::CoarseTimer, this, SLOT (showPatienceMsg()));
 }
 
 //==================================================================================================
@@ -299,7 +288,7 @@ void AbstractProtocol::reset() {
     pingRobot();
 
     /* Lower the watchdog timeout for faster scanning */
-    m_watchdog.setTimeout (200);
+    m_watchdog.setTimeout (500);
 
     /* Scan the next round of IP addresses */
     if (robotAddress().isEmpty()) {
