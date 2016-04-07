@@ -240,7 +240,6 @@ void Operator::configureStyles() {
     m_dsable->setDefault          (true);
     m_enable->setCheckable        (true);
     m_dsable->setCheckable        (true);
-    m_practice->setEnabled        (false);
 
     /* Configure the style of the mode buttons */
     m_test->setFlat               (true);
@@ -283,6 +282,12 @@ void Operator::configureStyles() {
     m_dsable->setFont             (font);
     m_elapsedTime->setFont        (font);
 
+    /* Update progressbar style */
+    CPU::initQueryProcess();
+    m_cpu->setFormat              ("");
+    m_battery->setFormat          ("");
+    m_plugIcon->setVisible        (false);
+
     /* Update the enable/disable state and appearance */
     updateEnableState();
 
@@ -294,12 +299,6 @@ void Operator::configureStyles() {
     buttonWidth        = qMax (buttonWidth, DPI_SCALE (85));
     m_dsable->setFixedWidth (buttonWidth);
     m_enable->setFixedWidth (buttonWidth);
-
-    /* Update progressbar style */
-    CPU::initQueryProcess();
-    m_cpu->setFormat              ("");
-    m_battery->setFormat          ("");
-    m_plugIcon->setVisible        (false);
 }
 
 //==================================================================================================
@@ -415,6 +414,16 @@ void Operator::updateControlMode (int index) {
 
     else if (m_test->isChecked())
         mode = DS::kControlTest;
+
+    else if (m_practice->isChecked()) {
+        QDS()->startPractice (Settings::get ("Practice countdown",   5).toInt(),
+                              Settings::get ("Practice autonomous", 15).toInt(),
+                              Settings::get ("Practice delay",       1).toInt(),
+                              Settings::get ("Practice teleop",    100).toInt(),
+                              Settings::get ("Practice end game",   20).toInt());
+
+        return;
+    }
 
     QDS()->setControlMode (mode);
 }

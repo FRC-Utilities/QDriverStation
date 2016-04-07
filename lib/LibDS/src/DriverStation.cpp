@@ -112,6 +112,8 @@ DriverStation::DriverStation() {
     qRegisterMetaType <DS::RumbleRequest> ("DS_RumbleRequest");
 
     m_init = false;
+    m_practiceRunning = false;
+    m_practiceInterrupted = true;
     m_clientPacketInterval = 9999;
 
     /* Initialize private members */
@@ -167,16 +169,16 @@ DriverStation::DriverStation() {
 
     /* Lamda-functions */
     connect (m_manager, &DS_Core::ProtocolManager::codeChanged,
-    [ = ] (bool ignored) {
+             [ = ] (bool ignored) {
         Q_UNUSED (ignored);
         emit robotStatusChanged (getRobotStatus());
     });
     connect (m_manager, &DS_Core::ProtocolManager::communicationsChanged,
-    [ = ] (DS::DS_CommStatus status) {
+             [ = ] (DS::DS_CommStatus status) {
         emit communicationsChanged (status);
     });
     connect (m_manager, &DS_Core::ProtocolManager::communicationsChanged,
-    [ = ] (DS::DS_CommStatus status) {
+             [ = ] (DS::DS_CommStatus status) {
         emit communicationsChanged (status);
         emit robotStatusChanged (getRobotStatus());
     });
@@ -311,6 +313,14 @@ bool DriverStation::isEnabled() {
         return m_manager->currentProtocol()->isEnabled();
 
     return false;
+}
+
+//==================================================================================================
+// DriverStation::isPractice
+//==================================================================================================
+
+bool DriverStation::isPractice() {
+    return !m_practiceInterrupted && m_practiceRunning;
 }
 
 //==================================================================================================
@@ -459,11 +469,15 @@ void DriverStation::setEmergencyStop (bool emergency_stop) {
 // DriverStation::startPractice
 //==================================================================================================
 
-void DriverStation::startPractice (int countdown,
-                                   int autonomous,
-                                   int delay,
-                                   int teleop,
-                                   int endgame) {
+void DriverStation::startPractice (int countdown, int autonomous, int delay, int teleop, int endgame) {
+    /* A practice session is already under progress */
+    if (m_practiceRunning)
+        return;
+
+    /* Allow the client to switch modes when the timers expire */
+    else
+        m_practiceInterrupted = false;
+
     /* Transform the times from seconds to milliseconds */
     delay *= 1000;
     teleop *= 1000;
@@ -478,14 +492,10 @@ void DriverStation::startPractice (int countdown,
     quint32 _stop = _startEndGame + endgame;
 
     /* Configure the sound/media timers */
-    QTimer::singleShot (_startAutonomous, Qt::PreciseTimer,
-                        this, SLOT (playAutonomousStart()));
-    QTimer::singleShot (_startTeleoperated, Qt::PreciseTimer,
-                        this, SLOT (playTeleopStart()));
-    QTimer::singleShot (_stop, Qt::PreciseTimer,
-                        this, SLOT (playEndGame()));
-    QTimer::singleShot (_startEndGame, Qt::PreciseTimer,
-                        this, SLOT (playEndGame()));
+    QTimer::singleShot (_startAutonomous,   Qt::PreciseTimer, this, SLOT (playAutonomousStart()));
+    QTimer::singleShot (_startTeleoperated, Qt::PreciseTimer, this, SLOT (playTeleopStart()));
+    QTimer::singleShot (_stop,              Qt::PreciseTimer, this, SLOT (playEndGame()));
+    QTimer::singleShot (_startEndGame,      Qt::PreciseTimer, this, SLOT (playEndGame()));
 }
 
 //==================================================================================================
@@ -711,8 +721,8 @@ QString DriverStation::getRobotStatus() {
             return tr ("No Robot Code");
 
         return QString ("%1 %2")
-               .arg (DS::controlModeString (controlMode()))
-               .arg (isEnabled() ? tr ("Enabled") : tr ("Disabled"));
+                .arg (DS::controlModeString (controlMode()))
+                .arg (isEnabled() ? tr ("Enabled") : tr ("Disabled"));
     }
 
     return tr ("No Robot Communication");
@@ -791,7 +801,8 @@ void DriverStation::resetElapsedTimer (DS::ControlMode mode) {
 //==================================================================================================
 
 void DriverStation::playEndGameApproaching() {
-    QSound::play (":/LibDS/Start of End Game_normalized.wav");
+    if (isPractice())
+        QSound::play (":/LibDS/Start of End Game_normalized.wav");
 }
 
 //==================================================================================================
@@ -799,7 +810,14 @@ void DriverStation::playEndGameApproaching() {
 //==================================================================================================
 
 void DriverStation::playEndGame() {
-    QSound::play (":/LibDS/Match End_normalized.wav");
+    if (isPractice()) {
+        setEnabled (false);
+
+        m_practiceRunning = false;
+        m_practiceInterrupted = true;
+
+        QSound::play (":/LibDS/Match End_normalized.wav");
+    }
 }
 
 //==================================================================================================
@@ -807,7 +825,10 @@ void DriverStation::playEndGame() {
 //==================================================================================================
 
 void DriverStation::playTeleopStart() {
-    QSound::play (":/LibDS/Start Teleop_normalized.wav");
+    if (isPractice()) {
+        setControlMode (DS::kControlTeleoperated);
+        QSound::play (":/LibDS/Start Teleop_normalized.wav");
+    }
 }
 
 //==================================================================================================
@@ -815,5 +836,8 @@ void DriverStation::playTeleopStart() {
 //==================================================================================================
 
 void DriverStation::playAutonomousStart() {
-    QSound::play (":/LibDS/Start Auto_normalized.wav");
+    if (isPractice()) {
+        setControlMode (DS::kControlAutonomous);
+        QSound::play (":/LibDS/Start Auto_normalized.wav");
+    }
 }

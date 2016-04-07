@@ -136,6 +136,11 @@ class LIB_DS_DECL DriverStation : public QObject {
     Q_INVOKABLE bool isEnabled();
 
     ///
+    /// Returns \c true if the client is using a practice match
+    ///
+    Q_INVOKABLE bool isPractice();
+
+    ///
     /// Returns \c true if the robot is in test mode
     ///
     Q_INVOKABLE bool isTest();
@@ -430,6 +435,16 @@ class LIB_DS_DECL DriverStation : public QObject {
     /// This variable is set to \c true when the \c init() function is called
     ///
     bool m_init;
+
+    ///
+    /// If set to \c true the client will asume that we are running a practice match
+    ///
+    bool m_practiceRunning;
+
+    ///
+    /// If set to true, the practice timings will be canceled
+    ///
+    bool m_practiceInterrupted;
 
     ///
     /// Represents the time interval (in milliseconds) between two client-to-robot packets.
