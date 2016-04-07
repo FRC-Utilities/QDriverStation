@@ -169,16 +169,16 @@ DriverStation::DriverStation() {
 
     /* Lamda-functions */
     connect (m_manager, &DS_Core::ProtocolManager::codeChanged,
-             [ = ] (bool ignored) {
+    [ = ] (bool ignored) {
         Q_UNUSED (ignored);
         emit robotStatusChanged (getRobotStatus());
     });
     connect (m_manager, &DS_Core::ProtocolManager::communicationsChanged,
-             [ = ] (DS::DS_CommStatus status) {
+    [ = ] (DS::DS_CommStatus status) {
         emit communicationsChanged (status);
     });
     connect (m_manager, &DS_Core::ProtocolManager::communicationsChanged,
-             [ = ] (DS::DS_CommStatus status) {
+    [ = ] (DS::DS_CommStatus status) {
         emit communicationsChanged (status);
         emit robotStatusChanged (getRobotStatus());
     });
@@ -469,7 +469,8 @@ void DriverStation::setEmergencyStop (bool emergency_stop) {
 // DriverStation::startPractice
 //==================================================================================================
 
-void DriverStation::startPractice (int countdown, int autonomous, int delay, int teleop, int endgame) {
+void DriverStation::startPractice (int countdown, int autonomous, int delay, int teleop,
+                                   int endgame) {
     /* A practice session is already under progress */
     if (m_practiceRunning)
         return;
@@ -722,8 +723,8 @@ QString DriverStation::getRobotStatus() {
             return tr ("No Robot Code");
 
         return QString ("%1 %2")
-                .arg (DS::controlModeString (controlMode()))
-                .arg (isEnabled() ? tr ("Enabled") : tr ("Disabled"));
+               .arg (DS::controlModeString (controlMode()))
+               .arg (isEnabled() ? tr ("Enabled") : tr ("Disabled"));
     }
 
     return tr ("No Robot Communication");
