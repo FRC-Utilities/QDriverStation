@@ -31,6 +31,7 @@
 
 #include "LibDS/Core/Common.h"
 #include "LibDS/Core/Watchdog.h"
+#include "LibDS/Core/NetworkScanner.h"
 
 namespace DS_Core {
 
@@ -187,6 +188,16 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     /// a generated list of DHCP IPs based on the local IP of the client.
     ///
     QStringList robotIPs();
+
+    ///
+    /// Specifies the name/title of the protocol. This is used in the welcome
+    /// message and to generate the protocol list in the DS.
+    ///
+    /// \note This function must be re-implemented by each protocol
+    ///
+    virtual QString name() {
+        return "Abstract Protocol";
+    }
 
     ///
     /// Specifies the frequency rate (in hertz) in which the subclassed
@@ -481,8 +492,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
 
   private:
     int m_team;
-    int m_radioIterator;
-    int m_robotIterator;
+    int m_interfaces;
     int m_sentFMSPackets;
     int m_sentRobotPackets;
 
@@ -491,6 +501,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     bool m_enabled;
     bool m_robotCode;
     bool m_sendDateTime;
+    bool m_patienceShown;
     bool m_emergencyStop;
     bool m_radioConnected;
     bool m_voltageBrownout;
@@ -509,6 +520,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     Watchdog m_watchdog;
     QTcpSocket m_robotPing;
     QTcpSocket m_radioPing;
+    NetworkScanner m_scanner;
 
   private slots:
     void pingRobot();
@@ -516,7 +528,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     void generateIpLists();
     void showPatienceMsg();
     void disableEmergencyStop();
-    void lookupFinished (QHostInfo info);
+    void onScannerResponse (QString ip, QByteArray data);
     void onPingResponse (QAbstractSocket::SocketState state);
 };
 

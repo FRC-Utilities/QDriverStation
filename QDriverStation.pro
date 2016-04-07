@@ -23,12 +23,12 @@
 # Deploy configuration
 #-------------------------------------------------------------------------------
 
+CONFIG += app
 TARGET = QDriverStation
 
 win32* {
     LIBS += -lPdh
     RC_FILE = $$PWD/etc/deploy/windows/info.rc
-    CONFIG += windows
 }
 
 macx* {
@@ -165,6 +165,7 @@ RESOURCES += $$PWD/etc/translations/translations.qrc
 # Translations
 #-------------------------------------------------------------------------------
 
+TRANSLATIONS += $$PWD/etc/translations/qds_ch.ts
 TRANSLATIONS += $$PWD/etc/translations/qds_es.ts
 TRANSLATIONS += $$PWD/etc/translations/qds_en.ts
 TRANSLATIONS += $$PWD/etc/translations/qds_de.ts

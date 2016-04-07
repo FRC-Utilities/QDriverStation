@@ -20,56 +20,56 @@
  * THE SOFTWARE.
  */
 
-#ifndef _LDS_PROTOCOL_2014_H
-#define _LDS_PROTOCOL_2014_H
+#ifndef _LDS_NETWORK_SCANNER_H
+#define _LDS_NETWORK_SCANNER_H
 
-#include "LibDS/Core/AbstractProtocol.h"
+#include "LibDS/Core/Common.h"
 
-namespace DS_Protocols {
+namespace DS_Core {
 
-class LIB_DS_DECL FRC_Protocol2014 : public DS_Core::AbstractProtocol {
+///
+/// The \c NetworkScanner class allows us to send and detect responses from
+/// the robot controller with a given IP list.
+///
+/// The idea behind this is to use a multiple I/O socket pairs in order to
+/// make the network scanning process much faster and efficient than if we
+/// were to use a single I/O socket pair to scan the network.
+///
+class NetworkScanner : public QObject {
     Q_OBJECT
 
   public:
-    explicit FRC_Protocol2014();
+    explicit NetworkScanner();
 
-    virtual QString name();
-
-    virtual int fmsFrequency();
-    virtual int robotFrequency();
-
-    virtual int fmsInputPort();
-    virtual int fmsOutputPort();
-    virtual int robotInputPort();
-    virtual int robotOutputPort();
-
-    virtual int tcpProbesPort();
-    virtual int netConsoleInputPort();
-    virtual int netConsoleOutputPort();
-
-    virtual bool acceptsConsoleCommands();
+    int inputPort() const;
+    int outputPort() const;
+    bool isEnabled() const;
+    int scannerCount() const;
 
   public slots:
-    virtual void reboot();
-    virtual void restartCode();
+    void update();
+    void setInputPort (int port);
+    void setOutputPort (int port);
+    void setEnabled (bool enabled);
+    void sendData (QByteArray data);
+    void setScannerCount (int scanner_count);
+    void setScanningList (const QStringList& list);
 
   private slots:
-    virtual void _resetProtocol();
-    virtual void _showProtocolWarning();
+    void readInputData();
+
+  signals:
+    void dataReceived (QString address, QByteArray data);
 
   private:
-    virtual bool _readFMSPacket (QByteArray data);
-    virtual bool _readRobotPacket (QByteArray data);
-
-    virtual QByteArray _getFmsPacket();
-    virtual QByteArray _getClientPacket();
-    virtual QByteArray _getJoystickData();
-
-    QString m_dsVersion;
-    QString m_robotMacAddress;
-
-    bool m_reboot;
-    bool m_restartCode;
+    int m_input;
+    int m_output;
+    int m_iterator;
+    bool m_enabled;
+    int m_scannerCount;
+    QStringList m_list;
+    QList<QUdpSocket*> m_inputSockets;
+    QList<QUdpSocket*> m_outputSockets;
 };
 
 }

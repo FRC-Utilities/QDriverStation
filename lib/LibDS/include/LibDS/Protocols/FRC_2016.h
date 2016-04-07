@@ -30,6 +30,9 @@ namespace DS_Protocols {
 class LIB_DS_DECL FRC_Protocol2016 : public FRC_Protocol2015 {
     Q_OBJECT
 
+  public:
+    virtual QString name();
+
   private:
     virtual QStringList _extraRobotIPs();
 };

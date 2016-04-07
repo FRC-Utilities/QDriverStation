@@ -38,7 +38,7 @@
 #include "Languages.h"
 
 //==================================================================================================
-// Languages::globalVariables
+// Global Variables
 //==================================================================================================
 
 static QTranslator* _translator = Q_NULLPTR;
@@ -56,14 +56,17 @@ void Languages::init() {
     case kAuto:
         locale = systemLanguage();
         break;
-    case kGerman:
-        locale = "de";
-        break;
     case kEnglish:
         locale = "en";
         break;
+    case kGerman:
+        locale = "de";
+        break;
     case kSpanish:
         locale = "es";
+        break;
+    case kChinese:
+        locale = "ch";
         break;
     default:
         locale = "en";
@@ -81,7 +84,7 @@ void Languages::init() {
 
 QFont Languages::appFont() {
     QFont font;
-    font.setFamily ("QuickSand");
+    font.setFamily ("Quicksand");
     font.setPixelSize (DPI_SCALE (12));
     return font;
 }
@@ -144,9 +147,10 @@ QStringList Languages::getAvailableLanguages() {
     QStringList list;
 
     list.append ("Auto");
-    list.append ("Deutsch");
     list.append ("English");
-    list.append ("Español");
+    list.append ("German (Deutsch)");
+    list.append ("Spanish (Español)");
+    list.append ("Chinese (中文)");
 
     return list;
 }
@@ -156,8 +160,7 @@ QStringList Languages::getAvailableLanguages() {
 //==================================================================================================
 
 void Languages::setLanguage (LanguageType language) {
-    DS::log (DS::kInfoLevel,
-             "Setting language to: " + QString::number (language));
+    DS::log (DS::kInfoLevel, "Setting language to: " + QString::number (language));
 
     if (language != currentLanguage()) {
         Settings::set ("Language", language);

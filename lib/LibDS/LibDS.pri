@@ -46,7 +46,8 @@ HEADERS += \
     $$PWD/include/LibDS/Protocols/FRC_2016.h \
     $$PWD/include/LibDS/Protocols/FRC_2015.h \
     $$PWD/include/LibDS/Protocols/FRC_2014.h \
-    $$PWD/include/LibDS/Core/AbstractProtocol.h
+    $$PWD/include/LibDS/Core/AbstractProtocol.h \
+    $$PWD/include/LibDS/Core/NetworkScanner.h
 
 SOURCES += \
     $$PWD/src/DriverStation.cpp \
@@ -59,6 +60,7 @@ SOURCES += \
     $$PWD/src/Protocols/FRC_2016.cpp \
     $$PWD/src/Protocols/FRC_2015.cpp \
     $$PWD/src/Protocols/FRC_2014.cpp \
-    $$PWD/src/Core/AbstractProtocol.cpp
+    $$PWD/src/Core/AbstractProtocol.cpp \
+    $$PWD/src/Core/NetworkScanner.cpp
 
 RESOURCES += $$PWD/etc/sounds/libds-sounds.qrc
