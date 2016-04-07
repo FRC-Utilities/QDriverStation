@@ -444,11 +444,11 @@ void DriverStation::setEnabled (bool enabled) {
             m_elapsedTime->resetTimer();
 
         else {
-			m_practiceRunning = false;
+            m_practiceRunning = false;
             m_practiceInterrupted = true;
-			
+
             m_elapsedTime->stopTimer();
-		}
+        }
     }
 }
 
@@ -828,8 +828,8 @@ void DriverStation::playTeleopStart() {
     if (isPractice()) {
         setControlMode (DS::kControlTeleoperated);
         QSound::play (":/LibDS/Start Teleop_normalized.wav");
-		
-		setEnabled (true);
+
+        setEnabled (true);
     }
 }
 
@@ -841,7 +841,7 @@ void DriverStation::playAutonomousStart() {
     if (isPractice()) {
         setControlMode (DS::kControlAutonomous);
         QSound::play (":/LibDS/Start Auto_normalized.wav");
-		
-		setEnabled (true);
+
+        setEnabled (true);
     }
 }
