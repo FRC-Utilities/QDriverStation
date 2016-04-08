@@ -33,17 +33,13 @@ const QString INIT           = "<p>"
                                "<font color=#888>** <font color=#AAA>%1</font> Initialized</font>"
                                "</p>";
 const QString INFO_NOTE      = "<p>"
-                               "<font color=#888>** <font color=#AAA>Notice:</font> "
-                               "It may take up to %1 seconds to detect the robot</font>"
+                               "<font color=#888>"
+                               "** It may take up to %1 seconds to detect the robot</font>"
                                "</p>";
 const QString IP_INFORMATION = "<p>"
-                               "<font color=#888>** <font color=#AAA>Information:</font> "
-                               "%1 robot IPs generated from %2 interfaces</font>"
+                               "<font color=#888>"
+                               "** %1 robot IPs generated from %2 interfaces</font>"
                                "</p>";
-const QString COMM_ESTABLISH = "<p>"
-                               "<font color=#59FF59><b>INFO:</b></font> "
-                               "<font color=#FFFFFF>"
-                               "Robot communications established with %1</font></p>";
 
 //==================================================================================================
 // AbstractProtocol::AbstractProtocol
