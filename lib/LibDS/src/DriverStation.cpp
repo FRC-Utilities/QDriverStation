@@ -601,7 +601,7 @@ void DriverStation::resetJoysticks() {
     joysticks()->clear();
 
     if (protocolLoaded())
-        currentProtocol()->_onJoysticksChanged();
+        currentProtocol()->onJoysticksChanged();
 
     emit joystickCountChanged();
 }
@@ -694,7 +694,7 @@ void DriverStation::addJoystick (int axes, int buttons, int POVs) {
     }
 
     if (protocolLoaded())
-        currentProtocol()->_onJoysticksChanged();
+        currentProtocol()->onJoysticksChanged();
 
     emit joystickCountChanged();
 }

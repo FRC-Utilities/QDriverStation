@@ -161,7 +161,7 @@ void FRC_Protocol2015::restartCode() {
 // FRC_Protocol2015::resetProtocol
 //==================================================================================================
 
-void FRC_Protocol2015::_resetProtocol() {
+void FRC_Protocol2015::resetProtocol() {
     m_instructionCode = INVALID;
 }
 
@@ -169,7 +169,7 @@ void FRC_Protocol2015::_resetProtocol() {
 // FRC_Protocol2015::readFMSPacket
 //==================================================================================================
 
-bool FRC_Protocol2015::_readFMSPacket (QByteArray data) {
+bool FRC_Protocol2015::interpretFmsPacket (QByteArray data) {
     Q_UNUSED (data);
     return true;
 }
@@ -178,7 +178,7 @@ bool FRC_Protocol2015::_readFMSPacket (QByteArray data) {
 // FRC_Protocol2015::readPacket
 //==================================================================================================
 
-bool FRC_Protocol2015::_readRobotPacket (QByteArray data) {
+bool FRC_Protocol2015::interpretRobotPacket (QByteArray data) {
     int offset = 8;
 
     /* Packet length is invalid, watchdog will not be reset */
@@ -201,10 +201,9 @@ bool FRC_Protocol2015::_readRobotPacket (QByteArray data) {
 
     /* Update client information */
     updateVoltageBrownout (false);
-    updateSendDateTime    (request == PROGRAM_REQUEST_TIME);
-    updateRobotCode       ((status & PROGRAM_CODE_PRESENT) != 0);
-    updateVoltage         (QString::number (majorVoltage),
-                           QString::number (minorVoltage));
+    updateSendDateTime (request == PROGRAM_REQUEST_TIME);
+    updateRobotCode ((status & PROGRAM_CODE_PRESENT) != 0);
+    updateVoltage (QString::number (majorVoltage), QString::number (minorVoltage));
 
     /* Packet contains additional data structures */
     if (data.length() > offset) {
@@ -249,48 +248,10 @@ bool FRC_Protocol2015::_readRobotPacket (QByteArray data) {
 }
 
 //==================================================================================================
-// FRC_Protocol2015::getFMSPacket
-//============================================================================
-
-QByteArray FRC_Protocol2015::_getFmsPacket() {
-    QByteArray data;
-    return data;
-}
-
-//==================================================================================================
-// FRC_Protocol2015::getClientPacket
-//==================================================================================================
-
-QByteArray FRC_Protocol2015::_getClientPacket() {
-    QByteArray data;
-
-    /* Used for rebooting the robot and restarting its code */
-    quint8 instruction = isConnectedToRobot() ? m_instructionCode : INVALID;
-
-    /* Defines operation mode, e-stop state & enabled state */
-    quint8 opcode = (isEmergencyStopped() ? ESTOP_ON : ESTOP_OFF) |
-                    (isEnabled() ? ENABLED : DISABLED) |
-                    (getControlCode());
-
-    /* Gets timezone data or joystick input */
-    QByteArray extensions = sendDateTime() ? _getTimezoneData() : _getJoystickData();
-
-    /* Construct the packet */
-    data.append (DS::intToBytes (sentRobotPackets()));
-    data.append (HEADER_GENERAL);
-    data.append (opcode);
-    data.append (instruction);
-    data.append (getAllianceCode());
-    data.append (extensions);
-
-    return data;
-}
-
-//==================================================================================================
 // FRC_Protocol2015::getJoystickData
 //==================================================================================================
 
-QByteArray FRC_Protocol2015::_getJoystickData() {
+QByteArray FRC_Protocol2015::getJoystickData() {
     QByteArray data;
 
     /* Do not send joystick data on DS init */
@@ -336,7 +297,7 @@ QByteArray FRC_Protocol2015::_getJoystickData() {
 // FRC_Protocol2015::getTimezoneData
 //==================================================================================================
 
-QByteArray FRC_Protocol2015::_getTimezoneData() {
+QByteArray FRC_Protocol2015::getTimezoneData() {
     QByteArray data;
 
     /* Add size (always 11) */
@@ -366,10 +327,48 @@ QByteArray FRC_Protocol2015::_getTimezoneData() {
 }
 
 //==================================================================================================
-// FRC_Protocol2015::_extraRobotIPs
+// FRC_Protocol2015::getFMSPacket
 //==================================================================================================
 
-QStringList FRC_Protocol2015::_extraRobotIPs() {
+QByteArray FRC_Protocol2015::generateFmsPacket() {
+    QByteArray data;
+    return data;
+}
+
+//==================================================================================================
+// FRC_Protocol2015::getClientPacket
+//==================================================================================================
+
+QByteArray FRC_Protocol2015::generateRobotPacket() {
+    QByteArray data;
+
+    /* Used for rebooting the robot and restarting its code */
+    quint8 instruction = isConnectedToRobot() ? m_instructionCode : INVALID;
+
+    /* Defines operation mode, e-stop state & enabled state */
+    quint8 opcode = (isEmergencyStopped() ? ESTOP_ON : ESTOP_OFF) |
+                    (isEnabled() ? ENABLED : DISABLED) |
+                    (getControlCode());
+
+    /* Gets timezone data or joystick input */
+    QByteArray extensions = sendDateTime() ? getTimezoneData() : getJoystickData();
+
+    /* Construct the packet */
+    data.append (DS::intToBytes (sentRobotPackets()));
+    data.append (HEADER_GENERAL);
+    data.append (opcode);
+    data.append (instruction);
+    data.append (getAllianceCode());
+    data.append (extensions);
+
+    return data;
+}
+
+//==================================================================================================
+// FRC_Protocol2015::additionalRobotIPs
+//==================================================================================================
+
+QStringList FRC_Protocol2015::additionalRobotIPs() {
     QStringList list;
     list.append (QString ("roboRIO-%1.local").arg (team()));
     list.append (QString ("172.22.11.2"));

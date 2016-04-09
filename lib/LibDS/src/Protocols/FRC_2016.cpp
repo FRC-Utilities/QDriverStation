@@ -36,7 +36,7 @@ QString FRC_Protocol2016::name() {
 // FRC_Protocol2016::_extraRobotIPs
 //==================================================================================================
 
-QStringList FRC_Protocol2016::_extraRobotIPs() {
+QStringList FRC_Protocol2016::additionalRobotIPs() {
     QStringList list;
     list.append (QString ("roboRIO-%1-FRC.local").arg (team()));
     list.append (QString ("roboRIO-%1.local").arg (team()));

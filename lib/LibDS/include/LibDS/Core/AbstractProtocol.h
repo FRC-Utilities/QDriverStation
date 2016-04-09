@@ -348,7 +348,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// Called when the state of the joysticks is changed
     ///
-    virtual void _onJoysticksChanged() {}
+    virtual void onJoysticksChanged() {}
 
   protected slots:
     ///
@@ -356,14 +356,14 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// \note This function must be re-implemented by each protocol
     ///
-    virtual void _resetProtocol()  {}
+    virtual void resetProtocol()  {}
 
     ///
     /// Implements a method to get more information about the robot components
     ///
     /// \note This function must be re-implemented by each protocol
     ///
-    virtual void _getRobotInformation()  {}
+    virtual void getRobotInformation()  {}
 
   protected:
     ///
@@ -371,7 +371,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// \note This function must be re-implemented by each protocol
     ///
-    virtual bool _readFMSPacket (QByteArray data) {
+    virtual bool interpretFmsPacket (QByteArray data) {
         Q_UNUSED (data);
         return false;
     }
@@ -381,29 +381,9 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// \note This function must be re-implemented by each protocol
     ///
-    virtual bool _readRobotPacket (QByteArray data) {
+    virtual bool interpretRobotPacket (QByteArray data) {
         Q_UNUSED (data);
         return false;
-    }
-
-    ///
-    /// Uses the joystick input information to generate a data array to be
-    /// sent along the client packet
-    ///
-    /// \note This function must be re-implemented by each protocol
-    ///
-    virtual QByteArray _getJoystickData() {
-        return QByteArray ("");
-    }
-
-    ///
-    /// Generates the neccesary data to send the robot the current timezone
-    /// of the client DS
-    ///
-    /// \note This function must be re-implemented by each protocol
-    ///
-    virtual QByteArray _getTimezoneData() {
-        return QByteArray ("");
     }
 
     ///
@@ -411,7 +391,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// \note This function must be re-implemented by each protocol
     ///
-    virtual QByteArray _getFmsPacket() {
+    virtual QByteArray generateFmsPacket() {
         return QByteArray ("");
     }
 
@@ -420,7 +400,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// \note This function must be re-implemented by each protocol
     ///
-    virtual QByteArray _getClientPacket() {
+    virtual QByteArray generateRobotPacket() {
         return QByteArray ("");
     }
 
@@ -429,7 +409,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// \note This function must be re-implemented by each protocol
     ///
-    virtual QStringList _extraRadioIPs() {
+    virtual QStringList additionalRadioIPs() {
         return QStringList ("");
     }
 
@@ -438,7 +418,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// \note This function must be re-implemented by each protocol
     ///
-    virtual QStringList _extraRobotIPs() {
+    virtual QStringList additionalRobotIPs() {
         return QStringList ("");
     }
 

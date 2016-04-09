@@ -34,7 +34,7 @@ class LIB_DS_DECL FRC_Protocol2016 : public FRC_Protocol2015 {
     virtual QString name();
 
   private:
-    virtual QStringList _extraRobotIPs();
+    virtual QStringList additionalRobotIPs();
 };
 
 }

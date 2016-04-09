@@ -32,17 +32,14 @@ class LIB_DS_DECL FRC_Protocol2015 : public DS_Core::AbstractProtocol {
 
   public:
     virtual QString name();
-
     virtual int fmsFrequency();
     virtual int robotFrequency();
 
     virtual int fmsInputPort();
     virtual int fmsOutputPort();
+    virtual int tcpProbesPort();
     virtual int robotInputPort();
     virtual int robotOutputPort();
-
-    virtual int tcpProbesPort();
-
     virtual int netConsoleInputPort();
     virtual bool acceptsConsoleCommands();
 
@@ -51,18 +48,18 @@ class LIB_DS_DECL FRC_Protocol2015 : public DS_Core::AbstractProtocol {
     virtual void restartCode();
 
   private slots:
-    virtual void _resetProtocol();
+    virtual void resetProtocol();
 
   private:
-    virtual bool _readFMSPacket (QByteArray data);
-    virtual bool _readRobotPacket (QByteArray data);
+    virtual bool interpretFmsPacket (QByteArray data);
+    virtual bool interpretRobotPacket (QByteArray data);
 
-    virtual QByteArray _getFmsPacket();
-    virtual QByteArray _getClientPacket();
-    virtual QByteArray _getJoystickData();
-    virtual QByteArray _getTimezoneData();
+    virtual QByteArray getJoystickData();
+    virtual QByteArray getTimezoneData();
+    virtual QByteArray generateFmsPacket();
+    virtual QByteArray generateRobotPacket();
 
-    virtual QStringList _extraRobotIPs();
+    virtual QStringList additionalRobotIPs();
 
     virtual int getControlCode();
     virtual int getAllianceCode();

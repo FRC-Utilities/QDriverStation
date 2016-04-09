@@ -54,16 +54,22 @@ class LIB_DS_DECL FRC_Protocol2014 : public DS_Core::AbstractProtocol {
     virtual void restartCode();
 
   private slots:
-    virtual void _resetProtocol();
-    virtual void _showProtocolWarning();
+    virtual void resetProtocol();
+    virtual void showProtocolWarning();
 
   private:
-    virtual bool _readFMSPacket (QByteArray data);
-    virtual bool _readRobotPacket (QByteArray data);
+    virtual bool interpretFmsPacket (QByteArray data);
+    virtual bool interpretRobotPacket (QByteArray data);
 
-    virtual QByteArray _getFmsPacket();
-    virtual QByteArray _getClientPacket();
-    virtual QByteArray _getJoystickData();
+    virtual QByteArray generateFmsPacket();
+    virtual QByteArray generateRobotPacket();
+    virtual QByteArray getJoystickData();
+
+    virtual quint8 getAlliance();
+    virtual quint8 getPosition();
+    virtual quint8 getOperationCode();
+    virtual QByteArray getAnalogData();
+    virtual QByteArray getDigitalInput();
 
     QString m_dsVersion;
     QString m_robotMacAddress;

@@ -70,6 +70,8 @@ AbstractProtocol::AbstractProtocol() {
              this,         &AbstractProtocol::onPingResponse);
     connect (&m_radioPing, &QTcpSocket::stateChanged,
              this,         &AbstractProtocol::onPingResponse);
+    connect (&m_sockets,   &SocketManager::fmsPacketReceived,
+             this,         &AbstractProtocol::readFmsPacket);
     connect (&m_sockets,   &SocketManager::robotPacketReceived,
              this,         &AbstractProtocol::readRobotPacket);
 
@@ -273,7 +275,7 @@ void AbstractProtocol::reset() {
     /* Only called if the protocol is allowed to operate */
     if (isOperating()) {
         /* Custom reset procedures for each protocol */
-        _resetProtocol();
+        resetProtocol();
 
         /* Emit appropiate signals */
         updateVoltage (0, 0);
@@ -472,7 +474,7 @@ void AbstractProtocol::initialize() {
 void AbstractProtocol::sendFmsPacket() {
     if (isOperating()) {
         m_sentFMSPackets += 1;
-        m_sockets.sendFmsPacket (_getFmsPacket());
+        m_sockets.sendFmsPacket (generateFmsPacket());
     }
 
     QTimer::singleShot (1000 / fmsFrequency(), Qt::PreciseTimer, this, SLOT (sendFmsPacket()));
@@ -485,7 +487,7 @@ void AbstractProtocol::sendFmsPacket() {
 void AbstractProtocol::sendRobotPacket() {
     if (isOperating()) {
         m_sentRobotPackets += 1;
-        m_sockets.sendRobotPacket (_getClientPacket());
+        m_sockets.sendRobotPacket (generateRobotPacket());
     }
 
     QTimer::singleShot (1000 / robotFrequency(), Qt::PreciseTimer, this, SLOT (sendRobotPacket()));
@@ -503,11 +505,11 @@ void AbstractProtocol::generateIpLists() {
     m_radioIPs.clear();
 
     /* Generate radio IPs */
-    m_radioIPs.append (_extraRadioIPs());
+    m_radioIPs.append (additionalRadioIPs());
     m_radioIPs.append (DS::getStaticIP (10, team(), 1));
 
     /* Generate robot IPs */
-    m_robotIPs.append (_extraRobotIPs());
+    m_robotIPs.append (additionalRobotIPs());
     m_robotIPs.append ("127.0.0.1");
 
     /* Generate robot IPs based on the current IP(s) of the computer */
@@ -559,11 +561,11 @@ void AbstractProtocol::disableEmergencyStop() {
 }
 
 //==================================================================================================
-// AbstractProtocol::readFMSPacket
+// AbstractProtocol::readFmsSPacket
 //==================================================================================================
 
 void AbstractProtocol::readFmsPacket (QByteArray data) {
-    if (_readFMSPacket (data))
+    if (interpretFmsPacket (data))
         emit fmsChanged (true);
 }
 
@@ -587,10 +589,10 @@ void AbstractProtocol::readRobotPacket (QByteArray data) {
         updateCommStatus (DS::kFull);
         DS::log (DS::kLibLevel, "Robot/DS connection established!");
 
-        _getRobotInformation();
+        getRobotInformation();
     }
 
-    if (_readRobotPacket (data))
+    if (interpretRobotPacket (data))
         m_watchdog.restart();
 }
 
