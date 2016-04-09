@@ -36,9 +36,9 @@ using namespace DS_Protocols;
 #define DS_TO_CRIO_CONTROL_EMERGENCY_STOP 0x00
 #define DS_TO_CRIO_ALLIANCE_RED           0x52
 #define DS_TO_CRIO_ALLIANCE_BLUE          0x52
-#define DS_TO_CRIO_POSITION_1             0x01
-#define DS_TO_CRIO_POSITION_2             0x02
-#define DS_TO_CRIO_POSITION_3             0x03
+#define DS_TO_CRIO_POSITION_1             0x31
+#define DS_TO_CRIO_POSITION_2             0x32
+#define DS_TO_CRIO_POSITION_3             0x33
 
 //==================================================================================================
 // FRC_Protocol2014::FRC_Protocol2014
