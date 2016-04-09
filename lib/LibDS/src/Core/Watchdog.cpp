@@ -55,5 +55,5 @@ void Watchdog::restart() {
 
 void Watchdog::setTimeout (int time) {
     m_timer.setInterval (time);
-    m_timer.start();
+    restart();
 }

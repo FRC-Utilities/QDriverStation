@@ -26,11 +26,9 @@
 #include "LibDS/Core/Common.h"
 
 namespace DS_Core {
-class Client;
 class AbstractProtocol;
 class NetConsole;
 class ElapsedTime;
-class ProtocolManager;
 }
 
 ///
@@ -70,6 +68,12 @@ class LIB_DS_DECL DriverStation : public QObject {
         kFRCProtocol2015 = 1,
         kFRCProtocol2014 = 2
     };
+
+    ///
+    /// Returns \c true if the current protocol is valid and does not
+    /// point to a NULL pointer
+    ///
+    Q_INVOKABLE bool protocolLoaded();
 
     ///
     /// Returns \c true if the DS has full communications with the robot and
@@ -124,6 +128,11 @@ class LIB_DS_DECL DriverStation : public QObject {
     /// Returns a list with the current joysticks
     ///
     Q_INVOKABLE QList<DS::Joystick>* joysticks();
+
+    ///
+    /// Returns a pointer to the current protocol in use
+    ///
+    Q_INVOKABLE DS_Core::AbstractProtocol* currentProtocol();
 
     ///
     /// Returns \c true if the robot reports that the user code is loaded
@@ -447,36 +456,10 @@ class LIB_DS_DECL DriverStation : public QObject {
     bool m_practiceInterrupted;
 
     ///
-    /// Represents the time interval (in milliseconds) between two client-to-robot packets.
-    /// This value is updated when we load a protcol in the DS.
-    ///
-    int m_clientPacketInterval;
-
-    ///
-    /// Represents the time interval (in milliseconds) between two client-to-FMS packets.
-    /// This value is updated when we load a protcol in the DS.
-    ///
-    int m_fmsPacketInterval;
-
-    ///
-    /// The client, used for sending and receiving data
-    /// from a specified network address and port, go on
-    /// and crash the school's server if you wish
-    ///
-    DS_Core::Client* m_client;
-
-    ///
     /// Used for receiving messages broadcasted by the
     /// robot over the network
     ///
     DS_Core::NetConsole* m_netConsole;
-
-    ///
-    /// Allows us to select an operation protocol and
-    /// configure it automatically to fit the librarie's
-    /// standards
-    ///
-    DS_Core::ProtocolManager* m_manager;
 
     ///
     /// Represents the current protocol in operation
@@ -505,30 +488,10 @@ class LIB_DS_DECL DriverStation : public QObject {
 
   private slots:
     ///
-    /// Sends a generated client packet to the robot
-    ///
-    void sendToFms();
-
-    ///
-    /// Sends a generated client packet to the robot
-    ///
-    void sendToRobot();
-
-    ///
     /// Resets the internal values of the library when we disconnect from the
     /// robot.
     ///
     void resetEverything();
-
-    ///
-    /// Sends the received FMS packet to the current protocol for further processing
-    ///
-    void readFmsPacket (QByteArray response);
-
-    ///
-    /// Sends the received robot packet to the current protocol for further processing
-    ///
-    void readRobotPacket (QByteArray response);
 
     ///
     /// Updates the elapsed time when the control mode is changed

@@ -31,7 +31,7 @@
 
 #include "LibDS/Core/Common.h"
 #include "LibDS/Core/Watchdog.h"
-#include "LibDS/Core/NetworkScanner.h"
+#include "LibDS/Core/SocketManager.h"
 
 namespace DS_Core {
 
@@ -70,6 +70,11 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     /// Returns \c true if the robot is running the user/team code.
     ///
     bool hasCode() const;
+
+    ///
+    /// Returns \c true if the protocol is operating
+    ///
+    bool isOperating() const;
 
     ///
     /// Returns the expiration time of the watchdog
@@ -158,24 +163,6 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     /// subclassed protocol or an user-set address.
     ///
     QString robotAddress();
-
-    ///
-    /// Constructs an FMS packet and updates the internal values
-    /// of this class.
-    ///
-    /// Please note that each subclassed protocol defines how a
-    /// FMS packet is generated with the \c _getFmsPacket function.
-    ///
-    QByteArray createFmsPacket();
-
-    ///
-    /// Constructs a DS-to-robot packet and updates the internal values
-    /// of this class.
-    ///
-    /// Please note that each subclassed protocol defines how a robot
-    /// packet is generated with the \c _getRobotPacket function.
-    ///
-    QByteArray createRobotPacket();
 
     ///
     /// Returns the default radio addresses of the current protocol and
@@ -298,6 +285,16 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
 
   public slots:
     ///
+    /// Inhibits the operation of the protocol
+    ///
+    void stop();
+
+    ///
+    /// Allows the operation of the protocol
+    ///
+    void start();
+
+    ///
     /// Resets the internal values of the protocol and emits the appropiate
     /// signals when the robot communication is lost.
     ///
@@ -306,8 +303,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     void reset();
 
     ///
-    /// Changes the team number of the robot, this can be used to generate
-    /// the robot and radio address.
+    /// Changes the team number and regenerates the IP lists
     ///
     void setTeam (int team);
 
@@ -335,16 +331,6 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     /// Updates the control \a mode of the robot
     ///
     void setControlMode (DS::ControlMode mode);
-
-    ///
-    /// Reads the FMS packet and calls the appropiate functions to interpret it
-    ///
-    void readFmsPacket (QByteArray data);
-
-    ///
-    /// Reads the robot data and calls the appropiate functions to interpret it
-    ///
-    void readRobotPacket (QByteArray data);
 
     ///
     /// Reboots the robot
@@ -463,32 +449,30 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     void updateRobotCode (bool available);
     void updateSendDateTime (bool sendDT);
     void updateRadioStatus (bool connected);
-    void updateCommStatus (DS::DS_CommStatus statusCode);
     void updateVoltageBrownout (bool brownout);
     void updateVoltage (QString digit, QString decimal);
+    void updateCommStatus (DS::DS_CommStatus statusCode);
 
   signals:
     void codeChanged (bool);
     void emergencyStopped();
-    void fmsChanged (bool attached);
-    void radioCommChanged (bool);
-    void rumbleRequest (DS::RumbleRequest request);
-    void communicationsChanged (DS::DS_CommStatus);
-    void voltageBrownoutChanged (bool);
-    void voltageChanged (QString);
     void cpuUsageChanged (int);
     void ramUsageChanged (int);
-    void diskUsageChanged (int);
-    void CANInfoReceived (DS::CAN_Information);
     void enabledChanged (bool);
-    void emergencyStoppedChanged (bool);
-    void controlModeChanged (DS::ControlMode);
+    void diskUsageChanged (int);
+    void radioCommChanged (bool);
+    void voltageChanged (QString);
+    void fmsChanged (bool attached);
     void libVersionChanged (QString);
     void rioVersionChanged (QString);
     void pdpVersionChanged (QString);
     void pcmVersionChanged (QString);
-    void robotAddressChanged (QString);
-    void packetReceived();
+    void voltageBrownoutChanged (bool);
+    void emergencyStoppedChanged (bool);
+    void controlModeChanged (DS::ControlMode);
+    void CANInfoReceived (DS::CAN_Information);
+    void rumbleRequest (DS::RumbleRequest request);
+    void communicationsChanged (DS::DS_CommStatus);
 
   private:
     int m_team;
@@ -499,6 +483,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     float m_voltage;
 
     bool m_enabled;
+    bool m_operating;
     bool m_robotCode;
     bool m_sendDateTime;
     bool m_patienceShown;
@@ -513,22 +498,21 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     QStringList m_robotIPs;
     QStringList m_radioIPs;
 
-    QString m_robotIp;
-    QString m_robotAddress;
-    QString m_radioAddress;
-
     Watchdog m_watchdog;
     QTcpSocket m_robotPing;
     QTcpSocket m_radioPing;
-    NetworkScanner m_scanner;
+    SocketManager m_sockets;
 
   private slots:
     void pingRobot();
     void pingRadio();
+    void initialize();
+    void sendFmsPacket();
+    void sendRobotPacket();
     void generateIpLists();
-    void showPatienceMsg();
     void disableEmergencyStop();
-    void onScannerResponse (QString ip, QByteArray data);
+    void readFmsPacket (QByteArray data);
+    void readRobotPacket (QByteArray data);
     void onPingResponse (QAbstractSocket::SocketState state);
 };
 

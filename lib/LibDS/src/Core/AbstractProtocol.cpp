@@ -51,13 +51,12 @@ AbstractProtocol::AbstractProtocol() {
     m_sentFMSPackets      = 0;
     m_sentRobotPackets    = 0;
 
-    m_robotAddress        = "";
-
     m_alliance            = DS::kAllianceRed1;
     m_controlMode         = DS::kControlInvalid;
     m_communicationStatus = DS::kFailing;
 
     m_enabled             = false;
+    m_operating           = false;
     m_robotCode           = false;
     m_emergencyStop       = false;
     m_radioConnected      = false;
@@ -67,18 +66,16 @@ AbstractProtocol::AbstractProtocol() {
 
     connect (&m_watchdog,  &Watchdog::timeout,
              this,         &AbstractProtocol::reset);
-    connect (this,         &AbstractProtocol::packetReceived,
-             &m_watchdog,  &Watchdog::restart);
     connect (&m_robotPing, &QTcpSocket::stateChanged,
              this,         &AbstractProtocol::onPingResponse);
     connect (&m_radioPing, &QTcpSocket::stateChanged,
              this,         &AbstractProtocol::onPingResponse);
-    connect (&m_scanner,   &NetworkScanner::dataReceived,
-             this,         &AbstractProtocol::onScannerResponse);
+    connect (&m_sockets,   &SocketManager::robotPacketReceived,
+             this,         &AbstractProtocol::readRobotPacket);
 
     generateIpLists();
     QTimer::singleShot (200, Qt::CoarseTimer, this, SLOT (reset()));
-    QTimer::singleShot (800, Qt::CoarseTimer, this, SLOT (showPatienceMsg()));
+    QTimer::singleShot (800, Qt::CoarseTimer, this, SLOT (initialize()));
 }
 
 //==================================================================================================
@@ -95,6 +92,14 @@ int AbstractProtocol::team() const {
 
 bool AbstractProtocol::hasCode() const {
     return m_robotCode;
+}
+
+//==================================================================================================
+// AbstractProtocol::isOperating
+//==================================================================================================
+
+bool AbstractProtocol::isOperating() const {
+    return m_operating;
 }
 
 //==================================================================================================
@@ -214,7 +219,7 @@ QList<DS::Joystick>* AbstractProtocol::joysticks() const {
 //==================================================================================================
 
 QString AbstractProtocol::radioAddress() {
-    return m_radioAddress;
+    return DS::getStaticIP (10, team(), 1);
 }
 
 //==================================================================================================
@@ -222,30 +227,7 @@ QString AbstractProtocol::radioAddress() {
 //==================================================================================================
 
 QString AbstractProtocol::robotAddress() {
-    return m_robotAddress;
-}
-
-//==================================================================================================
-// AbstractProtocol::createFMSPacket
-//==================================================================================================
-
-QByteArray AbstractProtocol::createFmsPacket() {
-    m_sentFMSPackets += 1;
-    return _getFmsPacket();
-}
-
-//==================================================================================================
-// AbstractProtocol::createPacket
-//==================================================================================================
-
-QByteArray AbstractProtocol::createRobotPacket() {
-    m_sentRobotPackets += 1;
-    QByteArray packetData = _getClientPacket();
-
-    if (!isConnectedToRobot() && robotAddress().isEmpty())
-        m_scanner.sendData (packetData);
-
-    return packetData;
+    return m_sockets.robotAddress();
 }
 
 //==================================================================================================
@@ -265,31 +247,48 @@ QStringList AbstractProtocol::robotIPs() {
 }
 
 //==================================================================================================
+// AbstractProtocol::stop
+//==================================================================================================
+
+void AbstractProtocol::stop() {
+    m_operating = false;
+}
+
+//==================================================================================================
+// AbstractProtocol::start
+//==================================================================================================
+
+void AbstractProtocol::start() {
+    m_operating = true;
+}
+
+//==================================================================================================
 // AbstractProtocol::reset
 //==================================================================================================
 
 void AbstractProtocol::reset() {
-    /* Custom reset procedures for each protocol */
-    _resetProtocol();
-
-    /* Emit appropiate signals */
-    updateVoltage      (0, 0);
-    updateRobotCode    (false);
-    updateRadioStatus  (false);
-    updateSendDateTime (false);
-    updateCommStatus   (DS::kFailing);
-
-    /* Ping robot & radio */
-    pingRadio();
-    pingRobot();
-
     /* Lower the watchdog timeout for faster scanning */
     m_watchdog.setTimeout (500);
 
-    /* Scan the next round of IP addresses */
-    if (robotAddress().isEmpty()) {
-        m_scanner.setEnabled (true);
-        m_scanner.update();
+    /* Only called if the protocol is allowed to operate */
+    if (isOperating()) {
+        /* Custom reset procedures for each protocol */
+        _resetProtocol();
+
+        /* Emit appropiate signals */
+        updateVoltage (0, 0);
+        updateRobotCode (false);
+        updateRadioStatus (false);
+        updateSendDateTime (false);
+        updateCommStatus (DS::kFailing);
+
+        /* Ping robot & radio */
+        pingRadio();
+        pingRobot();
+
+        /* Scan the next round of IP addresses */
+        if (robotAddress().isEmpty())
+            m_sockets.refreshIPs();
     }
 }
 
@@ -333,10 +332,7 @@ void AbstractProtocol::setEmergencyStop (bool emergency_stop) {
 //==================================================================================================
 
 void AbstractProtocol::setRobotAddress (QString address) {
-    m_robotAddress = address;
-
-    if (!isConnectedToRobot())
-        emit robotAddressChanged (robotAddress());
+    m_sockets.setRobotAddress (address);
 }
 
 //==================================================================================================
@@ -356,40 +352,6 @@ void AbstractProtocol::setControlMode (DS::ControlMode mode) {
         m_controlMode = mode;
         emit controlModeChanged (controlMode());
     }
-}
-
-//==================================================================================================
-// AbstractProtocol::readFMSPacket
-//==================================================================================================
-
-void AbstractProtocol::readFmsPacket (QByteArray data) {
-    if (_readFMSPacket (data))
-        emit fmsChanged (true);
-}
-
-//==================================================================================================
-// AbstractProtocol::readRobotPacket
-//==================================================================================================
-
-void AbstractProtocol::readRobotPacket (QByteArray data) {
-    if (data.isEmpty())
-        return;
-
-    if (!isConnectedToRobot()) {
-        m_scanner.setEnabled (false);
-        m_watchdog.setTimeout (1000);
-
-        updateCommStatus (DS::kFull);
-        setEnabled       (isEnabled());
-        setRobotAddress  (robotAddress());
-        setControlMode   (DS::kControlTeleoperated);
-        DS::log          (DS::kLibLevel, "Robot/DS connection established!");
-
-        _getRobotInformation();
-    }
-
-    if (_readRobotPacket (data))
-        emit packetReceived();
 }
 
 //==================================================================================================
@@ -421,15 +383,6 @@ void AbstractProtocol::updateSendDateTime (bool sendDT) {
 void AbstractProtocol::updateRadioStatus (bool connected) {
     m_radioConnected = connected;
     emit radioCommChanged (m_radioConnected);
-}
-
-//==================================================================================================
-// AbstractProtocol::updateCommStatus
-//==================================================================================================
-
-void AbstractProtocol::updateCommStatus (DS::DS_CommStatus status) {
-    m_communicationStatus = status;
-    emit communicationsChanged (m_communicationStatus);
 }
 
 //==================================================================================================
@@ -467,6 +420,15 @@ void AbstractProtocol::updateVoltage (QString digit, QString decimal) {
 }
 
 //==================================================================================================
+// AbstractProtocol::updateCommStatus
+//==================================================================================================
+
+void AbstractProtocol::updateCommStatus (DS::DS_CommStatus status) {
+    m_communicationStatus = status;
+    emit communicationsChanged (m_communicationStatus);
+}
+
+//==================================================================================================
 // AbstractProtocol::pingRobot
 //==================================================================================================
 
@@ -483,6 +445,52 @@ void AbstractProtocol::pingRadio() {
     m_radioPing.abort();
     m_radioPing.connectToHost (radioAddress(), 80, QTcpSocket::ReadOnly);
 }
+
+//==================================================================================================
+// AbstractProtocol::initialize
+//==================================================================================================
+
+void AbstractProtocol::initialize() {
+    /* Get total scanning time, convert to seconds and round to nearest 10 */
+    double msec = (robotIPs().count() * expirationTime()) / m_sockets.scannerCount();
+    double time = ceil ((msec / 1000) / 10) * 10;
+
+    /* Display the message */
+    DS::sendMessage (INIT.arg (name()));
+    DS::sendMessage (INFO_NOTE.arg (time));
+    DS::sendMessage (IP_INFORMATION.arg (m_robotIPs.count()).arg (m_interfaces));
+
+    /* Begin the packet creation loop */
+    sendFmsPacket();
+    sendRobotPacket();
+}
+
+//==================================================================================================
+// AbstractProtocol::sendFmsPacket
+//==================================================================================================
+
+void AbstractProtocol::sendFmsPacket() {
+    if (isOperating()) {
+        m_sentFMSPackets += 1;
+        m_sockets.sendFmsPacket (_getFmsPacket());
+    }
+
+    QTimer::singleShot (1000 / fmsFrequency(), Qt::PreciseTimer, this, SLOT (sendFmsPacket()));
+}
+
+//==================================================================================================
+// AbstractProtocol::sendRobotPacket
+//==================================================================================================
+
+void AbstractProtocol::sendRobotPacket() {
+    if (isOperating()) {
+        m_sentRobotPackets += 1;
+        m_sockets.sendRobotPacket (_getClientPacket());
+    }
+
+    QTimer::singleShot (1000 / robotFrequency(), Qt::PreciseTimer, this, SLOT (sendRobotPacket()));
+}
+
 
 //==================================================================================================
 // AbstractProtocol::generateIpLists
@@ -531,28 +539,15 @@ void AbstractProtocol::generateIpLists() {
     }
 
     /* Re-configure the network scanner */
-    m_scanner.setScanningList (m_robotIPs);
-    m_scanner.setInputPort (robotInputPort());
-    m_scanner.setOutputPort (robotOutputPort());
+    m_sockets.setRobotIPs (m_robotIPs);
+    m_sockets.setFmsInputPort (fmsInputPort());
+    m_sockets.setFmsOutputPort (fmsOutputPort());
+    m_sockets.setRobotInputPort (robotInputPort());
+    m_sockets.setRobotOutputPort (robotOutputPort());
 
     /* Log information */
     DS::log (DS::kLibLevel, QString ("Generated %1 radio IPs").arg (m_radioIPs.count()));
     DS::log (DS::kLibLevel, QString ("Generated %1 robot IPs").arg (m_robotIPs.count()));
-}
-
-//==================================================================================================
-// AbstractProtocol::showPatienceMsg
-//==================================================================================================
-
-void AbstractProtocol::showPatienceMsg() {
-    /* Get total scanning time, convert to seconds and round to nearest 10 */
-    double msec = (robotIPs().count() * expirationTime()) / m_scanner.scannerCount();
-    double time = ceil ((msec / 1000) / 10) * 10;
-
-    /* Display the message */
-    DS::sendMessage (INIT.arg (name()));
-    DS::sendMessage (INFO_NOTE.arg (time));
-    DS::sendMessage (IP_INFORMATION.arg (m_robotIPs.count()).arg (m_interfaces));
 }
 
 //==================================================================================================
@@ -564,12 +559,39 @@ void AbstractProtocol::disableEmergencyStop() {
 }
 
 //==================================================================================================
-// AbstractProtocol::onScannerResponse
+// AbstractProtocol::readFMSPacket
 //==================================================================================================
 
-void AbstractProtocol::onScannerResponse (QString ip, QByteArray data) {
-    setRobotAddress (ip);
-    readRobotPacket (data);
+void AbstractProtocol::readFmsPacket (QByteArray data) {
+    if (_readFMSPacket (data))
+        emit fmsChanged (true);
+}
+
+//==================================================================================================
+// AbstractProtocol::readRobotPacket
+//==================================================================================================
+
+void AbstractProtocol::readRobotPacket (QByteArray data) {
+    if (data.isEmpty())
+        return;
+
+    if (!isConnectedToRobot()) {
+        m_watchdog.setTimeout (1000);
+
+        if (controlMode() != DS::kControlInvalid)
+            setControlMode (controlMode());
+        else
+            setControlMode (DS::kControlTeleoperated);
+
+        setEnabled (isEnabled());
+        updateCommStatus (DS::kFull);
+        DS::log (DS::kLibLevel, "Robot/DS connection established!");
+
+        _getRobotInformation();
+    }
+
+    if (_readRobotPacket (data))
+        m_watchdog.restart();
 }
 
 //==================================================================================================
