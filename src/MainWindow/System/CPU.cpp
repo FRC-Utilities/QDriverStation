@@ -38,10 +38,11 @@ static PDH_HCOUNTER cpuTotal;
 // CPU::getUsage
 //==================================================================================================
 
+#include <qdebug.h>
 int CPU::getUsage() {
     int usage = 0;
 
-#if defined Q_OSw_WIN
+#if defined Q_OS_WIN
     PDH_FMT_COUNTERVALUE counterVal;
     PdhCollectQueryData (cpuQuery);
     PdhGetFormattedCounterValue (cpuTotal, PDH_FMT_DOUBLE, 0, &counterVal);
@@ -94,7 +95,9 @@ int CPU::getUsage() {
     usage = (t * 10) + u;
 #endif
 
-    if (usage < 5) usage = 5;
+    if (usage < 10)
+        usage = 10;
+
     return usage;
 }
 

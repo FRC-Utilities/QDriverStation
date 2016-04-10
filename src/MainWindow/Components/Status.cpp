@@ -243,19 +243,19 @@ void Status::configureStyles() {
 
 void Status::connectSlots() {
     connect (QDS(), &DriverStation::joystickCountChanged,
-             this, &Status::updateJoysticks);
+             this,  &Status::updateJoysticks);
     connect (QDS(), &DriverStation::communicationsChanged,
-             this, &Status::updateCommStatus);
+             this,  &Status::updateCommStatus);
     connect (QDS(), &DriverStation::codeChanged,
-             this, &Status::updateCodeStatus);
+             this,  &Status::updateCodeStatus);
     connect (QDS(), &DriverStation::voltageChanged,
-             this, &Status::updateVoltage);
+             this,  &Status::updateVoltage);
     connect (QDS(), &DriverStation::robotStatusChanged,
-             this, &Status::updateStatus);
+             this,  &Status::updateStatus);
     connect (QDS(), &DriverStation::teamChanged,
-             this, &Status::updateTeam);
+             this,  &Status::updateTeam);
     connect (QDS(), &DriverStation::emergencyStopped,
-             this, &Status::updateEmergencyStop);
+             this,  &Status::updateEmergencyStop);
 }
 
 //==================================================================================================

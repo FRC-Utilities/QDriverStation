@@ -122,11 +122,11 @@ void Operator::createWidgets() {
     m_plugIcon         = new QLabel (QChar (fa::plug), this);
 
     /* Create indicator captions */
-    m_cpuLabel         = new QLabel (tr ("PC CPU"),       this);
-    m_batteryLabel     = new QLabel (tr ("PC Battery"),   this);
-    m_windowModeLabel  = new QLabel (tr ("Window Mode"),  this);
-    m_elapsedTimeLabel = new QLabel (tr ("Elapsed Time"), this);
-    m_teamStationLabel = new QLabel (tr ("Team Station"), this);
+    m_cpuLabel         = new QLabel (tr ("PC CPU") + " %", this);
+    m_batteryLabel     = new QLabel (tr ("PC Battery"),    this);
+    m_windowModeLabel  = new QLabel (tr ("Window"),        this);
+    m_elapsedTimeLabel = new QLabel (tr ("Elapsed Time"),  this);
+    m_teamStationLabel = new QLabel (tr ("Team Station"),  this);
 
     /* Create window mode buttons */
     m_windowGroup      = new QButtonGroup (this);
@@ -372,7 +372,7 @@ void Operator::updateWindowState() {
 //==================================================================================================
 
 void Operator::updateProgressbars() {
-    if (m_cpu && m_battery && m_plugIcon) {
+    if (m_cpu != Q_NULLPTR && m_battery != Q_NULLPTR  && m_plugIcon != Q_NULLPTR) {
         m_cpu->setValue (CPU::getUsage());
         m_battery->setValue (Battery::currentLevel());
         m_plugIcon->setVisible (Battery::isConenctedToPowerSupply());
@@ -381,12 +381,18 @@ void Operator::updateProgressbars() {
         QPalette cpuPalette;
         cpuPalette.setColor (QPalette::Highlight, QColor ("#dcae00"));
 
+        /* Figure out battery color based on battery level */
+        QString batteryColor;
+        if (m_battery->value() < 25)
+            batteryColor = "#ee141a";
+        else if (m_battery->value() < 60)
+            batteryColor = "#deae00";
+        else
+            batteryColor = "#00ae00";
+
         /* Create battery palette */
         QPalette batteryPalette;
-        batteryPalette.setColor (QPalette::Highlight,
-                                 QColor (m_battery->value() <= 25 ?
-                                         "#ee141a" :
-                                         "#deae00"));
+        batteryPalette.setColor (QPalette::Highlight, QColor (batteryColor));
 
 
         /* Apply palettes */
