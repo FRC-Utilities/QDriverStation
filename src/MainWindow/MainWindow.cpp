@@ -98,25 +98,17 @@ MainWindow::MainWindow() {
     setCentralWidget              (m_central);
     m_central->setMinimumWidth    (m_central->minimumSizeHint().width());
     m_central->setFixedHeight     (m_central->minimumSizeHint().height());
-    setWindowTitle                (QApplication::applicationName()
-                                   + QString (" ")
-                                   + QApplication::applicationVersion());
+    setWindowTitle                (QString ("%1 - Version %2").arg (qApp->applicationName(),
+                                   qApp->applicationVersion()));
 
     /* Signals/slots */
-    connect (QDS(),     &DriverStation::initialized,
-             this,      &MainWindow::displayWindow);
-    connect (m_leftTab, &LeftTab::showDocked,
-             this,      &MainWindow::showDocked);
-    connect (m_leftTab, &LeftTab::showUnDocked,
-             this,      &MainWindow::showUnDocked);
-    connect (m_leftTab, &LeftTab::requestErrorAnimation,
-             m_status,  &Status::doErrorAnimation);
-    connect (qApp,      &QApplication::aboutToQuit,
-             this,      &MainWindow::quitSound);
+    connect (m_leftTab, &LeftTab::showDocked, this, &MainWindow::showDocked);
+    connect (m_leftTab, &LeftTab::showUnDocked, this, &MainWindow::showUnDocked);
+    connect (QDS(), &DriverStation::initialized, this, &MainWindow::displayWindow);
+    connect (m_leftTab, &LeftTab::requestErrorAnimation, m_status, &Status::doErrorAnimation);
 
     /* Move window to saved position */
-    move (Settings::get ("MainWindow X", 100).toInt(),
-          Settings::get ("MainWindow Y", 100).toInt());
+    move (Settings::get ("MainWindow X", 100).toInt(), Settings::get ("MainWindow Y", 100).toInt());
 
     DS::log (DS::kInfoLevel, "MainWindow OK");
 
@@ -169,7 +161,6 @@ void MainWindow::closeEvent (QCloseEvent* event) {
     }
 
     event->accept();
-    qApp->exit (EXIT_SUCCESS);
 }
 
 //==================================================================================================
@@ -178,23 +169,12 @@ void MainWindow::closeEvent (QCloseEvent* event) {
 
 void MainWindow::showUnDocked() {
     m_docked = false;
-    setWindowFlags (Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint);
-
-    move (Settings::get ("MainWindow X", 100).toInt(),
-          Settings::get ("MainWindow Y", 100).toInt());
 
     Settings::set ("Docked", false);
+    setWindowFlags (Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint);
+    move (Settings::get ("MainWindow X", 100).toInt(), Settings::get ("MainWindow Y", 100).toInt());
 
     showNormal();
-}
-
-//==================================================================================================
-// MainWindow::quitSound
-//==================================================================================================
-
-void MainWindow::quitSound() {
-    BEEPER()->beep (220, 100);
-    BEEPER()->beep (440, 100);;
 }
 
 //==================================================================================================
@@ -204,7 +184,6 @@ void MainWindow::quitSound() {
 void MainWindow::showDocked() {
     m_docked = true;
 
-    /* Frameless windows are a headache for some window managers */
 #if defined Q_OS_WIN
     setWindowFlags (Qt::FramelessWindowHint);
 #endif

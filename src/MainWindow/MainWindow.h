@@ -44,10 +44,10 @@ class MainWindow : public QMainWindow {
     void closeEvent (QCloseEvent* event);
 
   private slots:
-    void quitSound();
     void showDocked();
     void showUnDocked();
     void startUpSound();
+
     void updateSize();
     void displayWindow();
 
