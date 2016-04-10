@@ -49,9 +49,11 @@ class Joysticks : public QWidget {
     void hideEvent (QHideEvent* event);
 
   private slots:
+    void blacklist();
+    void whitelist();
     void onCountChanged();
     void setupIndicators (int row);
-    void setTipsVisible (bool visible);
+    void customMenuRequested (QPoint pos);
     void onPOVEvent (QDS_POVEvent event);
     void onAxisEvent (QDS_AxisEvent event);
     void onButtonEvent (QDS_ButtonEvent event);

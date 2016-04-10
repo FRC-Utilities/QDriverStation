@@ -54,8 +54,8 @@ SDL_Joysticks::SDL_Joysticks() {
 // SDL_Joysticks::joysticks
 //==================================================================================================
 
-QList<QDS_InputDevice> SDL_Joysticks::joysticks() {
-    QList<QDS_InputDevice> list;
+QList<QDS_InputDevice*> SDL_Joysticks::joysticks() {
+    QList<QDS_InputDevice*> list;
 
     for (int i = 0; i < SDL_NumJoysticks(); ++i)
         list.append (getJoystick (i));
@@ -68,7 +68,7 @@ QList<QDS_InputDevice> SDL_Joysticks::joysticks() {
 //==================================================================================================
 
 void SDL_Joysticks::rumble (QDS_RumbleRequest request) {
-    SDL_Haptic* haptic = SDL_HapticOpen (request.joystick.device_number);
+    SDL_Haptic* haptic = SDL_HapticOpen (request.joystick->device_number);
 
     if (haptic != Q_NULLPTR) {
         SDL_HapticRumbleInit (haptic);
@@ -130,18 +130,18 @@ int SDL_Joysticks::getDynamicID (int id) {
 // SDL_Joysticks::getJoystick
 //==================================================================================================
 
-QDS_InputDevice SDL_Joysticks::getJoystick (int id) {
-    QDS_InputDevice joystick;
+QDS_InputDevice* SDL_Joysticks::getJoystick (int id) {
+    QDS_InputDevice* joystick = new QDS_InputDevice;
     SDL_Joystick* sdl_joystick = SDL_JoystickOpen (id);
 
-    joystick.device_number = getDynamicID (id);
+    joystick->device_number = getDynamicID (id);
 
     if (sdl_joystick != Q_NULLPTR) {
-        joystick.blacklisted = false;
-        joystick.name        = SDL_JoystickNameForIndex (id);
-        joystick.numPOVs     = SDL_JoystickNumHats      (sdl_joystick);
-        joystick.numAxes     = SDL_JoystickNumAxes      (sdl_joystick);
-        joystick.numButtons  = SDL_JoystickNumButtons   (sdl_joystick);
+        joystick->blacklisted = false;
+        joystick->name        = SDL_JoystickNameForIndex (id);
+        joystick->numPOVs     = SDL_JoystickNumHats      (sdl_joystick);
+        joystick->numAxes     = SDL_JoystickNumAxes      (sdl_joystick);
+        joystick->numButtons  = SDL_JoystickNumButtons   (sdl_joystick);
     }
 
     return joystick;
@@ -196,8 +196,8 @@ QDS_POVEvent SDL_Joysticks::getPOVEvent (const SDL_Event* sdl_event) {
 QDS_AxisEvent SDL_Joysticks::getAxisEvent (const SDL_Event* sdl_event) {
     QDS_AxisEvent event;
 
-    event.axis     = sdl_event->jaxis.axis;
-    event.value    = (float) sdl_event->jaxis.value / 32767;
+    event.axis = sdl_event->jaxis.axis;
+    event.value = (float) sdl_event->jaxis.value / 32767;
     event.joystick = getJoystick (sdl_event->jdevice.which);
 
     return event;
@@ -210,8 +210,8 @@ QDS_AxisEvent SDL_Joysticks::getAxisEvent (const SDL_Event* sdl_event) {
 QDS_ButtonEvent SDL_Joysticks::getButtonEvent (const SDL_Event* sdl_event) {
     QDS_ButtonEvent event;
 
-    event.button   = sdl_event->jbutton.button;
-    event.pressed  = sdl_event->jbutton.state == SDL_PRESSED;
+    event.button = sdl_event->jbutton.button;
+    event.pressed = sdl_event->jbutton.state == SDL_PRESSED;
     event.joystick = getJoystick (sdl_event->jdevice.which);
 
     return event;

@@ -98,7 +98,7 @@ class Dashboards : public QObject {
 
   private:
     QProcess m_process;
-    DashboardTypes m_current;
+    DashboardTypes m_currentDashboard;
 };
 
 #endif

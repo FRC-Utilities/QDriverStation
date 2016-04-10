@@ -43,7 +43,7 @@ class SDL_Joysticks : public QObject {
     explicit SDL_Joysticks();
 
     QStringList joystickNames();
-    QList<QDS_InputDevice> joysticks();
+    QList<QDS_InputDevice*> joysticks();
 
   public slots:
     void rumble (QDS_RumbleRequest request);
@@ -60,7 +60,7 @@ class SDL_Joysticks : public QObject {
   private:
     int getDynamicID (int id);
 
-    QDS_InputDevice getJoystick (int id);
+    QDS_InputDevice* getJoystick (int id);
     QDS_POVEvent getPOVEvent (const SDL_Event* sdl_event);
     QDS_AxisEvent getAxisEvent (const SDL_Event* sdl_event);
     QDS_ButtonEvent getButtonEvent (const SDL_Event* sdl_event);

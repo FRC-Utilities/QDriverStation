@@ -30,14 +30,14 @@
 VirtualJoystick::VirtualJoystick() {
     qApp->installEventFilter (this);
 
-    m_axisRange            = 1;
-    m_joystickEnabled      = false;
+    m_axisRange = 1;
+    m_joystickEnabled = false;
 
-    m_joystick.numAxes     = 6;
-    m_joystick.numPOVs     = 0;
+    m_joystick.numAxes = 6;
+    m_joystick.numPOVs = 0;
     m_joystick.numButtons  = 10;
     m_joystick.blacklisted = false;
-    m_joystick.name        = tr ("Virtual Joystick");
+    m_joystick.name = tr ("Virtual Joystick");
 }
 
 //==================================================================================================
@@ -152,7 +152,7 @@ void VirtualJoystick::readAxes (int key, bool pressed) {
         QDS_AxisEvent event;
         event.axis     = axis;
         event.value    = value;
-        event.joystick = *joystick();
+        event.joystick = joystick();
 
         emit axisEvent (event);
     }
@@ -190,7 +190,7 @@ void VirtualJoystick::readButtons (int key, bool pressed) {
         QDS_ButtonEvent event;
         event.button   = button;
         event.pressed  = pressed;
-        event.joystick = *joystick();
+        event.joystick = joystick();
 
         emit buttonEvent (event);
     }

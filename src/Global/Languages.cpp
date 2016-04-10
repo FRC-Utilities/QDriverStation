@@ -96,11 +96,11 @@ QFont Languages::appFont() {
 QFont Languages::monoFont() {
     QFont font;
 #if defined Q_OS_WIN
-    font.setFamily     ("Consolas");
-    font.setPixelSize  (DPI_SCALE (12));
+    font.setFamily ("Consolas");
+    font.setPixelSize (DPI_SCALE (12));
 #else
-    font.setFamily     ("Inconsolata");
-    font.setPixelSize  (DPI_SCALE (12));
+    font.setFamily ("Inconsolata");
+    font.setPixelSize (DPI_SCALE (12));
 #endif
 
     return font;

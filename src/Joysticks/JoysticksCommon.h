@@ -50,9 +50,9 @@ struct QDS_InputDevice {
  *   - The rumble type (left, right or both)
  */
 struct QDS_RumbleRequest {
-    bool            leftRumble;
-    bool            rightRumble;
-    QDS_InputDevice joystick;
+    bool             leftRumble;
+    bool             rightRumble;
+    QDS_InputDevice* joystick;
 };
 
 /**
@@ -63,9 +63,9 @@ struct QDS_RumbleRequest {
  *    - The axis value
  */
 struct QDS_AxisEvent {
-    int             axis;
-    float           value;
-    QDS_InputDevice joystick;
+    int              axis;
+    float            value;
+    QDS_InputDevice* joystick;
 };
 
 /**
@@ -76,9 +76,9 @@ struct QDS_AxisEvent {
  *    - The 'pressed' state of the button
  */
 struct QDS_ButtonEvent {
-    int             button;
-    bool            pressed;
-    QDS_InputDevice joystick;
+    int              button;
+    bool             pressed;
+    QDS_InputDevice* joystick;
 };
 
 /**
@@ -89,9 +89,9 @@ struct QDS_ButtonEvent {
  *    - The angle value of the POV hat
  */
 struct QDS_POVEvent {
-    int             pov;
-    int             angle;
-    QDS_InputDevice joystick;
+    int              pov;
+    int              angle;
+    QDS_InputDevice* joystick;
 };
 
 #endif

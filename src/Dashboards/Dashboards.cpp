@@ -84,7 +84,7 @@ Dashboards* Dashboards::getInstance() {
 //==================================================================================================
 
 Dashboards::DashboardTypes Dashboards::currentDashboard() {
-    return m_current;
+    return m_currentDashboard;
 }
 
 //==================================================================================================
@@ -110,16 +110,15 @@ QStringList Dashboards::dashboardList() {
 
 void Dashboards::openDashboard() {
     QString path;
-    m_current = (DashboardTypes) Settings::get ("Dashboard", kNone).toInt();
+    QString home = QDir::homePath();
+    m_currentDashboard = (DashboardTypes) Settings::get ("Dashboard", kNone).toInt();
 
-    switch (m_current) {
+    switch (m_currentDashboard) {
     case kSFXDashboard:
-        path = QString ("%1 \"%2/wpilib/tools/sfx.jar\"").arg (JAVA_OPEN,
-                QDir::homePath());
+        path = QString ("%1 \"%2/wpilib/tools/sfx.jar\"").arg (JAVA_OPEN, home);
         break;
     case kSmartDashboard:
-        path = QString ("%1 \"%2/wpilib/tools/SmartDashboard.jar\"").arg (JAVA_OPEN ,
-                QDir::homePath());
+        path = QString ("%1 \"%2/wpilib/tools/SmartDashboard.jar\"").arg (JAVA_OPEN , home);
         break;
 #if defined Q_OS_WIN
     case kLabVIEW:

@@ -28,118 +28,118 @@
 class SDL_Joysticks;
 class VirtualJoystick;
 
-/**
- * The joystick manager class allows us to work with different
- * joystick/input interfaces in a simple and efficient way.
- *
- * The \c JoystickManager class 'runs' all input interfaces
- * in parallel and emits a selection on 'common' signals to
- * the rest of the application, such as when a joystick
- * axis event is triggered.
- */
+///
+/// The joystick manager class allows us to work with different
+/// joystick/input interfaces in a simple and efficient way.
+///
+/// The \c JoystickManager class 'runs' all input interfaces
+/// in parallel and emits a selection on 'common' signals to
+/// the rest of the application, such as when a joystick
+/// axis event is triggered.
+///
 class JoystickManager : public QObject {
     Q_OBJECT
 
   public:
     explicit JoystickManager();
 
-    /**
-     * Returns a list with the names of all the input interfaces
-     */
+    ///
+    /// Returns a list with the names of all the input interfaces
+    ///
     QStringList deviceNames();
 
-    /**
-     * Returns a list with all the input interfaces
-     */
-    QList<QDS_InputDevice> inputDevices();
+    ///
+    /// Returns a list with all the input interfaces
+    ///
+    QList<QDS_InputDevice*> inputDevices();
 
-    /**
-     * Returns \c true if the device in the \a index is set to
-     * be ignored by the application.
-     */
+    ///
+    /// Returns \c true if the device in the \a index is set to
+    /// be ignored by the application.
+    ///
     bool isBlacklisted (int index);
 
-    /**
-     * Returns the input interface with the given \a id
-     */
-    QDS_InputDevice getInputDevice (int id);
+    ///
+    /// Returns the input interface with the given \a id
+    ///
+    QDS_InputDevice* getInputDevice (int id);
 
-    /**
-     * Gives us direct access to the SDL interface
-     */
+    ///
+    /// Gives us direct access to the SDL interface
+    ///
     SDL_Joysticks* sdlJoysticks();
 
-    /**
-     * Gives us direct access to the virtual joystick
-     */
+    ///
+    /// Gives us direct access to the virtual joystick
+    ///
     VirtualJoystick* virtualJoystick();
 
   public slots:
-    /**
-     * Tells the system to ignore the selected joystick
-     */
+    ///
+    /// Tells the system to ignore the selected joystick
+    ///
     void setBlacklisted (int index, bool blacklist);
 
   signals:
-    /**
-     * Emitted when an interface is added or removed
-     */
+    ///
+    /// Emitted when an interface is added or removed
+    ///
     void countChanged();
 
-    /**
-     * Emitted when the system detects a POV event from
-     * any of the connected interfaces/devices
-     */
+    ///
+    /// Emitted when the system detects a POV event from
+    /// any of the connected interfaces/devices
+    ///
     void POVEvent (QDS_POVEvent event);
 
-    /**
-     * Emitted when the system detects an axis event from
-     * any of the connected interfaces/devices
-     */
+    ///
+    /// Emitted when the system detects an axis event from
+    /// any of the connected interfaces/devices
+    ///
     void axisEvent (QDS_AxisEvent event);
 
-    /**
-     * Emitted when the system detects a button event from
-     * any of the connected interfaces/devices
-     */
+    ///
+    /// Emitted when the system detects a button event from
+    /// any of the connected interfaces/devices
+    ///
     void buttonEvent (QDS_ButtonEvent event);
 
   private slots:
-    /**
-     * Removes/unregisters all interfaces from the system
-     */
+    ///
+    /// Removes/unregisters all interfaces from the system
+    ///
     void resetJoysticks();
 
-    /**
-     * Scans for new input devices and registers them to the system
-     */
+    ///
+    /// Scans for new input devices and registers them to the system
+    ///
     void updateInterfaces();
 
-    /**
-     * Registers the \a device to the system
-     */
-    void addInputDevice (QDS_InputDevice device);
+    ///
+    /// Registers the \a device to the system
+    ///
+    void addInputDevice (QDS_InputDevice* device);
 
-    /**
-     * Sends any POV event to the DS for further processing
-     */
+    ///
+    /// Sends any POV event to the DS for further processing
+    ///
     void onPOVEvent (QDS_POVEvent event);
 
-    /**
-     * Sends any axis event to the DS for further processing
-     */
+    ///
+    /// Sends any axis event to the DS for further processing
+    ///
     void onAxisEvent (QDS_AxisEvent event);
 
-    /**
-     * Sends any button event to the DS for further processing
-     */
+    ///
+    /// Sends any button event to the DS for further processing
+    ///
     void onButtonEvent (QDS_ButtonEvent event);
 
   private:
     SDL_Joysticks* m_sdlJoysticks;
     VirtualJoystick* m_virtualJoystick;
 
-    QList<QDS_InputDevice> m_devices;
+    QList<QDS_InputDevice*> m_devices;
 };
 
 #endif

@@ -24,7 +24,7 @@
 // System includes
 //==================================================================================================
 
-
+#include <QMenu>
 #include <QGroupBox>
 #include <QShowEvent>
 #include <QHideEvent>
@@ -123,10 +123,11 @@ Joysticks::Joysticks (QWidget* parent) : QWidget (parent) {
     m_joystickBox->addWidget             (m_joystickNames);
 
     /* Update UI config */
-    m_POVIndicators->setVisible          (false);
-    m_axisIndicators->setVisible         (false);
-    m_buttonIndicators->setVisible       (false);
-    m_buttonIndicators->setStyleSheet    (BUTTON_CSS);
+    m_joystickNames->setContextMenuPolicy (Qt::CustomContextMenu);
+    m_POVIndicators->setVisible           (false);
+    m_axisIndicators->setVisible          (false);
+    m_buttonIndicators->setVisible        (false);
+    m_buttonIndicators->setStyleSheet     (BUTTON_CSS);
     onCountChanged();
 
     /* Connect slots */
@@ -140,6 +141,8 @@ Joysticks::Joysticks (QWidget* parent) : QWidget (parent) {
              this,               &Joysticks::onButtonEvent);
     connect (m_joystickNames,    &QListWidget::currentRowChanged,
              this,               &Joysticks::setupIndicators);
+    connect (m_joystickNames,    &QListWidget::customContextMenuRequested,
+             this,               &Joysticks::customMenuRequested);
 
     DS::log (DS::kInfoLevel, "MainWindow: Joysticks widget created");
 }
@@ -169,6 +172,28 @@ void Joysticks::hideEvent (QHideEvent* event) {
     setupIndicators (-1);
     resize (minimumSizeHint());
     event->accept();
+}
+
+//==================================================================================================
+// Joysticks::blacklist
+//==================================================================================================
+
+void Joysticks::blacklist() {
+    JOYSTICK_MANAGER()->setBlacklisted (m_joystickNames->currentRow(), true);
+
+    onCountChanged();
+    setupIndicators (m_joystickNames->currentRow());
+}
+
+//==================================================================================================
+// Joysticks::whitelist
+//==================================================================================================
+
+void Joysticks::whitelist() {
+    JOYSTICK_MANAGER()->setBlacklisted (m_joystickNames->currentRow(), false);
+
+    onCountChanged();
+    setupIndicators (m_joystickNames->currentRow());
 }
 
 //==================================================================================================
@@ -210,10 +235,14 @@ void Joysticks::setupIndicators (int row) {
     if (row < 0)
         return;
 
+    /* Do not create the widgets if joystick is blacklisted */
+    if (JOYSTICK_MANAGER()->getInputDevice (row)->blacklisted)
+        return;
+
     /* Get joystick information */
-    int povCount    = JOYSTICK_MANAGER()->getInputDevice (row).numPOVs;
-    int axisCount   = JOYSTICK_MANAGER()->getInputDevice (row).numAxes;
-    int buttonCount = JOYSTICK_MANAGER()->getInputDevice (row).numButtons;
+    int povCount    = JOYSTICK_MANAGER()->getInputDevice (row)->numPOVs;
+    int axisCount   = JOYSTICK_MANAGER()->getInputDevice (row)->numAxes;
+    int buttonCount = JOYSTICK_MANAGER()->getInputDevice (row)->numButtons;
 
     /* Make the indicator containers visible */
     m_POVIndicators->setVisible (povCount > 0);
@@ -242,7 +271,7 @@ void Joysticks::setupIndicators (int row) {
         button->setEnabled (false);
         button->setCheckable (true);
         button->setFixedSize (DPI_SCALE (18), DPI_SCALE (12));
-        button->setToolTip     (tr ("Button %1").arg (i));
+        button->setToolTip (tr ("Button %1").arg (i));
 
         /* Distribute the button items in a nice layout */
         int row = (i <= 7) ? i : i - 8;
@@ -265,11 +294,16 @@ void Joysticks::setupIndicators (int row) {
 }
 
 //==================================================================================================
-// Joysticks::setTipsVisible
+// Joysticks::customContextMenuRequested
 //==================================================================================================
 
-void Joysticks::setTipsVisible (bool visible) {
-    Q_UNUSED (visible);
+void Joysticks::customMenuRequested (QPoint pos) {
+    if (m_joystickNames->count() > 0) {
+        QMenu* menu = new QMenu (this);
+        menu->addAction (tr ("Blacklist Joystick"), this, SLOT (blacklist()));
+        menu->addAction (tr ("Whitelist Joystick"), this, SLOT (whitelist()));
+        menu->exec (m_joystickNames->viewport()->mapToGlobal (pos));
+    }
 }
 
 //==================================================================================================
@@ -277,10 +311,10 @@ void Joysticks::setTipsVisible (bool visible) {
 //==================================================================================================
 
 void Joysticks::onPOVEvent (QDS_POVEvent event) {
-    if (m_joystickNames->currentRow() != event.joystick.device_number || !isVisible())
+    if (m_joystickNames->currentRow() != event.joystick->device_number || !isVisible())
         return;
 
-    if (event.pov < m_povs.count())
+    if (event.pov < m_povs.count() && !event.joystick->blacklisted)
         m_povs.at (event.pov)->setValue ((event.angle == 0) ? 360 : event.angle);
 }
 
@@ -289,10 +323,10 @@ void Joysticks::onPOVEvent (QDS_POVEvent event) {
 //==================================================================================================
 
 void Joysticks::onAxisEvent (QDS_AxisEvent event) {
-    if (m_joystickNames->currentRow() != event.joystick.device_number || !isVisible())
+    if (m_joystickNames->currentRow() != event.joystick->device_number || !isVisible())
         return;
 
-    if (event.axis < m_axes.count())
+    if (event.axis < m_axes.count() && !event.joystick->blacklisted)
         m_axes.at (event.axis)->setValue (event.value * 100);
 }
 
@@ -301,9 +335,9 @@ void Joysticks::onAxisEvent (QDS_AxisEvent event) {
 //==================================================================================================
 
 void Joysticks::onButtonEvent (QDS_ButtonEvent event) {
-    if (m_joystickNames->currentRow() != event.joystick.device_number || !isVisible())
+    if (m_joystickNames->currentRow() != event.joystick->device_number || !isVisible())
         return;
 
-    if (event.button < m_buttons.count())
+    if (event.button < m_buttons.count() && !event.joystick->blacklisted)
         m_buttons.at (event.button)->setChecked (event.pressed);
 }

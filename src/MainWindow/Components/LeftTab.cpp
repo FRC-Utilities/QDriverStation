@@ -48,14 +48,14 @@ LeftTab::LeftTab (QWidget* parent) : QTabWidget (parent) {
     m_preferences = new Preferences (this);
     m_diagnostics = new Diagnostics (this);
 
-    setTabPosition     (West);
-    addTab             (m_operator,    QIcon(), QChar (fa::dashboard));
-    addTab             (m_diagnostics, QIcon(), QChar (fa::stethoscope));
-    addTab             (m_preferences, QIcon(), QChar (fa::wrench));
-    addTab             (m_joysticks,   QIcon(), QChar (fa::usb));
-
+    setTabPosition (West);
     tabBar()->setStyle (new CustomTabStyle);
     tabBar()->setFont  (AWESOME()->font (DPI_SCALE (14)));
+
+    addTab (m_operator,    QIcon(), QChar (fa::dashboard));
+    addTab (m_diagnostics, QIcon(), QChar (fa::stethoscope));
+    addTab (m_preferences, QIcon(), QChar (fa::wrench));
+    addTab (m_joysticks,   QIcon(), QChar (fa::usb));
 
     connect (m_operator, &Operator::showDocked,
              this,       &LeftTab::showDocked);

@@ -30,8 +30,7 @@
 //==================================================================================================
 
 QSettings* SETTINGS() {
-    static QSettings settings (QApplication::organizationName(),
-                               QApplication::applicationName());
+    static QSettings settings (qApp->organizationName(), qApp->applicationName());
     return &settings;
 }
 

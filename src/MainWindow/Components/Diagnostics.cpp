@@ -203,28 +203,28 @@ void Diagnostics::createLayouts() {
 
 void Diagnostics::connectSlots() {
     connect (QDS(),         &DriverStation::radioChanged,
-             m_radio,      &QCheckBox::setChecked);
+             m_radio,       &QCheckBox::setChecked);
     connect (QDS(),         &DriverStation::radioChanged,
-             m_bridge,     &QCheckBox::setChecked);
+             m_bridge,      &QCheckBox::setChecked);
     connect (QDS(),         &DriverStation::fmsChanged,
-             m_fms,        &QCheckBox::setChecked);
+             m_fms,         &QCheckBox::setChecked);
     connect (QDS(),         &DriverStation::rioVersionChanged,
-             m_rioVersion, &QLabel::setText);
+             m_rioVersion,  &QLabel::setText);
     connect (QDS(),         &DriverStation::pdpVersionChanged,
-             m_pdpVersion, &QLabel::setText);
+             m_pdpVersion,  &QLabel::setText);
     connect (QDS(),         &DriverStation::pcmVersionChanged,
-             m_pcmVersion, &QLabel::setText);
+             m_pcmVersion,  &QLabel::setText);
     connect (QDS(),         &DriverStation::libVersionChanged,
-             m_libVersion, &QLabel::setText);
+             m_libVersion,  &QLabel::setText);
     connect (QDS(),         &DriverStation::cpuUsageChanged,
-             this,         &Diagnostics::updateCpuUsage);
+             this,          &Diagnostics::updateCpuUsage);
     connect (QDS(),         &DriverStation::ramUsageChanged,
-             this,         &Diagnostics::updateRamUsage);
+             this,          &Diagnostics::updateRamUsage);
     connect (QDS(),         &DriverStation::diskUsageChanged,
-             this,         &Diagnostics::updateDiskUsage);
-    connect (m_reboot,     &QPushButton::clicked,
+             this,          &Diagnostics::updateDiskUsage);
+    connect (m_reboot,      &QPushButton::clicked,
              QDS(),         &DriverStation::rebootRobot);
-    connect (m_restart,    &QPushButton::clicked,
+    connect (m_restart,     &QPushButton::clicked,
              QDS(),         &DriverStation::restartCode);
 
     /* Lambda-functions */

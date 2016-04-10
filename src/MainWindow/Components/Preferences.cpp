@@ -164,7 +164,7 @@ void Preferences::connectSlots() {
              this,           SLOT (savePracticeValues  (int)));
     connect (m_autonomous, SIGNAL (valueChanged        (int)),
              this,           SLOT (savePracticeValues  (int)));
-    connect (QDS(),         SIGNAL (teamChanged         (int)),
+    connect (QDS(),        SIGNAL (teamChanged         (int)),
              m_teamNumber,   SLOT (setValue            (int)));
 }
 
