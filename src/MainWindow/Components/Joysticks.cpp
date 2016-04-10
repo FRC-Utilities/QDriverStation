@@ -300,8 +300,16 @@ void Joysticks::setupIndicators (int row) {
 void Joysticks::customMenuRequested (QPoint pos) {
     if (m_joystickNames->count() > 0) {
         QMenu* menu = new QMenu (this);
-        menu->addAction (tr ("Blacklist Joystick"), this, SLOT (blacklist()));
-        menu->addAction (tr ("Whitelist Joystick"), this, SLOT (whitelist()));
+
+        /* The current joystick is blacklisted, add a whitelist option */
+        if (JOYSTICK_MANAGER()->getInputDevice (m_joystickNames->currentRow())->blacklisted)
+            menu->addAction (tr ("Whitelist Joystick"), this, SLOT (whitelist()));
+
+        /* The current joystick is not blacklisted, add a blacklist option */
+        else
+            menu->addAction (tr ("Blacklist Joystick"), this, SLOT (blacklist()));
+
+        /* Show the menu */
         menu->exec (m_joystickNames->viewport()->mapToGlobal (pos));
     }
 }
