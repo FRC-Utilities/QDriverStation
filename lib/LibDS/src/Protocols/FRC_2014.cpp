@@ -33,9 +33,9 @@ using namespace DS_Protocols;
 #define REBOOT_BIT         0x80 // DS triggers a reboot of the cRIO
 #define ENABLED_BIT        0x20 // DS enables the robot
 #define RESYNC_BIT         0x04 // DS re-syncs comms with robot?
-#define TELEOP_BIT         0x20 // DS changes robot mode to teleoperated
-#define AUTONOMOUS_BIT     0x30 // DS changes robot mode to autonomous
-#define TEST_BIT           0x22 // DS changes robot mode to test
+#define TELEOP_BIT         0x00 // DS changes robot mode to teleoperated
+#define AUTONOMOUS_BIT     0x10 // DS changes robot mode to autonomous
+#define TEST_BIT           0x02 // DS changes robot mode to test
 #define FMS_ATTACHED_BIT   0x08 // DS sends this when it is connected to the FMS
 #define ALLIANCE_RED_BIT   0x52 // DS changes robot alliance to red
 #define ALLIANCE_BLUE_BIT  0x42 // DS changes robot alliance to blue
@@ -171,12 +171,13 @@ void FRC_Protocol2014::resetProtocol() {
 //==================================================================================================
 
 void FRC_Protocol2014::showProtocolWarning() {
-    DS::sendMessage ("<p><b><font color=#FF7722>WARNING: </font></b>"
+    DS::sendMessage ("<p><b>"
+                     "<font color=#FF7722>WARNING: </font></b>"
                      "<font color=#FFFFFF>"
                      "This protocol is under heavy development and you WILL "
                      "encounter bugs. If using a real robot, limit its area of "
-                     "movement by placing it over a box or something. "
-                     "<b>Safety is your number one priority!</b></font></p>");
+                     "movement by placing it over a tote or something. "
+                     "<b><u>Safety is your number one priority!</u></b></font></p>");
 }
 
 //==================================================================================================
@@ -327,23 +328,25 @@ quint8 FRC_Protocol2014::getPosition() {
 
 quint8 FRC_Protocol2014::getOperationCode() {
     quint8 code = ESTOP_OFF_BIT;
+    quint8 enabled = isEnabled() ? ENABLED_BIT : 0x00;
 
-    if (isEnabled()) {
-        switch (controlMode()) {
-        case DS::kControlAutonomous:
-            code |= AUTONOMOUS_BIT;
-            break;
-        case DS::kControlTest:
-            code |= TEST_BIT;
-            break;
-        case DS::kControlTeleoperated:
-            code |= TELEOP_BIT;
-            break;
-        default:
-            code = ESTOP_OFF_BIT;
-            break;
-        }
+    switch (controlMode()) {
+    case DS::kControlAutonomous:
+        code |= enabled + AUTONOMOUS_BIT;
+        break;
+    case DS::kControlTest:
+        code |= enabled + TEST_BIT;
+        break;
+    case DS::kControlTeleoperated:
+        code |= enabled + TELEOP_BIT;
+        break;
+    default:
+        code = ESTOP_OFF_BIT;
+        break;
     }
+
+    if (isFmsAttached())
+        code |= FMS_ATTACHED_BIT;
 
     if (isEmergencyStopped())
         code = ESTOP_ON_BIT;

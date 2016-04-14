@@ -125,6 +125,11 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     bool isEmergencyStopped() const;
 
     ///
+    /// Returns \c true if the client is attached to the FMS
+    ///
+    bool isFmsAttached() const;
+
+    ///
     /// Returns the current battery voltage of the robot.
     ///
     float batteryVoltage() const;
@@ -428,6 +433,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
   protected:
     void updateRobotCode (bool available);
     void updateSendDateTime (bool sendDT);
+    void updateFmsAttached (bool attached);
     void updateRadioStatus (bool connected);
     void updateVoltageBrownout (bool brownout);
     void updateVoltage (QString digit, QString decimal);
@@ -465,6 +471,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     bool m_enabled;
     bool m_operating;
     bool m_robotCode;
+    bool m_fmsAttached;
     bool m_sendDateTime;
     bool m_patienceShown;
     bool m_emergencyStop;

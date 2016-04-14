@@ -58,6 +58,7 @@ AbstractProtocol::AbstractProtocol() {
     m_enabled             = false;
     m_operating           = false;
     m_robotCode           = false;
+    m_fmsAttached         = false;
     m_emergencyStop       = false;
     m_radioConnected      = false;
 
@@ -177,6 +178,14 @@ bool AbstractProtocol::isEmergencyStopped() const {
 }
 
 //==================================================================================================
+// AbstractProtocol::isFmsAttached
+//==================================================================================================
+
+bool AbstractProtocol::isFmsAttached() const {
+    return m_fmsAttached;
+}
+
+//==================================================================================================
 // AbstractProtocol::batteryVoltage
 //==================================================================================================
 
@@ -281,6 +290,7 @@ void AbstractProtocol::reset() {
         updateVoltage (0, 0);
         updateRobotCode (false);
         updateRadioStatus (false);
+        updateFmsAttached (false);
         updateSendDateTime (false);
         updateCommStatus (DS::kFailing);
 
@@ -377,6 +387,16 @@ void AbstractProtocol::updateRobotCode (bool available) {
 void AbstractProtocol::updateSendDateTime (bool sendDT) {
     m_sendDateTime = sendDT;
 }
+
+//==================================================================================================
+// AbstractProtocol::updateFmsAttached
+//==================================================================================================
+
+void AbstractProtocol::updateFmsAttached (bool attached) {
+    m_fmsAttached = attached;
+    emit fmsChanged (m_fmsAttached);
+}
+
 
 //==================================================================================================
 // AbstractProtocol::updateRadioStatus
@@ -565,8 +585,11 @@ void AbstractProtocol::disableEmergencyStop() {
 //==================================================================================================
 
 void AbstractProtocol::readFmsPacket (QByteArray data) {
-    if (interpretFmsPacket (data))
-        emit fmsChanged (true);
+    if (data.isEmpty())
+        return;
+
+    if (interpretFmsPacket (data) && !isFmsAttached())
+        updateFmsAttached (true);
 }
 
 //==================================================================================================
