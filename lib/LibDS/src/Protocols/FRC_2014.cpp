@@ -28,17 +28,20 @@ using namespace DS_Protocols;
 // Protocol bytes
 //==================================================================================================
 
-#define DS_TO_CRIO_CONTROL_TEST           0x62
-#define DS_TO_CRIO_CONTROL_TELEOP         0x60
-#define DS_TO_CRIO_CONTROL_REBOOT         0x80
-#define DS_TO_CRIO_CONTROL_AUTONOMOUS     0x70
-#define DS_TO_CRIO_CONTROL_DISABLED       0x40
-#define DS_TO_CRIO_CONTROL_EMERGENCY_STOP 0x00
-#define DS_TO_CRIO_ALLIANCE_RED           0x52
-#define DS_TO_CRIO_ALLIANCE_BLUE          0x52
-#define DS_TO_CRIO_POSITION_1             0x31
-#define DS_TO_CRIO_POSITION_2             0x32
-#define DS_TO_CRIO_POSITION_3             0x33
+#define ESTOP_ON_BIT       0x00 // DS triggers the emergency stop on the robot
+#define ESTOP_OFF_BIT      0x40 // DS triggers the emergency stop on the robot
+#define REBOOT_BIT         0x80 // DS triggers a reboot of the cRIO
+#define ENABLED_BIT        0x20 // DS enables the robot
+#define RESYNC_BIT         0x04 // DS re-syncs comms with robot?
+#define TELEOP_BIT         0x20 // DS changes robot mode to teleoperated
+#define AUTONOMOUS_BIT     0x30 // DS changes robot mode to autonomous
+#define TEST_BIT           0x22 // DS changes robot mode to test
+#define FMS_ATTACHED_BIT   0x08 // DS sends this when it is connected to the FMS
+#define ALLIANCE_RED_BIT   0x52 // DS changes robot alliance to red
+#define ALLIANCE_BLUE_BIT  0x42 // DS changes robot alliance to blue
+#define POSITION_1_BIT     0x31 // DS reports team station 1
+#define POSITION_2_BIT     0x32 // DS reports team station 2
+#define POSITION_3_BIT     0x33 // DS reports team station 3
 
 //==================================================================================================
 // FRC_Protocol2014::FRC_Protocol2014
@@ -95,7 +98,7 @@ int FRC_Protocol2014::fmsOutputPort() {
 //==================================================================================================
 
 int FRC_Protocol2014::robotInputPort() {
-    return 1110;
+    return 1150;
 }
 
 //==================================================================================================
@@ -103,7 +106,7 @@ int FRC_Protocol2014::robotInputPort() {
 //==================================================================================================
 
 int FRC_Protocol2014::robotOutputPort() {
-    return 1150;
+    return 1110;
 }
 
 //==================================================================================================
@@ -177,7 +180,7 @@ void FRC_Protocol2014::showProtocolWarning() {
 }
 
 //==================================================================================================
-// FRC_Protocol2014::readFMSPacket
+// FRC_Protocol2014::interpretFMSPacket
 //==================================================================================================
 
 bool FRC_Protocol2014::interpretFmsPacket (QByteArray data) {
@@ -186,7 +189,7 @@ bool FRC_Protocol2014::interpretFmsPacket (QByteArray data) {
 }
 
 //==================================================================================================
-// FRC_Protocol2014::readPacket
+// FRC_Protocol2014::interpretPacket
 //==================================================================================================
 
 bool FRC_Protocol2014::interpretRobotPacket (QByteArray data) {
@@ -195,7 +198,7 @@ bool FRC_Protocol2014::interpretRobotPacket (QByteArray data) {
 }
 
 //==================================================================================================
-// FRC_Protocol2014::getFMSPacket
+// FRC_Protocol2014::generateFmsPacket
 //==================================================================================================
 
 QByteArray FRC_Protocol2014::generateFmsPacket() {
@@ -204,24 +207,50 @@ QByteArray FRC_Protocol2014::generateFmsPacket() {
 }
 
 //==================================================================================================
-// FRC_Protocol2014::getClientPacket
+// FRC_Protocol2014::generateRobotPacket
 //==================================================================================================
 
 QByteArray FRC_Protocol2014::generateRobotPacket() {
     QByteArray data;
 
+    /* Setup the base packet */
     data.resize (1024);
     data.fill   (0x00);
 
-    data.append (DS::intToBytes (sentRobotPackets()));    // Packet index
-    data.append (getOperationCode());                     // Operation mode & instructions
-    data.append (getDigitalInput());                      // DIO, currently blank
-    data.append (team());                                 // Team number
-    data.append (getAlliance());                          // Current team alliance
-    data.append (getPosition());                          // Current team station
-    data.append (getJoystickData());                     // Joystick data, not tested
-    data.append (getAnalogData());                        // Analog IO, currently blank
-    data.append (qChecksum (data.data(), data.length())); // CRC checksum
+    /* Add packet index */
+    data[0] = (sentRobotPackets() & 0xff00) >> 8;
+    data[1] = (sentRobotPackets() & 0xff);
+
+    /* Add team number */
+    data[4] = (team() & 0xff00) >> 8;
+    data[5] = (team() & 0xff);
+
+    /* Add operation code, empty digital input and alliance & position */
+    data[2] = getOperationCode();
+    data[3] = getDigitalInput();
+    data[6] = getAlliance();
+    data[7] = getPosition();
+
+    /* Add joystick data */
+    QByteArray joysticks = getJoystickData();
+    data.replace (8, joysticks.length(), joysticks);
+
+    /* Add FRC Driver Station version */
+    data[72] = (quint8) 0x30;
+    data[73] = (quint8) 0x31;
+    data[74] = (quint8) 0x30;
+    data[75] = (quint8) 0x34;
+    data[76] = (quint8) 0x31;
+    data[77] = (quint8) 0x34;
+    data[78] = (quint8) 0x30;
+    data[79] = (quint8) 0x30;
+
+    /* Add CRC checksum */
+    quint16 checksum = qChecksum (data, 32);
+    data[1020] = (checksum & 0xff000000) >> 24;
+    data[1021] = (checksum & 0xff0000) >> 16;
+    data[1022] = (checksum & 0xff00) >> 8;
+    data[1023] = (checksum & 0xff);
 
     return data;
 }
@@ -242,16 +271,14 @@ QByteArray FRC_Protocol2014::getJoystickData() {
         int _num_axes    = joysticks()->at (i).numAxes;
         int _num_buttons = joysticks()->at (i).numButtons;
 
-        /* Add axis data (axis offset) + (joystick offset) */
+        /* Add axis data */
         for (int axis = 0; axis < _num_axes; ++axis)
-            data.append (joysticks()->at (i).axes [axis] * 127);
+            data.append (joysticks()->at (i).axes [axis]);
 
         /* Generate button data */
         int _button_data = 0;
-        for (int button = 0; button < _num_buttons; ++button) {
-            bool pressed = joysticks()->at (i).buttons [button];
-            _button_data += pressed ? qPow (2, button) : 0;
-        }
+        for (int button = 0; button < _num_buttons; ++button)
+            _button_data += joysticks()->at (i).buttons [button] ? qPow (2, button) : 0;
 
         /* Add button data */
         data.append (DS::intToBytes (_button_data));
@@ -268,9 +295,9 @@ quint8 FRC_Protocol2014::getAlliance() {
     if (alliance() == DS::kAllianceBlue1 ||
             alliance() == DS::kAllianceBlue2 ||
             alliance() == DS::kAllianceBlue3)
-        return DS_TO_CRIO_ALLIANCE_BLUE;
+        return ALLIANCE_BLUE_BIT;
 
-    return DS_TO_CRIO_ALLIANCE_RED;
+    return ALLIANCE_RED_BIT;
 }
 
 //==================================================================================================
@@ -280,18 +307,18 @@ quint8 FRC_Protocol2014::getAlliance() {
 quint8 FRC_Protocol2014::getPosition() {
     /* Position 1 */
     if (alliance() == DS::kAllianceRed1 || alliance() == DS::kAllianceBlue1)
-        return DS_TO_CRIO_POSITION_1;
+        return POSITION_1_BIT;
 
     /* Position 2 */
     if (alliance() == DS::kAllianceRed2 || alliance() == DS::kAllianceBlue2)
-        return DS_TO_CRIO_POSITION_2;
+        return POSITION_2_BIT;
 
     /* Position 3 */
     if (alliance() == DS::kAllianceRed3 || alliance() == DS::kAllianceBlue3)
-        return DS_TO_CRIO_POSITION_3;
+        return POSITION_3_BIT;
 
     /* Default to position 1 */
-    return DS_TO_CRIO_POSITION_1;
+    return POSITION_1_BIT;
 }
 
 //==================================================================================================
@@ -299,56 +326,38 @@ quint8 FRC_Protocol2014::getPosition() {
 //==================================================================================================
 
 quint8 FRC_Protocol2014::getOperationCode() {
-    quint8 _op_mode = DS_TO_CRIO_CONTROL_DISABLED;
+    quint8 code = ESTOP_OFF_BIT;
 
-    /* Send e-stop code */
-    if (isEmergencyStopped())
-        _op_mode = DS_TO_CRIO_CONTROL_EMERGENCY_STOP;
-
-    /* Send reboot request */
-    else if (m_reboot)
-        _op_mode = DS_TO_CRIO_CONTROL_REBOOT;
-
-    /* 'Normal' operation modes */
-    else if (isEnabled()) {
+    if (isEnabled()) {
         switch (controlMode()) {
         case DS::kControlAutonomous:
-            _op_mode = DS_TO_CRIO_CONTROL_AUTONOMOUS;
-            break;
-        case DS::kControlTeleoperated:
-            _op_mode = DS_TO_CRIO_CONTROL_TELEOP;
+            code |= AUTONOMOUS_BIT;
             break;
         case DS::kControlTest:
-            _op_mode = DS_TO_CRIO_CONTROL_TEST;
+            code |= TEST_BIT;
+            break;
+        case DS::kControlTeleoperated:
+            code |= TELEOP_BIT;
             break;
         default:
-            _op_mode = DS_TO_CRIO_CONTROL_DISABLED;
+            code = ESTOP_OFF_BIT;
             break;
         }
     }
 
-    return _op_mode;
+    if (isEmergencyStopped())
+        code = ESTOP_ON_BIT;
+
+    if (m_reboot)
+        code = REBOOT_BIT;
+
+    return code;
 }
 
 //==================================================================================================
-// FRC_Protocol2014::getAnalogData
+// FRC_Protocol2014::getDigitalInput
 //==================================================================================================
 
-QByteArray FRC_Protocol2014::getAnalogData() {
-    QByteArray data;
-    data.append (DS::intToBytes (0x00));
-    data.append (DS::intToBytes (0x00));
-    data.append (DS::intToBytes (0x00));
-    data.append (DS::intToBytes (0x00));
-    return data;
-}
-
-//==================================================================================================
-// FRC_Protocol2014::getDigitalData
-//==================================================================================================
-
-QByteArray FRC_Protocol2014::getDigitalInput() {
-    QByteArray data;
-    data.append (0xFF);
-    return data;
+quint8 FRC_Protocol2014::getDigitalInput() {
+    return 0x00;
 }

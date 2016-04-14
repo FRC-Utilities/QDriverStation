@@ -68,8 +68,7 @@ class LIB_DS_DECL FRC_Protocol2014 : public DS_Core::AbstractProtocol {
     virtual quint8 getAlliance();
     virtual quint8 getPosition();
     virtual quint8 getOperationCode();
-    virtual QByteArray getAnalogData();
-    virtual QByteArray getDigitalInput();
+    virtual quint8 getDigitalInput();
 
     QString m_dsVersion;
     QString m_robotMacAddress;
