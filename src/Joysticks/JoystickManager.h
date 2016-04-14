@@ -116,6 +116,11 @@ class JoystickManager : public QObject {
     void updateInterfaces();
 
     ///
+    /// Sends null values to the Driver Station for the selected \a device
+    ///
+    void resetDeviceInputs (int device);
+
+    ///
     /// Registers the \a device to the system
     ///
     void addInputDevice (QDS_InputDevice* device);

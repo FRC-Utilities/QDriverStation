@@ -24,7 +24,7 @@
 #include "VirtualJoystick.h"
 #include "JoystickManager.h"
 
-const QString _BLACKLISTED_STR = " (" + QObject::tr ("Blacklisted") + ")";
+const QString _BLACKLISTED_STR = " (" + QObject::tr ("Disabled") + ")";
 
 //==================================================================================================
 // JoystickManager::JoystickManager
@@ -147,6 +147,7 @@ void JoystickManager::setBlacklisted (int index, bool blacklisted) {
         else if (!blacklisted)
             name.chop (_BLACKLISTED_STR.length());
 
+        resetDeviceInputs (index);
         m_devices.at (index)->name = name;
         m_devices.at (index)->blacklisted = blacklisted;
     }
@@ -191,6 +192,23 @@ void JoystickManager::updateInterfaces() {
                      + QString::number (joystick->device_number)
                      + " because its blacklisted");
         }
+    }
+}
+
+//==================================================================================================
+// JoystickManager::resetDeviceInputs
+//==================================================================================================
+
+void JoystickManager::resetDeviceInputs (int device) {
+    if (m_devices.count() > device) {
+        for (int i = 0; i < m_devices.at (device)->numAxes; ++i)
+            QDS()->updateJoystickAxis (device, i, 0);
+
+        for (int i = 0; i < m_devices.at (device)->numButtons; ++i)
+            QDS()->updateJoystickButton (device, i, false);
+
+        for (int i = 0; i < m_devices.at (device)->numPOVs; ++i)
+            QDS()->updateJoystickPOV (device, i, 0);
     }
 }
 
