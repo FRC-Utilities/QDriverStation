@@ -7,6 +7,8 @@ The DriverStation library allows you to connect and manage a robot easily by pro
 
 The library is written in C++ and the Qt framework, allowing it to be used in many platforms, including (but not limited to) Windows, Linux/UNIX distros, Mac OS X, Android and iOS.
 
+The QDriverStation and LibDS have received a lot of support from users and developers like you. To see a complete list of the contributors to these projects, click [here](https://github.com/WinT-3794/QDriverStation/blob/master/CONTRIBUTORS.md).
+
 ### Project sections
 
 This library consists of three basic sections:
@@ -21,13 +23,10 @@ The core section is in charge of implementing the 'generic' networking side and 
 
 This section includes:
 
-- A configurable UDP server/client
 - A configurable NetConsole client
-- A system for registering and managing joysticks
-- An one-second watchdog that resets the current protocol if it expires
-- A network discovery service, which also includes an integrated mDNS responder service
+- An dynamic watchdog that resets the current protocol if it expires
+- A configurable IP/network scanner used by each protocol to find the robot.
 - A 'base' protocol, which implements all the functions except interpreting robot packets and generating client packets
-- A threaded timer system, which regulates different processes in the library, your applicaiton can access this system too
 
 #### Protocols section
 
@@ -35,9 +34,9 @@ This section contains the different protocols used for communicating with any FR
 
 This section includes:
 
+- The 2014 communication protocol (under heavy development)
 - The 2015 communication protocol
-
-The 2009-2014 may be implemented soon.
+- The 2016 communication protocol
 
 #### DriverStation section
 
