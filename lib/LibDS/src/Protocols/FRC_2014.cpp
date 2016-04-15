@@ -238,11 +238,11 @@ QByteArray FRC_Protocol2014::generateRobotPacket() {
 
     /* Add FRC Driver Station version */
     data[72] = (quint8) 0x30;
-    data[73] = (quint8) 0x31;
+    data[73] = (quint8) 0x34;
     data[74] = (quint8) 0x30;
-    data[75] = (quint8) 0x34;
+    data[75] = (quint8) 0x31;
     data[76] = (quint8) 0x31;
-    data[77] = (quint8) 0x34;
+    data[77] = (quint8) 0x36;
     data[78] = (quint8) 0x30;
     data[79] = (quint8) 0x30;
 
@@ -263,26 +263,38 @@ QByteArray FRC_Protocol2014::generateRobotPacket() {
 QByteArray FRC_Protocol2014::getJoystickData() {
     QByteArray data;
 
-    /* Do not send joystick data on DS init */
-    if (sentRobotPackets() <= 5)
-        return data;
+    /* The protocol must define data for 4 joysticks (even if they are not connected) */
+    for (int i = 0; i < 4; ++i) {
 
-    /* Generate data for each joystick */
-    for (int i = 0; i < joysticks()->count(); ++i) {
-        int _num_axes    = joysticks()->at (i).numAxes;
-        int _num_buttons = joysticks()->at (i).numButtons;
+        /* If set to false, the code will generate neutral button and axis values */
+        bool joystick_exists = joysticks()->count() > i;
 
-        /* Add axis data */
-        for (int axis = 0; axis < _num_axes; ++axis)
-            data.append (joysticks()->at (i).axes [axis]);
+        /* Get number of axes and buttons of the current joystick */
+        int num_axes = joystick_exists ? joysticks()->at (i).numAxes : 0;
+        int num_buttons = joystick_exists ? joysticks()->at (i).numButtons : 0;
+
+        /* Generate axis data (only 6 axes, no more, no less) */
+        for (int axis = 0; axis < 6; ++axis) {
+            /* The joystick exists and the axis also exists */
+            if (joystick_exists && axis < num_axes)
+                data.append (joysticks()->at (i).axes[axis] * 127);
+
+            /* Append neutral data, since the axis is not real */
+            else
+                data.append ((char) 0x00);
+        }
 
         /* Generate button data */
-        int _button_data = 0;
-        for (int button = 0; button < _num_buttons; ++button)
-            _button_data += joysticks()->at (i).buttons [button] ? qPow (2, button) : 0;
+        int button_data = 0;
+        for (int button = 0; button < num_buttons; ++button) {
+            /* Joystick exists and button is pressed */
+            if (joystick_exists && joysticks()->at (i).buttons[button])
+                button_data |= (int) qPow (2, button);
+        }
 
-        /* Add button data */
-        data.append (DS::intToBytes (_button_data));
+        /* Append the button data in two bytes */
+        data.append ((button_data & 0xff00) >> 8);
+        data.append ((button_data & 0xff));
     }
 
     return data;
@@ -344,6 +356,9 @@ quint8 FRC_Protocol2014::getOperationCode() {
         code = ESTOP_OFF_BIT;
         break;
     }
+
+    if (!isConnectedToRobot())
+        code |= RESYNC_BIT;
 
     if (isFmsAttached())
         code |= FMS_ATTACHED_BIT;
