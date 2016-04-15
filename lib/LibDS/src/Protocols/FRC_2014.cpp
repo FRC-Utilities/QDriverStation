@@ -202,7 +202,7 @@ bool FRC_Protocol2014::interpretRobotPacket (QByteArray data) {
 
     /* Read status echo and battery voltage, we could do more things, but we don't need them */
     quint8 opcode  = data.at (0);
-    quint8 digit   = data.at (1);
+    quint8 integer = data.at (1);
     quint8 decimal = data.at (2);
 
     /* The robot seems to be emergency stopped */
@@ -210,10 +210,10 @@ bool FRC_Protocol2014::interpretRobotPacket (QByteArray data) {
         setEmergencyStop (true);
 
     /* Update battery voltage */
-    updateVoltage (QString::number (digit), QString::number (decimal));
+    updateVoltage (QString::number (integer), QString::number (decimal));
 
     /* If both battery voltage values are 0x37, it means that there is no code loaded */
-    bool has_code = digit != 0x37 && decimal != 0x37;
+    bool has_code = integer != 0x37 && decimal != 0x37;
     if (has_code != hasCode())
         updateRobotCode (has_code);
 

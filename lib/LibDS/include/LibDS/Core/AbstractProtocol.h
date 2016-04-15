@@ -436,7 +436,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     void updateFmsAttached (bool attached);
     void updateRadioStatus (bool connected);
     void updateVoltageBrownout (bool brownout);
-    void updateVoltage (QString digit, QString decimal);
+    void updateVoltage (QString integer, QString decimal);
     void updateCommStatus (DS::DS_CommStatus statusCode);
 
   signals:

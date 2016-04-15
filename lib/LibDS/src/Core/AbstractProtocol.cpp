@@ -420,10 +420,10 @@ void AbstractProtocol::updateVoltageBrownout (bool brownout) {
 // AbstractProtocol::updateVoltage
 //==================================================================================================
 
-void AbstractProtocol::updateVoltage (QString digit, QString decimal) {
+void AbstractProtocol::updateVoltage (QString integer, QString decimal) {
     /* Voltage is smaller than 10v, add 0 before the digit (e.g. to 09) */
-    if (digit.length() < 2)
-        digit.prepend ("0");
+    if (integer.length() < 2)
+        integer.prepend ("0");
 
     /* Decimal voltage is less than 0.1v, add 0 to decimal (e.g 0.01) */
     if (decimal.length() < 2)
@@ -434,7 +434,7 @@ void AbstractProtocol::updateVoltage (QString digit, QString decimal) {
         decimal = QString (decimal.at (0)) + QString (decimal.at (1));
 
     /* Construct voltage string */
-    QString voltage = QString ("%1.%2").arg (digit, decimal);
+    QString voltage = QString ("%1.%2").arg (integer, decimal);
 
     /* Update values & emit signals */
     m_voltage = voltage.toFloat();

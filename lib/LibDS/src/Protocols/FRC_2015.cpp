@@ -190,11 +190,11 @@ bool FRC_Protocol2015::interpretRobotPacket (QByteArray data) {
         m_instructionCode = NORMAL;
 
     /* Read robot packet */
-    quint8 opcode       = data.at (3);
-    quint8 status       = data.at (4);
-    quint8 request      = data.at (7);
-    quint8 majorVoltage = data.at (5);
-    quint8 minorVoltage = data.at (6);
+    quint8 opcode  = data.at (3);
+    quint8 status  = data.at (4);
+    quint8 request = data.at (7);
+    quint8 integer = data.at (5);
+    quint8 decimal = data.at (6);
 
     /* Update e-stop information */
     setEmergencyStop (opcode == ESTOP_ON);
@@ -203,7 +203,7 @@ bool FRC_Protocol2015::interpretRobotPacket (QByteArray data) {
     updateVoltageBrownout (false);
     updateSendDateTime (request == PROGRAM_REQUEST_TIME);
     updateRobotCode ((status & PROGRAM_CODE_PRESENT) != 0);
-    updateVoltage (QString::number (majorVoltage), QString::number (minorVoltage));
+    updateVoltage (QString::number (integer), QString::number (decimal));
 
     /* Packet contains additional data structures */
     if (data.length() > offset) {
