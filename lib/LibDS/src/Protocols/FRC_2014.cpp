@@ -48,6 +48,7 @@ using namespace DS_Protocols;
 //==================================================================================================
 
 FRC_Protocol2014::FRC_Protocol2014() {
+    m_resync = true;
     m_reboot = false;
     m_restartCode = false;
     QTimer::singleShot (1000, Qt::CoarseTimer, this, SLOT (showProtocolWarning()));
@@ -162,6 +163,7 @@ void FRC_Protocol2014::restartCode() {
 //==================================================================================================
 
 void FRC_Protocol2014::resetProtocol() {
+    m_resync = true;
     m_reboot = false;
     m_restartCode = false;
 }
@@ -174,7 +176,7 @@ void FRC_Protocol2014::showProtocolWarning() {
     DS::sendMessage ("<p><b>"
                      "<font color=#FF7722>WARNING: </font></b>"
                      "<font color=#FFFFFF>"
-                     "This protocol is under heavy development and you WILL "
+                     "This protocol is under heavy development and you may "
                      "encounter bugs. If using a real robot, limit its area of "
                      "movement by placing it over a tote or something. "
                      "<b><u>Safety is your number one priority!</u></b></font></p>");
@@ -194,7 +196,27 @@ bool FRC_Protocol2014::interpretFmsPacket (QByteArray data) {
 //==================================================================================================
 
 bool FRC_Protocol2014::interpretRobotPacket (QByteArray data) {
-    Q_UNUSED (data);
+    /* The packet is smaller than it should be */
+    if (data.length() < 1024)
+        return false;
+
+    /* Read status echo and battery voltage, we could do more things, but we don't need them */
+    quint8 opcode  = data.at (0);
+    quint8 digit   = data.at (1);
+    quint8 decimal = data.at (2);
+
+    /* The robot seems to be emergency stopped */
+    if (opcode == ESTOP_ON_BIT && !isEmergencyStopped())
+        setEmergencyStop (true);
+
+    /* Update battery voltage */
+    updateVoltage (QString::number (digit), QString::number (decimal));
+
+    /* If both battery voltage values are 0x37, it means that there is no code loaded */
+    bool has_code = digit != 0x37 && decimal != 0x37;
+    if (has_code != hasCode())
+        updateRobotCode (has_code);
+
     return true;
 }
 
@@ -236,7 +258,7 @@ QByteArray FRC_Protocol2014::generateRobotPacket() {
     QByteArray joysticks = getJoystickData();
     data.replace (8, joysticks.length(), joysticks);
 
-    /* Add FRC Driver Station version */
+    /* Add FRC Driver Station version (same as the one sent by 16.0.1) */
     data[72] = (quint8) 0x30;
     data[73] = (quint8) 0x34;
     data[74] = (quint8) 0x30;
@@ -357,7 +379,7 @@ quint8 FRC_Protocol2014::getOperationCode() {
         break;
     }
 
-    if (!isConnectedToRobot())
+    if (m_resync)
         code |= RESYNC_BIT;
 
     if (isFmsAttached())

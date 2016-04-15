@@ -74,6 +74,7 @@ class LIB_DS_DECL FRC_Protocol2014 : public DS_Core::AbstractProtocol {
     QString m_robotMacAddress;
 
     bool m_reboot;
+    bool m_resync;
     bool m_restartCode;
 };
 
