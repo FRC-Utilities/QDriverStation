@@ -71,8 +71,10 @@ void SocketManager::refreshIPs() {
         for (int i = 0; i < m_inputSockets.count(); ++i) {
             if (scannerCount() > i && m_list.count() > m_iterator + i) {
                 m_inputSockets.at (i)->disconnectFromHost();
+                m_inputSockets.at (i)->setObjectName (m_list.at (m_iterator + i));
                 m_inputSockets.at (i)->bind (QHostAddress (m_list.at (m_iterator + i)),
-                                             m_robotInput, QUdpSocket::ShareAddress);
+                                             m_robotInput,
+                                             QUdpSocket::ShareAddress);
             }
         }
     }
@@ -134,8 +136,14 @@ void SocketManager::sendFmsPacket (QByteArray data) {
 //==================================================================================================
 
 void SocketManager::sendRobotPacket (QByteArray data) {
-    if (!robotAddress().isEmpty())
-        m_robotOutputSocket->writeDatagram (data, QHostAddress (robotAddress()), m_robotOutput);
+    if (data.isEmpty())
+        return;
+
+    if (!robotAddress().isEmpty() && m_robotOutputSocket != Q_NULLPTR) {
+        m_robotOutputSocket->writeDatagram (data,
+                                            QHostAddress (robotAddress()),
+                                            m_robotOutput);
+    }
 
     else {
         for (int i = 0; i < m_outputSockets.count(); ++i) {
@@ -153,10 +161,16 @@ void SocketManager::sendRobotPacket (QByteArray data) {
 //==================================================================================================
 
 void SocketManager::setRobotIPs (const QStringList& list) {
+    /* Invalid list, get out of here */
+    if (list.isEmpty())
+        return;
+
+    /* Update internal values */
     m_list = list;
     m_iterator = 0;
 
-    setScannerCount (list.count() / 8);
+    /* Adjust the scanner count */
+    setScannerCount (m_list.count() / 12);
 }
 
 //==================================================================================================
@@ -174,14 +188,15 @@ void SocketManager::readFmsPacket() {
 void SocketManager::readRobotPacket() {
     /* Get the socket information */
     QUdpSocket* socket = qobject_cast<QUdpSocket*> (sender());
-    int socket_id = socket->objectName().toInt();
+    QByteArray data = DS::readSocket (qobject_cast<QUdpSocket*> (sender()));
 
     /* This is the first packet, configure the permanent socket */
-    if (scannerCount() > socket_id && robotAddress().isEmpty())
-        setRobotAddress (m_list.at (m_iterator + socket_id));
+    if (robotAddress().isEmpty() && !socket->objectName().isEmpty() && !data.isEmpty())
+        setRobotAddress (socket->objectName());
 
     /* Tell the protocol to read the packet */
-    emit robotPacketReceived (DS::readSocket (socket));
+    if (!data.isEmpty())
+        emit robotPacketReceived (data);
 }
 
 //==================================================================================================
@@ -189,6 +204,9 @@ void SocketManager::readRobotPacket() {
 //==================================================================================================
 
 void SocketManager::setScannerCount (int count) {
+    if (count < 1)
+        count = 1;
+
     if (count >= 0 && count != scannerCount()) {
         m_scannerCount = count;
         m_inputSockets.clear();
@@ -201,14 +219,11 @@ void SocketManager::setScannerCount (int count) {
             QUdpSocket* input = new QUdpSocket (this);
             QUdpSocket* output = new QUdpSocket (this);
 
-            input->setObjectName (QString::number (i));
-            output->setObjectName (QString::number (i));
-            input->setSocketOption (QAbstractSocket::MulticastLoopbackOption, 0);
-
-            connect (input, SIGNAL (readyRead()), this, SLOT (readRobotPacket()));
-
             m_inputSockets.append (input);
             m_outputSockets.append (output);
+
+            input->setSocketOption (QAbstractSocket::MulticastLoopbackOption, 0);
+            connect (input, SIGNAL (readyRead()), this, SLOT (readRobotPacket()));
         }
     }
 }

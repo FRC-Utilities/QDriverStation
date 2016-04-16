@@ -29,17 +29,22 @@ using namespace DS_Core;
 // NetConsole warnings/information texts
 //==================================================================================================
 
-const QString INIT           = "<p>"
-                               "<font color=#888>** <font color=#AAA>%1</font> Initialized</font>"
-                               "</p>";
-const QString INFO_NOTE      = "<p>"
-                               "<font color=#888>"
-                               "** It may take up to %1 seconds to detect the robot</font>"
-                               "</p>";
-const QString IP_INFORMATION = "<p>"
-                               "<font color=#888>"
-                               "** %1 robot IPs generated from %2 interfaces</font>"
-                               "</p>";
+const QString INITIALIZED           = "<p>"
+                                      "<font color=#888>** <font color=#AAA>%1</font> "
+                                      "Initialized</font>"
+                                      "</p>";
+const QString PATIENCE_WITHOUT_TIME = "<p>"
+                                      "<font color=#888>"
+                                      "** It may take some time to detect the robot</font>"
+                                      "</p>";
+const QString PATIENCE_WITH_TIME    = "<p>"
+                                      "<font color=#888>"
+                                      "** It may take up to %1 seconds to detect the robot</font>"
+                                      "</p>";
+const QString IP_INFORMATION        = "<p>"
+                                      "<font color=#888>"
+                                      "** %1 robot IPs generated from %2 interfaces</font>"
+                                      "</p>";
 
 //==================================================================================================
 // AbstractProtocol::AbstractProtocol
@@ -77,6 +82,7 @@ AbstractProtocol::AbstractProtocol() {
              this,         &AbstractProtocol::readRobotPacket);
 
     generateIpLists();
+    m_watchdog.setTimeout (1000);
     QTimer::singleShot (200, Qt::CoarseTimer, this, SLOT (reset()));
     QTimer::singleShot (800, Qt::CoarseTimer, this, SLOT (initialize()));
 }
@@ -278,9 +284,6 @@ void AbstractProtocol::start() {
 //==================================================================================================
 
 void AbstractProtocol::reset() {
-    /* Lower the watchdog timeout for faster scanning */
-    m_watchdog.setTimeout (500);
-
     /* Only called if the protocol is allowed to operate */
     if (isOperating()) {
         /* Custom reset procedures for each protocol */
@@ -473,13 +476,17 @@ void AbstractProtocol::pingRadio() {
 //==================================================================================================
 
 void AbstractProtocol::initialize() {
-    /* Get total scanning time, convert to seconds and round to nearest 10 */
-    double msec = (robotIPs().count() * expirationTime()) / m_sockets.scannerCount();
-    double time = ceil ((msec / 1000) / 10) * 10;
+    /* Get total scanning time in seconds*/
+    double time = ((robotIPs().count() * expirationTime()) / m_sockets.scannerCount()) / 1000;
+
+    /* Decide which patience message to use */
+    QString be_patient = PATIENCE_WITHOUT_TIME;
+    if (time > 10 && time < 60)
+        be_patient = PATIENCE_WITH_TIME.arg (time);
 
     /* Display the message */
-    DS::sendMessage (INIT.arg (name()));
-    DS::sendMessage (INFO_NOTE.arg (time));
+    DS::sendMessage (INITIALIZED.arg (name()));
+    DS::sendMessage (be_patient);
     DS::sendMessage (IP_INFORMATION.arg (m_robotIPs.count()).arg (m_interfaces));
 
     /* Begin the packet creation loop */
@@ -560,12 +567,18 @@ void AbstractProtocol::generateIpLists() {
         }
     }
 
-    /* Re-configure the network scanner */
-    m_sockets.setRobotIPs (m_robotIPs);
+    /* Remove duplicates from list and sort it */
+    m_robotIPs = m_robotIPs.toSet().toList();
+    qSort (m_robotIPs.begin(), m_robotIPs.end());
+
+    /* Re-configure the network scanner  ports */
     m_sockets.setFmsInputPort (fmsInputPort());
     m_sockets.setFmsOutputPort (fmsOutputPort());
     m_sockets.setRobotInputPort (robotInputPort());
     m_sockets.setRobotOutputPort (robotOutputPort());
+
+    /* Update the IP lists */
+    m_sockets.setRobotIPs (m_robotIPs);
 
     /* Log information */
     DS::log (DS::kLibLevel, QString ("Generated %1 radio IPs").arg (m_radioIPs.count()));
@@ -601,8 +614,6 @@ void AbstractProtocol::readRobotPacket (QByteArray data) {
         return;
 
     if (!isConnectedToRobot()) {
-        m_watchdog.setTimeout (1000);
-
         if (controlMode() != DS::kControlInvalid)
             setControlMode (controlMode());
         else
