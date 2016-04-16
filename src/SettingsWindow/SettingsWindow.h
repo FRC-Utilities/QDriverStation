@@ -83,6 +83,7 @@ class SettingsWindow : public QDialog {
     QCheckBox* m_autoUpdater;
     QCheckBox* m_soundEffects;
     QCheckBox* m_promptOnQuit;
+    QCheckBox* m_enableScaling;
     QLabel* m_otherSettingsIcon;
     QGroupBox* m_otherSettingsBox;
     QWidget* m_othersContainer;

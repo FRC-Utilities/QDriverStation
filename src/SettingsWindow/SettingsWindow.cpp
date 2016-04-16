@@ -137,10 +137,9 @@ void SettingsWindow::createWidgets() {
     m_languageBox       = new QComboBox (m_container);
     m_languageLabel     = new QLabel    (tr ("Language") + ":", m_container);
     m_otherSettingsBox  = new QGroupBox (tr ("Other Settings"), m_container);
-    m_autoUpdater       = new QCheckBox (tr ("Check for updates automatically"),
-                                         m_container);
-    m_soundEffects      = new QCheckBox (tr ("Enable UI sound effects"),
-                                         m_container);
+    m_enableScaling     = new QCheckBox (tr ("Enable scalable UI"), m_container);
+    m_soundEffects      = new QCheckBox (tr ("Enable UI sound effects"),  m_container);
+    m_autoUpdater       = new QCheckBox (tr ("Check for updates automatically"), m_container);
     m_promptOnQuit      = new QCheckBox (tr ("Prompt on quit"), m_container);
 
     /* Defines the size of the color rectangles and color dialog buttons */
@@ -264,6 +263,7 @@ void SettingsWindow::createLayouts() {
     m_otherSettingsWidgets->addWidget         (m_autoUpdater);
     m_otherSettingsWidgets->addWidget         (m_soundEffects);
     m_otherSettingsWidgets->addWidget         (m_promptOnQuit);
+    m_otherSettingsWidgets->addWidget         (m_enableScaling);
 
     /* Other settings layout */
     m_otherSettingsLayout = new QHBoxLayout   (m_otherSettingsBox);
@@ -390,9 +390,10 @@ void SettingsWindow::readSettings() {
     m_foregroundColor->setStyleSheet (COLOR_RECTANGLE.arg (theme.foreground));
 
     /* Get other settings */
-    m_autoUpdater->setChecked  (Settings::get ("Auto Updater",   true).toBool());
-    m_soundEffects->setChecked (Settings::get ("UI Sounds",      true).toBool());
-    m_promptOnQuit->setChecked (Settings::get ("Prompt on Quit", true).toBool());
+    m_autoUpdater->setChecked   (Settings::get ("Auto Updater",   true).toBool());
+    m_soundEffects->setChecked  (Settings::get ("UI Sounds",      true).toBool());
+    m_promptOnQuit->setChecked  (Settings::get ("Prompt on Quit", true).toBool());
+    m_enableScaling->setChecked (Settings::get ("Enable scalable UI", true).toBool());
 
     /* Apply the loaded settings */
     applySettings();
@@ -416,9 +417,10 @@ void SettingsWindow::applySettings() {
     m_robotAddress->setPlaceholderText (QDS()->defaultRobotAddress());
 
     /* Apply other settings */
-    Settings::set ("Auto Updater",   m_autoUpdater->isChecked());
-    Settings::set ("UI Sounds",      m_soundEffects->isChecked());
-    Settings::set ("Prompt on Quit", m_promptOnQuit->isChecked());
+    Settings::set ("Auto Updater",       m_autoUpdater->isChecked());
+    Settings::set ("UI Sounds",          m_soundEffects->isChecked());
+    Settings::set ("Prompt on Quit",     m_promptOnQuit->isChecked());
+    Settings::set ("Enable scalable UI", m_enableScaling->isChecked());
     Languages::setLanguage ((Languages::LanguageType) m_languageBox->currentIndex());
 
     /* Create and apply a theme from UI values */
