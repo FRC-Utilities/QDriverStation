@@ -334,6 +334,15 @@ void Operator::updateEnableState() {
     bool enabled = m_enable->isChecked() && QDS()->canBeEnabled();
     QDS()->setEnabled (enabled);
 
+    /* Configure the practice mode if needed */
+    if (m_practice->isChecked() && enabled) {
+        QDS()->startPractice (Settings::get ("Practice countdown",   5).toInt(),
+                              Settings::get ("Practice autonomous", 15).toInt(),
+                              Settings::get ("Practice delay",       1).toInt(),
+                              Settings::get ("Practice teleop",    100).toInt(),
+                              Settings::get ("Practice end game",   20).toInt());
+    }
+
     /* Make the enable button light green */
     if (enabled) {
         m_enable->setStyleSheet (ENABLED_CHECK);
@@ -394,7 +403,6 @@ void Operator::updateProgressbars() {
         QPalette batteryPalette;
         batteryPalette.setColor (QPalette::Highlight, QColor (batteryColor));
 
-
         /* Apply palettes */
         m_cpu->setPalette (cpuPalette);
         m_battery->setPalette (batteryPalette);
@@ -410,28 +418,21 @@ void Operator::updateProgressbars() {
 
 void Operator::updateControlMode (int index) {
     Q_UNUSED (index);
-    DS::ControlMode mode = DS::kControlInvalid;
 
-    if (m_teleop->isChecked())
-        mode = DS::kControlTeleoperated;
+    if (!m_practice->isChecked()) {
+        DS::ControlMode mode = DS::kControlInvalid;
 
-    else if (m_autonomous->isChecked())
-        mode = DS::kControlAutonomous;
+        if (m_teleop->isChecked())
+            mode = DS::kControlTeleoperated;
 
-    else if (m_test->isChecked())
-        mode = DS::kControlTest;
+        else if (m_autonomous->isChecked())
+            mode = DS::kControlAutonomous;
 
-    else if (m_practice->isChecked()) {
-        QDS()->startPractice (Settings::get ("Practice countdown",   5).toInt(),
-                              Settings::get ("Practice autonomous", 15).toInt(),
-                              Settings::get ("Practice delay",       1).toInt(),
-                              Settings::get ("Practice teleop",    100).toInt(),
-                              Settings::get ("Practice end game",   20).toInt());
+        else if (m_test->isChecked())
+            mode = DS::kControlTest;
 
-        return;
+        QDS()->setControlMode (mode);
     }
-
-    QDS()->setControlMode (mode);
 }
 
 //==================================================================================================

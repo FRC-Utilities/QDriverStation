@@ -290,7 +290,11 @@ void Status::updateTeam (int team) {
 //==================================================================================================
 
 void Status::updateStatus (QString status) {
-    m_robotStatus->setText (status);
+    if (!QDS()->isPractice())
+        m_robotStatus->setText (status);
+
+    else
+        m_robotStatus->setText (tr ("Practice Match"));
 }
 
 //==================================================================================================

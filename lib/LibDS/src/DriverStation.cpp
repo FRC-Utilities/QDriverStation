@@ -445,13 +445,18 @@ void DriverStation::setEmergencyStop (bool emergency_stop) {
 
 void DriverStation::startPractice (int countdown, int autonomous, int delay, int teleop,
                                    int endgame) {
+    /* This can be used by the client to update the status text */
+    emit robotStatusChanged (tr ("Practice Match"));
+
     /* A practice session is already under progress */
-    if (m_practiceRunning)
+    if (isPractice())
         return;
 
     /* Allow the client to switch modes when the timers expire */
-    else
+    else {
+        m_practiceRunning = true;
         m_practiceInterrupted = false;
+    }
 
     /* Transform the times from seconds to milliseconds */
     delay *= 1000;
@@ -470,7 +475,7 @@ void DriverStation::startPractice (int countdown, int autonomous, int delay, int
     QTimer::singleShot (_startAutonomous,   Qt::PreciseTimer, this, SLOT (playAutonomousStart()));
     QTimer::singleShot (_startTeleoperated, Qt::PreciseTimer, this, SLOT (playTeleopStart()));
     QTimer::singleShot (_stop,              Qt::PreciseTimer, this, SLOT (playEndGame()));
-    QTimer::singleShot (_startEndGame,      Qt::PreciseTimer, this, SLOT (playEndGame()));
+    QTimer::singleShot (_startEndGame,      Qt::PreciseTimer, this, SLOT (playEndGameApproaching()));
 }
 
 //==================================================================================================
@@ -792,6 +797,7 @@ void DriverStation::playTeleopStart() {
         QSound::play (":/LibDS/Start Teleop_normalized.wav");
 
         setEnabled (true);
+        emit robotStatusChanged (tr ("Teleoperated Practice"));
     }
 }
 
@@ -805,5 +811,6 @@ void DriverStation::playAutonomousStart() {
         QSound::play (":/LibDS/Start Auto_normalized.wav");
 
         setEnabled (true);
+        emit robotStatusChanged (tr ("Autonomous Practice"));
     }
 }
