@@ -196,6 +196,16 @@ QByteArray LIB_DS_DECL readSocket (QTcpSocket* socket);
 /// |  256  | 0xFF 0x01 |
 ///
 QByteArray LIB_DS_DECL intToBytes (int number);
+
+///
+/// Returns the CRC-32 checksum of the given \a data.
+/// This function uses an external library (sse4_crc32 by Voxer), in which we
+/// removed support for Node.js and did some formatting changes.
+///
+/// The smart thing about this library is that it will use hardware acceleration
+/// when possible, making the whole calculation process a lot faster.
+///
+uint32_t crc32 (QByteArray data);
 }
 
 #endif
