@@ -34,6 +34,8 @@ QT += network
 QT += widgets
 QT += multimedia
 
+QMAKE_CXXFLAGS += -msse4
+QMAKE_CXXFLAGS += -msse4.1
 QMAKE_CXXFLAGS += -msse4.2
 
 HEADERS += \
