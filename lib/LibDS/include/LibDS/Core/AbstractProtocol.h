@@ -288,6 +288,24 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
         return false;
     }
 
+    ///
+    /// Returns the default radio address
+    ///
+    /// \note This function must be re-implemented by each protocol
+    ///
+    virtual QStringList additionalRadioIPs() {
+        return QStringList (DS::getStaticIP (10, team(), 1));
+    }
+
+    ///
+    /// Returns the default robot address
+    ///
+    /// \note This function must be re-implemented by each protocol
+    ///
+    virtual QStringList additionalRobotIPs() {
+        return QStringList (DS::getStaticIP (10, team(), 2));
+    }
+
   public slots:
     ///
     /// Inhibits the operation of the protocol
@@ -409,24 +427,6 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
         return QByteArray ("");
     }
 
-    ///
-    /// Returns the default radio address
-    ///
-    /// \note This function must be re-implemented by each protocol
-    ///
-    virtual QStringList additionalRadioIPs() {
-        return QStringList ("");
-    }
-
-    ///
-    /// Returns the default robot address
-    ///
-    /// \note This function must be re-implemented by each protocol
-    ///
-    virtual QStringList additionalRobotIPs() {
-        return QStringList ("");
-    }
-
   public:
     explicit AbstractProtocol();
 
@@ -463,6 +463,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
   private:
     int m_team;
     int m_interfaces;
+    int m_radioIterator;
     int m_sentFMSPackets;
     int m_sentRobotPackets;
 

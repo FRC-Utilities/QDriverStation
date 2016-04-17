@@ -142,6 +142,17 @@ bool FRC_Protocol2015::acceptsConsoleCommands() {
 }
 
 //==================================================================================================
+// FRC_Protocol2015::additionalRobotIPs
+//==================================================================================================
+
+QStringList FRC_Protocol2015::additionalRobotIPs() {
+    QStringList list;
+    list.append (QString ("roboRIO-%1.local").arg (team()));
+    list.append (QString ("172.22.11.2"));
+    return list;
+}
+
+//==================================================================================================
 // FRC_Protocol2015::reboot
 //==================================================================================================
 
@@ -362,17 +373,6 @@ QByteArray FRC_Protocol2015::generateRobotPacket() {
     data.append (extensions);
 
     return data;
-}
-
-//==================================================================================================
-// FRC_Protocol2015::additionalRobotIPs
-//==================================================================================================
-
-QStringList FRC_Protocol2015::additionalRobotIPs() {
-    QStringList list;
-    list.append (QString ("roboRIO-%1.local").arg (team()));
-    list.append (QString ("172.22.11.2"));
-    return list;
 }
 
 //==================================================================================================

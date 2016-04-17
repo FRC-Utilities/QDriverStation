@@ -34,20 +34,17 @@ class LIB_DS_DECL FRC_Protocol2014 : public DS_Core::AbstractProtocol {
     explicit FRC_Protocol2014();
 
     virtual QString name();
-
     virtual int fmsFrequency();
     virtual int robotFrequency();
-
     virtual int fmsInputPort();
     virtual int fmsOutputPort();
     virtual int robotInputPort();
     virtual int robotOutputPort();
-
     virtual int tcpProbesPort();
     virtual int netConsoleInputPort();
     virtual int netConsoleOutputPort();
-
     virtual bool acceptsConsoleCommands();
+    virtual QStringList additionalRobotIPs();
 
   public slots:
     virtual void reboot();

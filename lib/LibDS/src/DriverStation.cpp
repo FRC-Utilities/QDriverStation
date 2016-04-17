@@ -220,7 +220,7 @@ QString DriverStation::robotAddress() {
 
 QString DriverStation::defaultRobotAddress() {
     if (protocolLoaded())
-        return currentProtocol()->robotIPs().at (0);
+        return currentProtocol()->additionalRobotIPs().at (0);
 
     return "";
 }

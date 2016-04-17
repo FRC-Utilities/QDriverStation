@@ -53,6 +53,7 @@ const QString IP_INFORMATION        = "<p>"
 AbstractProtocol::AbstractProtocol() {
     m_team                = 0;
     m_interfaces          = 0;
+    m_radioIterator       = 0;
     m_sentFMSPackets      = 0;
     m_sentRobotPackets    = 0;
 
@@ -236,7 +237,11 @@ QList<DS::Joystick>* AbstractProtocol::joysticks() const {
 //==================================================================================================
 
 QString AbstractProtocol::radioAddress() {
-    return DS::getStaticIP (10, team(), 1);
+    if (m_radioIPs.count() > m_radioIterator)
+        return m_radioIPs.at (m_radioIterator);
+
+    else
+        return DS::getStaticIP (10, team(), 1);
 }
 
 //==================================================================================================
@@ -296,6 +301,14 @@ void AbstractProtocol::reset() {
         updateFmsAttached (false);
         updateSendDateTime (false);
         updateCommStatus (DS::kFailing);
+
+        /* Update the radio IP */
+        if (!isConnectedToRadio()) {
+            if (m_radioIterator < m_radioIPs.count())
+                ++m_radioIterator;
+            else
+                m_radioIterator = 0;
+        }
 
         /* Ping robot & radio */
         pingRadio();
@@ -477,7 +490,8 @@ void AbstractProtocol::pingRadio() {
 
 void AbstractProtocol::initialize() {
     /* Get total scanning time in seconds*/
-    double time = ((robotIPs().count() * expirationTime()) / m_sockets.scannerCount()) / 1000;
+    int ips = robotIPs().count() > 0 ? robotIPs().count() : 1;
+    int time = ((ips * expirationTime()) / m_sockets.scannerCount()) / 1000;
 
     /* Decide which patience message to use */
     QString be_patient = PATIENCE_WITHOUT_TIME;
@@ -567,9 +581,14 @@ void AbstractProtocol::generateIpLists() {
         }
     }
 
-    /* Remove duplicates from list and sort it */
-    m_robotIPs = m_robotIPs.toSet().toList();
-    qSort (m_robotIPs.begin(), m_robotIPs.end());
+    /* Remove duplicates and empty strings from the list */
+    QStringList fixed_list;
+    foreach (const QString& string, m_robotIPs)
+        if (!string.isEmpty() && !fixed_list.contains (string))
+            fixed_list.append (string);
+
+    /* Re-assing the 'fixed' IP list to the robot IP list */
+    m_robotIPs = fixed_list;
 
     /* Re-configure the network scanner  ports */
     m_sockets.setFmsInputPort (fmsInputPort());
