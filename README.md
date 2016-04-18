@@ -1,18 +1,14 @@
-![Header](/etc/resources/logo.png)
+# ![Header](/etc/resources/logo.png)
 
 [![Build Status](https://travis-ci.org/WinT-3794/QDriverStation.svg?branch=master)](https://travis-ci.org/WinT-3794/QDriverStation)
 [![BitCoin donate button](https://img.shields.io/badge/bitcoin-donate-yellow.svg)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
 [![Github downloads](https://img.shields.io/github/downloads/wint-3794/qdriverstation/total.svg)](https://github.com/wint-3794/qdriverstation/releases/latest)
 
-QDriverStation is an open-source, cross-platform alternative to the FRC Driver Station.
+The QDriverStation is a cross-platform and open-source alternative to the FRC Driver Station. It runs on both desktop devices (including laptops) and mobile devices (such as phones and tablets), making it easier for FRC teams test their robot code and make public presentations with their robots.
 
-The application looks and behaves almost identically to the FRC Driver Station, we may release some tutorials in the future. If you are already familiar with the FRC Driver Station, we would welcome any contributions regarding the documentation and/or tutorials for new users.
-
-Joystick input is achieved with SDL 2.0, which is a cross-platform library for C/C++.
+Our application is free to use, share and modify. You are welcome to test it and see the code to understand how it works!
 
 The actual code that moves and manages a FRC robot is found in a [separate repository](https://github.com/WinT-3794/LibDS), which you can use in your own Qt projects or change it to support older (and future) communication protocols.
-
-We are also developing a **mobile version** of the QDriverStation. [Check it here](https://github.com/wint-3794/ds-mobile)!
 
 ### Download
 
