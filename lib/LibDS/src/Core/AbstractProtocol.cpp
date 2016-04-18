@@ -495,7 +495,7 @@ void AbstractProtocol::initialize() {
 
     /* Decide which patience message to use */
     QString be_patient = PATIENCE_WITHOUT_TIME;
-    if (time > 10 && time < 60)
+    if (time > 5 && time < 60)
         be_patient = PATIENCE_WITH_TIME.arg (time);
 
     /* Display the message */

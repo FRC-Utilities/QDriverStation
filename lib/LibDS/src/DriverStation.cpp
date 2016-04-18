@@ -751,6 +751,11 @@ void DriverStation::resetEverything() {
     m_elapsedTime->resetTimer();
     m_elapsedTime->stopTimer();
 
+    if (isPractice()) {
+        m_practiceRunning = false;
+        m_practiceInterrupted = true;
+    }
+
     emit codeChanged           (false);
     emit elapsedTimeChanged    ("00:00.0");
     emit communicationsChanged (DS::kFailing);

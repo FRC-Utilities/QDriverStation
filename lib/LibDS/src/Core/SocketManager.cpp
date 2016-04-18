@@ -137,18 +137,14 @@ void SocketManager::sendRobotPacket (QByteArray data) {
     if (data.isEmpty())
         return;
 
-    if (!robotAddress().isEmpty() && m_robotOutputSocket != Q_NULLPTR) {
-        m_robotOutputSocket->writeDatagram (data,
-                                            QHostAddress (robotAddress()),
-                                            m_robotOutput);
-    }
+    if (!robotAddress().isEmpty() && m_robotOutputSocket != Q_NULLPTR)
+        m_robotOutputSocket->writeDatagram (data, QHostAddress (robotAddress()), m_robotOutput);
 
     else {
         for (int i = 0; i < m_outputSockets.count(); ++i) {
             if (scannerCount() > i && m_list.count() > m_iterator + i) {
-                m_outputSockets.at (i)->writeDatagram (data,
-                                                       QHostAddress (m_list.at (m_iterator + i)),
-                                                       m_robotOutput);
+                QHostAddress address = QHostAddress (m_list.at (m_iterator + i));
+                m_outputSockets.at (i)->writeDatagram (data, address, m_robotOutput);
             }
         }
     }
@@ -168,7 +164,7 @@ void SocketManager::setRobotIPs (const QStringList& list) {
     m_iterator = 0;
 
     /* Adjust the scanner count */
-    setScannerCount (m_list.count() / 12);
+    setScannerCount (m_list.count() / 6);
 }
 
 //==================================================================================================
