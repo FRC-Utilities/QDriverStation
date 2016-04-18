@@ -228,11 +228,13 @@ void JoystickManager::addInputDevice (QDS_InputDevice* device) {
 //==================================================================================================
 
 void JoystickManager::onPOVEvent (QDS_POVEvent event) {
-    bool blacklisted = m_devices.at (event.joystick->device_number)->blacklisted;
+    if (event.joystick->device_number < m_devices.count()) {
+        bool blacklisted = m_devices.at (event.joystick->device_number)->blacklisted;
 
-    QDS()->updateJoystickPOV (event.joystick->device_number,
-                              event.pov,
-                              blacklisted ? 0 : event.angle);
+        QDS()->updateJoystickPOV (event.joystick->device_number,
+                                  event.pov,
+                                  blacklisted ? 0 : event.angle);
+    }
 }
 
 //==================================================================================================
@@ -240,11 +242,13 @@ void JoystickManager::onPOVEvent (QDS_POVEvent event) {
 //==================================================================================================
 
 void JoystickManager::onAxisEvent (QDS_AxisEvent event) {
-    bool blacklisted = m_devices.at (event.joystick->device_number)->blacklisted;
+    if (event.joystick->device_number < m_devices.count()) {
+        bool blacklisted = m_devices.at (event.joystick->device_number)->blacklisted;
 
-    QDS()->updateJoystickAxis (event.joystick->device_number,
-                               event.axis,
-                               blacklisted ? 0 : event.value);
+        QDS()->updateJoystickAxis (event.joystick->device_number,
+                                   event.axis,
+                                   blacklisted ? 0 : event.value);
+    }
 }
 
 //==================================================================================================
@@ -252,9 +256,11 @@ void JoystickManager::onAxisEvent (QDS_AxisEvent event) {
 //==================================================================================================
 
 void JoystickManager::onButtonEvent (QDS_ButtonEvent event) {
-    bool blacklisted = m_devices.at (event.joystick->device_number)->blacklisted;
+    if (event.joystick->device_number < m_devices.count()) {
+        bool blacklisted = m_devices.at (event.joystick->device_number)->blacklisted;
 
-    QDS()->updateJoystickButton (event.joystick->device_number,
-                                 event.button,
-                                 blacklisted ? false : event.pressed);
+        QDS()->updateJoystickButton (event.joystick->device_number,
+                                     event.button,
+                                     blacklisted ? false : event.pressed);
+    }
 }

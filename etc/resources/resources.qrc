@@ -8,5 +8,9 @@
         <file>icons/ethernet.png</file>
         <file>icons/other_settings.png</file>
         <file>textures/notes.png</file>
+        <file>mappings/gamecontrollerdb.txt</file>
+        <file>mappings/generic_linux.txt</file>
+        <file>mappings/generic_osx.txt</file>
+        <file>mappings/generic_win.txt</file>
     </qresource>
 </RCC>

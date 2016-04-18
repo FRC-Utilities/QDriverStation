@@ -139,7 +139,7 @@ extern qreal DPI_SCALE (qreal input);
 extern void SDL_INIT();
 
 ///
-/// Initializes and configures SDL and the LibDS.
+/// Initializes all the application modules except SDL
 ///
 extern void GLOBAL_INIT();
 

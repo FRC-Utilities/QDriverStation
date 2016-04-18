@@ -24,6 +24,7 @@
 // System includes
 //==================================================================================================
 
+#include <QFile>
 #include <QTimer>
 #include <QMessageBox>
 #include <QApplication>
@@ -36,10 +37,18 @@
 #include "Global/Global.h"
 
 //==================================================================================================
-// Fix errors/warnings with main() re-define
+// Joystick mappings stuff
 //==================================================================================================
 
-#define SDL_MAIN_HANDLED
+static QString GENERIC_MAPPINGS;
+
+#if defined Q_OS_WIN
+#define GENERIC_MAPPINGS_PATH ":/mappings/generic_win.txt"
+#elif defined Q_OS_MAC
+#define GENERIC_MAPPINGS_PATH ":/mappings/generic_osx.txt"
+#elif defined Q_OS_LINUX
+#define GENERIC_MAPPINGS_PATH ":/mappings/generic_linux.txt"
+#endif
 
 //==================================================================================================
 // SDL_Joysticks::SDL_Joysticks
@@ -48,6 +57,22 @@
 SDL_Joysticks::SDL_Joysticks() {
     m_tracker = -1;
     connect (QDS(), &DriverStation::initialized, this, &SDL_Joysticks::update);
+
+    QFile database (":/mappings/gamecontrollerdb.txt");
+    if (database.open (QFile::ReadOnly)) {
+        while (!database.atEnd()) {
+            QString line = QString::fromUtf8 (database.readLine());
+            SDL_GameControllerAddMapping (line.toStdString().c_str());
+        }
+
+        database.close();
+    }
+
+    QFile generic_res (GENERIC_MAPPINGS_PATH);
+    if (generic_res.open (QFile::ReadOnly)) {
+        GENERIC_MAPPINGS = QString::fromUtf8 (generic_res.readAll());
+        generic_res.close();
+    }
 }
 
 //==================================================================================================
@@ -86,13 +111,14 @@ void SDL_Joysticks::update() {
     while (SDL_PollEvent (&event)) {
         switch (event.type) {
         case SDL_JOYDEVICEADDED:
-            ++m_tracker;
-            emit countChanged();
+            configureJoystick (&event);
             break;
         case SDL_JOYDEVICEREMOVED:
+            SDL_JoystickClose (SDL_JoystickOpen (event.jdevice.which));
+            SDL_GameControllerClose (SDL_GameControllerOpen (event.cdevice.which));
             emit countChanged();
             break;
-        case SDL_JOYAXISMOTION:
+        case SDL_CONTROLLERAXISMOTION:
             emit axisEvent (getAxisEvent (&event));
             break;
         case SDL_JOYBUTTONUP:
@@ -111,14 +137,39 @@ void SDL_Joysticks::update() {
 }
 
 //==================================================================================================
+// SDL_Joysticks::configureJoystick
+//==================================================================================================
+
+void SDL_Joysticks::configureJoystick (const SDL_Event* event) {
+    if (!SDL_IsGameController (event->cdevice.which)) {
+        SDL_Joystick* js = SDL_JoystickOpen (event->jdevice.which);
+
+        if (js != Q_NULLPTR) {
+            char guid [1024];
+            SDL_JoystickGetGUIDString (SDL_JoystickGetGUID (js), guid, sizeof (guid));
+
+            QString mapping = QString ("%1,%2,%3")
+                              .arg (guid)
+                              .arg (SDL_JoystickName (js))
+                              .arg (GENERIC_MAPPINGS);
+
+            SDL_GameControllerAddMapping (mapping.toStdString().c_str());
+            SDL_JoystickClose (js);
+        }
+    }
+
+    SDL_GameControllerOpen (event->cdevice.which);
+
+    ++m_tracker;
+    emit countChanged();
+}
+
+//==================================================================================================
 // SDL_Joysticks::getDynamicID
 //==================================================================================================
 
 int SDL_Joysticks::getDynamicID (int id) {
-    id = m_tracker - (id + 1);
-
-    if (id < 0)
-        id = abs (id);
+    id = abs (m_tracker - (id + 1));
 
     if (id >= SDL_NumJoysticks())
         id -= 1;
@@ -138,7 +189,7 @@ QDS_InputDevice* SDL_Joysticks::getJoystick (int id) {
 
     if (sdl_joystick != Q_NULLPTR) {
         joystick->blacklisted = false;
-        joystick->name        = SDL_JoystickNameForIndex (id);
+        joystick->name        = SDL_JoystickName         (sdl_joystick);
         joystick->numPOVs     = SDL_JoystickNumHats      (sdl_joystick);
         joystick->numAxes     = SDL_JoystickNumAxes      (sdl_joystick);
         joystick->numButtons  = SDL_JoystickNumButtons   (sdl_joystick);
@@ -196,9 +247,9 @@ QDS_POVEvent SDL_Joysticks::getPOVEvent (const SDL_Event* sdl_event) {
 QDS_AxisEvent SDL_Joysticks::getAxisEvent (const SDL_Event* sdl_event) {
     QDS_AxisEvent event;
 
-    event.axis = sdl_event->jaxis.axis;
-    event.value = (float) sdl_event->jaxis.value / 32767;
-    event.joystick = getJoystick (sdl_event->jdevice.which);
+    event.axis = sdl_event->caxis.axis;
+    event.value = (float) sdl_event->caxis.value / 32767;
+    event.joystick = getJoystick (sdl_event->cdevice.which);
 
     return event;
 }

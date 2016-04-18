@@ -111,9 +111,6 @@ MainWindow::MainWindow() {
     move (Settings::get ("MainWindow X", 100).toInt(), Settings::get ("MainWindow Y", 100).toInt());
 
     DS::log (DS::kInfoLevel, "MainWindow OK");
-
-    /* Finally, init the Driver Station */
-    QDS()->init();
 }
 
 //==================================================================================================

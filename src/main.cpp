@@ -106,6 +106,10 @@ int main (int argc, char* argv[]) {
     QApplication::installTranslator     (Languages::translator());
     QApplication::setFont               (Languages::appFont());
 
+    /* Initialize application modules */
+    SDL_INIT();
+    GLOBAL_INIT();
+
     /* Create the main window and check for updates */
     Updater updater;
     MainWindow mainwindow;
@@ -115,8 +119,10 @@ int main (int argc, char* argv[]) {
     (void) updater;
     (void) mainwindow;
 
-    /* Initialize the application modules and configure the SDL-sound effects */
-    GLOBAL_INIT();
+    /* Start the DS engine */
+    QDS()->init();
+
+    /* Enable sound effects when clicking any widget */
     ENABLE_SOUND_EFFECTS();
 
     /* Load the application theme and the font (which is based on the language) */

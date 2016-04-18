@@ -56,6 +56,7 @@ class SDL_Joysticks : public QObject {
 
   private slots:
     void update();
+    void configureJoystick (const SDL_Event* event);
 
   private:
     int getDynamicID (int id);

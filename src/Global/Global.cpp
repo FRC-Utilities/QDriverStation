@@ -47,7 +47,7 @@
 //==================================================================================================
 
 static qreal RATIO = -1;
-static Uint32 SDL_FLAGS = SDL_INIT_AUDIO | SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC;
+static Uint32 SDL_FLAGS = SDL_INIT_AUDIO | SDL_INIT_HAPTIC | SDL_INIT_GAMECONTROLLER;
 
 //==================================================================================================
 // BEEPER
@@ -190,10 +190,8 @@ void SDL_INIT() {
 //==================================================================================================
 
 void GLOBAL_INIT() {
-    SDL_INIT();
-
-    Q_UNUSED (SETTINGS_WINDOW());
-    Q_UNUSED (VJOYSTICK_WINDOW());
+    (void) SETTINGS_WINDOW();
+    (void) VJOYSTICK_WINDOW();
 }
 
 //==================================================================================================
