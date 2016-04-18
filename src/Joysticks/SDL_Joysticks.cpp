@@ -182,17 +182,18 @@ int SDL_Joysticks::getDynamicID (int id) {
 //==================================================================================================
 
 QDS_InputDevice* SDL_Joysticks::getJoystick (int id) {
-    QDS_InputDevice* joystick = new QDS_InputDevice;
-    SDL_Joystick* sdl_joystick = SDL_JoystickOpen (id);
+    QDS_InputDevice* joystick      = new QDS_InputDevice;
+    SDL_GameController* controller = SDL_GameControllerOpen (id);
+    SDL_Joystick* sdl_joystick     = SDL_GameControllerGetJoystick (controller);
 
     joystick->device_number = getDynamicID (id);
 
-    if (sdl_joystick != Q_NULLPTR) {
+    if (controller != Q_NULLPTR) {
         joystick->blacklisted = false;
-        joystick->name        = SDL_JoystickName         (sdl_joystick);
-        joystick->numPOVs     = SDL_JoystickNumHats      (sdl_joystick);
-        joystick->numAxes     = SDL_JoystickNumAxes      (sdl_joystick);
-        joystick->numButtons  = SDL_JoystickNumButtons   (sdl_joystick);
+        joystick->name        = SDL_GameControllerName (controller);
+        joystick->numPOVs     = SDL_JoystickNumHats (sdl_joystick);
+        joystick->numButtons  = SDL_JoystickNumButtons (sdl_joystick);
+        joystick->numAxes     = SDL_JoystickNumAxes (sdl_joystick);
     }
 
     return joystick;

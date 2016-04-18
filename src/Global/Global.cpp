@@ -165,7 +165,7 @@ void SDL_INIT() {
     DS::log (DS::kInfoLevel, "Initializing SDL...");
 
     SDL_JoystickEventState (SDL_ENABLE);
-    SDL_SetHint (SDL_HINT_XINPUT_ENABLED, "0");
+    SDL_SetHint (SDL_HINT_XINPUT_ENABLED, "1");
     SDL_SetHint (SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
 
     if (SDL_Init (SDL_FLAGS) != 0) {
