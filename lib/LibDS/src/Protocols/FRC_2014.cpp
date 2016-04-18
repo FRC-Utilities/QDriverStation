@@ -277,7 +277,8 @@ QByteArray FRC_Protocol2014::generateRobotPacket() {
     data[79] = (quint8) 0x30;
 
     /* Add CRC checksum */
-    quint32 checksum = DS::crc32 (data);
+    m_crc32.update (data);
+    long checksum = m_crc32.value();
     data[1020] = (checksum & 0xff000000) >> 24;
     data[1021] = (checksum & 0xff0000) >> 16;
     data[1022] = (checksum & 0xff00) >> 8;

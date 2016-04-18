@@ -26,17 +26,12 @@ CODECFORTR = UTF-8
 CODECFORSRC = UTF-8
 
 CONFIG += c++11
-INCLUDEPATH += $$PWD/utils
 INCLUDEPATH += $$PWD/include
 
 QT += core
 QT += network
 QT += widgets
 QT += multimedia
-
-QMAKE_CXXFLAGS += -msse4
-QMAKE_CXXFLAGS += -msse4.1
-QMAKE_CXXFLAGS += -msse4.2
 
 HEADERS += \
     $$PWD/include/LibDS.h \
@@ -51,7 +46,7 @@ HEADERS += \
     $$PWD/include/LibDS/Protocols/FRC_2014.h \
     $$PWD/include/LibDS/Core/AbstractProtocol.h \
     $$PWD/include/LibDS/Core/SocketManager.h \
-    $$PWD/utils/sse4_crc32/crc32c.h
+    $$PWD/include/LibDS/Utilities/CRC32.h
 
 SOURCES += \
     $$PWD/src/DriverStation.cpp \
@@ -64,7 +59,6 @@ SOURCES += \
     $$PWD/src/Protocols/FRC_2014.cpp \
     $$PWD/src/Core/AbstractProtocol.cpp \
     $$PWD/src/Core/SocketManager.cpp \
-    $$PWD/utils/sse4_crc32/crc32c_sse42.cpp \
-    $$PWD/utils/sse4_crc32/crc32c.cpp
+    $$PWD/src/Utilities/CRC32.cpp
 
 RESOURCES += $$PWD/etc/sounds/libds-sounds.qrc

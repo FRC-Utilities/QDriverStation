@@ -23,6 +23,7 @@
 #ifndef _LDS_PROTOCOL_2014_H
 #define _LDS_PROTOCOL_2014_H
 
+#include "LibDS/Utilities/CRC32.h"
 #include "LibDS/Core/AbstractProtocol.h"
 
 namespace DS_Protocols {
@@ -66,6 +67,8 @@ class LIB_DS_DECL FRC_Protocol2014 : public DS_Core::AbstractProtocol {
     virtual quint8 getPosition();
     virtual quint8 getOperationCode();
     virtual quint8 getDigitalInput();
+
+    DS_Utilities::CRC32 m_crc32;
 
     QString m_dsVersion;
     QString m_robotMacAddress;

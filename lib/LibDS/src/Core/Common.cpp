@@ -23,7 +23,6 @@
 #include <QDir>
 #include <QApplication>
 
-#include "sse4_crc32/crc32c.h"
 #include "LibDS/Core/Common.h"
 #include "LibDS/DriverStation.h"
 
@@ -272,13 +271,4 @@ QByteArray DS::intToBytes (int number) {
     }
 
     return array;
-}
-
-//==================================================================================================
-// DS::crc32
-//==================================================================================================
-
-uint32_t DS::crc32 (QByteArray data) {
-    std::string _data = std::string (data.constData(), data.length());
-    return hwCrc32c (0, _data.c_str(), data.length());
 }
