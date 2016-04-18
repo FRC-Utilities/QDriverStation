@@ -56,7 +56,7 @@ void CRC32::update (QByteArray buf, int off, int len) {
     m_crc = 0;
     int c = ~m_crc;
     while (--len >= 0)
-        c = m_crc_table[ (c ^ buf[off++]) & 0xff] ^ (((unsigned int) c) >> 8);
+        c = m_crc_table[ (c ^ buf[off++]) & 0xff] ^ (((quint32) c) >> 8);
     m_crc = ~c;
 }
 
@@ -72,9 +72,9 @@ void CRC32::make_crc_table() {
         int c = n;
         for (int k = 8; --k >= 0;) {
             if ((c & 1) != 0)
-                c = 0xedb88320 ^ (((unsigned int) c) >> 1);
+                c = 0xedb88320 ^ (((quint32) c) >> 1);
             else
-                c = ((unsigned int) c) >> 1;
+                c = ((quint32) c) >> 1;
         }
 
         m_crc_table[n] = c;

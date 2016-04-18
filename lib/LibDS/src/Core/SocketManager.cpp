@@ -69,12 +69,10 @@ void SocketManager::refreshIPs() {
             m_iterator = 0;
 
         for (int i = 0; i < m_inputSockets.count(); ++i) {
+
             if (scannerCount() > i && m_list.count() > m_iterator + i) {
                 m_inputSockets.at (i)->disconnectFromHost();
-                m_inputSockets.at (i)->setObjectName (m_list.at (m_iterator + i));
-                m_inputSockets.at (i)->bind (QHostAddress (m_list.at (m_iterator + i)),
-                                             m_robotInput,
-                                             QUdpSocket::ShareAddress);
+                m_inputSockets.at (i)->bind (QHostAddress (m_list.at (m_iterator + i)), m_robotInput);
             }
         }
     }
@@ -191,8 +189,8 @@ void SocketManager::readRobotPacket() {
     QByteArray data = DS::readSocket (qobject_cast<QUdpSocket*> (sender()));
 
     /* This is the first packet, configure the permanent socket */
-    if (robotAddress().isEmpty() && !socket->objectName().isEmpty() && !data.isEmpty())
-        setRobotAddress (socket->objectName());
+    if (robotAddress().isEmpty() && !data.isEmpty())
+        setRobotAddress (socket->peerAddress().toString());
 
     /* Tell the protocol to read the packet */
     if (!data.isEmpty())
