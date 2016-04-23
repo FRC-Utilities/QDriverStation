@@ -125,10 +125,10 @@ class SocketManager : public QObject {
     int m_scannerCount;
     QStringList m_list;
 
-    QUdpSocket* m_fmsInputSocket;
-    QUdpSocket* m_fmsOutputSocket;
-    QUdpSocket* m_robotInputSocket;
-    QUdpSocket* m_robotOutputSocket;
+    QUdpSocket m_fmsInputSocket;
+    QUdpSocket m_fmsOutputSocket;
+    QUdpSocket m_robotInputSocket;
+    QUdpSocket m_robotOutputSocket;
 
     QList<QUdpSocket*> m_inputSockets;
     QList<QUdpSocket*> m_outputSockets;

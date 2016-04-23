@@ -34,11 +34,8 @@ SocketManager::SocketManager() {
     m_robotOutput = 0;
     m_scannerCount = 0;
     m_robotAddress = "";
-    m_fmsInputSocket = new QUdpSocket (this);
-    m_fmsOutputSocket = new QUdpSocket (this);
-    m_robotOutputSocket = new QUdpSocket (this);
 
-    connect (m_fmsInputSocket, SIGNAL (readyRead()), this, SLOT (readFmsPacket()));
+    connect (&m_fmsInputSocket, SIGNAL (readyRead()), this, SLOT (readFmsPacket()));
 }
 
 //==================================================================================================
@@ -84,8 +81,8 @@ void SocketManager::refreshIPs() {
 //==================================================================================================
 
 void SocketManager::setFmsInputPort (int port) {
-    m_fmsInputSocket->bind (QHostAddress::Any, port, QUdpSocket::ShareAddress);
-    m_fmsInputSocket->setSocketOption (QAbstractSocket::MulticastLoopbackOption, 0);
+    m_fmsInputSocket.bind (QHostAddress::Any, port, QUdpSocket::ShareAddress);
+    m_fmsInputSocket.setSocketOption (QAbstractSocket::MulticastLoopbackOption, 0);
 }
 
 //==================================================================================================
@@ -126,7 +123,7 @@ void SocketManager::setRobotAddress (QString address) {
 
 void SocketManager::sendFmsPacket (QByteArray data) {
     if (!data.isEmpty())
-        m_fmsOutputSocket->writeDatagram (data, QHostAddress::Any, m_fmsOutput);
+        m_fmsOutputSocket.writeDatagram (data, QHostAddress::Any, m_fmsOutput);
 }
 
 //==================================================================================================
@@ -137,8 +134,8 @@ void SocketManager::sendRobotPacket (QByteArray data) {
     if (data.isEmpty())
         return;
 
-    if (!robotAddress().isEmpty() && m_robotOutputSocket != Q_NULLPTR)
-        m_robotOutputSocket->writeDatagram (data, QHostAddress (robotAddress()), m_robotOutput);
+    if (!robotAddress().isEmpty())
+        m_robotOutputSocket.writeDatagram (data, QHostAddress (robotAddress()), m_robotOutput);
 
     else {
         for (int i = 0; i < m_outputSockets.count(); ++i) {
@@ -172,7 +169,7 @@ void SocketManager::setRobotIPs (const QStringList& list) {
 //==================================================================================================
 
 void SocketManager::readFmsPacket() {
-    emit fmsPacketReceived (DS::readSocket (m_fmsInputSocket));
+    emit fmsPacketReceived (DS::readSocket (&m_fmsInputSocket));
 }
 
 //==================================================================================================
