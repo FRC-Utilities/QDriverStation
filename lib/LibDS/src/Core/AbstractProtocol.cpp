@@ -57,6 +57,9 @@ AbstractProtocol::AbstractProtocol() {
     m_sentFMSPackets      = 0;
     m_sentRobotPackets    = 0;
 
+    m_fmsFrequency        = fmsFrequency() > 0 ? (1000 / fmsFrequency()) : 500;
+    m_robotFrequency      = robotFrequency() > 0 ? (1000 / robotFrequency()) : 20;
+
     m_alliance            = DS::kAllianceRed1;
     m_controlMode         = DS::kControlInvalid;
     m_communicationStatus = DS::kFailing;
@@ -518,7 +521,7 @@ void AbstractProtocol::sendFmsPacket() {
         m_sockets.sendFmsPacket (generateFmsPacket());
     }
 
-    QTimer::singleShot (1000 / fmsFrequency(), Qt::PreciseTimer, this, SLOT (sendFmsPacket()));
+    QTimer::singleShot (m_fmsFrequency, Qt::PreciseTimer, this, SLOT (sendFmsPacket()));
 }
 
 //==================================================================================================
@@ -531,7 +534,7 @@ void AbstractProtocol::sendRobotPacket() {
         m_sockets.sendRobotPacket (generateRobotPacket());
     }
 
-    QTimer::singleShot (1000 / robotFrequency(), Qt::PreciseTimer, this, SLOT (sendRobotPacket()));
+    QTimer::singleShot (m_robotFrequency, Qt::PreciseTimer, this, SLOT (sendRobotPacket()));
 }
 
 

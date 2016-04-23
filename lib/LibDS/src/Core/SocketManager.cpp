@@ -29,12 +29,13 @@ using namespace DS_Core;
 //==================================================================================================
 
 SocketManager::SocketManager() {
+    m_fmsOutput = 0;
     m_robotInput = 0;
     m_robotOutput = 0;
     m_scannerCount = 0;
     m_robotAddress = "";
-    m_fmsInputSocket = new QTcpSocket (this);
-    m_fmsOutputSocket = new QTcpSocket (this);
+    m_fmsInputSocket = new QUdpSocket (this);
+    m_fmsOutputSocket = new QUdpSocket (this);
     m_robotOutputSocket = new QUdpSocket (this);
 
     connect (m_fmsInputSocket, SIGNAL (readyRead()), this, SLOT (readFmsPacket()));
@@ -83,8 +84,7 @@ void SocketManager::refreshIPs() {
 //==================================================================================================
 
 void SocketManager::setFmsInputPort (int port) {
-    m_fmsInputSocket->disconnectFromHost();
-    m_fmsInputSocket->bind (QHostAddress::Any, port, QTcpSocket::ShareAddress);
+    m_fmsInputSocket->bind (QHostAddress::Any, port, QUdpSocket::ShareAddress);
     m_fmsInputSocket->setSocketOption (QAbstractSocket::MulticastLoopbackOption, 0);
 }
 
@@ -93,8 +93,7 @@ void SocketManager::setFmsInputPort (int port) {
 //==================================================================================================
 
 void SocketManager::setFmsOutputPort (int port) {
-    m_fmsOutputSocket->disconnectFromHost();
-    m_fmsOutputSocket->connectToHost (QHostAddress::Any, port);
+    m_fmsOutput = port;
 }
 
 //==================================================================================================
@@ -126,7 +125,8 @@ void SocketManager::setRobotAddress (QString address) {
 //==================================================================================================
 
 void SocketManager::sendFmsPacket (QByteArray data) {
-    m_fmsOutputSocket->write (data);
+    if (!data.isEmpty())
+        m_fmsOutputSocket->writeDatagram (data, QHostAddress::Any, m_fmsOutput);
 }
 
 //==================================================================================================

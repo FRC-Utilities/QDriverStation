@@ -467,6 +467,9 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     int m_sentFMSPackets;
     int m_sentRobotPackets;
 
+    int m_fmsFrequency;
+    int m_robotFrequency;
+
     float m_voltage;
 
     bool m_enabled;

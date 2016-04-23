@@ -33,6 +33,7 @@ using namespace DS_Protocols;
 #define ENABLED              0x04 /* Robot enabled */
 #define DISABLED             0x00 /* Robot disabled */
 #define FMS_ATTACHED         0x01 /* FMS Attached bit */
+#define FMS_NOT_ATTACHED     0x00 /* FMS not attached bit */
 #define CONTROL_TEST         0x01 /* Test mode */
 #define CONTROL_AUTONOMOUS   0x02 /* Autonomous mode */
 #define CONTROL_TELEOPERATED 0x00 /* Teleop mode */
@@ -181,8 +182,21 @@ void FRC_Protocol2015::resetProtocol() {
 //==================================================================================================
 
 bool FRC_Protocol2015::interpretFmsPacket (QByteArray data) {
-    Q_UNUSED (data);
-    return true;
+    if (data.length() >= 22) {
+        quint8 opcode = data.at (3);
+        quint8 alliance = data.at (5);
+
+        /* Should use this to update operation mode & enabled state */
+        (void) opcode;
+
+        /* Update to correct alliance and position */
+        if (alliance != getAllianceCode())
+            setAlliance (getAllianceStation (alliance));
+
+        return true;
+    }
+
+    return false;
 }
 
 //==================================================================================================
@@ -397,25 +411,29 @@ int FRC_Protocol2015::getControlCode() {
 //==================================================================================================
 
 int FRC_Protocol2015::getAllianceCode() {
-    if (alliance() == DS::kAllianceRed1)
+    switch (alliance()) {
+    case DS::kAllianceRed1:
         return ALLIANCE_RED_1;
-
-    else if (alliance() == DS::kAllianceRed2)
+        break;
+    case DS::kAllianceRed2:
         return ALLIANCE_RED_2;
-
-    else if (alliance() == DS::kAllianceRed3)
+        break;
+    case DS::kAllianceRed3:
         return ALLIANCE_RED_3;
-
-    else if (alliance() == DS::kAllianceBlue1)
+        break;
+    case DS::kAllianceBlue1:
         return ALLIANCE_BLUE_1;
-
-    else if (alliance() == DS::kAllianceBlue2)
+        break;
+    case DS::kAllianceBlue2:
         return ALLIANCE_BLUE_2;
-
-    else if (alliance() == DS::kAllianceBlue3)
+        break;
+    case DS::kAllianceBlue3:
         return ALLIANCE_BLUE_3;
-
-    return ALLIANCE_RED_1;
+        break;
+    default:
+        return ALLIANCE_RED_1;
+        break;
+    }
 }
 
 //==================================================================================================
@@ -428,4 +446,35 @@ int FRC_Protocol2015::getJoystickSize (DS::Joystick joystick) {
             + (joystick.numButtons / 8)
             + (joystick.numButtons % 8 == 0 ? 0 : 1)
             + (joystick.numPOVs > 0 ? joystick.numPOVs * 2 : 0);
+}
+
+
+//==================================================================================================
+// FRC_Protocol2015::getAllianceStation
+//==================================================================================================
+
+DS::Alliance FRC_Protocol2015::getAllianceStation (quint8 code) {
+    switch (code) {
+    case ALLIANCE_RED_1:
+        return DS::kAllianceRed1;
+        break;
+    case ALLIANCE_RED_2:
+        return DS::kAllianceRed2;
+        break;
+    case ALLIANCE_RED_3:
+        return DS::kAllianceRed3;
+        break;
+    case ALLIANCE_BLUE_1:
+        return DS::kAllianceBlue1;
+        break;
+    case ALLIANCE_BLUE_2:
+        return DS::kAllianceBlue2;
+        break;
+    case ALLIANCE_BLUE_3:
+        return DS::kAllianceBlue3;
+        break;
+    default:
+        return DS::kAllianceRed1;
+        break;
+    }
 }

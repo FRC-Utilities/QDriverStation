@@ -62,6 +62,7 @@ class LIB_DS_DECL FRC_Protocol2015 : public DS_Core::AbstractProtocol {
     virtual int getControlCode();
     virtual int getAllianceCode();
     virtual int getJoystickSize (DS::Joystick joystick);
+    virtual DS::Alliance getAllianceStation (quint8 code);
 
     int m_instructionCode;
 };
