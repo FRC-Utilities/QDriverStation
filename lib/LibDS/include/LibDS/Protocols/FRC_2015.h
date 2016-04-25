@@ -94,6 +94,7 @@ class LIB_DS_DECL FRC_Protocol2015 : public DS_Core::AbstractProtocol {
     virtual void resetProtocol();
 
   private:
+    virtual void parseExtended (QByteArray data);
     virtual bool interpretFmsPacket (QByteArray data);
     virtual bool interpretRobotPacket (QByteArray data);
 

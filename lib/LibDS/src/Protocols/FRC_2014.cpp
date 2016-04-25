@@ -122,8 +122,7 @@ bool FRC_Protocol2014::interpretRobotPacket (QByteArray data) {
         setEmergencyStop (true);
 
     /* Calculate the voltage */
-    float voltage = integer + (99 * decimal / 255);
-    updateVoltage (voltage);
+    updateVoltage ((float) (integer + ((float) (decimal) * 99 / 255 / 100)));
 
     /* If both battery voltage values are 0x37, it means that there is no code loaded */
     updateRobotCode ((integer != 0x37) && (decimal != 0x37));
