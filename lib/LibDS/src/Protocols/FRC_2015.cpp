@@ -161,9 +161,9 @@ bool FRC_Protocol2015::interpretRobotPacket (QByteArray data) {
 
     /* Update client information */
     updateRobotCode    (has_code);
-    setEmergencyStop   (e_stopped);
     updateVBrownout    (voltage_brwn);
     updateSendDateTime (send_date_time);
+    setEmergencyStop   (e_stopped  && !isEmergencyStopped());
 
     /* Calculate the voltage */
     float voltage = integer + (99 * decimal / 255);

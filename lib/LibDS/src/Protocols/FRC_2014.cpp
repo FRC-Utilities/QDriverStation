@@ -113,16 +113,17 @@ bool FRC_Protocol2014::interpretRobotPacket (QByteArray data) {
         return false;
 
     /* Read status echo and battery voltage, we could do more things, but we don't need them */
-    auto opcode  = data.at (0);
-    auto integer = data.at (1);
-    auto decimal = data.at (2);
+    uint opcode  = data.at (0);
+    uint integer = data.at (1);
+    uint decimal = data.at (2);
 
     /* The robot seems to be emergency stopped */
     if (opcode == ESTOP_ON_BIT && !isEmergencyStopped())
         setEmergencyStop (true);
 
-    /* Update battery voltage */
-    updateVoltage (integer + (float) (decimal / 100));
+    /* Calculate the voltage */
+    float voltage = integer + (99 * decimal / 255);
+    updateVoltage (voltage);
 
     /* If both battery voltage values are 0x37, it means that there is no code loaded */
     updateRobotCode ((integer != 0x37) && (decimal != 0x37));
@@ -180,7 +181,7 @@ QByteArray FRC_Protocol2014::generateRobotPacket() {
 
     /* Add CRC checksum */
     m_crc32.update (data);
-    auto checksum = m_crc32.value();
+    uint checksum = m_crc32.value();
     data[1020] = (checksum & 0xff000000) >> 24;
     data[1021] = (checksum & 0xff0000) >> 16;
     data[1022] = (checksum & 0xff00) >> 8;
