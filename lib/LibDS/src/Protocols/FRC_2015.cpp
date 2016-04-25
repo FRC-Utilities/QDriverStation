@@ -217,8 +217,10 @@ bool FRC_Protocol2015::interpretRobotPacket (QByteArray data) {
     updateVoltage ((float) (integer + ((float) (decimal) * 99 / 255 / 100)));
 
     /* This is an extended packet, read its extra data */
-    if (data.size() > 8)
-        parseExtended (QByteArray::fromStdString (data.toStdString().substr (8)));
+    if (data.size() > 8) {
+        std::string extended = std::string (data.constData(), data.length());
+        parseExtended (QString::fromUtf8 (QString::fromStdString (extended.substr (8))));
+    }
 
     /* Packet was successfully read, reset watchdog */
     return true;
