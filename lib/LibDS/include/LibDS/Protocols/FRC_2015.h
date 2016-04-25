@@ -31,17 +31,60 @@ class LIB_DS_DECL FRC_Protocol2015 : public DS_Core::AbstractProtocol {
     Q_OBJECT
 
   public:
-    virtual QString name();
-    virtual int fmsFrequency();
-    virtual int robotFrequency();
-    virtual int fmsInputPort();
-    virtual int fmsOutputPort();
-    virtual int tcpProbesPort();
-    virtual int robotInputPort();
-    virtual int robotOutputPort();
-    virtual int netConsoleInputPort();
-    virtual bool acceptsConsoleCommands();
-    virtual QStringList additionalRobotIPs();
+    inline virtual QString name() {
+        return "FRC 2015 Protocol";
+    }
+
+    inline virtual int fmsFrequency() {
+        return 2;
+    }
+
+    inline virtual int robotFrequency() {
+        return 50;
+    }
+
+    inline virtual int fmsInputPort() {
+        return 1120;
+    }
+
+    inline virtual int fmsOutputPort() {
+        return 1160;
+    }
+
+    inline virtual int robotInputPort() {
+        return 1150;
+    }
+
+    inline virtual int robotOutputPort() {
+        return 1110;
+    }
+
+    inline virtual int tcpProbesPort() {
+        return 80;
+    }
+
+    inline virtual int netConsoleInputPort() {
+        return 6666;
+    }
+
+    inline virtual bool acceptsConsoleCommands() {
+        return false;
+    }
+
+    inline virtual QStringList additionalRobotIPs() {
+        QStringList list;
+        list.append (QString ("roboRIO-%1.local").arg (team()));
+        list.append (QString ("172.22.11.2"));
+        return list;
+    }
+
+    inline virtual DS::SocketType fmsSocketType() {
+        return DS::kUdpSocket;
+    }
+
+    inline virtual DS::SocketType robotSocketType() {
+        return DS::kUdpSocket;
+    }
 
   public slots:
     virtual void reboot();
@@ -59,12 +102,15 @@ class LIB_DS_DECL FRC_Protocol2015 : public DS_Core::AbstractProtocol {
     virtual QByteArray generateFmsPacket();
     virtual QByteArray generateRobotPacket();
 
-    virtual int getControlCode();
-    virtual int getAllianceCode();
-    virtual int getJoystickSize (DS::Joystick joystick);
+    virtual uint getControlCode();
+    virtual uint getRequestCode();
+    virtual uint getAllianceCode();
+    virtual uint getFmsControlCode();
+    virtual uint getJoystickSize (DS::Joystick joystick);
     virtual DS::Alliance getAllianceStation (quint8 code);
 
-    int m_instructionCode;
+    bool m_rebootRio;
+    bool m_restartCode;
 };
 
 }

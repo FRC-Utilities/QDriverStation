@@ -31,6 +31,7 @@
 
 #include "LibDS/Core/Common.h"
 #include "LibDS/Core/Watchdog.h"
+#include "LibDS/DriverStation.h"
 #include "LibDS/Core/SocketManager.h"
 
 namespace DS_Core {
@@ -55,6 +56,10 @@ namespace DS_Core {
 /// virtual functions to generate DS-to-robot packets, read robot-to-DS packets,
 /// encode joystick outputs and specify the ports used by the DS, robot and NetConsole.
 ///
+/// Please note that this class has a lot of inlined functions, which may increase code size,
+/// but can make the operation of the library a little faster (e.g. by reducing function call
+/// times while generating robot packets)
+///
 class LIB_DS_DECL AbstractProtocol : public QObject {
     Q_OBJECT
 
@@ -64,122 +69,170 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     /// Please note that the team number is assigned and updated automatically
     /// by the \c ProtocolManager class.
     ///
-    int team() const;
+    inline int team() const {
+        return m_team;
+    }
 
     ///
     /// Returns \c true if the robot is running the user/team code.
     ///
-    bool hasCode() const;
+    inline bool hasCode() const {
+        return m_robotCode;
+    }
 
     ///
     /// Returns \c true if the protocol is operating
     ///
-    bool isOperating() const;
+    inline bool isOperating() const {
+        return m_operating;
+    }
 
     ///
     /// Returns the expiration time of the watchdog
     ///
-    int expirationTime() const;
+    inline int expirationTime() const {
+        return m_watchdog.expirationTime();
+    }
 
     ///
     /// Returns the number of packets that the DS sent to the FMS.
     ///
-    int sentFmsPackets() const;
+    inline int sentFmsPackets() const {
+        return m_sentFMSPackets;
+    }
 
     ///
     /// Returns the number of packets that the DS sent to the robot.
     ///
-    int sentRobotPackets() const;
+    inline int sentRobotPackets() const {
+        return m_sentRobotPackets;
+    }
 
     ///
     /// Returns \c true if the robot is enabled.
     ///
-    bool isEnabled() const;
+    inline bool isEnabled() const {
+        return m_enabled;
+    }
 
     ///
     /// Returns \c true if the DS <--> Robot communications are working.
     ///
-    bool isConnectedToRobot() const;
+    inline bool isConnectedToRobot() const {
+        return communicationStatus() == DS::kFull;
+    }
 
     ///
     /// Returns \c true if the DS is able to ping the robot radio/router.
     ///
-    bool isConnectedToRadio() const;
+    inline bool isConnectedToRadio() const {
+        return m_radioConnected;
+    }
 
     ///
     /// Returns \c true if the robot requests the DS to send the current
     /// timestamp in a DS packet.
     ///
-    bool sendDateTime() const;
+    inline bool sendDateTime() const {
+        return m_sendDateTime;
+    }
 
     ///
     /// Returns \c true if the robot reports a voltage brownout.
     ///
-    bool hasVoltageBrownout() const;
+    inline bool hasVoltageBrownout() const {
+        return m_voltageBrownout;
+    }
 
     ///
     /// Returns \c true if the robot has been emergency stopped.
     /// Please note that the e-stop can be induced by the user or the
     /// robot controller itself.
     ///
-    bool isEmergencyStopped() const;
+    inline bool isEmergencyStopped() const {
+        return m_emergencyStop;
+    }
 
     ///
     /// Returns \c true if the client is attached to the FMS
     ///
-    bool isFmsAttached() const;
+    inline bool isFmsAttached() const {
+        return m_fmsAttached;
+    }
 
     ///
     /// Returns the current battery voltage of the robot.
     ///
-    float batteryVoltage() const;
+    inline float robotVoltage() const {
+        return m_voltage;
+    }
 
     ///
     /// Returns the current alliance and position of the robot.
     ///
-    DS::Alliance alliance() const;
+    inline DS::Alliance alliance() const {
+        return m_alliance;
+    }
 
     ///
     /// Returns the current control mode of the robot.
     ///
-    DS::ControlMode controlMode() const;
+    inline DS::ControlMode controlMode() const {
+        return m_controlMode;
+    }
 
     ///
     /// Returns the communication status between the robot and the DS.
     ///
-    DS::DS_CommStatus communicationStatus() const;
+    inline DS::DS_CommStatus communicationStatus() const {
+        return m_communicationStatus;
+    }
 
     ///
     /// Returns a pointer to the joysticks managed by the \c DriverStation
     /// class.
     ///
-    QList<DS::Joystick>* joysticks() const;
+    inline QList<DS::Joystick>* joysticks() const {
+        return DriverStation::getInstance()->joysticks();
+    }
 
     ///
     /// Returns the current radio address.
     /// Please note that this address can be one of the addresses
     /// specified by the subclassed protocol or an user-set address.
     ///
-    QString radioAddress();
+    inline QString radioAddress() {
+        if (m_radioIPs.count() > m_radioIterator)
+            return m_radioIPs.at (m_radioIterator);
+
+        else
+            return DS::getStaticIP (10, team(), 1);
+    }
 
     ///
     /// Returns the current robot address.
     /// This address can be one of the addresses specified by the
     /// subclassed protocol or an user-set address.
     ///
-    QString robotAddress();
+    inline QString robotAddress() {
+        return m_sockets.robotAddress();
+    }
 
     ///
     /// Returns the default radio addresses of the current protocol and
     /// a generated list of DHCP IPs based on the local IP of the client.
     ///
-    QStringList radioIPs();
+    inline QStringList radioIPs() {
+        return m_radioIPs;
+    }
 
     ///
     /// Returns the default robot addresses of the current protocol and
     /// a generated list of DHCP IPs based on the local IP of the client.
     ///
-    QStringList robotIPs();
+    inline QStringList robotIPs() {
+        return m_robotIPs;
+    }
 
     ///
     /// Specifies the name/title of the protocol. This is used in the welcome
@@ -187,7 +240,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// \note This function must be re-implemented by each protocol
     ///
-    virtual QString name() {
+    inline virtual QString name() {
         return "Abstract Protocol";
     }
 
@@ -197,7 +250,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// \note This function must be re-implemented by each protocol
     ///
-    virtual int fmsFrequency() {
+    inline virtual int fmsFrequency() {
         return 0;
     }
 
@@ -207,7 +260,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// \note This function must be re-implemented by each protocol
     ///
-    virtual int robotFrequency() {
+    inline virtual int robotFrequency() {
         return 0;
     }
 
@@ -216,7 +269,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// \note This function must be re-implemented by each protocol
     ///
-    virtual int fmsInputPort() {
+    inline virtual int fmsInputPort() {
         return DS::INVALID_PORT;
     }
 
@@ -225,7 +278,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// \note This function must be re-implemented by each protocol
     ///
-    virtual int fmsOutputPort() {
+    inline virtual int fmsOutputPort() {
         return DS::INVALID_PORT;
     }
 
@@ -234,7 +287,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// \note This function must be re-implemented by each protocol
     ///
-    virtual int robotInputPort() {
+    inline virtual int robotInputPort() {
         return DS::INVALID_PORT;
     }
 
@@ -243,7 +296,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// \note This function must be re-implemented by each protocol
     ///
-    virtual int robotOutputPort() {
+    inline virtual int robotOutputPort() {
         return DS::INVALID_PORT;
     }
 
@@ -253,7 +306,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     /// This port is used to check we we can ping the robot succesfully and
     /// obtain the 'partial' communication status.
     ///
-    virtual int tcpProbesPort() {
+    inline virtual int tcpProbesPort() {
         return DS::INVALID_PORT;
     }
 
@@ -262,7 +315,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// \note This function must be re-implemented by each protocol
     ///
-    virtual int netConsoleInputPort() {
+    inline virtual int netConsoleInputPort() {
         return DS::INVALID_PORT;
     }
 
@@ -274,7 +327,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// \note This function must be re-implemented by each protocol
     ///
-    virtual int netConsoleOutputPort() {
+    inline virtual int netConsoleOutputPort() {
         return DS::INVALID_PORT;
     }
 
@@ -284,7 +337,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// \note This function must be re-implemented by each protocol
     ///
-    virtual bool acceptsConsoleCommands() {
+    inline virtual bool acceptsConsoleCommands() {
         return false;
     }
 
@@ -293,7 +346,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// \note This function must be re-implemented by each protocol
     ///
-    virtual QStringList additionalRadioIPs() {
+    inline virtual QStringList additionalRadioIPs() {
         return QStringList (DS::getStaticIP (10, team(), 1));
     }
 
@@ -302,20 +355,44 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// \note This function must be re-implemented by each protocol
     ///
-    virtual QStringList additionalRobotIPs() {
+    inline virtual QStringList additionalRobotIPs() {
         return QStringList (DS::getStaticIP (10, team(), 2));
+    }
+
+    ///
+    /// Specifies the type of IP protocol/socket that we must use to communicate with the FMS.
+    /// Possible values are \a DS::kTcpSocket and \a DS::kUdpSocket
+    ///
+    /// \note This function must be re-implemented by each protocol
+    ///
+    inline virtual DS::SocketType fmsSocketType() {
+        return DS::kUdpSocket;
+    }
+
+    ///
+    /// Specifies the type of IP protocol/socket that we must use to communicate with the robot.
+    /// Possible values are \a DS::kTcpSocket and \a DS::kUdpSocket
+    ///
+    /// \note This function must be re-implemented by each protocol
+    ///
+    inline virtual DS::SocketType robotSocketType() {
+        return DS::kUdpSocket;
     }
 
   public slots:
     ///
     /// Inhibits the operation of the protocol
     ///
-    void stop();
+    inline void stop() {
+        m_operating = false;
+    }
 
     ///
     /// Allows the operation of the protocol
     ///
-    void start();
+    inline void start() {
+        m_operating = true;
+    }
 
     ///
     /// Resets the internal values of the protocol and emits the appropiate
@@ -431,13 +508,53 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     explicit AbstractProtocol();
 
   protected:
-    void updateRobotCode (bool available);
-    void updateSendDateTime (bool sendDT);
-    void updateFmsAttached (bool attached);
-    void updateRadioStatus (bool connected);
-    void updateVoltageBrownout (bool brownout);
-    void updateVoltage (QString integer, QString decimal);
-    void updateCommStatus (DS::DS_CommStatus statusCode);
+    inline void updateRobotCode (bool available) {
+        if (m_robotCode == available)
+            return;
+
+        if (m_robotCode && !available)
+            setEnabled (false);
+
+        m_robotCode = available;
+        emit codeChanged (m_robotCode);
+    }
+
+    inline void updateSendDateTime (bool sendDT) {
+        m_sendDateTime = sendDT;
+    }
+
+    inline void updateFmsAttached (bool attached) {
+        m_fmsAttached = attached;
+        emit fmsChanged (m_fmsAttached);
+    }
+
+    inline void updateRadioStatus (bool connected) {
+        m_radioConnected = connected;
+        emit radioCommChanged (m_radioConnected);
+    }
+
+    inline void updateVBrownout (bool brownout) {
+        m_voltageBrownout = brownout;
+        emit voltageBrownoutChanged (m_voltageBrownout);
+    }
+
+    inline void updateVoltage (float voltage) {
+        m_voltage = voltage;
+        int integer = (int) voltage;
+        int decimal = voltage - integer;
+
+        QString intString = QString::number (integer);
+        QString decString = QString::number (decimal);
+        intString.prepend (integer < 10 ? "0" : "");
+        decString.prepend (decimal < 10 ? "0" : "");
+
+        emit voltageChanged (intString + "." + decString);
+    }
+
+    inline void updateCommStatus (DS::DS_CommStatus status) {
+        m_communicationStatus = status;
+        emit communicationsChanged (m_communicationStatus);
+    }
 
   signals:
     void codeChanged (bool);

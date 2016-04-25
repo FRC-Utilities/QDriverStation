@@ -20,7 +20,6 @@
  * THE SOFTWARE.
  */
 
-#include "LibDS/DriverStation.h"
 #include "LibDS/Core/AbstractProtocol.h"
 
 using namespace DS_Core;
@@ -87,204 +86,8 @@ AbstractProtocol::AbstractProtocol() {
 
     generateIpLists();
     m_watchdog.setTimeout (1000);
-    QTimer::singleShot (200, Qt::CoarseTimer, this, SLOT (reset()));
-    QTimer::singleShot (800, Qt::CoarseTimer, this, SLOT (initialize()));
-}
-
-//==================================================================================================
-// AbstractProtocol::team
-//==================================================================================================
-
-int AbstractProtocol::team() const {
-    return m_team;
-}
-
-//==================================================================================================
-// AbstractProtocol::hasCode
-//==================================================================================================
-
-bool AbstractProtocol::hasCode() const {
-    return m_robotCode;
-}
-
-//==================================================================================================
-// AbstractProtocol::isOperating
-//==================================================================================================
-
-bool AbstractProtocol::isOperating() const {
-    return m_operating;
-}
-
-//==================================================================================================
-// AbstractProtocol::expirationTime
-//==================================================================================================
-
-int AbstractProtocol::expirationTime() const {
-    return m_watchdog.expirationTime();
-}
-
-//==================================================================================================
-// AbstractProtocol::sentFMSPackets
-//==================================================================================================
-
-int AbstractProtocol::sentFmsPackets() const {
-    return m_sentFMSPackets;
-}
-
-//==================================================================================================
-// AbstractProtocol::sentRobotPackets
-//==================================================================================================
-
-int AbstractProtocol::sentRobotPackets() const {
-    return m_sentRobotPackets;
-}
-
-//==================================================================================================
-// AbstractProtocol::isEnabled
-//==================================================================================================
-
-bool AbstractProtocol::isEnabled() const {
-    return m_enabled;
-}
-
-//==================================================================================================
-// AbstractProtocol::isConnectedToRobot
-//==================================================================================================
-
-bool AbstractProtocol::isConnectedToRobot() const {
-    return communicationStatus() == DS::kFull;
-}
-
-//==================================================================================================
-// AbstractProtocol::isConnectedToRadio
-//==================================================================================================
-
-bool AbstractProtocol::isConnectedToRadio() const {
-    return m_radioConnected;
-}
-
-//==================================================================================================
-// AbstractProtocol::sendDateTime
-//==================================================================================================
-
-bool AbstractProtocol::sendDateTime() const {
-    return m_sendDateTime;
-}
-
-//==================================================================================================
-// AbstractProtocol::hasVoltageBrownout
-//==================================================================================================
-
-bool AbstractProtocol::hasVoltageBrownout() const {
-    return m_voltageBrownout;
-}
-
-//==================================================================================================
-// AbstractProtocol::isEmergencyStopped
-//==================================================================================================
-
-bool AbstractProtocol::isEmergencyStopped() const {
-    return m_emergencyStop;
-}
-
-//==================================================================================================
-// AbstractProtocol::isFmsAttached
-//==================================================================================================
-
-bool AbstractProtocol::isFmsAttached() const {
-    return m_fmsAttached;
-}
-
-//==================================================================================================
-// AbstractProtocol::batteryVoltage
-//==================================================================================================
-
-float AbstractProtocol::batteryVoltage() const {
-    return m_voltage;
-}
-
-//==================================================================================================
-// AbstractProtocol::alliance
-//==================================================================================================
-
-DS::Alliance AbstractProtocol::alliance() const {
-    return m_alliance;
-}
-
-//==================================================================================================
-// AbstractProtocol::controlMode
-//==================================================================================================
-
-DS::ControlMode AbstractProtocol::controlMode() const {
-    return m_controlMode;
-}
-
-//==================================================================================================
-// AbstractProtocol::communicationStatus
-//==================================================================================================
-
-DS::DS_CommStatus AbstractProtocol::communicationStatus() const {
-    return m_communicationStatus;
-}
-
-//==================================================================================================
-// AbstractProtocol::joysticks
-//==================================================================================================
-
-QList<DS::Joystick>* AbstractProtocol::joysticks() const {
-    return DriverStation::getInstance()->joysticks();
-}
-
-//==================================================================================================
-// AbstractProtocol::radioAddress
-//==================================================================================================
-
-QString AbstractProtocol::radioAddress() {
-    if (m_radioIPs.count() > m_radioIterator)
-        return m_radioIPs.at (m_radioIterator);
-
-    else
-        return DS::getStaticIP (10, team(), 1);
-}
-
-//==================================================================================================
-// AbstractProtocol::robotAddress
-//==================================================================================================
-
-QString AbstractProtocol::robotAddress() {
-    return m_sockets.robotAddress();
-}
-
-//==================================================================================================
-// AbstractProtocol::radioIPs
-//==================================================================================================
-
-QStringList AbstractProtocol::radioIPs() {
-    return m_radioIPs;
-}
-
-//==================================================================================================
-// AbstractProtocol::robotIPs
-//==================================================================================================
-
-QStringList AbstractProtocol::robotIPs() {
-    return m_robotIPs;
-}
-
-//==================================================================================================
-// AbstractProtocol::stop
-//==================================================================================================
-
-void AbstractProtocol::stop() {
-    m_operating = false;
-}
-
-//==================================================================================================
-// AbstractProtocol::start
-//==================================================================================================
-
-void AbstractProtocol::start() {
-    m_operating = true;
+    QTimer::singleShot (200, Qt::CoarseTimer, this, &AbstractProtocol::reset);
+    QTimer::singleShot (800, Qt::CoarseTimer, this, &AbstractProtocol::initialize);
 }
 
 //==================================================================================================
@@ -298,7 +101,7 @@ void AbstractProtocol::reset() {
         resetProtocol();
 
         /* Emit appropiate signals */
-        updateVoltage (0, 0);
+        updateVoltage (0.0);
         updateRobotCode (false);
         updateRadioStatus (false);
         updateFmsAttached (false);
@@ -353,7 +156,7 @@ void AbstractProtocol::setEmergencyStop (bool emergency_stop) {
     emit emergencyStoppedChanged (isEmergencyStopped());
 
     if (isEmergencyStopped())
-        QTimer::singleShot (500, this, SLOT (disableEmergencyStop()));
+        QTimer::singleShot (500, this, &AbstractProtocol::disableEmergencyStop);
 
     emit emergencyStopped();
 }
@@ -383,90 +186,6 @@ void AbstractProtocol::setControlMode (DS::ControlMode mode) {
         m_controlMode = mode;
         emit controlModeChanged (controlMode());
     }
-}
-
-//==================================================================================================
-// AbstractProtocol::updateRobotCode
-//==================================================================================================
-
-void AbstractProtocol::updateRobotCode (bool available) {
-    /* Robot code just crashed/failed */
-    if (m_robotCode && !available)
-        setEnabled (false);
-
-    /* Update DS information */
-    m_robotCode = available;
-    emit codeChanged (m_robotCode);
-}
-
-//==================================================================================================
-// AbstractProtocol::updateSendDateTime
-//==================================================================================================
-
-void AbstractProtocol::updateSendDateTime (bool sendDT) {
-    m_sendDateTime = sendDT;
-}
-
-//==================================================================================================
-// AbstractProtocol::updateFmsAttached
-//==================================================================================================
-
-void AbstractProtocol::updateFmsAttached (bool attached) {
-    m_fmsAttached = attached;
-    emit fmsChanged (m_fmsAttached);
-}
-
-
-//==================================================================================================
-// AbstractProtocol::updateRadioStatus
-//==================================================================================================
-
-void AbstractProtocol::updateRadioStatus (bool connected) {
-    m_radioConnected = connected;
-    emit radioCommChanged (m_radioConnected);
-}
-
-//==================================================================================================
-// AbstractProtocol::updateVoltageBrownout
-//==================================================================================================
-
-void AbstractProtocol::updateVoltageBrownout (bool brownout) {
-    m_voltageBrownout = brownout;
-    emit voltageBrownoutChanged (m_voltageBrownout);
-}
-
-//==================================================================================================
-// AbstractProtocol::updateVoltage
-//==================================================================================================
-
-void AbstractProtocol::updateVoltage (QString integer, QString decimal) {
-    /* Voltage is smaller than 10v, add 0 before the digit (e.g. to 09) */
-    if (integer.length() < 2)
-        integer.prepend ("0");
-
-    /* Decimal voltage is less than 0.1v, add 0 to decimal (e.g 0.01) */
-    if (decimal.length() < 2)
-        decimal.prepend ("0");
-
-    /* Decimal is too detailed, obtain only first two digits */
-    else if (decimal.length() > 2)
-        decimal = QString (decimal.at (0)) + QString (decimal.at (1));
-
-    /* Construct voltage string */
-    QString voltage = QString ("%1.%2").arg (integer, decimal);
-
-    /* Update values & emit signals */
-    m_voltage = voltage.toFloat();
-    emit voltageChanged (voltage);
-}
-
-//==================================================================================================
-// AbstractProtocol::updateCommStatus
-//==================================================================================================
-
-void AbstractProtocol::updateCommStatus (DS::DS_CommStatus status) {
-    m_communicationStatus = status;
-    emit communicationsChanged (m_communicationStatus);
 }
 
 //==================================================================================================

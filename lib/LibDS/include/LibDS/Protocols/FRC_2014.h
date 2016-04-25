@@ -34,18 +34,61 @@ class LIB_DS_DECL FRC_Protocol2014 : public DS_Core::AbstractProtocol {
   public:
     explicit FRC_Protocol2014();
 
-    virtual QString name();
-    virtual int fmsFrequency();
-    virtual int robotFrequency();
-    virtual int fmsInputPort();
-    virtual int fmsOutputPort();
-    virtual int robotInputPort();
-    virtual int robotOutputPort();
-    virtual int tcpProbesPort();
-    virtual int netConsoleInputPort();
-    virtual int netConsoleOutputPort();
-    virtual bool acceptsConsoleCommands();
-    virtual QStringList additionalRobotIPs();
+    inline virtual QString name() {
+        return "FRC 2014 Protocol (Alpha)";
+    }
+
+    inline virtual int fmsFrequency() {
+        return 2;
+    }
+
+    inline virtual int robotFrequency() {
+        return 50;
+    }
+
+    inline virtual int fmsInputPort() {
+        return 1120;
+    }
+
+    inline virtual int fmsOutputPort() {
+        return 1160;
+    }
+
+    inline virtual int robotInputPort() {
+        return 1110;
+    }
+
+    inline virtual int robotOutputPort() {
+        return 1150;
+    }
+
+    inline virtual int tcpProbesPort() {
+        return 80;
+    }
+
+    inline virtual int netConsoleInputPort() {
+        return 6666;
+    }
+
+    inline virtual int netConsoleOutputPort() {
+        return 6668;
+    }
+
+    inline virtual bool acceptsConsoleCommands() {
+        return true;
+    }
+
+    inline virtual QStringList additionalRobotIPs() {
+        return QStringList (DS::getStaticIP (10, team(), 2));
+    }
+
+    inline virtual DS::SocketType fmsSocketType() {
+        return DS::kUdpSocket;
+    }
+
+    inline virtual DS::SocketType robotSocketType() {
+        return DS::kUdpSocket;
+    }
 
   public slots:
     virtual void reboot();

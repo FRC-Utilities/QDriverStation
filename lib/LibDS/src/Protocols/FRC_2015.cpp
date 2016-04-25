@@ -28,137 +28,60 @@ using namespace DS_Protocols;
 // Protocol bits
 //==================================================================================================
 
-#define ESTOP_ON             0x80 /* Emergency stop enabled */
-#define ESTOP_OFF            0x00 /* Emergency stop disabled */
-#define ENABLED              0x04 /* Robot enabled */
-#define DISABLED             0x00 /* Robot disabled */
-#define FMS_ATTACHED         0x01 /* FMS Attached bit */
-#define FMS_NOT_ATTACHED     0x00 /* FMS not attached bit */
-#define CONTROL_TEST         0x01 /* Test mode */
-#define CONTROL_AUTONOMOUS   0x02 /* Autonomous mode */
-#define CONTROL_TELEOPERATED 0x00 /* Teleop mode */
-#define HEADER_TIME          0x0f /* Indicates start of time section */
-#define HEADER_GENERAL       0x01 /* Indicates start of packet data */
-#define HEADER_JOYSTICK      0x0c /* Indicates start of joystick section */
-#define HEADER_TIMEZONE      0x10 /* Indicates start of timezone code */
-#define NORMAL               0x10 /* Robot operates normally */
-#define INVALID              0x00 /* Sent when there is no communication */
-#define REBOOT               0x14 /* Reboots the robot controller */
-#define RESTART_CODE         0x16 /* Re-launches the robot code */
-#define ALLIANCE_RED_1       0x00 /* Red alliance, position 1 */
-#define ALLIANCE_RED_2       0x01 /* Red alliance, position 2 */
-#define ALLIANCE_RED_3       0x02 /* Red alliance, position 3 */
-#define ALLIANCE_BLUE_1      0x03 /* Blue alliance, position 1 */
-#define ALLIANCE_BLUE_2      0x04 /* Blue alliance, position 2 */
-#define ALLIANCE_BLUE_3      0x05 /* Blue alliance, position 3 */
-#define HEADER_JOYSTICK_OUT  0x01 /* Joystick rumble request (from robot) */
-#define HEADER_DISK_INFO     0x04 /* Robot disk storage information */
-#define HEADER_CPU_INFO      0x05 /* Robot CPU information */
-#define HEADER_RAM_INFO      0x06 /* Robot RAM information */
-#define HEADER_CAN_METRICS   0x0e /* Robot CANBus metrics */
-#define PROGRAM_TEST         0x01 /* Robot test mode echo */
-#define PROGRAM_AUTONOMOUS   0x02 /* Robot autonomous echo */
-#define PROGRAM_CODE_PRESENT 0x20 /* Robot code status */
-#define PROGRAM_TELEOPERATED 0x00 /* Robot teleoperated echo */
-#define PROGRAM_REQUEST_TIME 0x01 /* Robot requests a new time packet */
+/* Robot mode codes */
+const uint OP_MODE_TEST         = 0b00000001;
+const uint OP_MODE_AUTONOMOUS   = 0b00000010;
+const uint OP_MODE_TELEOPERATED = 0b00000000;
+const uint OP_MODE_ESTOPPED     = 0b10000000;
+const uint OP_MODE_ENABLED      = 0b00000100;
 
-//==================================================================================================
-// FRC_Protocol2015::name
-//==================================================================================================
+/* Status & request flags */
+const uint DS_FMS_ATTACHED      = 0b00001000;
+const uint DS_REQUEST_NORMAL    = 0b10000000;
+const uint DS_REQUEST_UNKNOWN   = 0b00000000;
+const uint DS_REQUEST_REBOOT    = 0b00001000;
+const uint DS_REQUEST_KILL_CODE = 0b00000100;
 
-QString FRC_Protocol2015::name() {
-    return "FRC 2015 Protocol";
-}
+/* RIO-to-DS control flags */
+const uint R_CTRL_HAS_CODE      = 0b00100000;
+const uint R_CTRL_ESTOP_ON      = 0b10000000;
+const uint R_CTRL_BROWNOUT      = 0b00010000;
 
-//==================================================================================================
-// FRC_Protocol2015::fmsFrequency
-//==================================================================================================
+/* DS-to-FMS flags */
+const uint DS_FMS_COMM_VERSION  = 0b00000000;
+const uint DS_FMS_ROBOT_COMMS   = 0b00100000;
+const uint DS_FMS_RADIO_PING    = 0b00010000;
+const uint DS_FMS_ROBOT_PING    = 0b00001000;
 
-int FRC_Protocol2015::fmsFrequency() {
-    return 2;
-}
+/* DS-to-RIO data tags */
+const uint DS_TAG_DATE          = 0x0f;
+const uint DS_TAG_GENERAL       = 0x01;
+const uint DS_TAG_JOYSTICK      = 0x0c;
+const uint DS_TAG_TIMEZONE      = 0x10;
 
-//==================================================================================================
-// FRC_Protocol2015::robotFrequency
-//==================================================================================================
+/* Alliances & positions */
+const uint STATION_RED_1        = 0x00;
+const uint STATION_RED_2        = 0x01;
+const uint STATION_RED_3        = 0x02;
+const uint STATION_BLUE_1       = 0x03;
+const uint STATION_BLUE_2       = 0x04;
+const uint STATION_BLUE_3       = 0x05;
 
-int FRC_Protocol2015::robotFrequency() {
-    return 50;
-}
-
-//==================================================================================================
-// FRC_Protocol2015::fmsInputPort
-//==================================================================================================
-
-int FRC_Protocol2015::fmsInputPort() {
-    return 1120;
-}
-
-//==================================================================================================
-// FRC_Protocol2015::fmsOutputPort
-//==================================================================================================
-
-int FRC_Protocol2015::fmsOutputPort() {
-    return 1160;
-}
-
-//==================================================================================================
-// FRC_Protocol2015::clientPort
-//==================================================================================================
-
-int FRC_Protocol2015::robotInputPort() {
-    return 1150;
-}
-
-//==================================================================================================
-// FRC_Protocol2015::robotPort
-//==================================================================================================
-
-int FRC_Protocol2015::robotOutputPort() {
-    return 1110;
-}
-
-//==================================================================================================
-// FRC_Protocol2015::tcpProbePort
-//==================================================================================================
-
-int FRC_Protocol2015::tcpProbesPort() {
-    return 80;
-}
-
-//==================================================================================================
-// FRC_Protocol2015::netConsoleInputPort
-//==================================================================================================
-
-int FRC_Protocol2015::netConsoleInputPort() {
-    return 6666;
-}
-
-//==================================================================================================
-// FRC_Protocol2015::acceptsConsoleCommnds
-//==================================================================================================
-
-bool FRC_Protocol2015::acceptsConsoleCommands() {
-    return false;
-}
-
-//==================================================================================================
-// FRC_Protocol2015::additionalRobotIPs
-//==================================================================================================
-
-QStringList FRC_Protocol2015::additionalRobotIPs() {
-    QStringList list;
-    list.append (QString ("roboRIO-%1.local").arg (team()));
-    list.append (QString ("172.22.11.2"));
-    return list;
-}
+/* RIO-to-DS data tags */
+const uint R_TAG_JOYSTICK_OUT   = 0x01;
+const uint R_TAG_DISK_INFO      = 0x04;
+const uint R_TAG_CPU_INFO       = 0x05;
+const uint R_TAG_RAM_INFO       = 0x06;
+const uint R_TAG_CAN_METRICS    = 0x0e;
+const uint R_REQUEST_TIME       = 0x01;
 
 //==================================================================================================
 // FRC_Protocol2015::reboot
 //==================================================================================================
 
 void FRC_Protocol2015::reboot() {
-    m_instructionCode = REBOOT;
+    m_rebootRio = true;
+    QTimer::singleShot (200, Qt::PreciseTimer, this, SLOT (resetProtocol()));
 }
 
 //==================================================================================================
@@ -166,7 +89,8 @@ void FRC_Protocol2015::reboot() {
 //==================================================================================================
 
 void FRC_Protocol2015::restartCode() {
-    m_instructionCode = RESTART_CODE;
+    m_restartCode = true;
+    QTimer::singleShot (200, Qt::PreciseTimer, this, SLOT (resetProtocol()));
 }
 
 //==================================================================================================
@@ -174,7 +98,8 @@ void FRC_Protocol2015::restartCode() {
 //==================================================================================================
 
 void FRC_Protocol2015::resetProtocol() {
-    m_instructionCode = INVALID;
+    m_rebootRio = false;
+    m_restartCode = false;
 }
 
 //==================================================================================================
@@ -183,11 +108,24 @@ void FRC_Protocol2015::resetProtocol() {
 
 bool FRC_Protocol2015::interpretFmsPacket (QByteArray data) {
     if (data.length() >= 22) {
-        quint8 opcode = data.at (3);
+        quint8 control  = data.at (3);
         quint8 alliance = data.at (5);
 
-        /* Should use this to update operation mode & enabled state */
-        (void) opcode;
+        /* Change robot enabled state based on what FMS tells us to do*/
+        setEnabled (control & OP_MODE_ENABLED);
+
+        /* Get FMS robot mode */
+        DS::ControlMode mode = DS::kControlInvalid;
+        if (control & OP_MODE_TELEOPERATED)
+            mode = DS::kControlTeleoperated;
+        else if (control & OP_MODE_AUTONOMOUS)
+            mode = DS::kControlAutonomous;
+        else if (control & OP_MODE_TEST)
+            mode = DS::kControlTest;
+
+        /* Update robot mode */
+        if (mode != controlMode())
+            setControlMode (mode);
 
         /* Update to correct alliance and position */
         if (alliance != getAllianceCode())
@@ -204,67 +142,48 @@ bool FRC_Protocol2015::interpretFmsPacket (QByteArray data) {
 //==================================================================================================
 
 bool FRC_Protocol2015::interpretRobotPacket (QByteArray data) {
-    int offset = 8;
-
-    /* Packet length is invalid, watchdog will not be reset */
-    if (data.length() < offset)
+    /* Packet is invalid */
+    if (data.length() < 8)
         return false;
 
-    /* Be sure to reset status bit */
-    if (m_instructionCode == INVALID)
-        m_instructionCode = NORMAL;
-
     /* Read robot packet */
-    quint8 opcode  = data.at (3);
-    quint8 status  = data.at (4);
-    quint8 request = data.at (7);
-    quint8 integer = data.at (5);
-    quint8 decimal = data.at (6);
+    uint control = data.at (3);
+    uint status  = data.at (4);
+    uint request = data.at (7);
+    uint integer = data.at (5);
+    uint decimal = data.at (6);
 
-    /* Update e-stop information */
-    setEmergencyStop (opcode == ESTOP_ON);
+    /* Generate control information */
+    bool has_code       = (status & R_CTRL_HAS_CODE);
+    bool e_stopped      = (control & R_CTRL_ESTOP_ON);
+    bool voltage_brwn   = (control & R_CTRL_BROWNOUT);
+    bool send_date_time = (request == R_REQUEST_TIME);
 
     /* Update client information */
-    updateVoltageBrownout (false);
-    updateSendDateTime (request == PROGRAM_REQUEST_TIME);
-    updateRobotCode ((status & PROGRAM_CODE_PRESENT) != 0);
-    updateVoltage (QString::number (integer), QString::number (decimal));
+    updateRobotCode    (has_code);
+    setEmergencyStop   (e_stopped);
+    updateVBrownout    (voltage_brwn);
+    updateSendDateTime (send_date_time);
 
-    /* Packet contains additional data structures */
-    if (data.length() > offset) {
-        QByteArray extended;
-        for (int i = offset; i < data.length() - offset - 1; i++)
-            extended.append (data.at (i));
+    /* Calculate the voltage */
+    float voltage = integer + (99 * decimal / 255);
+    updateVoltage (voltage);
 
-        int id = extended.at (1);
-
-        /* Robot wants us to rumble a joystick */
-        if (id == HEADER_JOYSTICK_OUT) {
-            // TODO
-        }
-
-        /* Packet contains roboRIO CPU info */
-        else if (id == HEADER_CPU_INFO) {
-            // TODO
-        }
-
-        /* Packet contains roboRIO RAM info */
-        else if (id == HEADER_RAM_INFO) {
-            int a = (quint8) extended.at (6);
-            int b = (quint8) extended.at (7);
-            emit ramUsageChanged (a + b);
-        }
-
-        /* Packet contains roboRIO disk info */
-        else if (id == HEADER_DISK_INFO) {
-            int a = (quint8) extended.at (6);
-            int b = (quint8) extended.at (7);
-            emit diskUsageChanged (a + b);
-        }
-
-        /* Packet contains CAN metrics data */
-        else if (id == HEADER_CAN_METRICS) {
-            // TODO
+    /* Read extra data tags */
+    if (data.length() > 8) {
+        switch (data.at (8)) {
+        case R_TAG_JOYSTICK_OUT:
+            break;
+        case R_TAG_DISK_INFO:
+            break;
+        case R_TAG_CPU_INFO:
+            break;
+        case R_TAG_RAM_INFO:
+            break;
+        case R_TAG_CAN_METRICS:
+            break;
+        default:
+            break;
         }
     }
 
@@ -285,33 +204,31 @@ QByteArray FRC_Protocol2015::getJoystickData() {
 
     /* Generate data for each joystick */
     for (int i = 0; i < joysticks()->count(); ++i) {
-        quint8 _num_axes     = joysticks()->at (i).numAxes;
-        quint8 _num_buttons  = joysticks()->at (i).numButtons;
-        quint8 _num_pov_hats = joysticks()->at (i).numPOVs;
+        int numAxes    = joysticks()->at (i).numAxes;
+        int numPOVs    = joysticks()->at (i).numPOVs;
+        int numButtons = joysticks()->at (i).numButtons;
 
         /* Add joystick information and put the section header */
         data.append (getJoystickSize (joysticks()->at (i)) - 1);
-        data.append (HEADER_JOYSTICK);
+        data.append (DS_TAG_JOYSTICK);
 
         /* Add axis data */
-        data.append (_num_axes);
-        for (int axis = 0; axis < _num_axes; ++axis)
+        data.append (numAxes);
+        for (int axis = 0; axis < numAxes; ++axis)
             data.append (joysticks()->at (i).axes [axis] * 127);
 
         /* Generate button data */
-        int _button_data = 0;
-        for (int button = 0; button < _num_buttons; ++button) {
-            bool pressed = joysticks()->at (i).buttons [button];
-            _button_data += pressed ? qPow (2, button) : 0;
-        }
+        int buttonData = 0;
+        for (int button = 0; button < numButtons; ++button)
+            buttonData += joysticks()->at (i).buttons [button] ? qPow (2, button) : 0;
 
         /* Add button data */
-        data.append (_num_buttons);
-        data.append (DS::intToBytes (_button_data));
+        data.append (numButtons);
+        data.append (DS::intToBytes (buttonData));
 
         /* Add hat/pov data */
-        data.append (_num_pov_hats);
-        for (int hat = 0; hat < _num_pov_hats; ++hat)
+        data.append (numPOVs);
+        for (int hat = 0; hat < numPOVs; ++hat)
             data.append (DS::intToBytes (joysticks()->at (i).POVs [hat]));
     }
 
@@ -334,7 +251,7 @@ QByteArray FRC_Protocol2015::getTimezoneData() {
     QTime time = dt.time();
 
     /* Add current date/time */
-    data.append (HEADER_TIME);
+    data.append (DS_TAG_DATE);
     data.append (DS::intToBytes (time.msec()));
     data.append (time.second());
     data.append (time.minute());
@@ -345,47 +262,38 @@ QByteArray FRC_Protocol2015::getTimezoneData() {
 
     /* Add timezone data */
     data.append (DS::timezone().length() + 1);
-    data.append (HEADER_TIMEZONE);
+    data.append (DS_TAG_TIMEZONE);
     data.append (DS::timezone());
 
     return data;
 }
 
 //==================================================================================================
-// FRC_Protocol2015::getFMSPacket
+// FRC_Protocol2015::generateFmsPacket
 //==================================================================================================
 
 QByteArray FRC_Protocol2015::generateFmsPacket() {
     QByteArray data;
+    data.append (DS::intToBytes (sentFmsPackets()));
+    data.append (DS_FMS_COMM_VERSION);
+    data.append (getFmsControlCode());
+    data.append (DS::intToBytes (team()));
+    data.append (DS::floatToBytes (robotVoltage()));
     return data;
 }
 
 //==================================================================================================
-// FRC_Protocol2015::getClientPacket
+// FRC_Protocol2015::generateRobotPacket
 //==================================================================================================
 
 QByteArray FRC_Protocol2015::generateRobotPacket() {
     QByteArray data;
-
-    /* Used for rebooting the robot and restarting its code */
-    quint8 instruction = isConnectedToRobot() ? m_instructionCode : INVALID;
-
-    /* Defines operation mode, e-stop state & enabled state */
-    quint8 opcode = (isEmergencyStopped() ? ESTOP_ON : ESTOP_OFF) |
-                    (isEnabled() ? ENABLED : DISABLED) |
-                    (getControlCode());
-
-    /* Gets timezone data or joystick input */
-    QByteArray extensions = sendDateTime() ? getTimezoneData() : getJoystickData();
-
-    /* Construct the packet */
     data.append (DS::intToBytes (sentRobotPackets()));
-    data.append (HEADER_GENERAL);
-    data.append (opcode);
-    data.append (instruction);
+    data.append (DS_TAG_GENERAL);
+    data.append (getControlCode());
+    data.append (getRequestCode());
     data.append (getAllianceCode());
-    data.append (extensions);
-
+    data.append (sendDateTime() ? getTimezoneData() : getJoystickData());
     return data;
 }
 
@@ -393,54 +301,127 @@ QByteArray FRC_Protocol2015::generateRobotPacket() {
 // FRC_Protocol2015::getControlCode
 //==================================================================================================
 
-int FRC_Protocol2015::getControlCode() {
-    if (controlMode() == DS::kControlTest)
-        return CONTROL_TEST;
+uint FRC_Protocol2015::getControlCode() {
+    uint code = 0;
 
-    else if (controlMode() == DS::kControlAutonomous)
-        return CONTROL_AUTONOMOUS;
+    switch (controlMode()) {
+    case DS::kControlTest:
+        code |= OP_MODE_TEST;
+        break;
+    case DS::kControlAutonomous:
+        code |= OP_MODE_AUTONOMOUS;
+        break;
+    case DS::kControlTeleoperated:
+        code |= OP_MODE_TELEOPERATED;
+        break;
+    default:
+        break;
+    }
 
-    else if (controlMode() == DS::kControlTeleoperated)
-        return CONTROL_TELEOPERATED;
+    if (isFmsAttached())
+        code |= DS_FMS_ATTACHED;
 
-    return CONTROL_TELEOPERATED;
+    if (isEmergencyStopped())
+        code |= OP_MODE_ESTOPPED;
+
+    if (isEnabled())
+        code |= OP_MODE_ENABLED;
+
+    return code;
+}
+
+//==================================================================================================
+// FRC_Protocol2015::getRequestCode
+//==================================================================================================
+
+uint FRC_Protocol2015::getRequestCode() {
+    uint code = DS_REQUEST_UNKNOWN;
+
+    if (isConnectedToRobot())
+        code = DS_REQUEST_NORMAL;
+
+    if (isConnectedToRobot() && m_rebootRio)
+        code |= DS_REQUEST_REBOOT;
+
+    if (isConnectedToRobot() && m_restartCode)
+        code |= DS_REQUEST_KILL_CODE;
+
+    return code;
 }
 
 //==================================================================================================
 // FRC_Protocol2015::getAllianceCode
 //==================================================================================================
 
-int FRC_Protocol2015::getAllianceCode() {
+uint FRC_Protocol2015::getAllianceCode() {
     switch (alliance()) {
     case DS::kAllianceRed1:
-        return ALLIANCE_RED_1;
+        return STATION_RED_1;
         break;
     case DS::kAllianceRed2:
-        return ALLIANCE_RED_2;
+        return STATION_RED_2;
         break;
     case DS::kAllianceRed3:
-        return ALLIANCE_RED_3;
+        return STATION_RED_3;
         break;
     case DS::kAllianceBlue1:
-        return ALLIANCE_BLUE_1;
+        return STATION_BLUE_1;
         break;
     case DS::kAllianceBlue2:
-        return ALLIANCE_BLUE_2;
+        return STATION_BLUE_2;
         break;
     case DS::kAllianceBlue3:
-        return ALLIANCE_BLUE_3;
+        return STATION_BLUE_3;
         break;
     default:
-        return ALLIANCE_RED_1;
+        return STATION_RED_1;
         break;
     }
+}
+
+//==================================================================================================
+// FRC_Protocol2015::getFmsControlCode
+//==================================================================================================
+
+uint FRC_Protocol2015::getFmsControlCode() {
+    uint code = 0;
+
+    switch (controlMode()) {
+    case DS::kControlTest:
+        code |= OP_MODE_TEST;
+        break;
+    case DS::kControlAutonomous:
+        code |= OP_MODE_AUTONOMOUS;
+        break;
+    case DS::kControlTeleoperated:
+        code |= OP_MODE_TELEOPERATED;
+        break;
+    default:
+        break;
+    }
+
+    if (isEmergencyStopped())
+        code |= OP_MODE_ESTOPPED;
+
+    if (isEnabled())
+        code |= OP_MODE_ENABLED;
+
+    if (isConnectedToRadio())
+        code |= DS_FMS_RADIO_PING;
+
+    if (isConnectedToRobot()) {
+        code |= DS_FMS_ROBOT_COMMS;
+        code |= DS_FMS_ROBOT_PING;
+    }
+
+    return code;
 }
 
 //==================================================================================================
 // FRC_Protocol2015::getJoystickSize
 //==================================================================================================
 
-int FRC_Protocol2015::getJoystickSize (DS::Joystick joystick) {
+uint FRC_Protocol2015::getJoystickSize (DS::Joystick joystick) {
     return  5
             + (joystick.numAxes > 0 ? joystick.numAxes : 0)
             + (joystick.numButtons / 8)
@@ -455,22 +436,22 @@ int FRC_Protocol2015::getJoystickSize (DS::Joystick joystick) {
 
 DS::Alliance FRC_Protocol2015::getAllianceStation (quint8 code) {
     switch (code) {
-    case ALLIANCE_RED_1:
+    case STATION_RED_1:
         return DS::kAllianceRed1;
         break;
-    case ALLIANCE_RED_2:
+    case STATION_RED_2:
         return DS::kAllianceRed2;
         break;
-    case ALLIANCE_RED_3:
+    case STATION_RED_3:
         return DS::kAllianceRed3;
         break;
-    case ALLIANCE_BLUE_1:
+    case STATION_BLUE_1:
         return DS::kAllianceBlue1;
         break;
-    case ALLIANCE_BLUE_2:
+    case STATION_BLUE_2:
         return DS::kAllianceBlue2;
         break;
-    case ALLIANCE_BLUE_3:
+    case STATION_BLUE_3:
         return DS::kAllianceBlue3;
         break;
     default:

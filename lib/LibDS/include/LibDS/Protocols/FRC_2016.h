@@ -31,10 +31,18 @@ class LIB_DS_DECL FRC_Protocol2016 : public FRC_Protocol2015 {
     Q_OBJECT
 
   public:
-    virtual QString name();
-    virtual QStringList additionalRobotIPs();
-};
+    inline virtual QString name() {
+        return "FRC 2016 Protocol";
+    }
 
+    inline virtual QStringList additionalRobotIPs() {
+        QStringList list;
+        list.append (QString ("roboRIO-%1-FRC.local").arg (team()));
+        list.append (QString ("roboRIO-%1.local").arg (team()));
+        list.append (QString ("172.22.11.2"));
+        return list;
+    }
+};
 }
 
 #endif

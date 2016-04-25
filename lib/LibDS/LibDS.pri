@@ -54,7 +54,6 @@ SOURCES += \
     $$PWD/src/Core/ElapsedTimer.cpp \
     $$PWD/src/Core/NetConsole.cpp \
     $$PWD/src/Core/Watchdog.cpp \
-    $$PWD/src/Protocols/FRC_2016.cpp \
     $$PWD/src/Protocols/FRC_2015.cpp \
     $$PWD/src/Protocols/FRC_2014.cpp \
     $$PWD/src/Core/AbstractProtocol.cpp \

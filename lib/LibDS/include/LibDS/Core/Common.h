@@ -25,7 +25,6 @@
 
 #include <QtMath>
 #include <QString>
-
 #include <QDateTime>
 #include <QUdpSocket>
 #include <QTcpSocket>
@@ -50,6 +49,14 @@ typedef enum {
     kControlTeleoperated = 2,
     kControlInvalid      = 3,
 } ControlMode;
+
+///
+/// Represents the possible socket types used by the protocol
+///
+typedef enum {
+    kUdpSocket           = 0,
+    kTcpSocket           = 1,
+} SocketType;
 
 ///
 /// Represents the available alliances and positions during a match
@@ -144,9 +151,9 @@ void LIB_DS_DECL log (ErrorLevel type, QString message);
 /// Returns a calculated IP address based on the team address.
 ///
 /// For example:
-///    - \c DS_GetStaticIp(3794, 1) would return \c 10.37.94.1
-///    - \c DS_GetStaticIp(3794, 2) would return \c 10.37.94.2
-///    - \c DS_GetStaticIp( 118, 3) would return \c 10.01.18.3
+///    - \c DS_GetStaticIp (3794, 1) would return \c 10.37.94.1
+///    - \c DS_GetStaticIp (3794, 2) would return \c 10.37.94.2
+///    - \c DS_GetStaticIp ( 118, 3) would return \c 10.01.18.3
 ///    - And so on...
 ///
 QString LIB_DS_DECL getStaticIP (int team, int host);
@@ -155,9 +162,9 @@ QString LIB_DS_DECL getStaticIP (int team, int host);
 /// Returns a calculated IP address based on the team address.
 ///
 /// For example:
-///    - \c DS_GetStaticIp(10, 3794, 1) would return \c 10.37.94.1
-///    - \c DS_GetStaticIp(177, 3794, 2) would return \c 177.37.94.2
-///    - \c DS_GetStaticIp(10m 118, 3) would return \c 10.01.18.3
+///    - \c DS_GetStaticIp ( 10, 3794, 1) would return \c 10.37.94.1
+///    - \c DS_GetStaticIp (177, 3794, 2) would return \c 177.37.94.2
+///    - \c DS_GetStaticIp ( 10,  118, 3) would return \c 10.01.18.3
 ///    - And so on...
 ///
 QString LIB_DS_DECL getStaticIP (int net, int team, int host);
@@ -167,21 +174,49 @@ QString LIB_DS_DECL getStaticIP (int net, int team, int host);
 /// You can use this function to update the status widget of the
 /// client implementation.
 ///
-QString LIB_DS_DECL controlModeString (ControlMode mode);
+inline QString controlModeString (ControlMode mode) {
+    QString string;
+
+    switch (mode) {
+    case kControlTest:
+        string = "Test";
+        break;
+    case kControlTeleoperated:
+        string = "Teleoperated";
+        break;
+    case kControlAutonomous:
+        string = "Autonomous";
+        break;
+    case kControlInvalid:
+        string = "";
+        break;
+    }
+
+    return string;
+}
 
 ///
 /// Reads the stored data in the \a socket.
 /// This function is used internaly by the library, however, you may use
 /// this function for anything that your client may need.
 ///
-QByteArray LIB_DS_DECL readSocket (QUdpSocket* socket);
+inline QByteArray readSocket (QUdpSocket* socket) {
+    QByteArray buffer;
+
+    buffer.resize (socket->pendingDatagramSize());
+    socket->readDatagram (buffer.data(), buffer.size());
+
+    return buffer;
+}
 
 ///
 /// Reads the stored data in the \a socket.
 /// This function is used internaly by the library, however, you may use
 /// this function for anything that your client may need.
 ///
-QByteArray LIB_DS_DECL readSocket (QTcpSocket* socket);
+inline QByteArray readSocket (QTcpSocket* socket) {
+    return socket->readAll();
+}
 
 ///
 /// Parses the input number into two bytes. This function is used
@@ -195,7 +230,26 @@ QByteArray LIB_DS_DECL readSocket (QTcpSocket* socket);
 /// |    1  | 0x00 0x01 |
 /// |  256  | 0xFF 0x01 |
 ///
-QByteArray LIB_DS_DECL intToBytes (int number);
+inline QByteArray intToBytes (int number) {
+    QByteArray array;
+    array.append (((number & 0xff00) >> 8));
+    array.append (((number & 0xff)));
+    return array;
+}
+
+///
+/// Parses the input number into two bytes. This function is used by several
+/// protocols to send the robot's battery voltage to the FMS.
+///
+inline QByteArray floatToBytes (float number) {
+    int integer = (int) number;
+    int decimal = number - integer;
+
+    QByteArray array;
+    array.append (integer);
+    array.append (decimal);
+    return array;
+}
 }
 
 #endif

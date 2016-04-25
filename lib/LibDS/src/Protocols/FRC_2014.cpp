@@ -55,102 +55,6 @@ FRC_Protocol2014::FRC_Protocol2014() {
 }
 
 //==================================================================================================
-// FRC_Protocol2014::name
-//==================================================================================================
-
-QString FRC_Protocol2014::name() {
-    return "FRC 2014 Protocol (Alpha)";
-}
-
-//==================================================================================================
-// FRC_Protocol2014::fmsFrequency
-//==================================================================================================
-
-int FRC_Protocol2014::fmsFrequency() {
-    return 10;
-}
-
-//==================================================================================================
-// FRC_Protocol2014::robotFrequency
-//==================================================================================================
-
-int FRC_Protocol2014::robotFrequency() {
-    return 50;
-}
-
-//==================================================================================================
-// FRC_Protocol2014::fmsInputPort
-//==================================================================================================
-
-int FRC_Protocol2014::fmsInputPort() {
-    return 1120;
-}
-
-//==================================================================================================
-// FRC_Protocol2014::fmsOutputPort
-//==================================================================================================
-
-int FRC_Protocol2014::fmsOutputPort() {
-    return 1160;
-}
-
-//==================================================================================================
-// FRC_Protocol2014::clientPort
-//==================================================================================================
-
-int FRC_Protocol2014::robotInputPort() {
-    return 1150;
-}
-
-//==================================================================================================
-// FRC_Protocol2014::robotPort
-//==================================================================================================
-
-int FRC_Protocol2014::robotOutputPort() {
-    return 1110;
-}
-
-//==================================================================================================
-// FRC_Protocol2014::tcpProbePort
-//==================================================================================================
-
-int FRC_Protocol2014::tcpProbesPort() {
-    return 80;
-}
-
-//==================================================================================================
-// FRC_Protocol2014::netConsoleInputPort
-//==================================================================================================
-
-int FRC_Protocol2014::netConsoleInputPort() {
-    return 6666;
-}
-
-//==================================================================================================
-// FRC_Protocol2014::netConsoleOutputPort
-//==================================================================================================
-
-int FRC_Protocol2014::netConsoleOutputPort() {
-    return 6668;
-}
-
-//==================================================================================================
-// FRC_Protocol2014::acceptsConsoleCommnds
-//==================================================================================================
-
-bool FRC_Protocol2014::acceptsConsoleCommands() {
-    return true;
-}
-
-//==================================================================================================
-// FRC_Protocol2014::additionalRobotIPs
-//==================================================================================================
-
-QStringList FRC_Protocol2014::additionalRobotIPs() {
-    return QStringList (DS::getStaticIP (10, team(), 2));
-}
-
-//==================================================================================================
 // FRC_Protocol2014::reboot
 //==================================================================================================
 
@@ -209,21 +113,19 @@ bool FRC_Protocol2014::interpretRobotPacket (QByteArray data) {
         return false;
 
     /* Read status echo and battery voltage, we could do more things, but we don't need them */
-    quint8 opcode  = data.at (0);
-    quint8 integer = data.at (1);
-    quint8 decimal = data.at (2);
+    auto opcode  = data.at (0);
+    auto integer = data.at (1);
+    auto decimal = data.at (2);
 
     /* The robot seems to be emergency stopped */
     if (opcode == ESTOP_ON_BIT && !isEmergencyStopped())
         setEmergencyStop (true);
 
     /* Update battery voltage */
-    updateVoltage (QString::number (integer), QString::number (decimal));
+    updateVoltage (integer + (float) (decimal / 100));
 
     /* If both battery voltage values are 0x37, it means that there is no code loaded */
-    bool has_code = integer != 0x37 && decimal != 0x37;
-    if (has_code != hasCode())
-        updateRobotCode (has_code);
+    updateRobotCode ((integer != 0x37) && (decimal != 0x37));
 
     return true;
 }
@@ -278,7 +180,7 @@ QByteArray FRC_Protocol2014::generateRobotPacket() {
 
     /* Add CRC checksum */
     m_crc32.update (data);
-    long checksum = m_crc32.value();
+    auto checksum = m_crc32.value();
     data[1020] = (checksum & 0xff000000) >> 24;
     data[1021] = (checksum & 0xff0000) >> 16;
     data[1022] = (checksum & 0xff00) >> 8;
