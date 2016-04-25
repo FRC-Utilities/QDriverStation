@@ -121,7 +121,7 @@ void FRC_Protocol2015::parseExtended (QByteArray data) {
     }
 
     else if (tag == R_TAG_CPU_INFO) {
-        uint count = data.at (2);
+        int count = data.at (2);
         for (int i = 0; i < count; ++i)
             if (data.length() > i + 12)
                 emit cpuUsageChanged (data.at (i + 12));
@@ -219,7 +219,7 @@ bool FRC_Protocol2015::interpretRobotPacket (QByteArray data) {
     /* This is an extended packet, read its extra data */
     if (data.size() > 8) {
         std::string extended = std::string (data.constData(), data.length());
-        parseExtended (QString::fromUtf8 (QString::fromStdString (extended.substr (8))));
+        parseExtended (QString::fromStdString (extended.substr (8)).toUtf8());
     }
 
     /* Packet was successfully read, reset watchdog */
