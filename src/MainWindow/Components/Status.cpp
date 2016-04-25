@@ -90,8 +90,7 @@ Status::~Status() {
 
 void Status::doErrorAnimation() {
     for (int i = 0; i < 8; ++i)
-        QTimer::singleShot (100 * i, Qt::PreciseTimer,
-                            this, SLOT (toggleStatusColors()));
+        QTimer::singleShot (100 * i, Qt::PreciseTimer, this, SLOT (toggleStatusColors()));
 
     MORSE_BEEP ("..-", 550);
 }

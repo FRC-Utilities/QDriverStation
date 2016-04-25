@@ -86,8 +86,8 @@ AbstractProtocol::AbstractProtocol() {
 
     generateIpLists();
     m_watchdog.setTimeout (1000);
-    QTimer::singleShot (200, Qt::CoarseTimer, this, &AbstractProtocol::reset);
-    QTimer::singleShot (800, Qt::CoarseTimer, this, &AbstractProtocol::initialize);
+    QTimer::singleShot (200, Qt::CoarseTimer, this, SLOT (reset));
+    QTimer::singleShot (800, Qt::CoarseTimer, this, SLOT (initialize));
 }
 
 //==================================================================================================
@@ -156,7 +156,7 @@ void AbstractProtocol::setEmergencyStop (bool emergency_stop) {
     emit emergencyStoppedChanged (isEmergencyStopped());
 
     if (isEmergencyStopped())
-        QTimer::singleShot (500, this, &AbstractProtocol::disableEmergencyStop);
+        QTimer::singleShot (500, this, SLOT (disableEmergencyStop));
 
     emit emergencyStopped();
 }
