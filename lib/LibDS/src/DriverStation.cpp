@@ -381,8 +381,8 @@ void DriverStation::init() {
     if (!m_init) {
         m_init = true;
 
-        QTimer::singleShot (100, this, SIGNAL (initialized));
-        QTimer::singleShot (100, this, SLOT   (resetEverything));
+        QTimer::singleShot (100, this, SIGNAL (initialized()));
+        QTimer::singleShot (100, this, SLOT   (resetEverything()));
 
         DS::log (DS::kLibLevel, "DS Initialized");
     }

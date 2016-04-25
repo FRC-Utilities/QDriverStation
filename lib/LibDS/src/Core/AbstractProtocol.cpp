@@ -86,8 +86,8 @@ AbstractProtocol::AbstractProtocol() {
 
     generateIpLists();
     m_watchdog.setTimeout (1000);
-    QTimer::singleShot (200, Qt::CoarseTimer, this, SLOT (reset));
-    QTimer::singleShot (800, Qt::CoarseTimer, this, SLOT (initialize));
+    QTimer::singleShot (200, Qt::CoarseTimer, this, SLOT (reset()));
+    QTimer::singleShot (800, Qt::CoarseTimer, this, SLOT (initialize()));
 }
 
 //==================================================================================================
