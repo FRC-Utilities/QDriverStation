@@ -83,11 +83,11 @@ typedef enum {
 /// Used to differentiate between the different error levels of log messages
 ///
 typedef enum {
-    kLibLevel            = 0,
-    kInfoLevel           = 1,
-    kWarnLevel           = 2,
-    kErrorLevel          = 3,
-    kCriticalLevel       = 4,
+    kLibLevel            = 0x01,
+    kInfoLevel           = 0x02,
+    kWarnLevel           = 0x04,
+    kErrorLevel          = 0x08,
+    kCriticalLevel       = 0x10,
 } ErrorLevel;
 
 ///
@@ -145,7 +145,7 @@ void LIB_DS_DECL sendMessage (QString message);
 ///
 /// Logs the message according to its \a type or error level
 ///
-void LIB_DS_DECL log (ErrorLevel type, QString message);
+void LIB_DS_DECL log (int type, QString message);
 
 ///
 /// Returns a calculated IP address based on the team address.

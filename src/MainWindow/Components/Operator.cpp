@@ -322,6 +322,8 @@ void Operator::connectSlots() {
              QDS(),                       SLOT (setAlliance           (int)));
     connect (Dashboards::getInstance(), SIGNAL (dashboardChanged      (void)),
              this,                        SLOT (updateWindowState     (void)));
+    connect (QDS(),                     SIGNAL (enabledChanged        (bool)),
+             this,                        SLOT (updateEnableStyles    (bool)));
     connect (QDS(),                     SIGNAL (communicationsChanged (DS::DS_CommStatus)),
              this,                        SLOT (updateCommunications  (DS::DS_CommStatus)));
 }
@@ -331,11 +333,10 @@ void Operator::connectSlots() {
 //==================================================================================================
 
 void Operator::updateEnableState() {
-    bool enabled = m_enable->isChecked() && QDS()->canBeEnabled();
-    QDS()->setEnabled (enabled);
+    QDS()->setEnabled (m_enable->isChecked() && QDS()->canBeEnabled());
 
     /* Configure the practice mode if needed */
-    if (m_practice->isChecked() && enabled) {
+    if (m_practice->isChecked() && QDS()->isEnabled()) {
         QDS()->startPractice (Settings::get ("Practice countdown",   5).toInt(),
                               Settings::get ("Practice autonomous", 15).toInt(),
                               Settings::get ("Practice delay",       1).toInt(),
@@ -343,21 +344,12 @@ void Operator::updateEnableState() {
                               Settings::get ("Practice end game",   20).toInt());
     }
 
-    /* Make the enable button light green */
-    if (enabled) {
-        m_enable->setStyleSheet (ENABLED_CHECK);
-        m_dsable->setStyleSheet (DISABLED_UNCHECK);
-    }
-
-    /* Make the disable button light red */
-    else {
-        m_dsable->setStyleSheet (DSABLED_CHECK);
-        m_enable->setStyleSheet (ENABLED_UNCHECK);
-    }
+    /* Update stylesheets */
+    updateEnableStyles (QDS()->isEnabled());
 
     /* Error animation if user clicked on enabled and something is f*cked up */
     if (sender() != Q_NULLPTR) {
-        if (!enabled && sender()->objectName() == m_enable->objectName()) {
+        if (!QDS()->isEnabled() && sender()->objectName() == m_enable->objectName()) {
             m_dsable->setChecked (true);
             emit requestErrorAnimation();
         }
@@ -432,6 +424,25 @@ void Operator::updateControlMode (int index) {
             mode = DS::kControlTest;
 
         QDS()->setControlMode (mode);
+    }
+}
+
+//==================================================================================================
+// Operator::updateEnableStyles
+//==================================================================================================
+
+void Operator::updateEnableStyles (bool enabled) {
+    m_enable->setChecked (enabled);
+    m_dsable->setChecked (!enabled);
+
+    if (enabled) {
+        m_enable->setStyleSheet (ENABLED_CHECK);
+        m_dsable->setStyleSheet (DISABLED_UNCHECK);
+    }
+
+    else {
+        m_dsable->setStyleSheet (DSABLED_CHECK);
+        m_enable->setStyleSheet (ENABLED_UNCHECK);
     }
 }
 

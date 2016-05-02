@@ -129,7 +129,7 @@ void DS::sendMessage (QString message) {
 // DS::log
 //==================================================================================================
 
-void DS::log (ErrorLevel type,  QString message) {
+void DS::log (int type,  QString message) {
     /* Get level & time */
     QString level;
     QString time = QDateTime::currentDateTime().toString (_TIME_FORMAT);
@@ -140,24 +140,17 @@ void DS::log (ErrorLevel type,  QString message) {
         fprintf (stderr, _PRINT_FMT, "DATE/TIME", "ERROR LEVEL", "MESSAGE");
     }
 
-    /* Get the error level */
-    switch (type) {
-    case kLibLevel:
-        level = "DS_LIB";
-        break;
-    case kInfoLevel:
-        level = "DS_CLIENT";
-        break;
-    case kWarnLevel:
-        level = "DS_WARN";
-        break;
-    case kErrorLevel:
-        level = "DS_ERROR";
-        break;
-    case kCriticalLevel:
-        level = "DS_CRITICAL";
-        break;
-    }
+    /* Get the error levels */
+    if (type & kLibLevel)
+        level += " DS_LIB";
+    if (type & kInfoLevel)
+        level += " DS_CLIENT";
+    if (type & kWarnLevel)
+        level += " DS_WARN";
+    if (type & kErrorLevel)
+        level += " DS_ERROR";
+    if (type & kCriticalLevel)
+        level += " DS_CRITICAL";
 
     /* Write log message */
     fprintf (stderr,

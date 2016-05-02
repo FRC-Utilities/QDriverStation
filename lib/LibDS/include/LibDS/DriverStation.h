@@ -327,6 +327,11 @@ class LIB_DS_DECL DriverStation : public QObject {
     void teamChanged (int team);
 
     ///
+    /// Emitted when the robot is enabled or disabled
+    ///
+    void enabledChanged (bool enabled);
+
+    ///
     /// Emitted when the client detects that the availability of the robot
     /// software/code has changed
     ///

@@ -144,7 +144,7 @@ void AbstractProtocol::setTeam (int team) {
 
 void AbstractProtocol::setEnabled (bool enabled) {
     m_enabled = enabled;
-    emit enabledChanged (isEnabled());
+    emit enabledChanged (enabled);
 }
 
 //==================================================================================================
@@ -186,6 +186,8 @@ void AbstractProtocol::setControlMode (DS::ControlMode mode) {
         m_controlMode = mode;
         emit controlModeChanged (controlMode());
     }
+
+    setEnabled (false);
 }
 
 //==================================================================================================

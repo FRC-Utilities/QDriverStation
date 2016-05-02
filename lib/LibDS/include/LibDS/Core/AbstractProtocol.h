@@ -541,7 +541,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     inline void updateVoltage (float voltage) {
         m_voltage = voltage;
         int integer = (int) voltage;
-        int decimal = voltage - integer;
+        int decimal = (float) (voltage - integer) * 100;
 
         QString intString = QString::number (integer);
         QString decString = QString::number (decimal);

@@ -53,10 +53,10 @@
 // Joystick requirements
 //==================================================================================================
 
-const int MAX_AXES      = 0x0C;
-const int MAX_POVS      = 0x0C;
-const int MAX_BUTTONS   = 0x18;
-const int MAX_JOYSTICKS = 0x06;
+const int MAX_AXES      = 0x0C; // Support for 12 axes
+const int MAX_POVS      = 0x0C; // Support for 12 POVs
+const int MAX_BUTTONS   = 0x18; // Support for 24 buttons
+const int MAX_JOYSTICKS = 0x06; // Support for 6 joysticks
 
 //==================================================================================================
 // Joystick error messages/warnings
@@ -118,10 +118,10 @@ DriverStation::DriverStation() {
     m_netConsole  = new DS_Core::NetConsole (this);
     m_elapsedTime = new DS_Core::ElapsedTime (this);
 
-    /* Lamda-functions */
+    /* Lamda-functions for auto-updating robot status */
     connect (this, &DriverStation::codeChanged,
-    [ = ] (bool ignored) {
-        Q_UNUSED (ignored);
+    [ = ] (bool has_code) {
+        Q_UNUSED (has_code);
         emit robotStatusChanged (getRobotStatus());
     });
     connect (this, &DriverStation::communicationsChanged,
@@ -132,6 +132,11 @@ DriverStation::DriverStation() {
     connect (this, &DriverStation::controlModeChanged,
     [ = ] (DS::ControlMode mode) {
         Q_UNUSED (mode);
+        emit robotStatusChanged (getRobotStatus());
+    });
+    connect (this, &DriverStation::enabledChanged,
+    [ = ] (bool enabled) {
+        Q_UNUSED (enabled);
         emit robotStatusChanged (getRobotStatus());
     });
 
@@ -173,14 +178,12 @@ bool DriverStation::canBeEnabled() {
 
 QStringList DriverStation::alliances() {
     QStringList list;
-
     list.append (tr ("Red 1"));
     list.append (tr ("Red 2"));
     list.append (tr ("Red 3"));
     list.append (tr ("Blue 1"));
     list.append (tr ("Blue 2"));
     list.append (tr ("Blue 3"));
-
     return list;
 }
 
@@ -382,7 +385,7 @@ void DriverStation::init() {
         m_init = true;
 
         QTimer::singleShot (100, this, SIGNAL (initialized()));
-        QTimer::singleShot (100, this, SLOT   (resetEverything()));
+        QTimer::singleShot (100, this,   SLOT (resetEverything()));
 
         DS::log (DS::kLibLevel, "DS Initialized");
     }
@@ -531,12 +534,8 @@ void DriverStation::setProtocol (DS_Core::AbstractProtocol* protocol) {
              this,              &DriverStation::CANInfoReceived);
     connect (currentProtocol(), &DS_Core::AbstractProtocol::fmsChanged,
              this,              &DriverStation::fmsChanged);
-
     connect (currentProtocol(), &DS_Core::AbstractProtocol::enabledChanged,
-    [ = ] (bool enabled) {
-        Q_UNUSED (enabled);
-        emit robotStatusChanged (getRobotStatus());
-    });
+             this,              &DriverStation::enabledChanged);
 
     /* Start the protocol & re-configure the library modules */
     m_protocol->start();
@@ -768,6 +767,7 @@ void DriverStation::resetEverything() {
     emit codeChanged           (false);
     emit elapsedTimeChanged    ("00:00.0");
     emit communicationsChanged (DS::kFailing);
+    emit robotStatusChanged    (getRobotStatus());
 
     DS::log (DS::kLibLevel, "Reseting to initial values...");
 }

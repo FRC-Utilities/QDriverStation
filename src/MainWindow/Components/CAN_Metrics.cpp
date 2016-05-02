@@ -66,12 +66,12 @@ void CAN_Metrics::createWidgets() {
     m_receive       = new QLabel ("0", this);
     m_transmit      = new QLabel ("0", this);
 
-    m_titleLabel    = new QLabel (tr ("CAN Metrics"),            this);
-    m_utilLabel     = new QLabel (tr ("% Bus Utilization"),      this);
-    m_busOffLabel   = new QLabel (tr ("Bus Off (count)"),        this);
-    m_txFullLabel   = new QLabel (tr ("TX_FIFO Full (count)"),   this);
-    m_receiveLabel  = new QLabel (tr ("Receive Error (count)"),  this);
-    m_transmitLabel = new QLabel (tr ("Transmit Error (count)"), this);
+    m_titleLabel    = new QLabel (tr ("CAN Metrics"),       this);
+    m_utilLabel     = new QLabel (tr ("% Bus Utilization"), this);
+    m_busOffLabel   = new QLabel (tr ("Bus Off"),           this);
+    m_txFullLabel   = new QLabel (tr ("TX Full"),           this);
+    m_receiveLabel  = new QLabel (tr ("Receive Errors"),    this);
+    m_transmitLabel = new QLabel (tr ("Transmit Errors"),   this);
 }
 
 //==================================================================================================

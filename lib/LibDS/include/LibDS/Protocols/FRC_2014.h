@@ -55,11 +55,11 @@ class LIB_DS_DECL FRC_Protocol2014 : public DS_Core::AbstractProtocol {
     }
 
     inline virtual int robotInputPort() {
-        return 1110;
+        return 1150;
     }
 
     inline virtual int robotOutputPort() {
-        return 1150;
+        return 1110;
     }
 
     inline virtual int tcpProbesPort() {

@@ -28,7 +28,7 @@ using namespace DS_Protocols;
 // Protocol bytes
 //==================================================================================================
 
-/* Robot mode codes */
+/* Robot mode flags (applies to DS, roboRIO and FMS) */
 const uint OP_MODE_TEST         = 0x01; // 0000 0001
 const uint OP_MODE_AUTONOMOUS   = 0x02; // 0000 0010
 const uint OP_MODE_TELEOPERATED = 0x00; // 0000 0000

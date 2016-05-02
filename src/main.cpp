@@ -115,9 +115,9 @@ int main (int argc, char* argv[]) {
     MainWindow mainwindow;
 
     /* Do not allow the compiler to bitch about unused variables */
-    (void) app;
-    (void) updater;
-    (void) mainwindow;
+    Q_UNUSED (app);
+    Q_UNUSED (updater);
+    Q_UNUSED (mainwindow);
 
     /* Start the DS engine */
     QDS()->init();
