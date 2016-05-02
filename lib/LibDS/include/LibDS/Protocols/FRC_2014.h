@@ -35,7 +35,7 @@ class LIB_DS_DECL FRC_Protocol2014 : public DS_Core::AbstractProtocol {
     explicit FRC_Protocol2014();
 
     inline virtual QString name() {
-        return "FRC 2014 Protocol (Alpha)";
+        return "FRC 2014 Protocol";
     }
 
     inline virtual int fmsFrequency() {
@@ -96,7 +96,6 @@ class LIB_DS_DECL FRC_Protocol2014 : public DS_Core::AbstractProtocol {
 
   private slots:
     virtual void resetProtocol();
-    virtual void showProtocolWarning();
 
   private:
     virtual bool interpretFmsPacket (QByteArray data);

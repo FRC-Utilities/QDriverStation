@@ -80,20 +80,6 @@ void FRC_Protocol2014::resetProtocol() {
 }
 
 //==================================================================================================
-// FRC_Protocol2014::showProtocolWarning
-//==================================================================================================
-
-void FRC_Protocol2014::showProtocolWarning() {
-    DS::sendMessage ("<p><b>"
-                     "<font color=#FF7722>WARNING: </font></b>"
-                     "<font color=#FFFFFF>"
-                     "This protocol is under heavy development and you may "
-                     "encounter bugs. If using a real robot, limit its area of "
-                     "movement by placing it over a tote or something. "
-                     "<b><u>Safety is your number one priority!</u></b></font></p>");
-}
-
-//==================================================================================================
 // FRC_Protocol2014::interpretFMSPacket
 //==================================================================================================
 
