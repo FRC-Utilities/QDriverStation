@@ -115,11 +115,11 @@ bool FRC_Protocol2014::interpretRobotPacket (QByteArray data) {
     if (opcode == ESTOP_ON_BIT && !isEmergencyStopped())
         setEmergencyStop (true);
 
-    /* Calculate the voltage */
-    updateVoltage (voltage.toFloat());
-
     /* If both battery voltage values are 0x37, it means that there is no code loaded */
     updateRobotCode ((integer != 0x37) && (decimal != 0x37));
+
+    /* Update the voltage values */
+    updateVoltage (hasCode() ? voltage.toFloat() : 0);
 
     return true;
 }
