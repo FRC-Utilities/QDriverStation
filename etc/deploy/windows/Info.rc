@@ -25,4 +25,4 @@ BEGIN
   END
 END
 
-IDI_ICON1               ICON    DISCARDABLE     "icon.ico"
+IDI_ICON1               ICON    DISCARDABLE     "AppIcon.ico"
