@@ -7,11 +7,11 @@
 	<key>CFBundleExecutable</key>
 	<string>QDriverStation</string>
 	<key>CFBundleGetInfoString</key>
-        <string>1.0, Copyright © 2015 WinT 3794</string>
+	<string>1.0, Copyright © 2015-2016 WinT 3794</string>
 	<key>CFBundleIconFile</key>
 	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.wint.qdriverstation</string>
+	<string>org.wint3794.qdriverstation</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -19,7 +19,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-        <string>1.0</string>
+	<string>1.0</string>
 	<key>LSHasLocalizedDisplayName</key>
 	<true/>
 	<key>NSPrincipalClass</key>

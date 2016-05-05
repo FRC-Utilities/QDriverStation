@@ -69,6 +69,11 @@ class LIB_DS_DECL NetConsole : public QObject {
     ///
     void setAcceptsInput (bool accepts_input);
 
+    ///
+    /// Changes the flags used by the NC socket
+    ///
+    void setBindFlags (QAbstractSocket::BindMode flags);
+
   signals:
     ///
     /// Emitted when the NetConsole captures a broadcasted message
@@ -82,6 +87,7 @@ class LIB_DS_DECL NetConsole : public QObject {
     int m_outPort;
     bool m_acceptsInput;
     QUdpSocket m_socket;
+    QAbstractSocket::BindMode m_bindFlags;
 
   private slots:
     void readSocket();

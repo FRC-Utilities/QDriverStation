@@ -539,6 +539,7 @@ void DriverStation::setProtocol (DS_Core::AbstractProtocol* protocol) {
 
     /* Start the protocol & re-configure the library modules */
     m_protocol->start();
+    m_netConsole->setBindFlags    (currentProtocol()->ncBindFlags());
     m_netConsole->setInputPort    (currentProtocol()->netConsoleInputPort());
     m_netConsole->setOutputPort   (currentProtocol()->netConsoleOutputPort());
     m_netConsole->setAcceptsInput (currentProtocol()->acceptsConsoleCommands());

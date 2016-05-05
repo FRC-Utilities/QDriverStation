@@ -379,6 +379,30 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
         return DS::kUdpSocket;
     }
 
+    ///
+    /// Represents the socket flags for the FMS input socket.
+    /// You may re-implement this function if needed.
+    ///
+    inline virtual QAbstractSocket::BindMode fmsBindFlags() const {
+        return QAbstractSocket::ReuseAddressHint | QAbstractSocket::ShareAddress;
+    }
+
+    ///
+    /// Represents the socket flags for the robot input socket.
+    /// You may re-implement this function if needed.
+    ///
+    inline virtual QAbstractSocket::BindMode robotBindFlags() const {
+        return QAbstractSocket::ReuseAddressHint | QAbstractSocket::ShareAddress;
+    }
+
+    ///
+    /// Represents the socket flags for the NetConsole input socket.
+    /// You may re-implement this function if needed.
+    ///
+    inline virtual QAbstractSocket::BindMode ncBindFlags() const {
+        return QAbstractSocket::ReuseAddressHint | QAbstractSocket::ShareAddress;
+    }
+
   public slots:
     ///
     /// Inhibits the operation of the protocol

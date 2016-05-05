@@ -32,6 +32,7 @@ using namespace DS_Core;
 NetConsole::NetConsole (QObject* parent) : QObject (parent) {
     m_outPort = 0;
     m_acceptsInput = false;
+    m_bindFlags = QAbstractSocket::ShareAddress;
     connect (&m_socket, &QUdpSocket::readyRead, this, &NetConsole::readSocket);
 }
 
@@ -41,7 +42,7 @@ NetConsole::NetConsole (QObject* parent) : QObject (parent) {
 
 void NetConsole::setInputPort (int port) {
     m_socket.disconnectFromHost();
-    m_socket.bind (QHostAddress::Any, port, QUdpSocket::ShareAddress);
+    m_socket.bind (QHostAddress::Any, port, m_bindFlags);
 
     DS::log (DS::kLibLevel, "NetConsole input port set to: " + QString::number (port));
 }
@@ -70,6 +71,14 @@ void NetConsole::sendCommand (QString command) {
 
 void NetConsole::setAcceptsInput (bool accepts_input) {
     m_acceptsInput = accepts_input;
+}
+
+//==================================================================================================
+//NetConsole::setBindFlags
+//==================================================================================================
+
+void NetConsole::setBindFlags (QAbstractSocket::BindMode flags) {
+    m_bindFlags = flags;
 }
 
 //==================================================================================================

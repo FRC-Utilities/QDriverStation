@@ -63,7 +63,7 @@ class SocketManager : public QObject {
     ///
     /// Reconfigures the FMS receiver socket to use the given \a port
     ///
-    void setFmsInputPort (int port);
+    void setFmsInputPort (int port, QAbstractSocket::BindMode flags);
 
     ///
     /// Reconfigures the FMS output socket to send data to the
@@ -74,7 +74,7 @@ class SocketManager : public QObject {
     ///
     /// Configures the scanner to read incomming data in the given \a port
     ///
-    void setRobotInputPort (int port);
+    void setRobotInputPort (int port, QAbstractSocket::BindMode flags);
 
     ///
     /// Configures the scanner to send data to the given \a port
@@ -124,6 +124,8 @@ class SocketManager : public QObject {
 
     int m_scannerCount;
     QStringList m_list;
+
+    QAbstractSocket::BindMode m_robotInputFlags;
 
     QUdpSocket m_fmsInputSocket;
     QUdpSocket m_fmsOutputSocket;

@@ -315,10 +315,10 @@ void AbstractProtocol::generateIpLists() {
     m_robotIPs = fixed_list;
 
     /* Re-configure the network scanner  ports */
-    m_sockets.setFmsInputPort (fmsInputPort());
     m_sockets.setFmsOutputPort (fmsOutputPort());
-    m_sockets.setRobotInputPort (robotInputPort());
     m_sockets.setRobotOutputPort (robotOutputPort());
+    m_sockets.setFmsInputPort (fmsInputPort(), fmsBindFlags());
+    m_sockets.setRobotInputPort (robotInputPort(), robotBindFlags());
 
     /* Update the IP lists */
     m_sockets.setRobotIPs (m_robotIPs);

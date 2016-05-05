@@ -34,6 +34,7 @@ SocketManager::SocketManager() {
     m_robotOutput = 0;
     m_scannerCount = 0;
     m_robotAddress = "";
+    m_robotInputFlags = QAbstractSocket::ShareAddress | QAbstractSocket::ReuseAddressHint;
 
     connect (&m_fmsInputSocket, SIGNAL (readyRead()), this, SLOT (readFmsPacket()));
 }
@@ -70,7 +71,8 @@ void SocketManager::refreshIPs() {
 
             if (scannerCount() > i && m_list.count() > m_iterator + i) {
                 m_inputSockets.at (i)->disconnectFromHost();
-                m_inputSockets.at (i)->bind (QHostAddress (m_list.at (m_iterator + i)), m_robotInput);
+                m_inputSockets.at (i)->bind (QHostAddress (m_list.at (m_iterator + i)),
+                                             m_robotInput, m_robotInputFlags);
             }
         }
     }
@@ -80,8 +82,8 @@ void SocketManager::refreshIPs() {
 // SocketManager::setFmsInputPort
 //==================================================================================================
 
-void SocketManager::setFmsInputPort (int port) {
-    m_fmsInputSocket.bind (QHostAddress::Any, port, QUdpSocket::ShareAddress);
+void SocketManager::setFmsInputPort (int port, QAbstractSocket::BindMode flags) {
+    m_fmsInputSocket.bind (QHostAddress::Any, port, flags);
     m_fmsInputSocket.setSocketOption (QAbstractSocket::MulticastLoopbackOption, 0);
 }
 
@@ -97,8 +99,9 @@ void SocketManager::setFmsOutputPort (int port) {
 // SocketManager::setRobotInputPort
 //==================================================================================================
 
-void SocketManager::setRobotInputPort (int port) {
+void SocketManager::setRobotInputPort (int port, QAbstractSocket::BindMode flags) {
     m_robotInput = port;
+    m_robotInputFlags = flags;
 }
 
 //==================================================================================================
