@@ -66,6 +66,8 @@ class SettingsWindow : public QDialog {
 
     void onSelectorClicked();
     void onColorChanged (QString color);
+
+  private:
     QColor getColorValue (Colors type);
     Colors getColorType (const QObject* object);
 

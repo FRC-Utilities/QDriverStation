@@ -231,6 +231,11 @@ void Joysticks::setupIndicators (int row) {
     m_povs.clear();
     m_buttons.clear();
 
+    /* Hide indicator containers during widget generation */
+    m_POVIndicators->setVisible (false);
+    m_axisIndicators->setVisible (false);
+    m_buttonIndicators->setVisible (false);
+
     /* Avoid crashing the application when there are no joysticks */
     if (row < 0)
         return;

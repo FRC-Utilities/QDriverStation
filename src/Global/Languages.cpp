@@ -28,6 +28,7 @@
 #include <QTextCodec>
 #include <QMessageBox>
 #include <QApplication>
+#include <QFontDatabase>
 
 //==================================================================================================
 // Application includes
@@ -84,8 +85,14 @@ void Languages::init() {
 
 QFont Languages::appFont() {
     QFont font;
+
+#if defined Q_OS_WIN
     font.setFamily ("Quicksand");
     font.setPixelSize (DPI_SCALE (12));
+#else
+    font = QFontDatabase::systemFont (QFontDatabase::GeneralFont);
+#endif
+
     return font;
 }
 
@@ -95,12 +102,12 @@ QFont Languages::appFont() {
 
 QFont Languages::monoFont() {
     QFont font;
+
 #if defined Q_OS_WIN
     font.setFamily ("Consolas");
     font.setPixelSize (DPI_SCALE (12));
 #else
-    font.setFamily ("Inconsolata");
-    font.setPixelSize (DPI_SCALE (12));
+    font = QFontDatabase::systemFont (QFontDatabase::FixedFont);
 #endif
 
     return font;

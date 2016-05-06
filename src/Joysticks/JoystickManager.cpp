@@ -180,19 +180,6 @@ void JoystickManager::updateInterfaces() {
         addInputDevice (virtualJoystick()->joystick());
         virtualJoystick()->setJoystickID (inputDevices().count() - 1);
     }
-
-    /* Add the registered joysticks to the DriverStation */
-    foreach (QDS_InputDevice* joystick, inputDevices()) {
-        if (!joystick->blacklisted) {
-            QDS()->addJoystick (joystick->numAxes,
-                                joystick->numButtons,
-                                joystick->numPOVs);
-        } else {
-            DS::log (DS::kInfoLevel, "Ignoring joystick "
-                     + QString::number (joystick->device_number)
-                     + " because its blacklisted");
-        }
-    }
 }
 
 //==================================================================================================
@@ -218,6 +205,13 @@ void JoystickManager::resetDeviceInputs (int device) {
 
 void JoystickManager::addInputDevice (QDS_InputDevice* device) {
     if (device != Q_NULLPTR) {
+        /* Register the device with the driver station */
+        if (!device->blacklisted)
+            device->blacklisted = !QDS()->addJoystick (device->numAxes,
+                                  device->numButtons,
+                                  device->numPOVs);
+
+        /* Update variables and config */
         m_devices.append (device);
         emit countChanged();
     }

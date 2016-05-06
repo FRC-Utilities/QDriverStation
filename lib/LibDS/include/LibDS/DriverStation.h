@@ -283,9 +283,12 @@ class LIB_DS_DECL DriverStation : public QObject {
 
     ///
     /// Registers a new joystick to the Driver Station with the specified number
-    /// of \a axes, \a buttons and \a POVs
+    /// of \a axes, \a buttons and \a POVs.
     ///
-    Q_INVOKABLE void addJoystick (int axes, int buttons, int POVs);
+    /// This function returns \c true if the joystick is valid and respects
+    /// the axis and button ranges.
+    ///
+    Q_INVOKABLE bool addJoystick (int axes, int buttons, int POVs);
 
     ///
     /// Updates the \a value of the selected \a axis in the specified \a josytick

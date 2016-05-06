@@ -634,13 +634,13 @@ void DriverStation::updateJoystickPOV (int js, int hat, int angle) {
 // DriverStation::addJoystick
 //==================================================================================================
 
-void DriverStation::addJoystick (int axes, int buttons, int POVs) {
+bool DriverStation::addJoystick (int axes, int buttons, int POVs) {
     /* The DS has exceeded the supported number of joysticks */
     if (joysticks()->count() >= MAX_JOYSTICKS) {
         DS::log  (DS::kLibLevel, "Reached maximum number of joysticks");
         DS::log  (DS::kLibLevel, "Ignoring future joysticks");
         DS::sendMessage (ERR_JOYSTICKS.arg (MAX_JOYSTICKS));
-        return;
+        return false;
     }
 
     /* The input joysticks has too many POVs */
@@ -650,7 +650,7 @@ void DriverStation::addJoystick (int axes, int buttons, int POVs) {
                          .arg (joysticks()->count())
                          .arg (MAX_POVS)
                          .arg (POVs));
-        return;
+        return false;
     }
 
     /* The input joysticks has too many axes */
@@ -660,7 +660,7 @@ void DriverStation::addJoystick (int axes, int buttons, int POVs) {
                          .arg (joysticks()->count())
                          .arg (MAX_AXES)
                          .arg (axes));
-        return;
+        return false;
     }
 
     /* The input joysticks has too many buttons */
@@ -670,7 +670,7 @@ void DriverStation::addJoystick (int axes, int buttons, int POVs) {
                          .arg (joysticks()->count())
                          .arg (MAX_BUTTONS)
                          .arg (buttons));
-        return;
+        return false;
     }
 
     /* Everything OK, register the joystick */
@@ -712,6 +712,7 @@ void DriverStation::addJoystick (int axes, int buttons, int POVs) {
         currentProtocol()->onJoysticksChanged();
 
     emit joystickCountChanged();
+    return true;
 }
 
 //==================================================================================================

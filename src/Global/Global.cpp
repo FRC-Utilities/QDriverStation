@@ -150,8 +150,7 @@ qreal DPI_SCALE (qreal input) {
         if (RATIO < 1.2 || !Settings::get ("Enable scalable UI", true).toBool())
             RATIO = 1;
 
-        DS::log (DS::kInfoLevel,
-                 QString ("UI Scale Ratio set to: %1").arg (RATIO));
+        DS::log (DS::kInfoLevel, QString ("UI Scale Ratio set to: %1").arg (RATIO));
     }
 
     return input * RATIO;
