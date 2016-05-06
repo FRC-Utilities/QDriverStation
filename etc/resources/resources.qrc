@@ -2,7 +2,6 @@
     <qresource prefix="/">
         <file>fonts/Quicksand-Bold.otf</file>
         <file>fonts/Quicksand-Regular.otf</file>
-        <file>fonts/Inconsolata.otf</file>
         <file>headers/LibDS.png</file>
         <file>headers/QDriverStation.png</file>
         <file>icons/ethernet.png</file>

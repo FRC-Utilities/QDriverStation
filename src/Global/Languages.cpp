@@ -86,7 +86,7 @@ void Languages::init() {
 QFont Languages::appFont() {
     QFont font;
 
-#if defined Q_OS_WIN
+#if defined Q_OS_WIN || defined Q_OS_MAC
     font.setFamily ("Quicksand");
     font.setPixelSize (DPI_SCALE (12));
 #else
