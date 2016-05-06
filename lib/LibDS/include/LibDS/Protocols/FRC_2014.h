@@ -66,18 +66,6 @@ class LIB_DS_DECL FRC_Protocol2014 : public DS_Core::AbstractProtocol {
         return 80;
     }
 
-    inline virtual int netConsoleInputPort() {
-        return 6666;
-    }
-
-    inline virtual int netConsoleOutputPort() {
-        return 6668;
-    }
-
-    inline virtual bool acceptsConsoleCommands() {
-        return true;
-    }
-
     inline virtual QStringList additionalRobotIPs() {
         return QStringList (DS::getStaticIP (10, team(), 2));
     }

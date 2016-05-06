@@ -41,8 +41,11 @@ NetConsole::NetConsole (QObject* parent) : QObject (parent) {
 //==================================================================================================
 
 void NetConsole::setInputPort (int port) {
+    m_socket.close();
     m_socket.disconnectFromHost();
-    m_socket.bind (QHostAddress::Any, port, m_bindFlags);
+
+    if (port != DS::INVALID_PORT)
+        m_socket.bind (QHostAddress::Any, port, m_bindFlags);
 
     DS::log (DS::kLibLevel, "NetConsole input port set to: " + QString::number (port));
 }

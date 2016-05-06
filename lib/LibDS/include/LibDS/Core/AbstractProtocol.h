@@ -338,7 +338,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     /// \note This function must be re-implemented by each protocol
     ///
     inline virtual bool acceptsConsoleCommands() {
-        return false;
+        return netConsoleOutputPort() != DS::INVALID_PORT;
     }
 
     ///
