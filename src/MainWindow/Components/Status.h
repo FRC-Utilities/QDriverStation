@@ -53,7 +53,7 @@ class Status : public QWidget {
     void updateStatus        (QString status);
     void updateVoltage       (QString voltage);
     void updateCodeStatus    (bool codeAvailable);
-    void updateCommStatus    (DS::DS_CommStatus status);
+    void updateCommStatus    (DS::CommStatus status);
 
     void toggleStatusColors();
 

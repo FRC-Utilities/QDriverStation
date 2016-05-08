@@ -184,7 +184,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     ///
     /// Returns the communication status between the robot and the DS.
     ///
-    inline DS::DS_CommStatus communicationStatus() const {
+    inline DS::CommStatus communicationStatus() const {
         return m_communicationStatus;
     }
 
@@ -575,7 +575,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
         emit voltageChanged (intString + "." + decString);
     }
 
-    inline void updateCommStatus (DS::DS_CommStatus status) {
+    inline void updateCommStatus (DS::CommStatus status) {
         m_communicationStatus = status;
         emit communicationsChanged (m_communicationStatus);
     }
@@ -599,7 +599,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     void controlModeChanged (DS::ControlMode);
     void CANInfoReceived (DS::CAN_Information);
     void rumbleRequest (DS::RumbleRequest request);
-    void communicationsChanged (DS::DS_CommStatus);
+    void communicationsChanged (DS::CommStatus);
 
   private:
     int m_team;
@@ -625,7 +625,7 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
 
     DS::Alliance m_alliance;
     DS::ControlMode m_controlMode;
-    DS::DS_CommStatus m_communicationStatus;
+    DS::CommStatus m_communicationStatus;
 
     QStringList m_robotIPs;
     QStringList m_radioIPs;

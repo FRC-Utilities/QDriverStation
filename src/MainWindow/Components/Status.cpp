@@ -345,7 +345,7 @@ void Status::updateCodeStatus (bool codeAvailable) {
 // Status::updateCommStatus
 //==================================================================================================
 
-void Status::updateCommStatus (DS::DS_CommStatus status) {
+void Status::updateCommStatus (DS::CommStatus status) {
     m_comm->setChecked (status != DS::kFailing);
     m_comm->setStyleSheet (status != DS::kPartial ? NORMAL_LED : CUSTM_LED);
 }

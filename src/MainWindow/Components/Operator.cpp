@@ -324,8 +324,8 @@ void Operator::connectSlots() {
              this,                        SLOT (updateWindowState     (void)));
     connect (QDS(),                     SIGNAL (enabledChanged        (bool)),
              this,                        SLOT (updateEnableStyles    (bool)));
-    connect (QDS(),                     SIGNAL (communicationsChanged (DS::DS_CommStatus)),
-             this,                        SLOT (updateCommunications  (DS::DS_CommStatus)));
+    connect (QDS(),                     SIGNAL (communicationsChanged (DS::CommStatus)),
+             this,                        SLOT (updateCommunications  (DS::CommStatus)));
 }
 
 //==================================================================================================
@@ -450,7 +450,7 @@ void Operator::updateEnableStyles (bool enabled) {
 // Operator::updateCommunications
 //==================================================================================================
 
-void Operator::updateCommunications (DS::DS_CommStatus comms) {
+void Operator::updateCommunications (DS::CommStatus comms) {
     if (comms == DS::kFailing || comms == DS::kPartial)
         m_dsable->setChecked (true);
 

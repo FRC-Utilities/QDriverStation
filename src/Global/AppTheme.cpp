@@ -43,13 +43,13 @@
 //==================================================================================================
 
 void AppTheme::init() {
-    /* Load the application fonts */
-    QFontDatabase::addApplicationFont (":/fonts/Inconsolata.otf");
+#if defined Q_OS_WIN || defined Q_OS_MAC
     QFontDatabase::addApplicationFont (":/fonts/Quicksand-Bold.ttf");
     QFontDatabase::addApplicationFont (":/fonts/Quicksand-Regular.ttf");
+#endif
 
-    /* Configure appearance options */
     QApplication::setStyle (QStyleFactory::create ("Fusion"));
+    
 #if defined Q_OS_MAC
     QApplication::setWindowIcon (QIcon (""));
 #else

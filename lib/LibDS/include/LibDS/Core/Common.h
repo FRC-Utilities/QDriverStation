@@ -77,7 +77,7 @@ typedef enum {
     kFull                = 0,
     kPartial             = 1,
     kFailing             = 2,
-} DS_CommStatus;
+} CommStatus;
 
 ///
 /// Used to differentiate between the different error levels of log messages

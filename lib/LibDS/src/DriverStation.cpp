@@ -102,12 +102,12 @@ T* GET_INSTANCE() {
 //==================================================================================================
 
 DriverStation::DriverStation() {
-    qRegisterMetaType <DS::CAN_Information> ("DS_CAN");
-    qRegisterMetaType <DS::Joystick>        ("DS_Joystick");
-    qRegisterMetaType <DS::Alliance>        ("LibDS::DS_Alliance");
-    qRegisterMetaType <DS::DS_CommStatus>   ("DS_CommStatus");
-    qRegisterMetaType <DS::ControlMode>     ("LibDS::DS_ControlMode");
-    qRegisterMetaType <DS::RumbleRequest>   ("DS_RumbleRequest");
+    qRegisterMetaType <DS::CAN_Information> ("CAN_Information");
+    qRegisterMetaType <DS::Joystick>        ("Joystick");
+    qRegisterMetaType <DS::Alliance>        ("Alliance");
+    qRegisterMetaType <DS::CommStatus>      ("CommStatus");
+    qRegisterMetaType <DS::ControlMode>     ("ControlMode");
+    qRegisterMetaType <DS::RumbleRequest>   ("RumbleRequest");
 
     m_init = false;
     m_practiceRunning = false;
@@ -125,7 +125,7 @@ DriverStation::DriverStation() {
         emit robotStatusChanged (getRobotStatus());
     });
     connect (this, &DriverStation::communicationsChanged,
-    [ = ] (DS::DS_CommStatus status) {
+    [ = ] (DS::CommStatus status) {
         Q_UNUSED (status);
         emit robotStatusChanged (getRobotStatus());
     });
@@ -401,12 +401,28 @@ void DriverStation::rebootRobot() {
 }
 
 //==================================================================================================
-// DriverStation::restartRobotCode
+// DriverStation::restartCode
 //==================================================================================================
 
 void DriverStation::restartCode() {
     if (protocolLoaded())
         currentProtocol()->restartCode();
+}
+
+//==================================================================================================
+// DriverStation::enableRobot
+//==================================================================================================
+
+void DriverStation::enableRobot() {
+    setEnabled (true);
+}
+
+//==================================================================================================
+// DriverStation::disableRobot
+//==================================================================================================
+
+void DriverStation::disableRobot() {
+    setEnabled (false);
 }
 
 //==================================================================================================
@@ -441,9 +457,36 @@ void DriverStation::sendCommand (QString command) {
 // DriverStation::setEmergencyStop
 //==================================================================================================
 
-void DriverStation::setEmergencyStop (bool emergency_stop) {
+void DriverStation::setEmergencyStop (bool stop) {
     if (protocolLoaded())
-        currentProtocol()->setEmergencyStop (emergency_stop);
+        currentProtocol()->setEmergencyStop (stop);
+}
+
+//==================================================================================================
+// DriverStation::startTest
+//==================================================================================================
+
+void DriverStation::startTest (bool enabled) {
+    setControlMode (DS::kControlTest);
+    setEnabled (enabled);
+}
+
+//==================================================================================================
+// DriverStation::startAutonomous
+//==================================================================================================
+
+void DriverStation::startAutonomous (bool enabled) {
+    setControlMode (DS::kControlAutonomous);
+    setEnabled (enabled);
+}
+
+//==================================================================================================
+// DriverStation::startTeleoperated
+//==================================================================================================
+
+void DriverStation::startTeleoperated (bool enabled) {
+    setControlMode (DS::kControlTeleoperated);
+    setEnabled (enabled);
 }
 
 //==================================================================================================
@@ -484,6 +527,27 @@ void DriverStation::startPractice (int countdown, int autonomous, int delay, int
     QTimer::singleShot (_stop,              Qt::PreciseTimer, this, SLOT (playEndGame()));
     QTimer::singleShot (_startEndGame,      Qt::PreciseTimer, this, SLOT (playEndGameApproaching()));
 }
+
+//==================================================================================================
+// DriverStation::setTeamNumber
+//==================================================================================================
+
+void DriverStation::setTeamNumber (int team) {
+    if (protocolLoaded())
+        currentProtocol()->setTeam (team);
+
+    emit teamChanged (team);
+}
+
+//==================================================================================================
+// DriverStation::setAlliance
+//==================================================================================================
+
+void DriverStation::setAlliance (int alliance) {
+    if (protocolLoaded())
+        currentProtocol()->setAlliance ((DS::Alliance) alliance);
+}
+
 
 //==================================================================================================
 // DriverStation::setProtocol
@@ -551,7 +615,7 @@ void DriverStation::setProtocol (DS_Core::AbstractProtocol* protocol) {
 // DriverStation::setProtocol
 //==================================================================================================
 
-void DriverStation::setProtocol (ProtocolType protocol) {
+void DriverStation::setProtocol (int protocol) {
     if (protocol == kFRCProtocol2016)
         setProtocol (GET_INSTANCE<DS_Protocols::FRC_Protocol2016>());
 
@@ -563,40 +627,12 @@ void DriverStation::setProtocol (ProtocolType protocol) {
 }
 
 //==================================================================================================
-// DriverStation::setTeamNumber
-//==================================================================================================
-
-void DriverStation::setTeamNumber (int team) {
-    if (protocolLoaded())
-        currentProtocol()->setTeam (team);
-
-    emit teamChanged (team);
-}
-
-//==================================================================================================
-// DriverStation::setAlliance
-//==================================================================================================
-
-void DriverStation::setAlliance (int alliance) {
-    setAlliance ((DS::Alliance) alliance);
-}
-
-//==================================================================================================
-// DriverStation::setAlliance
-//==================================================================================================
-
-void DriverStation::setAlliance (DS::Alliance alliance) {
-    if (protocolLoaded())
-        currentProtocol()->setAlliance (alliance);
-}
-
-//==================================================================================================
 // DriverStation::setControlMode
 //==================================================================================================
 
-void DriverStation::setControlMode (DS::ControlMode mode) {
+void DriverStation::setControlMode (int mode) {
     if (protocolLoaded())
-        currentProtocol()->setControlMode (mode);
+        currentProtocol()->setControlMode ((DS::ControlMode) mode);
 }
 
 //==================================================================================================
@@ -626,7 +662,7 @@ void DriverStation::resetJoysticks() {
 //==================================================================================================
 
 void DriverStation::updateJoystickPOV (int js, int hat, int angle) {
-    if (js < joysticks()->count())
+    if (js < joysticks()->count() && js >= 0 && hat >= 0)
         joysticks()->at (js).POVs [hat] = angle;
 }
 
@@ -635,6 +671,9 @@ void DriverStation::updateJoystickPOV (int js, int hat, int angle) {
 //==================================================================================================
 
 bool DriverStation::addJoystick (int axes, int buttons, int POVs) {
+    if (axes <= 0 && buttons <= 0 && POVs <= 0)
+        return false;
+
     /* The DS has exceeded the supported number of joysticks */
     if (joysticks()->count() >= MAX_JOYSTICKS) {
         DS::log  (DS::kLibLevel, "Reached maximum number of joysticks");
@@ -720,7 +759,7 @@ bool DriverStation::addJoystick (int axes, int buttons, int POVs) {
 //==================================================================================================
 
 void DriverStation::updateJoystickAxis (int js, int axis, float value) {
-    if (js < joysticks()->count())
+    if (js < joysticks()->count() && js >= 0 && axis >= 0)
         joysticks()->at (js).axes [axis] = value;
 }
 
@@ -729,7 +768,7 @@ void DriverStation::updateJoystickAxis (int js, int axis, float value) {
 //==================================================================================================
 
 void DriverStation::updateJoystickButton (int js, int button, bool pressed) {
-    if (js < joysticks()->count())
+    if (js < joysticks()->count() && js >= 0 && button >= 0)
         joysticks()->at (js).buttons [button] = pressed;
 }
 

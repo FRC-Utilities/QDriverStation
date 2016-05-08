@@ -53,7 +53,7 @@ class Operator : public QWidget {
     void updateProgressbars();
     void updateControlMode (int index);
     void updateEnableStyles (bool enabled);
-    void updateCommunications (DS::DS_CommStatus comms);
+    void updateCommunications (DS::CommStatus comms);
 
   signals:
     void showDocked();

@@ -229,7 +229,7 @@ void Diagnostics::connectSlots() {
 
     /* Lambda-functions */
     connect (QDS(), &DriverStation::communicationsChanged,
-    [ = ] (DS::DS_CommStatus status) {
+    [ = ] (DS::CommStatus status) {
         m_robot->setChecked (status == DS::kFull);
     });
 }
