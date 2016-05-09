@@ -47,7 +47,7 @@
 #include "MainWindow/MainWindow.h"
 
 //==================================================================================================
-// Called when a widget is clicked
+// Called when a widget is clicked, plays an A4 for 100 milliseconds
 //==================================================================================================
 
 void BEEP() {
@@ -98,7 +98,7 @@ int main (int argc, char* argv[]) {
     DS::log (DS::kInfoLevel, "Starting application....");
 
     /* Qt 5.6 implements built-in support for hDPI displays, but it does not work sometimes */
-#if QT_VERSION <= 0x050600
+#if QT_VERSION >= QT_VERSION_CHECK (5, 6, 0)
 #if defined Q_OS_MAC
     RATIO = 1;
     QApplication::setAttribute (Qt::AA_EnableHighDpiScaling);
