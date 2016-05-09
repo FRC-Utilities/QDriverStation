@@ -134,6 +134,11 @@ extern qreal DPI_SCALE (qreal input);
 //==================================================================================================
 
 ///
+/// Changes the scalling ratio
+///
+extern void SET_RATIO (qreal input);
+
+///
 /// Initializes and configures SDL for joystick usage and generating sounds.
 ///
 extern void SDL_INIT();

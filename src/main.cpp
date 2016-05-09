@@ -97,6 +97,16 @@ void ENABLE_SOUND_EFFECTS() {
 int main (int argc, char* argv[]) {
     DS::log (DS::kInfoLevel, "Starting application....");
 
+    /* Qt 5.6 implements built-in support for hDPI displays, but it does not work sometimes */
+#if QT_VERSION <= 0x050600
+#if defined Q_OS_MAC
+    RATIO = 1;
+    QApplication::setAttribute (Qt::AA_EnableHighDpiScaling);
+#else
+    QApplication::setAttribute (Qt::AA_DisableHighDpiScaling);
+#endif
+#endif
+
     /* Configure application information */
     QApplication app (argc, argv);
     QApplication::setApplicationVersion ("1.0.0");

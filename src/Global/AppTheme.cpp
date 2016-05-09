@@ -49,7 +49,7 @@ void AppTheme::init() {
 #endif
 
     QApplication::setStyle (QStyleFactory::create ("Fusion"));
-    
+
 #if defined Q_OS_MAC
     QApplication::setWindowIcon (QIcon (""));
 #else
