@@ -68,12 +68,14 @@ RowLayout {
 
         onTriggered: {
             cpuProgressBar.value = cUtilities.getCpuUsage()
+            plug.visible = cUtilities.isConnectedToPowerSource()
             batteryProgressBar.value = cUtilities.getBatteryLevel()
         }
 
         Component.onCompleted: {
             start()
             cpuProgressBar.value = cUtilities.getCpuUsage()
+            plug.visible = cUtilities.isConnectedToPowerSource()
             batteryProgressBar.value = cUtilities.getBatteryLevel()
         }
     }
@@ -107,6 +109,9 @@ RowLayout {
                 autonomous.checked = false
             }
 
+            //
+            // Teleop selector
+            //
             Button {
                 id: teleop
                 checked: true
@@ -123,6 +128,9 @@ RowLayout {
                 }
             }
 
+            //
+            // Autonomous selector
+            //
             Button {
                 id: autonomous
                 text: "  " + qsTr ("Autonomous")
@@ -138,6 +146,9 @@ RowLayout {
                 }
             }
 
+            //
+            // Practice selector
+            //
             Button {
                 id: practice
                 enabled: false
@@ -152,6 +163,9 @@ RowLayout {
                 }
             }
 
+            //
+            // Test mode selector
+            //
             Button {
                 id: test
                 text: "  " + qsTr ("Test")
@@ -183,6 +197,9 @@ RowLayout {
                 right: parent.right
             }
 
+            //
+            // Enable button
+            //
             Button {
                 id: enable
                 text: qsTr ("Enable")
@@ -206,6 +223,9 @@ RowLayout {
                 }
             }
 
+            //
+            // Disable button
+            //
             Button {
                 id: disable
                 checked: true
@@ -254,11 +274,17 @@ RowLayout {
         property int minWidth: Globals.scale (80)
         property int maxWidth: Globals.scale (100)
 
+        //
+        // Elapsed time caption
+        //
         Label {
             Layout.fillWidth: true
             text: qsTr ("Elapsed Time")
         }
 
+        //
+        // Elapsed time indicator
+        //
         Label {
             size: large
             text: "00:00.0"
@@ -270,21 +296,40 @@ RowLayout {
             horizontalAlignment: Text.AlignRight
         }
 
+        //
+        // Spacer (for both columns)
+        //
         Item {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+        } Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
         }
 
-        Item {
+        //
+        // PC Battery label & plug icon
+        //
+        RowLayout {
             Layout.fillWidth: true
-            Layout.fillHeight: true
+            spacing: Globals.scale (5)
+            
+            Icon {
+                id: plug
+                name: icons.fa_plug
+                size: Globals.scale (10)
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            Label {
+                Layout.fillWidth: true
+                text: qsTr ("PC Battery")
+            }
         }
 
-        Label {
-            Layout.fillWidth: true
-            text: qsTr ("PC Battery")
-        }
-
+        //
+        // Battery level indicator
+        //
         Progressbar {
             id: batteryProgressBar
 
@@ -304,11 +349,17 @@ RowLayout {
             }
         }
 
+        //
+        // CPU caption
+        //
         Label {
             Layout.fillWidth: true
             text: qsTr ("PC CPU") + " %"
         }
 
+        //
+        // CPU Usage Indicator
+        //
         Progressbar {
             id: cpuProgressBar
 
@@ -320,25 +371,35 @@ RowLayout {
             Layout.maximumWidth: grid.maxWidth
         }
 
+        //
+        // Spacer (for both columns)
+        //
         Item {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+        } Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
         }
 
-        Item {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-        }
-
+        //
+        // Window mode label
+        //
         Label {
             text: qsTr ("Window")
             Layout.fillWidth: true
         }
 
+        //
+        // Window mode buttons
+        //
         RowLayout {
             Layout.fillWidth: true
             spacing: Globals.scale (-1)
 
+            //
+            // Normal window button
+            //
             Button {
                 id: normal
                 checked: true
@@ -360,6 +421,9 @@ RowLayout {
                 }
             }
 
+            //
+            // Docked window button
+            //
             Button {
                 id: docked
                 icon: icons.fa_expand
@@ -381,11 +445,17 @@ RowLayout {
             }
         }
 
+        //
+        // Team station caption
+        //
         Label {
             Layout.fillWidth: true
             text: qsTr ("Team Station")
         }
 
+        //
+        // Team station selector
+        //
         Combobox {
             id: alliances
             Layout.fillWidth: true
