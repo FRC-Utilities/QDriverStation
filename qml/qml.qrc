@@ -1,0 +1,32 @@
+<RCC>
+    <qresource prefix="/qml">
+        <file>About.qml</file>
+        <file>CAN_Metrics.qml</file>
+        <file>Diagnostics.qml</file>
+        <file>Joysticks.qml</file>
+        <file>main.qml</file>
+        <file>Messages.qml</file>
+        <file>Operator.qml</file>
+        <file>Preferences.qml</file>
+        <file>SettingsWindow.qml</file>
+        <file>Status.qml</file>
+        <file>VirtualJoystickWindow.qml</file>
+        <file>widgets/Icon.qml</file>
+        <file>widgets/LED.qml</file>
+        <file>widgets/Button.qml</file>
+        <file>widgets/Checkbox.qml</file>
+        <file>widgets/Combobox.qml</file>
+        <file>widgets/Label.qml</file>
+        <file>widgets/ListView.qml</file>
+        <file>widgets/Progressbar.qml</file>
+        <file>widgets/Spinbox.qml</file>
+        <file>globals.js</file>
+        <file>widgets/Panel.qml</file>
+        <file>widgets/Icons.qml</file>
+        <file>widgets/TextEditor.qml</file>
+        <file>LeftTab.qml</file>
+        <file>RightTab.qml</file>
+        <file>JoystickItem.qml</file>
+        <file>widgets/LineEdit.qml</file>
+    </qresource>
+</RCC>

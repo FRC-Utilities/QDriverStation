@@ -43,6 +43,11 @@ class SocketManager : public QObject {
     explicit SocketManager();
 
     ///
+    /// Returns the user-set PNSS limit
+    ///
+    int limit() const;
+
+    ///
     /// Returns the current number of parallel socket pairs scanning
     /// the network for the robot controller
     ///
@@ -59,6 +64,12 @@ class SocketManager : public QObject {
     /// of IP addresses
     ///
     void refreshIPs();
+
+    ///
+    /// Changes the number of sockets to use, if \a limit is set to
+    /// 0, then the limit will be calculated automatically
+    ///
+    void setLimit (int limit);
 
     ///
     /// Reconfigures the FMS receiver socket to use the given \a port
@@ -115,6 +126,7 @@ class SocketManager : public QObject {
     void robotPacketReceived (QByteArray data);
 
   private:
+    int m_limit;
     int m_iterator;
     int m_fmsOutput;
     int m_robotInput;

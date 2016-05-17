@@ -25,13 +25,14 @@ The most common way to repair this would be to:
 
     - Check that you are actually connected to the robot
     - Check that your team number is correctly set
+    - Check that all your network interfaces are enabled (e.g. WiFi is on and connected to a modem/router)
 
 If that still doesn't work:
 
     - Open a command prompt
     - Ping the robot by typing (where XXYY is your team number):
       
-          ping roboRIO-XXYY.local
+          ping roboRIO-XXYY-FRC.local
 
     - If you get a response, copy the IP address of the roboRIO
     - Paste the IP address of the robot in the "Custom Address" field 

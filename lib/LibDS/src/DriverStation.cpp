@@ -62,30 +62,22 @@ const int MAX_JOYSTICKS = 0x06; // Support for 6 joysticks
 // Joystick error messages/warnings
 //==================================================================================================
 
-const QString ERR_POV_CNT     = "<p>"
-                                "<font color=#FFF959><b>WARNING:</b></font> "
+const QString ERR_POV_CNT     = "<font color=#FFF959><b>WARNING:</b></font> "
                                 "<font color=#FFFFFF>Joystick %1 has exceed "
                                 "the POV range (0 to %2 POVs). "
-                                "Joystick %1 has %3 POVs.</font>"
-                                "</p>";
-const QString ERR_AXIS_CNT    = "<p>"
-                                "<font color=#FFF959><b>WARNING:</b></font> "
+                                "Joystick %1 has %3 POVs.</font>";
+const QString ERR_AXIS_CNT    = "<font color=#FFF959><b>WARNING:</b></font> "
                                 "<font color=#FFFFFF>Joystick %1 has exceed "
                                 "the axis range (0 to %2 axes). "
-                                "Joystick %1 has %3 axes.</font>"
-                                "</p>";
-const QString ERR_BUTTON_CNT  = "<p>"
-                                "<font color=#FFF959><b>WARNING:</b></font> "
+                                "Joystick %1 has %3 axes.</font>";
+const QString ERR_BUTTON_CNT  = "<font color=#FFF959><b>WARNING:</b></font> "
                                 "<font color=#FFFFFF>Joystick %1 has exceed "
                                 "the button range (0 to %2 buttons). "
-                                "Joystick %1 has %3 buttons.</font>"
-                                "</p>";
-const QString ERR_JOYSTICKS   = "<p>"
-                                "<font color=#FFF959><b>WARNING:</b></font> "
+                                "Joystick %1 has %3 buttons.</font>";
+const QString ERR_JOYSTICKS   = "<font color=#FFF959><b>WARNING:</b></font> "
                                 "<font color=#FFFFFF>Reached maximum number of "
                                 "joysticks (%1), further joysticks will be "
-                                "ignored.</font>"
-                                "</p>";
+                                "ignored.</font>";
 
 //==================================================================================================
 // Ugly hacks
@@ -154,6 +146,25 @@ DriverStation::DriverStation() {
 DriverStation* DriverStation::getInstance() {
     static DriverStation instance;
     return &instance;
+}
+
+//==================================================================================================
+// DriverStation::getPSC
+//==================================================================================================
+
+int DriverStation::getPSC() {
+    if (protocolLoaded())
+        return currentProtocol()->getPSC();
+
+    return 0;
+}
+
+//==================================================================================================
+// DriverStation::isInitialized
+//==================================================================================================
+
+bool DriverStation::isInitialized() {
+    return m_init;
 }
 
 //==================================================================================================
@@ -454,6 +465,15 @@ void DriverStation::sendCommand (QString command) {
 }
 
 //==================================================================================================
+// DriverStation::setPSC
+//==================================================================================================
+
+void DriverStation::setPSC (int limit) {
+    if (protocolLoaded())
+        currentProtocol()->setPSC (limit);
+}
+
+//==================================================================================================
 // DriverStation::setEmergencyStop
 //==================================================================================================
 
@@ -559,13 +579,11 @@ void DriverStation::setProtocol (DS_Core::AbstractProtocol* protocol) {
         return;
     }
 
-    /* There is already a running protocol */
+    /* Disable the current protocol and pass settings from one protocol to another */
     if (protocolLoaded()) {
-        /* Pass current protocol settings to new protocol */
-        protocol->setTeam         (currentProtocol()->team());
-        protocol->setRobotAddress (currentProtocol()->robotAddress());
+        protocol->setTeam (currentProtocol()->team());
+        protocol->setRobotAddress (robotAddress());
 
-        /* De-configure the old protocol */
         currentProtocol()->stop();
         currentProtocol()->disconnect();
     }
@@ -602,7 +620,6 @@ void DriverStation::setProtocol (DS_Core::AbstractProtocol* protocol) {
              this,              &DriverStation::enabledChanged);
 
     /* Start the protocol & re-configure the library modules */
-    m_protocol->start();
     m_netConsole->setBindFlags    (currentProtocol()->ncBindFlags());
     m_netConsole->setInputPort    (currentProtocol()->netConsoleInputPort());
     m_netConsole->setOutputPort   (currentProtocol()->netConsoleOutputPort());

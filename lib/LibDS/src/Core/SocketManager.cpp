@@ -29,6 +29,7 @@ using namespace DS_Core;
 //==================================================================================================
 
 SocketManager::SocketManager() {
+    m_limit = 0;
     m_fmsOutput = 0;
     m_robotInput = 0;
     m_robotOutput = 0;
@@ -37,6 +38,14 @@ SocketManager::SocketManager() {
     m_robotInputFlags = QAbstractSocket::ShareAddress | QAbstractSocket::ReuseAddressHint;
 
     connect (&m_fmsInputSocket, SIGNAL (readyRead()), this, SLOT (readFmsPacket()));
+}
+
+//==================================================================================================
+// SocketManager::limit
+//==================================================================================================
+
+int SocketManager::limit() const {
+    return m_limit;
 }
 
 //==================================================================================================
@@ -76,6 +85,15 @@ void SocketManager::refreshIPs() {
             }
         }
     }
+}
+
+//==================================================================================================
+// SocketManager::setLimit
+//==================================================================================================
+
+void SocketManager::setLimit (int limit) {
+    m_limit = limit;
+    setRobotIPs (m_list);
 }
 
 //==================================================================================================
@@ -140,6 +158,7 @@ void SocketManager::sendRobotPacket (QByteArray data) {
     if (!robotAddress().isEmpty())
         m_robotOutputSocket.writeDatagram (data, QHostAddress (robotAddress()), m_robotOutput);
 
+    /* We can consider this as spamming the LAN until the robot responds... */
     else {
         for (int i = 0; i < m_outputSockets.count(); ++i) {
             if (scannerCount() > i && m_list.count() > m_iterator + i) {
@@ -155,7 +174,7 @@ void SocketManager::sendRobotPacket (QByteArray data) {
 //==================================================================================================
 
 void SocketManager::setRobotIPs (const QStringList& list) {
-    /* Invalid list, get out of here */
+    /* Invalid list, get out of here! (ಠ_ಠ)┌∩┐ */
     if (list.isEmpty())
         return;
 
@@ -164,7 +183,7 @@ void SocketManager::setRobotIPs (const QStringList& list) {
     m_iterator = 0;
 
     /* Adjust the scanner count */
-    setScannerCount (m_list.count() / 6);
+    setScannerCount (m_limit > 0 ? m_limit : m_list.count() / 6);
 }
 
 //==================================================================================================

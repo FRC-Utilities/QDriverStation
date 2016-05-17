@@ -20,135 +20,97 @@
  * THE SOFTWARE.
  */
 
-//==================================================================================================
-// System includes
-//==================================================================================================
+//-----------------------------------------------------------------------------
+// Qt includes
+//-----------------------------------------------------------------------------
 
-#include <QObject>
-#include <QSpinBox>
-#include <QComboBox>
-#include <QCheckBox>
-#include <QTabWidget>
-#include <QPushButton>
+#include <QtQml>
+#include <QScreen>
 #include <QApplication>
-#include <QInputDialog>
+#include <QQmlApplicationEngine>
 
-//==================================================================================================
+//-----------------------------------------------------------------------------
+// LibDS and joystick libraries
+//-----------------------------------------------------------------------------
+
+#include <LibDS.h>
+#include <QJoysticks.h>
+
+//-----------------------------------------------------------------------------
 // Application includes
-//==================================================================================================
+//-----------------------------------------------------------------------------
 
-#include "Global/Global.h"
-#include "Global/Beeper.h"
-#include "Global/AppTheme.h"
-#include "Global/Settings.h"
-#include "Global/Languages.h"
+#include "beeper.h"
+#include "updater.h"
+#include "utilities.h"
+#include "dashboards.h"
 
-#include "Updater/Updater.h"
-#include "MainWindow/MainWindow.h"
+//-----------------------------------------------------------------------------
+// Avoid issues with SDL
+//-----------------------------------------------------------------------------
 
-//==================================================================================================
-// Called when a widget is clicked, plays an A4 for 100 milliseconds
-//==================================================================================================
+#if defined (QT_NEEDS_QMAIN)
+#define QDS_MAIN qMain
+#else
+#define QDS_MAIN main
+#endif
 
-void BEEP() {
-    BEEPER()->beep (440, 100);
-}
+//-----------------------------------------------------------------------------
+// Main entry point of the application
+//-----------------------------------------------------------------------------
 
-//==================================================================================================
-// Loops through all the widgets and configures them to call the BEEP() function when clicked
-//==================================================================================================
-
-void ENABLE_SOUND_EFFECTS() {
-    foreach (QWidget* widget, QApplication::allWidgets()) {
-        QSpinBox* spin      = qobject_cast<QSpinBox*> (widget);
-        QCheckBox* check    = qobject_cast<QCheckBox*> (widget);
-        QComboBox* combo    = qobject_cast<QComboBox*> (widget);
-        QTabWidget* tabwid  = qobject_cast<QTabWidget*> (widget);
-        QPushButton* button = qobject_cast<QPushButton*> (widget);
-
-        if (spin != Q_NULLPTR)
-            QObject::connect (spin,
-                              static_cast<void (QSpinBox::*) (int)
-                              > (&QSpinBox::valueChanged),
-                              BEEP);
-
-        else if (combo != Q_NULLPTR)
-            QObject::connect (combo,
-                              static_cast<void (QComboBox::*) (int)
-                              > (&QComboBox::currentIndexChanged),
-                              BEEP);
-
-        else if (check != Q_NULLPTR)
-            QObject::connect (check, &QCheckBox::clicked, BEEP);
-
-        else if (tabwid != Q_NULLPTR)
-            QObject::connect (tabwid, &QTabWidget::currentChanged, BEEP);
-
-        else if (button != Q_NULLPTR)
-            QObject::connect (button, &QPushButton::clicked, BEEP);
-    }
-
-}
-
-//==================================================================================================
-// Main entry-point of the application
-//==================================================================================================
-
-int main (int argc, char* argv[]) {
-    DS::log (DS::kInfoLevel, "Starting application....");
-
-    /* Qt 5.6 implements built-in support for hDPI displays, but it does not work sometimes */
+int QDS_MAIN (int argc, char* argv[]) {
+    /* Avoid UI scaling issues with Qt 5.6 */
 #if QT_VERSION >= QT_VERSION_CHECK (5, 6, 0)
 #if defined Q_OS_MAC
-    RATIO = 1;
     QApplication::setAttribute (Qt::AA_EnableHighDpiScaling);
 #else
     QApplication::setAttribute (Qt::AA_DisableHighDpiScaling);
 #endif
 #endif
 
-    /* Configure application information */
+    /* Start the application and register its information */
     QApplication app (argc, argv);
-    QApplication::setApplicationVersion ("1.0.0");
-    QApplication::setOrganizationName   ("WinT 3794");
-    QApplication::setApplicationName    ("QDriverStation");
-    QApplication::setOrganizationDomain ("www.wint3794.org");
-    QApplication::installTranslator     (Languages::translator());
-    QApplication::setFont               (Languages::appFont());
+    app.setApplicationVersion ("16.05");
+    app.setApplicationDisplayName ("QDriverStation");
+    app.setOrganizationName ("QDriverStation Developers");
+    app.setOrganizationDomain ("http://qdriverstation.sf.net");
 
-    /* Initialize application modules */
-    SDL_INIT();
-    GLOBAL_INIT();
+    /* Calculate the scale factor of the screen */
+    qreal scaleRatio = (app.primaryScreen()->physicalDotsPerInch() / 100) * 0.9;
 
-    /* Create the main window and check for updates */
+    /* Scale factor is too small */
+    if (scaleRatio < 1.2)
+        scaleRatio = 1;
+
+    /* Mac already scales things */
+#if defined Q_OS_MAC
+    scaleRatio = 1;
+#endif
+
+    /* Initialize application systems */
+    Beeper beeper;
     Updater updater;
-    MainWindow mainwindow;
+    Utilities utilities;
+    Dashboards dashboards;
 
-    /* Do not allow the compiler to bitch about unused variables */
-    Q_UNUSED (app);
-    Q_UNUSED (updater);
-    Q_UNUSED (mainwindow);
+    /* Load the QML interface */
+    QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty ("cRatio", scaleRatio);
+    engine.rootContext()->setContextProperty ("cBeeper", &beeper);
+    engine.rootContext()->setContextProperty ("cUpdater", &updater);
+    engine.rootContext()->setContextProperty ("cUtilities", &utilities);
+    engine.rootContext()->setContextProperty ("cDashboards", &dashboards);
+    engine.rootContext()->setContextProperty ("appName", app.applicationName());
+    engine.rootContext()->setContextProperty ("appVersion", app.applicationVersion());
+    engine.rootContext()->setContextProperty ("QJoysticks", QJoysticks::getInstance());
+    engine.rootContext()->setContextProperty ("DriverStation", DriverStation::getInstance());
+    engine.load (QUrl (QStringLiteral ("qrc:/qml/main.qml")));
 
-    /* Start the DS engine */
-    QDS()->init();
+    /* QML loading failed, exit the application */
+    if (engine.rootObjects().isEmpty())
+        return EXIT_FAILURE;
 
-    /* Enable sound effects when clicking any widget */
-    ENABLE_SOUND_EFFECTS();
-
-    /* Load the application theme and the font (which is based on the language) */
-    AppTheme::init();
-    QApplication::setFont (Languages::appFont());
-
-    /* Ask for team number on first launch */
-    if (Settings::get ("First launch", true).toBool()) {
-        QDS()->setTeamNumber (QInputDialog::getInt (Q_NULLPTR,
-                              QObject::tr ("QDriverStation"),
-                              QObject::tr ("Please input your team number:"),
-                              0, 0, 9999, 1, 0,
-                              Qt::WindowStaysOnTopHint));
-        Settings::set ("First launch", false);
-    }
-
-    /* Start the application loop */
-    return QApplication::exec();
+    /* Start the application event loop */
+    return app.exec();
 }

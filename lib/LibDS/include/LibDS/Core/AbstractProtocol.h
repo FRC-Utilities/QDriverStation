@@ -74,6 +74,13 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     }
 
     ///
+    /// Returns the current number of parallel scanners running
+    ///
+    inline int getPSC() const {
+        return m_sockets.scannerCount();
+    }
+
+    ///
     /// Returns \c true if the robot is running the user/team code.
     ///
     inline bool hasCode() const {
@@ -435,6 +442,16 @@ class LIB_DS_DECL AbstractProtocol : public QObject {
     /// Attempts to change the enabled state of the robot
     ///
     void setEnabled (bool enabled);
+
+    ///
+    /// Calculates the LAN scan time based on the PSC
+    ///
+    void calculateScanTime();
+
+    ///
+    /// Changes the PSC limit
+    ///
+    void setPSC (int limit = 256);
 
     ///
     /// Attempts to change the e-stop state of the robot

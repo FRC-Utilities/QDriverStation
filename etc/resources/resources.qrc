@@ -1,15 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file>fonts/Quicksand-Bold.otf</file>
-        <file>fonts/Quicksand-Regular.otf</file>
-        <file>headers/LibDS.png</file>
-        <file>headers/QDriverStation.png</file>
-        <file>icons/ethernet.png</file>
-        <file>icons/other_settings.png</file>
-        <file>textures/notes.png</file>
-        <file>mappings/gamecontrollerdb.txt</file>
-        <file>mappings/generic_linux.txt</file>
-        <file>mappings/generic_osx.txt</file>
-        <file>mappings/generic_win.txt</file>
+        <file>fonts/FontAwesome.ttf</file>
+        <file>fonts/Ubuntu-Bold.ttf</file>
+        <file>fonts/UbuntuMono.ttf</file>
+        <file>fonts/Ubuntu-Regular.ttf</file>
     </qresource>
 </RCC>

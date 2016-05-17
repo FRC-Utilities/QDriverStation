@@ -28,22 +28,13 @@ using namespace DS_Core;
 // NetConsole warnings/information texts
 //==================================================================================================
 
-const QString INITIALIZED           = "<p>"
-                                      "<font color=#888>** <font color=#AAA>%1</font> "
-                                      "Initialized</font>"
-                                      "</p>";
-const QString PATIENCE_WITHOUT_TIME = "<p>"
-                                      "<font color=#888>"
-                                      "** It may take some time to detect the robot</font>"
-                                      "</p>";
-const QString PATIENCE_WITH_TIME    = "<p>"
-                                      "<font color=#888>"
-                                      "** It may take up to %1 seconds to detect the robot</font>"
-                                      "</p>";
-const QString IP_INFORMATION        = "<p>"
-                                      "<font color=#888>"
-                                      "** %1 robot IPs generated from %2 interfaces</font>"
-                                      "</p>";
+const QString INITIALIZED    = "<font color=#888>** <font color=#AAA>%1</font> Initialized</font>";
+const QString SCAN_TIME_EST  = "<font color=#888>"
+                               "** It may take up to %1 seconds to detect the robot</font>";
+const QString IP_INFORMATION = "<font color=#888>"
+                               "** %1 robot IPs generated from %2 interfaces</font>";
+const QString PSC_UPDATED    = "<font color=#888>** "
+                               "<font color=#AAA>Parallel Socket Count</font> set to %1</font>";
 
 //==================================================================================================
 // AbstractProtocol::AbstractProtocol
@@ -148,6 +139,33 @@ void AbstractProtocol::setEnabled (bool enabled) {
 }
 
 //==================================================================================================
+// AbstractProtocol::calculateScanTime
+//==================================================================================================
+
+void AbstractProtocol::calculateScanTime() {
+    /* Get total scanning time in seconds*/
+    int ips = robotIPs().count() > 0 ? robotIPs().count() : 1;
+    int time = ((ips * expirationTime()) / m_sockets.scannerCount()) / 1000;
+
+    /* Show the messages */
+    if (isOperating()) {
+        DS::sendMessage (PSC_UPDATED.arg (m_sockets.scannerCount()));
+        DS::sendMessage (SCAN_TIME_EST.arg (time));
+    }
+}
+
+//==================================================================================================
+// AbstractProtocol::setPSC
+//==================================================================================================
+
+void AbstractProtocol::setPSC (int count) {
+    if (count != m_sockets.limit()) {
+        m_sockets.setLimit (count);
+        calculateScanTime();
+    }
+}
+
+//==================================================================================================
 // AbstractProtocol::setEmergencyStop
 //==================================================================================================
 
@@ -213,23 +231,17 @@ void AbstractProtocol::pingRadio() {
 //==================================================================================================
 
 void AbstractProtocol::initialize() {
-    /* Get total scanning time in seconds*/
-    int ips = robotIPs().count() > 0 ? robotIPs().count() : 1;
-    int time = ((ips * expirationTime()) / m_sockets.scannerCount()) / 1000;
-
-    /* Decide which patience message to use */
-    QString be_patient = PATIENCE_WITHOUT_TIME;
-    if (time > 5 && time < 60)
-        be_patient = PATIENCE_WITH_TIME.arg (time);
-
-    /* Display the message */
-    DS::sendMessage (INITIALIZED.arg (name()));
-    DS::sendMessage (be_patient);
-    DS::sendMessage (IP_INFORMATION.arg (m_robotIPs.count()).arg (m_interfaces));
-
     /* Begin the packet creation loop */
+    start();
     sendFmsPacket();
     sendRobotPacket();
+
+    /* Display the protocol initialzed message */
+    DS::sendMessage (INITIALIZED.arg (name()));
+    DS::sendMessage (IP_INFORMATION.arg (m_robotIPs.count()).arg (m_interfaces));
+
+    /* Estimate time to connect to robot */
+    calculateScanTime();
 }
 
 //==================================================================================================

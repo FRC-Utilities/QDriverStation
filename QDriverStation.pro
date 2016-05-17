@@ -26,6 +26,9 @@
 CONFIG += app
 TARGET = QDriverStation
 
+QT += qml
+QT += quick
+
 win32* {
     LIBS += -lPdh
     RC_FILE = $$PWD/etc/deploy/windows/info.rc
@@ -76,96 +79,31 @@ win32-msvc* {
     QMAKE_CXXFLAGS_RELEASE *= -Ot
 }
 
-
 #-------------------------------------------------------------------------------
 # Include other libraries
 #-------------------------------------------------------------------------------
 
-include ($$PWD/lib/SDL/SDL.pri)
 include ($$PWD/lib/LibDS/LibDS.pri)
-include ($$PWD/lib/QtAwesome/QtAwesome.pri)
+include ($$PWD/lib/QJoysticks/QJoysticks.pri)
 
 #-------------------------------------------------------------------------------
-# Import headers, forms and sources
+# Import source code and QML
 #-------------------------------------------------------------------------------
 
-INCLUDEPATH += $$PWD/src
+SOURCES += $$PWD/src/main.cpp \
+    src/utilities.cpp \
+    src/beeper.cpp \
+    src/updater.cpp \
+    src/dashboards.cpp
+RESOURCES += $$PWD/qml/qml.qrc \
+    etc/resources/resources.qrc
+OTHER_FILES += $$PWD/qml/*.qml
+OTHER_FILES += $$PWD/qml/*.js
+OTHER_FILES += $$PWD/qml/widgets/*.qml
 
 HEADERS += \
-    $$PWD/src/Dashboards/Dashboards.h \
-    $$PWD/src/Global/AppTheme.h \
-    $$PWD/src/Global/Beeper.h \
-    $$PWD/src/Global/Global.h \
-    $$PWD/src/Global/Languages.h \
-    $$PWD/src/Global/Settings.h \
-    $$PWD/src/Joysticks/JoystickManager.h \
-    $$PWD/src/Joysticks/JoysticksCommon.h \
-    $$PWD/src/Joysticks/SDL_Joysticks.h \
-    $$PWD/src/Joysticks/VirtualJoystick.h \
-    $$PWD/src/MainWindow/Components/About.h \
-    $$PWD/src/MainWindow/Components/Buttons.h \
-    $$PWD/src/MainWindow/Components/CAN_Metrics.h \
-    $$PWD/src/MainWindow/Components/Develop.h \
-    $$PWD/src/MainWindow/Components/Diagnostics.h \
-    $$PWD/src/MainWindow/Components/Joysticks.h \
-    $$PWD/src/MainWindow/Components/LeftTab.h \
-    $$PWD/src/MainWindow/Components/Messages.h \
-    $$PWD/src/MainWindow/Components/Operator.h \
-    $$PWD/src/MainWindow/Components/Preferences.h \
-    $$PWD/src/MainWindow/Components/RightTab.h \
-    $$PWD/src/MainWindow/Components/Status.h \
-    $$PWD/src/MainWindow/Hacks/CustomTabStyle.h \
-    $$PWD/src/MainWindow/System/Battery.h \
-    $$PWD/src/MainWindow/System/CPU.h \
-    $$PWD/src/MainWindow/MainWindow.h \
-    $$PWD/src/SettingsWindow/SettingsWindow.h \
-    $$PWD/src/Updater/Updater.h \
-    $$PWD/src/VJoystickWindow/VJoystickWindow.h
+    src/utilities.h \
+    src/beeper.h \
+    src/updater.h \
+    src/dashboards.h
 
-SOURCES += \
-    $$PWD/src/Dashboards/Dashboards.cpp \
-    $$PWD/src/Global/AppTheme.cpp \
-    $$PWD/src/Global/Beeper.cpp \
-    $$PWD/src/Global/Global.cpp \
-    $$PWD/src/Global/Languages.cpp \
-    $$PWD/src/Global/Settings.cpp \
-    $$PWD/src/Joysticks/JoystickManager.cpp \
-    $$PWD/src/Joysticks/SDL_Joysticks.cpp \
-    $$PWD/src/Joysticks/VirtualJoystick.cpp \
-    $$PWD/src/MainWindow/Components/About.cpp \
-    $$PWD/src/MainWindow/Components/Buttons.cpp \
-    $$PWD/src/MainWindow/Components/CAN_Metrics.cpp \
-    $$PWD/src/MainWindow/Components/Develop.cpp \
-    $$PWD/src/MainWindow/Components/Diagnostics.cpp \
-    $$PWD/src/MainWindow/Components/Joysticks.cpp \
-    $$PWD/src/MainWindow/Components/LeftTab.cpp \
-    $$PWD/src/MainWindow/Components/Messages.cpp \
-    $$PWD/src/MainWindow/Components/Operator.cpp \
-    $$PWD/src/MainWindow/Components/Preferences.cpp \
-    $$PWD/src/MainWindow/Components/RightTab.cpp \
-    $$PWD/src/MainWindow/Components/Status.cpp \
-    $$PWD/src/MainWindow/Hacks/CustomTabStyle.cpp \
-    $$PWD/src/MainWindow/System/Battery.cpp \
-    $$PWD/src/MainWindow/System/CPU.cpp \
-    $$PWD/src/MainWindow/MainWindow.cpp \
-    $$PWD/src/SettingsWindow/SettingsWindow.cpp \
-    $$PWD/src/Updater/Updater.cpp \
-    $$PWD/src/VJoystickWindow/VJoystickWindow.cpp \
-    $$PWD/src/main.cpp
-
-
-#-------------------------------------------------------------------------------
-# Import resources
-#-------------------------------------------------------------------------------
-
-RESOURCES += $$PWD/etc/resources/resources.qrc
-RESOURCES += $$PWD/etc/translations/translations.qrc
-
-#-------------------------------------------------------------------------------
-# Translations
-#-------------------------------------------------------------------------------
-
-TRANSLATIONS += $$PWD/etc/translations/qds_ch.ts
-TRANSLATIONS += $$PWD/etc/translations/qds_es.ts
-TRANSLATIONS += $$PWD/etc/translations/qds_en.ts
-TRANSLATIONS += $$PWD/etc/translations/qds_de.ts

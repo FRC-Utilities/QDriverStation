@@ -70,6 +70,16 @@ class LIB_DS_DECL DriverStation : public QObject {
     };
 
     ///
+    /// Returns the current number of client sockets count
+    ///
+    Q_INVOKABLE int getPSC();
+
+    ///
+    /// Returns \c true if the DS has been initialized
+    ///
+    Q_INVOKABLE bool isInitialized();
+
+    ///
     /// Returns \c true if the current protocol is valid and does not
     /// point to a NULL pointer
     ///
@@ -233,6 +243,11 @@ class LIB_DS_DECL DriverStation : public QObject {
     /// Sends a command through the net console
     ///
     Q_INVOKABLE void sendCommand (QString command = "");
+
+    ///
+    /// Changes the parallel socket count limit
+    ///
+    Q_INVOKABLE void setPSC (int limit = 256);
 
     ///
     /// If \a emergency_stop is set to \c true, the robot will stop moving

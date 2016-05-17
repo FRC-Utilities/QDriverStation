@@ -24,14 +24,17 @@
 - Implement UI sound effects
 - More options in the preferences window
 
-### QDriverStation 1.0 Beta
+### QDriverStation 16.05
 
 - Support for 2014 protocol
 - Support for multiple languages (Spanish, English and German)
-- Better robot detection code (by looping through all LAN addresses).
+- Implement PSC (Parallel Sockets) to detect the robot a LOT faster
 - Better robot voltage reading code
 - Dynamic control of the watchdog
 - Fix crash issue on Mac OS X
 - Implement a simple logger
 - Fix some minor issues in the UI
 - Add base framework for implementing FMS communications
+- Redesign UI in QML
+- New application icon
+- Allow enabling/disabling joysticks
