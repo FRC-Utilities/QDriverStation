@@ -120,6 +120,7 @@ RowLayout {
         Component.onCompleted: showOperator()
 
         Operator {
+            opacity: 0
             id: operator
             visible: opacity > 0
             anchors.fill: parent
@@ -129,6 +130,7 @@ RowLayout {
         }
 
         Diagnostics {
+            opacity: 0
             id: diagnostics
             visible: opacity > 0
             anchors.fill: parent
@@ -136,6 +138,7 @@ RowLayout {
         }
 
         Preferences {
+            opacity: 0
             id: preferences
             visible: opacity > 0
             anchors.fill: parent
@@ -143,6 +146,7 @@ RowLayout {
         }
 
         Joysticks {
+            opacity: 0
             id: joysticks
             visible: opacity > 0
             anchors.fill: parent

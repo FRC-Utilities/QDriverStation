@@ -61,6 +61,7 @@ RowLayout {
         Component.onCompleted: showMessages()
 
         Messages {
+            opacity: 0
             id: messages
             visible: opacity > 0
             anchors.fill: parent
@@ -68,6 +69,7 @@ RowLayout {
         }
 
         CAN_Metrics {
+            opacity: 0
             id: metrics
             visible: opacity > 0
             anchors.fill: parent
@@ -76,6 +78,7 @@ RowLayout {
 
         About {
             id: about
+            opacity: 0
             visible: opacity > 0
             anchors.fill: parent
             anchors.margins: Globals.spacing

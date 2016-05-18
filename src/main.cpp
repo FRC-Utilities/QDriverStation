@@ -20,46 +20,46 @@
  * THE SOFTWARE.
  */
 
-//-----------------------------------------------------------------------------
+//==============================================================================
 // Qt includes
-//-----------------------------------------------------------------------------
+//==============================================================================
 
 #include <QtQml>
 #include <QScreen>
+#include <QPalette>
 #include <QApplication>
+#include <QStyleFactory>
 #include <QQmlApplicationEngine>
 
-//-----------------------------------------------------------------------------
+//==============================================================================
 // LibDS and joystick libraries
-//-----------------------------------------------------------------------------
+//==============================================================================
 
 #include <LibDS.h>
 #include <QJoysticks.h>
 
-//-----------------------------------------------------------------------------
+//==============================================================================
 // Application includes
-//-----------------------------------------------------------------------------
+//==============================================================================
 
 #include "beeper.h"
 #include "updater.h"
 #include "utilities.h"
 #include "dashboards.h"
 
-//-----------------------------------------------------------------------------
-// Avoid issues with SDL
-//-----------------------------------------------------------------------------
+//==============================================================================
+// Avoid issues with SDL (especially with MS Windows & MSVC compilers)
+//==============================================================================
 
-#if defined (QT_NEEDS_QMAIN)
-#define QDS_MAIN qMain
-#else
-#define QDS_MAIN main
+#ifdef main
+#undef main
 #endif
 
-//-----------------------------------------------------------------------------
+//==============================================================================
 // Main entry point of the application
-//-----------------------------------------------------------------------------
+//==============================================================================
 
-int QDS_MAIN (int argc, char* argv[]) {
+int main (int argc, char* argv[]) {
     /* Avoid UI scaling issues with Qt 5.6 */
 #if QT_VERSION >= QT_VERSION_CHECK (5, 6, 0)
 #if defined Q_OS_MAC
@@ -75,6 +75,25 @@ int QDS_MAIN (int argc, char* argv[]) {
     app.setApplicationDisplayName ("QDriverStation");
     app.setOrganizationName ("QDriverStation Developers");
     app.setOrganizationDomain ("http://qdriverstation.sf.net");
+
+    /* Configure the dark style */
+    QPalette palette;
+    app.setStyle (QStyleFactory::create ("Fusion"));
+    palette.setColor (QPalette::Window, QColor(53,53,53));
+    palette.setColor (QPalette::WindowText, Qt::white);
+    palette.setColor (QPalette::Base, QColor(15,15,15));
+    palette.setColor (QPalette::AlternateBase, QColor(53,53,53));
+    palette.setColor (QPalette::ToolTipBase, Qt::white);
+    palette.setColor (QPalette::ToolTipText, Qt::white);
+    palette.setColor (QPalette::Text, Qt::white);
+    palette.setColor (QPalette::Button, QColor(53,53,53));
+    palette.setColor (QPalette::ButtonText, Qt::white);
+    palette.setColor (QPalette::BrightText, Qt::red);
+    palette.setColor (QPalette::Highlight, QColor(142,45,197).lighter());
+    palette.setColor (QPalette::HighlightedText, Qt::black);
+    palette.setColor (QPalette::Disabled, QPalette::Text, Qt::darkGray);
+    palette.setColor (QPalette::Disabled, QPalette::ButtonText, Qt::darkGray);
+    app.setPalette (palette);
 
     /* Calculate the scale factor of the screen */
     qreal scaleRatio = (app.primaryScreen()->physicalDotsPerInch() / 100) * 0.9;
