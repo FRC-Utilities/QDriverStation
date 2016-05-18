@@ -61,7 +61,7 @@ RowLayout {
         Component.onCompleted: showMessages()
 
         Messages {
-            opacity: 0
+            opacity: 1
             id: messages
             visible: opacity > 0
             anchors.fill: parent

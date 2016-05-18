@@ -120,7 +120,7 @@ RowLayout {
         Component.onCompleted: showOperator()
 
         Operator {
-            opacity: 0
+            opacity: 1
             id: operator
             visible: opacity > 0
             anchors.fill: parent
