@@ -1,3 +1,2 @@
 doc/* linguist-documentation
-lib/SDL/* linguist-vendored
-lib/LibDS/lib/* linguist-vendored
+lib/QJoysticks/lib/SDL/* linguist-vendored
