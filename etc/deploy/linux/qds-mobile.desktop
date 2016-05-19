@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=QDriverStation Mobile
-Comment=Open source alternative to the FRC DriverStation
-Exec=qds-mobile
-Terminal=false
-Type=Application
-StartupNotify=true
-Categories=Development;Education;Qt;Robotics;Utility;
-Icon=qds-mobile
