@@ -35,10 +35,13 @@ Item {
     // Shows the control and enables the 'watchdog' timer
     //
     function showControl() {
-        if (scroll.height < container.height) {
+        if (scroll.height < container.height)
             opacity = 1
-            timer.start()
-        }
+
+        else
+            opacity = 0
+
+        timer.start()
     }
 
     //

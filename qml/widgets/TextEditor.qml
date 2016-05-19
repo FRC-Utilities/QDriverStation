@@ -75,6 +75,7 @@ Item {
         interactive: true
         contentWidth: parent.width
         contentHeight: edit.contentHeight
+        flickableDirection: Flickable.VerticalFlick
 
         anchors {
             fill: parent
