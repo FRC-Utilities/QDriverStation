@@ -28,13 +28,10 @@ using namespace DS_Core;
 // NetConsole warnings/information texts
 //==================================================================================================
 
-const QString INITIALIZED    = "<font color=#888>** <font color=#AAA>%1</font> Initialized</font>";
-const QString SCAN_TIME_EST  = "<font color=#888>"
-                               "** It may take up to %1 seconds to detect the robot</font>";
-const QString IP_INFORMATION = "<font color=#888>"
-                               "** %1 robot IPs generated from %2 interfaces</font>";
-const QString PSC_UPDATED    = "<font color=#888>** "
-                               "<font color=#AAA>Parallel Socket Count</font> set to %1</font>";
+const QString INITIALIZED = "<font color=#888>** <font color=#AAA>%1</font> Initialized</font>";
+const QString PSC_UPDATED = "<font color=#888>** PSC: Using %1 parallel socket pairs</font>";
+const QString PSC_GEN_IPS = "<font color=#888>** PSC: %1 robot IPs generated from %2 interfaces</font>";
+const QString PSC_SCNTIME = "<font color=#888>** PSC: It may take up to %1 seconds to detect the robot</font>";
 
 //==================================================================================================
 // AbstractProtocol::AbstractProtocol
@@ -150,7 +147,8 @@ void AbstractProtocol::calculateScanTime() {
     /* Show the messages */
     if (isOperating()) {
         DS::sendMessage (PSC_UPDATED.arg (m_sockets.scannerCount()));
-        DS::sendMessage (SCAN_TIME_EST.arg (time));
+        DS::sendMessage (PSC_GEN_IPS.arg (m_robotIPs.count()).arg (m_interfaces));
+        DS::sendMessage (PSC_SCNTIME.arg (time));
     }
 }
 
@@ -238,7 +236,6 @@ void AbstractProtocol::initialize() {
 
     /* Display the protocol initialzed message */
     DS::sendMessage (INITIALIZED.arg (name()));
-    DS::sendMessage (IP_INFORMATION.arg (m_robotIPs.count()).arg (m_interfaces));
 
     /* Estimate time to connect to robot */
     calculateScanTime();
@@ -300,14 +297,14 @@ void AbstractProtocol::generateIpLists() {
             foreach (const QNetworkAddressEntry& address, interface.addressEntries()) {
                 QStringList numbers = address.ip().toString().split (".");
                 bool valid = (address.ip() != QHostAddress ("127.0.0.1")) &&
-                             (address.ip().protocol() == QAbstractSocket::IPv4Protocol);
+                        (address.ip().protocol() == QAbstractSocket::IPv4Protocol);
 
                 /* Ensure that the current IP is IPv4 and is valid */
                 if (numbers.count() == 4 && valid) {
                     QString base = QString ("%1.%2.%3.")
-                                   .arg (numbers.at (0))
-                                   .arg (numbers.at (1))
-                                   .arg (numbers.at (2));
+                            .arg (numbers.at (0))
+                            .arg (numbers.at (1))
+                            .arg (numbers.at (2));
 
                     /* Add all other IPs in the selected network */
                     for (int i = 1; i < 255; ++i)

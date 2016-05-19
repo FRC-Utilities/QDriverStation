@@ -248,7 +248,7 @@ Window {
                         Checkbox {
                             id: pcsCheckbox
                             checked: pcs.value > 0
-                            text: qsTr ("Limit the PSC* to:")
+                            text: qsTr ("Set the PSC* to:")
                         }
 
                         Spinbox {

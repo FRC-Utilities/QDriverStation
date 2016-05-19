@@ -38,7 +38,7 @@ var Colors = {
     'TextAreaForeground'        : "#000000",
     'IndicatorGood'             : "#64FF00",
     'IndicatorError'            : "#FF1400",
-    'IndicatorWarning'          : "#FF751A",
+    'IndicatorWarning'          : "#FFAA22",
     'HighlightColor'            : "#52D000",
     'IconColor'                 : "#969696",
     'PanelBackground'           : "#464646",

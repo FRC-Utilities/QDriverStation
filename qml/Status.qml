@@ -113,23 +113,7 @@ Item {
     //
     Connections {
         target: QJoysticks
-        onCountChanged: {
-            /* There is at least one enabled joystick */
-            if (QJoysticks.nonBlacklistedCount() > 0) {
-                joysticksLed.checked = true
-                joysticksLed.poweredColor = Globals.Colors.IndicatorGood
-            }
-
-            /* Joysticks are attached, but they have been disabled by the user */
-            else if (QJoysticks.count() > 0) {
-                joysticksLed.checked = true
-                joysticksLed.poweredColor = Globals.Colors.IndicatorWarning
-            }
-
-            /* No joysticks attached */
-            else
-                joysticksLed.checked = false
-        }
+        onCountChanged: joysticksLed.checked = QJoysticks.nonBlacklistedCount() > 0
     }
 
     //
