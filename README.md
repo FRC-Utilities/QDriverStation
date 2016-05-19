@@ -32,6 +32,10 @@ For more information regarding Linux installers, check [this issue](https://gith
 
 Check this [tutorial by Dakota Keeler](https://www.youtube.com/watch?v=G9DywTB9_cY) to build and install the QDriverStation on your Linux box.
 
+### Feature Requests
+
+[![Feature Requests](http://feathub.com/WinT-3794/QDriverStation?format=svg)](http://feathub.com/WinT-3794/QDriverStation)
+
 ### Install notes
 
 Once you finish installing the software, you can launch it and begin driving your robot. Just be sure to input your team number and to verify that the joysticks are working correctly. 
