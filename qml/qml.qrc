@@ -28,5 +28,6 @@
         <file>RightTab.qml</file>
         <file>JoystickItem.qml</file>
         <file>widgets/LineEdit.qml</file>
+        <file>widgets/Scrollbar.qml</file>
     </qresource>
 </RCC>

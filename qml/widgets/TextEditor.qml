@@ -35,6 +35,12 @@ Item {
     property alias text: edit.text
 
     //
+    // If set to true, the text will automatically scroll down when
+    // its changed (like a terminal emulator does)
+    //
+    property bool autoscroll: true
+
+    //
     // Define the colors of the control
     //
     property string foregroundColor: height > Globals.scale (140) ? Globals.Colors.WidgetForeground :
@@ -60,17 +66,84 @@ Item {
     }
 
     //
-    // The actual text editor
+    // A flickable item allows us to implement scrolling for
+    // the text editor.
     //
-    TextEdit {
-        id: edit
+    Flickable {
+        id: flick
+        clip: true
+        interactive: true
+        contentWidth: parent.width
+        contentHeight: edit.contentHeight
+
+        anchors {
+            fill: parent
+            margins: Globals.spacing
+        }
+
+        //
+        // This code was written by a Russian guy, original post:
+        // Link: http://www.cyberforum.ru/qt/thread578187.html
+        //
+        function ensureVisible (r) {
+            if (autoscroll) {
+                if (contentX >= r.x)
+                    contentX = r.x;
+                else if (contentX + width <= r.x + r.width)
+                    contentX = r.x + r.width - width;
+                if (contentY >= r.y)
+                    contentY = r.y;
+                else if (contentY + height <= r.y + r.height)
+                    contentY = r.y + r.height - height;
+            }
+        }
+
+        //
+        // The actual text editor
+        //
+        TextEdit {
+            id: edit
+            selectByMouse: true
+            color: foregroundColor
+            readOnly: !parent.enabled
+            font.family: Globals.uiFont
+            font.pixelSize: Globals.scale (12)
+            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+            selectionColor: Globals.Colors.HighlightColor
+            onCursorRectangleChanged: flick.ensureVisible (cursorRectangle)
+
+            anchors {
+                left: parent.left
+                right: parent.right
+            }
+        }
+    }
+
+    //
+    // The scrollbar
+    //
+    Scrollbar {
+        id: scroll
+        mouseArea: mouse
+        scrollArea: flick
+        height: parent.height
+        width: Globals.scale (8)
+
+        anchors {
+            top: parent.top
+            right: parent.right
+            bottom: parent.bottom
+            margins: Globals.scale (6)
+        }
+    }
+
+    //
+    // Used to show the scrollbar when mouse is over control
+    //
+    MouseArea {
+        id: mouse
+        hoverEnabled: true
         anchors.fill: parent
-        color: foregroundColor
-        readOnly: !parent.enabled
-        font.family: Globals.uiFont
-        font.pixelSize: Globals.scale (12)
-        anchors.margins: Globals.scale (5)
-        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-        selectionColor: Globals.Colors.HighlightColor
+        onContainsMouseChanged: scroll.showControl()
     }
 }
