@@ -10,6 +10,10 @@ Our application is free to use, share and modify. You are welcome to test it and
 
 The actual code that moves and manages a FRC robot is found in a [separate repository](https://github.com/WinT-3794/LibDS), which you can use in your own Qt projects or change it to support older (and future) communication protocols.
 
+### Feature Requests
+
+[![Feature Requests](http://feathub.com/WinT-3794/QDriverStation?format=svg)](http://feathub.com/WinT-3794/QDriverStation)
+
 ### Download
 
 You can download the QDriverStation from GitHub or SourceForge. If you got the QDriverStation from another website, it was probably modified by another person and may contain adware or some nasty junk in it. Be advised that SourceForge is known for serving misleading advertisements.
@@ -31,10 +35,6 @@ While for the moment we don't build Linux packages, there are some packages of t
 For more information regarding Linux installers, check [this issue](https://github.com/WinT-3794/QDriverStation/issues/9).
 
 Check this [tutorial by Dakota Keeler](https://www.youtube.com/watch?v=G9DywTB9_cY) to build and install the QDriverStation on your Linux box.
-
-### Feature Requests
-
-[![Feature Requests](http://feathub.com/WinT-3794/QDriverStation?format=svg)](http://feathub.com/WinT-3794/QDriverStation)
 
 ### Install notes
 
