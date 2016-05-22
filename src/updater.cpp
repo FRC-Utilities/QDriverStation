@@ -42,6 +42,7 @@
 Updater::Updater() {
     m_version = "";
     m_platform = "";
+    m_mode = kSilent;
     m_downloadLink = "";
     m_updateAvailable = false;
 
@@ -57,8 +58,8 @@ Updater::Updater() {
     m_platform = "ios";
 #endif
 
-    connect (&m_accessManager, &QNetworkAccessManager::finished,
-             this,             &Updater::onServerReply);
+    connect (&m_accessManager, SIGNAL (finished      (QNetworkReply*)),
+             this,               SLOT (onServerReply (QNetworkReply*)));
 }
 
 //==============================================================================
@@ -66,17 +67,16 @@ Updater::Updater() {
 //==============================================================================
 
 void Updater::showUpdateMessages() {
-    if (m_updateAvailable) {
+    qDebug() << m_mode;
+
+    if (m_updateAvailable && m_mode != kSilent) {
         QMessageBox box;
         box.setTextFormat (Qt::RichText);
         box.setIcon (QMessageBox::Information);
         box.setStandardButtons (QMessageBox::Ok);
         box.setWindowTitle (tr ("Update Available"));
 
-        box.setText ("<h3>"
-                     + tr ("New update available!")
-                     + "</h3>");
-
+        box.setText ("<h3>" + tr ("New update available!") + "</h3>");
         box.setInformativeText (tr ("A new version of %1 has been released! "
                                     "Version %2 is now available to download."
                                     "<br/><br/>"
@@ -90,6 +90,29 @@ void Updater::showUpdateMessages() {
 
         box.exec();
     }
+
+    else if (m_mode == kNotifyOnCheckingFinished) {
+        QMessageBox box;
+        box.setTextFormat (Qt::RichText);
+        box.setIcon (QMessageBox::Information);
+        box.setStandardButtons (QMessageBox::Ok);
+        box.setWindowTitle (tr ("No Updates Available"));
+
+        box.setText ("<h3>" + tr ("No updates available") + "</h3>");
+        box.setInformativeText (tr ("Congratulations! You are running the "
+                                    "latest version of %1!")
+                                .arg (qApp->applicationName()));
+
+        box.exec();
+    }
+}
+
+//==============================================================================
+// Updater::setReportMode
+//==============================================================================
+
+void Updater::setReportMode (int mode) {
+    m_mode = (ReportMode) mode;
 }
 
 //==============================================================================

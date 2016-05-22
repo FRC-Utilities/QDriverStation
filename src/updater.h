@@ -26,12 +26,33 @@
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 
+///
+/// This class is in charge of checking and reporting available applciation updates.
+/// In order to do this, we need to input an URL point to a specialized XML containing
+/// update information, such as:
+///
+///   - Latest version for the current operating system
+///   - Where do download an installer for the current operating system
+///
+/// The system is simple; We download the XML file, compare the local and online versions
+/// using a simple (for-loop) algorithm and notify the user if the online version is
+/// greater than the installed version. In that case, the message box shown to the user
+/// will contain a clickable link to download the latest version.
+///
 class Updater : public QObject {
     Q_OBJECT
+    Q_ENUMS (ReportMode)
 
   public:
     explicit Updater();
 
+    enum ReportMode {
+        kSilent = 0,
+        kNotifyOnUpdate = 1,
+        kNotifyOnCheckingFinished = 2,
+    };
+
+    Q_INVOKABLE void setReportMode (int mode);
     Q_INVOKABLE void checkForUpdates (QString url);
 
   private slots:
@@ -47,6 +68,7 @@ class Updater : public QObject {
   private:
     bool m_updateAvailable;
 
+    ReportMode m_mode;
     QString m_version;
     QString m_platform;
     QString m_downloadLink;

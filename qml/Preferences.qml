@@ -45,7 +45,7 @@ RowLayout {
     Component.onCompleted: {
         DriverStation.setTeamNumber (teamNumber.value)
         DriverStation.setProtocol (protocol.currentIndex)
-        cDashboards.openDashboard (dashboard.currentIndex)
+        cDashboard.openDashboard (dashboard.currentIndex)
     }
 
     ColumnLayout {
@@ -74,8 +74,8 @@ RowLayout {
         Combobox {
             id: dashboard
             Layout.fillWidth: true
-            model: cDashboards.dashboardList()
-            onCurrentIndexChanged: cDashboards.openDashboard (dashboard.currentIndex)
+            model: cDashboard.dashboardList()
+            onCurrentIndexChanged: cDashboard.openDashboard (dashboard.currentIndex)
         }
 
         Item {

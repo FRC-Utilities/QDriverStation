@@ -43,7 +43,7 @@ ColumnLayout {
     //
     Label {
         size: large
-        text: appName
+        text: appDspName
         font.bold: true
         anchors.horizontalCenter: parent.horizontalCenter
     }

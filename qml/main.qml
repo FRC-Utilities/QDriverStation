@@ -95,7 +95,7 @@ Window {
     // Misc. properties
     //
     color: Globals.Colors.WindowBackground
-    title: appName + " - " + qsTr ("Version") + " " + appVersion
+    title: appDspName + " - " + qsTr ("Version") + " " + appVersion
 
     //
     // Show the window and initialize the DS engine when the application starts

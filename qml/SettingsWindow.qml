@@ -66,7 +66,7 @@ Window {
         cBeeper.setEnabled (enableSoundEffects.checked)
 
         if (checkForUpdates.checked)
-            cUpdater.checkForUpdates (Globals.updatesURL)
+            cUpdater.checkForUpdates (cUpdaterUrl)
     }
 
     //

@@ -73,11 +73,6 @@ var uiFont = "Ubuntu"
 var monoFont = "Ubuntu Mono"
 
 //
-// The QDriverStation downloads this file to get update information
-//
-var updatesURL = "https://raw.githubusercontent.com/WinT-3794/QDriverStation/updater/current"
-
-//
 // Returns the adjusted input for the screen size and density
 //
 function scale (input) {

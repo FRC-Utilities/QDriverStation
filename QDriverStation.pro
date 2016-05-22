@@ -101,7 +101,8 @@ HEADERS += \
   $$PWD/src/utilities.h \
   $$PWD/src/beeper.h \
   $$PWD/src/updater.h \
-  $$PWD/src/dashboards.h
+  $$PWD/src/dashboards.h \
+  $$PWD/src/versions.h
     
 RESOURCES += \
   $$PWD/qml/qml.qrc \
