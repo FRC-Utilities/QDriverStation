@@ -27,3 +27,5 @@ Makefile
 
 # Idea projects
 .idea
+
+QDriverStation.pro.user

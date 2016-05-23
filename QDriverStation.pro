@@ -85,6 +85,7 @@ win32-msvc* {
 
 include ($$PWD/lib/LibDS/LibDS.pri)
 include ($$PWD/lib/QJoysticks/QJoysticks.pri)
+include ($$PWD/lib/QSimpleUpdater/QSimpleUpdater.pri)
 
 #-------------------------------------------------------------------------------
 # Import source code and QML
@@ -94,13 +95,11 @@ SOURCES += \
   $$PWD/src/main.cpp \
   $$PWD/src/utilities.cpp \
   $$PWD/src/beeper.cpp \
-  $$PWD/src/updater.cpp \
   $$PWD/src/dashboards.cpp
   
 HEADERS += \
   $$PWD/src/utilities.h \
   $$PWD/src/beeper.h \
-  $$PWD/src/updater.h \
   $$PWD/src/dashboards.h \
   $$PWD/src/versions.h
     

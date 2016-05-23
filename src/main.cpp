@@ -35,13 +35,13 @@
 
 #include <LibDS.h>
 #include <QJoysticks.h>
+#include <QSimpleUpdater.h>
 
 //==============================================================================
 // Application includes
 //==============================================================================
 
 #include "beeper.h"
-#include "updater.h"
 #include "versions.h"
 #include "utilities.h"
 #include "dashboards.h"
@@ -89,20 +89,17 @@ int main (int argc, char* argv[]) {
 
     /* Initialize application modules */
     Beeper beeper;
-    Updater updater;
     Utilities utilities;
     Dashboards dashboards;
     QJoysticks* qjoysticks = QJoysticks::getInstance();
+    QSimpleUpdater* updater = QSimpleUpdater::getInstance();
     DriverStation* driverstation = DriverStation::getInstance();
-
-    /* Configure modules */
-    updater.setReportMode (Updater::kNotifyOnUpdate);
 
     /* Load the QML interface */
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty ("cRatio",        ratio);
     engine.rootContext()->setContextProperty ("cBeeper",       &beeper);
-    engine.rootContext()->setContextProperty ("cUpdater",      &updater);
+    engine.rootContext()->setContextProperty ("cUpdater",      updater);
     engine.rootContext()->setContextProperty ("QJoysticks",    qjoysticks);
     engine.rootContext()->setContextProperty ("cUtilities",    &utilities);
     engine.rootContext()->setContextProperty ("cDashboard",    &dashboards);

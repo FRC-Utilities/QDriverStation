@@ -30,8 +30,10 @@ using namespace DS_Core;
 
 const QString INITIALIZED = "<font color=#888>** <font color=#AAA>%1</font> Initialized</font>";
 const QString PSC_UPDATED = "<font color=#888>** PSC: Using %1 parallel socket pairs</font>";
-const QString PSC_GEN_IPS = "<font color=#888>** PSC: %1 robot IPs generated from %2 interfaces</font>";
-const QString PSC_SCNTIME = "<font color=#888>** PSC: It may take up to %1 seconds to detect the robot</font>";
+const QString PSC_GEN_IPS =
+    "<font color=#888>** PSC: %1 robot IPs generated from %2 interfaces</font>";
+const QString PSC_SCNTIME =
+    "<font color=#888>** PSC: It may take up to %1 seconds to detect the robot</font>";
 
 //==================================================================================================
 // AbstractProtocol::AbstractProtocol
@@ -297,14 +299,14 @@ void AbstractProtocol::generateIpLists() {
             foreach (const QNetworkAddressEntry& address, interface.addressEntries()) {
                 QStringList numbers = address.ip().toString().split (".");
                 bool valid = (address.ip() != QHostAddress ("127.0.0.1")) &&
-                        (address.ip().protocol() == QAbstractSocket::IPv4Protocol);
+                             (address.ip().protocol() == QAbstractSocket::IPv4Protocol);
 
                 /* Ensure that the current IP is IPv4 and is valid */
                 if (numbers.count() == 4 && valid) {
                     QString base = QString ("%1.%2.%3.")
-                            .arg (numbers.at (0))
-                            .arg (numbers.at (1))
-                            .arg (numbers.at (2));
+                                   .arg (numbers.at (0))
+                                   .arg (numbers.at (1))
+                                   .arg (numbers.at (2));
 
                     /* Add all other IPs in the selected network */
                     for (int i = 1; i < 255; ++i)
