@@ -29,50 +29,50 @@ using namespace DS_Protocols;
 //==================================================================================================
 
 /* Robot mode flags (applies to DS, roboRIO and FMS) */
-const uint OP_MODE_TEST         = 0x01; // 0000 0001
-const uint OP_MODE_AUTONOMOUS   = 0x02; // 0000 0010
-const uint OP_MODE_TELEOPERATED = 0x00; // 0000 0000
-const uint OP_MODE_ESTOPPED     = 0x80; // 1000 0000
-const uint OP_MODE_ENABLED      = 0x04; // 0000 0100
+const uint OP_MODE_TEST         = 0x01; 
+const uint OP_MODE_AUTONOMOUS   = 0x02; 
+const uint OP_MODE_TELEOPERATED = 0x00; 
+const uint OP_MODE_ESTOPPED     = 0x80; 
+const uint OP_MODE_ENABLED      = 0x04; 
 
 /* Status & request flags */
-const uint DS_FMS_ATTACHED      = 0x08; // 0000 1000
-const uint DS_REQUEST_NORMAL    = 0x80; // 1000 0000
-const uint DS_REQUEST_UNKNOWN   = 0x00; // 0000 0000
-const uint DS_REQUEST_REBOOT    = 0x08; // 0000 1000
-const uint DS_REQUEST_KILL_CODE = 0x04; // 0000 0100
+const uint DS_FMS_ATTACHED      = 0x08; 
+const uint DS_REQUEST_NORMAL    = 0x80; 
+const uint DS_REQUEST_UNKNOWN   = 0x00;
+const uint DS_REQUEST_REBOOT    = 0x08;
+const uint DS_REQUEST_KILL_CODE = 0x04;
 
 /* RIO-to-DS control flags */
-const uint R_CTRL_HAS_CODE      = 0x20; // 0010 0000
-const uint R_CTRL_BROWNOUT      = 0x10; // 0001 0000
+const uint R_CTRL_HAS_CODE      = 0x20;
+const uint R_CTRL_BROWNOUT      = 0x10;
 
 /* DS-to-FMS flags */
-const uint DS_FMS_COMM_VERSION  = 0x00; // 0000 0000
-const uint DS_FMS_ROBOT_COMMS   = 0x20; // 0010 0000
-const uint DS_FMS_RADIO_PING    = 0x10; // 0001 0000
-const uint DS_FMS_ROBOT_PING    = 0x08; // 0000 1000
+const uint DS_FMS_COMM_VERSION  = 0x00;
+const uint DS_FMS_ROBOT_COMMS   = 0x20;
+const uint DS_FMS_RADIO_PING    = 0x10;
+const uint DS_FMS_ROBOT_PING    = 0x08;
 
 /* DS-to-RIO data tags */
-const uint DS_TAG_DATE          = 0x0f; // 0000 1111
-const uint DS_TAG_GENERAL       = 0x01; // 0000 0001
-const uint DS_TAG_JOYSTICK      = 0x0c; // 0000 1100
-const uint DS_TAG_TIMEZONE      = 0x10; // 0001 0000
+const uint DS_TAG_DATE          = 0x0f;
+const uint DS_TAG_GENERAL       = 0x01;
+const uint DS_TAG_JOYSTICK      = 0x0c;
+const uint DS_TAG_TIMEZONE      = 0x10;
 
 /* Alliances & positions */
-const uint STATION_RED_1        = 0x00; // 0000 0000
-const uint STATION_RED_2        = 0x01; // 0000 0001
-const uint STATION_RED_3        = 0x02; // 0000 0010
-const uint STATION_BLUE_1       = 0x03; // 0000 0011
-const uint STATION_BLUE_2       = 0x04; // 0000 0100
-const uint STATION_BLUE_3       = 0x05; // 0000 0101
+const uint STATION_RED_1        = 0x00;
+const uint STATION_RED_2        = 0x01;
+const uint STATION_RED_3        = 0x02;
+const uint STATION_BLUE_1       = 0x03;
+const uint STATION_BLUE_2       = 0x04;
+const uint STATION_BLUE_3       = 0x05;
 
 /* RIO-to-DS data tags */
-const uint R_TAG_JOYSTICK_OUT   = 0x01; // 0000 0001
-const uint R_TAG_DISK_INFO      = 0x04; // 0000 0100
-const uint R_TAG_CPU_INFO       = 0x05; // 0000 0101
-const uint R_TAG_RAM_INFO       = 0x06; // 0000 0110
-const uint R_TAG_CAN_METRICS    = 0x0e; // 0000 1110
-const uint R_REQUEST_TIME       = 0x01; // 0000 0001
+const uint R_TAG_JOYSTICK_OUT   = 0x01;
+const uint R_TAG_DISK_INFO      = 0x04;
+const uint R_TAG_CPU_INFO       = 0x05;
+const uint R_TAG_RAM_INFO       = 0x06;
+const uint R_TAG_CAN_METRICS    = 0x0e;
+const uint R_REQUEST_TIME       = 0x01;
 
 //==================================================================================================
 // FRC_Protocol2015::reboot
