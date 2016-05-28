@@ -186,4 +186,11 @@ Window {
     VirtualJoystickWindow {
         id: virtualJoystickWindow
     }
+
+    //
+    // Asks for team number on first launch
+    //
+    GetTeamNumber {
+        id: getTeamNumber
+    }
 }
