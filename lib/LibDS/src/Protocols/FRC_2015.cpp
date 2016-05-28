@@ -6,6 +6,7 @@
  * of this project.
  */
 
+<<<<<<< HEAD
 #include "FRC_2015.h"
 
 const uint OP_MODE_TEST         = 0x01;
@@ -20,20 +21,60 @@ const uint DS_REQUEST_REBOOT    = 0x08;
 const uint DS_REQUEST_KILL_CODE = 0x04;
 const uint R_CTRL_HAS_CODE      = 0x20;
 const uint R_CTRL_BROWNOUT      = 0x10;
+=======
+#include "LibDS/Protocols/FRC_2015.h"
+
+using namespace DS_Protocols;
+
+//==================================================================================================
+// Protocol bytes
+//==================================================================================================
+
+/* Robot mode flags (applies to DS, roboRIO and FMS) */
+const uint OP_MODE_TEST         = 0x01; 
+const uint OP_MODE_AUTONOMOUS   = 0x02; 
+const uint OP_MODE_TELEOPERATED = 0x00; 
+const uint OP_MODE_ESTOPPED     = 0x80; 
+const uint OP_MODE_ENABLED      = 0x04; 
+
+/* Status & request flags */
+const uint DS_FMS_ATTACHED      = 0x08; 
+const uint DS_REQUEST_NORMAL    = 0x80; 
+const uint DS_REQUEST_UNKNOWN   = 0x00;
+const uint DS_REQUEST_REBOOT    = 0x08;
+const uint DS_REQUEST_KILL_CODE = 0x04;
+
+/* RIO-to-DS control flags */
+const uint R_CTRL_HAS_CODE      = 0x20;
+const uint R_CTRL_BROWNOUT      = 0x10;
+
+/* DS-to-FMS flags */
+>>>>>>> origin/master
 const uint DS_FMS_COMM_VERSION  = 0x00;
 const uint DS_FMS_ROBOT_COMMS   = 0x20;
 const uint DS_FMS_RADIO_PING    = 0x10;
 const uint DS_FMS_ROBOT_PING    = 0x08;
+<<<<<<< HEAD
+=======
+
+/* DS-to-RIO data tags */
+>>>>>>> origin/master
 const uint DS_TAG_DATE          = 0x0f;
 const uint DS_TAG_GENERAL       = 0x01;
 const uint DS_TAG_JOYSTICK      = 0x0c;
 const uint DS_TAG_TIMEZONE      = 0x10;
+<<<<<<< HEAD
+=======
+
+/* Alliances & positions */
+>>>>>>> origin/master
 const uint STATION_RED_1        = 0x00;
 const uint STATION_RED_2        = 0x01;
 const uint STATION_RED_3        = 0x02;
 const uint STATION_BLUE_1       = 0x03;
 const uint STATION_BLUE_2       = 0x04;
 const uint STATION_BLUE_3       = 0x05;
+<<<<<<< HEAD
 const uint R_REQUEST_TIME       = 0x01;
 
 /**
@@ -44,6 +85,24 @@ FRC_2015::FRC_2015()
     m_restartCode = false;
     m_rebootRobot = false;
     m_sendDateTime = false;
+=======
+
+/* RIO-to-DS data tags */
+const uint R_TAG_JOYSTICK_OUT   = 0x01;
+const uint R_TAG_DISK_INFO      = 0x04;
+const uint R_TAG_CPU_INFO       = 0x05;
+const uint R_TAG_RAM_INFO       = 0x06;
+const uint R_TAG_CAN_METRICS    = 0x0e;
+const uint R_REQUEST_TIME       = 0x01;
+
+//==================================================================================================
+// FRC_Protocol2015::reboot
+//==================================================================================================
+
+void FRC_Protocol2015::reboot() {
+    m_rebootRio = true;
+    QTimer::singleShot (200, Qt::PreciseTimer, this, SLOT (resetProtocol()));
+>>>>>>> origin/master
 }
 
 /**
