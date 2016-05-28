@@ -31,10 +31,11 @@ import "globals.js" as Globals
 Window {
     id: window
     visible: false
-    flags: Qt.Dialog
     title: qsTr ("Settings")
     minimumWidth: Globals.scale (420)
+    maximumWidth: Globals.scale (420)
     minimumHeight: Globals.scale (460)
+    maximumHeight: Globals.scale (460)
     color: Globals.Colors.WindowBackground
 
     //

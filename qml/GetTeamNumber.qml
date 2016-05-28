@@ -36,7 +36,7 @@ Window {
     //
     // Window flags
     //
-    flags: Qt.Tool | Qt.WindowStaysOnTopHint
+    flags: Qt.WindowStaysOnTopHint
 
     //
     // Set window geometry
