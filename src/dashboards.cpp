@@ -30,8 +30,8 @@
 #define IS_64_BIT true
 #if _WIN32
 #undef  IS_64_BIT
-#define IS_64_BIT GetProcAddress (GetModuleHandle (TEXT ("kernel32")),
-"IsWow64Process")
+#define IS_64_BIT GetProcAddress (GetModuleHandle (TEXT ("kernel32")), \
+                                                         "IsWow64Process")
 #endif
 #define PF IS_64_BIT ? "C:/Program Files (x86)" : "C:/Program Files"
 #endif

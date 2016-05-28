@@ -41,7 +41,7 @@ Window {
     //
     function apply() {
         /* Set the placeholder */
-        customAddress.placeholder = DriverStation.robotAddress()
+        customAddress.placeholder = DriverStation.defaultRobotAddress()
 
         /* Set the PSC limit */
         if (pcsCheckbox.checked && pcs.value > 0)
@@ -74,6 +74,7 @@ Window {
     //
     Connections {
         target: DriverStation
+        onInitialized: apply()
         onProtocolChanged: apply()
         onTeamChanged: customAddress.placeholder = DriverStation.defaultRobotAddress()
     }

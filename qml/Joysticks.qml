@@ -263,7 +263,7 @@ Item {
                         text: qsTr ("Axis") + " " + index
                         height: getWidgetHeight (axes.model)
                         barColor: QJoysticks.isBlacklisted (currentJoystick) ?
-                                      Globals.Colors.Background :
+                                      Globals.Colors.IndicatorError :
                                       Globals.Colors.HighlightColor
 
                         Component.onCompleted: value = maximumValue / 2

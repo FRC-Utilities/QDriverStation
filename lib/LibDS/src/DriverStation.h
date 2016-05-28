@@ -109,6 +109,7 @@ public slots:
     void restartRobotCode();
     void setTeam (const int& team);
     void removeJoystick (const int& id);
+    void setEnabled (const bool& enabled);
     void setProtocol (Protocol* protocol);
     void setTeamStation (const int& station);
     void setProtocolType (const int& protocol);
