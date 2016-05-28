@@ -470,6 +470,7 @@ void Sockets::clearSocketLists()
 void Sockets::generateSocketPairs()
 {
     clearSocketLists();
+
     for (int i = 0; i < socketCount(); ++i) {
         ConfigurableSocket* sender = new ConfigurableSocket (robotSocketType());
         ConfigurableSocket* receiver = new ConfigurableSocket (robotSocketType());
@@ -504,18 +505,23 @@ void Sockets::generateSocketPairs()
  *         - ...
  *         - 168.192.1.254
  *     - The function will do this for each interface (ethernet, wifi, usb, etc)
- *
- * Every IP outputed by this function is validated, avoiding use of malformed
- * addresses.
  */
 void Sockets::generateLocalNetworkAddresses()
 {
+    if (robotSocketType() == DS::kSocketTypeTCP)
+        return;
+
     foreach (QNetworkInterface interface, QNetworkInterface::allInterfaces()) {
         bool isUp      = (interface.flags() & QNetworkInterface::IsUp);
         bool isRunning = (interface.flags() & QNetworkInterface::IsRunning);
 
         if (isUp && isRunning) {
             foreach (QNetworkAddressEntry address, interface.addressEntries()) {
+                if (address.ip().toString() == "127.0.0.1")
+                    return;
+                if (address.ip().isNull())
+                    return;
+
                 QStringList numbers = address.ip().toString().split (".");
 
                 if (numbers.count() == 4) {
