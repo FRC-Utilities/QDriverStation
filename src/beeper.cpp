@@ -20,23 +20,11 @@
  * THE SOFTWARE.
  */
 
-//==============================================================================
-// Application includes
-//==============================================================================
-
 #include "beeper.h"
-
-//==============================================================================
-// System includes
-//==============================================================================
 
 #include <cmath>
 #include <SDL.h>
 #include <SDL_audio.h>
-
-//==============================================================================
-// Global variables
-//==============================================================================
 
 const int AMPLITUDE = 28000;
 const int FREQUENCY = 44100;
@@ -45,11 +33,8 @@ bool ENABLED        = false;
 
 std::queue<BeepObject> BEEPS;
 
-//==============================================================================
-// audio_callback
-//==============================================================================
-
-void audio_callback (void* _beeper, Uint8* _stream, int _length) {
+void audio_callback (void* _beeper, Uint8* _stream, int _length)
+{
     int length = _length / 2;
     Sint16* stream = (Sint16*) _stream;
     Beeper* beeper = (Beeper*) _beeper;
@@ -57,11 +42,8 @@ void audio_callback (void* _beeper, Uint8* _stream, int _length) {
     beeper->generateSamples (stream, length);
 }
 
-//==============================================================================
-// Beeper::Beeper
-//==============================================================================
-
-Beeper::Beeper() {
+Beeper::Beeper()
+{
     SDL_AudioSpec desiredSpec;
     desiredSpec.freq = FREQUENCY;
     desiredSpec.format = AUDIO_S16SYS;
@@ -75,19 +57,13 @@ Beeper::Beeper() {
     SDL_PauseAudio (0);
 }
 
-//==============================================================================
-// Beeper::~Beeper
-//==============================================================================
-
-Beeper::~Beeper() {
+Beeper::~Beeper()
+{
     SDL_CloseAudio();
 }
 
-//==============================================================================
-// Beeper::generateSamples
-//==============================================================================
-
-void Beeper::generateSamples (qint16* stream, int length) {
+void Beeper::generateSamples (qint16* stream, int length)
+{
     int i = 0;
     while (i < length) {
 
@@ -115,19 +91,13 @@ void Beeper::generateSamples (qint16* stream, int length) {
     }
 }
 
-//==============================================================================
-// Beeper::setEnabled
-//==============================================================================
-
-void Beeper::setEnabled (bool enabled) {
+void Beeper::setEnabled (bool enabled)
+{
     ENABLED = enabled;
 }
 
-//==============================================================================
-// Beeper::beep
-//==============================================================================
-
-void Beeper::beep (float freq, int duration) {
+void Beeper::beep (float freq, int duration)
+{
     if (ENABLED) {
         BeepObject beep_object;
         beep_object.freq = freq;

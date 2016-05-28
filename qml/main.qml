@@ -104,8 +104,7 @@ Window {
         show()
         updateWindowMode()
 
-        if (!DriverStation.isInitialized())
-            DriverStation.init()
+        DriverStation.init()
     }
 
     Connections {

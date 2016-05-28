@@ -54,7 +54,7 @@ RowLayout {
     //
     Connections {
         target: DriverStation
-        onEnabledChanged: enable.checked = enabled
+        onEnabledChanged: enable.checked = DriverStation.isEnabled()
         onControlModeChanged: enable.checked = false
         onElapsedTimeChanged: elapsedTime.text = time
     }
@@ -124,7 +124,8 @@ RowLayout {
                     parent.uncheckEverything()
                     checked = true
 
-                    DriverStation.startTeleoperated (false)
+                    DriverStation.setEnabled (DriverStation.kRobotDisabled)
+                    DriverStation.setControlMode (DriverStation.kControlTeleoperated)
                 }
             }
 
@@ -142,7 +143,8 @@ RowLayout {
                     parent.uncheckEverything()
                     checked = true
 
-                    DriverStation.startAutonomous (false)
+                    DriverStation.setEnabled (DriverStation.kRobotDisabled)
+                    DriverStation.setControlMode (DriverStation.kControlAutonomous)
                 }
             }
 
@@ -177,7 +179,8 @@ RowLayout {
                     parent.uncheckEverything()
                     checked = true
 
-                    DriverStation.startTest (false)
+                    DriverStation.setEnabled (DriverStation.kRobotDisabled)
+                    DriverStation.setControlMode (DriverStation.kControlTest)
                 }
             }
         }
@@ -460,10 +463,10 @@ RowLayout {
             id: alliances
             Layout.fillWidth: true
             height: Globals.scale (24)
-            model: DriverStation.alliances()
             Layout.minimumWidth: grid.minWidth
             Layout.maximumWidth: grid.maxWidth
-            onCurrentIndexChanged: DriverStation.setAlliance (currentIndex)
+            model: DriverStation.teamStations()
+            onCurrentIndexChanged: DriverStation.setTeamStation (currentIndex)
         }
     }
 }

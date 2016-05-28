@@ -31,16 +31,15 @@ RowLayout {
 
     Connections {
         target: DriverStation
-        onFmsChanged: fms.checked = attached
-        onRioVersionChanged: rio.text = version
         onLibVersionChanged: lib.text = version
         onPcmVersionChanged: pcm.text = version
         onPdpVersionChanged: pdb.text = version
-        onRadioChanged: bridge.checked = available
-        onRamUsageChanged: ram.text = percent + "%"
-        onCpuUsageChanged: cpu.text = percent + "%"
-        onDiskUsageChanged: disk.text = percent + "%"
-        onCommunicationsChanged: robot.checked = DriverStation.isConnected()
+        onRamUsageChanged: ram.text = ((usage / total) * 100) + "%"
+        onCpuUsageChanged: cpu.text = ((usage / total) * 100) + "%"
+        onDiskUsageChanged: disk.text = ((usage / total) * 100) + "%"
+        onFmsCommStatusChanged: fms.checked = DriverStation.isConnectedToFMS()
+        onRadioCommStatusChanged: radio.checked = DriverStation.isConnectedToRadio()
+        onRobotCommStatusChanged: robot.checked = DriverStation.isConnectedToRobot()
     }
 
     //
@@ -61,7 +60,7 @@ RowLayout {
             spacing: Globals.scale (1)
 
             Checkbox {
-                id: bridge
+                id: radio
                 enabled: false
                 text: qsTr ("Bridge")
             }
@@ -184,7 +183,7 @@ RowLayout {
                 id: disk
                 text: Globals.invalidStr
             }
-        }  
+        }
     }
 
     Item {

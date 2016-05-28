@@ -157,7 +157,7 @@ typedef Uint16 SDL_AudioFormat;
  *  Stereo samples are stored in a LRLRLR ordering.
  */
 typedef void (SDLCALL* SDL_AudioCallback) (void* userdata, Uint8* stream,
-        int len);
+                                           int len);
 
 /**
  *  The calculated values in this structure are calculated by SDL_OpenAudio().
@@ -177,7 +177,7 @@ typedef struct SDL_AudioSpec {
 
 struct SDL_AudioCVT;
 typedef void (SDLCALL* SDL_AudioFilter) (struct SDL_AudioCVT* cvt,
-        SDL_AudioFormat format);
+                                         SDL_AudioFormat format);
 
 /**
  *  A structure to hold a set of audio conversion filters and buffers.
@@ -282,7 +282,7 @@ extern DECLSPEC const char* SDLCALL SDL_GetCurrentAudioDriver (void);
  *  any local mixing buffers after you open the audio device.
  */
 extern DECLSPEC int SDLCALL SDL_OpenAudio (SDL_AudioSpec* desired,
-        SDL_AudioSpec* obtained);
+                                           SDL_AudioSpec* obtained);
 
 /**
  *  SDL Audio Device IDs.
@@ -431,12 +431,12 @@ extern DECLSPEC void SDLCALL SDL_FreeWAV (Uint8* audio_buf);
  *  no conversion needed, or 1 if the audio filter is set up.
  */
 extern DECLSPEC int SDLCALL SDL_BuildAudioCVT (SDL_AudioCVT* cvt,
-        SDL_AudioFormat src_format,
-        Uint8 src_channels,
-        int src_rate,
-        SDL_AudioFormat dst_format,
-        Uint8 dst_channels,
-        int dst_rate);
+                                               SDL_AudioFormat src_format,
+                                               Uint8 src_channels,
+                                               int src_rate,
+                                               SDL_AudioFormat dst_format,
+                                               Uint8 dst_channels,
+                                               int dst_rate);
 
 /**
  *  Once you have initialized the \c cvt structure using SDL_BuildAudioCVT(),
@@ -459,7 +459,7 @@ extern DECLSPEC int SDLCALL SDL_ConvertAudio (SDL_AudioCVT* cvt);
  *  This is provided for convenience -- you can mix your own audio data.
  */
 extern DECLSPEC void SDLCALL SDL_MixAudio (Uint8* dst, const Uint8* src,
-        Uint32 len, int volume);
+                                           Uint32 len, int volume);
 
 /**
  *  This works like SDL_MixAudio(), but you specify the audio format instead of
@@ -467,9 +467,9 @@ extern DECLSPEC void SDLCALL SDL_MixAudio (Uint8* dst, const Uint8* src,
  *  device is open at all.
  */
 extern DECLSPEC void SDLCALL SDL_MixAudioFormat (Uint8* dst,
-        const Uint8* src,
-        SDL_AudioFormat format,
-        Uint32 len, int volume);
+                                                 const Uint8* src,
+                                                 SDL_AudioFormat format,
+                                                 Uint32 len, int volume);
 
 /**
  *  \name Audio lock functions

@@ -207,7 +207,7 @@ extern DECLSPEC int SDLCALL SDL_SaveBMP_RW
  *        but the surface must be locked before directly accessing the pixels.
  */
 extern DECLSPEC int SDLCALL SDL_SetSurfaceRLE (SDL_Surface* surface,
-        int flag);
+                                               int flag);
 
 /**
  *  \brief Sets the color key (transparent pixel) in a blittable surface.
@@ -221,7 +221,7 @@ extern DECLSPEC int SDLCALL SDL_SetSurfaceRLE (SDL_Surface* surface,
  *  You can pass SDL_RLEACCEL to enable RLE accelerated blits.
  */
 extern DECLSPEC int SDLCALL SDL_SetColorKey (SDL_Surface* surface,
-        int flag, Uint32 key);
+                                             int flag, Uint32 key);
 
 /**
  *  \brief Gets the color key (transparent pixel) in a blittable surface.
@@ -234,7 +234,7 @@ extern DECLSPEC int SDLCALL SDL_SetColorKey (SDL_Surface* surface,
  *          enabled.
  */
 extern DECLSPEC int SDLCALL SDL_GetColorKey (SDL_Surface* surface,
-        Uint32* key);
+                                             Uint32* key);
 
 /**
  *  \brief Set an additional color value used in blit operations.
@@ -334,7 +334,7 @@ extern DECLSPEC int SDLCALL SDL_GetSurfaceBlendMode (SDL_Surface* surface,
  *  and destination surfaces.
  */
 extern DECLSPEC SDL_bool SDLCALL SDL_SetClipRect (SDL_Surface* surface,
-        const SDL_Rect* rect);
+                                                  const SDL_Rect* rect);
 
 /**
  *  Gets the clipping rectangle for the destination surface in a blit.
@@ -343,7 +343,7 @@ extern DECLSPEC SDL_bool SDLCALL SDL_SetClipRect (SDL_Surface* surface,
  *  with the correct values.
  */
 extern DECLSPEC void SDLCALL SDL_GetClipRect (SDL_Surface* surface,
-        SDL_Rect* rect);
+                                              SDL_Rect* rect);
 
 /**
  *  Creates a new surface of the specified format, and then copies and maps
@@ -366,10 +366,10 @@ extern DECLSPEC SDL_Surface* SDLCALL SDL_ConvertSurfaceFormat
  *  \return 0 on success, or -1 if there was an error
  */
 extern DECLSPEC int SDLCALL SDL_ConvertPixels (int width, int height,
-        Uint32 src_format,
-        const void* src, int src_pitch,
-        Uint32 dst_format,
-        void* dst, int dst_pitch);
+                                               Uint32 src_format,
+                                               const void* src, int src_pitch,
+                                               Uint32 dst_format,
+                                               void* dst, int dst_pitch);
 
 /**
  *  Performs a fast fill of the given rectangle with \c color.
@@ -468,9 +468,9 @@ extern DECLSPEC int SDLCALL SDL_LowerBlit
  *  \note This function uses a static buffer, and is not thread-safe.
  */
 extern DECLSPEC int SDLCALL SDL_SoftStretch (SDL_Surface* src,
-        const SDL_Rect* srcrect,
-        SDL_Surface* dst,
-        const SDL_Rect* dstrect);
+                                             const SDL_Rect* srcrect,
+                                             SDL_Surface* dst,
+                                             const SDL_Rect* dstrect);
 
 #define SDL_BlitScaled SDL_UpperBlitScaled
 

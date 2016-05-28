@@ -396,7 +396,7 @@ extern DECLSPEC SDL_bool SDLCALL SDL_SetHintWithPriority (const char* name,
  *  \return SDL_TRUE if the hint was set, SDL_FALSE otherwise
  */
 extern DECLSPEC SDL_bool SDLCALL SDL_SetHint (const char* name,
-        const char* value);
+                                              const char* value);
 
 /**
  *  \brief Get a hint
@@ -415,8 +415,8 @@ extern DECLSPEC const char* SDLCALL SDL_GetHint (const char* name);
 typedef void (*SDL_HintCallback) (void* userdata, const char* name,
                                   const char* oldValue, const char* newValue);
 extern DECLSPEC void SDLCALL SDL_AddHintCallback (const char* name,
-        SDL_HintCallback callback,
-        void* userdata);
+                                                  SDL_HintCallback callback,
+                                                  void* userdata);
 
 /**
  *  \brief Remove a function watching a particular hint
@@ -426,8 +426,8 @@ extern DECLSPEC void SDLCALL SDL_AddHintCallback (const char* name,
  *  \param userdata A pointer being passed to the callback function
  */
 extern DECLSPEC void SDLCALL SDL_DelHintCallback (const char* name,
-        SDL_HintCallback callback,
-        void* userdata);
+                                                  SDL_HintCallback callback,
+                                                  void* userdata);
 
 /**
  *  \brief  Clear all hints

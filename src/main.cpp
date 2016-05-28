@@ -20,45 +20,27 @@
  * THE SOFTWARE.
  */
 
-//==============================================================================
-// Qt includes
-//==============================================================================
-
 #include <QtQml>
 #include <QScreen>
 #include <QApplication>
-#include <QQmlApplicationEngine>
-
-//==============================================================================
-// LibDS and joystick libraries
-//==============================================================================
-
-#include <LibDS.h>
 #include <QJoysticks.h>
+#include <DriverStation.h>
 #include <QSimpleUpdater.h>
-
-//==============================================================================
-// Application includes
-//==============================================================================
+#include <QQmlApplicationEngine>
 
 #include "beeper.h"
 #include "versions.h"
 #include "utilities.h"
 #include "dashboards.h"
 
-//==============================================================================
-// Avoid issues with SDL (especially with MS Windows & MSVC compilers)
-//==============================================================================
-
+#ifdef Q_OS_WIN
 #ifdef main
 #undef main
 #endif
+#endif
 
-//==============================================================================
-// Main entry point of the application
-//==============================================================================
-
-int main (int argc, char* argv[]) {
+int main (int argc, char* argv[])
+{
     /* Avoid UI scaling issues with Qt 5.6 */
 #if QT_VERSION >= QT_VERSION_CHECK (5, 6, 0)
 #if defined Q_OS_MAC

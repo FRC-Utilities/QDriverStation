@@ -29,6 +29,8 @@ static const QString APP_VERSION = "16.05";
 static const QString APP_COMPANY = "WinT 3794";
 static const QString APP_DSPNAME = "QDriverStation";
 static const QString APP_WEBSITE = "http://qdriverstation.sf.net";
-static const QString URL_UPDATER = "https://raw.githubusercontent.com/WinT-3794/QDriverStation/master/updates.json";
+static const QString URL_UPDATER = "https://raw.githubusercontent.com/"
+                                   "WinT-3794/QDriverStation/master/"
+                                   "updates.json";
 
 #endif

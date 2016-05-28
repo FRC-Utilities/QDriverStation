@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/WinT-3794/LibDS.svg?branch=master)](https://travis-ci.org/WinT-3794/LibDS)
 [![BitCoin donate button](https://img.shields.io/badge/bitcoin-donate-yellow.svg)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
 
-The DriverStation library allows you to connect and manage a robot easily by providing an abstraction layer between an application and the network commununications between the robot and the host computer.
+The DriverStation library allows you to connect and manage a robot easily by providing an abstraction layer between an application and the network comununications between the robot and the host computer.
 
 The library is written in C++ and the Qt framework, allowing it to be used in many platforms, including (but not limited to) Windows, Linux/UNIX distros, Mac OS X, Android and iOS.
 
@@ -19,14 +19,14 @@ This library consists of three basic sections:
 
 #### Core section
 
-The core section is in charge of implementing the 'generic' networking side and defining the common operations regardless of the protocol that we are using.
+The core section is in charge of implementing all the support system of the library. In this section you will find:
 
-This section includes:
-
-- A configurable NetConsole client
-- An dynamic watchdog that resets the current protocol if it expires
-- A configurable IP/network scanner used by each protocol to find the robot.
-- A 'base' protocol, which implements all the functions except interpreting robot packets and generating client packets
+- A parallel network scanner
+- Definitions for DS-specific types
+- Configurable NetConsole listener/sender
+- A watchdog for reseting the DS when not receiving input from the robot
+- The protocol abstract template
+- The base signaling/event system of the library
 
 #### Protocols section
 
@@ -34,13 +34,12 @@ This section contains the different protocols used for communicating with any FR
 
 This section includes:
 
-- The 2014 communication protocol (under heavy development)
-- The 2015 communication protocol
-- The 2016 communication protocol
+- The 2014 communication protocol
+- The 2015/2016 communication protocol
 
 #### DriverStation section
 
-This section provides an application access to the rest of the library. Think of this section as the 'public' side of the library, while the rest can be considered as the 'internal' side.
+This section provides client access to the library, while preserving all the features for safe robot operation. Think of this section as the 'public' side of the library, while the rest can be considered as the 'internal' side.
 
 ### Credits
 

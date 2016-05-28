@@ -118,7 +118,7 @@ extern DECLSPEC void SDLCALL SDL_LogSetAllPriority (SDL_LogPriority priority);
  *  \brief Set the priority of a particular log category
  */
 extern DECLSPEC void SDLCALL SDL_LogSetPriority (int category,
-        SDL_LogPriority priority);
+                                                 SDL_LogPriority priority);
 
 /**
  *  \brief Get the priority of a particular log category
@@ -141,7 +141,7 @@ extern DECLSPEC void SDLCALL SDL_Log (const char* fmt, ...);
  *  \brief Log a message with SDL_LOG_PRIORITY_VERBOSE
  */
 extern DECLSPEC void SDLCALL SDL_LogVerbose (int category, const char* fmt,
-        ...);
+                                             ...);
 
 /**
  *  \brief Log a message with SDL_LOG_PRIORITY_DEBUG
@@ -167,21 +167,21 @@ extern DECLSPEC void SDLCALL SDL_LogError (int category, const char* fmt, ...);
  *  \brief Log a message with SDL_LOG_PRIORITY_CRITICAL
  */
 extern DECLSPEC void SDLCALL SDL_LogCritical (int category, const char* fmt,
-        ...);
+                                              ...);
 
 /**
  *  \brief Log a message with the specified category and priority.
  */
 extern DECLSPEC void SDLCALL SDL_LogMessage (int category,
-        SDL_LogPriority priority,
-        const char* fmt, ...);
+                                             SDL_LogPriority priority,
+                                             const char* fmt, ...);
 
 /**
  *  \brief Log a message with the specified category and priority.
  */
 extern DECLSPEC void SDLCALL SDL_LogMessageV (int category,
-        SDL_LogPriority priority,
-        const char* fmt, va_list ap);
+                                              SDL_LogPriority priority,
+                                              const char* fmt, va_list ap);
 
 /**
  *  \brief The prototype for the log output function

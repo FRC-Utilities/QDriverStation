@@ -111,7 +111,7 @@ typedef struct {
  *        closes the messagebox.
  */
 extern DECLSPEC int SDLCALL SDL_ShowMessageBox (const SDL_MessageBoxData*
-        messageboxdata, int* buttonid);
+                                                messageboxdata, int* buttonid);
 
 /**
  *  \brief Create a simple modal message box

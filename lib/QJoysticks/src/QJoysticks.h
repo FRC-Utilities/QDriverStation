@@ -37,10 +37,11 @@
 /// Once the application has been initialized, connect the SIGNALS/SLOTS of this class
 /// with the rest of your application and call \c init() to initialze the event system.
 ///
-class QJoysticks : public QObject {
+class QJoysticks : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     ///
     /// Returns the only instance of the class
     ///
@@ -102,7 +103,7 @@ class QJoysticks : public QObject {
     ///
     VirtualJoystick* virtualJoystick();
 
-  public slots:
+public slots:
     ///
     /// Tells the system to ignore the selected joystick
     ///
@@ -118,10 +119,10 @@ class QJoysticks : public QObject {
     ///
     void setVirtualJoystickEnabled (bool enabled = false);
 
-  protected:
+protected:
     explicit QJoysticks();
 
-  signals:
+signals:
     ///
     /// Emitted when an interface is added or removed
     ///
@@ -169,7 +170,7 @@ class QJoysticks : public QObject {
     ///
     void buttonChanged (int js, int button, bool pressed);
 
-  private slots:
+private slots:
     ///
     /// Removes/unregisters all interfaces from the system
     ///
@@ -200,7 +201,7 @@ class QJoysticks : public QObject {
     ///
     void onButtonEvent (QJoystickButtonEvent event);
 
-  private:
+private:
     SDL_Joysticks* m_sdlJoysticks;
     VirtualJoystick* m_virtualJoystick;
 

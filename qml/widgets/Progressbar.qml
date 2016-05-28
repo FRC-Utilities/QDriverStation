@@ -56,5 +56,7 @@ Rectangle {
     Label {
         text: parent.text
         anchors.centerIn: parent
+        opacity: font.pixelSize > Globals.scale (8)
+        font.pixelSize: Math.min (Globals.scale (12), parent.height * (2/3))
     }
 }

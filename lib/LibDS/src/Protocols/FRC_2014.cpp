@@ -1,146 +1,208 @@
 /*
- * Copyright (c) 2014 WinT 3794 <http://wint3794.org>
+ * Copyright (c) 2016 Alex Spataru <alex_spataru@outlook.com>
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * This file is part of the LibDS, which is released under the MIT license.
+ * For more information, please read the LICENSE file in the root directory
+ * of this project.
  */
 
-#include "LibDS/Protocols/FRC_2014.h"
+#include "FRC_2014.h"
 
-using namespace DS_Protocols;
+const uint ESTOP_ON           = 0x00;
+const uint ESTOP_OFF          = 0x40;
+const uint REBOOT             = 0x80;
+const uint ENABLED            = 0x20;
+const uint RESYNC             = 0x04;
+const uint CONTROL_TELEOP     = 0x00;
+const uint CONTROL_AUTONOMOUS = 0x10;
+const uint CONTROL_TEST       = 0x02;
+const uint FMS_ATTACHED       = 0x08;
+const uint ALLIANCE_RED       = 0x52;
+const uint ALLIANCE_BLUE      = 0x42;
+const uint POSITION_1         = 0x31;
+const uint POSITION_2         = 0x32;
+const uint POSITION_3         = 0x33;
 
-//==================================================================================================
-// Protocol bytes
-//==================================================================================================
-
-#define ESTOP_ON_BIT       0x00 // DS triggers the emergency stop on the robot
-#define ESTOP_OFF_BIT      0x40 // DS triggers the emergency stop on the robot
-#define REBOOT_BIT         0x80 // DS triggers a reboot of the cRIO
-#define ENABLED_BIT        0x20 // DS enables the robot
-#define RESYNC_BIT         0x04 // DS re-syncs comms with robot?
-#define TELEOP_BIT         0x00 // DS changes robot mode to teleoperated
-#define AUTONOMOUS_BIT     0x10 // DS changes robot mode to autonomous
-#define TEST_BIT           0x02 // DS changes robot mode to test
-#define FMS_ATTACHED_BIT   0x08 // DS sends this when it is connected to the FMS
-#define ALLIANCE_RED_BIT   0x52 // DS changes robot alliance to red
-#define ALLIANCE_BLUE_BIT  0x42 // DS changes robot alliance to blue
-#define POSITION_1_BIT     0x31 // DS reports team station 1
-#define POSITION_2_BIT     0x32 // DS reports team station 2
-#define POSITION_3_BIT     0x33 // DS reports team station 3
-
-//==================================================================================================
-// FRC_Protocol2014::FRC_Protocol2014
-//==================================================================================================
-
-FRC_Protocol2014::FRC_Protocol2014() {
+/**
+ * Implements the 2009-2014 FRC communication protocol
+ */
+FRC_2014::FRC_2014()
+{
     m_resync = true;
-    m_reboot = false;
     m_restartCode = false;
+    m_rebootRobot = false;
 }
 
-//==================================================================================================
-// FRC_Protocol2014::reboot
-//==================================================================================================
-
-void FRC_Protocol2014::reboot() {
-    m_reboot = true;
+/**
+ * Returns the display name of the protocol
+ */
+QString FRC_2014::name()
+{
+    return QObject::tr ("FRC 2014 Protocol");
 }
 
-//==================================================================================================
-// FRC_Protocol2014::restartCode
-//==================================================================================================
+/**
+ * Send FMS packets 2 times per second
+ */
+int FRC_2014::fmsFrequency()
+{
+    return 2;
+}
 
-void FRC_Protocol2014::restartCode() {
+/**
+ * Send 50 robot packets per second
+ */
+int FRC_2014::robotFrequency()
+{
+    return 50;
+}
+
+/**
+ * We receive data from FMS at local port 1120
+ */
+int FRC_2014::fmsInputPort()
+{
+    return 1120;
+}
+
+/**
+ * We send data to the FMS to remote port 1160
+ */
+int FRC_2014::fmsOutputPort()
+{
+    return 1160;
+}
+
+/**
+ * We receive data from the robot at local port 1150
+ */
+int FRC_2014::robotInputPort()
+{
+    return 1150;
+}
+
+/**
+ * We send data to the robot at remote port 1110
+ */
+int FRC_2014::robotOutputPort()
+{
+    return 1110;
+}
+
+/**
+ * FRC 2014 protocol does not use POVs
+ */
+int FRC_2014::maxPOVCount()
+{
+    return 0;
+}
+
+/**
+ * FRC 2014 protocol supports a maximum of 6 axes.
+ * Remaining axes will be ignored.
+ */
+int FRC_2014::maxAxisCount()
+{
+    return 6;
+}
+
+/**
+ * FRC 2014 protocol supports a maximum of 12 buttons.
+ * Remaining buttons will be ignored.
+ */
+int FRC_2014::maxButtonCount()
+{
+    return 12;
+}
+
+/**
+ * FRC 2014 Protocol supports a maximum of 4 joysticks.
+ * Remaining joysticks will be ignored.
+ */
+int FRC_2014::maxJoystickCount()
+{
+    return 4;
+}
+
+/**
+ * Configures the protocol to reboot the robot with the next
+ * sent packet.
+ */
+void FRC_2014::rebootRobot()
+{
+    m_rebootRobot = true;
+}
+
+/**
+ * Configures the protocol to restart the robot code with the next
+ * sent packet (not really, it does not work for the moment).
+ */
+void FRC_2014::restartRobotCode()
+{
     m_restartCode = true;
 }
 
-//==================================================================================================
-// FRC_Protocol2014::resetProtocol
-//==================================================================================================
-
-void FRC_Protocol2014::resetProtocol() {
+/**
+ * Be sure that we do not reboot the robot or restart its code when
+ * we re-establish communications with it.
+ */
+void FRC_2014::onRobotWatchdogExpired()
+{
     m_resync = true;
-    m_reboot = false;
     m_restartCode = false;
+    m_rebootRobot = false;
 }
 
-//==================================================================================================
-// FRC_Protocol2014::interpretFMSPacket
-//==================================================================================================
-
-bool FRC_Protocol2014::interpretFmsPacket (QByteArray data) {
-    Q_UNUSED (data);
-    return true;
+/**
+ * FMS communications work with UDP datagrams
+ */
+DS::SocketType FRC_2014::fmsSocketType()
+{
+    return DS::kSocketTypeUDP;
 }
 
-//==================================================================================================
-// FRC_Protocol2014::interpretPacket
-//==================================================================================================
-
-bool FRC_Protocol2014::interpretRobotPacket (QByteArray data) {
-    /* The packet is smaller than it should be */
-    if (data.length() < 1024)
-        return false;
-
-    /* Read status echo code and voltage */
-    uint opcode  = data.at (0);
-    uint integer = data.at (1);
-    uint decimal = data.at (2);
-
-    /* Parse the voltage (which is stored in a strange format) */
-    QString voltage;
-    QByteArray hex = data.toHex();
-    voltage.append (hex.at (2));
-    voltage.append (hex.at (3));
-    voltage.append (".");
-    voltage.append (hex.at (4));
-    voltage.append (hex.at (5));
-
-    /* The robot seems to be emergency stopped */
-    if (opcode == ESTOP_ON_BIT && !isEmergencyStopped())
-        setEmergencyStop (true);
-
-    /* If both battery voltage values are 0x37, it means that there is no code loaded */
-    updateRobotCode ((integer != 0x37) && (decimal != 0x37));
-
-    /* Update the voltage values */
-    updateVoltage (hasCode() ? voltage.toFloat() : 0);
-
-    return true;
+/**
+ * Robot communications work with UDP datagrams
+ */
+DS::SocketType FRC_2014::robotSocketType()
+{
+    return DS::kSocketTypeUDP;
 }
 
-//==================================================================================================
-// FRC_Protocol2014::generateFmsPacket
-//==================================================================================================
+/**
+ * Radio is located at 10.XX.YY.1
+ */
+QString FRC_2014::defaultRadioAddress()
+{
+    return DS::getStaticIP (10, config()->team(), 1);
+}
 
-QByteArray FRC_Protocol2014::generateFmsPacket() {
+/**
+ * Robot is located at 10.XX.YY.2
+ */
+QStringList FRC_2014::defaultRobotAddresses()
+{
+    QStringList list;
+    list.append (DS::getStaticIP (10, config()->team(), 2));
+    return list;
+}
+
+/**
+ * \todo Implement this function
+ */
+QByteArray FRC_2014::getFMSPacket()
+{
     QByteArray data;
     return data;
 }
 
-//==================================================================================================
-// FRC_Protocol2014::generateRobotPacket
-//==================================================================================================
-
-QByteArray FRC_Protocol2014::generateRobotPacket() {
+/**
+ * Generates a packet that the DS will send to the robot
+ */
+QByteArray FRC_2014::getRobotPacket()
+{
     QByteArray data;
 
-    /* Setup the base packet */
     data.resize (1024);
     data.fill   (0x00);
 
@@ -149,8 +211,8 @@ QByteArray FRC_Protocol2014::generateRobotPacket() {
     data[1] = (sentRobotPackets() & 0xff);
 
     /* Add team number */
-    data[4] = (team() & 0xff00) >> 8;
-    data[5] = (team() & 0xff);
+    data[4] = (config()->team() & 0xff00) >> 8;
+    data[5] = (config()->team() & 0xff);
 
     /* Add operation code, empty digital input and alliance & position */
     data[2] = getOperationCode();
@@ -179,130 +241,168 @@ QByteArray FRC_Protocol2014::generateRobotPacket() {
     data[1021] = (checksum & 0xff0000) >> 16;
     data[1022] = (checksum & 0xff00) >> 8;
     data[1023] = (checksum & 0xff);
-
     return data;
 }
 
-//==================================================================================================
-// FRC_Protocol2014::getJoystickData
-//==================================================================================================
+/**
+ * \todo Implement this function
+ */
+bool FRC_2014::interpretFMSPacket (const QByteArray& data)
+{
+    Q_UNUSED (data);
+    return false;
+}
 
-QByteArray FRC_Protocol2014::getJoystickData() {
+/**
+ * Reads the input \a data and extracts the robot voltage, the
+ * robot code status and the emergency stop status.
+ *
+ * If the packet is read successfully, the function returns \c true.
+ *
+ * \note If both voltage values are equal to \c 0x37, it means that
+ *       the robot code is not running
+ */
+bool FRC_2014::interpretRobotPacket (const QByteArray& data)
+{
+    /* The packet is smaller than it should be */
+    if (data.length() < 1024)
+        return false;
+
+    /* Read status echo code and voltage */
+    uint opcode  = data.at (0);
+    uint integer = data.at (1);
+    uint decimal = data.at (2);
+
+    /* Parse the voltage (which is stored in a strange format) */
+    QString voltage;
+    QByteArray hex = data.toHex();
+    voltage.append (hex.at (2));
+    voltage.append (hex.at (3));
+    voltage.append (".");
+    voltage.append (hex.at (4));
+    voltage.append (hex.at (5));
+
+    /* The robot seems to be emergency stopped */
+    if (opcode == ESTOP_ON && !config()->isEmergencyStopped())
+        config()->updateOperationStatus (DS::kOperationEmergencyStop);
+
+    /* Update code status & voltage */
+    bool hasCode = (integer != 0x37) && (decimal != 0x37);
+    config()->setRobotCode (hasCode);
+    config()->updateVoltage (hasCode ? voltage.toFloat() : 0);
+
+    /* Packet read successfully */
+    return true;
+}
+
+/**
+ * Returns the code that represents the current alliance color
+ */
+quint8 FRC_2014::getAlliance()
+{
+    if (config()->alliance() == DS::kAllianceBlue)
+        return ALLIANCE_BLUE;
+
+    return ALLIANCE_RED;
+}
+
+/**
+ * Returns the code that represents the current team position
+ */
+quint8 FRC_2014::getPosition()
+{
+    if (config()->position() == DS::kPosition1)
+        return POSITION_1;
+
+    if (config()->position() == DS::kPosition2)
+        return POSITION_2;
+
+    if (config()->position() == DS::kPosition3)
+        return POSITION_3;
+
+    return POSITION_1;
+}
+
+/**
+ * \todo Allow the LibDS to support digital inputs
+ */
+quint8 FRC_2014::getDigitalInput()
+{
+    return 0x00;
+}
+
+/**
+ * Returns the code used to identify the enable status, control mode,
+ * operation mode and operation flags.
+ */
+quint8 FRC_2014::getOperationCode()
+{
+    quint8 code = ESTOP_OFF;
+    quint8 enabled = config()->isEnabled() ? ENABLED : 0x00;
+
+    switch (config()->controlMode()) {
+    case DS::kControlTest:
+        code |= enabled + CONTROL_TEST;
+        break;
+    case DS::kControlAutonomous:
+        code |= enabled + CONTROL_AUTONOMOUS;
+        break;
+    case DS::kControlTeleoperated:
+        code |= enabled + CONTROL_TELEOP;
+        break;
+    default:
+        code = ESTOP_OFF;
+        break;
+    }
+
+    if (m_resync)
+        code |= RESYNC;
+
+    if (config()->isFMSAttached())
+        code |= FMS_ATTACHED;
+
+    if (config()->isEmergencyStopped())
+        code = ESTOP_ON;
+
+    if (m_rebootRobot)
+        code = REBOOT;
+
+    return code;
+}
+
+/**
+ * Generates the joystick data. The FRC protocol defines joystick values
+ * for all joysticks, regardless if all joysticks are connected or not.
+ *
+ * In the case that a joystick is not connected, the protocol will send
+ * a netrual value (e.g. \c 0 for each axis and \c false for each button).
+ */
+QByteArray FRC_2014::getJoystickData()
+{
     QByteArray data;
 
-    /* The protocol must define data for 4 joysticks (even if they are not connected) */
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < maxJoystickCount(); ++i) {
+        bool exists = joysticks()->count() > i;
 
-        /* If set to false, the code will generate neutral button and axis values */
-        bool joystick_exists = joysticks()->count() > i;
+        int numAxes = exists ? joysticks()->at (i)->numAxes : 0;
+        int numButtons = exists ? joysticks()->at (i)->numButtons : 0;
 
-        /* Get number of axes and buttons of the current joystick */
-        int num_axes = joystick_exists ? joysticks()->at (i).numAxes : 0;
-        int num_buttons = joystick_exists ? joysticks()->at (i).numButtons : 0;
-
-        /* Generate axis data (only 6 axes, no more, no less) */
-        for (int axis = 0; axis < 6; ++axis) {
-            /* The joystick exists and the axis also exists */
-            if (joystick_exists && axis < num_axes)
-                data.append (joysticks()->at (i).axes[axis] * 127);
-
-            /* Append neutral data, since the axis is not real */
+        for (int axis = 0; axis < maxAxisCount(); ++axis) {
+            if (exists && axis < numAxes)
+                data.append (joysticks()->at (i)->axes [axis] * 127);
             else
                 data.append ((char) 0x00);
         }
 
-        /* Generate button data */
         int button_data = 0;
-        for (int button = 0; button < num_buttons; ++button) {
-            /* Joystick exists and button is pressed */
-            if (joystick_exists && joysticks()->at (i).buttons[button])
+        for (int button = 0; button < numButtons; ++button) {
+            if (exists && joysticks()->at (i)->buttons [button])
                 button_data |= (int) qPow (2, button);
         }
 
-        /* Append the button data in two bytes */
         data.append ((button_data & 0xff00) >> 8);
         data.append ((button_data & 0xff));
     }
 
     return data;
-}
-
-//==================================================================================================
-// FRC_Protocol2014::getAlliance
-//==================================================================================================
-
-quint8 FRC_Protocol2014::getAlliance() {
-    if (alliance() == DS::kAllianceBlue1 ||
-            alliance() == DS::kAllianceBlue2 ||
-            alliance() == DS::kAllianceBlue3)
-        return ALLIANCE_BLUE_BIT;
-
-    return ALLIANCE_RED_BIT;
-}
-
-//==================================================================================================
-// FRC_Protocol2014::getPosition
-//==================================================================================================
-
-quint8 FRC_Protocol2014::getPosition() {
-    /* Position 1 */
-    if (alliance() == DS::kAllianceRed1 || alliance() == DS::kAllianceBlue1)
-        return POSITION_1_BIT;
-
-    /* Position 2 */
-    if (alliance() == DS::kAllianceRed2 || alliance() == DS::kAllianceBlue2)
-        return POSITION_2_BIT;
-
-    /* Position 3 */
-    if (alliance() == DS::kAllianceRed3 || alliance() == DS::kAllianceBlue3)
-        return POSITION_3_BIT;
-
-    /* Default to position 1 */
-    return POSITION_1_BIT;
-}
-
-//==================================================================================================
-// FRC_Protocol2014::getOperationCode
-//==================================================================================================
-
-quint8 FRC_Protocol2014::getOperationCode() {
-    quint8 code = ESTOP_OFF_BIT;
-    quint8 enabled = isEnabled() ? ENABLED_BIT : 0x00;
-
-    switch (controlMode()) {
-    case DS::kControlAutonomous:
-        code |= enabled + AUTONOMOUS_BIT;
-        break;
-    case DS::kControlTest:
-        code |= enabled + TEST_BIT;
-        break;
-    case DS::kControlTeleoperated:
-        code |= enabled + TELEOP_BIT;
-        break;
-    default:
-        code = ESTOP_OFF_BIT;
-        break;
-    }
-
-    if (m_resync)
-        code |= RESYNC_BIT;
-
-    if (isFmsAttached())
-        code |= FMS_ATTACHED_BIT;
-
-    if (isEmergencyStopped())
-        code = ESTOP_ON_BIT;
-
-    if (m_reboot)
-        code = REBOOT_BIT;
-
-    return code;
-}
-
-//==================================================================================================
-// FRC_Protocol2014::getDigitalInput
-//==================================================================================================
-
-quint8 FRC_Protocol2014::getDigitalInput() {
-    return 0x00;
 }

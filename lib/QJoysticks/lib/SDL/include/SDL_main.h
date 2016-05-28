@@ -109,7 +109,7 @@ extern DECLSPEC void SDLCALL SDL_SetMainReady (void);
  *  This can be called to set the application class at startup
  */
 extern DECLSPEC int SDLCALL SDL_RegisterApp (char* name, Uint32 style,
-        void* hInst);
+                                             void* hInst);
 extern DECLSPEC void SDLCALL SDL_UnregisterApp (void);
 
 #endif /* __WIN32__ */

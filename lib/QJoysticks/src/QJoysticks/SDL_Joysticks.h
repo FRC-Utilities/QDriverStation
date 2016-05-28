@@ -27,27 +27,28 @@
 #include <QObject>
 #include <QJoysticks/JoysticksCommon.h>
 
-class SDL_Joysticks : public QObject {
+class SDL_Joysticks : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     explicit SDL_Joysticks();
     QList<QJoystickDevice*> joysticks();
 
-  public slots:
+public slots:
     void rumble (QJoystickRumble request);
 
-  signals:
+signals:
     void countChanged();
     void POVEvent (QJoystickPOVEvent event);
     void axisEvent (QJoystickAxisEvent event);
     void buttonEvent (QJoystickButtonEvent event);
 
-  private slots:
+private slots:
     void update();
     void configureJoystick (const SDL_Event* event);
 
-  private:
+private:
     int getDynamicID (int id);
 
     QJoystickDevice* getJoystick (int id);

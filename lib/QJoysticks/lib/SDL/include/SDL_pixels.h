@@ -357,8 +357,8 @@ extern DECLSPEC int SDLCALL SDL_SetPixelFormatPalette (SDL_PixelFormat* format,
  *  \return 0 on success, or -1 if not all of the colors could be set.
  */
 extern DECLSPEC int SDLCALL SDL_SetPaletteColors (SDL_Palette* palette,
-        const SDL_Color* colors,
-        int firstcolor, int ncolors);
+                                                  const SDL_Color* colors,
+                                                  int firstcolor, int ncolors);
 
 /**
  *  \brief Free a palette created with SDL_AllocPalette().
@@ -373,7 +373,7 @@ extern DECLSPEC void SDLCALL SDL_FreePalette (SDL_Palette* palette);
  *  \sa SDL_MapRGBA
  */
 extern DECLSPEC Uint32 SDLCALL SDL_MapRGB (const SDL_PixelFormat* format,
-        Uint8 r, Uint8 g, Uint8 b);
+                                           Uint8 r, Uint8 g, Uint8 b);
 
 /**
  *  \brief Maps an RGBA quadruple to a pixel value for a given pixel format.
@@ -381,8 +381,8 @@ extern DECLSPEC Uint32 SDLCALL SDL_MapRGB (const SDL_PixelFormat* format,
  *  \sa SDL_MapRGB
  */
 extern DECLSPEC Uint32 SDLCALL SDL_MapRGBA (const SDL_PixelFormat* format,
-        Uint8 r, Uint8 g, Uint8 b,
-        Uint8 a);
+                                            Uint8 r, Uint8 g, Uint8 b,
+                                            Uint8 a);
 
 /**
  *  \brief Get the RGB components from a pixel of the specified format.
@@ -390,8 +390,8 @@ extern DECLSPEC Uint32 SDLCALL SDL_MapRGBA (const SDL_PixelFormat* format,
  *  \sa SDL_GetRGBA
  */
 extern DECLSPEC void SDLCALL SDL_GetRGB (Uint32 pixel,
-        const SDL_PixelFormat* format,
-        Uint8* r, Uint8* g, Uint8* b);
+                                         const SDL_PixelFormat* format,
+                                         Uint8* r, Uint8* g, Uint8* b);
 
 /**
  *  \brief Get the RGBA components from a pixel of the specified format.
@@ -399,9 +399,9 @@ extern DECLSPEC void SDLCALL SDL_GetRGB (Uint32 pixel,
  *  \sa SDL_GetRGB
  */
 extern DECLSPEC void SDLCALL SDL_GetRGBA (Uint32 pixel,
-        const SDL_PixelFormat* format,
-        Uint8* r, Uint8* g, Uint8* b,
-        Uint8* a);
+                                          const SDL_PixelFormat* format,
+                                          Uint8* r, Uint8* g, Uint8* b,
+                                          Uint8* a);
 
 /**
  *  \brief Calculate a 256 entry gamma ramp for a gamma value.

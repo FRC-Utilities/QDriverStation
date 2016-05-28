@@ -123,11 +123,11 @@ Item {
     Connections {
         target: DriverStation
         onTeamChanged: teamNumber = team
-        onRobotStatusChanged: robotStatus = status
+        onStatusChanged: robotStatus = status
         onProtocolChanged: robotVoltage = Globals.invalidStr
-        onCodeChanged: codeLed.checked = DriverStation.robotHasCode()
-        onCommunicationsChanged: communicationsLed.checked = DriverStation.isConnected()
-        onVoltageChanged: robotVoltage = DriverStation.isConnected() ? voltage + "v" : Globals.invalidStr
+        onCodeStatusChanged: codeLed.checked = DriverStation.isRobotCodeRunning()
+        onRobotCommStatusChanged: communicationsLed.checked = DriverStation.isConnectedToRobot()
+        onVoltageChanged: robotVoltage = DriverStation.isConnected() ? voltageString : Globals.invalidStr
     }
 
     //

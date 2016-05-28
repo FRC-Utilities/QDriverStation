@@ -997,7 +997,7 @@ extern DECLSPEC int SDLCALL SDL_HapticEffectSupported (SDL_Haptic* haptic,
  *  \sa SDL_HapticDestroyEffect
  */
 extern DECLSPEC int SDLCALL SDL_HapticNewEffect (SDL_Haptic* haptic,
-        SDL_HapticEffect* effect);
+                                                 SDL_HapticEffect* effect);
 
 /**
  *  \brief Updates the properties of an effect.
@@ -1039,8 +1039,8 @@ extern DECLSPEC int SDLCALL SDL_HapticUpdateEffect (SDL_Haptic* haptic,
  *  \sa SDL_HapticGetEffectStatus
  */
 extern DECLSPEC int SDLCALL SDL_HapticRunEffect (SDL_Haptic* haptic,
-        int effect,
-        Uint32 iterations);
+                                                 int effect,
+                                                 Uint32 iterations);
 
 /**
  *  \brief Stops the haptic effect on its associated haptic device.
@@ -1053,7 +1053,7 @@ extern DECLSPEC int SDLCALL SDL_HapticRunEffect (SDL_Haptic* haptic,
  *  \sa SDL_HapticDestroyEffect
  */
 extern DECLSPEC int SDLCALL SDL_HapticStopEffect (SDL_Haptic* haptic,
-        int effect);
+                                                  int effect);
 
 /**
  *  \brief Destroys a haptic effect on the device.
@@ -1193,7 +1193,7 @@ extern DECLSPEC int SDLCALL SDL_HapticRumbleInit (SDL_Haptic* haptic);
  *  \sa SDL_HapticRumbleStop
  */
 extern DECLSPEC int SDLCALL SDL_HapticRumblePlay (SDL_Haptic* haptic,
-        float strength, Uint32 length );
+                                                  float strength, Uint32 length );
 
 /**
  *  \brief Stops the simple rumble on a haptic device.

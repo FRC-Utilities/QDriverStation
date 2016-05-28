@@ -544,8 +544,8 @@ typedef enum {
  *  This function is thread-safe.
  */
 extern DECLSPEC int SDLCALL SDL_PeepEvents (SDL_Event* events, int numevents,
-        SDL_eventaction action,
-        Uint32 minType, Uint32 maxType);
+                                            SDL_eventaction action,
+                                            Uint32 minType, Uint32 maxType);
 /* @} */
 
 /**
@@ -591,7 +591,7 @@ extern DECLSPEC int SDLCALL SDL_WaitEvent (SDL_Event* event);
  *  \param timeout The timeout (in milliseconds) to wait for next event.
  */
 extern DECLSPEC int SDLCALL SDL_WaitEventTimeout (SDL_Event* event,
-        int timeout);
+                                                  int timeout);
 
 /**
  *  \brief Add an event to the event queue.
@@ -629,7 +629,7 @@ typedef int (SDLCALL* SDL_EventFilter) (void* userdata, SDL_Event* event);
  *  internal queue and be delivered to the application at the next event poll.
  */
 extern DECLSPEC void SDLCALL SDL_SetEventFilter (SDL_EventFilter filter,
-        void* userdata);
+                                                 void* userdata);
 
 /**
  *  Return the current event filter - can be used to "chain" filters.
@@ -642,20 +642,20 @@ extern DECLSPEC SDL_bool SDLCALL SDL_GetEventFilter (SDL_EventFilter* filter,
  *  Add a function which is called when an event is added to the queue.
  */
 extern DECLSPEC void SDLCALL SDL_AddEventWatch (SDL_EventFilter filter,
-        void* userdata);
+                                                void* userdata);
 
 /**
  *  Remove an event watch function added with SDL_AddEventWatch()
  */
 extern DECLSPEC void SDLCALL SDL_DelEventWatch (SDL_EventFilter filter,
-        void* userdata);
+                                                void* userdata);
 
 /**
  *  Run the filter function on the current event queue, removing any
  *  events for which the filter returns 0.
  */
 extern DECLSPEC void SDLCALL SDL_FilterEvents (SDL_EventFilter filter,
-        void* userdata);
+                                               void* userdata);
 
 /* @{ */
 #define SDL_QUERY   -1

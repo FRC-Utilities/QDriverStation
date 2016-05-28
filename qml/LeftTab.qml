@@ -90,6 +90,13 @@ RowLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
 
+        function updateWidth() {
+            if (joysticks.opacity > 0 && Layout.minimumWidth > 1)
+                Layout.minimumWidth = joysticks.getMinimumWidth() * 1.2
+            else
+                Layout.minimumWidth = 0
+        }
+
         function hideWidgets() {
             operator.opacity = 0
             joysticks.opacity = 0
@@ -99,22 +106,31 @@ RowLayout {
 
         function showOperator() {
             hideWidgets()
+            updateWidth()
             operator.opacity = 1
         }
 
         function showJoysticks() {
             hideWidgets()
+            updateWidth()
             joysticks.opacity = 1
         }
 
         function showPreferences() {
             hideWidgets()
+            updateWidth()
             preferences.opacity = 1
         }
 
         function showDiagnostics() {
             hideWidgets()
+            updateWidth()
             diagnostics.opacity = 1
+        }
+
+        Connections {
+            target: DriverStation
+            onJoystickCountChanged: leftTab.updateWidth()
         }
 
         Component.onCompleted: showOperator()

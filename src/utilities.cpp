@@ -20,15 +20,7 @@
  * THE SOFTWARE.
  */
 
-//==============================================================================
-// Class includes
-//==============================================================================
-
 #include "utilities.h"
-
-//==============================================================================
-// Includes for CPU and Power metrics
-//==============================================================================
 
 #if defined Q_OS_WIN
 #include <pdh.h>
@@ -41,11 +33,8 @@ static SYSTEM_POWER_STATUS power;
 #include <QProcess>
 #endif
 
-//==============================================================================
-// Utilities::Utilities
-//==============================================================================
-
-Utilities::Utilities() {
+Utilities::Utilities()
+{
 #if defined Q_OS_WIN
     PdhOpenQuery (0, 0, &cpuQuery);
     PdhAddCounter (cpuQuery,
@@ -56,11 +45,8 @@ Utilities::Utilities() {
 #endif
 }
 
-//==============================================================================
-// Utilities::getCpuUsage
-//==============================================================================
-
-int Utilities::getCpuUsage() {
+int Utilities::getCpuUsage()
+{
     int usage = 0;
 
 #if defined Q_OS_WIN
@@ -122,11 +108,8 @@ int Utilities::getCpuUsage() {
     return usage;
 }
 
-//==============================================================================
-// Utilities::getBatteryLevel
-//==============================================================================
-
-int Utilities::getBatteryLevel() {
+int Utilities::getBatteryLevel()
+{
 #if defined Q_OS_WIN
     GetSystemPowerStatus (&power);
     return static_cast<int> (power.BatteryLifePercent);
@@ -178,11 +161,8 @@ int Utilities::getBatteryLevel() {
 #endif
 }
 
-//==============================================================================
-// Utilities::isConnectedToPowerSource
-//==============================================================================
-
-bool Utilities::isConnectedToPowerSource() {
+bool Utilities::isConnectedToPowerSource()
+{
 #if defined Q_OS_WIN
     GetSystemPowerStatus (&power);
     return power.ACLineStatus != 0;

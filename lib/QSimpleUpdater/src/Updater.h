@@ -44,10 +44,11 @@ class Downloader;
 /// the appcast and "reacting" based on the options given by the
 /// user/developer/application.
 ///
-class QSU_DECL Updater : public QObject {
+class QSU_DECL Updater : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     Updater();
     ~Updater();
 
@@ -126,7 +127,7 @@ class QSU_DECL Updater : public QObject {
     ///
     bool useCustomInstallProcedures() const;
 
-  public slots:
+public slots:
     ///
     /// Downloads the update definitions file and analyzes it to determine the
     /// latest version and the download links
@@ -192,7 +193,7 @@ class QSU_DECL Updater : public QObject {
     ///
     void setUseCustomInstallProcedures (const bool& custom);
 
-  signals:
+signals:
     ///
     /// Emitted when the download definitions have been downloaded and analyzed.
     ///
@@ -205,7 +206,7 @@ class QSU_DECL Updater : public QObject {
     ///
     void downloadFinished (const QString& url, const QString& filepath);
 
-  private slots:
+private slots:
     ///
     /// Reads and analyzes the downloaded update definition.
     ///
@@ -217,7 +218,7 @@ class QSU_DECL Updater : public QObject {
     ///
     void setUpdateAvailable (const bool& available);
 
-  private:
+private:
     ///
     /// Returns \c true if version \a x is greater than version \a y.
     /// This is used to determine if the online version is greater than the
@@ -225,7 +226,7 @@ class QSU_DECL Updater : public QObject {
     ///
     bool compare (const QString& x, const QString& y);
 
-  private:
+private:
     QString m_url;
 
     bool m_notifyOnUpdate;

@@ -119,7 +119,7 @@ typedef struct SDL_WindowShapeMode {
  * \sa SDL_GetShapedWindowMode.
  */
 extern DECLSPEC int SDLCALL SDL_SetWindowShape (SDL_Window* window,
-        SDL_Surface* shape, SDL_WindowShapeMode* shape_mode);
+                                                SDL_Surface* shape, SDL_WindowShapeMode* shape_mode);
 
 /**
  * \brief Get the shape parameters of a shaped window.

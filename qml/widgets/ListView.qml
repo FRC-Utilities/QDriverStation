@@ -32,10 +32,44 @@ Rectangle {
     color: Globals.Colors.WindowBackground
     border.color: Globals.Colors.WidgetBorder
 
-    ListView {
-        id: view
+    MouseArea {
+        id: mouse
         anchors.fill: parent
-        anchors.margins: Globals.scale (5)
+    }
+
+    Flickable {
+        id: flick
+        clip: true
+        interactive: true
+        contentWidth: parent.width
+        contentHeight: view.contentHeight
+        flickableDirection: Flickable.VerticalFlick
+
+        anchors {
+            fill: parent
+            margins: Globals.scale (5)
+            rightMargin: Globals.scale (16)
+        }
+
+        ListView {
+            id: view
+            anchors.fill: parent
+        }
+    }
+
+    Scrollbar {
+        id: scroll
+        mouseArea: mouse
+        scrollArea: flick
+        height: parent.height
+        width: Globals.scale (8)
+
+        anchors {
+            top: parent.top
+            right: parent.right
+            bottom: parent.bottom
+            margins: Globals.scale (6)
+        }
     }
 
     Behavior on width {

@@ -1,93 +1,87 @@
-﻿/*
- * Copyright (c) 2015-2016 WinT 3794 <http://wint3794.org>
+/*
+ * Copyright (c) 2016 Alex Spataru <alex_spataru@outlook.com>
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * This file is part of the LibDS, which is released under the MIT license.
+ * For more information, please read the LICENSE file in the root directory
+ * of this project.
  */
 
-#include "LibDS/Core/Common.h"
-#include "LibDS/Core/NetConsole.h"
+#include "NetConsole.h"
 
-using namespace DS_Core;
-
-//==================================================================================================
-//NetConsole::DS_NetConsole
-//==================================================================================================
-
-NetConsole::NetConsole (QObject* parent) : QObject (parent) {
-    m_outPort = 0;
-    m_acceptsInput = false;
-    m_bindFlags = QAbstractSocket::ShareAddress;
-    connect (&m_socket, &QUdpSocket::readyRead, this, &NetConsole::readSocket);
+/**
+ * @brief The NetConsole class
+ *
+ * The \c NetConsole allows the client to receive and send broadcasted messages
+ * through the network. These messages are mostly robot logs or simple
+ * client-to-robot commands for diagnostic purposes.
+ */
+NetConsole::NetConsole()
+{
+    m_inputPort = 0;
+    m_outputPort = 0;
+    connect (&m_inputSocket, SIGNAL (readyRead()),
+             this,             SLOT (onReadyRead()));
 }
 
-//==================================================================================================
-//NetConsole::setPort
-//==================================================================================================
-
-void NetConsole::setInputPort (int port) {
-    m_socket.close();
-    m_socket.disconnectFromHost();
-
-    if (port != DS::INVALID_PORT)
-        m_socket.bind (QHostAddress::Any, port, m_bindFlags);
-
-    DS::log (DS::kLibLevel, "NetConsole input port set to: " + QString::number (port));
+/**
+ * Returns the port in which we receive broadcasted robot messages
+ */
+int NetConsole::inputPort() const
+{
+    return m_inputPort;
 }
 
-//==================================================================================================
-//NetConsole::setOutputPort
-//==================================================================================================
-
-void NetConsole::setOutputPort (int port) {
-    m_outPort = port;
-    DS::log (DS::kLibLevel, "NetConsole output port set to: " + QString::number (port));
+/**
+ * Returns the port in which we broadcast commands to the robot
+ */
+int NetConsole::outputPort() const
+{
+    return m_outputPort;
 }
 
-//==================================================================================================
-//NetConsole::sendCommand
-//==================================================================================================
-
-void NetConsole::sendCommand (QString command) {
-    if (m_acceptsInput && m_outPort != DS::INVALID_PORT)
-        m_socket.writeDatagram (command.toUtf8(), QHostAddress::Any, m_outPort);
+/**
+ * Changes the port in which we receive broadcasted robot messages.
+ * If the \a port is set to \c 0, then the \c NetConsole will disable the
+ * input socket.
+ */
+void NetConsole::setInputPort (const int& port)
+{
+    m_inputPort = port;
+    m_inputSocket.close();
+    if (inputPort() > 0) {
+        m_inputSocket.bind (QHostAddress::Any, inputPort(),
+                            QUdpSocket::ShareAddress |
+                            QUdpSocket::ReuseAddressHint);
+    }
 }
 
-//==================================================================================================
-//NetConsole::setAcceptsInput
-//==================================================================================================
-
-void NetConsole::setAcceptsInput (bool accepts_input) {
-    m_acceptsInput = accepts_input;
+/**
+ * Changes the port in which we broadcast commands to the robot.
+ * If the \a port is set to \c 0, then the \c NetConsole will disable the
+ * output socket.
+ */
+void NetConsole::setOutputPort (const int& port)
+{
+    m_outputPort = port;
 }
 
-//==================================================================================================
-//NetConsole::setBindFlags
-//==================================================================================================
-
-void NetConsole::setBindFlags (QAbstractSocket::BindMode flags) {
-    m_bindFlags = flags;
+/**
+ * Broadcasts the given \a message to the robot.
+ * \note the output port must not be \c 0 in order for this to work
+ */
+void NetConsole::sendMessage (const QString& message)
+{
+    if (!message.isEmpty() && outputPort() > 0) {
+        m_outputSocket.writeDatagram (message.toUtf8(),
+                                      QHostAddress::Any,
+                                      outputPort());
+    }
 }
 
-//==================================================================================================
-//NetConsole::readSocket
-//==================================================================================================
-
-void NetConsole::readSocket() {
-    emit newMessage (QString::fromUtf8 (DS::readSocket (&m_socket)));
+/**
+ * Called when the input socket finishes receiving a datagram
+ */
+void NetConsole::onReadyRead()
+{
+    emit newMessage (QString::fromUtf8 (m_inputSocket.readAll()));
 }

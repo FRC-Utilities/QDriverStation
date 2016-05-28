@@ -37,7 +37,8 @@
 // Downloader::Downloader
 //==============================================================================
 
-Downloader::Downloader (QWidget* parent) : QWidget (parent) {
+Downloader::Downloader (QWidget* parent) : QWidget (parent)
+{
     m_ui = new Ui::Downloader;
     m_ui->setupUi (this);
 
@@ -69,7 +70,8 @@ Downloader::Downloader (QWidget* parent) : QWidget (parent) {
 // Downloader::~Downloader
 //==============================================================================
 
-Downloader::~Downloader() {
+Downloader::~Downloader()
+{
     delete m_ui;
     delete m_reply;
     delete m_manager;
@@ -79,7 +81,8 @@ Downloader::~Downloader() {
 // Downloader::useCustomInstallProcedures
 //==============================================================================
 
-bool Downloader::useCustomInstallProcedures() const {
+bool Downloader::useCustomInstallProcedures() const
+{
     return m_useCustomProcedures;
 }
 
@@ -87,7 +90,8 @@ bool Downloader::useCustomInstallProcedures() const {
 // Downloader::startDownload
 //==============================================================================
 
-void Downloader::startDownload (const QUrl& url) {
+void Downloader::startDownload (const QUrl& url)
+{
     /* Reset UI */
     m_ui->progressBar->setValue (0);
     m_ui->stopButton->setText (tr ("Stop"));
@@ -111,7 +115,8 @@ void Downloader::startDownload (const QUrl& url) {
 // Downloader::openDownload
 //==============================================================================
 
-void Downloader::openDownload() {
+void Downloader::openDownload()
+{
     if (!m_filePath.isEmpty()) {
         QString url = m_filePath;
 
@@ -136,7 +141,8 @@ void Downloader::openDownload() {
 // Downloader::installUpdate
 //==============================================================================
 
-void Downloader::installUpdate() {
+void Downloader::installUpdate()
+{
     if (useCustomInstallProcedures())
         return;
 
@@ -167,7 +173,8 @@ void Downloader::installUpdate() {
 // Downloader::cancelDownload
 //==============================================================================
 
-void Downloader::cancelDownload() {
+void Downloader::cancelDownload()
+{
     if (!m_reply->isFinished()) {
         QMessageBox box;
         box.setWindowTitle (tr ("Updater"));
@@ -189,7 +196,8 @@ void Downloader::cancelDownload() {
 // Downloader::onDownloadFinished
 //==============================================================================
 
-void Downloader::onDownloadFinished() {
+void Downloader::onDownloadFinished()
+{
     m_ui->stopButton->setText    (tr ("Close"));
     m_ui->downloadLabel->setText (tr ("Download complete!"));
     m_ui->timeLabel->setText     (tr ("The installer will open separately")
@@ -217,7 +225,8 @@ void Downloader::onDownloadFinished() {
 // Downloader::calculateSizes
 //==============================================================================
 
-void Downloader::calculateSizes (qint64 received, qint64 total) {
+void Downloader::calculateSizes (qint64 received, qint64 total)
+{
     QString totalSize;
     QString receivedSize;
 
@@ -248,7 +257,8 @@ void Downloader::calculateSizes (qint64 received, qint64 total) {
 // Downloader::updateProgress
 //==============================================================================
 
-void Downloader::updateProgress (qint64 received, qint64 total) {
+void Downloader::updateProgress (qint64 received, qint64 total)
+{
     if (total > 0) {
         m_ui->progressBar->setMinimum (0);
         m_ui->progressBar->setMaximum (100);
@@ -273,7 +283,8 @@ void Downloader::updateProgress (qint64 received, qint64 total) {
 // Downloader::calculateTimeRemaining
 //==============================================================================
 
-void Downloader::calculateTimeRemaining (qint64 received, qint64 total) {
+void Downloader::calculateTimeRemaining (qint64 received, qint64 total)
+{
     uint difference = QDateTime::currentDateTime().toTime_t() - m_startTime;
 
     if (difference > 0) {
@@ -301,7 +312,8 @@ void Downloader::calculateTimeRemaining (qint64 received, qint64 total) {
 // Downloader::round
 //==============================================================================
 
-float Downloader::round (const float& input) {
+float Downloader::round (const float& input)
+{
     return roundf (input * 100) / 100;
 }
 
@@ -309,6 +321,7 @@ float Downloader::round (const float& input) {
 // Downloader::setUseCustomInstallProcedures
 //==============================================================================
 
-void Downloader::setUseCustomInstallProcedures (const bool& custom) {
+void Downloader::setUseCustomInstallProcedures (const bool& custom)
+{
     m_useCustomProcedures = custom;
 }

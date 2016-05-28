@@ -59,8 +59,8 @@ Rectangle {
     //
     // The size of the control
     //
-    width: parent.width
     height: text.implicitHeight * 1.5
+    width: parent.width - Globals.scale (16)
 
     //
     // If the control is selected, then its background will be
@@ -132,7 +132,8 @@ Rectangle {
         }
 
         color: {
-            if (blacklistMouse.containsMouse || (mouse.containsMouse && currentJS !== jsIndex))
+            if (blacklistMouse.containsMouse
+                    || (mouse.containsMouse && currentJS !== jsIndex))
                 return Qt.lighter (Globals.Colors.WidgetBackground, 1.2)
 
             else if (currentJS === jsIndex)
@@ -143,14 +144,15 @@ Rectangle {
 
         //
         // The power icon.
-        // When the joystick is disabled, it will be red (to signal that its off).
-        // When the joystick is enabled, it will be green (to signal that its on)
+        // When the joystick is disabled, it will be red (off).
+        // When the joystick is enabled, it will be green (on).
         //
         Icon {
             name: icons.fa_power_off
             anchors.centerIn: parent
-            color: QJoysticks.isBlacklisted (jsIndex) ? Globals.Colors.IndicatorWarning :
-                                                        Globals.Colors.HighlightColor
+            color: QJoysticks.isBlacklisted (jsIndex) ?
+                       Globals.Colors.IndicatorError :
+                       Globals.Colors.HighlightColor
         }
 
         //

@@ -20,36 +20,21 @@
  * THE SOFTWARE.
  */
 
-//==================================================================================================
-// System includes
-//==================================================================================================
-
 #include <QDir>
 #include <QApplication>
 
-//==================================================================================================
-// Application includes
-//==================================================================================================
-
 #include "dashboards.h"
-
-//==================================================================================================
-// Use "Program Files" or "Program Files (x86)"?
-//==================================================================================================
 
 #if defined Q_OS_WIN
 #include <windows.h>
 #define IS_64_BIT true
 #if _WIN32
 #undef  IS_64_BIT
-#define IS_64_BIT GetProcAddress (GetModuleHandle (TEXT ("kernel32")), "IsWow64Process")
+#define IS_64_BIT GetProcAddress (GetModuleHandle (TEXT ("kernel32")),
+"IsWow64Process")
 #endif
 #define PF IS_64_BIT ? "C:/Program Files (x86)" : "C:/Program Files"
 #endif
-
-//==================================================================================================
-// Define the command to open Java JAR applications
-//==================================================================================================
 
 #if defined Q_OS_WIN
 #define JAVA_OPEN "java -jar"
@@ -59,19 +44,13 @@
 #define JAVA_OPEN "java -jar"
 #endif
 
-//==================================================================================================
-// Dashboard::Dashboard
-//==================================================================================================
-
-Dashboards::Dashboards() {
+Dashboards::Dashboards()
+{
     connect (qApp, &QApplication::aboutToQuit, this, &Dashboards::closeDashboard);
 }
 
-//==================================================================================================
-// Dashboard::dashboardList
-//==================================================================================================
-
-QStringList Dashboards::dashboardList() {
+QStringList Dashboards::dashboardList()
+{
     QStringList list;
     list.append (tr ("None"));
     list.append (tr ("SFX Dashboard"));
@@ -84,11 +63,13 @@ QStringList Dashboards::dashboardList() {
     return list;
 }
 
-//==================================================================================================
-// Dashboard::openDashboard
-//==================================================================================================
+void Dashboards::closeDashboard()
+{
+    m_process.close();
+}
 
-void Dashboards::openDashboard (int dashboard) {
+void Dashboards::openDashboard (int dashboard)
+{
     QString path;
     QString home = QDir::homePath();
 
@@ -97,7 +78,8 @@ void Dashboards::openDashboard (int dashboard) {
         path = QString ("%1 \"%2/wpilib/tools/sfx.jar\"").arg (JAVA_OPEN, home);
         break;
     case kSmartDashboard:
-        path = QString ("%1 \"%2/wpilib/tools/SmartDashboard.jar\"").arg (JAVA_OPEN , home);
+        path = QString ("%1 \"%2/wpilib/tools/SmartDashboard.jar\"")
+               .arg (JAVA_OPEN , home);
         break;
 #if defined Q_OS_WIN
     case kLabVIEWDashboard:
@@ -110,12 +92,4 @@ void Dashboards::openDashboard (int dashboard) {
 
     closeDashboard();
     m_process.start (path);
-}
-
-//==================================================================================================
-// Dashboard::closeDashboard
-//==================================================================================================
-
-void Dashboards::closeDashboard() {
-    m_process.close();
 }

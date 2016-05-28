@@ -25,23 +25,14 @@
 
 #include <QProcess>
 
-///
-/// This class is in charge of opening, managing and closing
-/// an FRC dashboard process.
-///
-/// There is no hidden magic here, we just use the \c QProcess
-/// class to open and close each Dashboard.
-///
-class Dashboards : public QObject {
+class Dashboards : public QObject
+{
     Q_OBJECT
     Q_ENUMS (DashboardTypes)
 
-  public:
+public:
     explicit Dashboards();
 
-    ///
-    /// Represents the available dashboard types
-    ///
     enum DashboardTypes {
         kNone = 0,
         kSFXDashboard = 1,
@@ -49,25 +40,13 @@ class Dashboards : public QObject {
         kLabVIEWDashboard = 3,
     };
 
-    ///
-    /// Returns a list with the available dashboards.
-    /// This list must have the same order as the
-    /// values specified in the \c DashboardTypes enum.
-    ///
     Q_INVOKABLE QStringList dashboardList();
 
-  public slots:
-    ///
-    /// Uses \c QProcess to open the selected dashboard process.
-    ///
+public slots:
+    void closeDashboard();
     void openDashboard (int dashboard = 0);
 
-    ///
-    /// Closes the current dashboard process.
-    ///
-    void closeDashboard();
-
-  private:
+private:
     QProcess m_process;
 };
 

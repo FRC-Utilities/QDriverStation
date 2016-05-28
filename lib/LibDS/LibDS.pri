@@ -26,7 +26,7 @@ CODECFORTR = UTF-8
 CODECFORSRC = UTF-8
 
 CONFIG += c++11
-INCLUDEPATH += $$PWD/include
+INCLUDEPATH += $$PWD/src
 
 QT += core
 QT += network
@@ -34,30 +34,28 @@ QT += widgets
 QT += multimedia
 
 HEADERS += \
-    $$PWD/include/LibDS.h \
-    $$PWD/include/LibDS/DriverStation.h \
-    $$PWD/include/LibDS/Core/Common.h \
-    $$PWD/include/LibDS/Core/ElapsedTimer.h \
-    $$PWD/include/LibDS/Core/Library.h \
-    $$PWD/include/LibDS/Core/NetConsole.h \
-    $$PWD/include/LibDS/Core/Watchdog.h \
-    $$PWD/include/LibDS/Protocols/FRC_2016.h \
-    $$PWD/include/LibDS/Protocols/FRC_2015.h \
-    $$PWD/include/LibDS/Protocols/FRC_2014.h \
-    $$PWD/include/LibDS/Core/AbstractProtocol.h \
-    $$PWD/include/LibDS/Core/SocketManager.h \
-    $$PWD/include/LibDS/Utilities/CRC32.h
+    $$PWD/src/Core/NetConsole.h \
+    $$PWD/src/Core/Protocol.h \
+    $$PWD/src/Core/Sockets.h \
+    $$PWD/src/Core/Watchdog.h \
+    $$PWD/src/Protocols/FRC_2014.h \
+    $$PWD/src/Protocols/FRC_2015.h \
+    $$PWD/src/Protocols/FRC_2016.h \
+    $$PWD/src/Utilities/CRC32.h \
+    $$PWD/src/DriverStation.h \
+    $$PWD/src/Core/DS_Base.h \
+    $$PWD/src/Core/DS_Config.h \
+    $$PWD/src/Core/ConfigurableSocket.h \
+    $$PWD/src/Core/DS_Common.h
 
 SOURCES += \
-    $$PWD/src/DriverStation.cpp \
-    $$PWD/src/Core/Common.cpp \
-    $$PWD/src/Core/ElapsedTimer.cpp \
     $$PWD/src/Core/NetConsole.cpp \
+    $$PWD/src/Core/Sockets.cpp \
     $$PWD/src/Core/Watchdog.cpp \
-    $$PWD/src/Protocols/FRC_2015.cpp \
     $$PWD/src/Protocols/FRC_2014.cpp \
-    $$PWD/src/Core/AbstractProtocol.cpp \
-    $$PWD/src/Core/SocketManager.cpp \
-    $$PWD/src/Utilities/CRC32.cpp
-
-RESOURCES += $$PWD/etc/sounds/libds-sounds.qrc
+    $$PWD/src/Protocols/FRC_2015.cpp \
+    $$PWD/src/Protocols/FRC_2016.cpp \
+    $$PWD/src/Utilities/CRC32.cpp \
+    $$PWD/src/DriverStation.cpp \
+    $$PWD/src/Core/DS_Config.cpp \
+    $$PWD/src/Core/ConfigurableSocket.cpp

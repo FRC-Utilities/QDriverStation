@@ -38,12 +38,9 @@ Item {
     // Regenerate the button, axis and POV indicators for the selected joystick
     //
     function regenerateControls() {
-        axes.model = 0
-        povs.model = 0
-        buttons.model = 0
-        axes.model = QJoysticks.getNumAxes (currentJoystick)
-        povs.model = QJoysticks.getNumPOVs (currentJoystick)
-        buttons.model = QJoysticks.getNumButtons (currentJoystick)
+        axes.model = DriverStation.getNumAxes (currentJoystick)
+        povs.model = DriverStation.getNumPOVs (currentJoystick)
+        buttons.model = DriverStation.getNumButtons (currentJoystick)
     }
 
     //
@@ -70,6 +67,20 @@ Item {
     }
 
     //
+    // Calculates the minimum width for the left tab
+    //
+    function getMinimumWidth() {
+        return width;
+    }
+
+    //
+    // Used for determining height of axis and button indicators
+    //
+    function getWidgetHeight (input) {
+        return joysticks.height * 0.7 / input
+    }
+
+    //
     // Regenerate the UI when a joystick is removed or attached and
     // update DriverStation joysticks
     //
@@ -82,16 +93,21 @@ Item {
             /* Register joysticks with DS */
             DriverStation.resetJoysticks()
             for (var i = 0; i < QJoysticks.count(); ++i) {
-                DriverStation.addJoystick (QJoysticks.getNumAxes (i),
-                                           QJoysticks.getNumButtons (i),
-                                           QJoysticks.getNumPOVs (i))
+                DriverStation.registerJoystick (QJoysticks.getNumAxes (i),
+                                                QJoysticks.getNumButtons (i),
+                                                QJoysticks.getNumPOVs (i))
             }
         }
 
         /* Send joystick input data to DS */
-        onPovChanged: DriverStation.updateJoystickPOV (js, pov, angle)
-        onAxisChanged: DriverStation.updateJoystickAxis (js, axis, value)
-        onButtonChanged: DriverStation.updateJoystickButton (js, button, pressed)
+        onPovChanged: DriverStation.updatePOV (js, pov, angle)
+        onAxisChanged: DriverStation.updateAxis (js, axis, value)
+        onButtonChanged: DriverStation.updateButton (js, button, pressed)
+    }
+
+    Connections {
+        target: DriverStation
+        onJoystickCountChanged: regenerateControls()
     }
 
     //
@@ -100,8 +116,8 @@ Item {
     onCurrentJoystickChanged: joysticks.regenerateControls()
 
     //
-    // Initialize the QJoysticks system and call updateControls(), which will help
-    // us in the case that the virtual joystick is enabled
+    // Initialize the QJoysticks system and call updateControls(), which will
+    // help us in the case that the virtual joystick is enabled
     //
     Component.onCompleted: joysticks.updateControls()
 
@@ -185,7 +201,8 @@ Item {
             ListView {
                 id: listView
                 Layout.fillWidth: true
-                Layout.minimumHeight: axes.model * Globals.scale (19)
+                Layout.fillHeight: true
+                Layout.minimumHeight: joysticks.height * 0.8
 
                 delegate: JoystickItem {
                     jsIndex: index
@@ -198,7 +215,8 @@ Item {
                     }
 
                     onBlacklistedChanged: {
-                        QJoysticks.setBlacklisted (jsIndex, !QJoysticks.isBlacklisted (jsIndex))
+                        var blacklisted = !QJoysticks.isBlacklisted (jsIndex)
+                        QJoysticks.setBlacklisted (jsIndex, blacklisted)
                         updateControls()
                     }
                 }
@@ -231,6 +249,8 @@ Item {
             // Dynamic list of progressbars for each joystick
             //
             ColumnLayout {
+                id: axesCol
+                Layout.fillHeight: true
                 spacing: Globals.scale (1)
 
                 Repeater {
@@ -240,17 +260,19 @@ Item {
                         minimumValue: 0
                         maximumValue: 200
                         width: Globals.scale (72)
-                        height: Globals.scale (18)
                         text: qsTr ("Axis") + " " + index
-                        barColor: QJoysticks.isBlacklisted (currentJoystick) ? Globals.Colors.IndicatorWarning :
-                                                                               Globals.Colors.HighlightColor
+                        height: getWidgetHeight (axes.model)
+                        barColor: QJoysticks.isBlacklisted (currentJoystick) ?
+                                      Globals.Colors.Background :
+                                      Globals.Colors.HighlightColor
 
                         Component.onCompleted: value = maximumValue / 2
 
                         Connections {
                             target: QJoysticks
                             onAxisChanged: {
-                                if (joysticks.currentJoystick === js && index === axis)
+                                if (joysticks.currentJoystick === js
+                                    && index === axis)
                                     progressbar.value = (value + 1) * 100
                             }
                         }
@@ -287,36 +309,37 @@ Item {
             //
             GridLayout {
                 id: grid
-                rows: axes.model
+                rows: buttons.model / 2
                 flow: GridLayout.TopToBottom
                 rowSpacing: Globals.scale (1)
                 columnSpacing: Globals.scale (1)
 
                 Repeater {
                     id: buttons
-                    delegate: LED {
-                        id: led_button
-                        implicitWidth: ledWidth
-                        implicitHeight: ledHeight
-                        ledWidth: Globals.scale (28)
-                        ledHeight: Globals.scale (18)
-                        poweredColor: Globals.Colors.IndicatorGood
-                        unpoweredColor: Globals.Colors.WindowBackground
 
-                        Label {
-                            anchors.fill: parent
-                            text: "      " + index
-                            anchors.centerIn: parent
-                            verticalAlignment: Text.AlignVCenter
-                            color: led_button.checked ? Globals.Colors.TextAreaForeground :
-                                                        Globals.Colors.WidgetForeground
-                        }
+                    //
+                    // You did not expect a button to be represented with a
+                    // progressbar? Neither did I first wrote this, but this
+                    // is by far the easiest and simplest way to center the
+                    // label on a 'LED'.
+                    // The minimum and maximum values are set to 0 and 1
+                    // respectively, to disguise a progressbar into a checkbox.
+                    //
+                    delegate: Progressbar {
+                        id: button
+                        minimumValue: 0
+                        maximumValue: 1
+
+                        text: index
+                        width: Globals.scale (28)
+                        height: getWidgetHeight (axes.model)
 
                         Connections {
                             target: QJoysticks
                             onButtonChanged: {
-                                if (joysticks.currentJoystick === js && button === index)
-                                    led_button.checked = pressed
+                                if (joysticks.currentJoystick === js
+                                    && button === index)
+                                    value = pressed ? 1 : 0
                             }
                         }
                     }
@@ -364,7 +387,8 @@ Item {
                         Connections {
                             target: QJoysticks
                             onPovChanged: {
-                                if (joysticks.currentJoystick === js && pov === index)
+                                if (joysticks.currentJoystick === js
+                                    && pov === index)
                                     spinbox.value = angle
                             }
                         }

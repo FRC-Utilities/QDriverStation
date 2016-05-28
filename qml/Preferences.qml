@@ -43,8 +43,6 @@ RowLayout {
     }
 
     Component.onCompleted: {
-        DriverStation.setTeamNumber (teamNumber.value)
-        DriverStation.setProtocol (protocol.currentIndex)
         cDashboard.openDashboard (dashboard.currentIndex)
     }
 
@@ -63,7 +61,7 @@ RowLayout {
             maximumValue: 9999
             Layout.fillWidth: true
             value: DriverStation.team()
-            onValueChanged: DriverStation.setTeamNumber (value)
+            onValueChanged: DriverStation.setTeam (value)
         }
 
         Label {
@@ -91,7 +89,7 @@ RowLayout {
             id: protocol
             Layout.fillWidth: true
             model: DriverStation.protocols()
-            onCurrentIndexChanged: DriverStation.setProtocol (currentIndex)
+            onCurrentIndexChanged: DriverStation.setProtocolType (currentIndex)
         }
     }
 
