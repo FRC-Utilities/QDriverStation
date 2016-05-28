@@ -56,6 +56,10 @@ DriverStation::DriverStation()
              this,     SIGNAL (cpuUsageChanged (int)));
     connect (config(), SIGNAL (diskUsageChanged (int, int)),
              this,     SIGNAL (diskUsageChanged (int, int)));
+    connect (config(), SIGNAL (elapsedTimeChanged (int)),
+             this,     SIGNAL (elapsedTimeChanged (int)));
+    connect (config(), SIGNAL (elapsedTimeChanged (QString)),
+             this,     SIGNAL (elapsedTimeChanged (QString)));
     connect (config(), SIGNAL (enabledChanged (EnableStatus)),
              this,     SIGNAL (enabledChanged (EnableStatus)));
     connect (config(), SIGNAL (fmsCommStatusChanged (CommStatus)),

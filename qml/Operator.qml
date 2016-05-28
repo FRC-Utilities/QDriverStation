@@ -56,7 +56,7 @@ RowLayout {
         target: DriverStation
         onEnabledChanged: enable.checked = DriverStation.isEnabled()
         onControlModeChanged: enable.checked = false
-        onElapsedTimeChanged: elapsedTime.text = time
+        onElapsedTimeChanged: elapsedTime.text = string
     }
 
     //
