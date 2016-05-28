@@ -43,6 +43,7 @@ Window {
     // Window properties
     //
     visible: false
+    flags: Qt.Dialog
     color: Globals.Colors.WindowBackground
     title: qsTr ("Virtual Joystick Options")
 

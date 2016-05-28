@@ -48,12 +48,13 @@ Rectangle {
         anchors {
             fill: parent
             margins: Globals.scale (5)
-            rightMargin: Globals.scale (16)
+            rightMargin: scroll.width + Globals.scale (8)
         }
 
         ListView {
             id: view
             anchors.fill: parent
+            anchors.rightMargin: flick.anchors.rightMargin
         }
     }
 
@@ -62,7 +63,9 @@ Rectangle {
         mouseArea: mouse
         scrollArea: flick
         height: parent.height
-        width: Globals.scale (8)
+        width: opacity > 0 ? Globals.scale (8) : 0
+
+        Behavior on width {NumberAnimation{}}
 
         anchors {
             top: parent.top

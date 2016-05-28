@@ -31,6 +31,7 @@ import "globals.js" as Globals
 Window {
     id: window
     visible: false
+    flags: Qt.Dialog
     title: qsTr ("Settings")
     minimumWidth: Globals.scale (420)
     minimumHeight: Globals.scale (460)

@@ -60,7 +60,10 @@ Rectangle {
     // The size of the control
     //
     height: text.implicitHeight * 1.5
-    width: parent.width - Globals.scale (16)
+    anchors {
+        left: parent.left
+        right: parent.right
+    }
 
     //
     // If the control is selected, then its background will be

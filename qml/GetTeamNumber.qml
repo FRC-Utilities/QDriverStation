@@ -31,8 +31,12 @@ import "globals.js" as Globals
 Window {
     id: dialog
     title: appDspName
-    modality: Qt.WindowModal
     color: Globals.Colors.WindowBackground
+
+    //
+    // Window flags
+    //
+    flags: Qt.Tool | Qt.WindowStaysOnTopHint
 
     //
     // Set window geometry

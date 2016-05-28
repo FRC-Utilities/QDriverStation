@@ -46,6 +46,11 @@ RowLayout {
         cDashboard.openDashboard (dashboard.currentIndex)
     }
 
+    Connections {
+        target: DriverStation
+        onTeamChanged: if (teamNumber.value !== team) teamNumber.value = team
+    }
+
     ColumnLayout {
         spacing: Globals.scale (5)
         Layout.maximumWidth: parent.width * 0.5
