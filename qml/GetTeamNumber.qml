@@ -34,17 +34,21 @@ Window {
     color: Globals.Colors.WindowBackground
 
     //
-    // Window flags
-    //
-    flags: Qt.WindowStaysOnTopHint
-
-    //
     // Set window geometry
     //
     minimumWidth: Globals.scale (320)
-    maximumWidth: Globals.scale (320)
+    maximumWidth: Globals.scale (302)
     minimumHeight: Globals.scale (102)
     maximumHeight: Globals.scale (102)
+
+    //
+    // Set window flags
+    //
+    flags: Qt.Window |
+           Qt.WindowTitleHint |
+           Qt.WindowStaysOnTopHint |
+           Qt.WindowSystemMenuHint |
+           Qt.WindowCloseButtonHint
 
     //
     // If this value is set to true, the window will show on application
@@ -81,6 +85,7 @@ Window {
             minimumValue: 0
             maximumValue: 9999
             Layout.fillWidth: true
+            Layout.fillHeight: false
         }
 
         RowLayout {

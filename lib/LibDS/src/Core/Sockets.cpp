@@ -49,11 +49,11 @@ Sockets::~Sockets()
  */
 int Sockets::socketCount() const
 {
-    if (m_socketCount > 0)
-        return m_socketCount;
+    if (customSocketCount() > 0)
+        return customSocketCount();
 
     else
-        return qMax (robotIpList().count() / 8, 4);
+        return qMax (robotIpList().count() / 6, 4);
 }
 
 /**
@@ -102,6 +102,16 @@ int Sockets::radioOutputPort() const
 int Sockets::robotOutputPort() const
 {
     return m_robotOutput;
+}
+
+/**
+ * Returns the custom socket count set by the client or user. If this value
+ * is equal to zero, then this class will calculate an value appropiate to
+ * the size of the robot IPs list.
+ */
+int Sockets::customSocketCount() const
+{
+    return m_socketCount;
 }
 
 /**

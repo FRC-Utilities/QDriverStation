@@ -864,7 +864,8 @@ void DriverStation::setProtocol (Protocol* protocol)
                          + "</font>");
 
         /* Tell client how much time is needed for detecting robot */
-        calculateScanSpeed();
+        if (m_sockets->customSocketCount() == 0)
+            calculateScanSpeed();
     }
 }
 
@@ -959,6 +960,12 @@ void DriverStation::setControlMode (const ControlMode& mode)
 void DriverStation::setParallelSocketCount (const int& count)
 {
     m_sockets->setSocketCount (count);
+
+    bool isSetByUser = (count > 0) |
+                       (count <= 0 && m_sockets->customSocketCount() > 0);
+
+    if (m_init && isSetByUser)
+        calculateScanSpeed();
 }
 
 /**

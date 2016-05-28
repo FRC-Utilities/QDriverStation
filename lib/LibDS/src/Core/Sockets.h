@@ -27,6 +27,8 @@ public:
     int radioOutputPort() const;
     int robotOutputPort() const;
 
+    int customSocketCount() const;
+
     QString radioIp() const;
     QString robotIp() const;
     QStringList robotIpList() const;

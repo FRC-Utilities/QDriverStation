@@ -35,9 +35,16 @@ ApplicationWindow {
     //
     // If set to true, the window will dock to the bottom of the screen
     //
-    property int oldX
-    property int oldY
     property bool docked: false
+
+    //
+    // Set window flags
+    //
+    flags: Qt.Window |
+           Qt.WindowTitleHint |
+           Qt.WindowSystemMenuHint |
+           Qt.WindowCloseButtonHint |
+           Qt.WindowMinimizeButtonHint
 
     //
     // Display the virtual joystick window (from anywhere in the app)
@@ -57,32 +64,19 @@ ApplicationWindow {
     // The actual docking procedures
     //
     function updateWindowMode() {
-        width = 0
-
         if (docked) {
-            if (x == oldX && y == oldY) {
-                oldX = x
-                oldY = y
-            }
-
-            x = 0
-            width = Screen.desktopAvailableWidth
-            y = Screen.desktopAvailableHeight - height
-        }
-
-        else {
+            showMaximized()
+        } else {
+            showNormal()
             width = minimumWidth
-
-            x = oldX
-            y = oldY
         }
     }
 
     //
     // Save window position if the window is not docked
     //
-    onXChanged: oldX = docked ? oldX : x
-    onYChanged: oldY = docked ? oldY : y
+    x: 100
+    y: 100
 
     //
     // Define the size of the window
@@ -131,8 +125,6 @@ ApplicationWindow {
         category: "MainWindow"
         property alias x: window.x
         property alias y: window.y
-        property alias oldX: window.oldX
-        property alias oldY: window.oldY
         property alias docked: window.docked
     }
 
