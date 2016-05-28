@@ -127,7 +127,8 @@ Item {
         onProtocolChanged: robotVoltage = Globals.invalidStr
         onCodeStatusChanged: codeLed.checked = DriverStation.isRobotCodeRunning()
         onRobotCommStatusChanged: communicationsLed.checked = DriverStation.isConnectedToRobot()
-        onVoltageChanged: robotVoltage = DriverStation.isConnected() ? voltageString : Globals.invalidStr
+        onVoltageChanged: robotVoltage = DriverStation.isConnectedToRobot() ?
+                              voltageString : Globals.invalidStr
     }
 
     //

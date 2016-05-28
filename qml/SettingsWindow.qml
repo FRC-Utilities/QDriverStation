@@ -41,14 +41,14 @@ Window {
     //
     function apply() {
         /* Set the placeholder */
-        customAddress.placeholder = DriverStation.defaultRobotAddress()
+        customAddress.placeholder = DriverStation.robotAddress()
 
         /* Set the PSC limit */
         if (pcsCheckbox.checked && pcs.value > 0)
-            DriverStation.setPSC (pcs.value)
+            DriverStation.setParallelSocketCount (pcs.value)
         else {
             pcs.value = 0
-            DriverStation.setPSC (0)
+            DriverStation.setParallelSocketCount (0)
         }
 
         /* Clear the custom robot address if needed */
@@ -56,7 +56,7 @@ Window {
             customAddress.text = ""
 
         /* Apply the robot address */
-        DriverStation.setRobotAddress (customAddress.text)
+        DriverStation.setCustomRobotAddress (customAddress.text)
     }
 
     //
