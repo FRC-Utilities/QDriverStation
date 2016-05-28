@@ -255,6 +255,8 @@ void Sockets::setRobotIp (const QString& ip)
  */
 void Sockets::setRobotIpList (const QStringList& list)
 {
+    m_robotIpList.clear();
+
     m_robotIpList = list;
     generateLocalNetworkAddresses();
 }
@@ -529,12 +531,5 @@ void Sockets::generateLocalNetworkAddresses()
         }
     }
 
-    QStringList validated;
-    foreach (QString ip, m_robotIpList) {
-        if (QHostAddress (ip).protocol() == QAbstractSocket::IPv4Protocol)
-            validated.append (ip);
-    }
-
-    m_robotIpList = validated;
     generateSocketPairs();
 }

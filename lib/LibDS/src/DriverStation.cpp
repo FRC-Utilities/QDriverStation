@@ -1163,10 +1163,8 @@ void DriverStation::calculateScanSpeed()
                        "</font>";
 
     if (protocol() && running()) {
-        int time = 0;
-        time += m_sockets->robotIpList().count();
+        int time = m_sockets->robotIpList().count() / m_sockets->socketCount();
         time *= m_robotWatchdog->expirationTime();
-        time /= m_sockets->socketCount();
         time /= 1000;
 
         emit newMessage (pscCount.arg (m_sockets->socketCount()));
