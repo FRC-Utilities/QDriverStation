@@ -107,6 +107,9 @@ public slots:
     void disableRobot();
     void resetJoysticks();
     void restartRobotCode();
+    void switchToTestMode();
+    void switchToAutonomous();
+    void switchToTeleoperated();
     void setTeam (const int& team);
     void removeJoystick (const int& id);
     void setEnabled (const bool& enabled);

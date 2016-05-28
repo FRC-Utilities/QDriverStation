@@ -124,8 +124,8 @@ RowLayout {
                     parent.uncheckEverything()
                     checked = true
 
-                    DriverStation.setEnabled (DriverStation.kRobotDisabled)
-                    DriverStation.setControlMode (DriverStation.kControlTeleoperated)
+                    disable.checked = true
+                    DriverStation.switchToTeleoperated()
                 }
             }
 
@@ -143,8 +143,8 @@ RowLayout {
                     parent.uncheckEverything()
                     checked = true
 
-                    DriverStation.setEnabled (DriverStation.kRobotDisabled)
-                    DriverStation.setControlMode (DriverStation.kControlAutonomous)
+                    disable.checked = true
+                    DriverStation.switchToAutonomous()
                 }
             }
 
@@ -179,8 +179,8 @@ RowLayout {
                     parent.uncheckEverything()
                     checked = true
 
-                    DriverStation.setEnabled (DriverStation.kRobotDisabled)
-                    DriverStation.setControlMode (DriverStation.kControlTest)
+                    disable.checked = true
+                    DriverStation.switchToTestMode()
                 }
             }
         }

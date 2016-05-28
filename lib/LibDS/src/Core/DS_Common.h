@@ -40,9 +40,9 @@ public:
      * Represents the available control modes of the robot
      */
     enum ControlMode {
-        kControlTest,
-        kControlAutonomous,
-        kControlTeleoperated
+        kControlTest         = 0,
+        kControlAutonomous   = 1,
+        kControlTeleoperated = 2,
     };
 
     /**
@@ -52,8 +52,8 @@ public:
      * (e.g adjust its sensors, change dashboard values, etc.)
      */
     enum Alliance {
-        kAllianceRed,
-        kAllianceBlue
+        kAllianceRed  = 0,
+        kAllianceBlue = 1,
     };
 
     /**
@@ -62,9 +62,9 @@ public:
      * Again, the robot program may use this data to change its behavior.
      */
     enum Position {
-        kPosition1,
-        kPosition2,
-        kPosition3
+        kPosition1 = 0,
+        kPosition2 = 1,
+        kPosition3 = 2,
     };
 
     /**
@@ -73,8 +73,8 @@ public:
      * the client and the radio.
      */
     enum CommStatus {
-        kCommsWorking,
-        kCommsFailing
+        kCommsWorking = 0,
+        kCommsFailing = 1,
     };
 
     /**
@@ -83,8 +83,8 @@ public:
      * the code is running or not (in order to be able to operate the robot).
      */
     enum CodeStatus {
-        kCodeRunning,
-        kCodeFailing
+        kCodeRunning = 0,
+        kCodeFailing = 1,
     };
 
     /**
@@ -92,8 +92,8 @@ public:
      * Represents the enabled state of the robot.
      */
     enum EnableStatus {
-        kEnabled,
-        kDisabled
+        kEnabled  = 0,
+        kDisabled = 1,
     };
 
     /**
@@ -101,8 +101,8 @@ public:
      * Represents the operation status of the robot.
      */
     enum OperationStatus {
-        kOperationNormal,
-        kOperationEmergencyStop
+        kOperationNormal        = 0,
+        kOperationEmergencyStop = 1,
     };
 
     /**
@@ -112,16 +112,16 @@ public:
      * the robot may report a voltage brownout.
      */
     enum VoltageStatus {
-        kVoltageNormal,
-        kVoltageBrownout
+        kVoltageNormal   = 0,
+        kVoltageBrownout = 1,
     };
 
     /**
      * Represents the socket types that can be used by the DS modules
      */
     enum SocketType {
-        kSocketTypeUDP,
-        kSocketTypeTCP
+        kSocketTypeUDP = 0,
+        kSocketTypeTCP = 1,
     };
 
     /**

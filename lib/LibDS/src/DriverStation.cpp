@@ -747,6 +747,33 @@ void DriverStation::restartRobotCode()
 }
 
 /**
+ * Disables the robot and changes the control mode to \c kControlTest
+ */
+void DriverStation::switchToTestMode()
+{
+    setEnabled (DS::kDisabled);
+    setControlMode (DS::kControlTest);
+}
+
+/**
+ * Disables the robot and changes the control mode to \c kControlAutonomous
+ */
+void DriverStation::switchToAutonomous()
+{
+    setEnabled (DS::kDisabled);
+    setControlMode (DS::kControlAutonomous);
+}
+
+/**
+ * Disables the robot and changes the control mode to \c kControlTeleoperated
+ */
+void DriverStation::switchToTeleoperated()
+{
+    setEnabled (DS::kDisabled);
+    setControlMode (DS::kControlTeleoperated);
+}
+
+/**
  * Changes the team number
  */
 void DriverStation::setTeam (const int& team)
