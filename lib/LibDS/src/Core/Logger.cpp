@@ -15,12 +15,12 @@
 
 FILE* DUMP;
 QElapsedTimer TIMER;
-bool FIRST_FUNCTN_CALL = false;
+bool INITIALIZED = false;
 const char* PRINT_FMT  = "%-14s %-13s %-12s\n";
 const QString TIME_FMT = "dd-MMM-yyyy HH:mm:ss";
 const QString DUMP_FMT = "yyyy-MMM-dd HH-mm-ss ddd";
 
-QString repeat (QString input, int reps)
+QString REPEAT (QString input, int reps)
 {
     QString string;
 
@@ -30,59 +30,67 @@ QString repeat (QString input, int reps)
     return string;
 }
 
+QString LOGGER_PATH()
+{
+#ifdef Q_OS_WIN
+    QString baseFolder = "/%1/Logs";
+#else
+    QString baseFolder = "/.%1/Logs";
+#endif
+
+    QDir path (QDir::homePath() + baseFolder.arg (qApp->applicationName()));
+
+    if (!path.exists())
+        path.mkpath (".");
+
+    return path.absolutePath();
+}
+
+void INIT_LOGGER()
+{
+    TIMER.start();
+
+    /* Construct file name */
+    QString name = QDateTime::currentDateTime().toString (DUMP_FMT);
+    QString fpath = LOGGER_PATH() + "/" + name + ".log";
+
+    /* Open the dump file */
+    DUMP = fopen (fpath.toStdString().c_str(), "a");
+    if (!DUMP) DUMP = stdout;
+
+    /* Get app info */
+    QString appN = qApp->applicationName();
+    QString appV = qApp->applicationVersion();
+    QString time = QDateTime::currentDateTime().toString (TIME_FMT);
+
+    /* Format app info */
+    time.prepend ("Log created on:      ");
+    appN.prepend ("Application name:    ");
+    appV.prepend ("Application version: ");
+
+    /* Append app info */
+    fprintf (DUMP, "%s\n",   time.toStdString().c_str());
+    fprintf (DUMP, "%s\n",   appN.toStdString().c_str());
+    fprintf (DUMP, "%s\n\n", appV.toStdString().c_str());
+
+    /* Start the table header */
+    fprintf (DUMP, PRINT_FMT, "ELAPSED TIME", "ERROR LEVEL", "MESSAGE");
+    fprintf (DUMP, PRINT_FMT,
+             REPEAT ("-", 14).toStdString().c_str(),
+             REPEAT ("-", 13).toStdString().c_str(),
+             REPEAT ("-", 32).toStdString().c_str());
+
+    INITIALIZED = true;
+}
+
 void DS_MESSAGE_HANDLER (QtMsgType type, const QMessageLogContext& context,
                          const QString& message)
 {
     Q_UNUSED (context);
 
     /* First call, create log file */
-    if (!FIRST_FUNCTN_CALL) {
-        TIMER.start();
-
-        /* Get log dumps folder */
-#ifdef Q_OS_WIN
-        QString baseFolder = "/%1/Logs";
-#else
-        QString baseFolder = "/.%1/Logs";
-#endif
-        QDir path (QDir::homePath() + baseFolder.arg (qApp->applicationName()));
-
-        /* Create log dump directories if required */
-        if (!path.exists())
-            path.mkpath (".");
-
-        /* Construct file name */
-        QString name = QDateTime::currentDateTime().toString (DUMP_FMT);
-        QString fpath = path.absolutePath() + "/" + name + ".log";
-
-        /* Open the dump file */
-        DUMP = fopen (fpath.toStdString().c_str(), "a");
-        if (!DUMP) DUMP = stdout;
-
-        /* Get app info */
-        QString appN = qApp->applicationName();
-        QString appV = qApp->applicationVersion();
-        QString time = QDateTime::currentDateTime().toString (TIME_FMT);
-
-        /* Format app info */
-        time.prepend ("Log created on:      ");
-        appN.prepend ("Application name:    ");
-        appV.prepend ("Application version: ");
-
-        /* Append app info */
-        fprintf (DUMP, "%s\n",   time.toStdString().c_str());
-        fprintf (DUMP, "%s\n",   appN.toStdString().c_str());
-        fprintf (DUMP, "%s\n\n", appV.toStdString().c_str());
-
-        /* Start the table header */
-        fprintf (DUMP, PRINT_FMT, "ELAPSED TIME", "ERROR LEVEL", "MESSAGE");
-        fprintf (DUMP, PRINT_FMT,
-                 repeat ("-", 14).toStdString().c_str(),
-                 repeat ("-", 13).toStdString().c_str(),
-                 repeat ("-", 32).toStdString().c_str());
-
-        FIRST_FUNCTN_CALL = true;
-    }
+    if (!INITIALIZED)
+        INIT_LOGGER();
 
     /* Get elapsed time */
     quint32 msec = TIMER.elapsed();
@@ -116,13 +124,11 @@ void DS_MESSAGE_HANDLER (QtMsgType type, const QMessageLogContext& context,
     }
 
     /* Write log message to file and console */
-    fprintf (DUMP,
-             PRINT_FMT,
+    fprintf (DUMP, PRINT_FMT,
              time.toStdString().c_str(),
              level.toStdString().c_str(),
              message.toStdString().c_str());
-    fprintf (stderr,
-             PRINT_FMT,
+    fprintf (stderr, PRINT_FMT,
              time.toStdString().c_str(),
              level.toStdString().c_str(),
              message.toStdString().c_str());

@@ -238,6 +238,14 @@ bool DriverStation::isRobotCodeRunning() const
 }
 
 /**
+ * Returns the path in which log files are stored
+ */
+QString DriverStation::loggerPath() const
+{
+    return LOGGER_PATH();
+}
+
+/**
  * Returns the current battery voltage of the robot
  */
 float DriverStation::currentBatteryVoltage() const

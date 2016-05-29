@@ -47,6 +47,7 @@ ColumnLayout {
 
         Button {
             text: qsTr ("Logs") + "..."
+            onClicked: Qt.openUrlExternally ("file:///" + DriverStation.loggerPath())
         }
 
         Item {

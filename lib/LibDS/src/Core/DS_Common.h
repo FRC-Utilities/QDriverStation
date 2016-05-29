@@ -19,6 +19,11 @@
 #define JoystickList QList<DS::Joystick*>
 
 /**
+ * Returns the location in where the log files are stored
+ */
+QString LOGGER_PATH();
+
+/**
  * This function implements our own logger engine. Feel free to enable
  * it if you want!
  *

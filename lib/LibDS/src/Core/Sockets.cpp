@@ -563,5 +563,6 @@ void Sockets::generateLocalNetworkAddresses()
         }
     }
 
+    m_robotIpList.append ("127.0.0.1");
     generateSocketPairs();
 }
