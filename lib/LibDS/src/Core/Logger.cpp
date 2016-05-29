@@ -39,8 +39,15 @@ void DS_MESSAGE_HANDLER (QtMsgType type, const QMessageLogContext& context,
     if (!FIRST_FUNCTN_CALL) {
         TIMER.start();
 
-        /* Get file directory (and create it if necessary)*/
-        QDir path (QDir::homePath() + "/.libds/logs/");
+        /* Get log dumps folder */
+#ifdef Q_OS_WIN
+        QString baseFolder = "/%1/Logs";
+#else
+        QString baseFolder = "/.%1/Logs";
+#endif
+        QDir path (QDir::homePath() + baseFolder.arg (qApp->applicationName()));
+
+        /* Create log dump directories if required */
         if (!path.exists())
             path.mkpath (".");
 

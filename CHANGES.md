@@ -27,8 +27,7 @@
 ### QDriverStation 16.05
 
 - Support for 2014 protocol
-- Support for multiple languages (Spanish, English and German)
-- Implement PSC (Parallel Sockets) to detect the robot a LOT faster
+- Implement parallel sockets to detect the robot a LOT faster
 - Better robot voltage reading code
 - Dynamic control of the watchdog
 - Fix crash issue on Mac OS X
@@ -37,4 +36,5 @@
 - Add base framework for implementing FMS communications
 - Redesign UI in QML
 - New application icon
+- FMS support for 2015 protocol
 - Allow enabling/disabling joysticks
