@@ -54,7 +54,9 @@ public:
     Q_INVOKABLE bool isConnectedToRadio() const;
     Q_INVOKABLE bool isRobotCodeRunning() const;
 
-    Q_INVOKABLE QString loggerPath() const;
+    Q_INVOKABLE QString filesPath() const;
+    Q_INVOKABLE QString appLoggerPath() const;
+    Q_INVOKABLE QString robotLoggerPath() const;
 
     Q_INVOKABLE float currentBatteryVoltage() const;
     Q_INVOKABLE float nominalBatteryVoltage() const;

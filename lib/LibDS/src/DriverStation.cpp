@@ -238,11 +238,27 @@ bool DriverStation::isRobotCodeRunning() const
 }
 
 /**
- * Returns the path in which log files are stored
+ * Returns the path in which different DS-related files are stored
  */
-QString DriverStation::loggerPath() const
+QString DriverStation::filesPath() const
+{
+    return DS_FILES_PATH();
+}
+
+/**
+ * Returns the path in which application log files are stored
+ */
+QString DriverStation::appLoggerPath() const
 {
     return DS_LOGGER_PATH();
+}
+
+/**
+ * Returns the path in which robot log files are stored
+ */
+QString DriverStation::robotLoggerPath() const
+{
+    return DS_ROBOT_LOGGER_PATH();
 }
 
 /**

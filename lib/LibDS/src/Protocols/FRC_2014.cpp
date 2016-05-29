@@ -384,13 +384,13 @@ QByteArray FRC_2014::getJoystickData()
     QByteArray data;
 
     for (int i = 0; i < maxJoystickCount(); ++i) {
-        bool exists = joysticks()->count() > i;
+        bool joystickExists = joysticks()->count() > i;
 
-        int numAxes = exists ? joysticks()->at (i)->numAxes : 0;
-        int numButtons = exists ? joysticks()->at (i)->numButtons : 0;
+        int numAxes = joystickExists ? joysticks()->at (i)->numAxes : 0;
+        int numButtons = joystickExists ? joysticks()->at (i)->numButtons : 0;
 
         for (int axis = 0; axis < maxAxisCount(); ++axis) {
-            if (exists && axis < numAxes)
+            if (joystickExists && axis < numAxes)
                 data.append (joysticks()->at (i)->axes [axis] * 127);
             else
                 data.append ((char) 0x00);
@@ -398,7 +398,7 @@ QByteArray FRC_2014::getJoystickData()
 
         int button_data = 0;
         for (int button = 0; button < numButtons; ++button) {
-            if (exists && joysticks()->at (i)->buttons [button])
+            if (joystickExists && joysticks()->at (i)->buttons [button])
                 button_data |= (int) qPow (2, button);
         }
 

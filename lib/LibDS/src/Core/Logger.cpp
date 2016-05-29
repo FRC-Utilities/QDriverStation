@@ -37,22 +37,42 @@ static QString REPEAT (QString input, int n)
 }
 
 /**
+ * Returns the path in which several application files are stored (e.g. logs)
+ */
+QString DS_FILES_PATH()
+{
+    QDir dir (QString ("%1/%2").arg (QDir::homePath(), qApp->applicationName()));
+
+    if (!dir.exists())
+        dir.mkpath (".");
+
+    return dir.absolutePath();
+}
+
+/**
  * Figures out where to place the application logs
  */
 QString DS_LOGGER_PATH()
 {
-#ifdef Q_OS_WIN
-    QString baseFolder = "/%1/Logs";
-#else
-    QString baseFolder = "/.%1/Logs";
-#endif
+    QDir dir = QDir (DS_FILES_PATH() + "/Application Logs");
 
-    QDir path (QDir::homePath() + baseFolder.arg (qApp->applicationName()));
+    if (!dir.exists())
+        dir.mkpath (".");
 
-    if (!path.exists())
-        path.mkpath (".");
+    return dir.absolutePath();
+}
 
-    return path.absolutePath();
+/**
+ * Figures out where to place robot log files (e.g. containing voltage & other
+ * stuff)
+ */
+QString DS_ROBOT_LOGGER_PATH()
+{
+    QDir dir = QDir (DS_FILES_PATH() + "/Robot Logs");
+    if (!dir.exists())
+        dir.mkpath (".");
+
+    return dir.absolutePath();
 }
 
 /**
@@ -106,7 +126,7 @@ static void INIT_LOGGER()
  * @param message the actual message/data
  */
 void DS_MESSAGE_HANDLER (QtMsgType type, const QMessageLogContext& context,
-                         const QString& message)
+                         const QString& data)
 {
     Q_UNUSED (context);
 
@@ -138,14 +158,17 @@ void DS_MESSAGE_HANDLER (QtMsgType type, const QMessageLogContext& context,
         level = "CRITICAL";
         break;
     case QtFatalMsg:
-        level = "ERROR_FATAL";
+        level = "FATAL";
         break;
     default:
         level = "SYSTEM";
         break;
     }
 
-    /* Write log message to file and console */
-    fprintf (DUMP,   PRINT_FMT, PRINT (time), PRINT (level), PRINT (message));
-    fprintf (stderr, PRINT_FMT, PRINT (time), PRINT (level), PRINT (message));
+    /* Write all logs to the dump file */
+    fprintf (DUMP,   PRINT_FMT, PRINT (time), PRINT (level), PRINT (data));
+
+    /* Do not log informational messages to the console */
+    if (type != QtDebugMsg)
+        fprintf (stderr, PRINT_FMT, PRINT (time), PRINT (level), PRINT (data));
 }

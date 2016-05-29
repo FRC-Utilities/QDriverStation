@@ -19,9 +19,19 @@
 #define JoystickList QList<DS::Joystick*>
 
 /**
+ * Returns the location in where application files (e.g. logs) are stored
+ */
+extern QString DS_FILES_PATH();
+
+/**
  * Returns the location in where the log files are stored
  */
 extern QString DS_LOGGER_PATH();
+
+/**
+ * Returns the localtion in which robot/protocol log files are stored
+ */
+extern QString DS_ROBOT_LOGGER_PATH();
 
 /**
  * This function implements our own logger engine. Feel free to enable
@@ -32,7 +42,7 @@ extern QString DS_LOGGER_PATH();
  */
 extern void DS_MESSAGE_HANDLER (QtMsgType type,
                                 const QMessageLogContext& context,
-                                const QString& message);
+                                const QString& data);
 
 /**
  * Holds the common data types shared between the \c DriverStation
