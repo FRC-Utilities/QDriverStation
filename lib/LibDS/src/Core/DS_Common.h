@@ -21,7 +21,7 @@
 /**
  * Returns the location in where the log files are stored
  */
-QString LOGGER_PATH();
+extern QString DS_LOGGER_PATH();
 
 /**
  * This function implements our own logger engine. Feel free to enable
@@ -30,8 +30,9 @@ QString LOGGER_PATH();
  * To enable it, write this in your \c main() function:
  * \c qInstallMessageHandler (DS_MESSAGE_HANDLER)
  */
-void DS_MESSAGE_HANDLER (QtMsgType type, const QMessageLogContext& context,
-                         const QString& message);
+extern void DS_MESSAGE_HANDLER (QtMsgType type,
+                                const QMessageLogContext& context,
+                                const QString& message);
 
 /**
  * Holds the common data types shared between the \c DriverStation
@@ -165,7 +166,7 @@ public:
      *    - \c getStaticIp ( 10,  118, 3) would return \c 10.01.18.3
      *    - And so on...
      */
-    static QString getStaticIP (int net, int team, int host)
+    static inline QString getStaticIP (int net, int team, int host)
     {
         QString string = QString ("%1").arg (team);
         switch (string.length()) {
@@ -195,7 +196,7 @@ public:
     /**
      * Returns the current timezone as a string
      */
-    static QString timezone()
+    static inline QString timezone()
     {
         switch (QDateTime::currentDateTime().offsetFromUtc() / 3600) {
         case -11:

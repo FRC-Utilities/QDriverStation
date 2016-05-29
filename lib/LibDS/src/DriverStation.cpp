@@ -242,7 +242,7 @@ bool DriverStation::isRobotCodeRunning() const
  */
 QString DriverStation::loggerPath() const
 {
-    return LOGGER_PATH();
+    return DS_LOGGER_PATH();
 }
 
 /**
