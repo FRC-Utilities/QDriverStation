@@ -18,8 +18,13 @@
 #include "Protocols/FRC_2015.h"
 #include "Protocols/FRC_2016.h"
 
+/**
+ * Initializes the members of the DriverStation class
+ */
 DriverStation::DriverStation()
 {
+    DS_INFO << "Initializing DriverStation...";
+
     /* Initialize the intervals to one second */
     m_fmsInterval   = 1000;
     m_radioInterval = 1000;
@@ -108,6 +113,8 @@ DriverStation::DriverStation()
     /* Notify client when the NetConsole receives a new message */
     connect (m_console, SIGNAL (newMessage (QString)),
              this,      SIGNAL (newMessage (QString)));
+
+    DS_INFO << "DriverStation initialized!";
 }
 
 DriverStation::~DriverStation()
@@ -640,13 +647,24 @@ bool DriverStation::registerJoystick (const int& axes,
                                       const int& buttons,
                                       const int& povs)
 {
+    DS_DEBUG << "Trying to register joystick with"
+             << axes    << "axes,"
+             << buttons << "buttons and"
+             << povs    << "POVs";
+
     /* Joystick has 0 axes, 0 buttons & 0 POVs, WTF? */
-    if (axes <= 0 && buttons <= 0 && povs <= 0)
+    if (axes <= 0 && buttons <= 0 && povs <= 0) {
+        DS_WARNING << "Joystick has nothing! WTF?";
+        DS_WARNING << "Abort joystick registration";
         return false;
+    }
 
     /* Joystick limit reached */
-    else if (joystickCount() + 1 > maxJoystickCount())
+    else if (joystickCount() + 1 > maxJoystickCount()) {
+        DS_WARNING << "Too many joysticks!";
+        DS_WARNING << "Abort joystick registration";
         return false;
+    }
 
     /* Everything is OK, register the joystick */
     else {
@@ -675,8 +693,22 @@ bool DriverStation::registerJoystick (const int& axes,
         for (int i = 0; i < joystick->numButtons; i++)
             joystick->buttons [i] = false;
 
+        /* Status report! */
+        DS_INFO << "Joystick registered!";
+        DS_INFO << "Real joystick values:"
+                << axes    << "axes"
+                << buttons << "buttons"
+                << povs    << "POVs";
+        DS_INFO << "Registered joystick values:"
+                << joystick->numAxes    << "axes"
+                << joystick->numButtons << "buttons"
+                << joystick->numButtons << "POVs";
+
         joysticks()->append (joystick);
     }
+
+    DS_INFO << "Joystick registration successfull!";
+    DS_INFO << "New joystick count is" << joystickCount();
 
     emit joystickCountChanged (joystickCount());
     return true;
@@ -698,8 +730,9 @@ void DriverStation::init()
         sendRobotPacket();
 
         emit statusChanged (generalStatus());
-        QTimer::singleShot (200, Qt::PreciseTimer,
-                            this, SIGNAL (initialized()));
+        QTimer::singleShot (200, Qt::PreciseTimer, this, SIGNAL (initialized()));
+
+        DS_INFO << "DS engine started!";
     }
 }
 
@@ -708,6 +741,8 @@ void DriverStation::init()
  */
 void DriverStation::rebootRobot()
 {
+    DS_INFO << "Robot reboot triggered by DS...";
+
     if (protocol())
         protocol()->rebootRobot();
 }
@@ -733,6 +768,8 @@ void DriverStation::disableRobot()
  */
 void DriverStation::resetJoysticks()
 {
+    DS_INFO << "Clearing all joysticks";
+
     joysticks()->clear();
     emit joystickCountChanged (joystickCount());
 }
@@ -811,10 +848,11 @@ void DriverStation::setProtocol (Protocol* protocol)
     QString separator = "";
 
     /* Delete the current protocol */
-    if (m_protocol) {
+    if (m_protocol && protocol) {
+        DS_INFO << "Decommissioning protocol" << m_protocol;
+
         separator = " ";
         free (m_protocol);
-
     }
 
     /* Re-assign the protocol */
@@ -866,6 +904,8 @@ void DriverStation::setProtocol (Protocol* protocol)
         /* Tell client how much time is needed for detecting robot */
         if (m_sockets->customSocketCount() == 0)
             calculateScanSpeed();
+
+        DS_INFO << "Protocol" << protocol << "ready for use";
     }
 }
 

@@ -10,12 +10,26 @@
 #define _LIB_DS_COMMON_H
 
 #include <QtMath>
+#include <QDebug>
 #include <QObject>
 #include <QDateTime>
 #include <QStringList>
 
 #define DISABLED_PORT 0
 #define JoystickList QList<DS::Joystick*>
+
+#define DS_INFO qInfo()
+#define DS_DEBUG qDebug()
+#define DS_WARNING qWarning()
+#define DS_CRITICAL qCritical()
+
+/**
+ * This function implements our own logger engine. Feel free to enable
+ * it if you want!
+ */
+void DS_MESSAGE_HANDLER (QtMsgType type,
+                         const QMessageLogContext& context,
+                         const QString& message);
 
 /**
  * Holds the common data types shared between the \c DriverStation
@@ -40,9 +54,9 @@ public:
      * Represents the available control modes of the robot
      */
     enum ControlMode {
-        kControlTest         = 0,
-        kControlAutonomous   = 1,
-        kControlTeleoperated = 2,
+        kControlTest,
+        kControlAutonomous,
+        kControlTeleoperated,
     };
 
     /**
@@ -52,8 +66,8 @@ public:
      * (e.g adjust its sensors, change dashboard values, etc.)
      */
     enum Alliance {
-        kAllianceRed  = 0,
-        kAllianceBlue = 1,
+        kAllianceRed,
+        kAllianceBlue,
     };
 
     /**
@@ -62,9 +76,9 @@ public:
      * Again, the robot program may use this data to change its behavior.
      */
     enum Position {
-        kPosition1 = 0,
-        kPosition2 = 1,
-        kPosition3 = 2,
+        kPosition1,
+        kPosition2,
+        kPosition3,
     };
 
     /**
@@ -73,8 +87,8 @@ public:
      * the client and the radio.
      */
     enum CommStatus {
-        kCommsWorking = 0,
-        kCommsFailing = 1,
+        kCommsWorking,
+        kCommsFailing,
     };
 
     /**
@@ -83,8 +97,8 @@ public:
      * the code is running or not (in order to be able to operate the robot).
      */
     enum CodeStatus {
-        kCodeRunning = 0,
-        kCodeFailing = 1,
+        kCodeRunning,
+        kCodeFailing,
     };
 
     /**
@@ -92,8 +106,8 @@ public:
      * Represents the enabled state of the robot.
      */
     enum EnableStatus {
-        kEnabled  = 0,
-        kDisabled = 1,
+        kEnabled,
+        kDisabled,
     };
 
     /**
@@ -101,8 +115,8 @@ public:
      * Represents the operation status of the robot.
      */
     enum OperationStatus {
-        kOperationNormal        = 0,
-        kOperationEmergencyStop = 1,
+        kOperationNormal,
+        kOperationEmergencyStop,
     };
 
     /**
@@ -112,16 +126,16 @@ public:
      * the robot may report a voltage brownout.
      */
     enum VoltageStatus {
-        kVoltageNormal   = 0,
-        kVoltageBrownout = 1,
+        kVoltageNormal,
+        kVoltageBrownout,
     };
 
     /**
      * Represents the socket types that can be used by the DS modules
      */
     enum SocketType {
-        kSocketTypeUDP = 0,
-        kSocketTypeTCP = 1,
+        kSocketTypeUDP,
+        kSocketTypeTCP,
     };
 
     /**

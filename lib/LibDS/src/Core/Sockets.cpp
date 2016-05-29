@@ -34,6 +34,8 @@ Sockets::Sockets()
     m_fmsSocketType   = DS::kSocketTypeUDP;
     m_radioSocketType = DS::kSocketTypeUDP;
     m_robotSocketType = DS::kSocketTypeUDP;
+
+    DS_INFO << "Socket Manager initialized!";
 }
 
 Sockets::~Sockets()
@@ -227,10 +229,14 @@ void Sockets::sendToRadio (const QByteArray& data)
 void Sockets::setRadioIp (const QString& ip)
 {
     m_radioIp = ip;
+
     if (m_radioReceiver)
         m_radioReceiver->bind (ip, radioInputPort(), FLAGS);
+
     if (m_radioSender)
         m_radioSender->connectToHost (ip, radioInputPort(), WRITE_ONLY);
+
+    DS_INFO << "Radio IP set to" << ip;
 }
 
 /**
@@ -245,6 +251,8 @@ void Sockets::setRobotIp (const QString& ip)
     m_robotIp = ip;
     if (m_robotSender)
         m_robotSender->connectToHost (ip, robotOutputPort(), WRITE_ONLY);
+
+    DS_INFO << "Robot IP set to" << ip;
 }
 
 /**
@@ -256,7 +264,6 @@ void Sockets::setRobotIp (const QString& ip)
 void Sockets::setRobotIpList (const QStringList& list)
 {
     m_robotIpList.clear();
-
     m_robotIpList = list;
     generateLocalNetworkAddresses();
 }
@@ -272,6 +279,8 @@ void Sockets::setSocketCount (const int& count)
 {
     m_socketCount = count;
     generateSocketPairs();
+
+    DS_INFO << "PSC set to" << count;
 }
 
 /**
@@ -282,6 +291,8 @@ void Sockets::setFMSInputPort (const int& port)
     m_fmsInput = port;
     if (m_fmsReceiver)
         m_fmsReceiver->bind (QHostAddress::Any, port, FLAGS);
+
+    DS_INFO << "FMS input port set to" << port;
 }
 
 /**
@@ -292,6 +303,8 @@ void Sockets::setFMSOutputPort (const int& port)
     m_fmsOutput = port;
     if (m_fmsSender)
         m_fmsSender->connectToHost (QHostAddress::Any, port, WRITE_ONLY);
+
+    DS_INFO << "FMS output port set to" << port;
 }
 
 /**
@@ -302,6 +315,8 @@ void Sockets::setRadioInputPort (const int& port)
     m_radioInput = port;
     if (m_radioReceiver)
         m_radioReceiver->bind (QHostAddress (radioIp()), port, FLAGS);
+
+    DS_INFO << "Radio input port set to" << port;
 }
 
 /**
@@ -310,6 +325,7 @@ void Sockets::setRadioInputPort (const int& port)
 void Sockets::setRobotInputPort (const int& port)
 {
     m_robotInput = port;
+    DS_INFO << "Robot input port set to" << port;
 }
 
 /**
@@ -320,6 +336,8 @@ void Sockets::setRadioOutputPort (const int& port)
     m_radioOutput = port;
     if (m_radioSender)
         m_radioSender->connectToHost (radioIp(), port, WRITE_ONLY);
+
+    DS_INFO << "Radio output port set to" << port;
 }
 
 /**
@@ -330,6 +348,8 @@ void Sockets::setRobotOutputPort (const int& port)
     m_robotOutput = port;
     if (m_robotSender)
         m_robotSender->connectToHost (robotIp(), port, WRITE_ONLY);
+
+    DS_INFO << "Robot output port set to" << port;
 }
 
 /**
@@ -344,6 +364,8 @@ void Sockets::setFMSSocketType (const DS::SocketType& type)
     m_fmsSender = new ConfigurableSocket (type);
     m_fmsReceiver = new ConfigurableSocket (type);
     m_fmsReceiver->socket()->setSocketOption (MULTICAST_LOOPBACK, 0);
+
+    DS_INFO << "FMS socket type set to" << type;
 }
 
 /**
@@ -358,6 +380,8 @@ void Sockets::setRadioSocketType (const DS::SocketType& type)
     m_radioSender = new ConfigurableSocket (type);
     m_radioReceiver = new ConfigurableSocket (type);
     m_radioReceiver->socket()->setSocketOption (MULTICAST_LOOPBACK, 0);
+
+    DS_INFO << "Radio socket type set to" << type;
 }
 
 /**
@@ -368,12 +392,16 @@ void Sockets::setRobotSocketType (const DS::SocketType& type)
 {
     m_robotSocketType = type;
     free (m_robotSender);
+
     m_robotSender = new ConfigurableSocket (type);
+
     if (type == DS::kSocketTypeTCP) {
         m_robotSender->socket()->connectToHost (robotIp(),
                                                 robotOutputPort(),
                                                 QIODevice::WriteOnly);
     }
+
+    DS_INFO << "Robot socket type set to" << type;
 }
 
 /**
@@ -508,9 +536,6 @@ void Sockets::generateSocketPairs()
  */
 void Sockets::generateLocalNetworkAddresses()
 {
-    if (robotSocketType() == DS::kSocketTypeTCP)
-        return;
-
     foreach (QNetworkInterface interface, QNetworkInterface::allInterfaces()) {
         bool isUp      = (interface.flags() & QNetworkInterface::IsUp);
         bool isRunning = (interface.flags() & QNetworkInterface::IsRunning);
@@ -518,11 +543,12 @@ void Sockets::generateLocalNetworkAddresses()
         if (isUp && isRunning) {
             foreach (QNetworkAddressEntry address, interface.addressEntries()) {
                 if (address.ip().toString() == "127.0.0.1")
-                    return;
+                    break;
                 if (address.ip().isNull())
-                    return;
+                    break;
 
                 QStringList numbers = address.ip().toString().split (".");
+                DS_INFO << "Client IP detected:" << address.ip().toString();
 
                 if (numbers.count() == 4) {
                     QString base = QString ("%1.%2.%3.")

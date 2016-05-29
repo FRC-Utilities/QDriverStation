@@ -58,4 +58,5 @@ SOURCES += \
     $$PWD/src/Utilities/CRC32.cpp \
     $$PWD/src/DriverStation.cpp \
     $$PWD/src/Core/DS_Config.cpp \
-    $$PWD/src/Core/ConfigurableSocket.cpp
+    $$PWD/src/Core/ConfigurableSocket.cpp \
+    $$PWD/src/Core/Logger.cpp

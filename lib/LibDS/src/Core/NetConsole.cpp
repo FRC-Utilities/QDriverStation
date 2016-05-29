@@ -6,6 +6,7 @@
  * of this project.
  */
 
+#include "DS_Common.h"
 #include "NetConsole.h"
 
 /**
@@ -46,8 +47,11 @@ int NetConsole::outputPort() const
  */
 void NetConsole::setInputPort (const int& port)
 {
+    DS_INFO << "NetConsole input port set to" << port;
+
     m_inputPort = port;
     m_inputSocket.close();
+
     if (inputPort() > 0) {
         m_inputSocket.bind (QHostAddress::Any, inputPort(),
                             QUdpSocket::ShareAddress |
@@ -63,6 +67,7 @@ void NetConsole::setInputPort (const int& port)
 void NetConsole::setOutputPort (const int& port)
 {
     m_outputPort = port;
+    DS_INFO << "NetConsole output port set to" << port;
 }
 
 /**

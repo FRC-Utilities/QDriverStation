@@ -57,6 +57,9 @@ int main (int argc, char* argv[])
     app.setOrganizationDomain     (APP_WEBSITE);
     app.setApplicationDisplayName (APP_DSPNAME);
 
+    /* Configure the logging system */
+    qInstallMessageHandler (DS_MESSAGE_HANDLER);
+
     /* Calculate the scale factor of the screen */
     qreal ratio = (app.primaryScreen()->physicalDotsPerInch() / 100) * 0.9;
 

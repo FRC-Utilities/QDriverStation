@@ -147,6 +147,8 @@ void DS_Config::updateTeam (const int& team)
     if (m_team != team) {
         m_team = team;
         emit teamChanged (m_team);
+
+        DS_INFO << "Team number set to" << team;
     }
 }
 
@@ -211,6 +213,8 @@ void DS_Config::updateAlliance (const Alliance& alliance)
     if (m_alliance != alliance) {
         m_alliance = alliance;
         emit allianceChanged (m_alliance);
+
+        DS_INFO << "Alliance set to" << alliance;
     }
 }
 
@@ -219,6 +223,8 @@ void DS_Config::updatePosition (const Position& position)
     if (m_position != position) {
         m_position = position;
         emit positionChanged (m_position);
+
+        DS_INFO << "Position set to" << position;
     }
 }
 
@@ -227,6 +233,8 @@ void DS_Config::updateLibVersion (const QString& version)
     if (m_libVersion != version) {
         m_libVersion = version;
         emit libVersionChanged (m_libVersion);
+
+        DS_INFO << "LIB version set to" << version;
     }
 }
 
@@ -235,6 +243,8 @@ void DS_Config::updatePcmVersion (const QString& version)
     if (m_pcmVersion != version) {
         m_pcmVersion = version;
         emit pcmVersionChanged (m_pcmVersion);
+
+        DS_INFO << "PCM version set to" << version;
     }
 }
 
@@ -243,6 +253,8 @@ void DS_Config::updatePdpVersion (const QString& version)
     if (m_pdpVersion != version) {
         m_pdpVersion = version;
         emit pdpVersionChanged (m_pdpVersion);
+
+        DS_INFO << "PDP version set to" << version;
     }
 }
 
@@ -252,6 +264,8 @@ void DS_Config::updateRobotCodeStatus (const CodeStatus& status)
         m_codeStatus = status;
         emit codeStatusChanged (status);
         emit statusChanged (DriverStation::getInstance()->generalStatus());
+
+        DS_INFO << "Code status set to" << status;
     }
 }
 
@@ -261,6 +275,8 @@ void DS_Config::updateControlMode (const ControlMode& mode)
         m_controlMode = mode;
         emit controlModeChanged (m_controlMode);
         emit statusChanged (DriverStation::getInstance()->generalStatus());
+
+        DS_INFO << "Control mode set to" << mode;
     }
 }
 
@@ -279,6 +295,8 @@ void DS_Config::updateEnabled (const EnableStatus& status)
 
         emit enabledChanged (m_enableStatus);
         emit statusChanged (DriverStation::getInstance()->generalStatus());
+
+        DS_INFO << "Enable status set to" << status;
     }
 }
 
@@ -298,6 +316,8 @@ void DS_Config::updateFMSCommStatus (const CommStatus& status)
         m_fmsCommStatus = status;
         emit fmsCommStatusChanged (m_fmsCommStatus);
         emit statusChanged (DriverStation::getInstance()->generalStatus());
+
+        DS_INFO << "FMS comm. status set to" << status;
     }
 }
 
@@ -306,6 +326,8 @@ void DS_Config::updateRadioCommStatus (const CommStatus& status)
     if (m_radioCommStatus != status) {
         m_radioCommStatus = status;
         emit radioCommStatusChanged (m_radioCommStatus);
+
+        DS_INFO << "Radio comm. status set to" << status;
     }
 }
 
@@ -315,6 +337,8 @@ void DS_Config::updateRobotCommStatus (const CommStatus& status)
         m_robotCommStatus = status;
         emit robotCommStatusChanged (m_robotCommStatus);
         emit statusChanged (DriverStation::getInstance()->generalStatus());
+
+        DS_INFO << "Robot comm. status set to" << status;
     }
 }
 
@@ -324,6 +348,8 @@ void DS_Config::updateVoltageStatus (const VoltageStatus& status)
         m_voltageStatus = status;
         emit voltageStatusChanged (m_voltageStatus);
         emit statusChanged (DriverStation::getInstance()->generalStatus());
+
+        DS_INFO << "Voltage status set to" << status;
     }
 }
 
@@ -333,6 +359,8 @@ void DS_Config::updateOperationStatus (const OperationStatus& status)
         m_operationStatus = status;
         emit operationStatusChanged (m_operationStatus);
         emit statusChanged (DriverStation::getInstance()->generalStatus());
+
+        DS_INFO << "Operation status set to" << status;
     }
 }
 

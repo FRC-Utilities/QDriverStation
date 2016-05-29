@@ -88,7 +88,7 @@ Window {
         category: "SettingsWindow"
         property alias x: window.x
         property alias y: window.y
-        property alias pnss: pcs.value
+        property alias pcs: pcs.value
         property alias address: customAddress.text
         property alias promptOnQuit: promptOnQuit.checked
         property alias checkForUpdates: checkForUpdates.checked
