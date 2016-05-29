@@ -905,7 +905,7 @@ void DriverStation::setProtocol (Protocol* protocol)
         if (m_sockets->customSocketCount() == 0)
             calculateScanSpeed();
 
-        qDebug() << "Protocol" << protocol << "ready for use";
+        qDebug() << "Protocol" << protocol->name() << "ready for use";
     }
 }
 
