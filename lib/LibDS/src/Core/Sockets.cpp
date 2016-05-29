@@ -55,7 +55,7 @@ int Sockets::socketCount() const
         return customSocketCount();
 
     else
-        return qMax (robotIpList().count() / 6, 4);
+        return qMax (robotIpList().count() / 6, 1);
 }
 
 /**
@@ -195,18 +195,19 @@ void Sockets::sendToRobot (const QByteArray& data)
     if (robotOutputPort() == DISABLED_PORT)
         return;
 
-    if (m_robotSender && !robotIp().isEmpty())
+    if (m_robotSender && !robotIp().isEmpty()) {
         m_robotSender->writeDatagram (data, robotIp(), robotOutputPort());
+        return;
+    }
 
-    else if (robotSocketType() == DS::kSocketTypeUDP) {
-        refreshRobotIPs();
-        for (int i = 0; i < robotIpList().count(); ++i) {
-            if (socketCount() > i && robotIpList().count() > m_iterator + i) {
-                QString ip = robotIpList().at (m_iterator + i);
-                m_robotSenderList.at (i)->writeDatagram (data,
-                                                         QHostAddress (ip),
-                                                         robotOutputPort());
-            }
+    refreshRobotIPs();
+
+    for (int i = 0; i < robotIpList().count(); ++i) {
+        if (socketCount() > i && robotIpList().count() > m_iterator + i) {
+            QString ip = robotIpList().at (m_iterator + i);
+            m_robotSenderList.at (i)->writeDatagram (data,
+                                                     QHostAddress (ip),
+                                                     robotOutputPort());
         }
     }
 }
@@ -461,12 +462,11 @@ void Sockets::readRobotData()
  */
 void Sockets::refreshRobotIPs()
 {
-    if (!robotIp().isEmpty() || robotSocketType() == DS::kSocketTypeTCP)
+    if (!robotIp().isEmpty())
         return;
 
     if (robotIpList().count() > m_iterator + socketCount())
         m_iterator += socketCount();
-
     else
         m_iterator = 0;
 
