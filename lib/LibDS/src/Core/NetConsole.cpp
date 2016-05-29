@@ -47,7 +47,7 @@ int NetConsole::outputPort() const
  */
 void NetConsole::setInputPort (const int& port)
 {
-    DS_INFO << "NetConsole input port set to" << port;
+    qDebug() << "NetConsole input port set to" << port;
 
     m_inputPort = port;
     m_inputSocket.close();
@@ -67,7 +67,7 @@ void NetConsole::setInputPort (const int& port)
 void NetConsole::setOutputPort (const int& port)
 {
     m_outputPort = port;
-    DS_INFO << "NetConsole output port set to" << port;
+    qDebug() << "NetConsole output port set to" << port;
 }
 
 /**

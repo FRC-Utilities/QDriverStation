@@ -18,14 +18,12 @@
 #define DISABLED_PORT 0
 #define JoystickList QList<DS::Joystick*>
 
-#define DS_INFO qInfo()
-#define DS_DEBUG qDebug()
-#define DS_WARNING qWarning()
-#define DS_CRITICAL qCritical()
-
 /**
  * This function implements our own logger engine. Feel free to enable
  * it if you want!
+ *
+ * To enable it, write this in your \c main() function:
+ * \c qInstallMessageHandler (DS_MESSAGE_HANDLER)
  */
 void DS_MESSAGE_HANDLER (QtMsgType type,
                          const QMessageLogContext& context,

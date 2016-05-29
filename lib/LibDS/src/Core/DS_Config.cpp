@@ -148,7 +148,7 @@ void DS_Config::updateTeam (const int& team)
         m_team = team;
         emit teamChanged (m_team);
 
-        DS_INFO << "Team number set to" << team;
+        qDebug() << "Team number set to" << team;
     }
 }
 
@@ -214,7 +214,7 @@ void DS_Config::updateAlliance (const Alliance& alliance)
         m_alliance = alliance;
         emit allianceChanged (m_alliance);
 
-        DS_INFO << "Alliance set to" << alliance;
+        qDebug() << "Alliance set to" << alliance;
     }
 }
 
@@ -224,7 +224,7 @@ void DS_Config::updatePosition (const Position& position)
         m_position = position;
         emit positionChanged (m_position);
 
-        DS_INFO << "Position set to" << position;
+        qDebug() << "Position set to" << position;
     }
 }
 
@@ -234,7 +234,7 @@ void DS_Config::updateLibVersion (const QString& version)
         m_libVersion = version;
         emit libVersionChanged (m_libVersion);
 
-        DS_INFO << "LIB version set to" << version;
+        qDebug() << "LIB version set to" << version;
     }
 }
 
@@ -244,7 +244,7 @@ void DS_Config::updatePcmVersion (const QString& version)
         m_pcmVersion = version;
         emit pcmVersionChanged (m_pcmVersion);
 
-        DS_INFO << "PCM version set to" << version;
+        qDebug() << "PCM version set to" << version;
     }
 }
 
@@ -254,7 +254,7 @@ void DS_Config::updatePdpVersion (const QString& version)
         m_pdpVersion = version;
         emit pdpVersionChanged (m_pdpVersion);
 
-        DS_INFO << "PDP version set to" << version;
+        qDebug() << "PDP version set to" << version;
     }
 }
 
@@ -265,7 +265,7 @@ void DS_Config::updateRobotCodeStatus (const CodeStatus& status)
         emit codeStatusChanged (status);
         emit statusChanged (DriverStation::getInstance()->generalStatus());
 
-        DS_INFO << "Code status set to" << status;
+        qDebug() << "Code status set to" << status;
     }
 }
 
@@ -276,7 +276,7 @@ void DS_Config::updateControlMode (const ControlMode& mode)
         emit controlModeChanged (m_controlMode);
         emit statusChanged (DriverStation::getInstance()->generalStatus());
 
-        DS_INFO << "Control mode set to" << mode;
+        qDebug() << "Control mode set to" << mode;
     }
 }
 
@@ -296,7 +296,7 @@ void DS_Config::updateEnabled (const EnableStatus& status)
         emit enabledChanged (m_enableStatus);
         emit statusChanged (DriverStation::getInstance()->generalStatus());
 
-        DS_INFO << "Enable status set to" << status;
+        qDebug() << "Enable status set to" << status;
     }
 }
 
@@ -317,7 +317,7 @@ void DS_Config::updateFMSCommStatus (const CommStatus& status)
         emit fmsCommStatusChanged (m_fmsCommStatus);
         emit statusChanged (DriverStation::getInstance()->generalStatus());
 
-        DS_INFO << "FMS comm. status set to" << status;
+        qDebug() << "FMS comm. status set to" << status;
     }
 }
 
@@ -327,7 +327,7 @@ void DS_Config::updateRadioCommStatus (const CommStatus& status)
         m_radioCommStatus = status;
         emit radioCommStatusChanged (m_radioCommStatus);
 
-        DS_INFO << "Radio comm. status set to" << status;
+        qDebug() << "Radio comm. status set to" << status;
     }
 }
 
@@ -338,7 +338,7 @@ void DS_Config::updateRobotCommStatus (const CommStatus& status)
         emit robotCommStatusChanged (m_robotCommStatus);
         emit statusChanged (DriverStation::getInstance()->generalStatus());
 
-        DS_INFO << "Robot comm. status set to" << status;
+        qDebug() << "Robot comm. status set to" << status;
     }
 }
 
@@ -349,7 +349,7 @@ void DS_Config::updateVoltageStatus (const VoltageStatus& status)
         emit voltageStatusChanged (m_voltageStatus);
         emit statusChanged (DriverStation::getInstance()->generalStatus());
 
-        DS_INFO << "Voltage status set to" << status;
+        qDebug() << "Voltage status set to" << status;
     }
 }
 
@@ -360,7 +360,7 @@ void DS_Config::updateOperationStatus (const OperationStatus& status)
         emit operationStatusChanged (m_operationStatus);
         emit statusChanged (DriverStation::getInstance()->generalStatus());
 
-        DS_INFO << "Operation status set to" << status;
+        qDebug() << "Operation status set to" << status;
     }
 }
 
