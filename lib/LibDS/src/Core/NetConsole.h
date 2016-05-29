@@ -9,7 +9,7 @@
 #ifndef _LIB_DS_NETCONSOLE_H
 #define _LIB_DS_NETCONSOLE_H
 
-#include <QUdpSocket>
+#include <Core/ConfigurableSocket.h>
 
 class NetConsole : public QObject
 {
@@ -35,8 +35,8 @@ private:
     int m_inputPort;
     int m_outputPort;
 
-    QUdpSocket m_inputSocket;
-    QUdpSocket m_outputSocket;
+    ConfigurableSocket* m_inputSocket;
+    ConfigurableSocket* m_outputSocket;
 };
 
 #endif

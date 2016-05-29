@@ -245,6 +245,8 @@ bool FRC_2015::interpretFMSPacket (const QByteArray& data)
         return true;
     }
 
+    qWarning() << name() << "Received invalid FMS packet!";
+
     return false;
 }
 
@@ -260,8 +262,10 @@ bool FRC_2015::interpretFMSPacket (const QByteArray& data)
 bool FRC_2015::interpretRobotPacket (const QByteArray& data)
 {
     /* Packet is invalid */
-    if (data.length() < 8)
+    if (data.length() < 8) {
+        qWarning() << name() << "received an invalid robot packet";
         return false;
+    }
 
     /* Read robot packet */
     uint control = data.at (3);

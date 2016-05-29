@@ -662,15 +662,15 @@ bool DriverStation::registerJoystick (const int& axes,
 
     /* Joystick has 0 axes, 0 buttons & 0 POVs, WTF? */
     if (axes <= 0 && buttons <= 0 && povs <= 0) {
-        qDebug() << "Joystick has nothing! WTF?";
-        qDebug() << "Abort joystick registration";
+        qCritical() << "Joystick has nothing! WTF?";
+        qCritical() << "Abort joystick registration";
         return false;
     }
 
     /* Joystick limit reached */
     else if (joystickCount() + 1 > maxJoystickCount()) {
-        qDebug() << "Too many joysticks!";
-        qDebug() << "Abort joystick registration";
+        qCritical() << "Too many joysticks!";
+        qCritical() << "Abort joystick registration";
         return false;
     }
 
@@ -857,7 +857,7 @@ void DriverStation::setProtocol (Protocol* protocol)
 
     /* Delete the current protocol */
     if (m_protocol && protocol) {
-        qDebug() << "Decommissioning protocol" << m_protocol;
+        qDebug() << "Decommissioning protocol" << m_protocol->name();
 
         separator = " ";
         free (m_protocol);
@@ -1073,8 +1073,14 @@ void DriverStation::updatePOV (const int& id,
                                const int& pov,
                                const int& angle)
 {
-    if (joysticks()->count() > abs (id))
-        joysticks()->at (id)->povs [abs (pov)] = angle;
+    if (joysticks()->count() > abs (id)) {
+        if (joysticks()->at (id)->numPOVs > pov) {
+            joysticks()->at (id)->povs [abs (pov)] = angle;
+            return;
+        }
+    }
+
+    qWarning() << "Client tried updating non-existent joystick POV";
 }
 
 /**
@@ -1085,8 +1091,14 @@ void DriverStation::updateAxis (const int& id,
                                 const int& axis,
                                 const float& value)
 {
-    if (joysticks()->count() > abs (id))
-        joysticks()->at (id)->axes [abs (axis)] = value;
+    if (joysticks()->count() > abs (id)) {
+        if (joysticks()->at (id)->numAxes > axis) {
+            joysticks()->at (id)->axes [abs (axis)] = value;
+            return;
+        }
+    }
+
+    qWarning() << "Client tried updating non-existent joystick axis";
 }
 
 /**
@@ -1097,8 +1109,14 @@ void DriverStation::updateButton (const int& id,
                                   const int& button,
                                   const bool& pressed)
 {
-    if (joysticks()->count() > abs (id))
-        joysticks()->at (id)->buttons [abs (button)] = pressed;
+    if (joysticks()->count() > abs (id)) {
+        if (joysticks()->at (id)->numButtons > button) {
+            joysticks()->at (id)->buttons [abs (button)] = pressed;
+            return;
+        }
+    }
+
+    qWarning() << "Client tried updating non-existent joystick button";
 }
 
 /**
@@ -1107,6 +1125,7 @@ void DriverStation::updateButton (const int& id,
 void DriverStation::stop()
 {
     m_running = false;
+    qDebug() << "DS networking operations stopped";
 }
 
 /**
@@ -1115,6 +1134,7 @@ void DriverStation::stop()
 void DriverStation::start()
 {
     m_running = true;
+    qDebug() << "DS networking operation resumed";
 }
 
 /**
@@ -1228,6 +1248,13 @@ void DriverStation::reconfigureJoysticks()
 {
     JoystickList list = m_joysticks;
     resetJoysticks();
+
+    qDebug() << "Re-generating joystick list based on protocol preferences";
+    qDebug() << protocol()->name() << "supports"
+             << maxJoystickCount() << "joysticks with:"
+             << maxAxisCount() << "axes,"
+             << maxButtonCount() << "buttons and"
+             << maxPOVCount() << "POVs";
 
     foreach (Joystick* joystick, list) {
         registerJoystick (joystick->realNumAxes,

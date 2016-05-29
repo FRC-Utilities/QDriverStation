@@ -20,8 +20,11 @@ NetConsole::NetConsole()
 {
     m_inputPort = 0;
     m_outputPort = 0;
-    connect (&m_inputSocket, SIGNAL (readyRead()),
-             this,             SLOT (onReadyRead()));
+    m_inputSocket  = new ConfigurableSocket (DS::kSocketTypeUDP);
+    m_outputSocket = new ConfigurableSocket (DS::kSocketTypeUDP);
+
+    connect (m_inputSocket, SIGNAL (readyRead()),
+             this,            SLOT (onReadyRead()));
 }
 
 /**
@@ -50,12 +53,12 @@ void NetConsole::setInputPort (const int& port)
     qDebug() << "NetConsole input port set to" << port;
 
     m_inputPort = port;
-    m_inputSocket.close();
+    m_inputSocket->socket()->close();
 
     if (inputPort() > 0) {
-        m_inputSocket.bind (QHostAddress::Any, inputPort(),
-                            QUdpSocket::ShareAddress |
-                            QUdpSocket::ReuseAddressHint);
+        m_inputSocket->bind (QHostAddress::Any, inputPort(),
+                             QUdpSocket::ShareAddress |
+                             QUdpSocket::ReuseAddressHint);
     }
 }
 
@@ -77,9 +80,11 @@ void NetConsole::setOutputPort (const int& port)
 void NetConsole::sendMessage (const QString& message)
 {
     if (!message.isEmpty() && outputPort() > 0) {
-        m_outputSocket.writeDatagram (message.toUtf8(),
-                                      QHostAddress::Any,
-                                      outputPort());
+        m_outputSocket->writeDatagram (message.toUtf8(),
+                                       QHostAddress::Any,
+                                       outputPort());
+
+        qDebug() << "NetConsole: sent" << message;
     }
 }
 
@@ -88,5 +93,8 @@ void NetConsole::sendMessage (const QString& message)
  */
 void NetConsole::onReadyRead()
 {
-    emit newMessage (QString::fromUtf8 (m_inputSocket.readAll()));
+    QString message = QString::fromUtf8 (m_inputSocket->readAll());
+    emit newMessage (message);
+
+    qDebug() << "NetConsole: received" << message;
 }

@@ -17,8 +17,8 @@ FILE* DUMP;
 QElapsedTimer TIMER;
 bool INITIALIZED = false;
 const char* PRINT_FMT  = "%-14s %-13s %-12s\n";
-const QString TIME_FMT = "dd-MMM-yyyy HH:mm:ss";
-const QString DUMP_FMT = "yyyy-MMM-dd HH-mm-ss ddd";
+const QString TIME_FMT = "MMM dd yyyy - HH:mm:ss";
+const QString DUMP_FMT = "ddd MMM dd yyyy - HH_mm_ss";
 
 QString REPEAT (QString input, int reps)
 {

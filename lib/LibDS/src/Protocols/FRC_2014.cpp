@@ -265,8 +265,10 @@ bool FRC_2014::interpretFMSPacket (const QByteArray& data)
 bool FRC_2014::interpretRobotPacket (const QByteArray& data)
 {
     /* The packet is smaller than it should be */
-    if (data.length() < 1024)
+    if (data.length() < 1024) {
+        qWarning() << name() << "received an invalid robot packet";
         return false;
+    }
 
     /* Read status echo code and voltage */
     uint opcode  = data.at (0);
