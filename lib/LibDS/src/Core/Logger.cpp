@@ -30,8 +30,7 @@ QString repeat (QString input, int reps)
     return string;
 }
 
-void DS_MESSAGE_HANDLER (QtMsgType type,
-                         const QMessageLogContext& context,
+void DS_MESSAGE_HANDLER (QtMsgType type, const QMessageLogContext& context,
                          const QString& message)
 {
     Q_UNUSED (context);
@@ -103,9 +102,6 @@ void DS_MESSAGE_HANDLER (QtMsgType type,
         break;
     case QtFatalMsg:
         level = "ERROR_FATAL";
-        break;
-    case QtInfoMsg:
-        level = "INFORMATION";
         break;
     default:
         level = "SYSTEM";

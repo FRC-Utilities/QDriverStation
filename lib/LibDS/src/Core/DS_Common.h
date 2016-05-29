@@ -25,8 +25,7 @@
  * To enable it, write this in your \c main() function:
  * \c qInstallMessageHandler (DS_MESSAGE_HANDLER)
  */
-void DS_MESSAGE_HANDLER (QtMsgType type,
-                         const QMessageLogContext& context,
+void DS_MESSAGE_HANDLER (QtMsgType type, const QMessageLogContext& context,
                          const QString& message);
 
 /**
