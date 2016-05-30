@@ -30,7 +30,7 @@ RowLayout {
     spacing: Globals.spacing
 
     //
-    // Contains the actual controls
+    // Contains the actual tab controls/buttons
     //
     Panel {
         id: rightTab
@@ -39,8 +39,8 @@ RowLayout {
 
         function hideWidgets() {
             about.opacity = 0
+            graphs.opacity = 0
             messages.opacity = 0
-            metrics.opacity = 0
         }
 
         function showMessages() {
@@ -48,9 +48,9 @@ RowLayout {
             messages.opacity = 1
         }
 
-        function showMetrics() {
+        function showGraphs() {
             hideWidgets()
-            metrics.opacity = 1
+            graphs.opacity = 1
         }
 
         function showAbout() {
@@ -68,9 +68,9 @@ RowLayout {
             anchors.margins: Globals.spacing
         }
 
-        CAN_Metrics {
+        Graphs {
             opacity: 0
-            id: metrics
+            id: graphs
             visible: opacity > 0
             anchors.fill: parent
             anchors.margins: Globals.spacing
@@ -109,8 +109,8 @@ RowLayout {
             caption.font.bold: true
             width: Globals.scale (36)
             height: Globals.scale (36)
-            onClicked: rightTab.showMetrics()
-            textColor: metrics.visible ? Globals.Colors.AlternativeHighlight :
+            onClicked: rightTab.showGraphs()
+            textColor: graphs.visible ? Globals.Colors.AlternativeHighlight :
                                          Globals.Colors.Foreground
         }
 

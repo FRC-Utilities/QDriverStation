@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/qml">
         <file>About.qml</file>
-        <file>CAN_Metrics.qml</file>
         <file>Diagnostics.qml</file>
         <file>Joysticks.qml</file>
         <file>main.qml</file>
@@ -30,6 +29,9 @@
         <file>widgets/LineEdit.qml</file>
         <file>widgets/Scrollbar.qml</file>
         <file>GetTeamNumber.qml</file>
-        <file>PowerWindow.qml</file>
+        <file>Graphs.qml</file>
+        <file>VoltageWindow.qml</file>
+        <file>widgets/Plot.qml</file>
+        <file>VoltageGraph.qml</file>
     </qresource>
 </RCC>

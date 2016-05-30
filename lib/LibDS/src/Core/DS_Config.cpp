@@ -62,7 +62,10 @@ int DS_Config::team() const
 
 float DS_Config::voltage() const
 {
-    return m_voltage;
+    if (isConnectedToRobot())
+        return m_voltage;
+
+    return 0;
 }
 
 bool DS_Config::isEnabled() const

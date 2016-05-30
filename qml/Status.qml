@@ -124,11 +124,22 @@ Item {
         target: DriverStation
         onTeamChanged: teamNumber = team
         onStatusChanged: robotStatus = status
-        onProtocolChanged: robotVoltage = Globals.invalidStr
         onCodeStatusChanged: codeLed.checked = DriverStation.isRobotCodeRunning()
         onRobotCommStatusChanged: communicationsLed.checked = DriverStation.isConnectedToRobot()
-        onVoltageChanged: robotVoltage = DriverStation.isConnectedToRobot() ?
-                              voltageString : Globals.invalidStr
+
+        onVoltageChanged: {
+            if (DriverStation.isConnectedToRobot()) {
+                robotVoltage = voltageString
+                plot.voltage = DriverStation.currentBatteryVoltage()
+            }
+
+            else {
+                plot.voltage = 0
+                robotVoltage = Globals.invalidStr
+            }
+        }
+
+        onProtocolChanged: robotVoltage = Globals.invalidStr
     }
 
     //
@@ -172,7 +183,7 @@ Item {
         }
 
         //
-        // Voltage indicator
+        // Voltage indicator & plot
         //
         RowLayout {
             spacing: Globals.spacing
@@ -188,16 +199,24 @@ Item {
                            Globals.Colors.AlternativeHighlight :
                            Globals.Colors.Foreground
 
-                Behavior on color {
-                    ColorAnimation {
-                        duration: Globals.slowAnimation
-                    }
+                //
+                // Robot voltage plot
+                //
+                VoltageGraph {
+                    x: Globals.scale (3)
+                    y: Globals.scale (12)
+                    width: Globals.scale (45)
+                    height: Globals.scale (21)
+
+                    refreshInterval: 250
+                    rectWidth: Globals.scale (0.5)
                 }
             }
 
             Label {
                 size: large
                 font.bold: true
+                id: voltageIndicator
                 Layout.fillWidth: true
                 text: status.robotVoltage
                 verticalAlignment: Text.AlignVCenter
@@ -206,19 +225,16 @@ Item {
                 color: mouse.containsMouse ?
                            Globals.Colors.AlternativeHighlight :
                            Globals.Colors.Foreground
-
-                Behavior on color {
-                    ColorAnimation {
-                        duration: Globals.slowAnimation
-                    }
-                }
             }
 
             MouseArea {
                 id: mouse
                 hoverEnabled: true
                 anchors.fill: parent
-                onClicked: powerWindow.show()
+                onClicked: {
+                    Globals.normalBeep()
+                    voltageWindow.show()
+                }
             }
         }
 
@@ -284,7 +300,7 @@ Item {
         }
     }
 
-    PowerWindow {
-        id: powerWindow
+    VoltageWindow {
+        id: voltageWindow
     }
 }

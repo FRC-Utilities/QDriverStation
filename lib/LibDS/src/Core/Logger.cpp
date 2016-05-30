@@ -167,8 +167,5 @@ void DS_MESSAGE_HANDLER (QtMsgType type, const QMessageLogContext& context,
 
     /* Write all logs to the dump file */
     fprintf (DUMP,   PRINT_FMT, PRINT (time), PRINT (level), PRINT (data));
-
-    /* Do not log informational messages to the console */
-    if (type != QtDebugMsg)
-        fprintf (stderr, PRINT_FMT, PRINT (time), PRINT (level), PRINT (data));
+    fprintf (stderr, PRINT_FMT, PRINT (time), PRINT (level), PRINT (data));
 }

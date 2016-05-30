@@ -64,6 +64,8 @@ Window {
 
             maxPower = Math.round (maxPower * 100) / 100
             maxVoltage = Math.round (maxVoltage * 100) / 100
+
+            canvas.requestPaint()
         }
 
         onVoltageChanged: {
@@ -75,6 +77,22 @@ Window {
 
             powerString = power + " W"
             voltageString = voltageString
+
+            canvas.requestPaint()
+        }
+    }
+
+    Timer {
+        id: timer
+        repeat: true
+        interval: 20
+        Component.onCompleted: start()
+
+        property int pos
+
+        onTriggered: {
+            pos += 1
+            canvas.requestPaint()
         }
     }
 
@@ -89,13 +107,13 @@ Window {
         anchors.fill: parent
         anchors.margins: Globals.spacing
 
-        Rectangle {
+        Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            color: Globals.Colors.WindowBackground
 
             RowLayout {
                 anchors.fill: parent
+                spacing: Globals.spacing
                 anchors.margins: Globals.spacing
 
                 GridLayout {
@@ -109,17 +127,50 @@ Window {
                     } Label {
                         text: voltageString
                     } Label {
-                        text: qsTr ("Power Output") + ": "
+                        text: qsTr ("Electrical Power") + ": "
                     } Label {
                         text: powerString
                     } Label {
-                        text: qsTr ("Max. Voltage") + ": "
+                        text: qsTr ("Nominal Voltage") + ": "
                     } Label {
                         text: maxVoltage + " V"
                     } Label {
-                        text: qsTr ("Max. Power Output") + ": "
+                        text: qsTr ("Nominal Power Supply") + ": "
                     } Label {
                         text: maxPower + " W"
+                    }
+                }
+
+                Canvas {
+                    id: canvas
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+                    onPaint: {
+                        var context = getContext('2d')
+                        context.globalCompositeOperation = "source-over";
+
+                        context.fillStyle = Globals.Colors.WindowBackground
+                        context.fillRect (0, 0, canvas.width, canvas.height);
+                        context.strokeStyle = Globals.Colors.HighlightColor
+
+                        /* Calculate current voltage ratio with height */
+                        var voltageLevel = voltage / maxVoltage
+                        var initialHeight = height * 0.9
+
+                        /* Calculate X and Y coordinates */
+                        var xOffset = timer.pos
+                        var yOffset = initialHeight - (voltageLevel * height)
+
+                        /* Reset X if it is greater than the width */
+                        if (xOffset > width) {
+                            xOffset = 0
+                            timer.pos = 0
+                        }
+
+                        /* Draw the point, but also extend it as a rectangle
+                         * to "fill" the graph */
+                        context.strokeRect (xOffset, yOffset, 0, yOffset)
                     }
                 }
             }
