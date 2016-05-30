@@ -65,15 +65,9 @@ RowLayout {
     Timer {
         repeat: true
         interval: 1000
+        Component.onCompleted: start()
 
         onTriggered: {
-            cpuProgressBar.value = cUtilities.getCpuUsage()
-            plug.visible = cUtilities.isConnectedToPowerSource()
-            batteryProgressBar.value = cUtilities.getBatteryLevel()
-        }
-
-        Component.onCompleted: {
-            start()
             cpuProgressBar.value = cUtilities.getCpuUsage()
             plug.visible = cUtilities.isConnectedToPowerSource()
             batteryProgressBar.value = cUtilities.getBatteryLevel()

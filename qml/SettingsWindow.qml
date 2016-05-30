@@ -46,10 +46,10 @@ Window {
         customAddress.placeholder = DriverStation.defaultRobotAddress()
 
         /* Set the PSC limit */
-        if (pcsCheckbox.checked && pcs.value > 0)
-            DriverStation.setParallelSocketCount (pcs.value)
+        if (pscCheckbox.checked && psc.value > 0)
+            DriverStation.setParallelSocketCount (psc.value)
         else {
-            pcs.value = 0
+            psc.value = 0
             DriverStation.setParallelSocketCount (0)
         }
 
@@ -88,7 +88,7 @@ Window {
         category: "SettingsWindow"
         property alias x: window.x
         property alias y: window.y
-        property alias pcs: pcs.value
+        property alias pcs: psc.value
         property alias address: customAddress.text
         property alias promptOnQuit: promptOnQuit.checked
         property alias checkForUpdates: checkForUpdates.checked
@@ -249,23 +249,39 @@ Window {
                         spacing: Globals.spacing
 
                         Checkbox {
-                            id: pcsCheckbox
-                            checked: pcs.value > 0
+                            id: pscCheckbox
+                            checked: psc.value > 0
                             text: qsTr ("Set the PSC* to:")
                         }
 
                         Spinbox {
-                            id: pcs
+                            id: psc
                             value: 0
                             minimumValue: 0
                             maximumValue: 1000
                             Layout.fillWidth: true
-                            enabled: pcsCheckbox.checked
+                            enabled: pscCheckbox.checked
                         }
 
                         Label {
                             size: small
                             text: qsTr ("*PSC: Parallel Socket Count (0 = auto)")
+                        }
+
+                        Label {
+                            size: small
+                            Layout.fillWidth: true
+                            wrapMode: Text.WordWrap
+                            opacity: pscCheckbox.checked ? 1 : 0
+                            color: Globals.Colors.IndicatorWarning
+                            text: qsTr ("WARNING: Using high (above 120) PSC " +
+                                        "values can cause unexpected problems")
+
+                            Behavior on opacity {
+                                NumberAnimation {
+                                    duration: Globals.slowAnimation
+                                }
+                            }
                         }
                     }
                 }

@@ -202,7 +202,7 @@ public:
      */
     virtual float nominalBatteryVoltage()
     {
-        return 13.00;
+        return 12.80;
     }
 
     /**

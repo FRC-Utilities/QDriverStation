@@ -51,11 +51,23 @@ Sockets::~Sockets()
  */
 int Sockets::socketCount() const
 {
+    /* Return user-set socket count */
     if (customSocketCount() > 0)
         return customSocketCount();
 
+    /* Return automatic PSC, no higher than 72 */
     else
-        return qMax (robotIpList().count() / 6, 1);
+        return qMin (72, qMax (robotIPs().count() / 6, 1));
+}
+
+/**
+ * This function ensures that we do not have more sockets than items in
+ * the IP list. This ensures a better management of system resources and avoids
+ * potential errors (e.g. modem stops responding, etc)...
+ */
+int Sockets::realSocketCount() const
+{
+    return qMin (socketCount(), robotIPs().count());
 }
 
 /**
@@ -146,7 +158,7 @@ QString Sockets::robotIp() const
  * limiting our scan speed to the ammount of RAM that we want the client to
  * use.
  */
-QStringList Sockets::robotIpList() const
+QStringList Sockets::robotIPs() const
 {
     return m_robotIpList;
 }
@@ -202,9 +214,9 @@ void Sockets::sendToRobot (const QByteArray& data)
 
     refreshRobotIPs();
 
-    for (int i = 0; i < robotIpList().count(); ++i) {
-        if (socketCount() > i && robotIpList().count() > m_iterator + i) {
-            QString ip = robotIpList().at (m_iterator + i);
+    for (int i = 0; i < robotIPs().count(); ++i) {
+        if (realSocketCount() > i && robotIPs().count() > m_iterator + i) {
+            QString ip = robotIPs().at (m_iterator + i);
             m_robotSenderList.at (i)->writeDatagram (data,
                                                      QHostAddress (ip),
                                                      robotOutputPort());
@@ -465,13 +477,13 @@ void Sockets::refreshRobotIPs()
     if (!robotIp().isEmpty())
         return;
 
-    if (robotIpList().count() > m_iterator + socketCount())
-        m_iterator += socketCount();
+    if (robotIPs().count() > m_iterator + realSocketCount())
+        m_iterator += realSocketCount();
     else
         m_iterator = 0;
 
-    for (int i = 0; i < robotIpList().count(); ++i) {
-        if (socketCount() > i && robotIpList().count() > m_iterator + i) {
+    for (int i = 0; i < robotIPs().count(); ++i) {
+        if (realSocketCount() > i && robotIPs().count() > m_iterator + i) {
             m_robotInputSockets.at (i)->socket()->disconnectFromHost();
             m_robotInputSockets.at (i)->bind (
                 QHostAddress (m_robotIpList.at (m_iterator + i)),
@@ -499,7 +511,7 @@ void Sockets::generateSocketPairs()
 {
     clearSocketLists();
 
-    for (int i = 0; i < socketCount(); ++i) {
+    for (int i = 0; i < realSocketCount(); ++i) {
         ConfigurableSocket* sender = new ConfigurableSocket (robotSocketType());
         ConfigurableSocket* receiver = new ConfigurableSocket (robotSocketType());
 

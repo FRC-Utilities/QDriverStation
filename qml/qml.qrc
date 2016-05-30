@@ -30,5 +30,6 @@
         <file>widgets/LineEdit.qml</file>
         <file>widgets/Scrollbar.qml</file>
         <file>GetTeamNumber.qml</file>
+        <file>PowerWindow.qml</file>
     </qresource>
 </RCC>

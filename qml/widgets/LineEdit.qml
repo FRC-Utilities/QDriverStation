@@ -62,6 +62,12 @@ Item {
         border.width: Globals.scale (1)
         opacity: parent.enabled ? 1 :0.5
         border.color: Globals.Colors.WidgetBorder
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: Globals.slowAnimation
+            }
+        }
     }
 
     //

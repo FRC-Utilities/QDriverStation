@@ -41,6 +41,12 @@ SpinBox {
             opacity: control.enabled ? 1 : 0.5
             color: Globals.Colors.TextAreaBackground
             border.color: Globals.Colors.WidgetBorder
+
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: Globals.slowAnimation
+                }
+            }
         }
 
         textColor: Globals.Colors.TextAreaForeground

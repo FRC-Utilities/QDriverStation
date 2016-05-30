@@ -183,6 +183,16 @@ Item {
                 name: icons.fa_battery
                 size: Globals.scale (42)
                 horizontalAlignment: Text.AlignLeft
+
+                color: mouse.containsMouse ?
+                           Globals.Colors.AlternativeHighlight :
+                           Globals.Colors.Foreground
+
+                Behavior on color {
+                    ColorAnimation {
+                        duration: Globals.slowAnimation
+                    }
+                }
             }
 
             Label {
@@ -192,6 +202,23 @@ Item {
                 text: status.robotVoltage
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
+
+                color: mouse.containsMouse ?
+                           Globals.Colors.AlternativeHighlight :
+                           Globals.Colors.Foreground
+
+                Behavior on color {
+                    ColorAnimation {
+                        duration: Globals.slowAnimation
+                    }
+                }
+            }
+
+            MouseArea {
+                id: mouse
+                hoverEnabled: true
+                anchors.fill: parent
+                onClicked: powerWindow.show()
             }
         }
 
@@ -255,5 +282,9 @@ Item {
             horizontalAlignment: Qt.AlignHCenter
             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
         }
+    }
+
+    PowerWindow {
+        id: powerWindow
     }
 }

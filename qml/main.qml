@@ -66,6 +66,7 @@ ApplicationWindow {
     function updateWindowMode() {
         if (docked) {
             showMaximized()
+            y = Screen.desktopAvailableHeight - height
         } else {
             showNormal()
             width = minimumWidth

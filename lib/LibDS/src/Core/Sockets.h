@@ -20,6 +20,8 @@ public:
     ~Sockets();
 
     int socketCount() const;
+    int realSocketCount() const;
+
     int fmsInputPort() const;
     int fmsOutputPort() const;
     int radioInputPort() const;
@@ -31,7 +33,7 @@ public:
 
     QString radioIp() const;
     QString robotIp() const;
-    QStringList robotIpList() const;
+    QStringList robotIPs() const;
 
     DS::SocketType fmsSocketType() const;
     DS::SocketType radioSocketType() const;

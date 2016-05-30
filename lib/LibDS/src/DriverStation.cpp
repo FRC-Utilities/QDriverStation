@@ -20,6 +20,14 @@
 #include "Protocols/FRC_2016.h"
 
 /**
+ * Formats the input message so that it looks nice on a text display widget
+ */
+static QString CONSOLE_MESSAGE (const QString& input)
+{
+    return "<font color='#888'>** " + input + "</font>";
+}
+
+/**
  * Initializes the members of the DriverStation class
  */
 DriverStation::DriverStation()
@@ -932,9 +940,8 @@ void DriverStation::setProtocol (Protocol* protocol)
         /* Send a message telling that the protocol has been initialized */
         emit protocolChanged();
         emit newMessage (separator);
-        emit newMessage ("<font color=#888>** "
-                         + tr ("%1 Initialized").arg (m_protocol->name())
-                         + "</font>");
+        emit newMessage (CONSOLE_MESSAGE (tr ("DS: %1 initialized")
+                                          .arg (m_protocol->name())));
 
         /* Tell client how much time is needed for detecting robot */
         if (m_sockets->customSocketCount() == 0)
@@ -1250,21 +1257,28 @@ void DriverStation::sendRobotPacket()
  */
 void DriverStation::calculateScanSpeed()
 {
-    QString pscCount = "<font color=#888>"
-                       "** PSC: Using %1 parallel socket pairs"
-                       "</font>";
-    QString scanTime = "<font color=#888>"
-                       "** PSC: It may take up to %1 seconds to detect "
-                       "the robot"
-                       "</font>";
+    QString pscCount = CONSOLE_MESSAGE (tr ("DS: Using %1 parallel sockets"));
+    QString scanTime = CONSOLE_MESSAGE (tr ("DS: It may take up to %1 seconds "
+                                            "to detect your robot"));
 
     if (protocol() && running()) {
-        int time = m_sockets->robotIpList().count() / m_sockets->socketCount();
+        int time = m_sockets->robotIPs().count() / m_sockets->realSocketCount();
         time *= m_robotWatchdog->expirationTime();
         time /= 1000;
 
-        emit newMessage (pscCount.arg (m_sockets->socketCount()));
-        emit newMessage (scanTime.arg (qMax (time, 3)));
+        /* It takes less than one second to detect the robot (in theory) */
+        if (time <= 1) {
+            time = 1;
+            scanTime = CONSOLE_MESSAGE (tr ("DS: It should take less than 1 "
+                                            "second to detect yout robot"));
+        }
+
+        /* It takes 2 or more seconds to detect the robot */
+        else
+            scanTime = scanTime.arg (time);
+
+        emit newMessage (pscCount.arg (m_sockets->realSocketCount()));
+        emit newMessage (scanTime);
     }
 }
 
