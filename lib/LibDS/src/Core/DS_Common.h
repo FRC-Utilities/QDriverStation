@@ -13,10 +13,18 @@
 #include <QDebug>
 #include <QObject>
 #include <QDateTime>
+#include <QMetaObject>
 #include <QStringList>
 
 #define DISABLED_PORT 0
 #define JoystickList QList<DS::Joystick*>
+
+/* Yet another damm fix for Travis CI to work with older Qt5 versions */
+#define SMART_ENUM(ENUM) \
+    friend Q_DECL_CONSTEXPR const QMetaObject *qt_getEnumMetaObject(ENUM) \
+    Q_DECL_NOEXCEPT { return &staticMetaObject; } \
+    friend Q_DECL_CONSTEXPR const char *qt_getEnumName(ENUM) \
+    Q_DECL_NOEXCEPT { return #ENUM; }
 
 /**
  * Returns the location in where application files (e.g. logs) are stored
@@ -71,7 +79,7 @@ public:
         kControlAutonomous,
         kControlTeleoperated,
     };
-    Q_ENUM (ControlMode)
+    SMART_ENUM (ControlMode)
 
     /**
      * @brief The Alliance enum
@@ -83,7 +91,7 @@ public:
         kAllianceRed,
         kAllianceBlue,
     };
-    Q_ENUM (Alliance)
+    SMART_ENUM (Alliance)
 
     /**
      * @brief The Position enum
@@ -95,7 +103,7 @@ public:
         kPosition2,
         kPosition3,
     };
-    Q_ENUM (Position)
+    SMART_ENUM (Position)
 
     /**
      * @brief The CommStatus enum
@@ -106,7 +114,7 @@ public:
         kCommsWorking,
         kCommsFailing,
     };
-    Q_ENUM (CommStatus)
+    SMART_ENUM (CommStatus)
 
     /**
      * @brief The CodeStatus enum
@@ -117,7 +125,7 @@ public:
         kCodeRunning,
         kCodeFailing,
     };
-    Q_ENUM (CodeStatus)
+    SMART_ENUM (CodeStatus)
 
     /**
      * @brief The EnableStatus enum
@@ -127,7 +135,7 @@ public:
         kEnabled,
         kDisabled,
     };
-    Q_ENUM (EnableStatus)
+    SMART_ENUM (EnableStatus)
 
     /**
      * @brief the OperationStatus enum
@@ -137,7 +145,7 @@ public:
         kOperationNormal,
         kOperationEmergencyStop,
     };
-    Q_ENUM (OperationStatus)
+    SMART_ENUM (OperationStatus)
 
     /**
      * @brief the VoltageStatus enum
@@ -149,7 +157,7 @@ public:
         kVoltageNormal,
         kVoltageBrownout,
     };
-    Q_ENUM (VoltageStatus)
+    SMART_ENUM (VoltageStatus)
 
     /**
      * Represents the socket types that can be used by the DS modules
@@ -158,7 +166,7 @@ public:
         kSocketTypeUDP,
         kSocketTypeTCP,
     };
-    Q_ENUM (SocketType)
+    SMART_ENUM (SocketType)
 
     /**
      * Represents a joystick and its respective properties
