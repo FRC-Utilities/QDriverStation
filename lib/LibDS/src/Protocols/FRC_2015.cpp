@@ -111,6 +111,42 @@ int FRC_2015::netconsoleInputPort()
 }
 
 /**
+ * FRC 2015 protocol supports only 1 POV.
+ * Remaining POVs will be ignored.
+ */
+int FRC_2015::maxPOVCount()
+{
+    return 1;
+}
+
+/**
+ * FRC 2015 protocol supports a maximum of 6 axes.
+ * Remaining axes will be ignored.
+ */
+int FRC_2015::maxAxisCount()
+{
+    return 6;
+}
+
+/**
+ * FRC 2015 protocol supports a maximum of 12 buttons.
+ * Remaining buttons will be ignored.
+ */
+int FRC_2015::maxButtonCount()
+{
+    return 12;
+}
+
+/**
+ * FRC 2015 Protocol supports a maximum of 6 joysticks.
+ * Remaining joysticks will be ignored.
+ */
+int FRC_2015::maxJoystickCount()
+{
+    return 6;
+}
+
+/**
  * Reboots the robot in the next packet cycle
  */
 void FRC_2015::rebootRobot()

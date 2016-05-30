@@ -85,7 +85,7 @@ static void INIT_LOGGER()
     /* Construct file name */
     QString fpath = DS_LOGGER_PATH()
                     + "/"
-                    + GET_DATE_TIME ("ddd MMM dd yyyy - HH_mm_ss")
+                    + GET_DATE_TIME ("ddd MMM dd yyyy - HH_mm_ss AP")
                     + ".log";
 
     /* Open the dump file */
@@ -96,7 +96,7 @@ static void INIT_LOGGER()
     /* Get app info */
     QString appN = qApp->applicationName();
     QString appV = qApp->applicationVersion();
-    QString time = GET_DATE_TIME ("MMM dd yyyy - HH:mm:ss");
+    QString time = GET_DATE_TIME ("MMM dd yyyy - HH:mm:ss AP");
 
     /* Format app info */
     time.prepend ("Log created on:      ");

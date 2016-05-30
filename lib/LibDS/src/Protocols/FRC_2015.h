@@ -29,6 +29,12 @@ public:
     virtual int robotOutputPort();
     virtual int netconsoleInputPort();
 
+    /* Joystick config */
+    virtual int maxPOVCount();
+    virtual int maxAxisCount();
+    virtual int maxButtonCount();
+    virtual int maxJoystickCount();
+
     /* Diagnostic functions */
     virtual void rebootRobot();
     virtual void restartRobotCode();

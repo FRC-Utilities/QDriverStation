@@ -46,7 +46,8 @@ HEADERS += \
     $$PWD/src/Core/DS_Base.h \
     $$PWD/src/Core/DS_Config.h \
     $$PWD/src/Core/ConfigurableSocket.h \
-    $$PWD/src/Core/DS_Common.h
+    $$PWD/src/Core/DS_Common.h \
+    $$PWD/src/Core/RobotLogger.h
 
 SOURCES += \
     $$PWD/src/Core/NetConsole.cpp \
@@ -59,4 +60,5 @@ SOURCES += \
     $$PWD/src/DriverStation.cpp \
     $$PWD/src/Core/DS_Config.cpp \
     $$PWD/src/Core/ConfigurableSocket.cpp \
-    $$PWD/src/Core/Logger.cpp
+    $$PWD/src/Core/Logger.cpp \
+    $$PWD/src/Core/RobotLogger.cpp

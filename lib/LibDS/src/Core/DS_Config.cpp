@@ -9,8 +9,15 @@
 #include "DS_Config.h"
 #include "DriverStation.h"
 
+#include <QTimer>
+#include <QElapsedTimer>
+#include <Core/RobotLogger.h>
+
 DS_Config::DS_Config()
 {
+    m_timer = new QElapsedTimer;
+    m_robotLogger = new RobotLogger;
+
     m_team = 0;
     m_voltage = 0;
     m_libVersion = "";
@@ -29,6 +36,17 @@ DS_Config::DS_Config()
     m_controlMode = kControlTeleoperated;
 
     updateElapsedTime();
+}
+
+DS_Config::~DS_Config()
+{
+    delete m_timer;
+    delete m_robotLogger;
+}
+
+RobotLogger* DS_Config::robotLogger()
+{
+    return m_robotLogger;
 }
 
 DS_Config* DS_Config::getInstance()
@@ -214,7 +232,7 @@ void DS_Config::updateAlliance (const Alliance& alliance)
         m_alliance = alliance;
         emit allianceChanged (m_alliance);
 
-        qDebug() << "Alliance set to" << alliance;
+        m_robotLogger->registerAlliance (alliance);
     }
 }
 
@@ -224,7 +242,7 @@ void DS_Config::updatePosition (const Position& position)
         m_position = position;
         emit positionChanged (m_position);
 
-        qDebug() << "Position set to" << position;
+        m_robotLogger->registerPosition (position);
     }
 }
 
@@ -265,7 +283,7 @@ void DS_Config::updateRobotCodeStatus (const CodeStatus& status)
         emit codeStatusChanged (status);
         emit statusChanged (DriverStation::getInstance()->generalStatus());
 
-        qDebug() << "Code status set to" << status;
+        m_robotLogger->registerCodeStatus (status);
     }
 }
 
@@ -276,7 +294,7 @@ void DS_Config::updateControlMode (const ControlMode& mode)
         emit controlModeChanged (m_controlMode);
         emit statusChanged (DriverStation::getInstance()->generalStatus());
 
-        qDebug() << "Control mode set to" << mode;
+        m_robotLogger->registerControlMode (mode);
     }
 }
 
@@ -286,7 +304,7 @@ void DS_Config::updateEnabled (const EnableStatus& status)
         m_enableStatus = status;
 
         if (status == DS::kEnabled) {
-            m_timer.restart();
+            m_timer->restart();
             m_timerEnabled = true;
         }
 
@@ -296,7 +314,7 @@ void DS_Config::updateEnabled (const EnableStatus& status)
         emit enabledChanged (m_enableStatus);
         emit statusChanged (DriverStation::getInstance()->generalStatus());
 
-        qDebug() << "Enable status set to" << status;
+        m_robotLogger->registerEnableStatus (status);
     }
 }
 
@@ -327,7 +345,7 @@ void DS_Config::updateRadioCommStatus (const CommStatus& status)
         m_radioCommStatus = status;
         emit radioCommStatusChanged (m_radioCommStatus);
 
-        qDebug() << "Radio comm. status set to" << status;
+        m_robotLogger->registerRadioCommStatus (status);
     }
 }
 
@@ -338,7 +356,7 @@ void DS_Config::updateRobotCommStatus (const CommStatus& status)
         emit robotCommStatusChanged (m_robotCommStatus);
         emit statusChanged (DriverStation::getInstance()->generalStatus());
 
-        qDebug() << "Robot comm. status set to" << status;
+        m_robotLogger->registerRobotCommStatus (status);
     }
 }
 
@@ -349,7 +367,7 @@ void DS_Config::updateVoltageStatus (const VoltageStatus& status)
         emit voltageStatusChanged (m_voltageStatus);
         emit statusChanged (DriverStation::getInstance()->generalStatus());
 
-        qDebug() << "Voltage status set to" << status;
+        m_robotLogger->registerVoltageStatus (status);
     }
 }
 
@@ -360,14 +378,14 @@ void DS_Config::updateOperationStatus (const OperationStatus& status)
         emit operationStatusChanged (m_operationStatus);
         emit statusChanged (DriverStation::getInstance()->generalStatus());
 
-        qDebug() << "Operation status set to" << status;
+        m_robotLogger->registerOperationStatus (status);
     }
 }
 
 void DS_Config::updateElapsedTime()
 {
     if (m_timerEnabled && isConnectedToRobot() && !isEmergencyStopped()) {
-        quint32 msec = m_timer.elapsed();
+        quint32 msec = m_timer->elapsed();
         quint32 secs = (msec / 1000);
         quint32 mins = (secs / 60) % 60;
 

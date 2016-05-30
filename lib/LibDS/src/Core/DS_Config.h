@@ -9,9 +9,10 @@
 #ifndef _LIB_DS_PRIVATE_CONFIG_H
 #define _LIB_DS_PRIVATE_CONFIG_H
 
-#include <QTimer>
-#include <QElapsedTimer>
 #include <Core/DS_Base.h>
+
+class RobotLogger;
+class QElapsedTimer;
 
 /**
  * This class updates the variables of the \c DriverStation class without
@@ -25,6 +26,7 @@
 class DS_Config : public DS_Base
 {
     Q_OBJECT
+    friend class DriverStation;
 
 public:
     static DS_Config* getInstance();
@@ -80,6 +82,8 @@ private slots:
 
 protected:
     DS_Config();
+    ~DS_Config();
+    RobotLogger* robotLogger();
 
 private:
     int m_team;
@@ -99,7 +103,9 @@ private:
     OperationStatus m_operationStatus;
 
     bool m_timerEnabled;
-    QElapsedTimer m_timer;
+
+    QElapsedTimer* m_timer;
+    RobotLogger* m_robotLogger;
 };
 
 #endif
