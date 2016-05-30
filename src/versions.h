@@ -31,6 +31,6 @@ static const QString APP_DSPNAME = "QDriverStation";
 static const QString APP_WEBSITE = "http://qdriverstation.sf.net";
 static const QString URL_UPDATER = "https://raw.githubusercontent.com/"
                                    "WinT-3794/QDriverStation/master/"
-                                   "updates.json";
+                                   "UPDATES.json";
 
 #endif
