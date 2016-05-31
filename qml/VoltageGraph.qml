@@ -28,57 +28,27 @@ import Qt.labs.settings 1.0
 import "widgets"
 import "globals.js" as Globals
 
-Item {
-    property double currentPos: 0
-    property int refreshInterval: 50
-    property double rectWidth: Globals.scale (2)
-
-    Timer {
-        repeat: true
-        interval: refreshInterval
-        Component.onCompleted: start()
-
-        onTriggered: {
-            currentPos += 1
-            plot.requestPaint()
+Plot {
+    Connections {
+        target: DriverStation
+        onProtocolChanged: {
+            maximumValue = DriverStation.nominalBatteryVoltage()
+            minimumValue = DriverStation.nominalBatteryVoltage() / 10
         }
     }
 
-    Plot {
-        id: plot
-        anchors.fill: parent
+    barColor: Globals.Colors.TextAreaBackground
 
-        onPaint: {
-            var context = getContext('2d')
-            var voltage = DriverStation.currentBatteryVoltage() /
-                          DriverStation.nominalBatteryVoltage()
+    onRefreshed: {
+        value = DriverStation.currentBatteryVoltage()
 
-            voltage = Math.min (voltage, 0.95) // Do not exceed 95%
-            voltage = Math.max (voltage, 0.20) // Used during no robot comm.
-
-            /* Set stroke color */
-            if (voltage >= 0.8)
-                context.fillStyle = Globals.Colors.IndicatorGood
-            else if (voltage >= 0.7)
-                context.fillStyle = Globals.Colors.IndicatorWarning
-            else if (!DriverStation.isConnectedToRobot())
-                context.fillStyle = Globals.Colors.CPUProgress
-            else
-                context.fillStyle = Globals.Colors.IndicatorError
-
-            /* Calculate X and Y coordinates */
-            var xOffset = Globals.scale (currentPos * rectWidth)
-            var yOffset = (1 - voltage) * height
-
-            /* Reset the graph if it is greater than the width */
-            if (xOffset > plot.width) {
-                xOffset = 0
-                currentPos = 0
-                context.clearRect (0, 0, plot.width, plot.height)
-            }
-
-            /* Draw a rectangle with its highest part representing the voltage */
-            context.fillRect (xOffset, yOffset, rectWidth, height)
-        }
+        if (!DriverStation.isConnectedToRobot())
+            barColor = Globals.Colors.TextAreaBackground
+        else if (getLevel() > 0.80)
+            barColor = Globals.Colors.IndicatorGood
+        else if (getLevel() > 0.70)
+            barColor = Globals.Colors.IndicatorWarning
+        else
+            barColor = Globals.Colors.IndicatorError
     }
 }

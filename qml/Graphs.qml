@@ -28,6 +28,23 @@ import Qt.labs.settings 1.0
 import "widgets"
 import "globals.js" as Globals
 
-Item {
+ColumnLayout {
+    spacing: Globals.spacing
 
+    Label {
+        text: qsTr ("Robot Voltage") + ":"
+    }
+
+    VoltageGraph {
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                Globals.normalBeep()
+                window.showVoltageWindow()
+            }
+        }
+    }
 }

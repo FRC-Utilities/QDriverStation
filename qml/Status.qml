@@ -195,19 +195,16 @@ Item {
                 size: Globals.scale (42)
                 horizontalAlignment: Text.AlignLeft
 
-                color: mouse.containsMouse ?
-                           Globals.Colors.AlternativeHighlight :
-                           Globals.Colors.Foreground
-
                 //
                 // Robot voltage plot
                 //
                 VoltageGraph {
                     x: Globals.scale (3)
-                    y: Globals.scale (12)
+                    y: Globals.scale (9)
                     width: Globals.scale (45)
-                    height: Globals.scale (21)
+                    height: Globals.scale (24)
 
+                    border.width: 0
                     refreshInterval: 250
                     rectWidth: Globals.scale (0.5)
                 }
@@ -221,19 +218,14 @@ Item {
                 text: status.robotVoltage
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-
-                color: mouse.containsMouse ?
-                           Globals.Colors.AlternativeHighlight :
-                           Globals.Colors.Foreground
             }
 
             MouseArea {
                 id: mouse
-                hoverEnabled: true
                 anchors.fill: parent
                 onClicked: {
                     Globals.normalBeep()
-                    voltageWindow.show()
+                    window.showVoltageWindow()
                 }
             }
         }
@@ -298,9 +290,5 @@ Item {
             horizontalAlignment: Qt.AlignHCenter
             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
         }
-    }
-
-    VoltageWindow {
-        id: voltageWindow
     }
 }

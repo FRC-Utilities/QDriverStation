@@ -105,8 +105,8 @@ RowLayout {
         }
 
         Button {
-            icon: icons.fa_bolt
             caption.font.bold: true
+            icon: icons.fa_area_chart
             width: Globals.scale (36)
             height: Globals.scale (36)
             onClicked: rightTab.showGraphs()

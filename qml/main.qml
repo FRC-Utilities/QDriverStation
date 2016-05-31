@@ -61,6 +61,13 @@ ApplicationWindow {
     }
 
     //
+    // Display the voltage window (from anywhere in the app)
+    //
+    function showVoltageWindow() {
+        voltageWindow.show()
+    }
+
+    //
     // The actual docking procedures
     //
     function updateWindowMode() {
@@ -179,6 +186,13 @@ ApplicationWindow {
     //
     VirtualJoystickWindow {
         id: virtualJoystickWindow
+    }
+
+    //
+    // A discrete window that shows a more detailed robot voltage graph
+    //
+    VoltageWindow {
+        id: voltageWindow
     }
 
     //
