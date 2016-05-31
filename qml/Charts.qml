@@ -28,46 +28,35 @@ import Qt.labs.settings 1.0
 import "widgets"
 import "globals.js" as Globals
 
-ColumnLayout {
-    spacing: Globals.spacing
+Item {
+    ColumnLayout {
+        anchors.fill: parent
+        spacing: Globals.spacing
 
-    Label {
-        text: qsTr ("CPU Usage")
-    }
+        Label {
+            text: qsTr ("CPU Usage") + ":"
+        }
 
-    Plot {
-        Layout.fillWidth: true
-        Layout.fillHeight: true
+        CpuUsageGraph {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+        }
 
-        value: 0
-        minimumValue: 8
-        maximumValue: 100
-        barColor: Globals.Colors.TextAreaBackground
+        Label {
+            text: qsTr ("Robot Voltage") + ":"
+        }
 
-        onRefreshed:  {
-            value = DriverStation.cpuUsage()
-
-            if (DriverStation.isConnectedToRobot())
-                barColor = Globals.Colors.CPUUsage
-            else
-                barColor = Globals.Colors.TextAreaBackground
+        VoltageGraph {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
         }
     }
 
-    Label {
-        text: qsTr ("Robot Voltage") + ":"
-    }
-
-    VoltageGraph {
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                Globals.normalBeep()
-                window.showVoltageWindow()
-            }
+    MouseArea {
+        anchors.fill: parent
+        onClicked: {
+            Globals.normalBeep()
+            window.showChartsWindow()
         }
     }
 }

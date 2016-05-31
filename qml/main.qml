@@ -61,10 +61,10 @@ ApplicationWindow {
     }
 
     //
-    // Display the voltage window (from anywhere in the app)
+    // Display the charts window (from anywhere in the app)
     //
-    function showVoltageWindow() {
-        voltageWindow.show()
+    function showChartsWindow() {
+        chartsWindow.show()
     }
 
     //
@@ -189,10 +189,10 @@ ApplicationWindow {
     }
 
     //
-    // A discrete window that shows a more detailed robot voltage graph
+    // A window that shows a more detailed robot voltage & CPU usage charts
     //
-    VoltageWindow {
-        id: voltageWindow
+    ChartsWindow {
+        id: chartsWindow
     }
 
     //

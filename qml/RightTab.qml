@@ -39,7 +39,7 @@ RowLayout {
 
         function hideWidgets() {
             about.opacity = 0
-            graphs.opacity = 0
+            charts.opacity = 0
             messages.opacity = 0
         }
 
@@ -48,9 +48,9 @@ RowLayout {
             messages.opacity = 1
         }
 
-        function showGraphs() {
+        function showCharts() {
             hideWidgets()
-            graphs.opacity = 1
+            charts.opacity = 1
         }
 
         function showAbout() {
@@ -68,9 +68,9 @@ RowLayout {
             anchors.margins: Globals.spacing
         }
 
-        Graphs {
+        Charts {
             opacity: 0
-            id: graphs
+            id: charts
             visible: opacity > 0
             anchors.fill: parent
             anchors.margins: Globals.spacing
@@ -109,8 +109,8 @@ RowLayout {
             icon: icons.fa_area_chart
             width: Globals.scale (36)
             height: Globals.scale (36)
-            onClicked: rightTab.showGraphs()
-            textColor: graphs.visible ? Globals.Colors.AlternativeHighlight :
+            onClicked: rightTab.showCharts()
+            textColor: charts.visible ? Globals.Colors.AlternativeHighlight :
                                          Globals.Colors.Foreground
         }
 

@@ -28,59 +28,18 @@ import Qt.labs.settings 1.0
 import "widgets"
 import "globals.js" as Globals
 
-Window {
-    id: voltageWindow
+Plot {
+    value: 0
+    minimumValue: 8
+    maximumValue: 100
+    barColor: Globals.Colors.TextAreaBackground
 
-    x: Globals.scale (300)
-    y: Globals.scale (200)
-    title: qsTr ("Robot Voltage")
-    color: Globals.Colors.Background
+    onRefreshed:  {
+        value = DriverStation.cpuUsage()
 
-    minimumWidth: Globals.scale (720)
-    maximumWidth: Globals.scale (720)
-    minimumHeight: Globals.scale (360)
-    maximumHeight: Globals.scale (360)
-
-    Component.onCompleted: {
-        if (showOnLaunch.checked)
-            show()
-    }
-
-    Settings {
-        category: "Voltage Window"
-        property alias x: voltageWindow.x
-        property alias y: voltageWindow.y
-        property alias showOnInt: showOnLaunch.checked
-    }
-
-    ColumnLayout {
-        anchors.fill: parent
-        spacing: Globals.spacing
-        anchors.margins: Globals.spacing
-
-        VoltageGraph {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-        }
-
-        RowLayout {
-            Layout.fillWidth: true
-            spacing: Globals.spacing
-
-            Checkbox {
-                checked: false
-                id: showOnLaunch
-                text: qsTr ("Show this window on application launch")
-            }
-
-            Item {
-                Layout.fillWidth: true
-            }
-
-            Button {
-                text: qsTr ("Close")
-                onClicked: voltageWindow.close()
-            }
-        }
+        if (DriverStation.isConnectedToRobot())
+            barColor = Globals.Colors.CPUUsage
+        else
+            barColor = Globals.Colors.TextAreaBackground
     }
 }

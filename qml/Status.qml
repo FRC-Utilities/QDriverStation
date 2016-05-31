@@ -225,7 +225,7 @@ Item {
                 anchors.fill: parent
                 onClicked: {
                     Globals.normalBeep()
-                    window.showVoltageWindow()
+                    window.showChartsWindow()
                 }
             }
         }

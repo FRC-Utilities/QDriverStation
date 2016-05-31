@@ -29,9 +29,10 @@
         <file>widgets/LineEdit.qml</file>
         <file>widgets/Scrollbar.qml</file>
         <file>GetTeamNumber.qml</file>
-        <file>Graphs.qml</file>
-        <file>VoltageWindow.qml</file>
         <file>widgets/Plot.qml</file>
         <file>VoltageGraph.qml</file>
+        <file>Charts.qml</file>
+        <file>ChartsWindow.qml</file>
+        <file>CpuUsageGraph.qml</file>
     </qresource>
 </RCC>
