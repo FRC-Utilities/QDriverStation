@@ -32,6 +32,29 @@ ColumnLayout {
     spacing: Globals.spacing
 
     Label {
+        text: qsTr ("CPU Usage")
+    }
+
+    Plot {
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+
+        value: 0
+        minimumValue: 8
+        maximumValue: 100
+        barColor: Globals.Colors.TextAreaBackground
+
+        onRefreshed:  {
+            value = DriverStation.cpuUsage()
+
+            if (DriverStation.isConnectedToRobot())
+                barColor = Globals.Colors.CPUUsage
+            else
+                barColor = Globals.Colors.TextAreaBackground
+        }
+    }
+
+    Label {
         text: qsTr ("Robot Voltage") + ":"
     }
 

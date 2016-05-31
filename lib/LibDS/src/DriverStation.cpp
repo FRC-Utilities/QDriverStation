@@ -316,6 +316,33 @@ int DriverStation::team() const
 }
 
 /**
+ * Returns the current CPU usage of the robot.
+ * Value range is from 0 to 100.
+ */
+int DriverStation::cpuUsage() const
+{
+    return config()->cpuUsage();
+}
+
+/**
+ * Returns the current RAM usage of the robot.
+ * Value range is from 0 to 100.
+ */
+int DriverStation::ramUsage() const
+{
+    return config()->ramUsage();
+}
+
+/**
+ * Returns the current disk usage of the robot.
+ * Value range is from 0 to 100.
+ */
+int DriverStation::diskUsage() const
+{
+    return config()->diskUsage();
+}
+
+/**
  * Returns the maximum number of POVs that a joystick can have
  */
 int DriverStation::maxPOVCount() const

@@ -63,6 +63,8 @@ protected:
     virtual DS::Alliance getAlliance (quint8 station);
     virtual DS::Position getPosition (quint8 station);
 
+    virtual void readExtended (const QByteArray& data);
+
     virtual uint getControlCode();
     virtual uint getRequestCode();
     virtual uint getFMSControlCode();

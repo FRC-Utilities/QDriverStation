@@ -32,6 +32,9 @@ public:
     static DS_Config* getInstance();
 
     int team() const;
+    int cpuUsage() const;
+    int ramUsage() const;
+    int diskUsage() const;
     float voltage() const;
     bool isEnabled() const;
     Alliance alliance() const;
@@ -58,6 +61,8 @@ public slots:
     void setRobotCode (const bool& code);
     void setEnabled (const bool& enabled);
     void updateCpuUsage (const int& usage);
+    void updateRamUsage (const int& usage);
+    void updateDiskUsage (const int& usage);
     void setBrownout (const bool& brownout);
     void setEmergencyStop (const bool& estop);
     void updateVoltage (const float& voltage);
@@ -68,8 +73,6 @@ public slots:
     void updatePdpVersion (const QString& version);
     void updateControlMode (const ControlMode& mode);
     void updateEnabled (const EnableStatus& statusChanged);
-    void updateRamUsage (const int& usage, const int& total);
-    void updateDiskUsage (const int& usage, const int& total);
     void updateFMSCommStatus (const CommStatus& statusChanged);
     void updateRadioCommStatus (const CommStatus& statusChanged);
     void updateRobotCommStatus (const CommStatus& statusChanged);
@@ -87,7 +90,11 @@ protected:
 
 private:
     int m_team;
+    int m_cpuUsage;
+    int m_ramUsage;
+    int m_diskUsage;
     float m_voltage;
+
     Alliance m_alliance;
     Position m_position;
     QString m_libVersion;

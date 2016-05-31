@@ -140,13 +140,13 @@ signals:
      * Emitted when the robot reports a change in the RAM usage of the primary
      * robot controller.
      */
-    void ramUsageChanged (int usage, int total);
+    void ramUsageChanged (int usage);
 
     /**
      * Emitted when the robot reports a change in the disk usage of the primary
      * robot controller.
      */
-    void diskUsageChanged (int usage, int total);
+    void diskUsageChanged (int usage);
 };
 
 

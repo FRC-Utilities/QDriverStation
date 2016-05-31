@@ -35,6 +35,10 @@ const uint STATION_BLUE_1       = 0x03;
 const uint STATION_BLUE_2       = 0x04;
 const uint STATION_BLUE_3       = 0x05;
 const uint R_REQUEST_TIME       = 0x01;
+const uint R_TAG_JOYSTICK_OUT   = 0x01;
+const uint R_TAG_DISK_INFO      = 0x04;
+const uint R_TAG_CPU_INFO       = 0x05;
+const uint R_TAG_RAM_INFO       = 0x06;
 
 /**
  * Implements the 2015 FRC Communication protocol
@@ -330,6 +334,12 @@ bool FRC_2015::interpretRobotPacket (const QByteArray& data)
     float voltage = (integer + ((float) (decimal) * 99 / 255 / 100));
     config()->updateVoltage (voltage);
 
+    /* This is an extended packet, read its extra data */
+    if (data.size() > 8) {
+        std::string extended = std::string (data.constData(), data.length());
+        readExtended (QString::fromStdString (extended.substr (8)).toUtf8());
+    }
+
     return true;
 }
 
@@ -455,6 +465,40 @@ DS::Position FRC_2015::getPosition (quint8 station)
         return DS::kPosition3;
 
     return DS::kPosition1;
+}
+
+/**
+ * Sometimes, the roboRIO will send us additional information, such as CPU
+ * usage and CAN metrics. This function is in charge of extracting this
+ * information from the packet and updating DS values accordingly.
+ */
+void FRC_2015::readExtended (const QByteArray& data)
+{
+    if (data.isEmpty() || data.length() < 2)
+        return;
+
+    uint tag = data.at (1);
+
+    if (tag == R_TAG_JOYSTICK_OUT) {
+        /* TODO */
+    }
+
+    else if (tag == R_TAG_CPU_INFO) {
+        int count = data.at (2);
+        for (int i = 0; i < count; ++i)
+            if (data.length() > i + 12)
+                config()->updateCpuUsage (data.at (i + 12));
+    }
+
+    else if (tag == R_TAG_RAM_INFO) {
+        if (data.length() > 5)
+            config()->updateRamUsage (data.at (5));
+    }
+
+    else if (tag == R_TAG_DISK_INFO) {
+        if (data.length() > 5)
+            config()->updateDiskUsage (data.at (5));
+    }
 }
 
 /**

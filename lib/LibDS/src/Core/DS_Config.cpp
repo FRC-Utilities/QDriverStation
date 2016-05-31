@@ -20,6 +20,9 @@ DS_Config::DS_Config()
 
     m_team = 0;
     m_voltage = 0;
+    m_cpuUsage = 0;
+    m_ramUsage = 0;
+    m_diskUsage = 0;
     m_libVersion = "";
     m_pcmVersion = "";
     m_pdpVersion = "";
@@ -58,6 +61,21 @@ DS_Config* DS_Config::getInstance()
 int DS_Config::team() const
 {
     return m_team;
+}
+
+int DS_Config::cpuUsage() const
+{
+    return m_cpuUsage;
+}
+
+int DS_Config::ramUsage() const
+{
+    return m_ramUsage;
+}
+
+int DS_Config::diskUsage() const
+{
+    return m_diskUsage;
 }
 
 float DS_Config::voltage() const
@@ -191,8 +209,22 @@ void DS_Config::setEnabled (const bool& enabled)
 
 void DS_Config::updateCpuUsage (const int& usage)
 {
+    m_cpuUsage = 0;
     emit cpuUsageChanged (usage);
 }
+
+void DS_Config::updateRamUsage (const int& usage)
+{
+    m_ramUsage = 0;
+    emit ramUsageChanged (usage);
+}
+
+void DS_Config::updateDiskUsage (const int& usage)
+{
+    m_diskUsage = 0;
+    emit diskUsageChanged (usage);
+}
+
 
 void DS_Config::setBrownout (const bool& brownout)
 {
@@ -319,16 +351,6 @@ void DS_Config::updateEnabled (const EnableStatus& status)
 
         m_robotLogger->registerEnableStatus (status);
     }
-}
-
-void DS_Config::updateRamUsage (const int& usage, const int& total)
-{
-    emit ramUsageChanged (usage, total);
-}
-
-void DS_Config::updateDiskUsage (const int& usage, const int& total)
-{
-    emit diskUsageChanged (usage, total);
 }
 
 void DS_Config::updateFMSCommStatus (const CommStatus& status)

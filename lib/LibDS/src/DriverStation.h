@@ -63,6 +63,9 @@ public:
     Q_INVOKABLE float nominalBatteryAmperage() const;
 
     Q_INVOKABLE int team() const;
+    Q_INVOKABLE int cpuUsage() const;
+    Q_INVOKABLE int ramUsage() const;
+    Q_INVOKABLE int diskUsage() const;
     Q_INVOKABLE int maxPOVCount() const;
     Q_INVOKABLE int maxAxisCount() const;
     Q_INVOKABLE int maxButtonCount() const;
