@@ -133,8 +133,6 @@ DriverStation::~DriverStation()
     delete m_fmsWatchdog;
     delete m_radioWatchdog;
     delete m_robotWatchdog;
-
-    qDebug() << "Program terminated";
 }
 
 /**

@@ -99,5 +99,10 @@ int main (int argc, char* argv[])
         return EXIT_FAILURE;
 
     /* Start the application event loop */
-    return app.exec();
+    int exit_code = app.exec();
+
+    /* Exit application */
+    qDebug() << "Exit code:" << exit_code;
+    qDebug() << "Application terminated";
+    return exit_code;
 }
