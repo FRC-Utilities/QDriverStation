@@ -52,10 +52,10 @@ int main (int argc, char* argv[])
 
     /* Start the application and register its information */
     QApplication app (argc, argv);
-    app.setOrganizationName       (APP_COMPANY);
-    app.setApplicationVersion     (APP_VERSION);
-    app.setOrganizationDomain     (APP_WEBSITE);
-    app.setApplicationDisplayName (APP_DSPNAME);
+    app.setApplicationName    (APP_DSPNAME);
+    app.setOrganizationName   (APP_COMPANY);
+    app.setApplicationVersion (APP_VERSION);
+    app.setOrganizationDomain (APP_WEBSITE);
 
     /* Configure the logging system */
     qInstallMessageHandler (DS_MESSAGE_HANDLER);

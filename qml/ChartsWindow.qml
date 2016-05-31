@@ -39,6 +39,12 @@ Window {
     minimumWidth: Globals.scale (720)
     minimumHeight: Globals.scale (360)
 
+    flags: Qt.Window |
+           Qt.WindowTitleHint |
+           Qt.WindowSystemMenuHint |
+           Qt.WindowCloseButtonHint |
+           Qt.WindowMinimizeButtonHint
+
     Component.onCompleted: {
         if (showOnLaunch.checked)
             show()

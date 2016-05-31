@@ -47,6 +47,15 @@ Window {
     title: qsTr ("Virtual Joystick Options")
 
     //
+    // Set window flags
+    //
+    flags: Qt.Window |
+           Qt.WindowTitleHint |
+           Qt.WindowSystemMenuHint |
+           Qt.WindowCloseButtonHint |
+           Qt.WindowMinimizeButtonHint
+
+    //
     // Save settings
     //
     Settings {

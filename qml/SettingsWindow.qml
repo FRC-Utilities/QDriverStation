@@ -39,6 +39,15 @@ Window {
     color: Globals.Colors.WindowBackground
 
     //
+    // Set window flags
+    //
+    flags: Qt.Window |
+           Qt.WindowTitleHint |
+           Qt.WindowSystemMenuHint |
+           Qt.WindowCloseButtonHint |
+           Qt.WindowMinimizeButtonHint
+
+    //
     // Applies the UI settings...
     //
     function apply() {
