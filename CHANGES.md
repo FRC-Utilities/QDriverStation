@@ -31,10 +31,12 @@
 - Better robot voltage reading code
 - Dynamic control of the watchdog
 - Fix crash issue on Mac OS X
-- Implement a simple logger
+- Implement a logger
 - Fix some minor issues in the UI
 - Add base framework for implementing FMS communications
 - Redesign UI in QML
 - New application icon
-- FMS support for 2015 protocol
+- FMS support for 2015 protocol (UNTESTED)
 - Allow enabling/disabling joysticks
+- Add voltage charts
+- Rewrite of LibDS to be more extensible and efficient (if a protocol requires constant comms. with radio or runs on TCP, we've got it!)
