@@ -72,11 +72,6 @@ Rectangle {
     border.color: Globals.Colors.WidgetBorder
 
     //
-    // Reset chart if visibility changes
-    //
-    onVisibleChanged: timer.currentPos = 0
-
-    //
     // Refreshes the graph on real-time
     //
     Timer {
