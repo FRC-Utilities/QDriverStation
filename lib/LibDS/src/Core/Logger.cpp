@@ -41,7 +41,8 @@ static QString REPEAT (QString input, int n)
  */
 QString DS_FILES_PATH()
 {
-    QDir dir (QString ("%1/%2").arg (QDir::homePath(), qApp->applicationName()));
+    QDir dir (QString ("%1/.%2/").arg (QDir::homePath(),
+                                       qApp->applicationName().toLower()));
 
     if (!dir.exists())
         dir.mkpath (".");
@@ -54,7 +55,7 @@ QString DS_FILES_PATH()
  */
 QString DS_LOGGER_PATH()
 {
-    QDir dir = QDir (DS_FILES_PATH() + "/Application Logs");
+    QDir dir = QDir (DS_FILES_PATH() + "/Application Logs/");
 
     if (!dir.exists())
         dir.mkpath (".");
@@ -68,7 +69,7 @@ QString DS_LOGGER_PATH()
  */
 QString DS_ROBOT_LOGGER_PATH()
 {
-    QDir dir = QDir (DS_FILES_PATH() + "/Robot Logs");
+    QDir dir = QDir (DS_FILES_PATH() + "/Robot Logs/");
     if (!dir.exists())
         dir.mkpath (".");
 

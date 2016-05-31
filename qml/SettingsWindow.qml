@@ -59,6 +59,7 @@ Window {
             DriverStation.setParallelSocketCount (psc.value)
         else {
             psc.value = 0
+            pscCheckbox.checked = false
             DriverStation.setParallelSocketCount (0)
         }
 
@@ -97,7 +98,7 @@ Window {
         category: "SettingsWindow"
         property alias x: window.x
         property alias y: window.y
-        property alias pcs: psc.value
+        property alias psc: psc.value
         property alias address: customAddress.text
         property alias promptOnQuit: promptOnQuit.checked
         property alias checkForUpdates: checkForUpdates.checked
@@ -267,7 +268,7 @@ Window {
                             id: psc
                             value: 0
                             minimumValue: 0
-                            maximumValue: 1000
+                            maximumValue: 128
                             Layout.fillWidth: true
                             enabled: pscCheckbox.checked
                         }
@@ -283,8 +284,9 @@ Window {
                             wrapMode: Text.WordWrap
                             opacity: pscCheckbox.checked ? 1 : 0
                             color: Globals.Colors.IndicatorWarning
-                            text: qsTr ("WARNING: Using high (above 120) PSC " +
-                                        "values can cause unexpected problems")
+                            text: qsTr ("High PSC values can cause many " +
+                                        "problems. For your safety, the "  +
+                                        "maximum PSC value is 128.")
 
                             Behavior on opacity {
                                 NumberAnimation {

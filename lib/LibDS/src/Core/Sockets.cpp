@@ -64,10 +64,18 @@ int Sockets::socketCount() const
  * This function ensures that we do not have more sockets than items in
  * the IP list. This ensures a better management of system resources and avoids
  * potential errors (e.g. modem stops responding, etc)...
+ *
+ * This is especially important in UNIX systems, since each process has a limit
+ * of how many files it can open, and on UNIX everything is a file.
+ *
+ * Usually, most process will behave bad when the number of files opened reaches
+ * 1024. To be safe, we will set a maximum socket count of 128 (1024 / 8), so
+ * that the client can still safely operate (e.g. saving files, reading settings,
+ * communicate with the WM, etc..).
  */
 int Sockets::realSocketCount() const
 {
-    return qMin (socketCount(), robotIPs().count());
+    return qMin (qMin (socketCount(), robotIPs().count()), 128);
 }
 
 /**
