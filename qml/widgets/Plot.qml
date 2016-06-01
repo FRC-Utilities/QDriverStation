@@ -103,8 +103,8 @@ Rectangle {
             context.fillStyle = barColor
 
             /* Calculate X and Y coordinates */
-            var xOffset = Globals.scale (timer.currentPos * rectWidth)
             var yOffset = (1 - getLevel()) * height
+            var xOffset = timer.currentPos * rectWidth
 
             /* Reset the graph if it is greater than the width */
             if (xOffset > canvas.width) {
