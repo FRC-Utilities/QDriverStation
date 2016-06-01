@@ -19,6 +19,9 @@
 #include "Protocols/FRC_2015.h"
 #include "Protocols/FRC_2016.h"
 
+#include <QUrl>
+#include <QDesktopServices>
+
 /**
  * Formats the input message so that it looks nice on a text display widget
  */
@@ -811,6 +814,14 @@ void DriverStation::rebootRobot()
 void DriverStation::enableRobot()
 {
     setEnabled (kEnabled);
+}
+
+/**
+ * Opens the application logs in an explorer window
+ */
+void DriverStation::openLogsPath()
+{
+    QDesktopServices::openUrl (QUrl::fromLocalFile (appLoggerPath()));
 }
 
 /**

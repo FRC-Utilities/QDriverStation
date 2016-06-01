@@ -112,6 +112,7 @@ public slots:
     void init();
     void rebootRobot();
     void enableRobot();
+    void openLogsPath();
     void disableRobot();
     void resetJoysticks();
     void restartRobotCode();
