@@ -29,15 +29,92 @@ import "widgets"
 import "globals.js" as Globals
 
 Item {
+    function updateGraphTimes (seconds) {
+        cpu.setSpeed (seconds)
+        voltage.setSpeed (seconds)
+    }
+
+    Component.onCompleted: oneMin.checked = true
+
     ColumnLayout {
         anchors.fill: parent
         spacing: Globals.spacing
 
-        Label {
-            text: qsTr ("CPU Usage") + ":"
+        RowLayout {
+            Layout.fillHeight: false
+            spacing: Globals.scale (-1)
+
+            Label {
+                text: qsTr ("CPU Usage") + ":"
+            }
+
+            Item {
+                Layout.fillWidth: true
+            }
+
+            Button {
+                id: twelveSecs
+                checkable: true
+                text: qsTr ("12 s")
+                width: Globals.scale (48)
+
+                onCheckedChanged: {
+                    if (checked) {
+                        oneMin.checked = false
+                        fiveMin.checked = false
+                        twelveSecs.checked = true
+
+                        updateGraphTimes (12)
+                    }
+
+                    if (!oneMin.checked && !fiveMin.checked && !twelveSecs.checked)
+                        checked = true
+                }
+            }
+
+            Button {
+                id: oneMin
+                checkable: true
+                text: qsTr ("1 m")
+                width: Globals.scale (48)
+
+                onCheckedChanged: {
+                    if (checked) {
+                        oneMin.checked = true
+                        fiveMin.checked = false
+                        twelveSecs.checked = false
+
+                        updateGraphTimes (60)
+                    }
+
+                    if (!oneMin.checked && !fiveMin.checked && !twelveSecs.checked)
+                        checked = true
+                }
+            }
+
+            Button {
+                id: fiveMin
+                checkable: true
+                text: qsTr ("5 m")
+                width: Globals.scale (48)
+
+                onCheckedChanged: {
+                    if (checked) {
+                        oneMin.checked = false
+                        fiveMin.checked = true
+                        twelveSecs.checked = false
+
+                        updateGraphTimes (300)
+                    }
+
+                    if (!oneMin.checked && !fiveMin.checked && !twelveSecs.checked)
+                        checked = true
+                }
+            }
         }
 
         CpuUsageGraph {
+            id: cpu
             Layout.fillWidth: true
             Layout.fillHeight: true
         }
@@ -47,16 +124,9 @@ Item {
         }
 
         VoltageGraph {
+            id: voltage
             Layout.fillWidth: true
             Layout.fillHeight: true
-        }
-    }
-
-    MouseArea {
-        anchors.fill: parent
-        onClicked: {
-            Globals.normalBeep()
-            window.showChartsWindow()
         }
     }
 }

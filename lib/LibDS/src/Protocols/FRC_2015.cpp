@@ -334,6 +334,9 @@ bool FRC_2015::interpretRobotPacket (const QByteArray& data)
     float voltage = (integer + ((float) (decimal) * 99 / 255 / 100));
     config()->updateVoltage (voltage);
 
+    /* If voltage is 0, then robot is simulated */
+    config()->updateSimulated (config()->voltage() == 0);
+
     /* This is an extended packet, read its extra data */
     if (data.size() > 8) {
         std::string extended = std::string (data.constData(), data.length());

@@ -45,6 +45,7 @@ public:
     Q_INVOKABLE bool running() const;
     Q_INVOKABLE bool isInTest() const;
     Q_INVOKABLE bool isEnabled() const;
+    Q_INVOKABLE bool isSimulated() const;
     Q_INVOKABLE bool isInAutonomous() const;
     Q_INVOKABLE bool isInTeleoperated() const;
     Q_INVOKABLE bool isConnectedToFMS() const;

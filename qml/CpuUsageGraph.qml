@@ -34,4 +34,5 @@ Plot {
     maximumValue: 100
     barColor: Globals.Colors.CPUProgress
     onRefreshed: value = DriverStation.cpuUsage()
+    Component.onCompleted: value = DriverStation.cpuUsage()
 }

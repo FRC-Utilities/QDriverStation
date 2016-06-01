@@ -37,6 +37,7 @@ public:
     int diskUsage() const;
     float voltage() const;
     bool isEnabled() const;
+    bool isSimulated() const;
     Alliance alliance() const;
     Position position() const;
     bool isFMSAttached() const;
@@ -66,6 +67,7 @@ public slots:
     void setBrownout (const bool& brownout);
     void setEmergencyStop (const bool& estop);
     void updateVoltage (const float& voltage);
+    void updateSimulated (const bool& simulated);
     void updateAlliance (const Alliance& alliance);
     void updatePosition (const Position& position);
     void updateLibVersion (const QString& version);
@@ -109,6 +111,7 @@ private:
     VoltageStatus m_voltageStatus;
     OperationStatus m_operationStatus;
 
+    bool m_simulated;
     bool m_timerEnabled;
 
     QElapsedTimer* m_timer;

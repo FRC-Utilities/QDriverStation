@@ -39,6 +39,36 @@
 #endif
 #endif
 
+#ifdef Q_OS_MAC
+#include <QObject>
+#include <QSettings>
+#include <QMessageBox>
+#include <QDesktopServices>
+void DownloadXboxDrivers()
+{
+    QSettings settings (APP_COMPANY, APP_DSPNAME);
+
+    if (settings.value ("FirstLaunch", true).toBool()) {
+        QMessageBox box;
+        box.setIcon (QMessageBox::Question);
+        box.setStandardButtons (QMessageBox::Yes | QMessageBox::No);
+        box.setDefaultButton (QMessageBox::Yes);
+
+        box.setWindowTitle (QObject::tr ("Download Joystick Drivers"));
+        box.setText (QObject::tr ("Do you want to install a driver for Xbox "
+                                  "joysticks?"));
+        box.setInformativeText (QObject::tr ("Clicking \"Yes\" will open a web "
+                                             "browser to download the drivers"));
+
+        settings.setValue ("FirstLaunch", false);
+
+        if (box.exec() == QMessageBox::Yes)
+            QDesktopServices::openUrl (QUrl ("https://github.com/360Controller/"
+                                             "360Controller/releases/latest"));
+    }
+}
+#endif
+
 int main (int argc, char* argv[])
 {
     /* Avoid UI scaling issues with Qt 5.6 */
@@ -97,6 +127,11 @@ int main (int argc, char* argv[])
     /* QML loading failed, exit the application */
     if (engine.rootObjects().isEmpty())
         return EXIT_FAILURE;
+
+    /* Ask OS X users to download Xbox drivers */
+#ifdef Q_OS_MAC
+    DownloadXboxDrivers();
+#endif
 
     /* Start the application event loop */
     int exit_code = app.exec();

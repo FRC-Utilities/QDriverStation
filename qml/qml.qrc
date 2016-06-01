@@ -32,7 +32,6 @@
         <file>widgets/Plot.qml</file>
         <file>VoltageGraph.qml</file>
         <file>Charts.qml</file>
-        <file>ChartsWindow.qml</file>
         <file>CpuUsageGraph.qml</file>
     </qresource>
 </RCC>

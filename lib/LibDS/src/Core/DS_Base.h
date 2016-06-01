@@ -33,6 +33,11 @@ signals:
     void statusChanged (QString status);
 
     /**
+     * Emitted when protocol knows if the target robot is simulated or not
+     */
+    void simulatedChanged (bool isSimulation);
+
+    /**
      * Emitted when the robot is enabled or disabled
      */
     void enabledChanged (EnableStatus status);

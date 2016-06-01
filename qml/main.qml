@@ -61,13 +61,6 @@ ApplicationWindow {
     }
 
     //
-    // Display the charts window (from anywhere in the app)
-    //
-    function showChartsWindow() {
-        chartsWindow.show()
-    }
-
-    //
     // The actual docking procedures
     //
     function updateWindowMode() {
@@ -186,13 +179,6 @@ ApplicationWindow {
     //
     VirtualJoystickWindow {
         id: virtualJoystickWindow
-    }
-
-    //
-    // A window that shows a more detailed robot voltage & CPU usage charts
-    //
-    ChartsWindow {
-        id: chartsWindow
     }
 
     //

@@ -21,7 +21,6 @@
  */
 
 import QtQuick 2.0
-
 import "../globals.js" as Globals
 
 Rectangle {
@@ -65,6 +64,22 @@ Rectangle {
     }
 
     //
+    // Changes the time in which the graph resets itself
+    //
+    function setSpeed (seconds) {
+        /* Get current time required to reset the graph */
+        var pixelsPerSec = rectWidth * (1000 / refreshInterval)
+        var resetTime = width / pixelsPerSec
+
+        /* Do a rule of three to obtain new refresh interval */
+        var newInterval = (seconds * refreshInterval) / resetTime
+
+        /* Apply obtained interval */
+        refreshInterval = newInterval
+        timer.interval = refreshInterval
+    }
+
+    //
     // Rectangle color & border
     //
     border.width: Globals.scale (1)
@@ -94,6 +109,7 @@ Rectangle {
     Canvas {
         id: canvas
         anchors.fill: parent
+        renderStrategy: Canvas.Threaded
         anchors.margins: parent.border.width
 
         onPaint: {

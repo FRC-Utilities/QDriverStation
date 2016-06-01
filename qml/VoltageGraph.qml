@@ -29,8 +29,14 @@ import "widgets"
 import "globals.js" as Globals
 
 Plot {
+    //
+    // The graph will be black when there are no communications with the robot
+    //
     property string noCommsColor: "#000"
 
+    //
+    // Gets current voltage and changes plot settings accordingly
+    //
     function update() {
         value = DriverStation.currentBatteryVoltage()
 
@@ -47,6 +53,9 @@ Plot {
             barColor = Globals.Colors.IndicatorError
     }
 
+    //
+    // Update the maximum values when the protocol is changed
+    //
     Connections {
         target: DriverStation
         onProtocolChanged: {
@@ -55,8 +64,14 @@ Plot {
         }
     }
 
+    //
+    // Refresh the graph values from time to time
+    //
     onRefreshed: update()
     barColor: Globals.Colors.TextAreaBackground
 
+    //
+    // Start graphing from origin, not from the middle or some other place
+    //
     Component.onCompleted: update()
 }

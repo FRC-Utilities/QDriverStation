@@ -37,6 +37,7 @@ Item {
     //
     // These properties are updated when the DS emits the appropiate signals
     //
+    property bool simulated: false
     property string teamNumber: DriverStation.team()
     property string robotVoltage: Globals.invalidStr
     property string robotStatus: qsTr ("Loading") + "..."
@@ -124,6 +125,7 @@ Item {
         target: DriverStation
         onTeamChanged: teamNumber = team
         onStatusChanged: robotStatus = status
+        onSimulatedChanged: simulated = isSimulation
         onCodeStatusChanged: codeLed.checked = DriverStation.isRobotCodeRunning()
         onRobotCommStatusChanged: communicationsLed.checked = DriverStation.isConnectedToRobot()
 
@@ -177,9 +179,25 @@ Item {
         }
 
         //
+        // Simulated Robot label
+        //
+        Label {
+            size: large
+            font.bold: true
+            visible: simulated
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            text: qsTr ("Simulated Robot")
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            color: Globals.Colors.AlternativeHighlight
+        }
+
+        //
         // Voltage indicator & plot
         //
         RowLayout {
+            visible: !simulated
             spacing: Globals.spacing
 
             //
@@ -203,11 +221,12 @@ Item {
                     VoltageGraph {
                         color: parent.color
                         anchors.fill: parent
-                        refreshInterval: 1000
                         border.color: parent.color
                         anchors.margins: Globals.scale (2)
                         anchors.topMargin: Globals.scale (0)
                         noCommsColor: Globals.Colors.WindowBackground
+
+                        Component.onCompleted: setSpeed (24)
                     }
                 }
 
@@ -256,15 +275,6 @@ Item {
                 text: status.robotVoltage
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-            }
-
-            MouseArea {
-                id: mouse
-                anchors.fill: parent
-                onClicked: {
-                    Globals.normalBeep()
-                    window.showChartsWindow()
-                }
             }
         }
 

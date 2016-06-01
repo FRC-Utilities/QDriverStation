@@ -20,6 +20,7 @@
 #include "Protocols/FRC_2016.h"
 
 #include <QUrl>
+#include <QThread>
 #include <QDesktopServices>
 
 /**
@@ -101,6 +102,8 @@ DriverStation::DriverStation()
              this,     SIGNAL (robotAddressChanged (QString)));
     connect (config(), SIGNAL (robotCommStatusChanged (CommStatus)),
              this,     SIGNAL (robotCommStatusChanged (CommStatus)));
+    connect (config(), SIGNAL (simulatedChanged (bool)),
+             this,     SIGNAL (simulatedChanged (bool)));
     connect (config(), SIGNAL (statusChanged (QString)),
              this,     SIGNAL (statusChanged (QString)));
     connect (config(), SIGNAL (teamChanged (int)),
@@ -126,7 +129,14 @@ DriverStation::DriverStation()
     connect (m_console, SIGNAL (newMessage (QString)),
              this,      SIGNAL (newMessage (QString)));
 
-    /* A huevo */
+    /* Move critical modules to another thread */
+    /*QThread* thread = new QThread (this);
+    m_sockets->moveToThread (thread);
+    m_fmsWatchdog->moveToThread (thread);
+    m_radioWatchdog->moveToThread (thread);
+    m_robotWatchdog->moveToThread (thread);
+    thread->start (QThread::HighestPriority);*/
+
     qDebug() << "DriverStation initialized!";
 }
 
@@ -181,6 +191,14 @@ bool DriverStation::isInTest() const
 bool DriverStation::isEnabled() const
 {
     return enableStatus() == kEnabled;
+}
+
+/**
+ * Returns \c true if the robot is a simulated robot
+ */
+bool DriverStation::isSimulated() const
+{
+    return config()->isSimulated();
 }
 
 /**
@@ -1240,6 +1258,7 @@ void DriverStation::resetRobot()
         protocol()->onRobotWatchdogExpired();
 
     config()->updateVoltage (0);
+    config()->updateSimulated (false);
     config()->updateEnabled (kDisabled);
     config()->updateVoltageStatus (kVoltageNormal);
     config()->updateRobotCodeStatus (kCodeFailing);

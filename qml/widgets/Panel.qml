@@ -23,6 +23,9 @@
 import QtQuick 2.0
 import "../globals.js" as Globals
 
+//
+// This item is the ultimate expression of my lazyness
+//
 Rectangle {
     border.width: Globals.scale (1)
     color: Globals.Colors.PanelBackground

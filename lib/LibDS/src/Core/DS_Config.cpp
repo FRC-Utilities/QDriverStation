@@ -26,6 +26,7 @@ DS_Config::DS_Config()
     m_libVersion = "";
     m_pcmVersion = "";
     m_pdpVersion = "";
+    m_simulated = false;
     m_timerEnabled = false;
     m_position = kPosition1;
     m_alliance = kAllianceRed;
@@ -89,6 +90,11 @@ float DS_Config::voltage() const
 bool DS_Config::isEnabled() const
 {
     return enableStatus() == DS::kEnabled;
+}
+
+bool DS_Config::isSimulated() const
+{
+    return m_simulated;
 }
 
 DS::Alliance DS_Config::alliance() const
@@ -258,6 +264,14 @@ void DS_Config::updateVoltage (const float& voltage)
 
         emit voltageChanged (m_voltage);
         emit voltageChanged (integer_str + "." + decimal_str + " V");
+    }
+}
+
+void DS_Config::updateSimulated (const bool& simulated)
+{
+    if (m_simulated != simulated) {
+        m_simulated = simulated;
+        emit simulatedChanged (simulated);
     }
 }
 

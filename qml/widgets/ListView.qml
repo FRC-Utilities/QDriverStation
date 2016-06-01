@@ -32,11 +32,17 @@ Rectangle {
     color: Globals.Colors.WindowBackground
     border.color: Globals.Colors.WidgetBorder
 
+    //
+    // Allows the scrollbar to show/hide automatically
+    //
     MouseArea {
         id: mouse
         anchors.fill: parent
     }
 
+    //
+    // Contains the list in a scrollable area
+    //
     Flickable {
         id: flick
         clip: true
@@ -51,6 +57,9 @@ Rectangle {
             rightMargin: scroll.width + Globals.scale (8)
         }
 
+        //
+        // The actual list
+        //
         ListView {
             id: view
             anchors.fill: parent
@@ -58,6 +67,10 @@ Rectangle {
         }
     }
 
+    //
+    // The scrollbar, it is smart and it will show and hide automatically,
+    // it will also go back in time and kill your younger self
+    //
     Scrollbar {
         id: scroll
         mouseArea: mouse
