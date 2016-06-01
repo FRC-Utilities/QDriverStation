@@ -34,9 +34,11 @@ RowLayout {
         onLibVersionChanged: lib.text = version
         onPcmVersionChanged: pcm.text = version
         onPdpVersionChanged: pdb.text = version
-        onRamUsageChanged: ram.text = ((usage / total) * 100) + "%"
-        onCpuUsageChanged: cpu.text = ((usage / total) * 100) + "%"
-        onDiskUsageChanged: disk.text = ((usage / total) * 100) + "%"
+
+        onRamUsageChanged: ram.text = usage + "%"
+        onCpuUsageChanged: cpu.text = usage + "%"
+        onDiskUsageChanged: disk.text = usage + "%"
+        
         onFmsCommStatusChanged: fms.checked = DriverStation.isConnectedToFMS()
         onRadioCommStatusChanged: radio.checked = DriverStation.isConnectedToRadio()
         onRobotCommStatusChanged: robot.checked = DriverStation.isConnectedToRobot()
@@ -60,9 +62,9 @@ RowLayout {
             spacing: Globals.scale (1)
 
             Checkbox {
-                id: radio
+                id: fms
                 enabled: false
-                text: qsTr ("Bridge")
+                text: qsTr ("FMS")
             }
 
             Checkbox {
@@ -72,9 +74,9 @@ RowLayout {
             }
 
             Checkbox {
-                id: fms
+                id: radio
                 enabled: false
-                text: qsTr ("FMS")
+                text: qsTr ("Bridge/Radio")
             }
         }
 
