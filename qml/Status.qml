@@ -162,7 +162,6 @@ Item {
             Label {
                 size: large
                 font.bold: true
-                Layout.fillWidth: true
                 text: status.teamNumber
                 verticalAlignment: Qt.AlignVCenter
                 horizontalAlignment: Qt.AlignHCenter
@@ -174,7 +173,7 @@ Item {
         //
         Item {
             width: height
-            height: Globals.scale (5)
+            height: Globals.scale (10)
         }
 
         //
@@ -183,33 +182,77 @@ Item {
         RowLayout {
             spacing: Globals.spacing
 
-            Icon {
-                font.bold: true
-                Layout.fillWidth: true
-                name: icons.fa_battery
-                size: Globals.scale (42)
-                horizontalAlignment: Text.AlignLeft
+            //
+            // Voltage widget
+            //
+            Item {
+                width: Globals.scale (54)
+                height: Globals.scale (34)
 
-                //
-                // Robot voltage plot
-                //
-                VoltageGraph {
-                    x: Globals.scale (3)
-                    y: Globals.scale (9)
-                    width: Globals.scale (45)
-                    height: Globals.scale (24)
+                property var diodeHeight: height * 0.20
+                property var backgroundColor: Globals.Colors.IconColor
 
-                    border.width: 0
-                    refreshInterval: 250
-                    rectWidth: Globals.scale (0.5)
+                Rectangle {
+                    id: base
+                    anchors.fill: parent
+                    color: parent.backgroundColor
+                    anchors.leftMargin: Globals.scale (2)
+                    anchors.rightMargin: Globals.scale (2)
+                    anchors.topMargin: parent.diodeHeight + cover.height
+
+                    VoltageGraph {
+                        color: parent.color
+                        anchors.fill: parent
+                        refreshInterval: 1000
+                        border.color: parent.color
+                        anchors.margins: Globals.scale (2)
+                        anchors.topMargin: Globals.scale (0)
+                        noCommsColor: Globals.Colors.WindowBackground
+                    }
                 }
+
+                Rectangle {
+                    id: cover
+                    height: Globals.scale (4)
+                    color: parent.backgroundColor
+
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.topMargin: parent.diodeHeight
+                }
+
+                Rectangle {
+                    id: leftDiode
+                    width: parent.width * 0.2
+                    color: parent.backgroundColor
+                    height: parent.diodeHeight - Globals.scale (2)
+
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.leftMargin: cover.height
+                }
+
+                Rectangle {
+                    id: rightDiode
+                    width: parent.width * 0.2
+                    color: parent.backgroundColor
+                    height: parent.diodeHeight - Globals.scale (2)
+
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.rightMargin: cover.height
+                }
+            }
+
+            Item {
+                Layout.fillWidth: true
             }
 
             Label {
                 size: large
                 font.bold: true
                 id: voltageIndicator
-                Layout.fillWidth: true
                 text: status.robotVoltage
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter

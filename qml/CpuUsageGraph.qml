@@ -32,14 +32,6 @@ Plot {
     value: 0
     minimumValue: 8
     maximumValue: 100
-    barColor: Globals.Colors.TextAreaBackground
-
-    onRefreshed:  {
-        value = DriverStation.cpuUsage()
-
-        if (DriverStation.isConnectedToRobot())
-            barColor = Globals.Colors.CPUProgress
-        else
-            barColor = Globals.Colors.TextAreaBackground
-    }
+    barColor: Globals.Colors.CPUProgress
+    onRefreshed: value = DriverStation.cpuUsage()
 }

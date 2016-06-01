@@ -29,6 +29,24 @@ import "widgets"
 import "globals.js" as Globals
 
 Plot {
+    property string noCommsColor: "#000"
+
+    function update() {
+        value = DriverStation.currentBatteryVoltage()
+
+        if (!DriverStation.isConnectedToRobot()) {
+            barColor = noCommsColor
+            value = maximumValue * 0.95
+        }
+
+        else if (getLevel() > 0.80)
+            barColor = Globals.Colors.IndicatorGood
+        else if (getLevel() > 0.70)
+            barColor = Globals.Colors.IndicatorWarning
+        else
+            barColor = Globals.Colors.IndicatorError
+    }
+
     Connections {
         target: DriverStation
         onProtocolChanged: {
@@ -37,18 +55,8 @@ Plot {
         }
     }
 
+    onRefreshed: update()
     barColor: Globals.Colors.TextAreaBackground
 
-    onRefreshed: {
-        value = DriverStation.currentBatteryVoltage()
-
-        if (!DriverStation.isConnectedToRobot())
-            barColor = Globals.Colors.TextAreaBackground
-        else if (getLevel() > 0.80)
-            barColor = Globals.Colors.IndicatorGood
-        else if (getLevel() > 0.70)
-            barColor = Globals.Colors.IndicatorWarning
-        else
-            barColor = Globals.Colors.IndicatorError
-    }
+    Component.onCompleted: update()
 }
