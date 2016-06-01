@@ -19,7 +19,11 @@
 #define DISABLED_PORT 0
 #define JoystickList QList<DS::Joystick*>
 
-/* Yet another damm fix for Travis CI to work with older Qt5 versions */
+/**
+ * This allows us see the name of an enum when logging it (instead of displaying
+ * its numerical output). This can be very helpful for anyone that will end up
+ * reading the application logs.
+ */ 
 #define SMART_ENUM(ENUM) \
     friend Q_DECL_CONSTEXPR const QMetaObject *qt_getEnumMetaObject(ENUM) \
     Q_DECL_NOEXCEPT { return &staticMetaObject; } \
