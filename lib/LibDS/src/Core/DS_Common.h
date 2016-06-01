@@ -23,7 +23,7 @@
  * This allows us see the name of an enum when logging it (instead of displaying
  * its numerical output). This can be very helpful for anyone that will end up
  * reading the application logs.
- */ 
+ */
 #define SMART_ENUM(ENUM) \
     friend Q_DECL_CONSTEXPR const QMetaObject *qt_getEnumMetaObject(ENUM) \
     Q_DECL_NOEXCEPT { return &staticMetaObject; } \
@@ -229,7 +229,82 @@ public:
      */
     static inline QString timezone()
     {
-        return QDateTime::currentDateTime().toString ("t");
+        switch (QDateTime::currentDateTime().offsetFromUtc() / 3600) {
+        case -11:
+            return "BST11BDT";
+            break;
+        case -10:
+            return "HST10HDT";
+            break;
+        case -9:
+            return "AST9ADT";
+            break;
+        case -8:
+            return "PST8PDT";
+            break;
+        case -7:
+            return "MST7MDT";
+            break;
+        case -6:
+            return "CST6CDT";
+            break;
+        case -5:
+            return "EST5EDT";
+            break;
+        case -4:
+            return "AST4ADT";
+            break;
+        case -3:
+            return "GRNLNDST3GRNLNDDT";
+            break;
+        case -2:
+            return "FALKST2FALKDT";
+            break;
+        case -1:
+            return "AZOREST1AZOREDT";
+            break;
+        case 0:
+            return "GMT0BST";
+            break;
+        case 1:
+            return "NFT-1DFT";
+            break;
+        case 2:
+            return "WET-2WET";
+            break;
+        case 3:
+            return "MEST-3MEDT";
+            break;
+        case 4:
+            return "WST-4WDT";
+            break;
+        case 5:
+            return "PAKST-5PAKDT";
+            break;
+        case 6:
+            return "TASHST-6TASHDT";
+            break;
+        case 7:
+            return "THAIST-7THAIDT";
+            break;
+        case 8:
+            return "WAUST-8WAUDT";
+            break;
+        case 9:
+            return "JST-9JSTDT";
+            break;
+        case 10:
+            return "EET-10EETDT";
+            break;
+        case 11:
+            return "MET-11METDT";
+            break;
+        case 12:
+            return "NZST-12NZDT";
+            break;
+        }
+
+        return "GMT0BST";
     }
 };
 

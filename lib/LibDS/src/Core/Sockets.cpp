@@ -51,31 +51,14 @@ Sockets::~Sockets()
  */
 int Sockets::socketCount() const
 {
-    /* Return user-set socket count */
+    int count = 0;
+
     if (customSocketCount() > 0)
-        return customSocketCount();
-
-    /* Return automatic PSC, no higher than 72 */
+        count = customSocketCount();
     else
-        return qMin (72, qMax (robotIPs().count() / 6, 1));
-}
+        count = qMin (72, qMax (addressList().count() / 6, 1));
 
-/**
- * This function ensures that we do not have more sockets than items in
- * the IP list. This ensures a better management of system resources and avoids
- * potential errors (e.g. modem stops responding, etc)...
- *
- * This is especially important in UNIX systems, since each process has a limit
- * of how many files it can open, and on UNIX everything is a file.
- *
- * Usually, most process will behave bad when the number of files opened reaches
- * 1024. To be safe, we will set a maximum socket count of 128 (1024 / 8), so
- * that the client can still safely operate (e.g. saving files, reading settings,
- * communicate with the WM, etc..).
- */
-int Sockets::realSocketCount() const
-{
-    return qMin (qMin (socketCount(), robotIPs().count()), 128);
+    return qMin (count, 128);
 }
 
 /**
@@ -139,7 +122,7 @@ int Sockets::customSocketCount() const
 /**
  * Returns the IP address of the robot radio
  */
-QString Sockets::radioIp() const
+QString Sockets::radioAddress() const
 {
     return m_radioIp;
 }
@@ -147,7 +130,7 @@ QString Sockets::radioIp() const
 /**
  * Returns the IP address of the robot (if set)
  */
-QString Sockets::robotIp() const
+QString Sockets::robotAddress() const
 {
     return m_robotIp;
 }
@@ -166,7 +149,7 @@ QString Sockets::robotIp() const
  * limiting our scan speed to the ammount of RAM that we want the client to
  * use.
  */
-QStringList Sockets::robotIPs() const
+QStringList Sockets::addressList() const
 {
     return m_robotIpList;
 }
@@ -196,6 +179,38 @@ DS::SocketType Sockets::robotSocketType() const
 }
 
 /**
+ * This function allows us to probe each IP on the robot IP list by "scrolling"
+ * the list and probing several IPs at the same time. This function is called
+ * when we finish sending a robot packet, thus, the scan speed is determined by
+ * the following factors:
+ *     - The frequency in which the DS sends a robot packet
+ *     - The number of parallel sockets (which allow us to probe more IPs
+ *       at the same time)
+ *
+ * Of course, this function will do nothing if we use TCP for robot
+ * communications or we already know the robot IP.
+ */
+void Sockets::refreshAddressList()
+{
+    if (robotAddress().isEmpty()) {
+        if (addressList().count() > m_iterator + socketCount())
+            m_iterator += socketCount();
+        else
+            m_iterator = 0;
+
+        for (int i = 0; i < socketCount(); ++i) {
+            if (socketCount() > i && addressList().count() > m_iterator + i) {
+                m_robotInputSockets.at (i)->socket()->disconnectFromHost();
+                m_robotInputSockets.at (i)->bind (
+                    QHostAddress (m_robotIpList.at (m_iterator + i)),
+                    robotInputPort(),
+                    FLAGS);
+            }
+        }
+    }
+}
+
+/**
  * Sends the given \c data to the FMS (Field Management System).
  */
 void Sockets::sendToFMS (const QByteArray& data)
@@ -215,19 +230,15 @@ void Sockets::sendToRobot (const QByteArray& data)
     if (robotOutputPort() == DISABLED_PORT)
         return;
 
-    if (m_robotSender && !robotIp().isEmpty()) {
-        m_robotSender->writeDatagram (data, robotIp(), robotOutputPort());
-        return;
-    }
+    if (m_robotSender && !robotAddress().isEmpty())
+        m_robotSender->writeDatagram (data, robotAddress(), robotOutputPort());
 
-    refreshRobotIPs();
-
-    for (int i = 0; i < robotIPs().count(); ++i) {
-        if (realSocketCount() > i && robotIPs().count() > m_iterator + i) {
-            QString ip = robotIPs().at (m_iterator + i);
-            m_robotSenderList.at (i)->writeDatagram (data,
-                                                     QHostAddress (ip),
-                                                     robotOutputPort());
+    else {
+        for (int i = 0; i < socketCount(); ++i) {
+            if (socketCount() > i && addressList().count() > (m_iterator + i)) {
+                QString ip = addressList().at (m_iterator + i);
+                m_robotSenderList.at (i)->writeDatagram (data, ip, robotOutputPort());
+            }
         }
     }
 }
@@ -239,7 +250,7 @@ void Sockets::sendToRadio (const QByteArray& data)
 {
     if (m_radioSender && radioOutputPort() != DISABLED_PORT)
         m_radioSender->writeDatagram (data,
-                                      QHostAddress (radioIp()),
+                                      QHostAddress (radioAddress()),
                                       radioOutputPort());
 }
 
@@ -247,7 +258,7 @@ void Sockets::sendToRadio (const QByteArray& data)
  * Changes the radio IP, this should only done by the \c Protocol and not
  * the user.
  */
-void Sockets::setRadioIp (const QString& ip)
+void Sockets::setRadioAddress (const QString& ip)
 {
     m_radioIp = ip;
 
@@ -267,9 +278,10 @@ void Sockets::setRadioIp (const QString& ip)
  * It is not recommended to use a custom address, since this class should
  * be able to detect any sign of the robot very fast.
  */
-void Sockets::setRobotIp (const QString& ip)
+void Sockets::setRobotAddress (const QString& ip)
 {
     m_robotIp = ip;
+
     if (m_robotSender)
         m_robotSender->connectToHost (ip, robotOutputPort(), WRITE_ONLY);
 
@@ -282,26 +294,11 @@ void Sockets::setRobotIp (const QString& ip)
  *       LAN interface (e.g. ethernet & wifi) in order to make the robot
  *       detection process faster and less error-prone.
  */
-void Sockets::setRobotIpList (const QStringList& list)
+void Sockets::setAddressList (const QStringList& list)
 {
     m_robotIpList.clear();
     m_robotIpList = list;
     generateLocalNetworkAddresses();
-}
-
-/**
- * Changes the parallel socket \c count. This can be used to increase the
- * LAN scan speed at the cost of more memory usage.
- *
- * If the \c count is set to 0, then this function will calculate the best
- * socket count based on the size of the \c robotIpList()
- */
-void Sockets::setSocketCount (const int& count)
-{
-    m_socketCount = count;
-    generateSocketPairs();
-
-    qDebug() << "PSC set to" << count;
 }
 
 /**
@@ -335,7 +332,7 @@ void Sockets::setRadioInputPort (const int& port)
 {
     m_radioInput = port;
     if (m_radioReceiver)
-        m_radioReceiver->bind (QHostAddress (radioIp()), port, FLAGS);
+        m_radioReceiver->bind (QHostAddress (radioAddress()), port, FLAGS);
 
     qDebug() << "Radio input port set to" << port;
 }
@@ -356,7 +353,7 @@ void Sockets::setRadioOutputPort (const int& port)
 {
     m_radioOutput = port;
     if (m_radioSender)
-        m_radioSender->connectToHost (radioIp(), port, WRITE_ONLY);
+        m_radioSender->connectToHost (radioAddress(), port, WRITE_ONLY);
 
     qDebug() << "Radio output port set to" << port;
 }
@@ -368,9 +365,24 @@ void Sockets::setRobotOutputPort (const int& port)
 {
     m_robotOutput = port;
     if (m_robotSender)
-        m_robotSender->connectToHost (robotIp(), port, WRITE_ONLY);
+        m_robotSender->connectToHost (robotAddress(), port, WRITE_ONLY);
 
     qDebug() << "Robot output port set to" << port;
+}
+
+/**
+ * Changes the parallel socket \c count. This can be used to increase the
+ * LAN scan speed at the cost of more memory usage.
+ *
+ * If the \c count is set to 0, then this function will calculate the best
+ * socket count based on the size of the \c robotIpList()
+ */
+void Sockets::setCustomSocketCount (const int& count)
+{
+    m_socketCount = count;
+    generateSocketPairs();
+
+    qDebug() << "PSC set to" << count;
 }
 
 /**
@@ -417,7 +429,7 @@ void Sockets::setRobotSocketType (const DS::SocketType& type)
     m_robotSender = new ConfigurableSocket (type);
 
     if (type == DS::kSocketTypeTCP) {
-        m_robotSender->socket()->connectToHost (robotIp(),
+        m_robotSender->socket()->connectToHost (robotAddress(),
                                                 robotOutputPort(),
                                                 QIODevice::WriteOnly);
     }
@@ -430,7 +442,7 @@ void Sockets::setRobotSocketType (const DS::SocketType& type)
  * this function will check if the socket pointer is not NULL before trying to
  * read its data.
  */
-void Sockets::readFMSData()
+void Sockets::readFMSSocket()
 {
     if (m_fmsReceiver)
         emit fmsPacketReceived (m_fmsReceiver->readAll());
@@ -441,7 +453,7 @@ void Sockets::readFMSData()
  * application, this function will check if the socket pointer is not NULL
  * before trying to read its data.
  */
-void Sockets::readRadioData()
+void Sockets::readRadioSocket()
 {
     if (m_radioReceiver)
         emit radioPacketReceived (m_radioReceiver->readAll());
@@ -455,49 +467,16 @@ void Sockets::readRadioData()
  * Doing so allows us to stop sending data through the parallel sockets, which
  * can cause the application to use more memory and the radio to "lag".
  */
-void Sockets::readRobotData()
+void Sockets::readRobotSocket()
 {
     ConfigurableSocket* socket = qobject_cast<ConfigurableSocket*> (sender());
     QByteArray data = socket->readAll();
 
-    if (robotIp().isEmpty() && !data.isEmpty())
-        setRobotIp (socket->peerAddress());
+    if (!data.isEmpty()) {
+        if (robotAddress().isEmpty())
+            setRobotAddress (socket->peerAddress());
 
-    if (!data.isEmpty())
         emit robotPacketReceived (data);
-
-}
-
-/**
- * This function allows us to probe each IP on the robot IP list by "scrolling"
- * the list and probing several IPs at the same time. This function is called
- * when we finish sending a robot packet, thus, the scan speed is determined by
- * the following factors:
- *     - The frequency in which the DS sends a robot packet
- *     - The number of parallel sockets (which allow us to probe more IPs
- *       at the same time)
- *
- * Of course, this function will do nothing if we use TCP for robot
- * communications or we already know the robot IP.
- */
-void Sockets::refreshRobotIPs()
-{
-    if (!robotIp().isEmpty())
-        return;
-
-    if (robotIPs().count() > m_iterator + realSocketCount())
-        m_iterator += realSocketCount();
-    else
-        m_iterator = 0;
-
-    for (int i = 0; i < robotIPs().count(); ++i) {
-        if (realSocketCount() > i && robotIPs().count() > m_iterator + i) {
-            m_robotInputSockets.at (i)->socket()->disconnectFromHost();
-            m_robotInputSockets.at (i)->bind (
-                QHostAddress (m_robotIpList.at (m_iterator + i)),
-                robotInputPort(),
-                FLAGS);
-        }
     }
 }
 
@@ -519,7 +498,7 @@ void Sockets::generateSocketPairs()
 {
     clearSocketLists();
 
-    for (int i = 0; i < realSocketCount(); ++i) {
+    for (int i = 0; i < socketCount(); ++i) {
         ConfigurableSocket* sender = new ConfigurableSocket (robotSocketType());
         ConfigurableSocket* receiver = new ConfigurableSocket (robotSocketType());
 
@@ -527,10 +506,9 @@ void Sockets::generateSocketPairs()
         m_robotInputSockets.append (receiver);
 
         connect (receiver, SIGNAL (readyRead()),
-                 this,       SLOT (readRobotData()));
+                 this,       SLOT (readRobotSocket()));
 
-        receiver->tcpSocket()->setSocketOption (MULTICAST_LOOPBACK, 0);
-        receiver->udpSocket()->setSocketOption (MULTICAST_LOOPBACK, 0);
+        receiver->socket()->setSocketOption (MULTICAST_LOOPBACK, 0);
     }
 }
 

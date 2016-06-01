@@ -128,15 +128,10 @@ Item {
         onRobotCommStatusChanged: communicationsLed.checked = DriverStation.isConnectedToRobot()
 
         onVoltageChanged: {
-            if (DriverStation.isConnectedToRobot()) {
+            if (DriverStation.isConnectedToRobot())
                 robotVoltage = voltageString
-                plot.voltage = DriverStation.currentBatteryVoltage()
-            }
-
-            else {
-                plot.voltage = 0
+            else
                 robotVoltage = Globals.invalidStr
-            }
         }
 
         onProtocolChanged: robotVoltage = Globals.invalidStr

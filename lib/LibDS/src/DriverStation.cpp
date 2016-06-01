@@ -68,8 +68,8 @@ DriverStation::DriverStation()
              this,     SIGNAL (controlModeChanged (ControlMode)));
     connect (config(), SIGNAL (cpuUsageChanged (int)),
              this,     SIGNAL (cpuUsageChanged (int)));
-    connect (config(), SIGNAL (diskUsageChanged (int, int)),
-             this,     SIGNAL (diskUsageChanged (int, int)));
+    connect (config(), SIGNAL (diskUsageChanged (int)),
+             this,     SIGNAL (diskUsageChanged (int)));
     connect (config(), SIGNAL (elapsedTimeChanged (int)),
              this,     SIGNAL (elapsedTimeChanged (int)));
     connect (config(), SIGNAL (elapsedTimeChanged (QString)),
@@ -92,8 +92,8 @@ DriverStation::DriverStation()
              this,     SIGNAL (radioAddressChanged (QString)));
     connect (config(), SIGNAL (radioCommStatusChanged (CommStatus)),
              this,     SIGNAL (radioCommStatusChanged (CommStatus)));
-    connect (config(), SIGNAL (ramUsageChanged (int, int)),
-             this,     SIGNAL (ramUsageChanged (int, int)));
+    connect (config(), SIGNAL (ramUsageChanged (int)),
+             this,     SIGNAL (ramUsageChanged (int)));
     connect (config(), SIGNAL (robotAddressChanged (QString)),
              this,     SIGNAL (robotAddressChanged (QString)));
     connect (config(), SIGNAL (robotCommStatusChanged (CommStatus)),
@@ -572,8 +572,8 @@ QString DriverStation::radioAddress() const
 QString DriverStation::robotAddress() const
 {
     if (customRobotAddress().isEmpty()) {
-        if (!m_sockets->robotIp().isEmpty())
-            return m_sockets->robotIp();
+        if (!m_sockets->robotAddress().isEmpty())
+            return m_sockets->robotAddress();
         else
             return "";
     }
@@ -753,7 +753,7 @@ bool DriverStation::registerJoystick (const int& axes,
         for (int i = 0; i < joystick->numButtons; i++)
             joystick->buttons [i] = false;
 
-        /* Status report! */
+        /* That joystick, Scotty, status report! */
         qDebug() << "Joystick registered!";
         qDebug() << "Real joystick values:"
                  << axes    << "axes"
@@ -944,9 +944,7 @@ void DriverStation::setProtocol (Protocol* protocol)
         m_console->setOutputPort      (m_protocol->netconsoleOutputPort());
 
         /* Update IP lists */
-        setCustomRadioAddress (radioAddress());
-        setCustomRobotAddress (robotAddress());
-        m_sockets->setRobotIpList (m_protocol->defaultRobotAddresses());
+        m_sockets->setAddressList (m_protocol->defaultRobotAddresses());
 
         /* Update packet intervals */
         m_fmsInterval = 1000 / m_protocol->fmsFrequency();
@@ -961,7 +959,7 @@ void DriverStation::setProtocol (Protocol* protocol)
         /* Update joystick config. to match protocol requirements */
         reconfigureJoysticks();
 
-        /* Start sending data */
+        /* Release the kraken */
         start();
 
         /* Send a message telling that the protocol has been initialized */
@@ -1068,7 +1066,7 @@ void DriverStation::setControlMode (const ControlMode& mode)
  */
 void DriverStation::setParallelSocketCount (const int& count)
 {
-    m_sockets->setSocketCount (count);
+    m_sockets->setCustomSocketCount (count);
 
     bool isSetByUser = (count > 0) |
                        (count <= 0 && m_sockets->customSocketCount() > 0);
@@ -1087,7 +1085,8 @@ void DriverStation::setParallelSocketCount (const int& count)
  */
 void DriverStation::setCustomRobotAddress (const QString& address)
 {
-    m_sockets->setRobotIp (address);
+    m_customRobotAddress = address;
+    m_sockets->setRobotAddress (customRobotAddress());
 }
 
 /**
@@ -1097,7 +1096,7 @@ void DriverStation::setCustomRobotAddress (const QString& address)
  */
 void DriverStation::setCustomRadioAddress (const QString& address)
 {
-    m_sockets->setRadioIp (address);
+    m_sockets->setRadioAddress (address);
 }
 
 /**
@@ -1236,6 +1235,11 @@ void DriverStation::resetRobot()
     config()->updateOperationStatus (kOperationNormal);
     config()->robotLogger()->registerWatchdogTimeout();
 
+    if (customRobotAddress().isEmpty()) {
+        m_sockets->setRobotAddress ("");
+        m_sockets->refreshAddressList();
+    }
+
     emit statusChanged (generalStatus());
 }
 
@@ -1247,9 +1251,8 @@ void DriverStation::sendFMSPacket()
     if (protocol() && running())
         m_sockets->sendToFMS (protocol()->generateFMSPacket());
 
-    QTimer::singleShot (m_fmsInterval,
-                        Qt::PreciseTimer,
-                        this, SLOT (sendFMSPacket()));
+    QTimer::singleShot (m_fmsInterval, Qt::PreciseTimer, this,
+                        SLOT (sendFMSPacket()));
 }
 
 /**
@@ -1260,9 +1263,8 @@ void DriverStation::sendRadioPacket()
     if (protocol() && running())
         m_sockets->sendToRadio (protocol()->generateRadioPacket());
 
-    QTimer::singleShot (m_radioInterval,
-                        Qt::PreciseTimer,
-                        this, SLOT (sendRadioPacket()));
+    QTimer::singleShot (m_radioInterval, Qt::PreciseTimer, this,
+                        SLOT (sendRadioPacket()));
 }
 
 /**
@@ -1273,9 +1275,8 @@ void DriverStation::sendRobotPacket()
     if (protocol() && running())
         m_sockets->sendToRobot (protocol()->generateRobotPacket());
 
-    QTimer::singleShot (m_robotInterval,
-                        Qt::PreciseTimer,
-                        this, SLOT (sendRobotPacket()));
+    QTimer::singleShot (m_robotInterval, Qt::PreciseTimer, this,
+                        SLOT (sendRobotPacket()));
 }
 
 /**
@@ -1289,22 +1290,19 @@ void DriverStation::calculateScanSpeed()
                                             "to detect your robot"));
 
     if (protocol() && running()) {
-        int time = m_sockets->robotIPs().count() / m_sockets->realSocketCount();
-        time *= m_robotWatchdog->expirationTime();
-        time /= 1000;
+        int time = m_sockets->addressList().count() / m_sockets->socketCount();
+        time *= m_robotWatchdog->expirationTime() / 1000;
 
         /* It takes less than one second to detect the robot (in theory) */
-        if (time <= 1) {
-            time = 1;
+        if (time <= 1)
             scanTime = CONSOLE_MESSAGE (tr ("DS: It should take less than 1 "
                                             "second to detect yout robot"));
-        }
 
         /* It takes 2 or more seconds to detect the robot */
         else
             scanTime = scanTime.arg (time);
 
-        emit newMessage (pscCount.arg (m_sockets->realSocketCount()));
+        emit newMessage (pscCount.arg (m_sockets->socketCount()));
         emit newMessage (scanTime);
     }
 }

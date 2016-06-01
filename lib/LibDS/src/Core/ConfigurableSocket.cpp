@@ -27,19 +27,20 @@ ConfigurableSocket::ConfigurableSocket (const DS::SocketType& type)
  */
 QByteArray ConfigurableSocket::readAll()
 {
+    QByteArray data;
+
     if (socketType() == DS::kSocketTypeTCP)
-        return tcpSocket()->readAll();
+        data = socket()->readAll();
 
-    QByteArray buf;
-    QHostAddress address;
+    else {
+        QHostAddress address;
+        data.resize (udpSocket()->pendingDatagramSize());
+        udpSocket()->readDatagram (data.data(), data.size(), &address);
 
-    buf.resize (udpSocket()->pendingDatagramSize());
-    udpSocket()->readDatagram (buf.data(), buf.size(), &address);
-
-    if (peerAddress().isEmpty())
         m_peerAddress = address.toString();
+    }
 
-    return buf;
+    return data;
 }
 
 /**

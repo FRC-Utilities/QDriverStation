@@ -38,7 +38,7 @@ Plot {
         value = DriverStation.cpuUsage()
 
         if (DriverStation.isConnectedToRobot())
-            barColor = Globals.Colors.CPUUsage
+            barColor = Globals.Colors.CPUProgress
         else
             barColor = Globals.Colors.TextAreaBackground
     }

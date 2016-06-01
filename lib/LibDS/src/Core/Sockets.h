@@ -20,8 +20,6 @@ public:
     ~Sockets();
 
     int socketCount() const;
-    int realSocketCount() const;
-
     int fmsInputPort() const;
     int fmsOutputPort() const;
     int radioInputPort() const;
@@ -31,24 +29,23 @@ public:
 
     int customSocketCount() const;
 
-    QString radioIp() const;
-    QString robotIp() const;
-    QStringList robotIPs() const;
+    QString radioAddress() const;
+    QString robotAddress() const;
+    QStringList addressList() const;
 
     DS::SocketType fmsSocketType() const;
     DS::SocketType radioSocketType() const;
     DS::SocketType robotSocketType() const;
 
 public slots:
+    void refreshAddressList();
     void sendToFMS (const QByteArray& data);
     void sendToRobot (const QByteArray& data);
     void sendToRadio (const QByteArray& data);
 
-    void setRadioIp (const QString& ip);
-    void setRobotIp (const QString& ip);
-    void setRobotIpList (const QStringList& list);
-
-    void setSocketCount (const int& count);
+    void setRadioAddress (const QString& ip);
+    void setRobotAddress (const QString& ip);
+    void setAddressList (const QStringList& list);
 
     void setFMSInputPort (const int& port);
     void setFMSOutputPort (const int& port);
@@ -56,6 +53,8 @@ public slots:
     void setRobotInputPort (const int& port);
     void setRadioOutputPort (const int& port);
     void setRobotOutputPort (const int& port);
+
+    void setCustomSocketCount (const int& count);
 
     void setFMSSocketType (const DS::SocketType& type);
     void setRadioSocketType (const DS::SocketType& type);
@@ -67,10 +66,9 @@ signals:
     void robotPacketReceived (QByteArray data);
 
 private slots:
-    void readFMSData();
-    void readRadioData();
-    void readRobotData();
-    void refreshRobotIPs();
+    void readFMSSocket();
+    void readRadioSocket();
+    void readRobotSocket();
     void clearSocketLists();
     void generateSocketPairs();
     void generateLocalNetworkAddresses();
