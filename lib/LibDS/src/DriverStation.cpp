@@ -109,7 +109,7 @@ DriverStation::DriverStation()
     connect (config(), SIGNAL (voltageStatusChanged (VoltageStatus)),
              this,     SIGNAL (voltageStatusChanged (VoltageStatus)));
 
-    /* Set watchdog expiration times */
+    /* Set default watchdog expiration times */
     m_fmsWatchdog->setExpirationTime (1000);
     m_radioWatchdog->setExpirationTime (1000);
     m_robotWatchdog->setExpirationTime (1000);
@@ -123,6 +123,7 @@ DriverStation::DriverStation()
     connect (m_console, SIGNAL (newMessage (QString)),
              this,      SIGNAL (newMessage (QString)));
 
+    /* A huevo */
     qDebug() << "DriverStation initialized!";
 }
 
@@ -350,7 +351,7 @@ int DriverStation::maxPOVCount() const
     if (protocol())
         return protocol()->maxPOVCount();
 
-    return 12;
+    return 0;
 }
 
 /**
@@ -361,7 +362,7 @@ int DriverStation::maxAxisCount() const
     if (protocol())
         return protocol()->maxAxisCount();
 
-    return 12;
+    return 0;
 }
 
 /**
@@ -372,7 +373,7 @@ int DriverStation::maxButtonCount() const
     if (protocol())
         return protocol()->maxButtonCount();
 
-    return 24;
+    return 0;
 }
 
 /**
@@ -383,7 +384,7 @@ int DriverStation::maxJoystickCount() const
     if (protocol())
         return protocol()->maxJoystickCount();
 
-    return 6;
+    return 0;
 }
 
 /**
@@ -653,10 +654,12 @@ QString DriverStation::defaultRadioAddress() const
  */
 QString DriverStation::defaultRobotAddress() const
 {
+    /* Return first item of the address list of the current protocol */
     if (protocol())
         if (protocol()->defaultRobotAddresses().count() > 0)
             return protocol()->defaultRobotAddresses().at (0);
 
+    /* Return 10.xx.yy.2 */
     return getStaticIP (10, team(), 2);
 }
 
@@ -755,10 +758,6 @@ bool DriverStation::registerJoystick (const int& axes,
 
         /* That joystick, Scotty, status report! */
         qDebug() << "Joystick registered!";
-        qDebug() << "Real joystick values:"
-                 << axes    << "axes"
-                 << buttons << "buttons"
-                 << povs    << "POVs";
         qDebug() << "Registered joystick values:"
                  << joystick->numAxes    << "axes"
                  << joystick->numButtons << "buttons"
@@ -767,7 +766,6 @@ bool DriverStation::registerJoystick (const int& axes,
         joysticks()->append (joystick);
     }
 
-    qDebug() << "Joystick registration successfull!";
     qDebug() << "New joystick count is" << joystickCount();
 
     emit joystickCountChanged (joystickCount());
@@ -844,6 +842,8 @@ void DriverStation::resetJoysticks()
  */
 void DriverStation::restartRobotCode()
 {
+    qDebug() << "Robot code restart triggered by DS...";
+
     if (protocol())
         protocol()->restartRobotCode();
 }
@@ -891,7 +891,6 @@ void DriverStation::removeJoystick (const int& id)
     if (joystickCount() > id) {
         joysticks()->removeAt (id);
 
-        /* Disable robot if not connected to FMS */
         if (!isConnectedToFMS())
             setEnabled (false);
     }
@@ -925,21 +924,26 @@ void DriverStation::setProtocol (Protocol* protocol)
         free (m_protocol);
     }
 
-    /* Re-assign the protocol */
+    /* Re-assign the protocol, stop sending data */
     stop();
     m_protocol = protocol;
 
     /* Update DS config to match new protocol settings */
     if (m_protocol) {
+        /* Update radio, FMS and robot socket types */
         m_sockets->setFMSSocketType   (m_protocol->fmsSocketType());
         m_sockets->setRadioSocketType (m_protocol->radioSocketType());
         m_sockets->setRobotSocketType (m_protocol->robotSocketType());
+
+        /* Update radio, FMS and robot ports */
         m_sockets->setFMSInputPort    (m_protocol->fmsInputPort());
         m_sockets->setFMSOutputPort   (m_protocol->fmsOutputPort());
         m_sockets->setRadioInputPort  (m_protocol->radioInputPort());
         m_sockets->setRobotInputPort  (m_protocol->robotInputPort());
         m_sockets->setRadioOutputPort (m_protocol->radioOutputPort());
         m_sockets->setRobotOutputPort (m_protocol->robotOutputPort());
+
+        /* Update NetConsole ports */
         m_console->setInputPort       (m_protocol->netconsoleInputPort());
         m_console->setOutputPort      (m_protocol->netconsoleOutputPort());
 
@@ -972,6 +976,7 @@ void DriverStation::setProtocol (Protocol* protocol)
         if (m_sockets->customSocketCount() == 0)
             calculateScanSpeed();
 
+        /* We're back in business */
         qDebug() << "Protocol" << protocol->name() << "ready for use";
     }
 }
@@ -1067,11 +1072,7 @@ void DriverStation::setControlMode (const ControlMode& mode)
 void DriverStation::setParallelSocketCount (const int& count)
 {
     m_sockets->setCustomSocketCount (count);
-
-    bool isSetByUser = (count > 0) |
-                       (count <= 0 && m_sockets->customSocketCount() > 0);
-
-    if (m_init && isSetByUser)
+    if (m_init && (count > 0 || m_sockets->customSocketCount() > 0))
         calculateScanSpeed();
 }
 
@@ -1194,7 +1195,7 @@ void DriverStation::stop()
 void DriverStation::start()
 {
     m_running = true;
-    qDebug() << "DS networking operation resumed";
+    qDebug() << "DS networking operations resumed";
 }
 
 /**
@@ -1235,6 +1236,7 @@ void DriverStation::resetRobot()
     config()->updateOperationStatus (kOperationNormal);
     config()->robotLogger()->registerWatchdogTimeout();
 
+    /* Scan the next round of robot IPs */
     if (customRobotAddress().isEmpty()) {
         m_sockets->setRobotAddress ("");
         m_sockets->refreshAddressList();
@@ -1251,8 +1253,8 @@ void DriverStation::sendFMSPacket()
     if (protocol() && running())
         m_sockets->sendToFMS (protocol()->generateFMSPacket());
 
-    QTimer::singleShot (m_fmsInterval, Qt::PreciseTimer, this,
-                        SLOT (sendFMSPacket()));
+    QTimer::singleShot (m_fmsInterval, Qt::PreciseTimer,
+                        this, SLOT (sendFMSPacket()));
 }
 
 /**
@@ -1263,8 +1265,8 @@ void DriverStation::sendRadioPacket()
     if (protocol() && running())
         m_sockets->sendToRadio (protocol()->generateRadioPacket());
 
-    QTimer::singleShot (m_radioInterval, Qt::PreciseTimer, this,
-                        SLOT (sendRadioPacket()));
+    QTimer::singleShot (m_radioInterval, Qt::PreciseTimer,
+                        this, SLOT (sendRadioPacket()));
 }
 
 /**
@@ -1275,8 +1277,8 @@ void DriverStation::sendRobotPacket()
     if (protocol() && running())
         m_sockets->sendToRobot (protocol()->generateRobotPacket());
 
-    QTimer::singleShot (m_robotInterval, Qt::PreciseTimer, this,
-                        SLOT (sendRobotPacket()));
+    QTimer::singleShot (m_robotInterval, Qt::PreciseTimer,
+                        this, SLOT (sendRobotPacket()));
 }
 
 /**
@@ -1289,22 +1291,20 @@ void DriverStation::calculateScanSpeed()
     QString scanTime = CONSOLE_MESSAGE (tr ("DS: It may take up to %1 seconds "
                                             "to detect your robot"));
 
-    if (protocol() && running()) {
-        int time = m_sockets->addressList().count() / m_sockets->socketCount();
-        time *= m_robotWatchdog->expirationTime() / 1000;
+    int time = m_sockets->addressList().count() / m_sockets->socketCount();
+    time *= m_robotWatchdog->expirationTime() / 1000;
 
-        /* It takes less than one second to detect the robot (in theory) */
-        if (time <= 1)
-            scanTime = CONSOLE_MESSAGE (tr ("DS: It should take less than 1 "
-                                            "second to detect yout robot"));
+    /* It takes less than one second to detect the robot (in theory) */
+    if (time <= 1)
+        scanTime = CONSOLE_MESSAGE (tr ("DS: It should take less than 1 "
+                                        "second to detect yout robot"));
 
-        /* It takes 2 or more seconds to detect the robot */
-        else
-            scanTime = scanTime.arg (time);
+    /* It takes 2 or more seconds to detect the robot */
+    else
+        scanTime = scanTime.arg (time);
 
-        emit newMessage (pscCount.arg (m_sockets->socketCount()));
-        emit newMessage (scanTime);
-    }
+    emit newMessage (pscCount.arg (m_sockets->socketCount()));
+    emit newMessage (scanTime);
 }
 
 /**

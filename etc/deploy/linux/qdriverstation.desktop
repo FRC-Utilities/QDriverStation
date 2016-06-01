@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=QDriverStation
-Comment=Open source alternative to the FRC DriverStation
+Comment=Open source alternative to the FRC Driver Station
 Exec=qdriverstation
 Terminal=false
 Type=Application
