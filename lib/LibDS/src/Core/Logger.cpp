@@ -98,8 +98,21 @@ static void INIT_LOGGER()
     /* Get app info */
     QString appN = qApp->applicationName();
     QString appV = qApp->applicationVersion();
-    QString sysV = QSysInfo::prettyProductName();
     QString time = GET_DATE_TIME ("MMM dd yyyy - HH:mm:ss AP");
+
+    /* Get OS information */
+    QString sysV = "Unknown";
+#if QT_VERSION >= QT_VERSION_CHECK (5, 4, 0)
+    sysV = QSysInfo::prettyProductName();
+#else
+#if defined Q_OS_WIN
+    sysV = "Windows";
+#elif defined Q_OS_MAC
+    sysV = "Mac OSX";
+#elif defined Q_OS_LINUX
+    sysV = "GNU/Linux";
+#endif
+#endif
 
     /* Format app info */
     time.prepend ("Log created on:      ");
