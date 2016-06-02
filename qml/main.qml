@@ -80,6 +80,12 @@ ApplicationWindow {
     y: 100
 
     //
+    // Animations, we all like 'em!
+    //
+    Behavior on x { NumberAnimation{} }
+    Behavior on y { NumberAnimation{} }
+
+    //
     // Define the size of the window
     //
     minimumWidth: Globals.scale (1185)
