@@ -51,36 +51,6 @@ var Colors = {
 }
 
 //
-// Rename to "Colors" and comment the section above to enable it
-//
-var ExperimentalTheme = {
-    'Foreground'                : "#D3DAE3",
-    'Background'                : "#3E424D",
-    'WidgetBorder'              : "#2b2e39",
-    'WidgetBackground'          : "#3E424D",
-    'WidgetForeground'          : "#D3DAE3",
-    'WindowBackground'          : "#2F343F",
-    'WidgetBackgroundSelected'  : "#3E424D",
-    'WidgetForegroundSelected'  : "#D3DAE3",
-    'WidgetBackgroundHighlight' : "#505666",
-    'WidgetForegroundHighlight' : "#D3DAE3",
-    'TextAreaBackground'        : "#D3DAE3",
-    'TextAreaForeground'        : "#282828",
-    'IndicatorGood'             : "#5DBA6F",
-    'IndicatorError'            : "#EB594D",
-    'IndicatorWarning'          : "#2B610C",
-    'HighlightColor'            : "#5DBA6F",
-    'IconColor'                 : "#D3DAE3",
-    'PanelBackground'           : "#3E424D",
-    'AlternativeHighlight'      : "#3DA6B9",
-    'EnableButtonSelected'      : "#4AA614",
-    'DisableButtonSelected'     : "#D11616",
-    'EnableButtonUnselected'    : "#002F00",
-    'DisableButtonUnselected'   : "#2B610C",
-    'CPUProgress'               : "#FFA726",
-}
-
-//
 // Global-wide animation speeds
 //
 var slowAnimation = 200

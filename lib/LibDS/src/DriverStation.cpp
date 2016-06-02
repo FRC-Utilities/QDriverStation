@@ -129,14 +129,6 @@ DriverStation::DriverStation()
     connect (m_console, SIGNAL (newMessage (QString)),
              this,      SIGNAL (newMessage (QString)));
 
-    /* Move critical modules to another thread */
-    /*QThread* thread = new QThread (this);
-    m_sockets->moveToThread (thread);
-    m_fmsWatchdog->moveToThread (thread);
-    m_radioWatchdog->moveToThread (thread);
-    m_robotWatchdog->moveToThread (thread);
-    thread->start (QThread::HighestPriority);*/
-
     qDebug() << "DriverStation initialized!";
 }
 

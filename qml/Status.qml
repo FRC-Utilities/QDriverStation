@@ -211,26 +211,6 @@ Item {
                 property var backgroundColor: Globals.Colors.IconColor
 
                 Rectangle {
-                    id: base
-                    anchors.fill: parent
-                    color: parent.backgroundColor
-                    anchors.leftMargin: Globals.scale (2)
-                    anchors.rightMargin: Globals.scale (2)
-                    anchors.topMargin: parent.diodeHeight + cover.height
-
-                    VoltageGraph {
-                        color: parent.color
-                        anchors.fill: parent
-                        border.color: parent.color
-                        anchors.margins: Globals.scale (2)
-                        anchors.topMargin: Globals.scale (0)
-                        noCommsColor: Globals.Colors.WindowBackground
-
-                        Component.onCompleted: setSpeed (24)
-                    }
-                }
-
-                Rectangle {
                     id: cover
                     height: Globals.scale (4)
                     color: parent.backgroundColor
@@ -261,6 +241,26 @@ Item {
                     anchors.top: parent.top
                     anchors.right: parent.right
                     anchors.rightMargin: cover.height
+                }
+
+                Rectangle {
+                    id: base
+                    anchors.fill: parent
+                    color: parent.backgroundColor
+                    anchors.leftMargin: Globals.scale (2)
+                    anchors.rightMargin: Globals.scale (2)
+                    anchors.topMargin: parent.diodeHeight + (cover.height / 2)
+
+                    VoltageGraph {
+                        color: parent.color
+                        anchors.fill: parent
+                        border.color: parent.color
+                        anchors.margins: Globals.scale (2)
+                        anchors.topMargin: Globals.scale (0)
+                        noCommsColor: Globals.Colors.WindowBackground
+
+                        Component.onCompleted: setSpeed (24)
+                    }
                 }
             }
 

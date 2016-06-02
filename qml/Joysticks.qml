@@ -38,6 +38,9 @@ Item {
     // Regenerate the button, axis and POV indicators for the selected joystick
     //
     function regenerateControls() {
+        axes.model = 0
+        povs.model = 0
+        buttons.model = 0
         axes.model = DriverStation.getNumAxes (currentJoystick)
         povs.model = DriverStation.getNumPOVs (currentJoystick)
         buttons.model = DriverStation.getNumButtons (currentJoystick)
@@ -309,7 +312,7 @@ Item {
             //
             GridLayout {
                 id: grid
-                rows: buttons.model / 2
+                rows: 6
                 flow: GridLayout.TopToBottom
                 rowSpacing: Globals.scale (1)
                 columnSpacing: Globals.scale (1)
