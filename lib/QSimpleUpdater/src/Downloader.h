@@ -19,19 +19,17 @@
 #include <QDialog>
 #include <ui_Downloader.h>
 
-namespace Ui
-{
+namespace Ui {
 class Downloader;
 }
 
 class QNetworkReply;
 class QNetworkAccessManager;
 
-class Downloader : public QWidget
-{
+class Downloader : public QWidget {
     Q_OBJECT
 
-public:
+  public:
     explicit Downloader (QWidget* parent = 0);
     ~Downloader();
 
@@ -44,7 +42,7 @@ public:
     ///
     bool useCustomInstallProcedures() const;
 
-public slots:
+  public slots:
     ///
     /// Begins downloading the update
     ///
@@ -58,7 +56,7 @@ public slots:
     ///
     void setUseCustomInstallProcedures (const bool& custom);
 
-private slots:
+  private slots:
     void openDownload();
     void installUpdate();
     void cancelDownload();
@@ -67,13 +65,13 @@ private slots:
     void updateProgress (qint64 received, qint64 total);
     void calculateTimeRemaining (qint64 received, qint64 total);
 
-private:
+  private:
     ///
     /// Rounds the \a input to the nearest integer
     ///
     float round (const float& input);
 
-signals:
+  signals:
     ///
     /// Emitted when the download has finished.
     /// You can use this to implement your own procedures to install the
@@ -81,7 +79,7 @@ signals:
     ///
     void downloadFinished (const QString& url, const QString& filepath);
 
-private:
+  private:
     uint m_startTime;
     QString m_filePath;
     Ui::Downloader* m_ui;
