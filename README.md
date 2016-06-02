@@ -38,7 +38,7 @@ Check this [tutorial by Dakota Keeler](https://www.youtube.com/watch?v=G9DywTB9_
 
 ### Install notes
 
-Once you finish installing the software, you can launch it and begin driving your robot. Just be sure to input your team number and to verify that the joysticks are working correctly. 
+Once you finish installing the software, you can launch it and begin driving your robot. Just be sure to input your team number and to verify that the joysticks are working correctly.
 
 Mac users will be prompted to download an additional driver for Xbox 360 controllers to work.
 
@@ -54,7 +54,7 @@ The only requirement to compile the application is to have [Qt](http://www.qt.io
 
 - If you are using Linux, make sure that you have installed the following packages:
     - libsdl2-dev
- 
+
 The project already contains the compiled SDL libraries for Windows and Mac.
 
 ###### Compiling the application
@@ -66,28 +66,8 @@ Alternatively, you can also use the following commands:
 - make
 - **Optional:** sudo make install
 
-### Translating the application
-
-Before changing an existing translation, please do the following:
-
-- Run the "lupdate" tool from terminal, this will "sync" the translations with the current code
-
-If you want to create a new translation, please do the following:
-
-- Open QDriverStation.pro with any text editor
-- Go to the "Translations" section (at the bottom of the file)
-- Add a new line with your language code:
-    - For example, if you want to create a Russian translation, you would add this line:
-    - > TRANSLATIONS += $$PWD/translations/qds_ru.ts
-- Update the "translations.qrc" file (under the resources section)
-- Do your translations and run the "lrelease" tool
-- Update the "Languages" class (src/Utilities/Languages.h)
-
-Once you finish creating or improving a translation, please do the following:
-
-- Run the "lrelease" tool from terminal
-- Recompile the QDriverStation
-
 ### Credits
 
-This application was created by FRC team 3794 "WinT" from Metepec, Mexico. We sincerely hope that you enjoy our application and we would love some feedback from your team about it.
+This application was created by FRC team 3794 "WinT" from Metepec, Mexico.
+
+Of course, many people outside of our team contributed in different ways to this project, you can find more details in the [contributors list](CONTRIBUTORS.md). Finally, we want to thank you for trying this little project, we sincerely hope that you enjoy our application and we would love some of your feedback.

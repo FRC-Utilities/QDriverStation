@@ -110,14 +110,14 @@ void Window::onEnabledChanged()
 
 void Window::updateControlMode()
 {
-    DS_Common::ControlMode mode;
+    DS::ControlMode mode;
 
     if (m_ui->Test->isChecked())
-        mode = DS_Common::kControlTest;
+        mode = DS::kControlTest;
     if (m_ui->Autonomous->isChecked())
-        mode = DS_Common::kControlAutonomous;
+        mode = DS::kControlAutonomous;
     if (m_ui->Teleoperated->isChecked())
-        mode = DS_Common::kControlTeleoperated;
+        mode = DS::kControlTeleoperated;
 
     m_driverStation->setControlMode (mode);
 }

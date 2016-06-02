@@ -192,17 +192,20 @@ DS::SocketType Sockets::robotSocketType() const
  */
 void Sockets::refreshAddressList()
 {
-    if (robotAddress().isEmpty()) {
+    if (robotAddress().isEmpty() && !addressList().isEmpty()) {
         if (addressList().count() > m_iterator + socketCount())
             m_iterator += socketCount();
         else
             m_iterator = 0;
 
-        for (int i = 0; i < socketCount(); ++i) {
-            if (socketCount() > i && addressList().count() > m_iterator + i) {
+        int psc = m_robotInputSockets.count();
+        for (int i = 0; i < psc; ++i) {
+            bool socketExists = psc > i;
+            bool addressExists = psc > (m_iterator + i);
+            if (socketExists && addressExists) {
                 m_robotInputSockets.at (i)->socket()->disconnectFromHost();
                 m_robotInputSockets.at (i)->bind (
-                    QHostAddress (m_robotIpList.at (m_iterator + i)),
+                    m_robotIpList.at (m_iterator + i),
                     robotInputPort(),
                     FLAGS);
             }
