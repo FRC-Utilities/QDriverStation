@@ -22,6 +22,18 @@
 
 #include <QJoysticks/VirtualJoystick.h>
 
+/**
+ * \file VirtualJoystick.h
+ * \class VirtualJoystick
+ *
+ * This class implements a virtual joystick device that uses the computer's
+ * keyboard as means to get the axis, button and POV values of the joystick.
+ */
+
+/**
+ * Initializes the joystick and installs the global event filer to capture
+ * keyboard events anywhere in the application.
+ */
 VirtualJoystick::VirtualJoystick()
 {
     m_axisRange = 1;
@@ -36,37 +48,79 @@ VirtualJoystick::VirtualJoystick()
     qApp->installEventFilter (this);
 }
 
+/**
+ * Returns the current axis range of the joystick.
+ * The axis range is an absolute value that represents the maximum value that
+ * the joystick can have.
+ *
+ * For example, the \c QJoystick system supports an axis range of 1 (-1 to 1).
+ * If you set an axis range of 0.8 to the virtual joystick, then it will report
+ * values ranging from -0.8 to 0.8.
+ */
 float VirtualJoystick::axisRange() const
 {
     return m_axisRange;
 }
 
+/**
+ * Returns \c true if the virtual joystick is enabled.
+ */
 bool VirtualJoystick::joystickEnabled() const
 {
     return m_joystickEnabled;
 }
 
+/**
+ * Returns a pointer to the virtual josytick device. This can be used if you
+ * need to customize the virtual joystick (e.g. add new axes or buttons).
+ */
 QJoystickDevice* VirtualJoystick::joystick()
 {
     return &m_joystick;
 }
 
+/**
+ * Sets the ID of the virtual joystick device. The \c QJoysticks will
+ * automatically change the \a ID of the virtual joystick when it scans for
+ * new joysticks.
+ *
+ * The virtual joystick will ALWAYS be the last joystick to be registered.
+ */
 void VirtualJoystick::setJoystickID (int id)
 {
     m_joystick.id = id;
 }
 
+/**
+ * Changes the axis range that the joystick can use. For example, if you set
+ * an axis range of 0.8, then axis values will be reported from -0.8 to 0.8.
+ *
+ * If you set an axis range of 1 (maximum), then the joystick will report axis
+ * values ranging from -1 to 1.
+ */
 void VirtualJoystick::setAxisRange (float range)
 {
+    range = abs (range);
+
+    if (range > 1)
+        range = 1;
+
     m_axisRange = range;
 }
 
+/**
+ * Enables or disables the virtual joystick device.
+ */
 void VirtualJoystick::setJoystickEnabled (bool enabled)
 {
     m_joystickEnabled = enabled;
     emit enabledChanged();
 }
 
+/**
+ * Polls the keyboard events and if required, reports a change in the axis
+ * values of the virtual joystick device.
+ */
 void VirtualJoystick::readAxes (int key, bool pressed)
 {
     int axis = -1;
@@ -130,6 +184,10 @@ void VirtualJoystick::readAxes (int key, bool pressed)
     }
 }
 
+/**
+ * Polls the keyboard events and if required, reports a change in the POV/hat
+ * values of the virtual joystick device.
+ */
 void VirtualJoystick::readPOVs (int key, bool pressed)
 {
     int angle = 0;
@@ -156,6 +214,10 @@ void VirtualJoystick::readPOVs (int key, bool pressed)
     }
 }
 
+/**
+ * Polls the keyboard events and if required, reports a change in the button
+ * values of the virtual joystick device.
+ */
 void VirtualJoystick::readButtons (int key, bool pressed)
 {
     int button = -1;
@@ -191,6 +253,12 @@ void VirtualJoystick::readButtons (int key, bool pressed)
     }
 }
 
+/**
+ * Called when the event filter detects a keyboard event.
+ *
+ * This function prompts the joystick to update its axis, button and POV values
+ * based on the keys that have been pressed or released.
+ */
 void VirtualJoystick::processKeyEvent (QKeyEvent* event, bool pressed)
 {
     if (joystickEnabled()) {
@@ -200,6 +268,14 @@ void VirtualJoystick::processKeyEvent (QKeyEvent* event, bool pressed)
     }
 }
 
+/**
+ * "Listens" for keyboard presses or releases while any window or widget of the
+ * application is focused.
+ *
+ * \note This function may or may not detect keyboard events when the
+ *       application is not focused. This depends on the operating system and
+ *       the window manager that is being used.
+ */
 bool VirtualJoystick::eventFilter (QObject* object, QEvent* event)
 {
     Q_UNUSED (object);

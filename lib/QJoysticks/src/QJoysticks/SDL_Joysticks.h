@@ -52,9 +52,9 @@ private:
     int getDynamicID (int id);
 
     QJoystickDevice* getJoystick (int id);
-    QJoystickPOVEvent getPOVEvent (const SDL_Event* sdl_event);
-    QJoystickAxisEvent getAxisEvent (const SDL_Event* sdl_event);
-    QJoystickButtonEvent getButtonEvent (const SDL_Event* sdl_event);
+    QJoystickPOVEvent getPOVEvent (const SDL_Event* event);
+    QJoystickAxisEvent getAxisEvent (const SDL_Event* event);
+    QJoystickButtonEvent getButtonEvent (const SDL_Event* event);
 
     int m_tracker;
     QList<QJoystickDevice> m_joysticks;

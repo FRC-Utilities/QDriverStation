@@ -27,10 +27,32 @@
 #include <QJoysticks/VirtualJoystick.h>
 
 /**
+ * \file QJoysticks.h
+ * \class QJoysticks
+ *
+ * The \c QJoysticks class is the "god-object" of this system. It manages every
+ * input system used by the application (e.g. SDL for real joysticks and
+ * keyboard for virtual joystick) and communicates every module/input system
+ * with the rest of the application through standarized types.
+ *
+ * The joysticks are assigned a numerical ID, which the \c QJoysticks can use to
+ * identify them. The ID's start with \c 0 (as with a QList). The ID's are
+ * refreshed when a joystick is attached or removed. The first joystick that
+ * has been connected to the computer will have \c 0 as an ID, the second
+ * joystick will have \c 1 as an ID, and so on...
+ *
+ * \note the virtual joystick will ALWAYS be the last joystick to be registered,
+ *       even if it has been enabled before any SDL joystick has been attached.
+ */
+
+/**
  * Appended to the name of all joystick blacklisted
  */
 const QString BLACKLISTED_STR = " (" + QObject::tr ("Disabled") + ")";
 
+/**
+ * Initializes and configures the SDL and virtual joystick modules.
+ */
 QJoysticks::QJoysticks()
 {
     m_sdlJoysticks = new SDL_Joysticks();

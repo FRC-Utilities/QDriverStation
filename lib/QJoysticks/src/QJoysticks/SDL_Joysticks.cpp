@@ -24,9 +24,31 @@
 #include <QTimer>
 #include <QJoysticks/SDL_Joysticks.h>
 
+/**
+ * \file SDL_Joysticks.h
+ * \class SDL_Joysticks
+ *
+ * This class is in charge of managing and operating real joysticks through the
+ * SDL API. The implementation procedure is the same for every operating system.
+ *
+ * The only thing that differs from each operating system is the backup mapping
+ * applied in the case that we do not know what mapping to apply to a joystick.
+ *
+ * The joystick values are refreshed every 20 milliseconds through an event
+ * loop.
+ */
 
+/**
+ * Holds a generic mapping to be applied to joysticks that have not been mapped
+ * by the SDL project or by the database.
+ *
+ * This mapping is different on each supported operating system.
+ */
 static QString GENERIC_MAPPINGS;
 
+/**
+ * Load a different generic/backup mapping for each operating system.
+ */
 #if defined Q_OS_WIN
 #define GENERIC_MAPPINGS_PATH ":/QJoysticks/SDL/GenericMappings/Windows.txt"
 #elif defined Q_OS_MAC
@@ -35,6 +57,10 @@ static QString GENERIC_MAPPINGS;
 #define GENERIC_MAPPINGS_PATH ":/QJoysticks/SDL/GenericMappings/Linux.txt"
 #endif
 
+/**
+ * Initializes SDL, loads the generic mapping and loads the controller mappings
+ * database file into the SDL system.
+ */
 SDL_Joysticks::SDL_Joysticks()
 {
     m_tracker = -1;
@@ -59,6 +85,9 @@ SDL_Joysticks::SDL_Joysticks()
     QTimer::singleShot (1500, Qt::PreciseTimer, this, SLOT (update()));
 }
 
+/**
+ * Returns a list with all the registered joystick devices
+ */
 QList<QJoystickDevice*> SDL_Joysticks::joysticks()
 {
     QList<QJoystickDevice*> list;
@@ -69,16 +98,23 @@ QList<QJoystickDevice*> SDL_Joysticks::joysticks()
     return list;
 }
 
+/**
+ * Based on the data contained in the \a request, this function will instruct
+ * the appropiate joystick to rumble for
+ */
 void SDL_Joysticks::rumble (const QJoystickRumble& request)
 {
     SDL_Haptic* haptic = SDL_HapticOpen (request.joystick->id);
 
-    if (haptic != Q_NULLPTR) {
+    if (haptic) {
         SDL_HapticRumbleInit (haptic);
-        SDL_HapticRumblePlay (haptic, 1, 1000);
+        SDL_HapticRumblePlay (haptic, request.strength, request.length);
     }
 }
 
+/**
+ * Polls for new SDL events and reacts to each event accordingly.
+ */
 void SDL_Joysticks::update()
 {
     SDL_Event event;
@@ -111,12 +147,17 @@ void SDL_Joysticks::update()
     QTimer::singleShot (20, this, SLOT (update()));
 }
 
+/**
+ * Checks if the joystick referenced by the \a event can be initialized.
+ * If not, the function will apply a generic mapping to the joystick and
+ * attempt to initialize the joystick again.
+ */
 void SDL_Joysticks::configureJoystick (const SDL_Event* event)
 {
     if (!SDL_IsGameController (event->cdevice.which)) {
         SDL_Joystick* js = SDL_JoystickOpen (event->jdevice.which);
 
-        if (js != Q_NULLPTR) {
+        if (js) {
             char guid [1024];
             SDL_JoystickGetGUIDString (SDL_JoystickGetGUID (js), guid, sizeof (guid));
 
@@ -136,6 +177,15 @@ void SDL_Joysticks::configureJoystick (const SDL_Event* event)
     emit countChanged();
 }
 
+/**
+ * Returns a joystick ID compatible with the \c QJoysticks system.
+ * SDL assigns an ID to each joystick based on the order that they are attached,
+ * but it does not decrease the ID counter when a joystick is removed.
+ *
+ * As noted earlier, the \c QJoysticks maintains an ID system similar to the
+ * one used by a \c QList, since it eases the operation with most Qt classes
+ * and widgets.
+ */
 int SDL_Joysticks::getDynamicID (int id)
 {
     id = abs (m_tracker - (id + 1));
@@ -146,6 +196,11 @@ int SDL_Joysticks::getDynamicID (int id)
     return id;
 }
 
+/**
+ * Returns the josytick device registered with the given \a id.
+ * If no joystick with the given \a id is found, then the function will warn
+ * the user through the console.
+ */
 QJoystickDevice* SDL_Joysticks::getJoystick (int id)
 {
     QJoystickDevice* joystick  = new QJoystickDevice;
@@ -153,7 +208,7 @@ QJoystickDevice* SDL_Joysticks::getJoystick (int id)
 
     joystick->id = getDynamicID (id);
 
-    if (sdl_joystick != Q_NULLPTR) {
+    if (sdl_joystick) {
         joystick->blacklisted = false;
         joystick->name        = SDL_JoystickName (sdl_joystick);
         joystick->numPOVs     = SDL_JoystickNumHats (sdl_joystick);
@@ -161,16 +216,23 @@ QJoystickDevice* SDL_Joysticks::getJoystick (int id)
         joystick->numButtons  = SDL_JoystickNumButtons (sdl_joystick);
     }
 
+    else
+        qWarning() << Q_FUNC_INFO << "Cannot find joystick with id:" << id;
+
     return joystick;
 }
 
-QJoystickPOVEvent SDL_Joysticks::getPOVEvent (const SDL_Event* sdl_event)
+/**
+ * Reads the contents of the given \a event and constructs a new
+ * \c QJoystickPOVEvent to be used with the \c QJoysticks system.
+ */
+QJoystickPOVEvent SDL_Joysticks::getPOVEvent (const SDL_Event* event)
 {
     QJoystickPOVEvent event;
-    event.pov      = sdl_event->jhat.hat;
-    event.joystick = getJoystick (sdl_event->jdevice.which);
+    event.pov      = event->jhat.hat;
+    event.joystick = getJoystick (event->jdevice.which);
 
-    switch (sdl_event->jhat.value) {
+    switch (event->jhat.value) {
     case SDL_HAT_RIGHTUP:
         event.angle = 45;
         break;
@@ -203,7 +265,11 @@ QJoystickPOVEvent SDL_Joysticks::getPOVEvent (const SDL_Event* sdl_event)
     return event;
 }
 
-QJoystickAxisEvent SDL_Joysticks::getAxisEvent (const SDL_Event* sdl_event)
+/**
+ * Reads the contents of the given \a event and constructs a new
+ * \c QJoystickAxisEvent to be used with the \c QJoysticks system.
+ */
+QJoystickAxisEvent SDL_Joysticks::getAxisEvent (const SDL_Event* event)
 {
     QJoystickAxisEvent event;
 
@@ -214,13 +280,17 @@ QJoystickAxisEvent SDL_Joysticks::getAxisEvent (const SDL_Event* sdl_event)
     return event;
 }
 
-QJoystickButtonEvent SDL_Joysticks::getButtonEvent (const SDL_Event* sdl_event)
+/**
+ * Reads the contents of the given \a event and constructs a new
+ * \c QJoystickButtonEvent to be used with the \c QJoysticks system.
+ */
+QJoystickButtonEvent SDL_Joysticks::getButtonEvent (const SDL_Event* event)
 {
     QJoystickButtonEvent event;
 
-    event.button = sdl_event->jbutton.button;
-    event.pressed = sdl_event->jbutton.state == SDL_PRESSED;
-    event.joystick = getJoystick (sdl_event->jdevice.which);
+    event.button = event->jbutton.button;
+    event.pressed = event->jbutton.state == SDL_PRESSED;
+    event.joystick = getJoystick (event->jdevice.which);
 
     return event;
 }
