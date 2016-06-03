@@ -23,7 +23,7 @@
 #ifndef _QJOYSTICKS_MAIN_H
 #define _QJOYSTICKS_MAIN_H
 
-#include <QObject>
+#include <QStringList>
 #include <QJoysticks/JoysticksCommon.h>
 
 class SDL_Joysticks;
