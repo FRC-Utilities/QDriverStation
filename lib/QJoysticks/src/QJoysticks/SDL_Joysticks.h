@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 WinT 3794 <http://wint3794.org>
+ * Copyright (c) 2015-2016 Alex Spataru <alex_spataru@outlook.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,9 +52,9 @@ private:
     int getDynamicID (int id);
 
     QJoystickDevice* getJoystick (int id);
-    QJoystickPOVEvent getPOVEvent (const SDL_Event* event);
-    QJoystickAxisEvent getAxisEvent (const SDL_Event* event);
-    QJoystickButtonEvent getButtonEvent (const SDL_Event* event);
+    QJoystickPOVEvent getPOVEvent (const SDL_Event* sdl_event);
+    QJoystickAxisEvent getAxisEvent (const SDL_Event* sdl_event);
+    QJoystickButtonEvent getButtonEvent (const SDL_Event* sdl_event);
 
     int m_tracker;
     QList<QJoystickDevice> m_joysticks;

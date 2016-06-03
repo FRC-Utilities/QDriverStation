@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 WinT 3794 <http://wint3794.org>
+ * Copyright (c) 2015-2016 Alex Spataru <alex_spataru@outlook.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,7 @@
  */
 
 #include <QFile>
+#include <QDebug>
 #include <QTimer>
 #include <QJoysticks/SDL_Joysticks.h>
 
@@ -226,13 +227,13 @@ QJoystickDevice* SDL_Joysticks::getJoystick (int id)
  * Reads the contents of the given \a event and constructs a new
  * \c QJoystickPOVEvent to be used with the \c QJoysticks system.
  */
-QJoystickPOVEvent SDL_Joysticks::getPOVEvent (const SDL_Event* event)
+QJoystickPOVEvent SDL_Joysticks::getPOVEvent (const SDL_Event* sdl_event)
 {
     QJoystickPOVEvent event;
-    event.pov      = event->jhat.hat;
-    event.joystick = getJoystick (event->jdevice.which);
+    event.pov      = sdl_event->jhat.hat;
+    event.joystick = getJoystick (sdl_event->jdevice.which);
 
-    switch (event->jhat.value) {
+    switch (sdl_event->jhat.value) {
     case SDL_HAT_RIGHTUP:
         event.angle = 45;
         break;
@@ -269,7 +270,7 @@ QJoystickPOVEvent SDL_Joysticks::getPOVEvent (const SDL_Event* event)
  * Reads the contents of the given \a event and constructs a new
  * \c QJoystickAxisEvent to be used with the \c QJoysticks system.
  */
-QJoystickAxisEvent SDL_Joysticks::getAxisEvent (const SDL_Event* event)
+QJoystickAxisEvent SDL_Joysticks::getAxisEvent (const SDL_Event* sdl_event)
 {
     QJoystickAxisEvent event;
 
@@ -284,13 +285,13 @@ QJoystickAxisEvent SDL_Joysticks::getAxisEvent (const SDL_Event* event)
  * Reads the contents of the given \a event and constructs a new
  * \c QJoystickButtonEvent to be used with the \c QJoysticks system.
  */
-QJoystickButtonEvent SDL_Joysticks::getButtonEvent (const SDL_Event* event)
+QJoystickButtonEvent SDL_Joysticks::getButtonEvent (const SDL_Event* sdl_event)
 {
     QJoystickButtonEvent event;
 
-    event.button = event->jbutton.button;
-    event.pressed = event->jbutton.state == SDL_PRESSED;
-    event.joystick = getJoystick (event->jdevice.which);
+    event.button = sdl_event->jbutton.button;
+    event.pressed = sdl_event->jbutton.state == SDL_PRESSED;
+    event.joystick = getJoystick (sdl_event->jdevice.which);
 
     return event;
 }

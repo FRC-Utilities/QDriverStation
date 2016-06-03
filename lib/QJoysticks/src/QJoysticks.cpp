@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 WinT 3794 <http://wint3794.org>
+ * Copyright (c) 2015-2016 Alex Spataru <alex_spataru@outlook.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  */
 
 #include <QDebug>
-
 #include <QJoysticks.h>
 #include <QJoysticks/SDL_Joysticks.h>
 #include <QJoysticks/VirtualJoystick.h>
