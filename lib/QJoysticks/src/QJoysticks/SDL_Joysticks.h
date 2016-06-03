@@ -36,13 +36,13 @@ public:
     QList<QJoystickDevice*> joysticks();
 
 public slots:
-    void rumble (QJoystickRumble request);
+    void rumble (const QJoystickRumble& request);
 
 signals:
     void countChanged();
-    void POVEvent (QJoystickPOVEvent event);
-    void axisEvent (QJoystickAxisEvent event);
-    void buttonEvent (QJoystickButtonEvent event);
+    void POVEvent (const QJoystickPOVEvent& event);
+    void axisEvent (const QJoystickAxisEvent& event);
+    void buttonEvent (const QJoystickButtonEvent& event);
 
 private slots:
     void update();

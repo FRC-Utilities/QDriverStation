@@ -46,9 +46,9 @@ public slots:
 
 signals:
     void enabledChanged();
-    void povEvent (QJoystickPOVEvent event);
-    void axisEvent (QJoystickAxisEvent event);
-    void buttonEvent (QJoystickButtonEvent event);
+    void povEvent (const QJoystickPOVEvent& event);
+    void axisEvent (const QJoystickAxisEvent& event);
+    void buttonEvent (const QJoystickButtonEvent& event);
 
 private slots:
     void readAxes (int key, bool pressed);

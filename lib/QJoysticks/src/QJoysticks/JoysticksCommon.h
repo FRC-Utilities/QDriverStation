@@ -25,67 +25,36 @@
 
 #include <QString>
 
-///
-/// Represents an input device with:
-///  - Its USB/device ID
-///  - The Display name
-///  - The number of axes, buttons and POVs
-///
 struct QJoystickDevice {
-    int             id;
-    QString         name;
-    int             numAxes;
-    int             numPOVs;
-    int             numButtons;
-    bool            blacklisted;
+    int     id;
+    QString name;
+    int     numAxes;
+    int     numPOVs;
+    int     numButtons;
+    bool    blacklisted;
 };
 
-///
-/// Represents a joystick rumble event that is triggered by
-/// the application itself.
-///
 struct QJoystickRumble {
-    bool             leftRumble;
-    bool             rightRumble;
+    bool leftRumble;
+    bool rightRumble;
     QJoystickDevice* joystick;
 };
 
-///
-/// Represents an axis event that can be triggered by a josytick.
-/// This structure contains:
-///   - A pointer to the joystick that caused the event
-///   - The axis number/ID
-///   - The axis value
-///
-struct QJoystickAxisEvent {
-    int              axis;
-    float            value;
-    QJoystickDevice* joystick;
-};
-
-///
-/// Represents an button event that can be triggered by a josytick.
-/// This structure contains:
-///   - A pointer to the joystick that caused the event
-///   - The button number/ID
-///   - The button state
-///
-struct QJoystickButtonEvent {
-    int              button;
-    bool             pressed;
-    QJoystickDevice* joystick;
-};
-
-///
-/// Represents an POV event that can be triggered by a josytick.
-/// This structure contains:
-///   - A pointer to the joystick that caused the event
-///   - The POV number/ID
-///   - The POV angle
-///
 struct QJoystickPOVEvent {
-    int              pov;
-    int              angle;
+    int pov;
+    int angle;
+    QJoystickDevice* joystick;
+};
+
+struct QJoystickAxisEvent {
+    int axis;
+    float value;
+    QJoystickDevice* joystick;
+};
+
+struct QJoystickButtonEvent {
+    int button;
+    bool pressed;
     QJoystickDevice* joystick;
 };
 

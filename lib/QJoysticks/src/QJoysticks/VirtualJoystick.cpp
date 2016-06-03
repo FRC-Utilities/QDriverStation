@@ -22,10 +22,6 @@
 
 #include <QJoysticks/VirtualJoystick.h>
 
-//==============================================================================
-// VirtualJoystick::VirtualJoystick
-//==============================================================================
-
 VirtualJoystick::VirtualJoystick()
 {
     m_axisRange = 1;
@@ -40,64 +36,36 @@ VirtualJoystick::VirtualJoystick()
     qApp->installEventFilter (this);
 }
 
-//==============================================================================
-// VirtualJoystick::axisRange
-//==============================================================================
-
 float VirtualJoystick::axisRange() const
 {
     return m_axisRange;
 }
-
-//==============================================================================
-// VirtualJoystick::joystickEnabled
-//==============================================================================
 
 bool VirtualJoystick::joystickEnabled() const
 {
     return m_joystickEnabled;
 }
 
-//==============================================================================
-// VirtualJoystick::joystick
-//==============================================================================
-
 QJoystickDevice* VirtualJoystick::joystick()
 {
     return &m_joystick;
 }
-
-//==============================================================================
-// VirtualJoystick::setJoystickID
-//==============================================================================
 
 void VirtualJoystick::setJoystickID (int id)
 {
     m_joystick.id = id;
 }
 
-//==============================================================================
-// VirtualJoystick::setAxisRange
-//==============================================================================
-
 void VirtualJoystick::setAxisRange (float range)
 {
     m_axisRange = range;
 }
-
-//==============================================================================
-// VirtualJoystick::setJoystickEnabled
-//==============================================================================
 
 void VirtualJoystick::setJoystickEnabled (bool enabled)
 {
     m_joystickEnabled = enabled;
     emit enabledChanged();
 }
-
-//==============================================================================
-// VirtualJoystick::readAxes
-//==============================================================================
 
 void VirtualJoystick::readAxes (int key, bool pressed)
 {
@@ -162,10 +130,6 @@ void VirtualJoystick::readAxes (int key, bool pressed)
     }
 }
 
-//==============================================================================
-// VirtualJoystick::readPOV
-//==============================================================================
-
 void VirtualJoystick::readPOVs (int key, bool pressed)
 {
     int angle = 0;
@@ -191,10 +155,6 @@ void VirtualJoystick::readPOVs (int key, bool pressed)
         emit povEvent (event);
     }
 }
-
-//==============================================================================
-// VirtualJoystick::readButtons
-//==============================================================================
 
 void VirtualJoystick::readButtons (int key, bool pressed)
 {
@@ -231,10 +191,6 @@ void VirtualJoystick::readButtons (int key, bool pressed)
     }
 }
 
-//==============================================================================
-// VirtualJoystick::processKeyEvent
-//==============================================================================
-
 void VirtualJoystick::processKeyEvent (QKeyEvent* event, bool pressed)
 {
     if (joystickEnabled()) {
@@ -243,10 +199,6 @@ void VirtualJoystick::processKeyEvent (QKeyEvent* event, bool pressed)
         readButtons (event->key(), pressed);
     }
 }
-
-//==============================================================================
-// VirtualJoystick::eventFilter
-//==============================================================================
 
 bool VirtualJoystick::eventFilter (QObject* object, QEvent* event)
 {

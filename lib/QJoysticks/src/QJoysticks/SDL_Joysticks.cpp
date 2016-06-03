@@ -24,9 +24,6 @@
 #include <QTimer>
 #include <QJoysticks/SDL_Joysticks.h>
 
-//==============================================================================
-// Joystick mappings stuff
-//==============================================================================
 
 static QString GENERIC_MAPPINGS;
 
@@ -37,10 +34,6 @@ static QString GENERIC_MAPPINGS;
 #elif defined Q_OS_LINUX
 #define GENERIC_MAPPINGS_PATH ":/QJoysticks/SDL/GenericMappings/Linux.txt"
 #endif
-
-//==============================================================================
-// SDL_Joysticks::SDL_Joysticks
-//==============================================================================
 
 SDL_Joysticks::SDL_Joysticks()
 {
@@ -66,10 +59,6 @@ SDL_Joysticks::SDL_Joysticks()
     QTimer::singleShot (1500, Qt::PreciseTimer, this, SLOT (update()));
 }
 
-//==============================================================================
-// SDL_Joysticks::joysticks
-//==============================================================================
-
 QList<QJoystickDevice*> SDL_Joysticks::joysticks()
 {
     QList<QJoystickDevice*> list;
@@ -80,11 +69,7 @@ QList<QJoystickDevice*> SDL_Joysticks::joysticks()
     return list;
 }
 
-//==============================================================================
-// SDL_Joysticks::rumble
-//==============================================================================
-
-void SDL_Joysticks::rumble (QJoystickRumble request)
+void SDL_Joysticks::rumble (const QJoystickRumble& request)
 {
     SDL_Haptic* haptic = SDL_HapticOpen (request.joystick->id);
 
@@ -93,10 +78,6 @@ void SDL_Joysticks::rumble (QJoystickRumble request)
         SDL_HapticRumblePlay (haptic, 1, 1000);
     }
 }
-
-//==============================================================================
-// SDL_Joysticks::update
-//==============================================================================
 
 void SDL_Joysticks::update()
 {
@@ -130,10 +111,6 @@ void SDL_Joysticks::update()
     QTimer::singleShot (20, this, SLOT (update()));
 }
 
-//==============================================================================
-// SDL_Joysticks::configureJoystick
-//==============================================================================
-
 void SDL_Joysticks::configureJoystick (const SDL_Event* event)
 {
     if (!SDL_IsGameController (event->cdevice.which)) {
@@ -159,10 +136,6 @@ void SDL_Joysticks::configureJoystick (const SDL_Event* event)
     emit countChanged();
 }
 
-//==============================================================================
-// SDL_Joysticks::getDynamicID
-//==============================================================================
-
 int SDL_Joysticks::getDynamicID (int id)
 {
     id = abs (m_tracker - (id + 1));
@@ -172,10 +145,6 @@ int SDL_Joysticks::getDynamicID (int id)
 
     return id;
 }
-
-//==============================================================================
-// SDL_Joysticks::getJoystick
-//==============================================================================
 
 QJoystickDevice* SDL_Joysticks::getJoystick (int id)
 {
@@ -194,10 +163,6 @@ QJoystickDevice* SDL_Joysticks::getJoystick (int id)
 
     return joystick;
 }
-
-//==============================================================================
-// SDL_Joysticks::getPOVEvent
-//==============================================================================
 
 QJoystickPOVEvent SDL_Joysticks::getPOVEvent (const SDL_Event* sdl_event)
 {
@@ -238,10 +203,6 @@ QJoystickPOVEvent SDL_Joysticks::getPOVEvent (const SDL_Event* sdl_event)
     return event;
 }
 
-//==============================================================================
-// SDL_Joysticks::getAxisEvent
-//==============================================================================
-
 QJoystickAxisEvent SDL_Joysticks::getAxisEvent (const SDL_Event* sdl_event)
 {
     QJoystickAxisEvent event;
@@ -252,10 +213,6 @@ QJoystickAxisEvent SDL_Joysticks::getAxisEvent (const SDL_Event* sdl_event)
 
     return event;
 }
-
-//==============================================================================
-// SDL_Joysticks::getButtonEvent
-//==============================================================================
 
 QJoystickButtonEvent SDL_Joysticks::getButtonEvent (const SDL_Event* sdl_event)
 {
