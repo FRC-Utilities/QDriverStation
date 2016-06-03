@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+#include <math.h>
 #include <QJoysticks/VirtualJoystick.h>
 
 /**
@@ -100,7 +101,7 @@ void VirtualJoystick::setJoystickID (int id)
  */
 void VirtualJoystick::setAxisRange (float range)
 {
-    range = abs (range);
+    range = fabs (range);
 
     if (range > 1)
         range = 1;

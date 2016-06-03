@@ -80,7 +80,7 @@ function scale (input) {
 }
 
 //
-// A very fast beep, some speakers may have trouble reproducing this
+// A quick beep, some speakers may have trouble reproducing this
 //
 function fastBeep() {
     beep (220, 50)

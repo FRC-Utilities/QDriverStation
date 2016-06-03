@@ -85,15 +85,13 @@ ApplicationWindow {
     //
     // Animations, we all like 'em!
     //
-    Behavior on x { NumberAnimation{} }
-    Behavior on y { NumberAnimation{} }
+    Behavior on x { NumberAnimation { duration: Globals.slowAnimation } }
+    Behavior on y { NumberAnimation { duration: Globals.slowAnimation } }
 
     //
     // Define the size of the window
     //
-    minimumWidth: Globals.scale (1185)
-    minimumHeight: Globals.scale (210)
-    maximumHeight: Globals.scale (210)
+    maximumHeight: minimumHeight
     onDockedChanged: updateWindowMode()
 
     //
@@ -172,7 +170,7 @@ ApplicationWindow {
         RightTab {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.minimumWidth: Globals.scale (420)
+            Layout.minimumWidth: Globals.scale (520)
         }
     }
 

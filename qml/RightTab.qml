@@ -27,7 +27,7 @@ import "widgets"
 import "globals.js" as Globals
 
 RowLayout {
-    spacing: Globals.spacing
+    spacing: Globals.spacing    
 
     //
     // Contains the actual tab controls/buttons
@@ -127,6 +127,7 @@ RowLayout {
         Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.minimumHeight: Globals.spacing
         }
 
         Button {

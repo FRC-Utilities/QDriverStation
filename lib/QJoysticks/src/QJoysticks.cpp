@@ -171,6 +171,20 @@ bool QJoysticks::isBlacklisted (const int index)
 }
 
 /**
+ * Returns \c true if the joystick at the given \a index is valid, otherwise,
+ * the function returns \c false and warns the user through the console.
+ */
+bool QJoysticks::joystickExists (const int index)
+{
+    if ((index >= 0) && (count() > index))
+        return true;
+
+    qWarning() << "Hey shithead! You requested an invalid joystick:" << index;
+    return false;
+}
+
+
+/**
  * Returns a list with the names of all registered joystick.
  *
  * \note This list also includes the blacklisted joysticks
@@ -360,17 +374,4 @@ void QJoysticks::onButtonEvent (const QJoystickButtonEvent& event)
 {
     if (!isBlacklisted (event.joystick->id))
         emit buttonChanged (event.joystick->id, event.button, event.pressed);
-}
-
-/**
- * Returns \c true if the joystick at the given \a index is valid, otherwise,
- * the function returns \c false and warns the user through the console.
- */
-bool QJoysticks::joystickExists (const int index)
-{
-    if ((index >= 0) && (count() > index))
-        return true;
-
-    qWarning() << "Hey shithead! You requested an invalid joystick:" << index;
-    return false;
 }

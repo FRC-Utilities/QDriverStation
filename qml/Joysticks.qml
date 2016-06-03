@@ -275,7 +275,7 @@ Item {
                             target: QJoysticks
                             onAxisChanged: {
                                 if (joysticks.currentJoystick === js
-                                    && index === axis)
+                                        && index === axis)
                                     progressbar.value = (value + 1) * 100
                             }
                         }

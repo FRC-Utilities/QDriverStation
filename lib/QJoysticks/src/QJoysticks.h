@@ -43,6 +43,7 @@ public:
     Q_INVOKABLE int getNumPOVs (const int index);
     Q_INVOKABLE int getNumButtons (const int index);
     Q_INVOKABLE bool isBlacklisted (const int index);
+    Q_INVOKABLE bool joystickExists (const int index);
 
     Q_INVOKABLE QStringList deviceNames() const;
     QList<QJoystickDevice*> inputDevices() const;
@@ -75,9 +76,6 @@ private slots:
     void onPOVEvent (const QJoystickPOVEvent& event);
     void onAxisEvent (const QJoystickAxisEvent& event);
     void onButtonEvent (const QJoystickButtonEvent& event);
-
-private:
-    bool joystickExists (const int index);
 
 private:
     SDL_Joysticks* m_sdlJoysticks;
