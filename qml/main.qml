@@ -38,6 +38,12 @@ ApplicationWindow {
     property bool docked: false
 
     //
+    // Holds the old values of x and y
+    //
+    property int oldX: 100
+    property int oldY: 100
+
+    //
     // Set window flags
     //
     flags: Qt.Window |
@@ -73,6 +79,9 @@ ApplicationWindow {
         } else {
             showNormal()
             width = minimumWidth
+
+            x = oldX
+            y = oldY
         }
     }
 
@@ -81,6 +90,13 @@ ApplicationWindow {
     //
     x: 100
     y: 100
+
+    //
+    // Update custom variables
+    //
+    onDockedChanged: updateWindowMode()
+    onXChanged: oldX = !docked ? x : oldX
+    onYChanged: oldY = !docked ? y : oldY
 
     //
     // Animations, we all like 'em!
@@ -92,7 +108,6 @@ ApplicationWindow {
     // Define the size of the window
     //
     maximumHeight: minimumHeight
-    onDockedChanged: updateWindowMode()
 
     //
     // Misc. properties
@@ -133,6 +148,8 @@ ApplicationWindow {
         category: "MainWindow"
         property alias x: window.x
         property alias y: window.y
+        property alias oldX: window.oldX
+        property alias oldY: window.oldY
         property alias docked: window.docked
     }
 
