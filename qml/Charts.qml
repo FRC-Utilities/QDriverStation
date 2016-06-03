@@ -29,29 +29,50 @@ import "widgets"
 import "globals.js" as Globals
 
 Item {
+    //
+    // Changes the horizontal refresh rate of the charts
+    //
     function updateGraphTimes (seconds) {
         cpu.setSpeed (seconds)
         voltage.setSpeed (seconds)
     }
 
+    //
+    // Make sure that the "1 min" button is checked on start-up
+    //
     Component.onCompleted: oneMin.checked = true
 
+    //
+    // Displays all the widgets in a vertical layout
+    //
     ColumnLayout {
         anchors.fill: parent
         spacing: Globals.spacing
 
+        //
+        // Show the refresh speed buttons horizontally
+        //
         RowLayout {
             Layout.fillHeight: false
             spacing: Globals.scale (-1)
 
+            //
+            // CPU usage label
+            //
             Label {
                 text: qsTr ("CPU Usage") + ":"
             }
 
+            //
+            // Horizontal spacer
+            //
             Item {
                 Layout.fillWidth: true
             }
 
+            //
+            // "12 s" button
+            //
             Button {
                 id: twelveSecs
                 checkable: true
@@ -72,6 +93,9 @@ Item {
                 }
             }
 
+            //
+            // "1 m" button
+            //
             Button {
                 id: oneMin
                 checkable: true
@@ -92,6 +116,9 @@ Item {
                 }
             }
 
+            //
+            // "5 m" button
+            //
             Button {
                 id: fiveMin
                 checkable: true
@@ -113,16 +140,25 @@ Item {
             }
         }
 
+        //
+        // CPU Usage chart
+        //
         CpuUsageGraph {
             id: cpu
             Layout.fillWidth: true
             Layout.fillHeight: true
         }
 
+        //
+        // Robot voltage label
+        //
         Label {
             text: qsTr ("Robot Voltage") + ":"
         }
 
+        //
+        // Robot voltage chart
+        //
         VoltageGraph {
             id: voltage
             Layout.fillWidth: true

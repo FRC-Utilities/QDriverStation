@@ -24,24 +24,52 @@ import QtQuick 2.0
 import "../globals.js" as Globals
 
 Rectangle {
+    //
+    // Holds the relative value of the progressbar
+    //
     property int value: 0
+
+    //
+    // The values hold the 'range' of the progressbar
+    //
     property int minimumValue: 0
     property int maximumValue: 100
+
+    //
+    // Default caption will display current relative value of progressbar
+    //
     property string text: value + "%"
+
+    //
+    // Define the colors of the progressbar
+    //
     property string barColor: Globals.Colors.HighlightColor
     property string textColor: Globals.Colors.TextAreaForeground
 
+    //
+    // Set height of widget and width of border
+    //
     height: Globals.scale (18)
     border.width: Globals.scale (1)
+
+    //
+    // Set background color and border color
+    //
     color: Globals.Colors.WindowBackground
     border.color: Globals.Colors.WidgetBorder
 
+    //
+    // Animate the progrssbar when it changes its value
+    //
     Behavior on value {
         NumberAnimation {
             duration: Globals.slowAnimation
         }
     }
 
+    //
+    // The 'foreground' part of the progress bar that displays its value
+    //
     Rectangle {
         y: 0
         x: 0
@@ -53,6 +81,9 @@ Rectangle {
         width: parent.width * ((minimumValue + value) / maximumValue)
     }
 
+    //
+    // The text/caption of the progressbar
+    //
     Label {
         text: parent.text
         anchors.centerIn: parent

@@ -85,6 +85,9 @@ Item {
         }
     }
 
+    //
+    // The text of the LED/checkbox
+    //
     Label {
         id: label
         text: parent.text
@@ -97,6 +100,9 @@ Item {
         }
     }
 
+    //
+    // Inverts the checked state of the widget when clicked
+    //
     MouseArea {
         anchors.fill: parent
         enabled: parent.enabled

@@ -64,6 +64,9 @@ ApplicationWindow {
     // The actual docking procedures
     //
     function updateWindowMode() {
+        if (!visible)
+            return
+
         if (docked) {
             showMaximized()
             y = Screen.desktopAvailableHeight - height
@@ -100,20 +103,20 @@ ApplicationWindow {
     title: appDspName + " - " + qsTr ("Version") + " " + appVersion
 
     //
-    // Show the window and initialize the DS engine when the application starts
+    // Initialize the DS engine when the application starts
     //
-    Component.onCompleted: {
-        show()
-        updateWindowMode()
-
-        DriverStation.init()
-    }
+    Component.onCompleted: DriverStation.init()
 
     Connections {
         target: DriverStation
         onInitialized: {
             Globals.beep (440, 100)
             Globals.beep (220, 100)
+
+            if (!visible) {
+                visible = true
+                updateWindowMode()
+            }
         }
     }
 

@@ -98,6 +98,7 @@ Window {
 
             Button {
                 text: qsTr ("OK")
+                anchors.verticalCenter: parent.verticalCenter
                 onClicked: {
                     close()
                     firstLaunch = false

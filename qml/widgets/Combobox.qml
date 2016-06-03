@@ -7,6 +7,9 @@ import "../globals.js" as Globals
 ComboBox {
     id: combo
 
+    //
+    // We can do a combo-box from scratch, but I'm lazy
+    //
     style: ComboBoxStyle {
         background: Rectangle {
             border.width: Globals.scale (1)

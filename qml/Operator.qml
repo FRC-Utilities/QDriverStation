@@ -410,12 +410,10 @@ RowLayout {
                 onClicked: {
                     normal.checked = true
                     docked.checked = false
-                }
-
-                onCheckedChanged: {
-                    docked.checked = !checked
                     windowModeChanged (docked.checked)
                 }
+
+                onCheckedChanged: docked.checked = !checked
             }
 
             //
@@ -433,12 +431,10 @@ RowLayout {
                 onClicked: {
                     docked.checked = true
                     normal.checked = false
-                }
-
-                onCheckedChanged: {
-                    normal.checked = !checked
                     windowModeChanged (docked.checked)
                 }
+
+                onCheckedChanged: normal.checked = !checked
             }
         }
 

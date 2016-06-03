@@ -88,13 +88,14 @@ Rectangle {
         }
     }
 
+    //
+    // Animate when changing size
+    //
     Behavior on width {
         NumberAnimation {
             duration: Globals.slowAnimation
         }
-    }
-
-    Behavior on height {
+    } Behavior on height {
         NumberAnimation {
             duration: Globals.slowAnimation
         }

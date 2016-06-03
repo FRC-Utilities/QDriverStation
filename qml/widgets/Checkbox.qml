@@ -86,6 +86,9 @@ Item {
         }
     }
 
+    //
+    // Inverts the check-state of the widget when clicked
+    //
     MouseArea {
         anchors.fill: parent
         enabled: parent.enabled

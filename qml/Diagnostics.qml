@@ -29,6 +29,9 @@ import "globals.js" as Globals
 RowLayout {
     spacing: Globals.spacing
 
+    //
+    // Update widgets according to DS events
+    //
     Connections {
         target: DriverStation
         onLibVersionChanged: lib.text = version
