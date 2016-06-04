@@ -24,10 +24,10 @@
 !define UNIXNAME                     "qdriverstation"
 !define COMPANYNAME                  "WinT 3794"
 !define DESCRIPTION                  "Open source alternative to the FRC DriverStation"
-!define VERSIONMAJOR                 0
-!define VERSIONMINOR                 1
-!define VERSIONBUILD                 5
-!define ESTIMATED_SIZE               49000
+!define VERSIONMAJOR                 16
+!define VERSIONMINOR                 5
+!define VERSIONBUILD                 0
+!define ESTIMATED_SIZE               64000
 !define MUI_ABORTWARNING
 !define INSTALL_DIR                  "$PROGRAMFILES\${APPNAME}"
 !define MUI_FINISHPAGE_RUN
@@ -73,8 +73,8 @@ Section "${APPNAME} (required)" SecDummy
   SetOutPath "${INSTALL_DIR}"
   File /r "${APPNAME}\*"
   DeleteRegKey HKCU "Software\${COMPANYNAME}\${APPNAME}"
-  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" 
-  
+  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}"
+
   WriteUninstaller "${INSTALL_DIR}\uninstall.exe"
   WriteRegStr   HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "DisplayName"     "${APPNAME}"
   WriteRegStr   HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "UninstallString" "${INSTALL_DIR}\uninstall.exe"
@@ -87,7 +87,7 @@ Section "${APPNAME} (required)" SecDummy
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "NoModify"         1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "NoRepair"         1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "EstimatedSize"    ${ESTIMATED_SIZE}
-  
+
 SectionEnd
 
 Section "Start Menu Shortcuts"
@@ -110,5 +110,5 @@ Section "Uninstall"
   RMDir /r "${INSTALL_DIR}"
   RMDir /r "$SMPROGRAMS\${APPNAME}.lnk"
   DeleteRegKey HKCU "Software\${COMPANYNAME}\${APPNAME}"
-  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" 
+  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}"
 SectionEnd

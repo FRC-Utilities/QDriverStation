@@ -47,7 +47,7 @@
 void DownloadXboxDrivers()
 {
     QSettings settings (APP_COMPANY, APP_DSPNAME);
-
+    
     if (settings.value ("FirstLaunch", true).toBool()) {
         QMessageBox box;
         box.setIcon (QMessageBox::Question);
