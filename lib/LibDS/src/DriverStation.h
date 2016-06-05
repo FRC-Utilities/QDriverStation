@@ -23,6 +23,13 @@ class DriverStation : public DS_Base
     Q_ENUMS (ProtocolType)
     Q_ENUMS (TeamStation)
 
+signals:
+    void resetted();
+    void initialized();
+    void protocolChanged();
+    void newMessage (QString message);
+    void joystickCountChanged (int count);
+
 public:
     static DriverStation* getInstance();
 
@@ -104,10 +111,7 @@ public:
     Q_INVOKABLE QStringList protocols() const;
     Q_INVOKABLE QStringList teamStations() const;
 
-
-    Q_INVOKABLE bool registerJoystick (const int& axes,
-                                       const int& buttons,
-                                       const int& povs);
+    Q_INVOKABLE bool registerJoystick (int axes, int buttons, int povs);
 
 public slots:
     void init();
@@ -120,23 +124,23 @@ public slots:
     void switchToTestMode();
     void switchToAutonomous();
     void switchToTeleoperated();
-    void setTeam (const int& team);
-    void removeJoystick (const int& id);
-    void setEnabled (const bool& enabled);
+    void setTeam (int team);
+    void removeJoystick (int id);
+    void setEnabled (bool enabled);
     void setProtocol (Protocol* protocol);
-    void setTeamStation (const int& station);
-    void setProtocolType (const int& protocol);
-    void setAlliance (const Alliance& alliance);
-    void setPosition (const Position& position);
-    void setControlMode (const ControlMode& mode);
-    void setParallelSocketCount (const int& count);
+    void setTeamStation (int station);
+    void setProtocolType (int protocol);
+    void setAlliance (Alliance alliance);
+    void setPosition (Position position);
+    void setControlMode (ControlMode mode);
+    void setParallelSocketCount (int count);
+    void updatePOV (int id, int pov, int angle);
+    void setEnabled (EnableStatus statusChanged);
+    void updateAxis (int id, int axis, float value);
+    void updateButton (int id, int button, bool state);
     void setCustomRobotAddress (const QString& address);
     void setCustomRadioAddress (const QString& address);
-    void setEnabled (const EnableStatus& statusChanged);
-    void setOperationStatus (const OperationStatus& statusChanged);
-    void updatePOV (const int& id, const int& pov, const int& angle);
-    void updateAxis (const int& id, const int& axis, const float& value);
-    void updateButton (const int& id, const int& button, const bool& pressed);
+    void setOperationStatus (OperationStatus statusChanged);
 
 private slots:
     void stop();
@@ -156,13 +160,6 @@ private slots:
 protected:
     DriverStation();
     ~DriverStation();
-
-signals:
-    void resetted();
-    void initialized();
-    void protocolChanged();
-    void newMessage (QString message);
-    void joystickCountChanged (int count);
 
 private:
     bool m_init;

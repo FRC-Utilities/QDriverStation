@@ -38,7 +38,7 @@
 // Implementation hacks
 //==============================================================================
 
-static QList<QString> URLS;
+static QList<QString>  URLS;
 static QList<Updater*> UPDATERS;
 
 //==============================================================================
@@ -203,7 +203,7 @@ void QSimpleUpdater::setModuleVersion (const QString& url,
 //==============================================================================
 
 void QSimpleUpdater::setNotifyOnUpdate (const QString& url,
-                                        const bool& notify)
+                                        bool notify)
 {
     getUpdater (url)->setNotifyOnUpdate (notify);
 }
@@ -213,7 +213,7 @@ void QSimpleUpdater::setNotifyOnUpdate (const QString& url,
 //==============================================================================
 
 void QSimpleUpdater::setNotifyOnFinish (const QString& url,
-                                        const bool& notify)
+                                        bool notify)
 {
     getUpdater (url)->setNotifyOnFinish (notify);
 }
@@ -223,7 +223,7 @@ void QSimpleUpdater::setNotifyOnFinish (const QString& url,
 //==============================================================================
 
 void QSimpleUpdater::setDownloaderEnabled (const QString& url,
-                                           const bool& enabled)
+                                           bool enabled)
 {
     getUpdater (url)->setDownloaderEnabled (enabled);
 }
@@ -233,7 +233,7 @@ void QSimpleUpdater::setDownloaderEnabled (const QString& url,
 //==============================================================================
 
 void QSimpleUpdater::setUseCustomInstallProcedures (const QString& url,
-        const bool& custom)
+        bool custom)
 {
     getUpdater (url)->setUseCustomInstallProcedures (custom);
 }

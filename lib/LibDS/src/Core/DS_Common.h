@@ -24,11 +24,13 @@
  * its numerical output). This can be very helpful for anyone that will end up
  * reading the application logs.
  */
+// *INDENT-OFF*
 #define SMART_ENUM(ENUM) \
     friend Q_DECL_CONSTEXPR const QMetaObject *qt_getEnumMetaObject(ENUM) \
     Q_DECL_NOEXCEPT { return &staticMetaObject; } \
     friend Q_DECL_CONSTEXPR const char *qt_getEnumName(ENUM) \
     Q_DECL_NOEXCEPT { return #ENUM; }
+// *INDENT-ON*
 
 /**
  * Returns the location in where application files (e.g. logs) are stored

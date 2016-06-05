@@ -47,14 +47,14 @@ public slots:
     void setRobotAddress (const QString& ip);
     void setAddressList (const QStringList& list);
 
-    void setFMSInputPort (const int& port);
-    void setFMSOutputPort (const int& port);
-    void setRadioInputPort (const int& port);
-    void setRobotInputPort (const int& port);
-    void setRadioOutputPort (const int& port);
-    void setRobotOutputPort (const int& port);
+    void setFMSInputPort (int port);
+    void setFMSOutputPort (int port);
+    void setRadioInputPort (int port);
+    void setRobotInputPort (int port);
+    void setRadioOutputPort (int port);
+    void setRobotOutputPort (int port);
 
-    void setCustomSocketCount (const int& count);
+    void setCustomSocketCount (int count);
 
     void setFMSSocketType (const DS::SocketType& type);
     void setRadioSocketType (const DS::SocketType& type);

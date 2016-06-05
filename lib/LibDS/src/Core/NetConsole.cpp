@@ -48,7 +48,7 @@ int NetConsole::outputPort() const
  * If the \a port is set to \c 0, then the \c NetConsole will disable the
  * input socket.
  */
-void NetConsole::setInputPort (const int& port)
+void NetConsole::setInputPort (int port)
 {
     qDebug() << "NetConsole input port set to" << port;
 
@@ -67,7 +67,7 @@ void NetConsole::setInputPort (const int& port)
  * If the \a port is set to \c 0, then the \c NetConsole will disable the
  * output socket.
  */
-void NetConsole::setOutputPort (const int& port)
+void NetConsole::setOutputPort (int port)
 {
     m_outputPort = port;
     qDebug() << "NetConsole output port set to" << port;

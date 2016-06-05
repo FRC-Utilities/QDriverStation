@@ -9,9 +9,11 @@
 #include "Sockets.h"
 #include <QNetworkInterface>
 
-#define WRITE_ONLY QIODevice::WriteOnly
-#define MULTICAST_LOOPBACK QAbstractSocket::MulticastLoopbackOption
+// *INDENT-OFF*
+#define WRITE QIODevice::WriteOnly
+#define LBACK QAbstractSocket::MulticastLoopbackOption
 #define FLAGS QAbstractSocket::ShareAddress | QAbstractSocket::ReuseAddressHint
+// *INDENT-ON*
 
 Sockets::Sockets()
 {
@@ -269,7 +271,7 @@ void Sockets::setRadioAddress (const QString& ip)
         m_radioReceiver->bind (ip, radioInputPort(), FLAGS);
 
     if (m_radioSender)
-        m_radioSender->connectToHost (ip, radioInputPort(), WRITE_ONLY);
+        m_radioSender->connectToHost (ip, radioInputPort(), WRITE);
 
     qDebug() << "Radio IP set to" << ip;
 }
@@ -287,7 +289,7 @@ void Sockets::setRobotAddress (const QString& ip)
         m_robotIp = ip;
 
         if (m_robotSender)
-            m_robotSender->connectToHost (ip, robotOutputPort(), WRITE_ONLY);
+            m_robotSender->connectToHost (ip, robotOutputPort(), WRITE);
 
         qDebug() << "Robot IP set to" << ip;
     }
@@ -309,7 +311,7 @@ void Sockets::setAddressList (const QStringList& list)
 /**
  * Changes the \c port in which we receive data from the FMS.
  */
-void Sockets::setFMSInputPort (const int& port)
+void Sockets::setFMSInputPort (int port)
 {
     if (m_fmsInput != port) {
         m_fmsInput = port;
@@ -324,13 +326,13 @@ void Sockets::setFMSInputPort (const int& port)
 /**
  * Changes the \c port in which we send data to the FMS.
  */
-void Sockets::setFMSOutputPort (const int& port)
+void Sockets::setFMSOutputPort (int port)
 {
     if (m_fmsOutput != port) {
         m_fmsOutput = port;
 
         if (m_fmsSender)
-            m_fmsSender->connectToHost (QHostAddress::Any, port, WRITE_ONLY);
+            m_fmsSender->connectToHost (QHostAddress::Any, port, WRITE);
 
         qDebug() << "FMS output port set to" << port;
     }
@@ -339,7 +341,7 @@ void Sockets::setFMSOutputPort (const int& port)
 /**
  * Changes the \c port in which we receive data from the radio.
  */
-void Sockets::setRadioInputPort (const int& port)
+void Sockets::setRadioInputPort (int port)
 {
     if (m_radioInput != port) {
         m_radioInput = port;
@@ -354,7 +356,7 @@ void Sockets::setRadioInputPort (const int& port)
 /**
  * Changes the \c port in which we receive data from the robot.
  */
-void Sockets::setRobotInputPort (const int& port)
+void Sockets::setRobotInputPort (int port)
 {
     if (m_robotInput != port) {
         m_robotInput = port;
@@ -365,13 +367,13 @@ void Sockets::setRobotInputPort (const int& port)
 /**
  * Changes the \c port in which we send data to the radio.
  */
-void Sockets::setRadioOutputPort (const int& port)
+void Sockets::setRadioOutputPort (int port)
 {
     if (m_radioOutput != port) {
         m_radioOutput = port;
 
         if (m_radioSender)
-            m_radioSender->connectToHost (radioAddress(), port, WRITE_ONLY);
+            m_radioSender->connectToHost (radioAddress(), port, WRITE);
 
         qDebug() << "Radio output port set to" << port;
     }
@@ -380,13 +382,13 @@ void Sockets::setRadioOutputPort (const int& port)
 /**
  * Changes the \c port in which we send data to the robot.
  */
-void Sockets::setRobotOutputPort (const int& port)
+void Sockets::setRobotOutputPort (int port)
 {
     if (m_robotOutput != port) {
         m_robotOutput = port;
 
         if (m_robotSender)
-            m_robotSender->connectToHost (robotAddress(), port, WRITE_ONLY);
+            m_robotSender->connectToHost (robotAddress(), port, WRITE);
 
         qDebug() << "Robot output port set to" << port;
     }
@@ -399,7 +401,7 @@ void Sockets::setRobotOutputPort (const int& port)
  * If the \c count is set to 0, then this function will calculate the best
  * socket count based on the size of the \c robotIpList()
  */
-void Sockets::setCustomSocketCount (const int& count)
+void Sockets::setCustomSocketCount (int count)
 {
     if (m_socketCount != count) {
         m_socketCount = count;
@@ -424,7 +426,7 @@ void Sockets::setFMSSocketType (const DS::SocketType& type)
         m_fmsSender = new ConfigurableSocket (type);
         m_fmsReceiver = new ConfigurableSocket (type);
 
-        m_fmsReceiver->socket()->setSocketOption (MULTICAST_LOOPBACK, 0);
+        m_fmsReceiver->socket()->setSocketOption (LBACK, 0);
 
         qDebug() << "FMS socket type set to" << type;
     }
@@ -445,7 +447,7 @@ void Sockets::setRadioSocketType (const DS::SocketType& type)
         m_radioSender = new ConfigurableSocket (type);
         m_radioReceiver = new ConfigurableSocket (type);
 
-        m_radioReceiver->socket()->setSocketOption (MULTICAST_LOOPBACK, 0);
+        m_radioReceiver->socket()->setSocketOption (LBACK, 0);
 
         qDebug() << "Radio socket type set to" << type;
     }
@@ -544,7 +546,7 @@ void Sockets::generateSocketPairs()
         connect (receiver, SIGNAL (readyRead()),
                  this,       SLOT (readRobotSocket()));
 
-        receiver->socket()->setSocketOption (MULTICAST_LOOPBACK, 0);
+        receiver->socket()->setSocketOption (LBACK, 0);
     }
 }
 

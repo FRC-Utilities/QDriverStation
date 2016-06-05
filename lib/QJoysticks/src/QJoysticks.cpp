@@ -123,7 +123,7 @@ int QJoysticks::nonBlacklistedCount()
  *
  * \note If the joystick does not exist, this function will return \c 0
  */
-int QJoysticks::getNumAxes (const int index)
+int QJoysticks::getNumAxes (int index)
 {
     if (joystickExists (index))
         return getInputDevice (index)->numAxes;
@@ -136,7 +136,7 @@ int QJoysticks::getNumAxes (const int index)
  *
  * \note If the joystick does not exist, this function will return \c 0
  */
-int QJoysticks::getNumPOVs (const int index)
+int QJoysticks::getNumPOVs (int index)
 {
     if (joystickExists (index))
         return getInputDevice (index)->numPOVs;
@@ -149,7 +149,7 @@ int QJoysticks::getNumPOVs (const int index)
  *
  * \note If the joystick does not exist, this function will return \c 0
  */
-int QJoysticks::getNumButtons (const int index)
+int QJoysticks::getNumButtons (int index)
 {
     if (joystickExists (index))
         return getInputDevice (index)->numButtons;
@@ -162,7 +162,7 @@ int QJoysticks::getNumButtons (const int index)
  *
  * \note If the joystick does not exist, this function will also return \c true
  */
-bool QJoysticks::isBlacklisted (const int index)
+bool QJoysticks::isBlacklisted (int index)
 {
     if (joystickExists (index))
         return inputDevices().at (index)->blacklisted;
@@ -174,7 +174,7 @@ bool QJoysticks::isBlacklisted (const int index)
  * Returns \c true if the joystick at the given \a index is valid, otherwise,
  * the function returns \c false and warns the user through the console.
  */
-bool QJoysticks::joystickExists (const int index)
+bool QJoysticks::joystickExists (int index)
 {
     if ((index >= 0) && (count() > index))
         return true;
@@ -239,7 +239,7 @@ VirtualJoystick* QJoysticks::virtualJoystick() const
  * \note If the joystick does not exist, the program will not crash, however,
  *       it will warn you through the console output
  */
-QJoystickDevice* QJoysticks::getInputDevice (const int index)
+QJoystickDevice* QJoysticks::getInputDevice (int index)
 {
     if (joystickExists (index))
         return inputDevices().at (index);
@@ -262,7 +262,7 @@ QJoystickDevice* QJoysticks::getInputDevice (const int index)
  * \note The joystick name will be changed based on the value of \a blacklisted
  * \note This function does not have effect if the given joystick does not exist
  */
-void QJoysticks::setBlacklisted (const int index, const bool blacklisted)
+void QJoysticks::setBlacklisted (int index, bool blacklisted)
 {
     if (joystickExists (index)) {
         QString name = inputDevices().at (index)->name;
@@ -294,7 +294,7 @@ void QJoysticks::setBlacklisted (const int index, const bool blacklisted)
  * Take into account that maximum axis values supported by the \c QJoysticks
  * system is from \c -1 to \c 1.
  */
-void QJoysticks::setVirtualJoystickRange (const float range)
+void QJoysticks::setVirtualJoystickRange (float range)
 {
     virtualJoystick()->setAxisRange (range);
 }
@@ -302,7 +302,7 @@ void QJoysticks::setVirtualJoystickRange (const float range)
 /**
  * Enables or disables the virtual joystick
  */
-void QJoysticks::setVirtualJoystickEnabled (const bool enabled)
+void QJoysticks::setVirtualJoystickEnabled (bool enabled)
 {
     virtualJoystick()->setJoystickEnabled (enabled);
 }

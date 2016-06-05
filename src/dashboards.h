@@ -43,8 +43,7 @@ public:
     Q_INVOKABLE QStringList dashboardList();
 
 public slots:
-    void closeDashboard();
-    void openDashboard (int dashboard = 0);
+    void openDashboard (int dashboard);
 
 private:
     QProcess m_process;

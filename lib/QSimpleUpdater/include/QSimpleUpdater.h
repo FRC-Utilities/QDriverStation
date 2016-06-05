@@ -200,7 +200,7 @@ public slots:
     /// \note this function only changes the behavior for the updater registered
     ///       with the given \a url.
     ///
-    void setNotifyOnUpdate (const QString& url, const bool& notify);
+    void setNotifyOnUpdate (const QString& url, bool notify);
 
     ///
     /// If set to \c true, the updater will notify the user when it finishes
@@ -218,7 +218,7 @@ public slots:
     /// \note this function only changes the behavior for the updater registered
     ///       with the given \a url.
     ///
-    void setNotifyOnFinish (const QString& url, const bool& notify);
+    void setNotifyOnFinish (const QString& url, bool notify);
 
     ///
     /// If set to true, the updater will allow the user to choose whenever to
@@ -231,7 +231,7 @@ public slots:
     /// \note this function only changes the behavior for the updater registered
     ///       with the given \a url.
     ///
-    void setDownloaderEnabled (const QString& url, const bool& enabled);
+    void setDownloaderEnabled (const QString& url, bool enabled);
 
     ///
     /// If \c custom is set to true, then the Downloader will not attempt to
@@ -239,7 +239,7 @@ public slots:
     /// to implement your own install procedures using the \c downloadFinished()
     /// signal.
     ///
-    void setUseCustomInstallProcedures (const QString& url, const bool& custom);
+    void setUseCustomInstallProcedures (const QString& url, bool custom);
 
 signals:
     ///

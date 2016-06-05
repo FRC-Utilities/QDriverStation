@@ -146,7 +146,7 @@ public slots:
     /// If \c notify is set to false, the \c QSimpleUpdater will not notify the
     /// user when an update is available.
     ///
-    void setNotifyOnUpdate (const bool& notify);
+    void setNotifyOnUpdate (bool notify);
 
     ///
     /// If set to \c true, the updater will notify the user when it finishes
@@ -155,7 +155,7 @@ public slots:
     /// If set to \c false (default), the updater will only notify the user
     /// when there is an update available (if setNotifyOnUpdate() is \c true).
     ///
-    void setNotifyOnFinish (const bool& notify);
+    void setNotifyOnFinish (bool notify);
 
     ///
     /// Changes the name of the module, this can be useful in large applications
@@ -176,7 +176,7 @@ public slots:
     /// of opening the download URL from a browser and manually installing
     /// the update.
     ///
-    void setDownloaderEnabled (const bool& enabled);
+    void setDownloaderEnabled (bool enabled);
 
     ///
     /// Changes the platform key/id. This can be useful if the update depends
@@ -191,7 +191,7 @@ public slots:
     /// to implement your own install procedures using the \c downloadFinished()
     /// signal.
     ///
-    void setUseCustomInstallProcedures (const bool& custom);
+    void setUseCustomInstallProcedures (bool custom);
 
 signals:
     ///
@@ -216,7 +216,7 @@ private slots:
     /// Changes the appropiate internal values, shows notifications (if allowed)
     /// and (if allowed) initializes the internal downloader.
     ///
-    void setUpdateAvailable (const bool& available);
+    void setUpdateAvailable (bool available);
 
 private:
     ///

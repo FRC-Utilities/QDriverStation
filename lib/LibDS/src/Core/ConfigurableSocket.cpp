@@ -86,7 +86,7 @@ QAbstractSocket* ConfigurableSocket::socket()
  * Returns the type of socket used. This function allows us to determine if
  * the socket is a TCP socket or an UDP socket.
  */
-DS::SocketType ConfigurableSocket::socketType() const
+DS::SocketType ConfigurableSocket::socketType()
 {
     return m_socketType;
 }

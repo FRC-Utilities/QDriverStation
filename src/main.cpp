@@ -44,6 +44,7 @@
 #include <QSettings>
 #include <QMessageBox>
 #include <QDesktopServices>
+
 void DownloadXboxDrivers()
 {
     QSettings settings (APP_COMPANY, APP_DSPNAME);
@@ -89,6 +90,7 @@ int main (int argc, char* argv[])
 
     /* Configure the logging system */
     qInstallMessageHandler (DS_MESSAGE_HANDLER);
+    qDebug() << "Initializing application...";
 
     /* Calculate the scale factor of the screen */
     qreal ratio = (app.primaryScreen()->physicalDotsPerInch() / 100) * 0.9;
@@ -101,6 +103,8 @@ int main (int argc, char* argv[])
 #if defined Q_OS_MAC
     ratio = 1;
 #endif
+
+    qDebug() << "Scale factor set to:" << ratio;
 
     /* Initialize application modules */
     Beeper beeper;

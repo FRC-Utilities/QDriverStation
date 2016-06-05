@@ -56,7 +56,7 @@ public slots:
     /// to implement your own install procedures using the \c downloadFinished()
     /// signal.
     ///
-    void setUseCustomInstallProcedures (const bool& custom);
+    void setUseCustomInstallProcedures (bool custom);
 
 private slots:
     void openDownload();
@@ -71,7 +71,7 @@ private:
     ///
     /// Rounds the \a input to the nearest integer
     ///
-    float round (const float& input);
+    float round (float input);
 
 signals:
     ///

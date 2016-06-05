@@ -21,15 +21,15 @@ public:
     Q_INVOKABLE int outputPort() const;
 
 public slots:
-    void setInputPort (const int& port);
-    void setOutputPort (const int& port);
+    void setInputPort (int port);
+    void setOutputPort (int port);
     void sendMessage (const QString& message);
 
 private slots:
     void onReadyRead();
 
 signals:
-    void newMessage (QString message);
+    void newMessage (const QString& message);
 
 private:
     int m_inputPort;

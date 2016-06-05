@@ -187,7 +187,7 @@ DS::OperationStatus DS_Config::operationStatus() const
     return m_operationStatus;
 }
 
-void DS_Config::updateTeam (const int& team)
+void DS_Config::updateTeam (int team)
 {
     if (m_team != team) {
         m_team = team;
@@ -197,7 +197,7 @@ void DS_Config::updateTeam (const int& team)
     }
 }
 
-void DS_Config::setRobotCode (const bool& code)
+void DS_Config::setRobotCode (bool code)
 {
     DS::CodeStatus status = DS::kCodeFailing;
     if (code) status = DS::kCodeRunning;
@@ -205,7 +205,7 @@ void DS_Config::setRobotCode (const bool& code)
     updateRobotCodeStatus (status);
 }
 
-void DS_Config::setEnabled (const bool& enabled)
+void DS_Config::setEnabled (bool enabled)
 {
     DS::EnableStatus status = DS::kDisabled;
     if (enabled) status = DS::kEnabled;
@@ -213,26 +213,26 @@ void DS_Config::setEnabled (const bool& enabled)
     updateEnabled (status);
 }
 
-void DS_Config::updateCpuUsage (const int& usage)
+void DS_Config::updateCpuUsage (int usage)
 {
     m_cpuUsage = 0;
     emit cpuUsageChanged (usage);
 }
 
-void DS_Config::updateRamUsage (const int& usage)
+void DS_Config::updateRamUsage (int usage)
 {
     m_ramUsage = 0;
     emit ramUsageChanged (usage);
 }
 
-void DS_Config::updateDiskUsage (const int& usage)
+void DS_Config::updateDiskUsage (int usage)
 {
     m_diskUsage = 0;
     emit diskUsageChanged (usage);
 }
 
 
-void DS_Config::setBrownout (const bool& brownout)
+void DS_Config::setBrownout (bool brownout)
 {
     DS::VoltageStatus status = DS::kVoltageNormal;
     if (brownout) status = DS::kVoltageBrownout;
@@ -240,7 +240,7 @@ void DS_Config::setBrownout (const bool& brownout)
     updateVoltageStatus (status);
 }
 
-void DS_Config::setEmergencyStop (const bool& estop)
+void DS_Config::setEmergencyStop (bool estop)
 {
     DS::OperationStatus status = DS::kOperationNormal;
     if (estop) status = DS::kOperationEmergencyStop;
@@ -248,7 +248,7 @@ void DS_Config::setEmergencyStop (const bool& estop)
     updateOperationStatus (status);
 }
 
-void DS_Config::updateVoltage (const float& voltage)
+void DS_Config::updateVoltage (float voltage)
 {
     if (m_voltage != voltage) {
         m_voltage = roundf (voltage * 100) / 100;
@@ -267,7 +267,7 @@ void DS_Config::updateVoltage (const float& voltage)
     }
 }
 
-void DS_Config::updateSimulated (const bool& simulated)
+void DS_Config::updateSimulated (bool simulated)
 {
     if (m_simulated != simulated) {
         m_simulated = simulated;
@@ -275,7 +275,7 @@ void DS_Config::updateSimulated (const bool& simulated)
     }
 }
 
-void DS_Config::updateAlliance (const Alliance& alliance)
+void DS_Config::updateAlliance (Alliance alliance)
 {
     if (m_alliance != alliance) {
         m_alliance = alliance;
@@ -285,13 +285,35 @@ void DS_Config::updateAlliance (const Alliance& alliance)
     }
 }
 
-void DS_Config::updatePosition (const Position& position)
+void DS_Config::updatePosition (Position position)
 {
     if (m_position != position) {
         m_position = position;
         emit positionChanged (m_position);
 
         m_robotLogger->registerPosition (position);
+    }
+}
+
+void DS_Config::updateRobotCodeStatus (CodeStatus status)
+{
+    if (m_codeStatus != status) {
+        m_codeStatus = status;
+        emit codeStatusChanged (status);
+        emit statusChanged (DriverStation::getInstance()->generalStatus());
+
+        m_robotLogger->registerCodeStatus (status);
+    }
+}
+
+void DS_Config::updateControlMode (ControlMode mode)
+{
+    if (m_controlMode != mode) {
+        m_controlMode = mode;
+        emit controlModeChanged (m_controlMode);
+        emit statusChanged (DriverStation::getInstance()->generalStatus());
+
+        m_robotLogger->registerControlMode (mode);
     }
 }
 
@@ -325,29 +347,7 @@ void DS_Config::updatePdpVersion (const QString& version)
     }
 }
 
-void DS_Config::updateRobotCodeStatus (const CodeStatus& status)
-{
-    if (m_codeStatus != status) {
-        m_codeStatus = status;
-        emit codeStatusChanged (status);
-        emit statusChanged (DriverStation::getInstance()->generalStatus());
-
-        m_robotLogger->registerCodeStatus (status);
-    }
-}
-
-void DS_Config::updateControlMode (const ControlMode& mode)
-{
-    if (m_controlMode != mode) {
-        m_controlMode = mode;
-        emit controlModeChanged (m_controlMode);
-        emit statusChanged (DriverStation::getInstance()->generalStatus());
-
-        m_robotLogger->registerControlMode (mode);
-    }
-}
-
-void DS_Config::updateEnabled (const EnableStatus& status)
+void DS_Config::updateEnabled (EnableStatus status)
 {
     if (m_enableStatus != status) {
         m_enableStatus = status;
@@ -367,7 +367,7 @@ void DS_Config::updateEnabled (const EnableStatus& status)
     }
 }
 
-void DS_Config::updateFMSCommStatus (const CommStatus& status)
+void DS_Config::updateFMSCommStatus (CommStatus status)
 {
     if (m_fmsCommStatus != status) {
         m_fmsCommStatus = status;
@@ -378,7 +378,7 @@ void DS_Config::updateFMSCommStatus (const CommStatus& status)
     }
 }
 
-void DS_Config::updateRadioCommStatus (const CommStatus& status)
+void DS_Config::updateRadioCommStatus (CommStatus status)
 {
     if (m_radioCommStatus != status) {
         m_radioCommStatus = status;
@@ -388,7 +388,7 @@ void DS_Config::updateRadioCommStatus (const CommStatus& status)
     }
 }
 
-void DS_Config::updateRobotCommStatus (const CommStatus& status)
+void DS_Config::updateRobotCommStatus (CommStatus status)
 {
     if (m_robotCommStatus != status) {
         m_robotCommStatus = status;
@@ -399,7 +399,7 @@ void DS_Config::updateRobotCommStatus (const CommStatus& status)
     }
 }
 
-void DS_Config::updateVoltageStatus (const VoltageStatus& status)
+void DS_Config::updateVoltageStatus (VoltageStatus status)
 {
     if (m_voltageStatus != status) {
         m_voltageStatus = status;
@@ -410,7 +410,7 @@ void DS_Config::updateVoltageStatus (const VoltageStatus& status)
     }
 }
 
-void DS_Config::updateOperationStatus (const OperationStatus& status)
+void DS_Config::updateOperationStatus (OperationStatus status)
 {
     if (m_operationStatus != status) {
         m_operationStatus = status;

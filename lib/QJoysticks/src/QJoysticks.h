@@ -39,23 +39,23 @@ public:
 
     Q_INVOKABLE int count() const;
     Q_INVOKABLE int nonBlacklistedCount();
-    Q_INVOKABLE int getNumAxes (const int index);
-    Q_INVOKABLE int getNumPOVs (const int index);
-    Q_INVOKABLE int getNumButtons (const int index);
-    Q_INVOKABLE bool isBlacklisted (const int index);
-    Q_INVOKABLE bool joystickExists (const int index);
+    Q_INVOKABLE int getNumAxes (int index);
+    Q_INVOKABLE int getNumPOVs (int index);
+    Q_INVOKABLE int getNumButtons (int index);
+    Q_INVOKABLE bool isBlacklisted (int index);
+    Q_INVOKABLE bool joystickExists (int index);
 
     Q_INVOKABLE QStringList deviceNames() const;
     QList<QJoystickDevice*> inputDevices() const;
 
     SDL_Joysticks* sdlJoysticks() const;
     VirtualJoystick* virtualJoystick() const;
-    QJoystickDevice* getInputDevice (const int index);
+    QJoystickDevice* getInputDevice (int index);
 
 public slots:
-    void setVirtualJoystickRange (const float range);
-    void setVirtualJoystickEnabled (const bool enabled);
-    void setBlacklisted (const int index, const bool blacklisted);
+    void setVirtualJoystickRange (float range);
+    void setVirtualJoystickEnabled (bool enabled);
+    void setBlacklisted (int index, bool blacklisted);
 
 protected:
     explicit QJoysticks();
@@ -65,9 +65,9 @@ signals:
     void POVEvent (const QJoystickPOVEvent& event);
     void axisEvent (const QJoystickAxisEvent& event);
     void buttonEvent (const QJoystickButtonEvent& event);
-    void povChanged (const int js, const int pov, const int angle);
-    void axisChanged (const int js, const int axis, const double value);
-    void buttonChanged (const int js, const int button, const bool pressed);
+    void povChanged (int js, int pov, int angle);
+    void axisChanged (int js, int axis, const double value);
+    void buttonChanged (int js, int button, bool pressed);
 
 private slots:
     void resetJoysticks();

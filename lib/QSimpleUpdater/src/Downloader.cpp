@@ -303,7 +303,7 @@ void Downloader::calculateTimeRemaining (qint64 received, qint64 total)
 // Downloader::round
 //==============================================================================
 
-float Downloader::round (const float& input)
+float Downloader::round (float input)
 {
     return roundf (input * 100) / 100;
 }
@@ -312,7 +312,7 @@ float Downloader::round (const float& input)
 // Downloader::setUseCustomInstallProcedures
 //==============================================================================
 
-void Downloader::setUseCustomInstallProcedures (const bool& custom)
+void Downloader::setUseCustomInstallProcedures (bool custom)
 {
     m_useCustomProcedures = custom;
 }

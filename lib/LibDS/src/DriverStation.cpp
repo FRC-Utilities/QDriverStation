@@ -156,9 +156,7 @@ DriverStation* DriverStation::getInstance()
  */
 bool DriverStation::canBeEnabled()
 {
-    return isConnectedToRobot()
-           && isRobotCodeRunning()
-           && !isEmergencyStopped();
+    return isConnectedToRobot() && isRobotCodeRunning() && !isEmergencyStopped();
 }
 
 /**
@@ -719,9 +717,9 @@ QStringList DriverStation::teamStations() const
  * Registers a new joystick with the given number of \a axes, \a buttons &
  * \a POVs hats.
  */
-bool DriverStation::registerJoystick (const int& axes,
-                                      const int& buttons,
-                                      const int& povs)
+bool DriverStation::registerJoystick (int axes,
+                                      int buttons,
+                                      int povs)
 {
     qDebug() << "Trying to register joystick with"
              << axes    << "axes,"
@@ -851,7 +849,6 @@ void DriverStation::resetJoysticks()
 
     joysticks()->clear();
 
-    /* Disable robot if not connected to FMS */
     if (!isConnectedToFMS())
         setEnabled (false);
 
@@ -899,7 +896,7 @@ void DriverStation::switchToTeleoperated()
 /**
  * Changes the team number
  */
-void DriverStation::setTeam (const int& team)
+void DriverStation::setTeam (int team)
 {
     config()->updateTeam (team);
 }
@@ -907,7 +904,7 @@ void DriverStation::setTeam (const int& team)
 /**
  * Removes the joystick at the given \a id
  */
-void DriverStation::removeJoystick (const int& id)
+void DriverStation::removeJoystick (int id)
 {
     if (joystickCount() > id) {
         joysticks()->removeAt (id);
@@ -924,7 +921,7 @@ void DriverStation::removeJoystick (const int& id)
  * \note This value can be overwritten by the FMS system or the robot
  *       application itself.
  */
-void DriverStation::setEnabled (const bool& enabled)
+void DriverStation::setEnabled (bool enabled)
 {
     setEnabled (enabled ? DS::kEnabled : DS::kDisabled);
 }
@@ -1006,7 +1003,7 @@ void DriverStation::setProtocol (Protocol* protocol)
  * If you are lazy enough to not wanting to use two function calls to
  * change the alliance & position of the robot, we've got you covered!
  */
-void DriverStation::setTeamStation (const int& station)
+void DriverStation::setTeamStation (int station)
 {
     switch ((TeamStation) station) {
     case kRed1:
@@ -1043,7 +1040,7 @@ void DriverStation::setTeamStation (const int& station)
  * This function is meant to be used in co-junction of the list outputted
  * by the \c protocols() function.
  */
-void DriverStation::setProtocolType (const int& protocol)
+void DriverStation::setProtocolType (int protocol)
 {
     if ((ProtocolType) protocol == kFRC2016)
         setProtocol (new FRC_2016);
@@ -1059,7 +1056,7 @@ void DriverStation::setProtocolType (const int& protocol)
  * Updates the team \a alliance.
  * \note This value can be overwritten by the FMS system
  */
-void DriverStation::setAlliance (const Alliance& alliance)
+void DriverStation::setAlliance (Alliance alliance)
 {
     config()->updateAlliance (alliance);
 }
@@ -1068,7 +1065,7 @@ void DriverStation::setAlliance (const Alliance& alliance)
  * Updates the team \a position
  * \note This value can be overwritten by the FMS system
  */
-void DriverStation::setPosition (const Position& position)
+void DriverStation::setPosition (Position position)
 {
     config()->updatePosition (position);
 }
@@ -1077,7 +1074,7 @@ void DriverStation::setPosition (const Position& position)
  * Changes the control \a mode of the robot.
  * \note This value can be overwritten by the FMS system
  */
-void DriverStation::setControlMode (const ControlMode& mode)
+void DriverStation::setControlMode (ControlMode mode)
 {
     config()->updateControlMode (mode);
 }
@@ -1090,11 +1087,69 @@ void DriverStation::setControlMode (const ControlMode& mode)
  * If the \c count is set to \c 0, then the scanner system will calculate
  * an appropiate value for the number of parallel sockets.
  */
-void DriverStation::setParallelSocketCount (const int& count)
+void DriverStation::setParallelSocketCount (int count)
 {
     m_sockets->setCustomSocketCount (count);
     if (m_init && (count > 0 || m_sockets->customSocketCount() > 0))
         calculateScanSpeed();
+}
+
+/**
+ * Updates the \a angle of the given \a pov of the joystick with the
+ * specified \a id
+ */
+void DriverStation::updatePOV (int id, int pov, int angle)
+{
+    if (joysticks()->count() > abs (id)) {
+        if (joysticks()->at (id)->numPOVs > pov) {
+            joysticks()->at (id)->povs [abs (pov)] = angle;
+            return;
+        }
+    }
+
+    qWarning() << "Client tried updating non-existent joystick POV";
+}
+
+/**
+ * Changes the enabled \a status of the robot.
+ * \note This value can be overwritten by the FMS system or the robot
+ *       application itself.
+ */
+void DriverStation::setEnabled (EnableStatus status)
+{
+    config()->updateEnabled (status);
+}
+
+/**
+ * Updates the \a value of the given \a axis of the joystick with the
+ * specified \a id
+ */
+void DriverStation::updateAxis (int id, int axis, float value)
+{
+    if (joysticks()->count() > abs (id)) {
+        if (joysticks()->at (id)->numAxes > axis) {
+            joysticks()->at (id)->axes [abs (axis)] = value;
+            return;
+        }
+    }
+
+    qWarning() << "Client tried updating non-existent joystick axis";
+}
+
+/**
+ * Updates the \a pressed state of the given \a button of the joystick with
+ * the specified \a id
+ */
+void DriverStation::updateButton (int id, int button, bool state)
+{
+    if (joysticks()->count() > abs (id)) {
+        if (joysticks()->at (id)->numButtons > button) {
+            joysticks()->at (id)->buttons [abs (button)] = state;
+            return;
+        }
+    }
+
+    qWarning() << "Client tried updating non-existent joystick button";
 }
 
 /**
@@ -1122,16 +1177,6 @@ void DriverStation::setCustomRadioAddress (const QString& address)
 }
 
 /**
- * Changes the enabled \a status of the robot.
- * \note This value can be overwritten by the FMS system or the robot
- *       application itself.
- */
-void DriverStation::setEnabled (const EnableStatus& status)
-{
-    config()->updateEnabled (status);
-}
-
-/**
  * Changes the operation \c status of the robot.
  * Possible values are:
  *   - \c kDisconnected
@@ -1142,63 +1187,9 @@ void DriverStation::setEnabled (const EnableStatus& status)
  * encourage you to implement the hability to e-stop the robot in your
  * custom client.
  */
-void DriverStation::setOperationStatus (const OperationStatus& status)
+void DriverStation::setOperationStatus (OperationStatus status)
 {
     config()->updateOperationStatus (status);
-}
-
-/**
- * Updates the \a angle of the given \a pov of the joystick with the
- * specified \a id
- */
-void DriverStation::updatePOV (const int& id,
-                               const int& pov,
-                               const int& angle)
-{
-    if (joysticks()->count() > abs (id)) {
-        if (joysticks()->at (id)->numPOVs > pov) {
-            joysticks()->at (id)->povs [abs (pov)] = angle;
-            return;
-        }
-    }
-
-    qWarning() << "Client tried updating non-existent joystick POV";
-}
-
-/**
- * Updates the \a value of the given \a axis of the joystick with the
- * specified \a id
- */
-void DriverStation::updateAxis (const int& id,
-                                const int& axis,
-                                const float& value)
-{
-    if (joysticks()->count() > abs (id)) {
-        if (joysticks()->at (id)->numAxes > axis) {
-            joysticks()->at (id)->axes [abs (axis)] = value;
-            return;
-        }
-    }
-
-    qWarning() << "Client tried updating non-existent joystick axis";
-}
-
-/**
- * Updates the \a pressed state of the given \a button of the joystick with
- * the specified \a id
- */
-void DriverStation::updateButton (const int& id,
-                                  const int& button,
-                                  const bool& pressed)
-{
-    if (joysticks()->count() > abs (id)) {
-        if (joysticks()->at (id)->numButtons > button) {
-            joysticks()->at (id)->buttons [abs (button)] = pressed;
-            return;
-        }
-    }
-
-    qWarning() << "Client tried updating non-existent joystick button";
 }
 
 /**

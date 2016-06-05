@@ -65,7 +65,7 @@ static QString GENERIC_MAPPINGS;
 SDL_Joysticks::SDL_Joysticks()
 {
     m_tracker = -1;
-    SDL_Init (SDL_INIT_AUDIO | SDL_INIT_HAPTIC | SDL_INIT_GAMECONTROLLER);
+    SDL_Init (SDL_INIT_HAPTIC | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER);
 
     QFile database (":/QJoysticks/SDL/Database.txt");
     if (database.open (QFile::ReadOnly)) {

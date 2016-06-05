@@ -58,29 +58,29 @@ public:
     OperationStatus operationStatus() const;
 
 public slots:
-    void updateTeam (const int& team);
-    void setRobotCode (const bool& code);
-    void setEnabled (const bool& enabled);
-    void updateCpuUsage (const int& usage);
-    void updateRamUsage (const int& usage);
-    void updateDiskUsage (const int& usage);
-    void setBrownout (const bool& brownout);
-    void setEmergencyStop (const bool& estop);
-    void updateVoltage (const float& voltage);
-    void updateSimulated (const bool& simulated);
-    void updateAlliance (const Alliance& alliance);
-    void updatePosition (const Position& position);
+    void updateTeam (int team);
+    void setRobotCode (bool code);
+    void setEnabled (bool enabled);
+    void updateCpuUsage (int usage);
+    void updateRamUsage (int usage);
+    void updateDiskUsage (int usage);
+    void setBrownout (bool brownout);
+    void setEmergencyStop (bool estop);
+    void updateVoltage (float voltage);
+    void updateSimulated (bool simulated);
+    void updateAlliance (Alliance alliance);
+    void updatePosition (Position position);
+    void updateControlMode (ControlMode mode);
     void updateLibVersion (const QString& version);
     void updatePcmVersion (const QString& version);
     void updatePdpVersion (const QString& version);
-    void updateControlMode (const ControlMode& mode);
-    void updateEnabled (const EnableStatus& statusChanged);
-    void updateFMSCommStatus (const CommStatus& statusChanged);
-    void updateRadioCommStatus (const CommStatus& statusChanged);
-    void updateRobotCommStatus (const CommStatus& statusChanged);
-    void updateRobotCodeStatus (const CodeStatus& statusChanged);
-    void updateVoltageStatus (const VoltageStatus& statusChanged);
-    void updateOperationStatus (const OperationStatus& statusChanged);
+    void updateEnabled (EnableStatus statusChanged);
+    void updateFMSCommStatus (CommStatus statusChanged);
+    void updateRadioCommStatus (CommStatus statusChanged);
+    void updateRobotCommStatus (CommStatus statusChanged);
+    void updateRobotCodeStatus (CodeStatus statusChanged);
+    void updateVoltageStatus (VoltageStatus statusChanged);
+    void updateOperationStatus (OperationStatus statusChanged);
 
 private slots:
     void updateElapsedTime();

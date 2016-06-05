@@ -223,7 +223,7 @@ void Updater::setUrl (const QString& url)
 // Updater::setNotifyOnUpdate
 //==============================================================================
 
-void Updater::setNotifyOnUpdate (const bool& notify)
+void Updater::setNotifyOnUpdate (bool notify)
 {
     m_notifyOnUpdate = notify;
 }
@@ -232,7 +232,7 @@ void Updater::setNotifyOnUpdate (const bool& notify)
 // Updater::setNotifyOnFinish
 //==============================================================================
 
-void Updater::setNotifyOnFinish (const bool& notify)
+void Updater::setNotifyOnFinish (bool notify)
 {
     m_notifyOnFinish = notify;
 }
@@ -259,7 +259,7 @@ void Updater::setModuleName (const QString& name)
 // Updater::setDownloaderEnabled
 //==============================================================================
 
-void Updater::setDownloaderEnabled (const bool& enabled)
+void Updater::setDownloaderEnabled (bool enabled)
 {
     m_downloaderEnabled = enabled;
 }
@@ -268,7 +268,7 @@ void Updater::setDownloaderEnabled (const bool& enabled)
 // Updater::setUseCustomInstallProcedures
 //==============================================================================
 
-void Updater::setUseCustomInstallProcedures (const bool& custom)
+void Updater::setUseCustomInstallProcedures (bool custom)
 {
     m_downloader->setUseCustomInstallProcedures (custom);
 }
@@ -312,7 +312,7 @@ void Updater::onReply (QNetworkReply* reply)
 // Updater::setUpdateAvailable
 //==============================================================================
 
-void Updater::setUpdateAvailable (const bool& available)
+void Updater::setUpdateAvailable (bool available)
 {
     m_updateAvailable = available;
 

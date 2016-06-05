@@ -25,12 +25,12 @@
 
 #include <QString>
 
+// *INDENT-OFF*
 static const QString APP_VERSION = "16.05";
 static const QString APP_DSPNAME = "QDriverStation";
 static const QString APP_COMPANY = "QDriverStation Developers";
 static const QString APP_WEBSITE = "http://qdriverstation.sf.net";
-static const QString URL_UPDATER = "https://raw.githubusercontent.com/"
-                                   "WinT-3794/QDriverStation/master/"
-                                   "UPDATES.json";
+static const QString URL_UPDATER = "https://raw.githubusercontent.com/WinT-3794/QDriverStation/master/UPDATES.json";
+// *INDENT-ON*
 
 #endif

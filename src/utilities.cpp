@@ -33,6 +33,9 @@ static SYSTEM_POWER_STATUS power;
 #include <QProcess>
 #endif
 
+/**
+ * Initializes the CPU querying process under Microsoft Windows
+ */
 Utilities::Utilities()
 {
 #if defined Q_OS_WIN
@@ -45,6 +48,9 @@ Utilities::Utilities()
 #endif
 }
 
+/**
+ * Returns the current CPU usage (from 0 to 100)
+ */
 int Utilities::getCpuUsage()
 {
     int usage = 0;
@@ -108,6 +114,9 @@ int Utilities::getCpuUsage()
     return usage;
 }
 
+/**
+ * Returns the current battery level (from 0 to 100)
+ */
 int Utilities::getBatteryLevel()
 {
 #if defined Q_OS_WIN
@@ -161,6 +170,10 @@ int Utilities::getBatteryLevel()
 #endif
 }
 
+/**
+ * Returns \c true if the computer is connected to a power source or the
+ * battery is not discharging.
+ */
 bool Utilities::isConnectedToPowerSource()
 {
 #if defined Q_OS_WIN

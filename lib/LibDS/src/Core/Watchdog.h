@@ -15,17 +15,16 @@ class Watchdog : public QObject
 {
     Q_OBJECT
 
+signals:
+    void expired();
+
 public:
     Watchdog();
-
     int expirationTime() const;
 
 public slots:
     void reset();
     void setExpirationTime (int msecs);
-
-signals:
-    void expired();
 
 private:
     QTimer m_timer;
