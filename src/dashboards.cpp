@@ -36,13 +36,7 @@
 #define PF IS_64_BIT ? "C:/Program Files (x86)" : "C:/Program Files"
 #endif
 
-#if defined Q_OS_WIN
 #define JAVA_OPEN "java -jar"
-#elif defined Q_OS_LINUX
-#define JAVA_OPEN "xdg-open"
-#elif defined Q_OS_MAC
-#define JAVA_OPEN "java -jar"
-#endif
 
 Dashboards::Dashboards()
 {
