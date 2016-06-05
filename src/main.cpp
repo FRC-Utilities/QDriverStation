@@ -47,7 +47,7 @@
 void DownloadXboxDrivers()
 {
     QSettings settings (APP_COMPANY, APP_DSPNAME);
-    
+
     if (settings.value ("FirstLaunch", true).toBool()) {
         QMessageBox box;
         box.setIcon (QMessageBox::Question);
@@ -138,6 +138,6 @@ int main (int argc, char* argv[])
 
     /* Exit application */
     qDebug() << "Exit code:" << exit_code;
-    qDebug() << "Application terminated";
+    qDebug() << "Application terminated normally";
     return exit_code;
 }

@@ -8,37 +8,78 @@
 
 #include "FRC_2015.h"
 
-const uint OP_MODE_TEST         = 0x01;
-const uint OP_MODE_AUTONOMOUS   = 0x02;
-const uint OP_MODE_TELEOPERATED = 0x00;
-const uint OP_MODE_ESTOPPED     = 0x80;
-const uint OP_MODE_ENABLED      = 0x04;
-const uint DS_FMS_ATTACHED      = 0x08;
-const uint DS_REQUEST_NORMAL    = 0x80;
-const uint DS_REQUEST_UNKNOWN   = 0x00;
-const uint DS_REQUEST_REBOOT    = 0x08;
-const uint DS_REQUEST_KILL_CODE = 0x04;
-const uint R_CTRL_HAS_CODE      = 0x20;
-const uint R_CTRL_BROWNOUT      = 0x10;
-const uint DS_FMS_COMM_VERSION  = 0x00;
-const uint DS_FMS_ROBOT_COMMS   = 0x20;
-const uint DS_FMS_RADIO_PING    = 0x10;
-const uint DS_FMS_ROBOT_PING    = 0x08;
-const uint DS_TAG_DATE          = 0x0f;
-const uint DS_TAG_GENERAL       = 0x01;
-const uint DS_TAG_JOYSTICK      = 0x0c;
-const uint DS_TAG_TIMEZONE      = 0x10;
-const uint STATION_RED_1        = 0x00;
-const uint STATION_RED_2        = 0x01;
-const uint STATION_RED_3        = 0x02;
-const uint STATION_BLUE_1       = 0x03;
-const uint STATION_BLUE_2       = 0x04;
-const uint STATION_BLUE_3       = 0x05;
-const uint R_REQUEST_TIME       = 0x01;
-const uint R_TAG_JOYSTICK_OUT   = 0x01;
-const uint R_TAG_DISK_INFO      = 0x04;
-const uint R_TAG_CPU_INFO       = 0x05;
-const uint R_TAG_RAM_INFO       = 0x06;
+/**
+ * Holds the control mode flags sent to the robot
+ */
+enum Robot_Control {
+    kTest          = 0x01, /**< Test operation mode */
+    kEnabled       = 0x04, /**< Sent when DS enables the robot */
+    kAutonomous    = 0x02, /**< Autonomous operation mode */
+    kTeleoperated  = 0x00, /**< Teleoperated operation mode */
+    kFMS_Attached  = 0x08, /**< Sent to robot when we are connected with FMS */
+    kEmergencyStop = 0x80, /**< Robot code is stopped */
+};
+
+/**
+ * Holds the different operation states sent to the robot
+ */
+enum DS_Flags {
+    kRequestReboot      = 0x08, /**< Sent when DS wants a robot reboot */
+    kRequestNormal      = 0x80, /**< Sent when DS has comms. with robot */
+    kRequestUnconnected = 0x00, /**< Sent when DS has no comms. with robot */
+    kRequestRestartCode = 0x04, /**< Sent when DS wants to restart robot code */
+};
+
+/**
+ * Holds different flags that are sent to the FMS
+ */
+enum FMS_Control {
+    kFMS_RadioPing  = 0x10, /**< Sent if TCP ping with radio is successfull */
+    kFMS_RobotPing  = 0x08, /**< Sent if TCP ping with robot is successfull */
+    kFMS_RobotComms = 0x20, /**< Sent if DS has comms. with robot */
+    kFMS_DS_Version = 0x00, /**< Sends DS version to the FMS */
+};
+
+/**
+ * Holds the different tags/headers of each section of the sent packets
+ */
+enum DS_Tags {
+    kTagDate     = 0x0f, /**< Staart of date & time section */
+    kTagGeneral  = 0x01, /**< Start of control/basic section */
+    kTagJoystick = 0x0c, /**< Start of joystick input section */
+    kTagTimezone = 0x10, /**< Start of timezone section */
+};
+
+/**
+ * Represents the different team stations
+ */
+enum Stations {
+    kRed1  = 0x00, /**< Red Alliance, Position 1 */
+    kRed2  = 0x01, /**< Red Alliance, Position 2 */
+    kRed3  = 0x02, /**< Red Alliance, Position 3 */
+    kBlue1 = 0x03, /**< Blue Alliance, Position 1 */
+    kBlue2 = 0x04, /**< Blue Alliance, Position 2 */
+    kBlue3 = 0x05, /**< Blue Alliance, Position 3 */
+};
+
+/**
+ * Represents the tags that can be sent by the robot with the extended packets
+ */
+enum Robot_Tags {
+    kRTagCpuInfo     = 0x05, /**< Robot program sents CPU usage */
+    kRTagMemInfo     = 0x06, /**< Robot program sends RAM usage */
+    kRTagDiskInfo    = 0x04, /**< Robot program sends disk usage */
+    kRTagJoystickOut = 0x01, /**< Robot program wants to rumble joysticks */
+};
+
+/**
+ * Different robot requests & operation status flags
+ */
+enum Robot_Data {
+    kRequestTime     = 0x01, /**< Robot wants current date & time */
+    kRobotHasCode    = 0x20, /**< Robot has user code loaded */
+    kVoltageBrownout = 0x10, /**< Robot experiences a voltage brownout */
+};
 
 /**
  * Implements the 2015 FRC Communication protocol
@@ -224,7 +265,7 @@ QByteArray FRC_2015::getFMSPacket()
     QByteArray data;
     data.append ((sentFMSPackets() & 0xff00) >> 8);
     data.append ((sentFMSPackets()) & 0xff);
-    data.append (DS_FMS_COMM_VERSION);
+    data.append (kFMS_DS_Version);
     data.append (getFMSControlCode());
     data.append ((config()->team() & 0xff00) >> 8);
     data.append ((config()->team()) & 0xff);
@@ -241,7 +282,7 @@ QByteArray FRC_2015::getRobotPacket()
     QByteArray data;
     data.append ((sentRobotPackets() & 0xff00) >> 8);
     data.append ((sentRobotPackets()) & 0xff);
-    data.append (DS_TAG_GENERAL);
+    data.append (kTagGeneral);
     data.append (getControlCode());
     data.append (getRequestCode());
     data.append (getTeamStationCode());
@@ -264,15 +305,15 @@ bool FRC_2015::interpretFMSPacket (const QByteArray& data)
         quint8 station = data.at (5);
 
         /* Change robot enabled state based on what FMS tells us to do*/
-        config()->setEnabled (control & OP_MODE_ENABLED);
+        config()->setEnabled (control & kEnabled);
 
         /* Get FMS robot mode */
         DS::ControlMode mode;
-        if (control & OP_MODE_TELEOPERATED)
+        if (control & kTeleoperated)
             mode = DS::kControlTeleoperated;
-        else if (control & OP_MODE_AUTONOMOUS)
+        else if (control & kAutonomous)
             mode = DS::kControlAutonomous;
-        else if (control & OP_MODE_TEST)
+        else if (control & kTest)
             mode = DS::kControlTest;
 
         /* Update robot mode */
@@ -315,14 +356,14 @@ bool FRC_2015::interpretRobotPacket (const QByteArray& data)
     uint decimal = data.at (6);
 
     /* Generate control information */
-    bool has_code       = (status & R_CTRL_HAS_CODE);
-    bool e_stopped      = (control & OP_MODE_ESTOPPED);
-    bool voltage_brwn   = (control & R_CTRL_BROWNOUT);
+    bool has_code       = (status & kRobotHasCode);
+    bool e_stopped      = (control & kEmergencyStop);
+    bool voltage_brwn   = (control & kVoltageBrownout);
 
     /* Update client information */
     config()->setRobotCode (has_code);
     config()->setBrownout  (voltage_brwn);
-    m_sendDateTime = (request == R_REQUEST_TIME);
+    m_sendDateTime = (request == kRequestTime);
 
     /* Update emergency stop state */
     if (e_stopped && !config()->isEmergencyStopped())
@@ -366,7 +407,7 @@ QByteArray FRC_2015::getTimezoneData()
     QTime time = dt.time();
 
     /* Add current date/time */
-    data.append (DS_TAG_DATE);
+    data.append (kTagDate);
     data.append ((time.msec() & 0xff00) >> 8);
     data.append ((time.msec()) & 0xff);
     data.append (time.second());
@@ -378,7 +419,7 @@ QByteArray FRC_2015::getTimezoneData()
 
     /* Add timezone data */
     data.append (DS::timezone().length() + 1);
-    data.append (DS_TAG_TIMEZONE);
+    data.append (kTagTimezone);
     data.append (DS::timezone());
 
     return data;
@@ -408,7 +449,7 @@ QByteArray FRC_2015::getJoystickData()
 
         /* Add joystick information and put the section header */
         data.append (getJoystickSize (*joysticks()->at (i)) - 1);
-        data.append (DS_TAG_JOYSTICK);
+        data.append (kTagJoystick);
 
         /* Add axis data */
         data.append (numAxes);
@@ -444,9 +485,9 @@ QByteArray FRC_2015::getJoystickData()
  */
 DS::Alliance FRC_2015::getAlliance (quint8 station)
 {
-    if (station == STATION_BLUE_1
-        || station == STATION_BLUE_2
-        || station == STATION_BLUE_3)
+    if (station == kBlue1
+        || station == kBlue2
+        || station == kBlue3)
         return DS::kAllianceBlue;
 
     return DS::kAllianceRed;
@@ -458,13 +499,13 @@ DS::Alliance FRC_2015::getAlliance (quint8 station)
  */
 DS::Position FRC_2015::getPosition (quint8 station)
 {
-    if (station == STATION_RED_1 || station == STATION_BLUE_1)
+    if (station == kRed1 || station == kBlue1)
         return DS::kPosition1;
 
-    if (station == STATION_RED_2 || station == STATION_BLUE_2)
+    if (station == kRed2 || station == kBlue2)
         return DS::kPosition2;
 
-    if (station == STATION_RED_3 || station == STATION_BLUE_3)
+    if (station == kRed3 || station == kBlue3)
         return DS::kPosition3;
 
     return DS::kPosition1;
@@ -482,23 +523,23 @@ void FRC_2015::readExtended (const QByteArray& data)
 
     uint tag = data.at (1);
 
-    if (tag == R_TAG_JOYSTICK_OUT) {
+    if (tag == kRTagJoystickOut) {
         /* TODO */
     }
 
-    else if (tag == R_TAG_CPU_INFO) {
+    else if (tag == kRTagCpuInfo) {
         int count = data.at (2);
         for (int i = 0; i < count; ++i)
             if (data.length() > i + 12)
                 config()->updateCpuUsage (data.at (i + 12));
     }
 
-    else if (tag == R_TAG_RAM_INFO) {
+    else if (tag == kRTagMemInfo) {
         if (data.length() > 5)
             config()->updateRamUsage (data.at (5));
     }
 
-    else if (tag == R_TAG_DISK_INFO) {
+    else if (tag == kRTagDiskInfo) {
         if (data.length() > 5)
             config()->updateDiskUsage (data.at (5));
     }
@@ -518,26 +559,26 @@ uint FRC_2015::getControlCode()
 
     switch (config()->controlMode()) {
     case DS::kControlTest:
-        code |= OP_MODE_TEST;
+        code |= kTest;
         break;
     case DS::kControlAutonomous:
-        code |= OP_MODE_AUTONOMOUS;
+        code |= kAutonomous;
         break;
     case DS::kControlTeleoperated:
-        code |= OP_MODE_TELEOPERATED;
+        code |= kTeleoperated;
         break;
     default:
         break;
     }
 
     if (config()->isFMSAttached())
-        code |= DS_FMS_ATTACHED;
+        code |= kFMS_Attached;
 
     if (config()->isEmergencyStopped())
-        code |= OP_MODE_ESTOPPED;
+        code |= kEmergencyStop;
 
     if (config()->isEnabled())
-        code |= OP_MODE_ENABLED;
+        code |= kEnabled;
 
     return code;
 }
@@ -550,16 +591,16 @@ uint FRC_2015::getControlCode()
  */
 uint FRC_2015::getRequestCode()
 {
-    uint code = DS_REQUEST_UNKNOWN;
+    uint code = kRequestUnconnected;
 
     if (config()->isConnectedToRobot())
-        code = DS_REQUEST_NORMAL;
+        code = kRequestNormal;
 
     if (config()->isConnectedToRobot() && m_rebootRobot)
-        code |= DS_REQUEST_REBOOT;
+        code |= kRequestReboot;
 
     if (config()->isConnectedToRobot() && m_restartCode)
-        code |= DS_REQUEST_KILL_CODE;
+        code |= kRequestRestartCode;
 
     return code;
 }
@@ -582,30 +623,30 @@ uint FRC_2015::getFMSControlCode()
 
     switch (config()->controlMode()) {
     case DS::kControlTest:
-        code |= OP_MODE_TEST;
+        code |= kTest;
         break;
     case DS::kControlAutonomous:
-        code |= OP_MODE_AUTONOMOUS;
+        code |= kAutonomous;
         break;
     case DS::kControlTeleoperated:
-        code |= OP_MODE_TELEOPERATED;
+        code |= kTeleoperated;
         break;
     default:
         break;
     }
 
     if (config()->isEmergencyStopped())
-        code |= OP_MODE_ESTOPPED;
+        code |= kEmergencyStop;
 
     if (config()->isEnabled())
-        code |= OP_MODE_ENABLED;
+        code |= kEnabled;
 
     if (config()->isConnectedToRadio())
-        code |= DS_FMS_RADIO_PING;
+        code |= kFMS_RadioPing;
 
     if (config()->isConnectedToRobot()) {
-        code |= DS_FMS_ROBOT_COMMS;
-        code |= DS_FMS_ROBOT_PING;
+        code |= kFMS_RobotComms;
+        code |= kFMS_RobotPing;
     }
 
     return code;
@@ -620,26 +661,26 @@ uint FRC_2015::getTeamStationCode()
 {
     if (config()->position() == DS::kPosition1) {
         if (config()->alliance() == DS::kAllianceRed)
-            return STATION_RED_1;
+            return kRed1;
         else
-            return STATION_BLUE_1;
+            return kBlue1;
     }
 
     if (config()->position() == DS::kPosition2) {
         if (config()->alliance() == DS::kAllianceRed)
-            return STATION_RED_2;
+            return kRed2;
         else
-            return STATION_BLUE_2;
+            return kBlue2;
     }
 
     if (config()->position() == DS::kPosition3) {
         if (config()->alliance() == DS::kAllianceRed)
-            return STATION_RED_3;
+            return kRed3;
         else
-            return STATION_BLUE_3;
+            return kBlue3;
     }
 
-    return STATION_RED_1;
+    return kRed1;
 }
 
 /**

@@ -8,20 +8,37 @@
 
 #include "FRC_2014.h"
 
-const uint ESTOP_ON           = 0x00;
-const uint ESTOP_OFF          = 0x40;
-const uint REBOOT             = 0x80;
-const uint ENABLED            = 0x20;
-const uint RESYNC             = 0x04;
-const uint CONTROL_TELEOP     = 0x00;
-const uint CONTROL_AUTONOMOUS = 0x10;
-const uint CONTROL_TEST       = 0x02;
-const uint FMS_ATTACHED       = 0x08;
-const uint ALLIANCE_RED       = 0x52;
-const uint ALLIANCE_BLUE      = 0x42;
-const uint POSITION_1         = 0x31;
-const uint POSITION_2         = 0x32;
-const uint POSITION_3         = 0x33;
+/**
+ * Represents the basic operation codes of the robot
+ */
+enum Control {
+    kEnabled          = 0x20, /**< Enabled flag */
+    kTestMode         = 0x02, /**< Test operation mode */
+    kAutonomous       = 0x10, /**< Autonomous operation mode */
+    kTeleoperated     = 0x00, /**< Teleoperated operation mode */
+    kFMS_Attached     = 0x08, /**< Sent to robot when we are connected to FMS */
+    kEmergencyStopOn  = 0x00, /**< Robot program is stopped */
+    kEmergencyStopOff = 0x40, /**< Normal operation of the robot program */
+};
+
+/**
+ * Represents the special instructions that we can send to the robot
+ */
+enum Instructions {
+    kResyncComms = 0x04, /**< Resyncs the DS and the robot loops */
+    kRebootRobot = 0x80, /**< Restarts the robot controller */
+};
+
+/**
+ * Represents the available team station
+ */
+enum Stations {
+    kPosition1    = 0x31, /**< Position 1 on any alliance */
+    kPosition2    = 0x32, /**< Position 2 on any alliance */
+    kPosition3    = 0x33, /**< Position 3 on any alliance */
+    kAllianceRed  = 0x52, /**< Set alliance to red */
+    kAllianceBlue = 0x42, /**< Set alliance to blue */
+};
 
 /**
  * Implements the 2009-2014 FRC communication protocol
@@ -285,7 +302,7 @@ bool FRC_2014::interpretRobotPacket (const QByteArray& data)
     voltage.append (hex.at (5));
 
     /* The robot seems to be emergency stopped */
-    if (opcode == ESTOP_ON && !config()->isEmergencyStopped())
+    if (opcode == kEmergencyStopOn && !config()->isEmergencyStopped())
         config()->updateOperationStatus (DS::kOperationEmergencyStop);
 
     /* Update code status & voltage */
@@ -303,9 +320,9 @@ bool FRC_2014::interpretRobotPacket (const QByteArray& data)
 quint8 FRC_2014::getAlliance()
 {
     if (config()->alliance() == DS::kAllianceBlue)
-        return ALLIANCE_BLUE;
+        return kAllianceBlue;
 
-    return ALLIANCE_RED;
+    return kAllianceRed;
 }
 
 /**
@@ -314,15 +331,15 @@ quint8 FRC_2014::getAlliance()
 quint8 FRC_2014::getPosition()
 {
     if (config()->position() == DS::kPosition1)
-        return POSITION_1;
+        return kPosition1;
 
     if (config()->position() == DS::kPosition2)
-        return POSITION_2;
+        return kPosition2;
 
     if (config()->position() == DS::kPosition3)
-        return POSITION_3;
+        return kPosition3;
 
-    return POSITION_1;
+    return kPosition1;
 }
 
 /**
@@ -339,35 +356,35 @@ quint8 FRC_2014::getDigitalInput()
  */
 quint8 FRC_2014::getOperationCode()
 {
-    quint8 code = ESTOP_OFF;
-    quint8 enabled = config()->isEnabled() ? ENABLED : 0x00;
+    quint8 code = kEmergencyStopOff;
+    quint8 enabled = config()->isEnabled() ? kEnabled : 0x00;
 
     switch (config()->controlMode()) {
     case DS::kControlTest:
-        code |= enabled + CONTROL_TEST;
+        code |= enabled + kTestMode;
         break;
     case DS::kControlAutonomous:
-        code |= enabled + CONTROL_AUTONOMOUS;
+        code |= enabled + kAutonomous;
         break;
     case DS::kControlTeleoperated:
-        code |= enabled + CONTROL_TELEOP;
+        code |= enabled + kTeleoperated;
         break;
     default:
-        code = ESTOP_OFF;
+        code = kEmergencyStopOff;
         break;
     }
 
     if (m_resync)
-        code |= RESYNC;
+        code |= kResyncComms;
 
     if (config()->isFMSAttached())
-        code |= FMS_ATTACHED;
+        code |= kFMS_Attached;
 
     if (config()->isEmergencyStopped())
-        code = ESTOP_ON;
+        code = kEmergencyStopOn;
 
     if (m_rebootRobot)
-        code = REBOOT;
+        code = kRebootRobot;
 
     return code;
 }
