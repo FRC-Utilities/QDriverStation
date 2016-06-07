@@ -1,0 +1,32 @@
+<h1>QDriverStation README</h1>
+<p>Thanks for downloading the QDriverStation! We hope that you have an excellent time trying it out.</p>
+<p>If you need help with anything, feel free to contact me at: <a href="mailto:alex_spataru@outlook.com">alex_spataru@outlook.com</a></p>
+<h2>Warnings</h2>
+<p>The code has been thoroughly tested, however, please take into account the following:</p>
+<ul>
+<li>Always <strong>check the joysticks tab before enabling the robot</strong>! The <em>QDriverStation</em> may map them differently than the official <em>FRC Driver Station</em>.</li>
+<li>The keyboard shortcuts are the same as in the official <em>FRC Driver Station</em>. However, take into account that <strong>keyboard shortcuts will not work if the application/window is not focused</strong>.</li>
+<li>Using the <em>QDriverStation</em> in a home network (e.g. for testing robot simulation) may temporarily slow down your router, since the <em>QDriverStation</em> uses parallel socket programming to detect the robot faster.</li>
+<li>While we partially implemented support for the FMS. <strong>You should not use the <em>QDriverStation</em> in official <em>FRC</em> events</strong>.</li>
+</ul>
+<h2>FAQs</h2>
+<h4>1. Does the QDriverStation support the 2014 protocol?</h4>
+<p>Yes, the <em>QDriverStation</em> has supported the FRC 2014 protocol since version 16.05.</p>
+<h4>2. Does the QDriverStation support the 2015/2016 protocol?</h4>
+<p>Yes, the <em>QDriverStation</em> has supported the FRC 2015 protocol since its initial release.</p>
+<h4>3. Does the QDriverStation check for updates?</h4>
+<p>Yes. However, checking for updates will (obviously) not work if your robot is not connected to the Internet. We recommend you to launch the QDriverStation from time to time in an Internet-connected network to check for updates.</p>
+<h4>4. Can I disable the QDriverStation updater?</h4>
+<p>Yes, just open the preferences window and uncheck the <em>Check for updates automatically</em> checkbox.</p>
+<h4>5. What is the <em>PSC</em>?</h4>
+<p>The <em>PSC</em> stands for <em>Parallel Socket Count</em>. It allows you to control how many parallel sockets to use to find the robot. A greater <em>PSC</em> value will allow the <em>QDriverStation</em> to detect the robot faster.</p>
+<p>In most cases, the <em>PSC</em> value set by the <em>QDriverStation</em> will be OK.</p>
+<p><strong>NOTE:</strong> Setting a very high <em>PSC</em> value may clog your system's resources. If the <em>QDriverStation</em> is slow to respond or it does not save/load settings correctly, try lowering the <em>PSC</em> value.</p>
+<h4>6. I am interested in making my own Driver Station, where can I start?</h4>
+<p>If you are interested in making your own GUI, check the <em><a href="http://github.com/wint-3794/libds">LibDS</a></em>, which deals with all the networking aspects of a Driver Station and allows you to load custom robot protocols (FRC 2014 and 2015/2016 protocols are already included in the library).</p>
+<p>Also, check the <a href="https://github.com/WinT-3794/QDriverStation/blob/master/CONTRIBUTORS.md">CONTRIBUTORS</a> file, which contains several links that may be helpful to you.</p>
+<h2>Reporting Bugs</h2>
+<p>If you find a bug, you can report it here: <a href="https://github.com/wint-3794/qdriverstation/issues">https://github.com/wint-3794/qdriverstation/issues</a>. Alternatively, just go to the <em>Info/About</em> tab and click on the <em>Report Bug</em> button.</p>
+<p>It would be great if you could append your log file while reporting a bug. Log files can be found by clicking the "Logs" button in the <em>Messages</em> tab.</p>
+<h2>License</h2>
+<p>This project is licensed under the MIT license. To read a copy, click <a href="https://raw.githubusercontent.com/WinT-3794/QDriverStation/master/LICENSE">here</a>.</p>
