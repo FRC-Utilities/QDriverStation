@@ -74,6 +74,7 @@ public:
     Q_INVOKABLE int cpuUsage() const;
     Q_INVOKABLE int ramUsage() const;
     Q_INVOKABLE int diskUsage() const;
+    Q_INVOKABLE int packetLoss() const;
     Q_INVOKABLE int maxPOVCount() const;
     Q_INVOKABLE int maxAxisCount() const;
     Q_INVOKABLE int maxButtonCount() const;
@@ -151,6 +152,7 @@ private slots:
     void sendFMSPacket();
     void sendRadioPacket();
     void sendRobotPacket();
+    void updatePacketLoss();
     void calculateScanSpeed();
     void reconfigureJoysticks();
     void readFMSPacket (const QByteArray& data);
@@ -164,6 +166,8 @@ protected:
 private:
     bool m_init;
     bool m_running;
+
+    int m_packetLoss;
     int m_fmsInterval;
     int m_radioInterval;
     int m_robotInterval;

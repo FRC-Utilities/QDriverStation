@@ -21,6 +21,7 @@
  */
 
 #include <QDir>
+#include <QDebug>
 #include <QApplication>
 
 #include "dashboards.h"
@@ -73,7 +74,7 @@ QStringList Dashboards::dashboardList()
  */
 void Dashboards::openDashboard (int dashboard)
 {
-    m_process.terminate();
+    m_process.close();
 
     switch (dashboard) {
     case kSFXDashboard:
@@ -84,7 +85,7 @@ void Dashboards::openDashboard (int dashboard)
         break;
 #if defined Q_OS_WIN
     case kLabVIEWDashboard:
-        m_process.start (LVD_COMMAND.arg (QDir::homePath()), QIODevice::ReadOnly);
+        m_process.start (LVD_COMMAND.arg (PROGRAM_FILES), QIODevice::ReadOnly);
         break;
 #endif
     }

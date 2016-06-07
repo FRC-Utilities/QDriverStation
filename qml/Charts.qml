@@ -33,7 +33,9 @@ Item {
     // Changes the horizontal refresh rate of the charts
     //
     function updateGraphTimes (seconds) {
-        cpu.setSpeed (seconds)
+        loss.clear()
+        voltage.clear()
+        loss.setSpeed (seconds)
         voltage.setSpeed (seconds)
     }
 
@@ -57,10 +59,10 @@ Item {
             spacing: Globals.scale (-1)
 
             //
-            // CPU usage label
+            // Packet loss label
             //
             Label {
-                text: qsTr ("CPU Usage") + ":"
+                text: qsTr ("Packet Loss %") + ":"
             }
 
             //
@@ -141,12 +143,18 @@ Item {
         }
 
         //
-        // CPU Usage chart
+        // Packet loss chart
         //
-        CpuUsageGraph {
-            id: cpu
+        Plot {
+            id: loss
+            value: 0
+            minimumValue: 0
+            maximumValue: 100
             Layout.fillWidth: true
             Layout.fillHeight: true
+            barColor: Globals.Colors.PacketLoss
+            onRefreshed: value = DriverStation.packetLoss()
+            Component.onCompleted: value = DriverStation.packetLoss()
         }
 
         //

@@ -48,6 +48,9 @@ DriverStation::DriverStation()
     m_running = false;
     m_protocol = Q_NULLPTR;
 
+    /* Initialzie misc. variables */
+    m_packetLoss = 0;
+
     /* Initialize DS modules & watchdogs */
     m_sockets = new Sockets;
     m_console = new NetConsole;
@@ -352,6 +355,14 @@ int DriverStation::ramUsage() const
 int DriverStation::diskUsage() const
 {
     return config()->diskUsage();
+}
+
+/**
+ * Returns the current packet loss percentage
+ */
+int DriverStation::packetLoss() const
+{
+    return m_packetLoss;
 }
 
 /**
@@ -797,6 +808,7 @@ void DriverStation::init()
         sendFMSPacket();
         sendRadioPacket();
         sendRobotPacket();
+        updatePacketLoss();
 
         emit statusChanged (generalStatus());
         QTimer::singleShot (200, Qt::PreciseTimer, this, SIGNAL (initialized()));
@@ -1292,6 +1304,34 @@ void DriverStation::sendRobotPacket()
 
     QTimer::singleShot (m_robotInterval, Qt::PreciseTimer,
                         this, SLOT (sendRobotPacket()));
+}
+
+/**
+ * Calculates the current packet loss as a percent
+ */
+void DriverStation::updatePacketLoss()
+{
+    float loss = 0;
+    float sentPackets = 0;
+    float recvPackets = 0;
+
+    if (protocol()) {
+        recvPackets = protocol()->receivedRobotPackets();
+        sentPackets = protocol()->sentRobotPacketsSinceConnect();
+    }
+
+    if (recvPackets <= 0 || sentPackets <= 0) {
+        if (recvPackets <= 0)
+            loss = 100;
+        if (sentPackets <= 0)
+            loss = 0;
+    }
+
+    else if (recvPackets < sentPackets)
+        loss = (recvPackets / sentPackets) * 100;
+
+    m_packetLoss = (int) loss;
+    QTimer::singleShot (250, Qt::PreciseTimer, this, SLOT (updatePacketLoss()));
 }
 
 /**

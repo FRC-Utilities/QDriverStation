@@ -24,6 +24,7 @@ public:
         m_receivedFmsPackets = 0;
         m_receivedRadioPackets = 0;
         m_receivedRobotPackets = 0;
+        m_sentRobotPacketsSinceConnect = 0;
     }
 
     /**
@@ -336,6 +337,8 @@ public:
     QByteArray generateRobotPacket()
     {
         ++m_sentRobotPackets;
+        ++m_sentRobotPacketsSinceConnect;
+
         return getRobotPacket();
     }
 
@@ -368,8 +371,11 @@ public:
     void readRobotPacket (const QByteArray& data)
     {
         ++m_receivedRobotPackets;
-        if (interpretRobotPacket (data))
+
+        if (interpretRobotPacket (data) && !config()->isConnectedToRobot()) {
+            m_sentRobotPacketsSinceConnect = 0;
             config()->updateRobotCommStatus (DS::kCommsWorking);
+        }
     }
 
     /**
@@ -418,6 +424,18 @@ public:
     int receivedRobotPackets()
     {
         return m_receivedRobotPackets;
+    }
+
+    /**
+     * Returns the number of packets sent since robot connection.
+     * This is used to get an real-time packet loss percentage.
+     * If we use the \c sentRobotPackets() to do that, we risk having
+     * an unreal packet-loss ratio, since we would take into account the
+     * number of packets sent before robot connection (which can be a lot).
+     */
+    int sentRobotPacketsSinceConnect()
+    {
+        return m_sentRobotPacketsSinceConnect;
     }
 
 protected:
@@ -507,6 +525,8 @@ private:
     int m_receivedFmsPackets;
     int m_receivedRadioPackets;
     int m_receivedRobotPackets;
+
+    int m_sentRobotPacketsSinceConnect;
 };
 
 #endif

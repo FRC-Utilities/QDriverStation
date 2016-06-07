@@ -80,6 +80,13 @@ Rectangle {
     }
 
     //
+    // Forces the canvas to clear its plot
+    //
+    function clear() {
+        timer.currentPos = canvas.width / rectWidth
+    }
+
+    //
     // Rectangle color & border
     //
     border.width: Globals.scale (1)

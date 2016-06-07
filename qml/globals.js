@@ -48,6 +48,7 @@ var Colors = {
     'EnableButtonUnselected'    : "#002F00",
     'DisableButtonUnselected'   : "#880000",
     'CPUProgress'               : "#DCAE00",
+    'PacketLoss'                : "#DC9F00",
 }
 
 //

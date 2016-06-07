@@ -245,11 +245,12 @@ RowLayout {
     }
 
     //
-    // A horizontal spacer...
+    // Separator line
     //
-    Item {
-        Layout.fillWidth: true
+    Rectangle {
         Layout.fillHeight: true
+        width: Globals.scale (1)
+        color: Globals.Colors.WidgetBorder
     }
 
     //

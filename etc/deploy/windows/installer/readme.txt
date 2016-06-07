@@ -18,9 +18,10 @@ INPUT FOLDER STRUCTURE
 $root
     install-script.nsi
     \QDriverStation
-       LICENSE.txt
-       README-QDS.txt
-       README-SDL.txt        
+       LICENSE.html
+       CONTRIBUTORS.html
+       CHANGES.html
+       README-SDL.txt      
        uninstall.exe
        \bin
            QDriverStation.exe
