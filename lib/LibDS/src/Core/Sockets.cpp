@@ -195,15 +195,8 @@ DS::SocketType Sockets::robotSocketType() const {
  *     - The scan rate (which allow us to probe more IPs at the same time)
  */
 void Sockets::refreshAddressList() {
-    /* Delete the temp. sockets */
-    m_socketList.clear();
-
     /* Only generate sockets & update values if necessary */
     if (!addressList().isEmpty()) {
-
-        /* Create a set of temp. sockets */
-        for (int i = 0; i < scanRate(); ++i)
-            m_socketList.append (new ConfigurableSocket (robotSocketType()));
 
         /* Probe next round of IPs */
         if (addressList().count() > m_iterator + scanRate())
@@ -305,9 +298,20 @@ void Sockets::setRobotAddress (const QString& ip) {
  *       detection process faster and less error-prone.
  */
 void Sockets::setAddressList (const QStringList& list) {
+    /* Delete sockets */
+    qDeleteAll (m_socketList);
+
+    /* Clear the lists */
+    m_socketList.clear();
     m_robotIpList.clear();
+
+    /* Configure the IPs */
     m_robotIpList = list;
-    generateLocalNetworkAddresses();
+    generateLocalNetworkAddresses();  
+
+    /* Create temp. sockets */
+    for (int i = 0; i < scanRate(); ++i)
+        m_socketList.append (new ConfigurableSocket (robotSocketType()));
 }
 
 /**
