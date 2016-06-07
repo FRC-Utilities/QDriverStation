@@ -95,13 +95,15 @@ SOURCES += \
   $$PWD/src/main.cpp \
   $$PWD/src/utilities.cpp \
   $$PWD/src/beeper.cpp \
-  $$PWD/src/dashboards.cpp
+  $$PWD/src/dashboards.cpp \
+    src/shortcuts.cpp
   
 HEADERS += \
   $$PWD/src/utilities.h \
   $$PWD/src/beeper.h \
   $$PWD/src/dashboards.h \
-  $$PWD/src/versions.h
+  $$PWD/src/versions.h \
+    src/shortcuts.h
     
 RESOURCES += \
   $$PWD/qml/qml.qrc \

@@ -148,8 +148,8 @@ public:
      * Represents the operation status of the robot.
      */
     enum OperationStatus {
-        kOperationNormal,
-        kOperationEmergencyStop,
+        kNormal,
+        kEmergencyStop,
     };
     SMART_ENUM (OperationStatus)
 

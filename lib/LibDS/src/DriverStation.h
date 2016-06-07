@@ -125,6 +125,7 @@ public slots:
     void switchToTestMode();
     void switchToAutonomous();
     void switchToTeleoperated();
+    void reconfigureJoysticks();
     void setTeam (int team);
     void removeJoystick (int id);
     void setEnabled (bool enabled);
@@ -154,7 +155,6 @@ private slots:
     void sendRobotPacket();
     void updatePacketLoss();
     void calculateScanSpeed();
-    void reconfigureJoysticks();
     void readFMSPacket (const QByteArray& data);
     void readRadioPacket (const QByteArray& data);
     void readRobotPacket (const QByteArray& data);

@@ -289,6 +289,25 @@ void QJoysticks::setBlacklisted (int index, bool blacklisted)
 }
 
 /**
+ * 'Rescans' for new/removed joysticks and registers them again.
+ */
+void QJoysticks::updateInterfaces()
+{
+    /* Remove all the joysticks */
+    resetJoysticks();
+
+    /* Register all SDL joysticks */
+    foreach (QJoystickDevice* joystick, sdlJoysticks()->joysticks())
+        addInputDevice (joystick);
+
+    /* Register the virtual joystick */
+    if (virtualJoystick()->joystickEnabled()) {
+        addInputDevice (virtualJoystick()->joystick());
+        virtualJoystick()->setJoystickID (inputDevices().count() - 1);
+    }
+}
+
+/**
  * Changes the axis value range of the virtual joystick.
  *
  * Take into account that maximum axis values supported by the \c QJoysticks
@@ -314,25 +333,6 @@ void QJoysticks::resetJoysticks()
 {
     m_devices.clear();
     emit countChanged();
-}
-
-/**
- * 'Rescans' for new/removed joysticks and registers them again.
- */
-void QJoysticks::updateInterfaces()
-{
-    /* Remove all the joysticks */
-    resetJoysticks();
-
-    /* Register all SDL joysticks */
-    foreach (QJoystickDevice* joystick, sdlJoysticks()->joysticks())
-        addInputDevice (joystick);
-
-    /* Register the virtual joystick */
-    if (virtualJoystick()->joystickEnabled()) {
-        addInputDevice (virtualJoystick()->joystick());
-        virtualJoystick()->setJoystickID (inputDevices().count() - 1);
-    }
 }
 
 /**

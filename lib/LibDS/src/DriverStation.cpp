@@ -232,7 +232,7 @@ bool DriverStation::isVoltageBrownout() const
  */
 bool DriverStation::isEmergencyStopped() const
 {
-    return operationStatus() == kOperationEmergencyStop;
+    return operationStatus() == kEmergencyStop;
 }
 
 /**
@@ -906,6 +906,29 @@ void DriverStation::switchToTeleoperated()
 }
 
 /**
+ * Re-registers all joysticks based on the criteria specified by the new
+ * protocol.
+ */
+void DriverStation::reconfigureJoysticks()
+{
+    JoystickList list = m_joysticks;
+    resetJoysticks();
+
+    qDebug() << "Re-generating joystick list based on protocol preferences";
+    qDebug() << protocol()->name() << "supports"
+             << maxJoystickCount() << "joysticks with:"
+             << maxAxisCount() << "axes,"
+             << maxButtonCount() << "buttons and"
+             << maxPOVCount() << "POVs";
+
+    foreach (Joystick* joystick, list) {
+        registerJoystick (joystick->realNumAxes,
+                          joystick->realNumButtons,
+                          joystick->realNumPOVs);
+    }
+}
+
+/**
  * Changes the team number
  */
 void DriverStation::setTeam (int team)
@@ -1258,7 +1281,7 @@ void DriverStation::resetRobot()
     config()->updateVoltageStatus (kVoltageNormal);
     config()->updateRobotCodeStatus (kCodeFailing);
     config()->updateRobotCommStatus (kCommsFailing);
-    config()->updateOperationStatus (kOperationNormal);
+    config()->updateOperationStatus (kNormal);
     config()->robotLogger()->registerWatchdogTimeout();
 
     /* Scan the next round of robot IPs */
@@ -1358,29 +1381,6 @@ void DriverStation::calculateScanSpeed()
 
     emit newMessage (pscCount.arg (m_sockets->socketCount()));
     emit newMessage (scanTime);
-}
-
-/**
- * Re-registers all joysticks based on the criteria specified by the new
- * protocol.
- */
-void DriverStation::reconfigureJoysticks()
-{
-    JoystickList list = m_joysticks;
-    resetJoysticks();
-
-    qDebug() << "Re-generating joystick list based on protocol preferences";
-    qDebug() << protocol()->name() << "supports"
-             << maxJoystickCount() << "joysticks with:"
-             << maxAxisCount() << "axes,"
-             << maxButtonCount() << "buttons and"
-             << maxPOVCount() << "POVs";
-
-    foreach (Joystick* joystick, list) {
-        registerJoystick (joystick->realNumAxes,
-                          joystick->realNumButtons,
-                          joystick->realNumPOVs);
-    }
 }
 
 /**

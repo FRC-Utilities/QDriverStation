@@ -303,7 +303,7 @@ bool FRC_2014::interpretRobotPacket (const QByteArray& data)
 
     /* The robot seems to be emergency stopped */
     if (opcode == kEmergencyStopOn && !config()->isEmergencyStopped())
-        config()->updateOperationStatus (DS::kOperationEmergencyStop);
+        config()->updateOperationStatus (DS::kEmergencyStop);
 
     /* Update code status & voltage */
     bool hasCode = (integer != 0x37) && (decimal != 0x37);

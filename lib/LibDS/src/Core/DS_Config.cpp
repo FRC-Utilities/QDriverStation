@@ -31,7 +31,7 @@ DS_Config::DS_Config()
     m_position = kPosition1;
     m_alliance = kAllianceRed;
     m_codeStatus = kCodeFailing;
-    m_operationStatus = kOperationNormal;
+    m_operationStatus = kNormal;
     m_fmsCommStatus = kCommsFailing;
     m_enableStatus = kDisabled;
     m_voltageStatus = kVoltageNormal;
@@ -129,7 +129,7 @@ QString DS_Config::pdpVersion() const
 
 bool DS_Config::isEmergencyStopped() const
 {
-    return operationStatus() == DS::kOperationEmergencyStop;
+    return operationStatus() == DS::kEmergencyStop;
 }
 
 bool DS_Config::isRobotCodeRunning() const
@@ -242,8 +242,8 @@ void DS_Config::setBrownout (bool brownout)
 
 void DS_Config::setEmergencyStop (bool estop)
 {
-    DS::OperationStatus status = DS::kOperationNormal;
-    if (estop) status = DS::kOperationEmergencyStop;
+    DS::OperationStatus status = DS::kNormal;
+    if (estop) status = DS::kEmergencyStop;
 
     updateOperationStatus (status);
 }

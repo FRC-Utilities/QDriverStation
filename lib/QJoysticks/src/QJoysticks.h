@@ -53,6 +53,7 @@ public:
     QJoystickDevice* getInputDevice (int index);
 
 public slots:
+    void updateInterfaces();
     void setVirtualJoystickRange (float range);
     void setVirtualJoystickEnabled (bool enabled);
     void setBlacklisted (int index, bool blacklisted);
@@ -71,7 +72,6 @@ signals:
 
 private slots:
     void resetJoysticks();
-    void updateInterfaces();
     void addInputDevice (QJoystickDevice* device);
     void onPOVEvent (const QJoystickPOVEvent& event);
     void onAxisEvent (const QJoystickAxisEvent& event);
