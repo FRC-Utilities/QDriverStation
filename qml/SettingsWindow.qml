@@ -34,8 +34,8 @@ Window {
     title: qsTr ("Settings")
     minimumWidth: Globals.scale (420)
     maximumWidth: Globals.scale (420)
-    minimumHeight: Globals.scale (460)
-    maximumHeight: Globals.scale (460)
+    minimumHeight: Globals.scale (468)
+    maximumHeight: Globals.scale (468)
     color: Globals.Colors.WindowBackground
 
     //
