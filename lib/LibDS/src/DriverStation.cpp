@@ -557,17 +557,26 @@ QString DriverStation::robotAddress() const {
  * Returns the current status of the Driver Station
  */
 QString DriverStation::generalStatus() const {
+    /* No robot communication */
     if (!isConnectedToRobot())
         return tr ("No Robot Communication");
+
+    /* Emergecy stopped */
     else if (isEmergencyStopped())
         return tr ("Emergency Stopped");
+
+    /* No robot code */
     else if (!isRobotCodeRunning())
         return tr ("No Robot Code");
+
+    /* Voltage brownout (ouch!) */
     else if (isVoltageBrownout())
         return tr ("Voltage Brownout");
 
     QString mode;
     QString enabled;
+
+    /* Get control mode string */
     switch (controlMode()) {
     case kControlTest:
         mode = tr ("Test");
@@ -580,6 +589,7 @@ QString DriverStation::generalStatus() const {
         break;
     }
 
+    /* Get enabled string */
     switch (enableStatus()) {
     case kEnabled:
         enabled = tr ("Enabled");
@@ -589,6 +599,7 @@ QString DriverStation::generalStatus() const {
         break;
     }
 
+    /* Return %mode% %enabled% */
     return mode + " " + enabled;
 }
 

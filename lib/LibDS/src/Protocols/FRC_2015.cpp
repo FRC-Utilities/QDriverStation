@@ -285,16 +285,12 @@ bool FRC_2015::interpretFMSPacket (const QByteArray& data) {
         config()->setEnabled (control & kEnabled);
 
         /* Get FMS robot mode */
-        DS::ControlMode mode;
         if (control & kTeleoperated)
-            mode = DS::kControlTeleoperated;
+            config()->updateControlMode (DS::kControlTeleoperated);
         else if (control & kAutonomous)
-            mode = DS::kControlAutonomous;
+            config()->updateControlMode (DS::kControlAutonomous);
         else if (control & kTest)
-            mode = DS::kControlTest;
-
-        /* Update robot mode */
-        config()->updateControlMode (mode);
+            config()->updateControlMode (DS::kControlTest);
 
         /* Update to correct alliance and position */
         config()->updateAlliance (getAlliance (station));

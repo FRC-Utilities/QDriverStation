@@ -307,7 +307,7 @@ void Sockets::setAddressList (const QStringList& list) {
 
     /* Configure the IPs */
     m_robotIpList = list;
-    generateLocalNetworkAddresses();  
+    generateLocalNetworkAddresses();
 
     /* Create temp. sockets */
     for (int i = 0; i < scanRate(); ++i)

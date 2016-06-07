@@ -80,9 +80,9 @@ class DS : public QObject {
      * Represents the available control modes of the robot
      */
     enum ControlMode {
-        kControlTest,
-        kControlAutonomous,
-        kControlTeleoperated,
+        kControlTest,         /**< Dashboard controls individual actuators */
+        kControlAutonomous,   /**< Robot uses its programming to move */
+        kControlTeleoperated, /**< Driver moves robot */
     };
     SMART_ENUM (ControlMode)
 
@@ -93,8 +93,8 @@ class DS : public QObject {
      * (e.g adjust its sensors, change dashboard values, etc.)
      */
     enum Alliance {
-        kAllianceRed,
-        kAllianceBlue,
+        kAllianceRed,  /**< Set robot to red alliance */
+        kAllianceBlue, /**< Set robot to blue alliance */
     };
     SMART_ENUM (Alliance)
 
@@ -104,9 +104,9 @@ class DS : public QObject {
      * Again, the robot program may use this data to change its behavior.
      */
     enum Position {
-        kPosition1,
-        kPosition2,
-        kPosition3,
+        kPosition1, /**< Position 1, regardless of alliance */
+        kPosition2, /**< Position 2, regardless of alliance */
+        kPosition3, /**< Position 3, regardless of alliance */
     };
     SMART_ENUM (Position)
 
@@ -116,8 +116,8 @@ class DS : public QObject {
      * the client and the radio.
      */
     enum CommStatus {
-        kCommsWorking,
-        kCommsFailing,
+        kCommsWorking, /**< Communications with target have been established */
+        kCommsFailing, /**< We don't have a working comms. link with target */
     };
     SMART_ENUM (CommStatus)
 
@@ -127,8 +127,8 @@ class DS : public QObject {
      * the code is running or not (in order to be able to operate the robot).
      */
     enum CodeStatus {
-        kCodeRunning,
-        kCodeFailing,
+        kCodeRunning, /**< Robot code is operational */
+        kCodeFailing, /**< For some reason, robot does not have code */
     };
     SMART_ENUM (CodeStatus)
 
@@ -137,8 +137,8 @@ class DS : public QObject {
      * Represents the enabled state of the robot.
      */
     enum EnableStatus {
-        kEnabled,
-        kDisabled,
+        kEnabled,  /**< Robot is enabled */
+        kDisabled, /**< Robot is disabled */
     };
     SMART_ENUM (EnableStatus)
 
@@ -147,8 +147,8 @@ class DS : public QObject {
      * Represents the operation status of the robot.
      */
     enum OperationStatus {
-        kNormal,
-        kEmergencyStop,
+        kNormal,        /**< Robot program operates */
+        kEmergencyStop, /**< Robot program is stopped */
     };
     SMART_ENUM (OperationStatus)
 
@@ -159,8 +159,8 @@ class DS : public QObject {
      * the robot may report a voltage brownout.
      */
     enum VoltageStatus {
-        kVoltageNormal,
-        kVoltageBrownout,
+        kVoltageNormal,   /**< Robot systems have enough power to operate */
+        kVoltageBrownout, /**< Robot systems may fail due to lack of power */
     };
     SMART_ENUM (VoltageStatus)
 
@@ -168,8 +168,8 @@ class DS : public QObject {
      * Represents the socket types that can be used by the DS modules
      */
     enum SocketType {
-        kSocketTypeUDP,
-        kSocketTypeTCP,
+        kSocketTypeUDP, /**< Represents a UDP socket */
+        kSocketTypeTCP, /**< Represents a TCP socket */
     };
     SMART_ENUM (SocketType)
 
