@@ -340,7 +340,7 @@ RowLayout {
                 if (value > 60)
                     return Globals.Colors.HighlightColor
 
-                else if (value > 20)
+                else if (value > 25)
                     return Globals.Colors.CPUProgress
 
                 return Globals.Colors.IndicatorError
