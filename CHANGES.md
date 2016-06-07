@@ -1,6 +1,6 @@
 # Changes
 
-### QDriverStation 16.05
+### QDriverStation 16.06
 
 - Support for 2014 protocol
 - Implement parallel sockets to detect the robot a LOT faster
