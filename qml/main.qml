@@ -176,9 +176,8 @@ ApplicationWindow {
         //
         Status {
             id: status
+            Layout.fillWidth: false
             Layout.fillHeight: true
-            Layout.maximumWidth: implicitWidth
-            Layout.minimumHeight: implicitHeight
         }
 
         //
