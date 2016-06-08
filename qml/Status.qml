@@ -96,6 +96,7 @@ ColumnLayout {
         timer.start()
 
         Globals.morse ("..-", 440, true)
+        Globals.beep (220, 100)
     }
 
     //

@@ -74,11 +74,6 @@ var uiFont = "Ubuntu"
 var monoFont = "Ubuntu Mono"
 
 //
-// Changes the default offset of the "nice beep"
-//
-var defaultOffset = -90
-
-//
 // Returns the adjusted input for the screen size and density
 //
 function scale (input) {
@@ -106,20 +101,6 @@ function longBeep() {
     beep (220, 200)
 }
 
-function niceBeep (frequency, offset, time) {
-    /* Offset is positive, offset (acute) sound first */
-    if (offset > 0) {
-        beep (frequency + offset, time)
-        beep (frequency, time)
-    }
-
-    /* Offset is negative, offset (bass) sound last */
-    else {
-        beep (frequency, time)
-        beep (frequency + offset, time)
-    }
-}
-
 //
 // Beep with a custom frequency (in HZ) and time (in milliseconds)
 //
@@ -132,7 +113,7 @@ function beep (frequency, time) {
 // the appropiate sounds. This is used in the status widget to generate
 // several sound tones.
 //
-function morse (input, frequency, nice) {
+function morse (input, frequency) {
     for (var i = 0; i < input.length; ++i) {
         var time = 0
         var base = 50
@@ -147,7 +128,7 @@ function morse (input, frequency, nice) {
         else if (character === "/")
             time = base * 7
 
-        niceBeep (frequency, nice ? defaultOffset : 0, time)
+        beep (frequency, time)
         beep (0, base)
     }
 }

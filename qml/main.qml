@@ -123,8 +123,8 @@ ApplicationWindow {
     Connections {
         target: DriverStation
         onInitialized: {
-            Globals.niceBeep (440, Globals.defaultOffset, 100)
-            Globals.niceBeep (220, Globals.defaultOffset, 100)
+            Globals.beep (440, 100)
+            Globals.beep (220, 100)
 
             if (!visible) {
                 visible = true

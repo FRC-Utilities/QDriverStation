@@ -66,8 +66,8 @@ Beeper::Beeper() {
 
     /* Generate the audio configuration */
     SDL_AudioSpec desiredSpec;
-    desiredSpec.samples = 8;
     desiredSpec.channels = 1;
+    desiredSpec.samples = 1024;
     desiredSpec.userdata = this;
     desiredSpec.freq = SAMPLING_FREQ;
     desiredSpec.format = AUDIO_S16SYS;
