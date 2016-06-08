@@ -128,6 +128,7 @@ qint64 ConfigurableSocket::writeDatagram (const QByteArray& data,
  *             to the IP and port or to share that access)
  */
 void ConfigurableSocket::bind (quint16 port, QAbstractSocket::BindMode mode) {
+    socket()->abort();
     socket()->bind (port, mode);
 }
 
@@ -157,6 +158,8 @@ void ConfigurableSocket::bind (const QString& ip, quint16 port,
 void ConfigurableSocket::bind (const QHostAddress& ip, quint16 port,
                                QAbstractSocket::BindMode mode) {
     m_peerAddress = ip.toString();
+
+    socket()->abort();
     socket()->bind (ip, port, mode);
 }
 

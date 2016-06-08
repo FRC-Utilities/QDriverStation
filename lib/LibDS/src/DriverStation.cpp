@@ -1188,7 +1188,6 @@ void DriverStation::resetRobot() {
     config()->updateOperationStatus (kNormal);
     config()->robotLogger()->registerWatchdogTimeout();
 
-    /* Scan the next round of robot IPs */
     if (customRobotAddress().isEmpty()) {
         m_sockets->setRobotAddress ("");
         m_sockets->refreshAddressList();

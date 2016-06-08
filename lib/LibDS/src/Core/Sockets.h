@@ -81,6 +81,8 @@ class Sockets : public QObject {
     ConfigurableSocket* m_robotReceiver;
     ConfigurableSocket* m_radioReceiver;
 
+    QList<ConfigurableSocket*> m_socketList;
+
     int m_fmsInput;
     int m_fmsOutput;
     int m_radioInput;

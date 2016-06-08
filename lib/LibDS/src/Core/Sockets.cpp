@@ -15,24 +15,40 @@
 #define FLAGS QAbstractSocket::ShareAddress | QAbstractSocket::ReuseAddressHint
 // *INDENT-ON*
 
+/*
+ * WARNING:
+ *
+ * The concept of this class is simple enough, however, there are a lot
+ * of ugly hacks here. Do not change anything unless you know what you are
+ * doing! If you change something, expect something to break!
+ */
+
 Sockets::Sockets() {
+    /* Initialze scanner variables */
     m_iterator        = 0;
-    m_scanRate     = 0;
+    m_scanRate        = 0;
+
+    /* Initialize IP strings */
     m_robotIp         = "";
     m_radioIp         = "";
+
+    /* Initialize sockets */
     m_fmsSender       = Q_NULLPTR;
     m_fmsReceiver     = Q_NULLPTR;
     m_radioSender     = Q_NULLPTR;
     m_robotSender     = Q_NULLPTR;
     m_radioReceiver   = Q_NULLPTR;
     m_robotReceiver   = Q_NULLPTR;
+
+    /* Initialize ports */
     m_fmsInput        = DISABLED_PORT;
     m_fmsOutput       = DISABLED_PORT;
     m_radioInput      = DISABLED_PORT;
     m_robotInput      = DISABLED_PORT;
     m_radioOutput     = DISABLED_PORT;
     m_robotOutput     = DISABLED_PORT;
-    m_robotIpList     = QStringList ("");
+
+    /* Initialize socket types */
     m_fmsSocketType   = DS::kSocketTypeUDP;
     m_radioSocketType = DS::kSocketTypeUDP;
     m_robotSocketType = DS::kSocketTypeUDP;
@@ -44,15 +60,34 @@ Sockets::Sockets() {
  * Returns the number of IPs probed per watchdog expiration time.
  * If the client/user did not assign a custom scan rate, then this function
  * will calculate an appropiate value based on the size of the robot IP list.
+ *
+ * \note The value may be decrased depending on the size of a robot packet
  */
 int Sockets::scanRate() const {
     int rate = 0;
 
+    /* Use the user set rate */
     if (customScanRate() > 0)
         rate = customScanRate();
-    else
-        rate = qMin (72, qMax (addressList().count() / 6, 1));
 
+    /* Use the automatically-set scan rate */
+    else if (addressList().count() > 0)
+        rate = qMax (addressList().count() / 6, 1);
+
+    /*
+     * Do not let the scan rate be greater than 128.
+     * This is important, since UNIX systems treat sockets (and everything)
+     * as files, and UNIX imposes a open-file-limit per application.
+     * Usually, this limit is around 1024, if exceeded, bad things can
+     * happen, such as slow responses and incorrect handling of
+     * sockets.
+     */
+    rate = qMin (rate, 128);
+
+    /* Do not let the scan rate be smaller than 1 */
+    rate = qMax (rate, 1);
+
+    /* Done! */
     return rate;
 }
 
@@ -125,15 +160,6 @@ QString Sockets::robotAddress() const {
  * Returns a list with the possible IP addresses of the robot.
  * Please note that the \c Protocol appends a generated list with all
  * the possible IPs based on the current IP(s) address(es) of the client.
- *
- * While this can be considered as brute force, it is more reliable than
- * hopping that the robot respects the default address, that mDNS works
- * and that the default gateway is available.
- *
- * Using this method is also faster, as we can control the ammount of
- * parallel socket pairs working on detecting the robot, effectively
- * limiting our scan speed to the ammount of RAM that we want the client to
- * use.
  */
 QStringList Sockets::addressList() const {
     return m_robotIpList;
@@ -169,10 +195,21 @@ DS::SocketType Sockets::robotSocketType() const {
  *     - The scan rate (which allow us to probe more IPs at the same time)
  */
 void Sockets::refreshAddressList() {
-    if (robotAddress().isEmpty() && !addressList().isEmpty()) {
+    /* Delete the temp. sockets */
+    m_socketList.clear();
+
+    /* Only generate sockets & update values if necessary */
+    if (!addressList().isEmpty()) {
+
+        /* Create a set of temp. sockets */
+        for (int i = 0; i < scanRate(); ++i)
+            m_socketList.append (new ConfigurableSocket (robotSocketType()));
+
+        /* Probe next round of IPs */
         if (addressList().count() > m_iterator + scanRate())
             m_iterator += scanRate();
 
+        /* Reached the end, start from beginning */
         else
             m_iterator = 0;
     }
@@ -195,14 +232,20 @@ void Sockets::sendToRobot (const QByteArray& data) {
     if (robotOutputPort() == DISABLED_PORT)
         return;
 
+    /* We already know robot IP, send data directly */
     if (m_robotSender && !robotAddress().isEmpty())
         m_robotSender->writeDatagram (data, robotAddress(), robotOutputPort());
 
+    /* We do not know robot IP, use parallel socket magic */
     else {
+
+        /* Send a different IP for each temp. socket */
         for (int i = 0; i < scanRate(); ++i) {
-            if (scanRate() > i && addressList().count() > (m_iterator + i)) {
+
+            /* Only send if socket & IP exist */
+            if (m_socketList.count() > i && addressList().count() > (m_iterator + i)) {
                 QString ip = addressList().at (m_iterator + i);
-                m_robotSender->writeDatagram (data, ip, robotOutputPort());
+                m_socketList.at (i)->writeDatagram (data, ip, robotOutputPort());
             }
         }
     }
@@ -223,15 +266,16 @@ void Sockets::sendToRadio (const QByteArray& data) {
  * the user.
  */
 void Sockets::setRadioAddress (const QString& ip) {
-    m_radioIp = ip;
+    if (m_radioIp != ip) {
+        m_radioIp = ip;
+        qDebug() << "Radio IP set to" << ip;
+    }
 
     if (m_radioReceiver)
-        m_radioReceiver->bind (ip, radioInputPort(), FLAGS);
+        m_radioReceiver->bind (m_radioIp, radioInputPort(), FLAGS);
 
     if (m_radioSender)
-        m_radioSender->connectToHost (ip, radioInputPort(), WRITE);
-
-    qDebug() << "Radio IP set to" << ip;
+        m_radioSender->connectToHost (m_radioIp, radioInputPort(), WRITE);
 }
 
 /**
@@ -242,15 +286,16 @@ void Sockets::setRadioAddress (const QString& ip) {
  * be able to detect any sign of the robot very fast.
  */
 void Sockets::setRobotAddress (const QString& ip) {
-    m_robotIp = ip;
+    if (m_robotIp != ip) {
+        m_robotIp = ip;
+        qDebug() << "Robot IP set to" << ip;
+    }
 
     if (m_robotReceiver)
-        m_robotReceiver->bind (ip, robotInputPort(), FLAGS);
+        m_robotReceiver->bind (m_robotIp, robotInputPort(), FLAGS);
 
     if (m_robotSender)
-        m_robotSender->connectToHost (ip, robotOutputPort(), WRITE);
-
-    qDebug() << "Robot IP set to" << ip;
+        m_robotSender->connectToHost (m_robotIp, robotOutputPort(), WRITE);
 }
 
 /**
@@ -346,7 +391,8 @@ void Sockets::setRobotOutputPort (int port) {
  */
 void Sockets::setScanRate (int count) {
     m_scanRate = count;
-    qDebug() << "Scan rate set to" << count;
+    m_iterator = 0;
+    qDebug() << "Scan rate set to" << scanRate();
 }
 
 /**
@@ -356,15 +402,19 @@ void Sockets::setScanRate (int count) {
 void Sockets::setFMSSocketType (const DS::SocketType& type) {
     m_fmsSocketType = type;
 
+    /* Delete FMS sockets */
     free (m_fmsSender);
     free (m_fmsReceiver);
 
+    /* Create FMS sockets */
     m_fmsSender = new ConfigurableSocket (type);
     m_fmsReceiver = new ConfigurableSocket (type);
 
+    /* Avoid receiving sent data */
     m_fmsSender->socket()->setSocketOption (LBACK, 0);
     m_fmsReceiver->socket()->setSocketOption (LBACK, 0);
 
+    /* React when receiving data from FMS */
     connect (m_fmsReceiver, SIGNAL (readyRead()), this, SLOT (readFMSSocket()));
 
     qDebug() << "FMS socket type set to" << type;
@@ -377,15 +427,19 @@ void Sockets::setFMSSocketType (const DS::SocketType& type) {
 void Sockets::setRadioSocketType (const DS::SocketType& type) {
     m_radioSocketType = type;
 
+    /* Delete radio sockets */
     free (m_radioSender);
     free (m_radioReceiver);
 
+    /* Create radio sockets */
     m_radioSender = new ConfigurableSocket (type);
     m_radioReceiver = new ConfigurableSocket (type);
 
+    /* Do not receive sent data */
     m_radioSender->socket()->setSocketOption (LBACK, 0);
     m_radioReceiver->socket()->setSocketOption (LBACK, 0);
 
+    /* React when receiving data from radio */
     connect (m_radioReceiver, SIGNAL (readyRead()), this, SLOT (readRadioSocket()));
 
     qDebug() << "Radio socket type set to" << type;
@@ -398,15 +452,19 @@ void Sockets::setRadioSocketType (const DS::SocketType& type) {
 void Sockets::setRobotSocketType (const DS::SocketType& type) {
     m_robotSocketType = type;
 
+    /* Delete robot sockets */
     free (m_robotSender);
     free (m_robotReceiver);
 
+    /* Create robot sockets */
     m_robotSender = new ConfigurableSocket (type);
     m_robotReceiver = new ConfigurableSocket (type);
 
+    /* Do not receive sent data */
     m_robotSender->socket()->setSocketOption (LBACK, 0);
     m_robotReceiver->socket()->setSocketOption (LBACK, 0);
 
+    /* Reach when receiving data from radio */
     connect (m_robotReceiver, SIGNAL (readyRead()), this, SLOT (readRobotSocket()));
 
     qDebug() << "Robot socket type set to" << type;
@@ -468,26 +526,39 @@ void Sockets::readRobotSocket() {
  *     - The function will do this for each interface (ethernet, wifi, usb, etc)
  */
 void Sockets::generateLocalNetworkAddresses() {
+    /* Get current IP & generate LAN IPs for each network interface */
     foreach (QNetworkInterface interface, QNetworkInterface::allInterfaces()) {
+
+        /* Know if interface is usable */
         bool isUp      = (interface.flags() & QNetworkInterface::IsUp);
         bool isRunning = (interface.flags() & QNetworkInterface::IsRunning);
 
+        /* Interface is usable, get current IP(s) & generate LAN IPs */
         if (isUp && isRunning) {
+
+            /* The interface may have more than one IP, repeat process for each IP */
             foreach (QNetworkAddressEntry address, interface.addressEntries()) {
+
+                /* IP is 127.0.0.1, get out */
                 if (address.ip().toString() == "127.0.0.1")
                     break;
-                if (address.ip().isNull())
-                    break;
 
+                /* Divide IPv4 address into four segments */
                 QStringList numbers = address.ip().toString().split (".");
-                qDebug() << "Client IP detected:" << address.ip().toString();
 
+                /* Construct an IPv4 with the first three segments */
                 if (numbers.count() == 4) {
+
+                    /* Notify developer that we are using this IP */
+                    qDebug() << "Client IP detected:" << address.ip().toString();
+
+                    /* Contruct base IP */
                     QString base = QString ("%1.%2.%3.")
                                    .arg (numbers.at (0))
                                    .arg (numbers.at (1))
                                    .arg (numbers.at (2));
 
+                    /* Generate the last segment for each IP */
                     for (int i = 1; i < 255; ++i)
                         m_robotIpList.append (base + QString::number (i));
                 }
@@ -495,5 +566,6 @@ void Sockets::generateLocalNetworkAddresses() {
         }
     }
 
+    /* Finally, add home address */
     m_robotIpList.append ("127.0.0.1");
 }

@@ -34,8 +34,8 @@ Window {
     title: qsTr ("Settings")
     minimumWidth: Globals.scale (420)
     maximumWidth: Globals.scale (420)
-    minimumHeight: Globals.scale (468)
-    maximumHeight: Globals.scale (468)
+    minimumHeight: Globals.scale (440)
+    maximumHeight: Globals.scale (440)
     color: Globals.Colors.WindowBackground
 
     //
@@ -268,7 +268,7 @@ Window {
                             id: scanRate
                             value: 0
                             minimumValue: 0
-                            maximumValue: 512
+                            maximumValue: 128 // Do not change this!
                             Layout.fillWidth: true
                             enabled: scanRateCheckbox.checked
                         }
