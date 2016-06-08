@@ -394,8 +394,8 @@ void Sockets::setRobotOutputPort (int port) {
  * socket count based on the size of the \c robotIpList()
  */
 void Sockets::setScanRate (int count) {
-    m_scanRate = count;
     m_iterator = 0;
+    m_scanRate = count;
     qDebug() << "Scan rate set to" << scanRate();
 }
 
