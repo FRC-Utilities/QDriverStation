@@ -20,10 +20,9 @@
 <p>Yes. However, checking for updates will (obviously) not work if your robot is not connected to the Internet. We recommend you to launch the QDriverStation from time to time in an Internet-connected network to check for updates.</p>
 <h4>5. Can I disable the QDriverStation updater?</h4>
 <p>Yes, just open the preferences window and uncheck the <em>Check for updates automatically</em> checkbox.</p>
-<h4>6. What is the <em>PSC</em>?</h4>
-<p>The <em>PSC</em> stands for <em>Parallel Socket Count</em>. It allows you to control how many parallel sockets to use to find the robot. A greater <em>PSC</em> value will allow the <em>QDriverStation</em> to detect the robot faster.</p>
-<p>In most cases, the <em>PSC</em> value set by the <em>QDriverStation</em> will be OK.</p>
-<p><strong>NOTE:</strong> Setting a very high <em>PSC</em> value may clog your system's resources. If the <em>QDriverStation</em> is slow to respond or it does not save/load settings correctly, try lowering the <em>PSC</em> value.</p>
+<h4>6. What is the <em>scan rate</em>?</h4>
+<p>The QDriverStation uses a system of parallel sockets to detect the robot faster. You can control the number of parallel sockets by setting a custom scan rate (0 = automatic).<p>
+<p><strong>NOTE:</strong> Setting a very high <em>scan rate</em> may clog your system's resources. If the <em>QDriverStation</em> is slow to respond or it does not save/load settings correctly, try lowering the <em>scan rate</em>.</p>
 <h4>7. I am interested in making my own Driver Station, where can I start?</h4>
 <p>If you are interested in making your own GUI, check the <em><a href="http://github.com/wint-3794/libds">LibDS</a></em>, which deals with all the networking aspects of a Driver Station and allows you to load custom robot protocols (FRC 2014 and 2015/2016 protocols are already included in the library).</p>
 <p>Also, check the <a href="https://github.com/WinT-3794/QDriverStation/blob/master/CONTRIBUTORS.md">CONTRIBUTORS</a> file, which contains several links that may be helpful to you.</p>
