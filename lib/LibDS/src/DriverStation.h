@@ -65,8 +65,8 @@ class DriverStation : public DS_Base {
     Q_INVOKABLE QString appLoggerPath() const;
     Q_INVOKABLE QString robotLoggerPath() const;
 
+    Q_INVOKABLE float maxBatteryVoltage() const;
     Q_INVOKABLE float currentBatteryVoltage() const;
-    Q_INVOKABLE float nominalBatteryVoltage() const;
     Q_INVOKABLE float nominalBatteryAmperage() const;
 
     Q_INVOKABLE int team() const;

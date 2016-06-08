@@ -55,10 +55,7 @@ Plot {
     //
     Connections {
         target: DriverStation
-        onProtocolChanged: {
-            maximumValue = DriverStation.nominalBatteryVoltage()
-            minimumValue = DriverStation.nominalBatteryVoltage() / 10
-        }
+        onProtocolChanged: maximumValue = DriverStation.maxBatteryVoltage()
     }
 
     //
@@ -70,5 +67,6 @@ Plot {
     //
     // Start graphing from origin, not from the middle or some other place
     //
+    minimumValue: 0
     Component.onCompleted: update()
 }

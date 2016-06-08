@@ -182,9 +182,12 @@ class Protocol {
      * Returns the nominal voltage given by the battery.
      * This value can be used by the client to draw graphs, create car-like
      * dashboards and other cool things.
+     *
+     * It is also used to avoid reporting 37.00 V or 16'674'591 V.
+     * Trust me, it happened: http://imgur.com/a/6ibog
      */
-    virtual float nominalBatteryVoltage() {
-        return 12.80;
+    virtual float maxBatteryVoltage() {
+        return 14;
     }
 
     /**

@@ -26,7 +26,7 @@ import QtQuick.Layouts 1.0
 import "widgets"
 import "globals.js" as Globals
 
-Item {
+ColumnLayout {
     id: status
 
     //
@@ -99,9 +99,12 @@ Item {
     }
 
     //
-    // Ensure that the width of the controls is not to small but not too large
+    // Layout/geometry options
     //
-    implicitWidth: Math.max (childrenRect.width, Globals.scale (166))
+    spacing: 0
+    Layout.margins: Globals.spacing
+    Layout.minimumWidth: Globals.scale (144)
+    Layout.preferredWidth: Globals.scale (144)
 
     //
     // Check if there is already a joystick connected to the computer
@@ -139,203 +142,194 @@ Item {
     }
 
     //
-    // The actual controls
+    // Team number indicator
     //
-    ColumnLayout {
-        spacing: 0
-        anchors.fill: parent
-        anchors.margins: Globals.spacing
+    RowLayout {
+        spacing: Globals.spacing
 
-        //
-        // Team number indicator
-        //
-        RowLayout {
-            spacing: Globals.spacing
-
-            Label {
-                size: large
-                font.bold: true
-                Layout.fillWidth: true
-                text: qsTr ("Team") + " #"
-                verticalAlignment: Qt.AlignCenter
-            }
-
-            Label {
-                size: large
-                font.bold: true
-                text: status.teamNumber
-                verticalAlignment: Qt.AlignVCenter
-                horizontalAlignment: Qt.AlignHCenter
-            }
-        }
-
-        //
-        // Spacer
-        //
-        Item {
-            width: height
-            height: Globals.scale (10)
-        }
-
-        //
-        // Simulated Robot label
-        //
         Label {
             size: large
             font.bold: true
-            visible: simulated
             Layout.fillWidth: true
-            Layout.fillHeight: true
-            text: qsTr ("Simulated Robot")
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            color: Globals.Colors.AlternativeHighlight
+            text: qsTr ("Team") + " #"
+            verticalAlignment: Qt.AlignCenter
         }
 
-        //
-        // Voltage indicator & plot
-        //
-        RowLayout {
-            visible: !simulated
-            spacing: Globals.spacing
-
-            //
-            // Voltage widget
-            //
-            Item {
-                width: Globals.scale (54)
-                height: Globals.scale (34)
-
-                property var diodeHeight: height * 0.20
-                property var backgroundColor: Globals.Colors.IconColor
-
-                Rectangle {
-                    id: cover
-                    height: Globals.scale (4)
-                    color: parent.backgroundColor
-
-                    anchors.top: parent.top
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.topMargin: parent.diodeHeight
-                }
-
-                Rectangle {
-                    id: leftDiode
-                    width: parent.width * 0.2
-                    color: parent.backgroundColor
-                    height: parent.diodeHeight - Globals.scale (2)
-
-                    anchors.top: parent.top
-                    anchors.left: parent.left
-                    anchors.leftMargin: cover.height
-                }
-
-                Rectangle {
-                    id: rightDiode
-                    width: parent.width * 0.2
-                    color: parent.backgroundColor
-                    height: parent.diodeHeight - Globals.scale (2)
-
-                    anchors.top: parent.top
-                    anchors.right: parent.right
-                    anchors.rightMargin: cover.height
-                }
-
-                Rectangle {
-                    id: base
-                    anchors.fill: parent
-                    color: parent.backgroundColor
-                    anchors.leftMargin: Globals.scale (2)
-                    anchors.rightMargin: Globals.scale (2)
-                    anchors.topMargin: parent.diodeHeight + (cover.height / 2)
-
-                    VoltageGraph {
-                        color: parent.color
-                        anchors.fill: parent
-                        border.color: parent.color
-                        anchors.margins: Globals.scale (2)
-                        anchors.topMargin: Globals.scale (0)
-                        noCommsColor: Globals.Colors.WindowBackground
-
-                        Component.onCompleted: setSpeed (24)
-                    }
-                }
-            }
-
-            Item {
-                Layout.fillWidth: true
-            }
-
-            Label {
-                size: large
-                font.bold: true
-                id: voltageIndicator
-                text: status.robotVoltage
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-            }
-        }
-
-        //
-        // Another spacer
-        //
-        Item {
-            width: height
-            Layout.fillHeight: true
-            height: Globals.scale (10)
-        }
-
-        //
-        // Status LEDs
-        //
-        Column {
-            Layout.fillWidth: true
-            spacing: Globals.scale (3)
-
-            LED {
-                leftToRight: true
-                id: communicationsLed
-                anchors.right: parent.right
-                text: qsTr ("Communications")
-            }
-
-            LED {
-                id: codeLed
-                leftToRight: true
-                text: qsTr ("Robot Code")
-                anchors.right: parent.right
-            }
-
-            LED {
-                id: joysticksLed
-                leftToRight: true
-                text: qsTr ("Joysticks")
-                anchors.right: parent.right
-            }
-        }
-
-        //
-        // Yet another spacer
-        //
-        Item {
-            width: height
-            height: Globals.scale (10)
-        }
-
-        //
-        // Robot status
-        //
         Label {
-            id: rstatus
             size: large
             font.bold: true
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            text: status.robotStatus
+            text: status.teamNumber
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignHCenter
-            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
         }
+    }
+
+    //
+    // Spacer
+    //
+    Item {
+        width: height
+        height: Globals.scale (10)
+    }
+
+    //
+    // Simulated Robot label
+    //
+    Label {
+        size: large
+        font.bold: true
+        visible: simulated
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        text: qsTr ("Simulated Robot")
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignHCenter
+        color: Globals.Colors.AlternativeHighlight
+    }
+
+    //
+    // Voltage indicator & plot
+    //
+    RowLayout {
+        visible: !simulated
+        spacing: Globals.spacing
+
+        //
+        // Voltage widget
+        //
+        Item {
+            width: Globals.scale (54)
+            height: Globals.scale (34)
+
+            property var diodeHeight: height * 0.20
+            property var backgroundColor: Globals.Colors.IconColor
+
+            Rectangle {
+                id: cover
+                height: Globals.scale (4)
+                color: parent.backgroundColor
+
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.topMargin: parent.diodeHeight
+            }
+
+            Rectangle {
+                id: leftDiode
+                width: parent.width * 0.2
+                color: parent.backgroundColor
+                height: parent.diodeHeight - Globals.scale (2)
+
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.leftMargin: cover.height
+            }
+
+            Rectangle {
+                id: rightDiode
+                width: parent.width * 0.2
+                color: parent.backgroundColor
+                height: parent.diodeHeight - Globals.scale (2)
+
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.rightMargin: cover.height
+            }
+
+            Rectangle {
+                id: base
+                anchors.fill: parent
+                color: parent.backgroundColor
+                anchors.leftMargin: Globals.scale (2)
+                anchors.rightMargin: Globals.scale (2)
+                anchors.topMargin: parent.diodeHeight + (cover.height / 2)
+
+                VoltageGraph {
+                    color: parent.color
+                    anchors.fill: parent
+                    border.color: parent.color
+                    anchors.margins: Globals.scale (2)
+                    anchors.topMargin: Globals.scale (0)
+                    noCommsColor: Globals.Colors.WindowBackground
+
+                    Component.onCompleted: setSpeed (24)
+                }
+            }
+        }
+
+        Item {
+            Layout.fillWidth: true
+        }
+
+        Label {
+            size: large
+            font.bold: true
+            id: voltageIndicator
+            text: status.robotVoltage
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+        }
+    }
+
+    //
+    // Another spacer
+    //
+    Item {
+        width: height
+        Layout.fillHeight: true
+        height: Globals.scale (10)
+    }
+
+    //
+    // Status LEDs
+    //
+    Column {
+        Layout.fillWidth: true
+        spacing: Globals.scale (3)
+
+        LED {
+            leftToRight: true
+            id: communicationsLed
+            anchors.right: parent.right
+            text: qsTr ("Communications")
+        }
+
+        LED {
+            id: codeLed
+            leftToRight: true
+            text: qsTr ("Robot Code")
+            anchors.right: parent.right
+        }
+
+        LED {
+            id: joysticksLed
+            leftToRight: true
+            text: qsTr ("Joysticks")
+            anchors.right: parent.right
+        }
+    }
+
+    //
+    // Yet another spacer
+    //
+    Item {
+        width: height
+        height: Globals.scale (10)
+    }
+
+    //
+    // Robot status
+    //
+    Label {
+        id: rstatus
+        size: large
+        font.bold: true
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        text: status.robotStatus
+        verticalAlignment: Qt.AlignVCenter
+        horizontalAlignment: Qt.AlignHCenter
+        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
     }
 }

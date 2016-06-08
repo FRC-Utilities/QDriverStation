@@ -266,22 +266,22 @@ QString DriverStation::robotLoggerPath() const {
 }
 
 /**
- * Returns the current battery voltage of the robot
- */
-float DriverStation::currentBatteryVoltage() const {
-    return config()->voltage();
-}
-
-/**
  * Returns the nominal battery voltage of the robot.
  * This value, along with the \c currentBatteryVoltage() function, can be
  * used to draw graphs or do other cool stuff.
  */
-float DriverStation::nominalBatteryVoltage() const {
+float DriverStation::maxBatteryVoltage() const {
     if (protocol())
-        return protocol()->nominalBatteryVoltage();
+        return protocol()->maxBatteryVoltage();
 
-    return 0;
+    return 14;
+}
+
+/**
+ * Returns the current battery voltage of the robot
+ */
+float DriverStation::currentBatteryVoltage() const {
+    return config()->voltage();
 }
 
 /**
