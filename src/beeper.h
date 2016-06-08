@@ -6,25 +6,24 @@
 #ifndef _QDS_BEEPER_H
 #define _QDS_BEEPER_H
 
-#include <queue>
 #include <QObject>
-
-struct BeepObject {
-    float freq;
-    int samplesLeft;
-};
 
 class Beeper : public QObject {
     Q_OBJECT
 
   public:
-    Beeper();
+    explicit Beeper();
     ~Beeper();
 
-    Q_INVOKABLE void setEnabled (bool enabled);
-    Q_INVOKABLE void beep (float freq, int duration);
-
     void generateSamples (qint16* stream, int length);
+
+  public slots:
+    void setEnabled (bool enabled);
+    void beep (float frequency, int duration);
+
+  private:
+    bool m_enabled;
+    double m_angle;
 };
 
 #endif

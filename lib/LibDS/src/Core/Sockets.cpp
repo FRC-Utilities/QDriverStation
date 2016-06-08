@@ -19,8 +19,8 @@
  * WARNING:
  *
  * The concept of this class is simple enough, however, there are a lot
- * of ugly hacks here. Do not change anything unless you know what you are
- * doing! If you change something, expect something to break!
+ * of 'ugly hacks' here. Do not change anything unless you know what you are doing!
+ * If you change something, expect something to break or to stop working!
  */
 
 Sockets::Sockets() {
