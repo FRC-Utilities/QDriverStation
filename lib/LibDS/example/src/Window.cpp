@@ -11,8 +11,7 @@
 
 #include <QMessageBox>
 
-Window::Window (QWidget* parent) : QMainWindow (parent)
-{
+Window::Window (QWidget* parent) : QMainWindow (parent) {
     m_ui = new Ui::Window;
     m_driverStation = DriverStation::getInstance();
     m_ui->setupUi (this);
@@ -77,13 +76,11 @@ Window::Window (QWidget* parent) : QMainWindow (parent)
     m_driverStation->setProtocolType (m_ui->Protocols->currentIndex());
 }
 
-Window::~Window()
-{
+Window::~Window() {
     delete m_ui;
 }
 
-void Window::onEnabledChanged()
-{
+void Window::onEnabledChanged() {
     /* User clicked on the enable button */
     if (m_ui->Enable->isChecked()) {
         /* The DS allows us to enable the robot */
@@ -108,8 +105,7 @@ void Window::onEnabledChanged()
         m_driverStation->disableRobot();
 }
 
-void Window::updateControlMode()
-{
+void Window::updateControlMode() {
     DS::ControlMode mode;
 
     if (m_ui->Test->isChecked())
@@ -122,8 +118,7 @@ void Window::updateControlMode()
     m_driverStation->setControlMode (mode);
 }
 
-void Window::updateVoltage (QString voltage)
-{
+void Window::updateVoltage (QString voltage) {
     /* We are connected to robot, display voltage */
     if (m_driverStation->isConnectedToRobot())
         m_ui->Voltage->setText (voltage);

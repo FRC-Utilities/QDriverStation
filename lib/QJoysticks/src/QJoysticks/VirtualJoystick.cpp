@@ -35,8 +35,7 @@
  * Initializes the joystick and installs the global event filer to capture
  * keyboard events anywhere in the application.
  */
-VirtualJoystick::VirtualJoystick()
-{
+VirtualJoystick::VirtualJoystick() {
     m_axisRange = 1;
     m_joystickEnabled = false;
 
@@ -58,16 +57,14 @@ VirtualJoystick::VirtualJoystick()
  * If you set an axis range of 0.8 to the virtual joystick, then it will report
  * values ranging from -0.8 to 0.8.
  */
-float VirtualJoystick::axisRange() const
-{
+float VirtualJoystick::axisRange() const {
     return m_axisRange;
 }
 
 /**
  * Returns \c true if the virtual joystick is enabled.
  */
-bool VirtualJoystick::joystickEnabled() const
-{
+bool VirtualJoystick::joystickEnabled() const {
     return m_joystickEnabled;
 }
 
@@ -75,8 +72,7 @@ bool VirtualJoystick::joystickEnabled() const
  * Returns a pointer to the virtual josytick device. This can be used if you
  * need to customize the virtual joystick (e.g. add new axes or buttons).
  */
-QJoystickDevice* VirtualJoystick::joystick()
-{
+QJoystickDevice* VirtualJoystick::joystick() {
     return &m_joystick;
 }
 
@@ -87,8 +83,7 @@ QJoystickDevice* VirtualJoystick::joystick()
  *
  * The virtual joystick will ALWAYS be the last joystick to be registered.
  */
-void VirtualJoystick::setJoystickID (int id)
-{
+void VirtualJoystick::setJoystickID (int id) {
     m_joystick.id = id;
 }
 
@@ -99,8 +94,7 @@ void VirtualJoystick::setJoystickID (int id)
  * If you set an axis range of 1 (maximum), then the joystick will report axis
  * values ranging from -1 to 1.
  */
-void VirtualJoystick::setAxisRange (float range)
-{
+void VirtualJoystick::setAxisRange (float range) {
     range = fabs (range);
 
     if (range > 1)
@@ -112,8 +106,7 @@ void VirtualJoystick::setAxisRange (float range)
 /**
  * Enables or disables the virtual joystick device.
  */
-void VirtualJoystick::setJoystickEnabled (bool enabled)
-{
+void VirtualJoystick::setJoystickEnabled (bool enabled) {
     m_joystickEnabled = enabled;
     emit enabledChanged();
 }
@@ -122,8 +115,7 @@ void VirtualJoystick::setJoystickEnabled (bool enabled)
  * Polls the keyboard events and if required, reports a change in the axis
  * values of the virtual joystick device.
  */
-void VirtualJoystick::readAxes (int key, bool pressed)
-{
+void VirtualJoystick::readAxes (int key, bool pressed) {
     int axis = -1;
     float value = axisRange() * (pressed ? 1 : 0);
 
@@ -189,8 +181,7 @@ void VirtualJoystick::readAxes (int key, bool pressed)
  * Polls the keyboard events and if required, reports a change in the POV/hat
  * values of the virtual joystick device.
  */
-void VirtualJoystick::readPOVs (int key, bool pressed)
-{
+void VirtualJoystick::readPOVs (int key, bool pressed) {
     int angle = 0;
 
     if (key == Qt::Key_Up)
@@ -219,8 +210,7 @@ void VirtualJoystick::readPOVs (int key, bool pressed)
  * Polls the keyboard events and if required, reports a change in the button
  * values of the virtual joystick device.
  */
-void VirtualJoystick::readButtons (int key, bool pressed)
-{
+void VirtualJoystick::readButtons (int key, bool pressed) {
     int button = -1;
 
     if (key == Qt::Key_0)
@@ -260,8 +250,7 @@ void VirtualJoystick::readButtons (int key, bool pressed)
  * This function prompts the joystick to update its axis, button and POV values
  * based on the keys that have been pressed or released.
  */
-void VirtualJoystick::processKeyEvent (QKeyEvent* event, bool pressed)
-{
+void VirtualJoystick::processKeyEvent (QKeyEvent* event, bool pressed) {
     if (joystickEnabled()) {
         readPOVs (event->key(), pressed);
         readAxes (event->key(), pressed);
@@ -277,8 +266,7 @@ void VirtualJoystick::processKeyEvent (QKeyEvent* event, bool pressed)
  *       application is not focused. This depends on the operating system and
  *       the window manager that is being used.
  */
-bool VirtualJoystick::eventFilter (QObject* object, QEvent* event)
-{
+bool VirtualJoystick::eventFilter (QObject* object, QEvent* event) {
     Q_UNUSED (object);
 
     switch (event->type()) {

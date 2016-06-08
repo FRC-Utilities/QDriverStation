@@ -11,22 +11,21 @@
 
 #include <QTimer>
 
-class Watchdog : public QObject
-{
+class Watchdog : public QObject {
     Q_OBJECT
 
-signals:
+  signals:
     void expired();
 
-public:
+  public:
     Watchdog();
     int expirationTime() const;
 
-public slots:
+  public slots:
     void reset();
     void setExpirationTime (int msecs);
 
-private:
+  private:
     QTimer m_timer;
 };
 

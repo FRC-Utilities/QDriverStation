@@ -12,9 +12,8 @@
 #include <Core/Protocol.h>
 #include <Utilities/CRC32.h>
 
-class FRC_2014 : public Protocol
-{
-public:
+class FRC_2014 : public Protocol {
+  public:
     FRC_2014();
     virtual QString name();
 
@@ -55,14 +54,14 @@ public:
     virtual bool interpretFMSPacket (const QByteArray& data);
     virtual bool interpretRobotPacket(const QByteArray& data);
 
-protected:
+  protected:
     virtual quint8 getAlliance();
     virtual quint8 getPosition();
     virtual quint8 getDigitalInput();
     virtual quint8 getOperationCode();
     virtual QByteArray getJoystickData();
 
-private:
+  private:
     bool m_resync;
     bool m_restartCode;
     bool m_rebootRobot;

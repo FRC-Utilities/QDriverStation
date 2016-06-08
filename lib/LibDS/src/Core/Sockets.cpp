@@ -15,10 +15,9 @@
 #define FLAGS QAbstractSocket::ShareAddress | QAbstractSocket::ReuseAddressHint
 // *INDENT-ON*
 
-Sockets::Sockets()
-{
+Sockets::Sockets() {
     m_iterator        = 0;
-    m_socketCount     = 0;
+    m_scanRate     = 0;
     m_robotIp         = "";
     m_radioIp         = "";
     m_fmsSender       = Q_NULLPTR;
@@ -26,6 +25,7 @@ Sockets::Sockets()
     m_radioSender     = Q_NULLPTR;
     m_robotSender     = Q_NULLPTR;
     m_radioReceiver   = Q_NULLPTR;
+    m_robotReceiver   = Q_NULLPTR;
     m_fmsInput        = DISABLED_PORT;
     m_fmsOutput       = DISABLED_PORT;
     m_radioInput      = DISABLED_PORT;
@@ -40,100 +40,84 @@ Sockets::Sockets()
     qDebug() << "Socket Manager initialized!";
 }
 
-Sockets::~Sockets()
-{
-    clearSocketLists();
-}
-
 /**
- * Returns the number of parallel socket pairs.
- * If the client/user did not assign a custom number of parallel sockets, then
- * this function will calculate an appropiate value based on the size of the
- * robot IP list.
+ * Returns the number of IPs probed per watchdog expiration time.
+ * If the client/user did not assign a custom scan rate, then this function
+ * will calculate an appropiate value based on the size of the robot IP list.
  */
-int Sockets::socketCount() const
-{
-    int count = 0;
+int Sockets::scanRate() const {
+    int rate = 0;
 
-    if (customSocketCount() > 0)
-        count = customSocketCount();
+    if (customScanRate() > 0)
+        rate = customScanRate();
     else
-        count = qMin (72, qMax (addressList().count() / 6, 1));
+        rate = qMin (72, qMax (addressList().count() / 6, 1));
 
-    return qMin (count, 128);
+    return rate;
 }
 
 /**
  * Returns the port from which we receive data from the FMS
  */
-int Sockets::fmsInputPort() const
-{
+int Sockets::fmsInputPort() const {
     return m_fmsInput;
 }
 
 /**
  * Returns the port in which we send data to the FMS
  */
-int Sockets::fmsOutputPort() const
-{
+int Sockets::fmsOutputPort() const {
     return m_fmsOutput;
 }
 
 /**
  * Returns the port in which we receive data from the robot radio
  */
-int Sockets::radioInputPort() const
-{
+int Sockets::radioInputPort() const {
     return m_radioInput;
 }
 
 /**
  * Returns the port in which we receive data from the robot
  */
-int Sockets::robotInputPort() const
-{
+int Sockets::robotInputPort() const {
     return m_robotInput;
 }
 
 /**
  * Returns the port in which we send data to the robot radio
  */
-int Sockets::radioOutputPort() const
-{
+int Sockets::radioOutputPort() const {
     return m_radioOutput;
 }
 
 /**
  * Returns the port in which we send data to the robot
  */
-int Sockets::robotOutputPort() const
-{
+int Sockets::robotOutputPort() const {
     return m_robotOutput;
 }
 
 /**
- * Returns the custom socket count set by the client or user. If this value
+ * Returns the custom scan rate set by the client or user. If this value
  * is equal to zero, then this class will calculate an value appropiate to
  * the size of the robot IPs list.
  */
-int Sockets::customSocketCount() const
-{
-    return m_socketCount;
+int Sockets::customScanRate() const {
+    return m_scanRate;
 }
 
 /**
  * Returns the IP address of the robot radio
  */
-QString Sockets::radioAddress() const
-{
+QString Sockets::radioAddress() const {
     return m_radioIp;
 }
 
 /**
  * Returns the IP address of the robot (if set)
  */
-QString Sockets::robotAddress() const
-{
+QString Sockets::robotAddress() const {
     return m_robotIp;
 }
 
@@ -151,32 +135,28 @@ QString Sockets::robotAddress() const
  * limiting our scan speed to the ammount of RAM that we want the client to
  * use.
  */
-QStringList Sockets::addressList() const
-{
+QStringList Sockets::addressList() const {
     return m_robotIpList;
 }
 
 /**
  * Returns the socket type (UDP or TCP) used for client/FMS communications.
  */
-DS::SocketType Sockets::fmsSocketType() const
-{
+DS::SocketType Sockets::fmsSocketType() const {
     return m_fmsSocketType;
 }
 
 /**
  * Returns the socket type used for client/radio communications.
  */
-DS::SocketType Sockets::radioSocketType() const
-{
+DS::SocketType Sockets::radioSocketType() const {
     return m_radioSocketType;
 }
 
 /**
  * Returns the socket type used for client/radio communications.
  */
-DS::SocketType Sockets::robotSocketType() const
-{
+DS::SocketType Sockets::robotSocketType() const {
     return m_robotSocketType;
 }
 
@@ -186,40 +166,22 @@ DS::SocketType Sockets::robotSocketType() const
  * when we finish sending a robot packet, thus, the scan speed is determined by
  * the following factors:
  *     - The frequency in which the DS sends a robot packet
- *     - The number of parallel sockets (which allow us to probe more IPs
- *       at the same time)
- *
- * Of course, this function will do nothing if we use TCP for robot
- * communications or we already know the robot IP.
+ *     - The scan rate (which allow us to probe more IPs at the same time)
  */
-void Sockets::refreshAddressList()
-{
+void Sockets::refreshAddressList() {
     if (robotAddress().isEmpty() && !addressList().isEmpty()) {
-        if (addressList().count() > m_iterator + socketCount())
-            m_iterator += socketCount();
+        if (addressList().count() > m_iterator + scanRate())
+            m_iterator += scanRate();
+
         else
             m_iterator = 0;
-
-        int psc = m_robotInputSockets.count();
-        for (int i = 0; i < psc; ++i) {
-            bool socketExists = psc > i;
-            bool addressExists = psc > (m_iterator + i);
-            if (socketExists && addressExists) {
-                m_robotInputSockets.at (i)->socket()->disconnectFromHost();
-                m_robotInputSockets.at (i)->bind (
-                    m_robotIpList.at (m_iterator + i),
-                    robotInputPort(),
-                    FLAGS);
-            }
-        }
     }
 }
 
 /**
  * Sends the given \c data to the FMS (Field Management System).
  */
-void Sockets::sendToFMS (const QByteArray& data)
-{
+void Sockets::sendToFMS (const QByteArray& data) {
     if (m_fmsSender && fmsOutputPort() != DISABLED_PORT)
         m_fmsSender->writeDatagram (data, QHostAddress::Any, fmsOutputPort());
 }
@@ -227,11 +189,9 @@ void Sockets::sendToFMS (const QByteArray& data)
 /**
  * Sends the given \a data to the robot. If the robot address is not
  * specified (e.g. when we don't have comms with robot), the data will be
- * sent to a set of parallel sockets, which send the data to different
- * IPs obtained from the LAN until one of them responds.
+ * sent to a dynamic set of IPs (depending on the scan rate).
  */
-void Sockets::sendToRobot (const QByteArray& data)
-{
+void Sockets::sendToRobot (const QByteArray& data) {
     if (robotOutputPort() == DISABLED_PORT)
         return;
 
@@ -239,10 +199,10 @@ void Sockets::sendToRobot (const QByteArray& data)
         m_robotSender->writeDatagram (data, robotAddress(), robotOutputPort());
 
     else {
-        for (int i = 0; i < socketCount(); ++i) {
-            if (socketCount() > i && addressList().count() > (m_iterator + i)) {
+        for (int i = 0; i < scanRate(); ++i) {
+            if (scanRate() > i && addressList().count() > (m_iterator + i)) {
                 QString ip = addressList().at (m_iterator + i);
-                m_robotSenderList.at (i)->writeDatagram (data, ip, robotOutputPort());
+                m_robotSender->writeDatagram (data, ip, robotOutputPort());
             }
         }
     }
@@ -251,8 +211,7 @@ void Sockets::sendToRobot (const QByteArray& data)
 /**
  * Sends the given \a data to the robot radio.
  */
-void Sockets::sendToRadio (const QByteArray& data)
-{
+void Sockets::sendToRadio (const QByteArray& data) {
     if (m_radioSender && radioOutputPort() != DISABLED_PORT)
         m_radioSender->writeDatagram (data,
                                       QHostAddress (radioAddress()),
@@ -263,8 +222,7 @@ void Sockets::sendToRadio (const QByteArray& data)
  * Changes the radio IP, this should only done by the \c Protocol and not
  * the user.
  */
-void Sockets::setRadioAddress (const QString& ip)
-{
+void Sockets::setRadioAddress (const QString& ip) {
     m_radioIp = ip;
 
     if (m_radioReceiver)
@@ -283,16 +241,16 @@ void Sockets::setRadioAddress (const QString& ip)
  * It is not recommended to use a custom address, since this class should
  * be able to detect any sign of the robot very fast.
  */
-void Sockets::setRobotAddress (const QString& ip)
-{
-    if (m_robotIp != ip) {
-        m_robotIp = ip;
+void Sockets::setRobotAddress (const QString& ip) {
+    m_robotIp = ip;
 
-        if (m_robotSender)
-            m_robotSender->connectToHost (ip, robotOutputPort(), WRITE);
+    if (m_robotReceiver)
+        m_robotReceiver->bind (ip, robotInputPort(), FLAGS);
 
-        qDebug() << "Robot IP set to" << ip;
-    }
+    if (m_robotSender)
+        m_robotSender->connectToHost (ip, robotOutputPort(), WRITE);
+
+    qDebug() << "Robot IP set to" << ip;
 }
 
 /**
@@ -301,8 +259,7 @@ void Sockets::setRobotAddress (const QString& ip)
  *       LAN interface (e.g. ethernet & wifi) in order to make the robot
  *       detection process faster and less error-prone.
  */
-void Sockets::setAddressList (const QStringList& list)
-{
+void Sockets::setAddressList (const QStringList& list) {
     m_robotIpList.clear();
     m_robotIpList = list;
     generateLocalNetworkAddresses();
@@ -311,87 +268,73 @@ void Sockets::setAddressList (const QStringList& list)
 /**
  * Changes the \c port in which we receive data from the FMS.
  */
-void Sockets::setFMSInputPort (int port)
-{
-    if (m_fmsInput != port) {
-        m_fmsInput = port;
+void Sockets::setFMSInputPort (int port) {
+    m_fmsInput = port;
 
-        if (m_fmsReceiver)
-            m_fmsReceiver->bind (QHostAddress::Any, port, FLAGS);
+    if (m_fmsReceiver)
+        m_fmsReceiver->bind (port, FLAGS);
 
-        qDebug() << "FMS input port set to" << port;
-    }
+    qDebug() << "FMS input port set to" << port;
 }
 
 /**
  * Changes the \c port in which we send data to the FMS.
  */
-void Sockets::setFMSOutputPort (int port)
-{
-    if (m_fmsOutput != port) {
-        m_fmsOutput = port;
+void Sockets::setFMSOutputPort (int port) {
+    m_fmsOutput = port;
 
-        if (m_fmsSender)
-            m_fmsSender->connectToHost (QHostAddress::Any, port, WRITE);
+    if (m_fmsSender)
+        m_fmsSender->connectToHost (QHostAddress::Any, port, WRITE);
 
-        qDebug() << "FMS output port set to" << port;
-    }
+    qDebug() << "FMS output port set to" << port;
 }
 
 /**
  * Changes the \c port in which we receive data from the radio.
  */
-void Sockets::setRadioInputPort (int port)
-{
-    if (m_radioInput != port) {
-        m_radioInput = port;
+void Sockets::setRadioInputPort (int port) {
+    m_radioInput = port;
 
-        if (m_radioReceiver)
-            m_radioReceiver->bind (QHostAddress (radioAddress()), port, FLAGS);
+    if (m_radioReceiver)
+        m_radioReceiver->bind (port, FLAGS);
 
-        qDebug() << "Radio input port set to" << port;
-    }
+    qDebug() << "Radio input port set to" << port;
 }
 
 /**
  * Changes the \c port in which we receive data from the robot.
  */
-void Sockets::setRobotInputPort (int port)
-{
-    if (m_robotInput != port) {
-        m_robotInput = port;
-        qDebug() << "Robot input port set to" << port;
-    }
+void Sockets::setRobotInputPort (int port) {
+    m_robotInput = port;
+
+    if (m_robotReceiver)
+        m_robotReceiver->bind (port, FLAGS);
+
+    qDebug() << "Robot input port set to" << port;
 }
 
 /**
  * Changes the \c port in which we send data to the radio.
  */
-void Sockets::setRadioOutputPort (int port)
-{
-    if (m_radioOutput != port) {
-        m_radioOutput = port;
+void Sockets::setRadioOutputPort (int port) {
+    m_radioOutput = port;
 
-        if (m_radioSender)
-            m_radioSender->connectToHost (radioAddress(), port, WRITE);
+    if (m_radioSender)
+        m_radioSender->connectToHost (radioAddress(), port, WRITE);
 
-        qDebug() << "Radio output port set to" << port;
-    }
+    qDebug() << "Radio output port set to" << port;
 }
 
 /**
  * Changes the \c port in which we send data to the robot.
  */
-void Sockets::setRobotOutputPort (int port)
-{
-    if (m_robotOutput != port) {
-        m_robotOutput = port;
+void Sockets::setRobotOutputPort (int port) {
+    m_robotOutput = port;
 
-        if (m_robotSender)
-            m_robotSender->connectToHost (robotAddress(), port, WRITE);
+    if (m_robotSender)
+        m_robotSender->connectToHost (robotAddress(), port, WRITE);
 
-        qDebug() << "Robot output port set to" << port;
-    }
+    qDebug() << "Robot output port set to" << port;
 }
 
 /**
@@ -401,78 +344,72 @@ void Sockets::setRobotOutputPort (int port)
  * If the \c count is set to 0, then this function will calculate the best
  * socket count based on the size of the \c robotIpList()
  */
-void Sockets::setCustomSocketCount (int count)
-{
-    if (m_socketCount != count) {
-        m_socketCount = count;
-        generateSocketPairs();
-
-        qDebug() << "PSC set to" << count;
-    }
+void Sockets::setScanRate (int count) {
+    m_scanRate = count;
+    qDebug() << "Scan rate set to" << count;
 }
 
 /**
  * Changes the socket type (UDP or TCP) that we use to communicate with
  * the FMS.
  */
-void Sockets::setFMSSocketType (const DS::SocketType& type)
-{
-    if (m_fmsSocketType != type) {
-        m_fmsSocketType = type;
+void Sockets::setFMSSocketType (const DS::SocketType& type) {
+    m_fmsSocketType = type;
 
-        free (m_fmsSender);
-        free (m_fmsReceiver);
+    free (m_fmsSender);
+    free (m_fmsReceiver);
 
-        m_fmsSender = new ConfigurableSocket (type);
-        m_fmsReceiver = new ConfigurableSocket (type);
+    m_fmsSender = new ConfigurableSocket (type);
+    m_fmsReceiver = new ConfigurableSocket (type);
 
-        m_fmsReceiver->socket()->setSocketOption (LBACK, 0);
+    m_fmsSender->socket()->setSocketOption (LBACK, 0);
+    m_fmsReceiver->socket()->setSocketOption (LBACK, 0);
 
-        qDebug() << "FMS socket type set to" << type;
-    }
+    connect (m_fmsReceiver, SIGNAL (readyRead()), this, SLOT (readFMSSocket()));
+
+    qDebug() << "FMS socket type set to" << type;
 }
 
 /**
  * Changes the socket type (UDP or TCP) that we use to communicate with
  * the robot radio.
  */
-void Sockets::setRadioSocketType (const DS::SocketType& type)
-{
-    if (m_radioSocketType != type) {
-        m_radioSocketType = type;
+void Sockets::setRadioSocketType (const DS::SocketType& type) {
+    m_radioSocketType = type;
 
-        free (m_radioSender);
-        free (m_radioReceiver);
+    free (m_radioSender);
+    free (m_radioReceiver);
 
-        m_radioSender = new ConfigurableSocket (type);
-        m_radioReceiver = new ConfigurableSocket (type);
+    m_radioSender = new ConfigurableSocket (type);
+    m_radioReceiver = new ConfigurableSocket (type);
 
-        m_radioReceiver->socket()->setSocketOption (LBACK, 0);
+    m_radioSender->socket()->setSocketOption (LBACK, 0);
+    m_radioReceiver->socket()->setSocketOption (LBACK, 0);
 
-        qDebug() << "Radio socket type set to" << type;
-    }
+    connect (m_radioReceiver, SIGNAL (readyRead()), this, SLOT (readRadioSocket()));
+
+    qDebug() << "Radio socket type set to" << type;
 }
 
 /**
  * Changes the socket type (UDP or TCP) that we use to communicate with
  * the robot
  */
-void Sockets::setRobotSocketType (const DS::SocketType& type)
-{
-    if (m_robotSocketType != type) {
-        m_robotSocketType = type;
+void Sockets::setRobotSocketType (const DS::SocketType& type) {
+    m_robotSocketType = type;
 
-        free (m_robotSender);
-        m_robotSender = new ConfigurableSocket (type);
+    free (m_robotSender);
+    free (m_robotReceiver);
 
-        if (type == DS::kSocketTypeTCP) {
-            m_robotSender->socket()->connectToHost (robotAddress(),
-                                                    robotOutputPort(),
-                                                    QIODevice::WriteOnly);
-        }
+    m_robotSender = new ConfigurableSocket (type);
+    m_robotReceiver = new ConfigurableSocket (type);
 
-        qDebug() << "Robot socket type set to" << type;
-    }
+    m_robotSender->socket()->setSocketOption (LBACK, 0);
+    m_robotReceiver->socket()->setSocketOption (LBACK, 0);
+
+    connect (m_robotReceiver, SIGNAL (readyRead()), this, SLOT (readRobotSocket()));
+
+    qDebug() << "Robot socket type set to" << type;
 }
 
 /**
@@ -480,8 +417,7 @@ void Sockets::setRobotSocketType (const DS::SocketType& type)
  * this function will check if the socket pointer is not NULL before trying to
  * read its data.
  */
-void Sockets::readFMSSocket()
-{
+void Sockets::readFMSSocket() {
     if (m_fmsReceiver)
         emit fmsPacketReceived (m_fmsReceiver->readAll());
 }
@@ -491,62 +427,23 @@ void Sockets::readFMSSocket()
  * application, this function will check if the socket pointer is not NULL
  * before trying to read its data.
  */
-void Sockets::readRadioSocket()
-{
+void Sockets::readRadioSocket() {
     if (m_radioReceiver)
         emit radioPacketReceived (m_radioReceiver->readAll());
 }
 
 /**
- * Called when we receive data from the robot. Since we are using the magical
- * parallel sockets, this function will self-assign the robot IP once we
- * receive the first robot packet.
- *
- * Doing so allows us to stop sending data through the parallel sockets, which
- * can cause the application to use more memory and the radio to "lag".
+ * This function will self-assign the robot IP once we receive the
+ * first robot packet, giving a break to the modem.
  */
-void Sockets::readRobotSocket()
-{
-    ConfigurableSocket* socket = qobject_cast<ConfigurableSocket*> (sender());
-    QByteArray data = socket->readAll();
+void Sockets::readRobotSocket() {
+    QByteArray data = m_robotReceiver->readAll();
 
     if (!data.isEmpty()) {
         if (robotAddress().isEmpty())
-            setRobotAddress (socket->peerAddress());
+            setRobotAddress (m_robotReceiver->peerAddress());
 
         emit robotPacketReceived (data);
-    }
-}
-
-/**
- * Deletes the parallel sockets from the memory
- */
-void Sockets::clearSocketLists()
-{
-    m_iterator = 0;
-    m_robotSenderList.clear();
-    m_robotInputSockets.clear();
-}
-
-/**
- * Generates the parallel sockets. The number of generated parallel sockets is
- * determined by the return-value of the \c socketCount() function.
- */
-void Sockets::generateSocketPairs()
-{
-    clearSocketLists();
-
-    for (int i = 0; i < socketCount(); ++i) {
-        ConfigurableSocket* sender = new ConfigurableSocket (robotSocketType());
-        ConfigurableSocket* receiver = new ConfigurableSocket (robotSocketType());
-
-        m_robotSenderList.append (sender);
-        m_robotInputSockets.append (receiver);
-
-        connect (receiver, SIGNAL (readyRead()),
-                 this,       SLOT (readRobotSocket()));
-
-        receiver->socket()->setSocketOption (LBACK, 0);
     }
 }
 
@@ -570,8 +467,7 @@ void Sockets::generateSocketPairs()
  *         - 168.192.1.254
  *     - The function will do this for each interface (ethernet, wifi, usb, etc)
  */
-void Sockets::generateLocalNetworkAddresses()
-{
+void Sockets::generateLocalNetworkAddresses() {
     foreach (QNetworkInterface interface, QNetworkInterface::allInterfaces()) {
         bool isUp      = (interface.flags() & QNetworkInterface::IsUp);
         bool isRunning = (interface.flags() & QNetworkInterface::IsRunning);
@@ -600,5 +496,4 @@ void Sockets::generateLocalNetworkAddresses()
     }
 
     m_robotIpList.append ("127.0.0.1");
-    generateSocketPairs();
 }

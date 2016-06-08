@@ -25,11 +25,10 @@
 
 #include <QObject>
 
-class Utilities : public QObject
-{
+class Utilities : public QObject {
     Q_OBJECT
 
-public:
+  public:
     explicit Utilities();
     Q_INVOKABLE int getCpuUsage();
     Q_INVOKABLE int getBatteryLevel();

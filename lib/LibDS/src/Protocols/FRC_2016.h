@@ -11,9 +11,8 @@
 
 #include <Protocols/FRC_2015.h>
 
-class FRC_2016 : public FRC_2015
-{
-public:
+class FRC_2016 : public FRC_2015 {
+  public:
     virtual QString name();
     virtual QStringList defaultRobotAddresses();
 };

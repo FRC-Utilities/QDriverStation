@@ -8,8 +8,7 @@
 
 #include "Window.h"
 
-int main (int argc, char** argv)
-{
+int main (int argc, char** argv) {
     QApplication app (argc, argv);
     app.setApplicationVersion ("1.0");
     app.setApplicationName ("Bob's Badass App");

@@ -30,11 +30,10 @@
 class SDL_Joysticks;
 class VirtualJoystick;
 
-class QJoysticks : public QObject
-{
+class QJoysticks : public QObject {
     Q_OBJECT
 
-public:
+  public:
     static QJoysticks* getInstance();
 
     Q_INVOKABLE int count() const;
@@ -52,16 +51,16 @@ public:
     VirtualJoystick* virtualJoystick() const;
     QJoystickDevice* getInputDevice (int index);
 
-public slots:
+  public slots:
     void updateInterfaces();
     void setVirtualJoystickRange (float range);
     void setVirtualJoystickEnabled (bool enabled);
     void setBlacklisted (int index, bool blacklisted);
 
-protected:
+  protected:
     explicit QJoysticks();
 
-signals:
+  signals:
     void countChanged();
     void POVEvent (const QJoystickPOVEvent& event);
     void axisEvent (const QJoystickAxisEvent& event);
@@ -70,14 +69,14 @@ signals:
     void axisChanged (int js, int axis, const double value);
     void buttonChanged (int js, int button, bool pressed);
 
-private slots:
+  private slots:
     void resetJoysticks();
     void addInputDevice (QJoystickDevice* device);
     void onPOVEvent (const QJoystickPOVEvent& event);
     void onAxisEvent (const QJoystickAxisEvent& event);
     void onButtonEvent (const QJoystickButtonEvent& event);
 
-private:
+  private:
     SDL_Joysticks* m_sdlJoysticks;
     VirtualJoystick* m_virtualJoystick;
 

@@ -11,11 +11,10 @@
 
 #include <Core/DS_Common.h>
 
-class DS_Base : public DS
-{
+class DS_Base : public DS {
     Q_OBJECT
 
-signals:
+  signals:
     /**
      * Emitted when the elapsed time since the robot has been enabled is
      * changed

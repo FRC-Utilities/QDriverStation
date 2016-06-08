@@ -13,15 +13,14 @@
 
 class QElapsedTimer;
 
-class RobotLogger : public QObject
-{
+class RobotLogger : public QObject {
     Q_OBJECT
 
-public:
+  public:
     RobotLogger();
     ~RobotLogger();
 
-public slots:
+  public slots:
     void registerWatchdogTimeout();
     void registerVoltage (float voltage);
     void registerRobotRAMUsage (int usage);
@@ -36,7 +35,7 @@ public slots:
     void registerVoltageStatus (DS::VoltageStatus status);
     void registerOperationStatus (DS::OperationStatus status);
 
-private:
+  private:
     QElapsedTimer* m_timer;
 };
 

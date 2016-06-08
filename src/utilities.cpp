@@ -36,8 +36,7 @@ static SYSTEM_POWER_STATUS power;
 /**
  * Initializes the CPU querying process under Microsoft Windows
  */
-Utilities::Utilities()
-{
+Utilities::Utilities() {
 #if defined Q_OS_WIN
     PdhOpenQuery (0, 0, &cpuQuery);
     PdhAddCounter (cpuQuery,
@@ -51,8 +50,7 @@ Utilities::Utilities()
 /**
  * Returns the current CPU usage (from 0 to 100)
  */
-int Utilities::getCpuUsage()
-{
+int Utilities::getCpuUsage() {
     int usage = 0;
 
 #if defined Q_OS_WIN
@@ -117,8 +115,7 @@ int Utilities::getCpuUsage()
 /**
  * Returns the current battery level (from 0 to 100)
  */
-int Utilities::getBatteryLevel()
-{
+int Utilities::getBatteryLevel() {
 #if defined Q_OS_WIN
     GetSystemPowerStatus (&power);
     return static_cast<int> (power.BatteryLifePercent);
@@ -174,8 +171,7 @@ int Utilities::getBatteryLevel()
  * Returns \c true if the computer is connected to a power source or the
  * battery is not discharging.
  */
-bool Utilities::isConnectedToPowerSource()
-{
+bool Utilities::isConnectedToPowerSource() {
 #if defined Q_OS_WIN
     GetSystemPowerStatus (&power);
     return power.ACLineStatus != 0;

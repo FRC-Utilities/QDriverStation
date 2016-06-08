@@ -33,8 +33,7 @@ bool ENABLED        = false;
 
 std::queue<BeepObject> BEEPS;
 
-void audio_callback (void* _beeper, Uint8* _stream, int _length)
-{
+void audio_callback (void* _beeper, Uint8* _stream, int _length) {
     int length = _length / 2;
     Sint16* stream = (Sint16*) _stream;
     Beeper* beeper = (Beeper*) _beeper;
@@ -42,8 +41,7 @@ void audio_callback (void* _beeper, Uint8* _stream, int _length)
     beeper->generateSamples (stream, length);
 }
 
-Beeper::Beeper()
-{
+Beeper::Beeper() {
     SDL_AudioSpec desiredSpec;
     desiredSpec.freq = FREQUENCY;
     desiredSpec.format = AUDIO_S16SYS;
@@ -57,13 +55,11 @@ Beeper::Beeper()
     SDL_PauseAudio (0);
 }
 
-Beeper::~Beeper()
-{
+Beeper::~Beeper() {
     SDL_CloseAudio();
 }
 
-void Beeper::generateSamples (qint16* stream, int length)
-{
+void Beeper::generateSamples (qint16* stream, int length) {
     int i = 0;
     while (i < length) {
 
@@ -91,13 +87,11 @@ void Beeper::generateSamples (qint16* stream, int length)
     }
 }
 
-void Beeper::setEnabled (bool enabled)
-{
+void Beeper::setEnabled (bool enabled) {
     ENABLED = enabled;
 }
 
-void Beeper::beep (float freq, int duration)
-{
+void Beeper::beep (float freq, int duration) {
     if (ENABLED) {
         BeepObject beep_object;
         beep_object.freq = freq;

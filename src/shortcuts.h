@@ -10,11 +10,10 @@
 #include <QKeyEvent>
 #include <QApplication>
 
-class Shortcuts : public QObject
-{
+class Shortcuts : public QObject {
     Q_OBJECT
 
-private:
+  private:
     bool eventFilter (QObject* object, QEvent* event);
 };
 

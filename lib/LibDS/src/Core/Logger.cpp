@@ -27,8 +27,7 @@ static bool INITIALIZED = false;
 /**
  * Repeats the \a input string \a n times and returns the resultant string
  */
-static QString REPEAT (QString input, int n)
-{
+static QString REPEAT (QString input, int n) {
     QString string;
 
     for (int i = 0; i < n; ++i)
@@ -40,8 +39,7 @@ static QString REPEAT (QString input, int n)
 /**
  * Returns the path in which several application files are stored (e.g. logs)
  */
-QString DS_FILES_PATH()
-{
+QString DS_FILES_PATH() {
     QDir dir (QString ("%1/.%2/").arg (QDir::homePath(),
                                        qApp->applicationName().toLower()));
 
@@ -54,8 +52,7 @@ QString DS_FILES_PATH()
 /**
  * Figures out where to place the application logs
  */
-QString DS_LOGGER_PATH()
-{
+QString DS_LOGGER_PATH() {
     QDir dir = QDir (DS_FILES_PATH() + "/Application Logs/");
 
     if (!dir.exists())
@@ -68,8 +65,7 @@ QString DS_LOGGER_PATH()
  * Figures out where to place robot log files (e.g. containing voltage & other
  * stuff)
  */
-QString DS_ROBOT_LOGGER_PATH()
-{
+QString DS_ROBOT_LOGGER_PATH() {
     QDir dir = QDir (DS_FILES_PATH() + "/Robot Logs/");
     if (!dir.exists())
         dir.mkpath (".");
@@ -80,8 +76,7 @@ QString DS_ROBOT_LOGGER_PATH()
 /**
  * Creates the log dump file
  */
-static void INIT_LOGGER()
-{
+static void INIT_LOGGER() {
     TIMER.start();
 
     /* Construct file name */
@@ -144,8 +139,7 @@ static void INIT_LOGGER()
  * @param message the actual message/data
  */
 void DS_MESSAGE_HANDLER (QtMsgType type, const QMessageLogContext& context,
-                         const QString& data)
-{
+                         const QString& data) {
     Q_UNUSED (context);
 
     /* First call, create log file */

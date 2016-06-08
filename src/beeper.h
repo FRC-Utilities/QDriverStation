@@ -14,11 +14,10 @@ struct BeepObject {
     int samplesLeft;
 };
 
-class Beeper : public QObject
-{
+class Beeper : public QObject {
     Q_OBJECT
 
-public:
+  public:
     Beeper();
     ~Beeper();
 

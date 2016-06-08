@@ -11,20 +11,19 @@
 
 #include <QByteArray>
 
-class CRC32
-{
-public:
+class CRC32 {
+  public:
     explicit CRC32();
 
     long value();
     void update (QByteArray buf);
     void update (QByteArray buf, int off, int len);
 
-private:
+  private:
     int m_crc;
     int* m_crc_table;
 
-private:
+  private:
     void make_crc_table();
 };
 

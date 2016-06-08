@@ -64,11 +64,10 @@ class Updater;
 /// By default, the downloader will try to open the file as if you opened it
 /// from a file manager or a web browser (with the "file:///" url).
 ///
-class QSU_DECL QSimpleUpdater : public QObject
-{
+class QSU_DECL QSimpleUpdater : public QObject {
     Q_OBJECT
 
-public:
+  public:
     ///
     /// Returns the only instance of the class
     ///
@@ -140,7 +139,7 @@ public:
     ///
     bool usesCustomInstallProcedures (const QString& url) const;
 
-public slots:
+  public slots:
     ///
     /// Checks for updates by downloading the update definitions file at the
     /// given \a url.
@@ -241,7 +240,7 @@ public slots:
     ///
     void setUseCustomInstallProcedures (const QString& url, bool custom);
 
-signals:
+  signals:
     ///
     /// Emitted when the check for updates process finishes.
     /// You can use this function if you are implementing your own notification
@@ -259,10 +258,10 @@ signals:
     ///
     void downloadFinished (const QString& url, const QString& filepath);
 
-protected:
+  protected:
     ~QSimpleUpdater();
 
-private:
+  private:
     ///
     /// Returns the updater object registered with the given \a url.
     /// If an updater object with the given \a url is not found, then this

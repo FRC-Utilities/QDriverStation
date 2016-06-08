@@ -26,16 +26,14 @@
 /**
  * Formats the input message so that it looks nice on a text display widget
  */
-static QString CONSOLE_MESSAGE (const QString& input)
-{
+static QString CONSOLE_MESSAGE (const QString& input) {
     return "<font color='#888'>** " + input + "</font>";
 }
 
 /**
  * Initializes the members of the DriverStation class
  */
-DriverStation::DriverStation()
-{
+DriverStation::DriverStation() {
     qDebug() << "Initializing DriverStation...";
 
     /* Initialize the intervals to one second */
@@ -135,8 +133,7 @@ DriverStation::DriverStation()
     qDebug() << "DriverStation initialized!";
 }
 
-DriverStation::~DriverStation()
-{
+DriverStation::~DriverStation() {
     delete m_sockets;
     delete m_console;
     delete m_fmsWatchdog;
@@ -147,8 +144,7 @@ DriverStation::~DriverStation()
 /**
  * One instance to rule them all!
  */
-DriverStation* DriverStation::getInstance()
-{
+DriverStation* DriverStation::getInstance() {
     static DriverStation instance;
     return &instance;
 }
@@ -157,56 +153,49 @@ DriverStation* DriverStation::getInstance()
  * Returns \c true if we have communications with the robot controller
  * and the robot code is running.
  */
-bool DriverStation::canBeEnabled()
-{
+bool DriverStation::canBeEnabled() {
     return isConnectedToRobot() && isRobotCodeRunning() && !isEmergencyStopped();
 }
 
 /**
  * Returns \c true if the DS is currently sending and receiving data
  */
-bool DriverStation::running() const
-{
+bool DriverStation::running() const {
     return m_running;
 }
 
 /**
  * Returns \c true if the robot is currently in test mode
  */
-bool DriverStation::isInTest() const
-{
+bool DriverStation::isInTest() const {
     return controlMode() == kControlTest;
 }
 
 /**
  * Returns \c true if the robot is currently enabled
  */
-bool DriverStation::isEnabled() const
-{
+bool DriverStation::isEnabled() const {
     return enableStatus() == kEnabled;
 }
 
 /**
  * Returns \c true if the robot is a simulated robot
  */
-bool DriverStation::isSimulated() const
-{
+bool DriverStation::isSimulated() const {
     return config()->isSimulated();
 }
 
 /**
  * Returns \c true if the robot is currently in autonomous mode
  */
-bool DriverStation::isInAutonomous() const
-{
+bool DriverStation::isInAutonomous() const {
     return controlMode() == kControlAutonomous;
 }
 
 /**
  * Returns \c true if the robot is currently in teleop mode
  */
-bool DriverStation::isInTeleoperated() const
-{
+bool DriverStation::isInTeleoperated() const {
     return controlMode() == kControlTeleoperated;
 }
 
@@ -214,24 +203,21 @@ bool DriverStation::isInTeleoperated() const
  * Returns \c true if the Driver Station has established communications
  * with the FMS.
  */
-bool DriverStation::isConnectedToFMS() const
-{
+bool DriverStation::isConnectedToFMS() const {
     return fmsCommStatus() == kCommsWorking;
 }
 
 /**
  * Returns \c true if the robot is experiencing a brownout (ouch!)
  */
-bool DriverStation::isVoltageBrownout() const
-{
+bool DriverStation::isVoltageBrownout() const {
     return voltageStatus() == kVoltageBrownout;
 }
 
 /**
  * Returns \c true if the robot is emergency stopped
  */
-bool DriverStation::isEmergencyStopped() const
-{
+bool DriverStation::isEmergencyStopped() const {
     return operationStatus() == kEmergencyStop;
 }
 
@@ -239,8 +225,7 @@ bool DriverStation::isEmergencyStopped() const
  * Returns \c true if the Driver Station has established communications
  * with the robot.
  */
-bool DriverStation::isConnectedToRobot() const
-{
+bool DriverStation::isConnectedToRobot() const {
     return robotCommStatus() == kCommsWorking;
 }
 
@@ -248,48 +233,42 @@ bool DriverStation::isConnectedToRobot() const
  * Returns \c true if the Driver Station has established communications
  * with the radio.
  */
-bool DriverStation::isConnectedToRadio() const
-{
+bool DriverStation::isConnectedToRadio() const {
     return radioCommStatus() == kCommsWorking;
 }
 
 /**
  * Returns \c true if the robot code is running
  */
-bool DriverStation::isRobotCodeRunning() const
-{
+bool DriverStation::isRobotCodeRunning() const {
     return robotCodeStatus() == kCodeRunning;
 }
 
 /**
  * Returns the path in which different DS-related files are stored
  */
-QString DriverStation::filesPath() const
-{
+QString DriverStation::filesPath() const {
     return DS_FILES_PATH();
 }
 
 /**
  * Returns the path in which application log files are stored
  */
-QString DriverStation::appLoggerPath() const
-{
+QString DriverStation::appLoggerPath() const {
     return DS_LOGGER_PATH();
 }
 
 /**
  * Returns the path in which robot log files are stored
  */
-QString DriverStation::robotLoggerPath() const
-{
+QString DriverStation::robotLoggerPath() const {
     return DS_ROBOT_LOGGER_PATH();
 }
 
 /**
  * Returns the current battery voltage of the robot
  */
-float DriverStation::currentBatteryVoltage() const
-{
+float DriverStation::currentBatteryVoltage() const {
     return config()->voltage();
 }
 
@@ -298,8 +277,7 @@ float DriverStation::currentBatteryVoltage() const
  * This value, along with the \c currentBatteryVoltage() function, can be
  * used to draw graphs or do other cool stuff.
  */
-float DriverStation::nominalBatteryVoltage() const
-{
+float DriverStation::nominalBatteryVoltage() const {
     if (protocol())
         return protocol()->nominalBatteryVoltage();
 
@@ -314,8 +292,7 @@ float DriverStation::nominalBatteryVoltage() const
  * You could do some cool stuff with this function, such as making a
  * dashboard similar to Tesla's car dashboard.
  */
-float DriverStation::nominalBatteryAmperage() const
-{
+float DriverStation::nominalBatteryAmperage() const {
     if (protocol())
         return protocol()->nominalBatteryAmperage();
 
@@ -325,8 +302,7 @@ float DriverStation::nominalBatteryAmperage() const
 /**
  * Returns the current team number
  */
-int DriverStation::team() const
-{
+int DriverStation::team() const {
     return config()->team();
 }
 
@@ -334,8 +310,7 @@ int DriverStation::team() const
  * Returns the current CPU usage of the robot.
  * Value range is from 0 to 100.
  */
-int DriverStation::cpuUsage() const
-{
+int DriverStation::cpuUsage() const {
     return config()->cpuUsage();
 }
 
@@ -343,8 +318,7 @@ int DriverStation::cpuUsage() const
  * Returns the current RAM usage of the robot.
  * Value range is from 0 to 100.
  */
-int DriverStation::ramUsage() const
-{
+int DriverStation::ramUsage() const {
     return config()->ramUsage();
 }
 
@@ -352,24 +326,21 @@ int DriverStation::ramUsage() const
  * Returns the current disk usage of the robot.
  * Value range is from 0 to 100.
  */
-int DriverStation::diskUsage() const
-{
+int DriverStation::diskUsage() const {
     return config()->diskUsage();
 }
 
 /**
  * Returns the current packet loss percentage
  */
-int DriverStation::packetLoss() const
-{
+int DriverStation::packetLoss() const {
     return m_packetLoss;
 }
 
 /**
  * Returns the maximum number of POVs that a joystick can have
  */
-int DriverStation::maxPOVCount() const
-{
+int DriverStation::maxPOVCount() const {
     if (protocol())
         return protocol()->maxPOVCount();
 
@@ -379,8 +350,7 @@ int DriverStation::maxPOVCount() const
 /**
  * Returns the maximum number of axes that a joystick can have
  */
-int DriverStation::maxAxisCount() const
-{
+int DriverStation::maxAxisCount() const {
     if (protocol())
         return protocol()->maxAxisCount();
 
@@ -390,8 +360,7 @@ int DriverStation::maxAxisCount() const
 /**
  * Returns the maximum number of buttons that a joystick can have
  */
-int DriverStation::maxButtonCount() const
-{
+int DriverStation::maxButtonCount() const {
     if (protocol())
         return protocol()->maxButtonCount();
 
@@ -401,8 +370,7 @@ int DriverStation::maxButtonCount() const
 /**
  * Returns the maximum number of joysticks that the protocol can handle
  */
-int DriverStation::maxJoystickCount() const
-{
+int DriverStation::maxJoystickCount() const {
     if (protocol())
         return protocol()->maxJoystickCount();
 
@@ -414,8 +382,7 @@ int DriverStation::maxJoystickCount() const
  * \note This will only return the value supported by the protocol, to get
  *       the actual value, use the \c getRealNumAxes() function
  */
-int DriverStation::getNumAxes (int joystick)
-{
+int DriverStation::getNumAxes (int joystick) {
     if (joysticks()->count() > joystick)
         return joysticks()->at (joystick)->numAxes;
 
@@ -427,8 +394,7 @@ int DriverStation::getNumAxes (int joystick)
  * \note This will only return the value supported by the protocol, to get
  *       the actual value, use the \c getRealNumPOVs() function
  */
-int DriverStation::getNumPOVs (int joystick)
-{
+int DriverStation::getNumPOVs (int joystick) {
     if (joysticks()->count() > joystick)
         return joysticks()->at (joystick)->numPOVs;
 
@@ -440,8 +406,7 @@ int DriverStation::getNumPOVs (int joystick)
  * \note This will only return the value supported by the protocol, to get
  *       the actual value, use the \c getRealNumButtons() function
  */
-int DriverStation::getNumButtons (int joystick)
-{
+int DriverStation::getNumButtons (int joystick) {
     if (joysticks()->count() > joystick)
         return joysticks()->at (joystick)->numButtons;
 
@@ -454,8 +419,7 @@ int DriverStation::getNumButtons (int joystick)
  * in getting only the number of axes used by the DS, use the \c getNumAxes()
  * function.
  */
-int DriverStation::getRealNumAxes (int joystick)
-{
+int DriverStation::getRealNumAxes (int joystick) {
     if (joysticks()->count() > joystick)
         return joysticks()->at (joystick)->realNumAxes;
 
@@ -468,8 +432,7 @@ int DriverStation::getRealNumAxes (int joystick)
  * in getting only the number of POVs used by the DS, use the \c getNumPOVs()
  * function.
  */
-int DriverStation::getRealNumPOVs (int joystick)
-{
+int DriverStation::getRealNumPOVs (int joystick) {
     if (joysticks()->count() > joystick)
         return joysticks()->at (joystick)->realNumPOVs;
 
@@ -482,8 +445,7 @@ int DriverStation::getRealNumPOVs (int joystick)
  * in getting only the number of buttons used by the DS, use the
  * \c getNumButtons() function.
  */
-int DriverStation::getRealNumButtons (int joystick)
-{
+int DriverStation::getRealNumButtons (int joystick) {
     if (joysticks()->count() > joystick)
         return joysticks()->at (joystick)->realNumButtons;
 
@@ -493,96 +455,84 @@ int DriverStation::getRealNumButtons (int joystick)
 /**
  * Returns the current number of joysticks registered with the DS.
  */
-int DriverStation::joystickCount()
-{
+int DriverStation::joystickCount() {
     return joysticks()->count();
 }
 
 /**
  * Returns the actual joysticks and their properties
  */
-JoystickList* DriverStation::joysticks()
-{
+JoystickList* DriverStation::joysticks() {
     return &m_joysticks;
 }
 
 /**
  * Returns the current alliance (red or blue) of the robot.
  */
-DS::Alliance DriverStation::alliance() const
-{
+DS::Alliance DriverStation::alliance() const {
     return config()->alliance();
 }
 
 /**
  * Returns the current position (1, 2 or 3) of the robot.
  */
-DS::Position DriverStation::position() const
-{
+DS::Position DriverStation::position() const {
     return config()->position();
 }
 
 /**
  * Returns the current control mode (test, auto or teleop) of the robot.
  */
-DS::ControlMode DriverStation::controlMode() const
-{
+DS::ControlMode DriverStation::controlMode() const {
     return config()->controlMode();
 }
 
 /**
  * Returns the current client/FMS communication status.
  */
-DS::CommStatus DriverStation::fmsCommStatus() const
-{
+DS::CommStatus DriverStation::fmsCommStatus() const {
     return config()->fmsCommStatus();
 }
 
 /**
  * Returns the current enable status of the robot.
  */
-DS::EnableStatus DriverStation::enableStatus() const
-{
+DS::EnableStatus DriverStation::enableStatus() const {
     return config()->enableStatus();
 }
 
 /**
  * Returns the current radio/FMS communication status.
  */
-DS::CommStatus DriverStation::radioCommStatus() const
-{
+DS::CommStatus DriverStation::radioCommStatus() const {
     return config()->radioCommStatus();
 }
 
 /**
  * Returns the current robot/FMS communication status.
  */
-DS::CommStatus DriverStation::robotCommStatus() const
-{
+DS::CommStatus DriverStation::robotCommStatus() const {
     return config()->robotCommStatus();
 }
 
 /**
  * Returns the current status of the robot code
  */
-DS::CodeStatus DriverStation::robotCodeStatus() const
-{
+DS::CodeStatus DriverStation::robotCodeStatus() const {
     return config()->robotCodeStatus();
 }
 
 /**
  * Returns the current voltage status (normal or brownout) of the robot.
  */
-DS::VoltageStatus DriverStation::voltageStatus() const
-{
+DS::VoltageStatus DriverStation::voltageStatus() const {
     return config()->voltageStatus();
 }
 
 /**
  * Returns the applied radio address (be it DS-set or user-set)
  */
-QString DriverStation::radioAddress() const
-{
+QString DriverStation::radioAddress() const {
     if (customRadioAddress().isEmpty())
         return defaultRobotAddress();
 
@@ -592,8 +542,7 @@ QString DriverStation::radioAddress() const
 /**
  * Returns the applied robot address (be it DS-set or user-set)
  */
-QString DriverStation::robotAddress() const
-{
+QString DriverStation::robotAddress() const {
     if (customRobotAddress().isEmpty()) {
         if (!m_sockets->robotAddress().isEmpty())
             return m_sockets->robotAddress();
@@ -607,8 +556,7 @@ QString DriverStation::robotAddress() const
 /**
  * Returns the current status of the Driver Station
  */
-QString DriverStation::generalStatus() const
-{
+QString DriverStation::generalStatus() const {
     if (!isConnectedToRobot())
         return tr ("No Robot Communication");
     else if (isEmergencyStopped())
@@ -647,24 +595,21 @@ QString DriverStation::generalStatus() const
 /**
  * Returns the user-set radio address
  */
-QString DriverStation::customRadioAddress() const
-{
+QString DriverStation::customRadioAddress() const {
     return m_customRadioAddress;
 }
 
 /**
  * Returns the user-set robot address
  */
-QString DriverStation::customRobotAddress() const
-{
+QString DriverStation::customRobotAddress() const {
     return m_customRobotAddress;
 }
 
 /**
  * Returns the protocol-set radio address
  */
-QString DriverStation::defaultRadioAddress() const
-{
+QString DriverStation::defaultRadioAddress() const {
     if (protocol())
         return protocol()->defaultRadioAddress();
 
@@ -674,8 +619,7 @@ QString DriverStation::defaultRadioAddress() const
 /**
  * Returns the protocol-set robot address
  */
-QString DriverStation::defaultRobotAddress() const
-{
+QString DriverStation::defaultRobotAddress() const {
     /* Return first item of the address list of the current protocol */
     if (protocol())
         if (protocol()->defaultRobotAddresses().count() > 0)
@@ -688,8 +632,7 @@ QString DriverStation::defaultRobotAddress() const
 /**
  * Returns the current operation status of the robot (normal or e-stop).
  */
-DS::OperationStatus DriverStation::operationStatus() const
-{
+DS::OperationStatus DriverStation::operationStatus() const {
     return config()->operationStatus();
 }
 
@@ -698,8 +641,7 @@ DS::OperationStatus DriverStation::operationStatus() const
  * This function is meant to be used to generate your UI elements and
  * seamessly use them with the \c setProtocolType() function.
  */
-QStringList DriverStation::protocols() const
-{
+QStringList DriverStation::protocols() const {
     QStringList list;
     list.append (tr ("FRC 2016"));
     list.append (tr ("FRC 2015"));
@@ -712,8 +654,7 @@ QStringList DriverStation::protocols() const
  * This function is meant to be used to generate your UI elements and
  * seamessly use them with the \c setAllianceAndPosition() function.
  */
-QStringList DriverStation::teamStations() const
-{
+QStringList DriverStation::teamStations() const {
     QStringList list;
     list.append (tr ("Red 1"));
     list.append (tr ("Red 2"));
@@ -730,8 +671,7 @@ QStringList DriverStation::teamStations() const
  */
 bool DriverStation::registerJoystick (int axes,
                                       int buttons,
-                                      int povs)
-{
+                                      int povs) {
     qDebug() << "Trying to register joystick with"
              << axes    << "axes,"
              << buttons << "buttons and"
@@ -797,8 +737,7 @@ bool DriverStation::registerJoystick (int axes,
 /**
  * This function must be called in order to start DS operations
  */
-void DriverStation::init()
-{
+void DriverStation::init() {
     if (!m_init) {
         m_init = true;
 
@@ -820,8 +759,7 @@ void DriverStation::init()
 /**
  * Reboots the robot controller
  */
-void DriverStation::rebootRobot()
-{
+void DriverStation::rebootRobot() {
     qDebug() << "Robot reboot triggered by DS...";
 
     if (protocol())
@@ -831,32 +769,28 @@ void DriverStation::rebootRobot()
 /**
  * Enables the robot directly
  */
-void DriverStation::enableRobot()
-{
+void DriverStation::enableRobot() {
     setEnabled (kEnabled);
 }
 
 /**
  * Opens the application logs in an explorer window
  */
-void DriverStation::openLogsPath()
-{
+void DriverStation::openLogsPath() {
     QDesktopServices::openUrl (QUrl::fromLocalFile (appLoggerPath()));
 }
 
 /**
  * Disables the robot directly
  */
-void DriverStation::disableRobot()
-{
+void DriverStation::disableRobot() {
     setEnabled (kDisabled);
 }
 
 /**
  * Clears all the registered joysticks
  */
-void DriverStation::resetJoysticks()
-{
+void DriverStation::resetJoysticks() {
     qDebug() << "Clearing all joysticks";
 
     joysticks()->clear();
@@ -870,8 +804,7 @@ void DriverStation::resetJoysticks()
 /**
  * Restarts the robot code
  */
-void DriverStation::restartRobotCode()
-{
+void DriverStation::restartRobotCode() {
     qDebug() << "Robot code restart triggered by DS...";
 
     if (protocol())
@@ -881,8 +814,7 @@ void DriverStation::restartRobotCode()
 /**
  * Disables the robot and changes the control mode to \c kControlTest
  */
-void DriverStation::switchToTestMode()
-{
+void DriverStation::switchToTestMode() {
     setEnabled (DS::kDisabled);
     setControlMode (DS::kControlTest);
 }
@@ -890,8 +822,7 @@ void DriverStation::switchToTestMode()
 /**
  * Disables the robot and changes the control mode to \c kControlAutonomous
  */
-void DriverStation::switchToAutonomous()
-{
+void DriverStation::switchToAutonomous() {
     setEnabled (DS::kDisabled);
     setControlMode (DS::kControlAutonomous);
 }
@@ -899,8 +830,7 @@ void DriverStation::switchToAutonomous()
 /**
  * Disables the robot and changes the control mode to \c kControlTeleoperated
  */
-void DriverStation::switchToTeleoperated()
-{
+void DriverStation::switchToTeleoperated() {
     setEnabled (DS::kDisabled);
     setControlMode (DS::kControlTeleoperated);
 }
@@ -909,8 +839,7 @@ void DriverStation::switchToTeleoperated()
  * Re-registers all joysticks based on the criteria specified by the new
  * protocol.
  */
-void DriverStation::reconfigureJoysticks()
-{
+void DriverStation::reconfigureJoysticks() {
     JoystickList list = m_joysticks;
     resetJoysticks();
 
@@ -931,16 +860,28 @@ void DriverStation::reconfigureJoysticks()
 /**
  * Changes the team number
  */
-void DriverStation::setTeam (int team)
-{
+void DriverStation::setTeam (int team) {
     config()->updateTeam (team);
+}
+
+/**
+ * Changes the number IPs probed per expiration time.
+ * Increasing this value decreases the time needed to detect the robot,
+ * but also uses more memory and can over-saturate the LAN access-point.
+ *
+ * If the \c count is set to \c 0, then the scanner system will calculate
+ * an appropiate scan rate based on IP list size.
+ */
+void DriverStation::setScanRate (int rate) {
+    m_sockets->setScanRate (rate);
+    if (m_init && (rate > 0 || m_sockets->customScanRate() > 0))
+        calculateScanSpeed();
 }
 
 /**
  * Removes the joystick at the given \a id
  */
-void DriverStation::removeJoystick (int id)
-{
+void DriverStation::removeJoystick (int id) {
     if (joystickCount() > id) {
         joysticks()->removeAt (id);
 
@@ -956,16 +897,14 @@ void DriverStation::removeJoystick (int id)
  * \note This value can be overwritten by the FMS system or the robot
  *       application itself.
  */
-void DriverStation::setEnabled (bool enabled)
-{
+void DriverStation::setEnabled (bool enabled) {
     setEnabled (enabled ? DS::kEnabled : DS::kDisabled);
 }
 
 /**
  * Loads and configures the given \a protocol in the DS system
  */
-void DriverStation::setProtocol (Protocol* protocol)
-{
+void DriverStation::setProtocol (Protocol* protocol) {
     /* Used to separate protocol init messages */
     QString separator = "";
 
@@ -1000,24 +939,27 @@ void DriverStation::setProtocol (Protocol* protocol)
         m_console->setInputPort       (m_protocol->netconsoleInputPort());
         m_console->setOutputPort      (m_protocol->netconsoleOutputPort());
 
-        /* Update IP lists */
-        m_sockets->setAddressList (m_protocol->defaultRobotAddresses());
-
         /* Update packet intervals */
         m_fmsInterval = 1000 / m_protocol->fmsFrequency();
         m_radioInterval = 1000 / m_protocol->radioFrequency();
         m_robotInterval = 1000 / m_protocol->robotFrequency();
 
         /* Update the watchdog expiration times */
-        m_fmsWatchdog->setExpirationTime (qMin (m_fmsInterval * 50, 2000));
-        m_radioWatchdog->setExpirationTime (qMin (m_radioInterval * 50, 2000));
-        m_robotWatchdog->setExpirationTime (qMin (m_robotInterval * 50, 2000));
+        m_fmsWatchdog->setExpirationTime (1000);
+        m_radioWatchdog->setExpirationTime (1000);
+        m_robotWatchdog->setExpirationTime (1000);
 
         /* Update joystick config. to match protocol requirements */
         reconfigureJoysticks();
 
         /* Release the kraken */
         start();
+        resetFMS();
+        resetRadio();
+        resetRobot();
+
+        /* Update IP lists */
+        m_sockets->setAddressList (m_protocol->defaultRobotAddresses());
 
         /* Send a message telling that the protocol has been initialized */
         emit protocolChanged();
@@ -1026,7 +968,7 @@ void DriverStation::setProtocol (Protocol* protocol)
                                           .arg (m_protocol->name())));
 
         /* Tell client how much time is needed for detecting robot */
-        if (m_sockets->customSocketCount() == 0)
+        if (m_sockets->customScanRate() == 0)
             calculateScanSpeed();
 
         /* We're back in business */
@@ -1038,8 +980,7 @@ void DriverStation::setProtocol (Protocol* protocol)
  * If you are lazy enough to not wanting to use two function calls to
  * change the alliance & position of the robot, we've got you covered!
  */
-void DriverStation::setTeamStation (int station)
-{
+void DriverStation::setTeamStation (int station) {
     switch ((TeamStation) station) {
     case kRed1:
         setPosition (kPosition1);
@@ -1075,8 +1016,7 @@ void DriverStation::setTeamStation (int station)
  * This function is meant to be used in co-junction of the list outputted
  * by the \c protocols() function.
  */
-void DriverStation::setProtocolType (int protocol)
-{
+void DriverStation::setProtocolType (int protocol) {
     if ((ProtocolType) protocol == kFRC2016)
         setProtocol (new FRC_2016);
 
@@ -1091,8 +1031,7 @@ void DriverStation::setProtocolType (int protocol)
  * Updates the team \a alliance.
  * \note This value can be overwritten by the FMS system
  */
-void DriverStation::setAlliance (Alliance alliance)
-{
+void DriverStation::setAlliance (Alliance alliance) {
     config()->updateAlliance (alliance);
 }
 
@@ -1100,8 +1039,7 @@ void DriverStation::setAlliance (Alliance alliance)
  * Updates the team \a position
  * \note This value can be overwritten by the FMS system
  */
-void DriverStation::setPosition (Position position)
-{
+void DriverStation::setPosition (Position position) {
     config()->updatePosition (position);
 }
 
@@ -1109,40 +1047,21 @@ void DriverStation::setPosition (Position position)
  * Changes the control \a mode of the robot.
  * \note This value can be overwritten by the FMS system
  */
-void DriverStation::setControlMode (ControlMode mode)
-{
+void DriverStation::setControlMode (ControlMode mode) {
     config()->updateControlMode (mode);
-}
-
-/**
- * Changes the number of sockets that are scanning the LAN for the robot.
- * Increasing this value decreases the time needed to detect the robot,
- * but also uses more memory and can over-saturate the LAN access-point.
- *
- * If the \c count is set to \c 0, then the scanner system will calculate
- * an appropiate value for the number of parallel sockets.
- */
-void DriverStation::setParallelSocketCount (int count)
-{
-    m_sockets->setCustomSocketCount (count);
-    if (m_init && (count > 0 || m_sockets->customSocketCount() > 0))
-        calculateScanSpeed();
 }
 
 /**
  * Updates the \a angle of the given \a pov of the joystick with the
  * specified \a id
  */
-void DriverStation::updatePOV (int id, int pov, int angle)
-{
+void DriverStation::updatePOV (int id, int pov, int angle) {
     if (joysticks()->count() > abs (id)) {
         if (joysticks()->at (id)->numPOVs > pov) {
             joysticks()->at (id)->povs [abs (pov)] = angle;
             return;
         }
     }
-
-    qWarning() << "Client tried updating non-existent joystick POV";
 }
 
 /**
@@ -1150,8 +1069,7 @@ void DriverStation::updatePOV (int id, int pov, int angle)
  * \note This value can be overwritten by the FMS system or the robot
  *       application itself.
  */
-void DriverStation::setEnabled (EnableStatus status)
-{
+void DriverStation::setEnabled (EnableStatus status) {
     config()->updateEnabled (status);
 }
 
@@ -1159,32 +1077,26 @@ void DriverStation::setEnabled (EnableStatus status)
  * Updates the \a value of the given \a axis of the joystick with the
  * specified \a id
  */
-void DriverStation::updateAxis (int id, int axis, float value)
-{
+void DriverStation::updateAxis (int id, int axis, float value) {
     if (joysticks()->count() > abs (id)) {
         if (joysticks()->at (id)->numAxes > axis) {
             joysticks()->at (id)->axes [abs (axis)] = value;
             return;
         }
     }
-
-    qWarning() << "Client tried updating non-existent joystick axis";
 }
 
 /**
  * Updates the \a pressed state of the given \a button of the joystick with
  * the specified \a id
  */
-void DriverStation::updateButton (int id, int button, bool state)
-{
+void DriverStation::updateButton (int id, int button, bool state) {
     if (joysticks()->count() > abs (id)) {
         if (joysticks()->at (id)->numButtons > button) {
             joysticks()->at (id)->buttons [abs (button)] = state;
             return;
         }
     }
-
-    qWarning() << "Client tried updating non-existent joystick button";
 }
 
 /**
@@ -1195,8 +1107,7 @@ void DriverStation::updateButton (int id, int button, bool state)
  * Using this function is discouraged, the LibDS is fast enough to remove
  * the need of defining the IP address of the robot by yourself.
  */
-void DriverStation::setCustomRobotAddress (const QString& address)
-{
+void DriverStation::setCustomRobotAddress (const QString& address) {
     m_customRobotAddress = address;
     m_sockets->setRobotAddress (customRobotAddress());
 }
@@ -1206,8 +1117,7 @@ void DriverStation::setCustomRobotAddress (const QString& address)
  * instead of using the default radio address specified by the current
  * protocol.
  */
-void DriverStation::setCustomRadioAddress (const QString& address)
-{
+void DriverStation::setCustomRadioAddress (const QString& address) {
     m_sockets->setRadioAddress (address);
 }
 
@@ -1222,16 +1132,14 @@ void DriverStation::setCustomRadioAddress (const QString& address)
  * encourage you to implement the hability to e-stop the robot in your
  * custom client.
  */
-void DriverStation::setOperationStatus (OperationStatus status)
-{
+void DriverStation::setOperationStatus (OperationStatus status) {
     config()->updateOperationStatus (status);
 }
 
 /**
  * Inhibits the DS to send and receive packets
  */
-void DriverStation::stop()
-{
+void DriverStation::stop() {
     m_running = false;
     qDebug() << "DS networking operations stopped";
 }
@@ -1239,8 +1147,7 @@ void DriverStation::stop()
 /**
  * Allows the DS to send and receive packets
  */
-void DriverStation::start()
-{
+void DriverStation::start() {
     m_running = true;
     qDebug() << "DS networking operations resumed";
 }
@@ -1248,8 +1155,7 @@ void DriverStation::start()
 /**
  * Called when the FMS watchdog expires
  */
-void DriverStation::resetFMS()
-{
+void DriverStation::resetFMS() {
     if (protocol())
         protocol()->onFMSWatchdogExpired();
 
@@ -1259,8 +1165,7 @@ void DriverStation::resetFMS()
 /**
  * Called when the radio watchdog expires
  */
-void DriverStation::resetRadio()
-{
+void DriverStation::resetRadio() {
     if (protocol())
         protocol()->onRadioWatchdogExpired();
 
@@ -1270,8 +1175,7 @@ void DriverStation::resetRadio()
 /**
  * Called when the robot watchdog expires
  */
-void DriverStation::resetRobot()
-{
+void DriverStation::resetRobot() {
     if (protocol())
         protocol()->onRobotWatchdogExpired();
 
@@ -1296,8 +1200,7 @@ void DriverStation::resetRobot()
 /**
  * Generates and sends a new FMS packet
  */
-void DriverStation::sendFMSPacket()
-{
+void DriverStation::sendFMSPacket() {
     if (protocol() && running())
         m_sockets->sendToFMS (protocol()->generateFMSPacket());
 
@@ -1308,8 +1211,7 @@ void DriverStation::sendFMSPacket()
 /**
  * Generates and sends a new radio packet
  */
-void DriverStation::sendRadioPacket()
-{
+void DriverStation::sendRadioPacket() {
     if (protocol() && running())
         m_sockets->sendToRadio (protocol()->generateRadioPacket());
 
@@ -1320,8 +1222,7 @@ void DriverStation::sendRadioPacket()
 /**
  * Generates and sends a new robot packet
  */
-void DriverStation::sendRobotPacket()
-{
+void DriverStation::sendRobotPacket() {
     if (protocol() && running())
         m_sockets->sendToRobot (protocol()->generateRobotPacket());
 
@@ -1332,8 +1233,7 @@ void DriverStation::sendRobotPacket()
 /**
  * Calculates the current packet loss as a percent
  */
-void DriverStation::updatePacketLoss()
-{
+void DriverStation::updatePacketLoss() {
     float loss = 0;
     float sentPackets = 0;
     float recvPackets = 0;
@@ -1361,13 +1261,12 @@ void DriverStation::updatePacketLoss()
  * Calculates the time required to detect the robot (assuming it is in one
  * of the LAN networks of the client computer)
  */
-void DriverStation::calculateScanSpeed()
-{
-    QString pscCount = CONSOLE_MESSAGE (tr ("DS: Using %1 parallel sockets"));
+void DriverStation::calculateScanSpeed() {
+    QString ipsCount = CONSOLE_MESSAGE (tr ("DS: Probing %1 IPs per cycle"));
     QString scanTime = CONSOLE_MESSAGE (tr ("DS: It may take up to %1 seconds "
                                             "to detect your robot"));
 
-    int time = m_sockets->addressList().count() / m_sockets->socketCount();
+    int time = m_sockets->addressList().count() / m_sockets->scanRate();
     time *= m_robotWatchdog->expirationTime() / 1000;
 
     /* It takes less than one second to detect the robot (in theory) */
@@ -1379,7 +1278,7 @@ void DriverStation::calculateScanSpeed()
     else
         scanTime = scanTime.arg (time);
 
-    emit newMessage (pscCount.arg (m_sockets->socketCount()));
+    emit newMessage (ipsCount.arg (m_sockets->scanRate()));
     emit newMessage (scanTime);
 }
 
@@ -1387,8 +1286,7 @@ void DriverStation::calculateScanSpeed()
  * Instructs the current protocol to interpret the given \a data, which
  * was sent by the FMS.
  */
-void DriverStation::readFMSPacket (const QByteArray& data)
-{
+void DriverStation::readFMSPacket (const QByteArray& data) {
     if (protocol() && running()) {
         m_fmsWatchdog->reset();
         protocol()->readFMSPacket (data);
@@ -1399,8 +1297,7 @@ void DriverStation::readFMSPacket (const QByteArray& data)
  * Instructs the current protocol to interpret the given \a data, which
  * was sent by the robot radio.
  */
-void DriverStation::readRadioPacket (const QByteArray& data)
-{
+void DriverStation::readRadioPacket (const QByteArray& data) {
     if (protocol() && running()) {
         m_radioWatchdog->reset();
         protocol()->readRadioPacket (data);
@@ -1411,8 +1308,7 @@ void DriverStation::readRadioPacket (const QByteArray& data)
  * Instructs the current protocol to interpret the given \a data, which
  * was sent by the robot controller.
  */
-void DriverStation::readRobotPacket (const QByteArray& data)
-{
+void DriverStation::readRobotPacket (const QByteArray& data) {
     if (protocol() && running()) {
         m_robotWatchdog->reset();
         protocol()->readRobotPacket (data);
@@ -1423,8 +1319,7 @@ void DriverStation::readRobotPacket (const QByteArray& data)
  * Returns a pointer to the \c DS_Config class, which is shared by the
  * \c DriverStation and the protocol
  */
-DS_Config* DriverStation::config() const
-{
+DS_Config* DriverStation::config() const {
     return DS_Config::getInstance();
 }
 
@@ -1432,8 +1327,7 @@ DS_Config* DriverStation::config() const
  * Returns a pointer to the current loaded protocol. Always check if the
  * pointer is not \c NULL before using it!
  */
-Protocol* DriverStation::protocol() const
-{
+Protocol* DriverStation::protocol() const {
     return m_protocol;
 }
 

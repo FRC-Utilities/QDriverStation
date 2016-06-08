@@ -63,8 +63,7 @@ extern void DS_MESSAGE_HANDLER (QtMsgType type,
  * and the \c Protocol classes of this library. This data must be registered
  * inside a QObject class in order to allow full support for QML applications.
  */
-class DS : public QObject
-{
+class DS : public QObject {
     Q_OBJECT
     Q_ENUMS (Alliance)
     Q_ENUMS (Position)
@@ -75,7 +74,7 @@ class DS : public QObject
     Q_ENUMS (EnableStatus)
     Q_ENUMS (OperationStatus)
 
-public:
+  public:
     /**
      * @brief The ControlMode enum
      * Represents the available control modes of the robot
@@ -199,8 +198,7 @@ public:
      *    - \c getStaticIp ( 10,  118, 3) would return \c 10.01.18.3
      *    - And so on...
      */
-    static inline QString getStaticIP (int net, int team, int host)
-    {
+    static inline QString getStaticIP (int net, int team, int host) {
         QString string = QString ("%1").arg (team);
         switch (string.length()) {
         case 1:
@@ -229,8 +227,7 @@ public:
     /**
      * Returns the current timezone as a string
      */
-    static inline QString timezone()
-    {
+    static inline QString timezone() {
         switch (QDateTime::currentDateTime().offsetFromUtc() / 3600) {
         case -11:
             return "BST11BDT";

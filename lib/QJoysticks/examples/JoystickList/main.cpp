@@ -38,8 +38,7 @@
 #endif
 #endif
 
-void configureDarkStyle()
-{
+void configureDarkStyle() {
     qApp->setStyle (QStyleFactory::create ("Fusion"));
     QPalette darkPalette;
     darkPalette.setColor (QPalette::BrightText,      Qt::red);
@@ -58,8 +57,7 @@ void configureDarkStyle()
     qApp->setPalette(darkPalette);
 }
 
-int main (int argc, char* argv[])
-{
+int main (int argc, char* argv[]) {
     QApplication app (argc, argv);
     QQmlApplicationEngine qmlEngine;
 

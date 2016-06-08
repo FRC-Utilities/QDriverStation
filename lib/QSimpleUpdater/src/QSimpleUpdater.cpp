@@ -45,8 +45,7 @@ static QList<Updater*> UPDATERS;
 // QSimpleUpdater::~QSimpleUpdater
 //==============================================================================
 
-QSimpleUpdater::~QSimpleUpdater()
-{
+QSimpleUpdater::~QSimpleUpdater() {
     URLS.clear();
     UPDATERS.clear();
 }
@@ -55,8 +54,7 @@ QSimpleUpdater::~QSimpleUpdater()
 // QSimpleUpdater::getInstance
 //==============================================================================
 
-QSimpleUpdater* QSimpleUpdater::getInstance()
-{
+QSimpleUpdater* QSimpleUpdater::getInstance() {
     static QSimpleUpdater updater;
     return &updater;
 }
@@ -65,8 +63,7 @@ QSimpleUpdater* QSimpleUpdater::getInstance()
 // QSimpleUpdater::getNotifyOnUpdate
 //==============================================================================
 
-bool QSimpleUpdater::getNotifyOnUpdate (const QString& url) const
-{
+bool QSimpleUpdater::getNotifyOnUpdate (const QString& url) const {
     return getUpdater (url)->notifyOnUpdate();
 }
 
@@ -74,8 +71,7 @@ bool QSimpleUpdater::getNotifyOnUpdate (const QString& url) const
 // QSimpleUpdater::getNotifyOnFinish
 //==============================================================================
 
-bool QSimpleUpdater::getNotifyOnFinish (const QString& url) const
-{
+bool QSimpleUpdater::getNotifyOnFinish (const QString& url) const {
     return getUpdater (url)->notifyOnFinish();
 }
 
@@ -83,8 +79,7 @@ bool QSimpleUpdater::getNotifyOnFinish (const QString& url) const
 // QSimpleUpdater::getUpdateAvailable
 //==============================================================================
 
-bool QSimpleUpdater::getUpdateAvailable (const QString& url) const
-{
+bool QSimpleUpdater::getUpdateAvailable (const QString& url) const {
     return getUpdater (url)->updateAvailable();
 }
 
@@ -92,8 +87,7 @@ bool QSimpleUpdater::getUpdateAvailable (const QString& url) const
 // QSimpleUpdater::getDownloaderEnabled
 //==============================================================================
 
-bool QSimpleUpdater::getDownloaderEnabled (const QString& url) const
-{
+bool QSimpleUpdater::getDownloaderEnabled (const QString& url) const {
     return getUpdater (url)->downloaderEnabled();
 }
 
@@ -101,8 +95,7 @@ bool QSimpleUpdater::getDownloaderEnabled (const QString& url) const
 // QSimpleUpdater::getChangelog
 //==============================================================================
 
-QString QSimpleUpdater::getChangelog (const QString& url) const
-{
+QString QSimpleUpdater::getChangelog (const QString& url) const {
     return getUpdater (url)->changelog();
 }
 
@@ -110,8 +103,7 @@ QString QSimpleUpdater::getChangelog (const QString& url) const
 // QSimpleUpdater::getDownloadUrl
 //==============================================================================
 
-QString QSimpleUpdater::getDownloadUrl (const QString& url) const
-{
+QString QSimpleUpdater::getDownloadUrl (const QString& url) const {
     return getUpdater (url)->downloadUrl();
 }
 
@@ -119,8 +111,7 @@ QString QSimpleUpdater::getDownloadUrl (const QString& url) const
 // QSimpleUpdater::getLatestVersion
 //==============================================================================
 
-QString QSimpleUpdater::getLatestVersion (const QString& url) const
-{
+QString QSimpleUpdater::getLatestVersion (const QString& url) const {
     return getUpdater (url)->latestVersion();
 }
 
@@ -128,8 +119,7 @@ QString QSimpleUpdater::getLatestVersion (const QString& url) const
 // QSimpleUpdater::getPlatformKey
 //==============================================================================
 
-QString QSimpleUpdater::getPlatformKey (const QString& url) const
-{
+QString QSimpleUpdater::getPlatformKey (const QString& url) const {
     return getUpdater (url)->platformKey();
 }
 
@@ -137,8 +127,7 @@ QString QSimpleUpdater::getPlatformKey (const QString& url) const
 // QSimpleUpdater::getModuleName
 //==============================================================================
 
-QString QSimpleUpdater::getModuleName (const QString& url) const
-{
+QString QSimpleUpdater::getModuleName (const QString& url) const {
     return getUpdater (url)->moduleName();
 }
 
@@ -146,8 +135,7 @@ QString QSimpleUpdater::getModuleName (const QString& url) const
 // QSimpleUpdater::getModuleVersion
 //==============================================================================
 
-QString QSimpleUpdater::getModuleVersion (const QString& url) const
-{
+QString QSimpleUpdater::getModuleVersion (const QString& url) const {
     return getUpdater (url)->moduleVersion();
 }
 
@@ -155,8 +143,7 @@ QString QSimpleUpdater::getModuleVersion (const QString& url) const
 // QSimpleUpdater::usesCustomInstallProcedures
 //==============================================================================
 
-bool QSimpleUpdater::usesCustomInstallProcedures (const QString& url) const
-{
+bool QSimpleUpdater::usesCustomInstallProcedures (const QString& url) const {
     return getUpdater (url)->useCustomInstallProcedures();
 }
 
@@ -164,8 +151,7 @@ bool QSimpleUpdater::usesCustomInstallProcedures (const QString& url) const
 // QSimpleUpdater::checkForUpdates
 //==============================================================================
 
-void QSimpleUpdater::checkForUpdates (const QString& url)
-{
+void QSimpleUpdater::checkForUpdates (const QString& url) {
     getUpdater (url)->checkForUpdates();
 }
 
@@ -174,8 +160,7 @@ void QSimpleUpdater::checkForUpdates (const QString& url)
 //==============================================================================
 
 void QSimpleUpdater::setPlatformKey (const QString& url,
-                                     const QString& platform)
-{
+                                     const QString& platform) {
     getUpdater (url)->setPlatformKey (platform);
 }
 
@@ -183,8 +168,7 @@ void QSimpleUpdater::setPlatformKey (const QString& url,
 // QSimpleUpdater::setModuleName
 //==============================================================================
 
-void QSimpleUpdater::setModuleName (const QString& url, const QString& name)
-{
+void QSimpleUpdater::setModuleName (const QString& url, const QString& name) {
     getUpdater (url)->setModuleName (name);
 }
 
@@ -193,8 +177,7 @@ void QSimpleUpdater::setModuleName (const QString& url, const QString& name)
 //==============================================================================
 
 void QSimpleUpdater::setModuleVersion (const QString& url,
-                                       const QString& version)
-{
+                                       const QString& version) {
     getUpdater (url)->setModuleVersion (version);
 }
 
@@ -203,8 +186,7 @@ void QSimpleUpdater::setModuleVersion (const QString& url,
 //==============================================================================
 
 void QSimpleUpdater::setNotifyOnUpdate (const QString& url,
-                                        bool notify)
-{
+                                        bool notify) {
     getUpdater (url)->setNotifyOnUpdate (notify);
 }
 
@@ -213,8 +195,7 @@ void QSimpleUpdater::setNotifyOnUpdate (const QString& url,
 //==============================================================================
 
 void QSimpleUpdater::setNotifyOnFinish (const QString& url,
-                                        bool notify)
-{
+                                        bool notify) {
     getUpdater (url)->setNotifyOnFinish (notify);
 }
 
@@ -223,8 +204,7 @@ void QSimpleUpdater::setNotifyOnFinish (const QString& url,
 //==============================================================================
 
 void QSimpleUpdater::setDownloaderEnabled (const QString& url,
-                                           bool enabled)
-{
+                                           bool enabled) {
     getUpdater (url)->setDownloaderEnabled (enabled);
 }
 
@@ -233,8 +213,7 @@ void QSimpleUpdater::setDownloaderEnabled (const QString& url,
 //==============================================================================
 
 void QSimpleUpdater::setUseCustomInstallProcedures (const QString& url,
-        bool custom)
-{
+        bool custom) {
     getUpdater (url)->setUseCustomInstallProcedures (custom);
 }
 
@@ -242,8 +221,7 @@ void QSimpleUpdater::setUseCustomInstallProcedures (const QString& url,
 // QSimpleUpdater::getUpdater
 //==============================================================================
 
-Updater* QSimpleUpdater::getUpdater (const QString& url) const
-{
+Updater* QSimpleUpdater::getUpdater (const QString& url) const {
     if (!URLS.contains (url)) {
         Updater* updater = new Updater;
         updater->setUrl (url);

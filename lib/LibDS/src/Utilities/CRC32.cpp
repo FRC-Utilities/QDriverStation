@@ -15,16 +15,14 @@
  * Can be used to get the CRC32 over a stream if used with checked input/output
  * streams.
  */
-CRC32::CRC32()
-{
+CRC32::CRC32() {
     make_crc_table();
 }
 
 /**
  * Returns the CRC32 data checksum computed so far.
  */
-long CRC32::value()
-{
+long CRC32::value() {
     return (long) m_crc & 0xFFFFFFFFL;
 }
 
@@ -33,8 +31,7 @@ long CRC32::value()
  *
  * @param buf the data buffer
  */
-void CRC32::update (QByteArray buf)
-{
+void CRC32::update (QByteArray buf) {
     update (buf, 0, buf.length());
 }
 
@@ -45,8 +42,7 @@ void CRC32::update (QByteArray buf)
  * @param off the offset in the buffer where the data starts
  * @param len the length of the data
  */
-void CRC32::update (QByteArray buf, int off, int len)
-{
+void CRC32::update (QByteArray buf, int off, int len) {
     m_crc = 0;
     int c = ~m_crc;
     while (--len >= 0)
@@ -57,8 +53,7 @@ void CRC32::update (QByteArray buf, int off, int len)
 /**
  * Generates a table for fast CRC
  */
-void CRC32::make_crc_table()
-{
+void CRC32::make_crc_table() {
     m_crc = 0;
     m_crc_table = new int[256];
     for (int n = 0; n < 256; n++) {

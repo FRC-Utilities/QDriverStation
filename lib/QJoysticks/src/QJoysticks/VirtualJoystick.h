@@ -28,38 +28,37 @@
 #include <QApplication>
 #include <QJoysticks/JoysticksCommon.h>
 
-class VirtualJoystick : public QObject
-{
+class VirtualJoystick : public QObject {
     Q_OBJECT
 
-public:
+  public:
     explicit VirtualJoystick();
 
     float axisRange() const;
     bool joystickEnabled() const;
     QJoystickDevice* joystick();
 
-public slots:
+  public slots:
     void setJoystickID (int id);
     void setAxisRange (float range);
     void setJoystickEnabled (bool enabled);
 
-signals:
+  signals:
     void enabledChanged();
     void povEvent (const QJoystickPOVEvent& event);
     void axisEvent (const QJoystickAxisEvent& event);
     void buttonEvent (const QJoystickButtonEvent& event);
 
-private slots:
+  private slots:
     void readAxes (int key, bool pressed);
     void readPOVs (int key, bool pressed);
     void readButtons (int key, bool pressed);
     void processKeyEvent (QKeyEvent* event, bool pressed);
 
-protected:
+  protected:
     bool eventFilter (QObject* object, QEvent* event);
 
-private:
+  private:
     float m_axisRange;
     bool m_joystickEnabled;
     QJoystickDevice m_joystick;

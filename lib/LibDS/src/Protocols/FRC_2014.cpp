@@ -43,8 +43,7 @@ enum Stations {
 /**
  * Implements the 2009-2014 FRC communication protocol
  */
-FRC_2014::FRC_2014()
-{
+FRC_2014::FRC_2014() {
     m_resync = true;
     m_restartCode = false;
     m_rebootRobot = false;
@@ -53,64 +52,56 @@ FRC_2014::FRC_2014()
 /**
  * Returns the display name of the protocol
  */
-QString FRC_2014::name()
-{
+QString FRC_2014::name() {
     return QObject::tr ("FRC 2014 Protocol");
 }
 
 /**
  * Send FMS packets 2 times per second
  */
-int FRC_2014::fmsFrequency()
-{
+int FRC_2014::fmsFrequency() {
     return 2;
 }
 
 /**
  * Send 50 robot packets per second
  */
-int FRC_2014::robotFrequency()
-{
+int FRC_2014::robotFrequency() {
     return 50;
 }
 
 /**
  * We receive data from FMS at local port 1120
  */
-int FRC_2014::fmsInputPort()
-{
+int FRC_2014::fmsInputPort() {
     return 1120;
 }
 
 /**
  * We send data to the FMS to remote port 1160
  */
-int FRC_2014::fmsOutputPort()
-{
+int FRC_2014::fmsOutputPort() {
     return 1160;
 }
 
 /**
  * We receive data from the robot at local port 1150
  */
-int FRC_2014::robotInputPort()
-{
+int FRC_2014::robotInputPort() {
     return 1150;
 }
 
 /**
  * We send data to the robot at remote port 1110
  */
-int FRC_2014::robotOutputPort()
-{
+int FRC_2014::robotOutputPort() {
     return 1110;
 }
 
 /**
  * FRC 2014 protocol does not use POVs
  */
-int FRC_2014::maxPOVCount()
-{
+int FRC_2014::maxPOVCount() {
     return 0;
 }
 
@@ -118,8 +109,7 @@ int FRC_2014::maxPOVCount()
  * FRC 2014 protocol supports a maximum of 6 axes.
  * Remaining axes will be ignored.
  */
-int FRC_2014::maxAxisCount()
-{
+int FRC_2014::maxAxisCount() {
     return 6;
 }
 
@@ -127,8 +117,7 @@ int FRC_2014::maxAxisCount()
  * FRC 2014 protocol supports a maximum of 12 buttons.
  * Remaining buttons will be ignored.
  */
-int FRC_2014::maxButtonCount()
-{
+int FRC_2014::maxButtonCount() {
     return 12;
 }
 
@@ -136,8 +125,7 @@ int FRC_2014::maxButtonCount()
  * FRC 2014 Protocol supports a maximum of 4 joysticks.
  * Remaining joysticks will be ignored.
  */
-int FRC_2014::maxJoystickCount()
-{
+int FRC_2014::maxJoystickCount() {
     return 4;
 }
 
@@ -145,8 +133,7 @@ int FRC_2014::maxJoystickCount()
  * Configures the protocol to reboot the robot with the next
  * sent packet.
  */
-void FRC_2014::rebootRobot()
-{
+void FRC_2014::rebootRobot() {
     m_rebootRobot = true;
 }
 
@@ -154,8 +141,7 @@ void FRC_2014::rebootRobot()
  * Configures the protocol to restart the robot code with the next
  * sent packet (not really, it does not work for the moment).
  */
-void FRC_2014::restartRobotCode()
-{
+void FRC_2014::restartRobotCode() {
     m_restartCode = true;
 }
 
@@ -163,8 +149,7 @@ void FRC_2014::restartRobotCode()
  * Be sure that we do not reboot the robot or restart its code when
  * we re-establish communications with it.
  */
-void FRC_2014::onRobotWatchdogExpired()
-{
+void FRC_2014::onRobotWatchdogExpired() {
     m_resync = true;
     m_restartCode = false;
     m_rebootRobot = false;
@@ -173,32 +158,28 @@ void FRC_2014::onRobotWatchdogExpired()
 /**
  * FMS communications work with UDP datagrams
  */
-DS::SocketType FRC_2014::fmsSocketType()
-{
+DS::SocketType FRC_2014::fmsSocketType() {
     return DS::kSocketTypeUDP;
 }
 
 /**
  * Robot communications work with UDP datagrams
  */
-DS::SocketType FRC_2014::robotSocketType()
-{
+DS::SocketType FRC_2014::robotSocketType() {
     return DS::kSocketTypeUDP;
 }
 
 /**
  * Radio is located at 10.XX.YY.1
  */
-QString FRC_2014::defaultRadioAddress()
-{
+QString FRC_2014::defaultRadioAddress() {
     return DS::getStaticIP (10, config()->team(), 1);
 }
 
 /**
  * Robot is located at 10.XX.YY.2
  */
-QStringList FRC_2014::defaultRobotAddresses()
-{
+QStringList FRC_2014::defaultRobotAddresses() {
     QStringList list;
     list.append (DS::getStaticIP (10, config()->team(), 2));
     return list;
@@ -207,8 +188,7 @@ QStringList FRC_2014::defaultRobotAddresses()
 /**
  * \todo Implement this function
  */
-QByteArray FRC_2014::getFMSPacket()
-{
+QByteArray FRC_2014::getFMSPacket() {
     QByteArray data;
     return data;
 }
@@ -216,10 +196,10 @@ QByteArray FRC_2014::getFMSPacket()
 /**
  * Generates a packet that the DS will send to the robot
  */
-QByteArray FRC_2014::getRobotPacket()
-{
+QByteArray FRC_2014::getRobotPacket() {
     QByteArray data;
 
+    /* Setup the base packet */
     data.resize (1024);
     data.fill   (0x00);
 
@@ -258,14 +238,14 @@ QByteArray FRC_2014::getRobotPacket()
     data[1021] = (checksum & 0xff0000) >> 16;
     data[1022] = (checksum & 0xff00) >> 8;
     data[1023] = (checksum & 0xff);
+
     return data;
 }
 
 /**
  * \todo Implement this function
  */
-bool FRC_2014::interpretFMSPacket (const QByteArray& data)
-{
+bool FRC_2014::interpretFMSPacket (const QByteArray& data) {
     Q_UNUSED (data);
     return false;
 }
@@ -279,8 +259,7 @@ bool FRC_2014::interpretFMSPacket (const QByteArray& data)
  * \note If both voltage values are equal to \c 0x37, it means that
  *       the robot code is not running
  */
-bool FRC_2014::interpretRobotPacket (const QByteArray& data)
-{
+bool FRC_2014::interpretRobotPacket (const QByteArray& data) {
     /* The packet is smaller than it should be */
     if (data.length() < 1024) {
         qWarning() << name() << "received an invalid robot packet";
@@ -308,6 +287,7 @@ bool FRC_2014::interpretRobotPacket (const QByteArray& data)
     /* Update code status & voltage */
     bool hasCode = (integer != 0x37) && (decimal != 0x37);
     config()->setRobotCode (hasCode);
+    config()->updateSimulated (voltage == "12.43");
     config()->updateVoltage (hasCode ? voltage.toFloat() : 0);
 
     /* Packet read successfully */
@@ -317,8 +297,7 @@ bool FRC_2014::interpretRobotPacket (const QByteArray& data)
 /**
  * Returns the code that represents the current alliance color
  */
-quint8 FRC_2014::getAlliance()
-{
+quint8 FRC_2014::getAlliance() {
     if (config()->alliance() == DS::kAllianceBlue)
         return kAllianceBlue;
 
@@ -328,8 +307,7 @@ quint8 FRC_2014::getAlliance()
 /**
  * Returns the code that represents the current team position
  */
-quint8 FRC_2014::getPosition()
-{
+quint8 FRC_2014::getPosition() {
     if (config()->position() == DS::kPosition1)
         return kPosition1;
 
@@ -345,8 +323,7 @@ quint8 FRC_2014::getPosition()
 /**
  * \todo Allow the LibDS to support digital inputs
  */
-quint8 FRC_2014::getDigitalInput()
-{
+quint8 FRC_2014::getDigitalInput() {
     return 0x00;
 }
 
@@ -354,8 +331,7 @@ quint8 FRC_2014::getDigitalInput()
  * Returns the code used to identify the enable status, control mode,
  * operation mode and operation flags.
  */
-quint8 FRC_2014::getOperationCode()
-{
+quint8 FRC_2014::getOperationCode() {
     quint8 code = kEmergencyStopOff;
     quint8 enabled = config()->isEnabled() ? kEnabled : 0x00;
 
@@ -396,8 +372,7 @@ quint8 FRC_2014::getOperationCode()
  * In the case that a joystick is not connected, the protocol will send
  * a netrual value (e.g. \c 0 for each axis and \c false for each button).
  */
-QByteArray FRC_2014::getJoystickData()
-{
+QByteArray FRC_2014::getJoystickData() {
     QByteArray data;
 
     for (int i = 0; i < maxJoystickCount(); ++i) {

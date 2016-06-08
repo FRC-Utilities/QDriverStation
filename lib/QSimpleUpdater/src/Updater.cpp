@@ -49,8 +49,7 @@
 // Updater::Updater
 //==============================================================================
 
-Updater::Updater()
-{
+Updater::Updater() {
     m_url = "";
     m_openUrl = "";
     m_changelog = "";
@@ -88,8 +87,7 @@ Updater::Updater()
 // Updater::~Updater
 //==============================================================================
 
-Updater::~Updater()
-{
+Updater::~Updater() {
     delete m_downloader;
 }
 
@@ -97,8 +95,7 @@ Updater::~Updater()
 // Updater::url
 //==============================================================================
 
-QString Updater::url() const
-{
+QString Updater::url() const {
     return m_url;
 }
 
@@ -106,8 +103,7 @@ QString Updater::url() const
 // Updater::platformKey
 //==============================================================================
 
-QString Updater::platformKey() const
-{
+QString Updater::platformKey() const {
     return m_platform;
 }
 
@@ -115,8 +111,7 @@ QString Updater::platformKey() const
 // Updater::notifyOnUpdate
 //==============================================================================
 
-bool Updater::notifyOnUpdate() const
-{
+bool Updater::notifyOnUpdate() const {
     return m_notifyOnUpdate;
 }
 
@@ -124,8 +119,7 @@ bool Updater::notifyOnUpdate() const
 // Updater::notifyOnFinish
 //==============================================================================
 
-bool Updater::notifyOnFinish() const
-{
+bool Updater::notifyOnFinish() const {
     return m_notifyOnFinish;
 }
 
@@ -133,8 +127,7 @@ bool Updater::notifyOnFinish() const
 // Updater::updateAvailable
 //==============================================================================
 
-bool Updater::updateAvailable() const
-{
+bool Updater::updateAvailable() const {
     return m_updateAvailable;
 }
 
@@ -142,8 +135,7 @@ bool Updater::updateAvailable() const
 // Updater::downloaderEnabled
 //==============================================================================
 
-bool Updater::downloaderEnabled() const
-{
+bool Updater::downloaderEnabled() const {
     return m_downloaderEnabled;
 }
 
@@ -151,8 +143,7 @@ bool Updater::downloaderEnabled() const
 // Updater::m_changelog
 //==============================================================================
 
-QString Updater::changelog() const
-{
+QString Updater::changelog() const {
     return m_changelog;
 }
 
@@ -160,8 +151,7 @@ QString Updater::changelog() const
 // Updater::downloadUrl
 //==============================================================================
 
-QString Updater::downloadUrl() const
-{
+QString Updater::downloadUrl() const {
     return m_downloadUrl;
 }
 
@@ -169,8 +159,7 @@ QString Updater::downloadUrl() const
 // Updater::latestVersion
 //==============================================================================
 
-QString Updater::latestVersion() const
-{
+QString Updater::latestVersion() const {
     return m_latestVersion;
 }
 
@@ -178,8 +167,7 @@ QString Updater::latestVersion() const
 // Updater::moduleName
 //==============================================================================
 
-QString Updater::moduleName() const
-{
+QString Updater::moduleName() const {
     return m_moduleName;
 }
 
@@ -187,8 +175,7 @@ QString Updater::moduleName() const
 // Updater::moduleVersion
 //==============================================================================
 
-QString Updater::moduleVersion() const
-{
+QString Updater::moduleVersion() const {
     return m_moduleVersion;
 }
 
@@ -196,8 +183,7 @@ QString Updater::moduleVersion() const
 // Updater::useCustomInstallProcedures
 //==============================================================================
 
-bool Updater::useCustomInstallProcedures() const
-{
+bool Updater::useCustomInstallProcedures() const {
     return m_downloader->useCustomInstallProcedures();
 }
 
@@ -205,8 +191,7 @@ bool Updater::useCustomInstallProcedures() const
 // Updater::checkForUpdates
 //==============================================================================
 
-void Updater::checkForUpdates()
-{
+void Updater::checkForUpdates() {
     m_manager->get (QNetworkRequest (url()));
 }
 
@@ -214,8 +199,7 @@ void Updater::checkForUpdates()
 // Updater::setUrl
 //==============================================================================
 
-void Updater::setUrl (const QString& url)
-{
+void Updater::setUrl (const QString& url) {
     m_url = url;
 }
 
@@ -223,8 +207,7 @@ void Updater::setUrl (const QString& url)
 // Updater::setNotifyOnUpdate
 //==============================================================================
 
-void Updater::setNotifyOnUpdate (bool notify)
-{
+void Updater::setNotifyOnUpdate (bool notify) {
     m_notifyOnUpdate = notify;
 }
 
@@ -232,8 +215,7 @@ void Updater::setNotifyOnUpdate (bool notify)
 // Updater::setNotifyOnFinish
 //==============================================================================
 
-void Updater::setNotifyOnFinish (bool notify)
-{
+void Updater::setNotifyOnFinish (bool notify) {
     m_notifyOnFinish = notify;
 }
 
@@ -241,8 +223,7 @@ void Updater::setNotifyOnFinish (bool notify)
 // Updater::setPlatformKey
 //==============================================================================
 
-void Updater::setPlatformKey (const QString& platformKey)
-{
+void Updater::setPlatformKey (const QString& platformKey) {
     m_platform = platformKey;
 }
 
@@ -250,8 +231,7 @@ void Updater::setPlatformKey (const QString& platformKey)
 // Updater::setModuleName
 //==============================================================================
 
-void Updater::setModuleName (const QString& name)
-{
+void Updater::setModuleName (const QString& name) {
     m_moduleName = name;
 }
 
@@ -259,8 +239,7 @@ void Updater::setModuleName (const QString& name)
 // Updater::setDownloaderEnabled
 //==============================================================================
 
-void Updater::setDownloaderEnabled (bool enabled)
-{
+void Updater::setDownloaderEnabled (bool enabled) {
     m_downloaderEnabled = enabled;
 }
 
@@ -268,8 +247,7 @@ void Updater::setDownloaderEnabled (bool enabled)
 // Updater::setUseCustomInstallProcedures
 //==============================================================================
 
-void Updater::setUseCustomInstallProcedures (bool custom)
-{
+void Updater::setUseCustomInstallProcedures (bool custom) {
     m_downloader->setUseCustomInstallProcedures (custom);
 }
 
@@ -277,8 +255,7 @@ void Updater::setUseCustomInstallProcedures (bool custom)
 // Updater::setModuleVersion
 //==============================================================================
 
-void Updater::setModuleVersion (const QString& version)
-{
+void Updater::setModuleVersion (const QString& version) {
     m_moduleVersion = version;
 }
 
@@ -286,8 +263,7 @@ void Updater::setModuleVersion (const QString& version)
 // Updater::onReply
 //==============================================================================
 
-void Updater::onReply (QNetworkReply* reply)
-{
+void Updater::onReply (QNetworkReply* reply) {
     if (reply->error() == QNetworkReply::NoError) {
         QJsonDocument document = QJsonDocument::fromJson (reply->readAll());
 
@@ -312,8 +288,7 @@ void Updater::onReply (QNetworkReply* reply)
 // Updater::setUpdateAvailable
 //==============================================================================
 
-void Updater::setUpdateAvailable (bool available)
-{
+void Updater::setUpdateAvailable (bool available) {
     m_updateAvailable = available;
 
     QMessageBox box;
@@ -360,8 +335,7 @@ void Updater::setUpdateAvailable (bool available)
 // Updater::compare
 //==============================================================================
 
-bool Updater::compare (const QString& x, const QString& y)
-{
+bool Updater::compare (const QString& x, const QString& y) {
     QStringList versionsX = x.split (".");
     QStringList versionsY = y.split (".");
 

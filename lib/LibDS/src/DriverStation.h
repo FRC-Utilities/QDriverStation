@@ -17,20 +17,19 @@ class Protocol;
 class DS_Config;
 class NetConsole;
 
-class DriverStation : public DS_Base
-{
+class DriverStation : public DS_Base {
     Q_OBJECT
     Q_ENUMS (ProtocolType)
     Q_ENUMS (TeamStation)
 
-signals:
+  signals:
     void resetted();
     void initialized();
     void protocolChanged();
     void newMessage (QString message);
     void joystickCountChanged (int count);
 
-public:
+  public:
     static DriverStation* getInstance();
 
     enum ProtocolType {
@@ -114,7 +113,7 @@ public:
 
     Q_INVOKABLE bool registerJoystick (int axes, int buttons, int povs);
 
-public slots:
+  public slots:
     void init();
     void rebootRobot();
     void enableRobot();
@@ -127,6 +126,7 @@ public slots:
     void switchToTeleoperated();
     void reconfigureJoysticks();
     void setTeam (int team);
+    void setScanRate (int rate);
     void removeJoystick (int id);
     void setEnabled (bool enabled);
     void setProtocol (Protocol* protocol);
@@ -135,7 +135,6 @@ public slots:
     void setAlliance (Alliance alliance);
     void setPosition (Position position);
     void setControlMode (ControlMode mode);
-    void setParallelSocketCount (int count);
     void updatePOV (int id, int pov, int angle);
     void setEnabled (EnableStatus statusChanged);
     void updateAxis (int id, int axis, float value);
@@ -144,7 +143,7 @@ public slots:
     void setCustomRadioAddress (const QString& address);
     void setOperationStatus (OperationStatus statusChanged);
 
-private slots:
+  private slots:
     void stop();
     void start();
     void resetFMS();
@@ -159,11 +158,11 @@ private slots:
     void readRadioPacket (const QByteArray& data);
     void readRobotPacket (const QByteArray& data);
 
-protected:
+  protected:
     DriverStation();
     ~DriverStation();
 
-private:
+  private:
     bool m_init;
     bool m_running;
 

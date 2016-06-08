@@ -23,8 +23,7 @@ static const QString DEFS_URL = "https://raw.githubusercontent.com/"
 // Window::Window
 //==============================================================================
 
-Window::Window (QWidget* parent) : QMainWindow (parent)
-{
+Window::Window (QWidget* parent) : QMainWindow (parent) {
     m_ui = new Ui::Window;
     m_ui->setupUi (this);
 
@@ -56,8 +55,7 @@ Window::Window (QWidget* parent) : QMainWindow (parent)
 // Window::~Window
 //==============================================================================
 
-Window::~Window()
-{
+Window::~Window() {
     delete m_ui;
 }
 
@@ -65,8 +63,7 @@ Window::~Window()
 // Window::checkForUpdates
 //==============================================================================
 
-void Window::resetFields()
-{
+void Window::resetFields() {
     m_ui->installedVersion->setText ("0.1");
     m_ui->enableDownloader->setChecked (true);
     m_ui->showAllNotifcations->setChecked (false);
@@ -77,8 +74,7 @@ void Window::resetFields()
 // Window::checkForUpdates
 //==============================================================================
 
-void Window::checkForUpdates()
-{
+void Window::checkForUpdates() {
     /* Get settings from the UI */
     QString version = m_ui->installedVersion->text();
     bool downloaderEnabled = m_ui->enableDownloader->isChecked();
@@ -99,8 +95,7 @@ void Window::checkForUpdates()
 // Window::updateChangelog
 //==============================================================================
 
-void Window::updateChangelog (QString url)
-{
+void Window::updateChangelog (QString url) {
     if (url == DEFS_URL)
         m_ui->changelogText->setText (m_updater->getChangelog (url));
 }

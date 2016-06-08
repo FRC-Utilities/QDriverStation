@@ -12,9 +12,8 @@
 #include <QTime>
 #include <Core/Protocol.h>
 
-class FRC_2015 : public Protocol
-{
-public:
+class FRC_2015 : public Protocol {
+  public:
     FRC_2015();
     virtual QString name();
 
@@ -56,7 +55,7 @@ public:
     virtual bool interpretFMSPacket (const QByteArray& data);
     virtual bool interpretRobotPacket (const QByteArray& data);
 
-protected:
+  protected:
     virtual QByteArray getTimezoneData();
     virtual QByteArray getJoystickData();
 
@@ -71,7 +70,7 @@ protected:
     virtual uint getTeamStationCode();
     virtual uint getJoystickSize (const DS::Joystick& joystick);
 
-private:
+  private:
     bool m_restartCode;
     bool m_rebootRobot;
     bool m_sendDateTime;

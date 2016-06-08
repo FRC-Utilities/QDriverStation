@@ -46,8 +46,7 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 
-void DownloadXboxDrivers()
-{
+void DownloadXboxDrivers() {
     QSettings settings (APP_COMPANY, APP_DSPNAME);
 
     if (settings.value ("FirstLaunch", true).toBool()) {
@@ -71,8 +70,7 @@ void DownloadXboxDrivers()
 }
 #endif
 
-int main (int argc, char* argv[])
-{
+int main (int argc, char* argv[]) {
     /* Avoid UI scaling issues with Qt 5.6 */
 #if QT_VERSION >= QT_VERSION_CHECK (5, 6, 0)
 #if defined Q_OS_MAC

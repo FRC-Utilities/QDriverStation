@@ -84,8 +84,7 @@ enum Robot_Data {
 /**
  * Implements the 2015 FRC Communication protocol
  */
-FRC_2015::FRC_2015()
-{
+FRC_2015::FRC_2015() {
     m_restartCode = false;
     m_rebootRobot = false;
     m_sendDateTime = false;
@@ -94,64 +93,56 @@ FRC_2015::FRC_2015()
 /**
  * Returns the display name of the protocol
  */
-QString FRC_2015::name()
-{
+QString FRC_2015::name() {
     return QObject::tr ("FRC 2015 Protocol");
 }
 
 /**
  * Send 2 FMS packets every second
  */
-int FRC_2015::fmsFrequency()
-{
+int FRC_2015::fmsFrequency() {
     return 2;
 }
 
 /**
  * Send 50 robot packets every second
  */
-int FRC_2015::robotFrequency()
-{
+int FRC_2015::robotFrequency() {
     return 50;
 }
 
 /**
  * We receive data from FMS at local port 1120
  */
-int FRC_2015::fmsInputPort()
-{
+int FRC_2015::fmsInputPort() {
     return 1120;
 }
 
 /**
  * We send data to the FMS to remote port 1160
  */
-int FRC_2015::fmsOutputPort()
-{
+int FRC_2015::fmsOutputPort() {
     return 1160;
 }
 
 /**
  * We receive data from the robot at local port 1150
  */
-int FRC_2015::robotInputPort()
-{
+int FRC_2015::robotInputPort() {
     return 1150;
 }
 
 /**
  * We send data to the robot at remote port 1110
  */
-int FRC_2015::robotOutputPort()
-{
+int FRC_2015::robotOutputPort() {
     return 1110;
 }
 
 /**
  * We received broadcasted messages from the robot in port 6666
  */
-int FRC_2015::netconsoleInputPort()
-{
+int FRC_2015::netconsoleInputPort() {
     return 6666;
 }
 
@@ -159,8 +150,7 @@ int FRC_2015::netconsoleInputPort()
  * FRC 2015 protocol supports only 1 POV.
  * Remaining POVs will be ignored.
  */
-int FRC_2015::maxPOVCount()
-{
+int FRC_2015::maxPOVCount() {
     return 1;
 }
 
@@ -168,8 +158,7 @@ int FRC_2015::maxPOVCount()
  * FRC 2015 protocol supports a maximum of 6 axes.
  * Remaining axes will be ignored.
  */
-int FRC_2015::maxAxisCount()
-{
+int FRC_2015::maxAxisCount() {
     return 6;
 }
 
@@ -177,8 +166,7 @@ int FRC_2015::maxAxisCount()
  * FRC 2015 protocol supports a maximum of 12 buttons.
  * Remaining buttons will be ignored.
  */
-int FRC_2015::maxButtonCount()
-{
+int FRC_2015::maxButtonCount() {
     return 12;
 }
 
@@ -186,24 +174,21 @@ int FRC_2015::maxButtonCount()
  * FRC 2015 Protocol supports a maximum of 6 joysticks.
  * Remaining joysticks will be ignored.
  */
-int FRC_2015::maxJoystickCount()
-{
+int FRC_2015::maxJoystickCount() {
     return 6;
 }
 
 /**
  * Reboots the robot in the next packet cycle
  */
-void FRC_2015::rebootRobot()
-{
+void FRC_2015::rebootRobot() {
     m_rebootRobot = true;
 }
 
 /**
  * Restarts the robot code in the next packet cycle
  */
-void FRC_2015::restartRobotCode()
-{
+void FRC_2015::restartRobotCode() {
     m_restartCode = true;
 }
 
@@ -211,8 +196,7 @@ void FRC_2015::restartRobotCode()
  * Do not reboot robot or restart code when we re-establish communications
  * with the robot.
  */
-void FRC_2015::onRobotWatchdogExpired()
-{
+void FRC_2015::onRobotWatchdogExpired() {
     m_restartCode = false;
     m_rebootRobot = false;
     m_sendDateTime = false;
@@ -221,24 +205,21 @@ void FRC_2015::onRobotWatchdogExpired()
 /**
  * FMS communications work with UDP datagrams
  */
-DS::SocketType FRC_2015::fmsSocketType()
-{
+DS::SocketType FRC_2015::fmsSocketType() {
     return DS::kSocketTypeUDP;
 }
 
 /**
  * Robot communications work with UDP datagrams
  */
-DS::SocketType FRC_2015::robotSocketType()
-{
+DS::SocketType FRC_2015::robotSocketType() {
     return DS::kSocketTypeUDP;
 }
 
 /**
  * Default radio address is 10.TE.AM.1
  */
-QString FRC_2015::defaultRadioAddress()
-{
+QString FRC_2015::defaultRadioAddress() {
     return DS::getStaticIP (10, config()->team(), 1);
 }
 
@@ -248,8 +229,7 @@ QString FRC_2015::defaultRadioAddress()
  *     - 172.22.11.2
  *     - 10.TE.AM.2
  */
-QStringList FRC_2015::defaultRobotAddresses()
-{
+QStringList FRC_2015::defaultRobotAddresses() {
     QStringList list;
     list.append (QString ("roboRIO-%1.local").arg (config()->team()));
     list.append (QString ("172.22.11.2"));
@@ -260,8 +240,7 @@ QStringList FRC_2015::defaultRobotAddresses()
 /**
  * Generates a packet that the DS will send to the FMS
  */
-QByteArray FRC_2015::getFMSPacket()
-{
+QByteArray FRC_2015::getFMSPacket() {
     QByteArray data;
     data.append ((sentFMSPackets() & 0xff00) >> 8);
     data.append ((sentFMSPackets()) & 0xff);
@@ -277,8 +256,7 @@ QByteArray FRC_2015::getFMSPacket()
 /**
  * Generates a packet that the DS will send to the robot
  */
-QByteArray FRC_2015::getRobotPacket()
-{
+QByteArray FRC_2015::getRobotPacket() {
     QByteArray data;
     data.append ((sentRobotPackets() & 0xff00) >> 8);
     data.append ((sentRobotPackets()) & 0xff);
@@ -298,8 +276,7 @@ QByteArray FRC_2015::getRobotPacket()
  *   - Change team alliance
  *   - Change team position
  */
-bool FRC_2015::interpretFMSPacket (const QByteArray& data)
-{
+bool FRC_2015::interpretFMSPacket (const QByteArray& data) {
     if (data.length() >= 22) {
         quint8 control = data.at (3);
         quint8 station = data.at (5);
@@ -340,8 +317,7 @@ bool FRC_2015::interpretFMSPacket (const QByteArray& data)
  *   - If the robot is emergency stopped
  *   - If the robot is experiencing a voltage brownout
  */
-bool FRC_2015::interpretRobotPacket (const QByteArray& data)
-{
+bool FRC_2015::interpretRobotPacket (const QByteArray& data) {
     /* Packet is invalid */
     if (data.length() < 8) {
         qWarning() << name() << "received an invalid robot packet";
@@ -394,8 +370,7 @@ bool FRC_2015::interpretRobotPacket (const QByteArray& data)
  * The robot may ask for this information in some cases (e.g. when initializing
  * the robot code).
  */
-QByteArray FRC_2015::getTimezoneData()
-{
+QByteArray FRC_2015::getTimezoneData() {
     QByteArray data;
 
     /* Add size (always 11) */
@@ -433,8 +408,7 @@ QByteArray FRC_2015::getTimezoneData()
  * This information is separated with a joystick header code (specified at the
  * top of this file).
  */
-QByteArray FRC_2015::getJoystickData()
-{
+QByteArray FRC_2015::getJoystickData() {
     QByteArray data;
 
     /* Do not send joystick data on DS init */
@@ -483,11 +457,10 @@ QByteArray FRC_2015::getJoystickData()
  * code. This function is used to follow the instructions outlined by the
  * FMS packets.
  */
-DS::Alliance FRC_2015::getAlliance (quint8 station)
-{
+DS::Alliance FRC_2015::getAlliance (quint8 station) {
     if (station == kBlue1
-        || station == kBlue2
-        || station == kBlue3)
+            || station == kBlue2
+            || station == kBlue3)
         return DS::kAllianceBlue;
 
     return DS::kAllianceRed;
@@ -497,8 +470,7 @@ DS::Alliance FRC_2015::getAlliance (quint8 station)
  * This function returns the position referenced by the given \a station code.
  * This function is used to follow the instructions outlined by the FMS packets.
  */
-DS::Position FRC_2015::getPosition (quint8 station)
-{
+DS::Position FRC_2015::getPosition (quint8 station) {
     if (station == kRed1 || station == kBlue1)
         return DS::kPosition1;
 
@@ -516,8 +488,7 @@ DS::Position FRC_2015::getPosition (quint8 station)
  * usage and CAN metrics. This function is in charge of extracting this
  * information from the packet and updating DS values accordingly.
  */
-void FRC_2015::readExtended (const QByteArray& data)
-{
+void FRC_2015::readExtended (const QByteArray& data) {
     if (data.isEmpty() || data.length() < 2)
         return;
 
@@ -553,8 +524,7 @@ void FRC_2015::readExtended (const QByteArray& data)
  *    - The FMS attached keyword
  *    - The operation state (e-stop, normal)
  */
-uint FRC_2015::getControlCode()
-{
+uint FRC_2015::getControlCode() {
     uint code = 0;
 
     switch (config()->controlMode()) {
@@ -589,8 +559,7 @@ uint FRC_2015::getControlCode()
  *    - Reboot the RIO
  *    - Restart the robot code
  */
-uint FRC_2015::getRequestCode()
-{
+uint FRC_2015::getRequestCode() {
     uint code = kRequestUnconnected;
 
     if (config()->isConnectedToRobot())
@@ -617,8 +586,7 @@ uint FRC_2015::getRequestCode()
  *    - Robot radio connected?
  *    - The operation state (e-stop, normal)
  */
-uint FRC_2015::getFMSControlCode()
-{
+uint FRC_2015::getFMSControlCode() {
     uint code = 0;
 
     switch (config()->controlMode()) {
@@ -657,8 +625,7 @@ uint FRC_2015::getFMSControlCode()
  * This value may be used by the robot program to use specialized autonomous
  * modes or adjust sensor input.
  */
-uint FRC_2015::getTeamStationCode()
-{
+uint FRC_2015::getTeamStationCode() {
     if (config()->position() == DS::kPosition1) {
         if (config()->alliance() == DS::kAllianceRed)
             return kRed1;
@@ -690,8 +657,7 @@ uint FRC_2015::getTeamStationCode()
  * This information will help the robot decide where a information starts and
  * ends for each attached joystick.
  */
-uint FRC_2015::getJoystickSize(const DS::Joystick& joystick)
-{
+uint FRC_2015::getJoystickSize(const DS::Joystick& joystick) {
     return  5
             + (joystick.numAxes > 0 ? joystick.numAxes : 0)
             + (joystick.numButtons / 8)

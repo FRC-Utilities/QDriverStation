@@ -11,8 +11,7 @@
 /**
  * Returns the display name of the protocol
  */
-QString FRC_2016::name()
-{
+QString FRC_2016::name() {
     return QObject::tr ("FRC 2016 Protocol");
 }
 
@@ -23,8 +22,7 @@ QString FRC_2016::name()
  *     - 172.22.11.2
  *     - 10.TE.AM.2
  */
-QStringList FRC_2016::defaultRobotAddresses()
-{
+QStringList FRC_2016::defaultRobotAddresses() {
     QStringList list;
     list.append (QString ("roboRIO-%1-FRC.local").arg (config()->team()));
     list.append (QString ("roboRIO-%1.local").arg (config()->team()));

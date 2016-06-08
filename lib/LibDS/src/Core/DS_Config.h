@@ -23,12 +23,11 @@ class QElapsedTimer;
  * and - if not managed correctly - cause a lot of issues with the event system
  * of Qt.
  */
-class DS_Config : public DS_Base
-{
+class DS_Config : public DS_Base {
     Q_OBJECT
     friend class DriverStation;
 
-public:
+  public:
     static DS_Config* getInstance();
 
     int team() const;
@@ -57,7 +56,7 @@ public:
     VoltageStatus voltageStatus() const;
     OperationStatus operationStatus() const;
 
-public slots:
+  public slots:
     void updateTeam (int team);
     void setRobotCode (bool code);
     void setEnabled (bool enabled);
@@ -82,15 +81,15 @@ public slots:
     void updateVoltageStatus (VoltageStatus statusChanged);
     void updateOperationStatus (OperationStatus statusChanged);
 
-private slots:
+  private slots:
     void updateElapsedTime();
 
-protected:
+  protected:
     DS_Config();
     ~DS_Config();
     RobotLogger* robotLogger();
 
-private:
+  private:
     int m_team;
     int m_cpuUsage;
     int m_ramUsage;

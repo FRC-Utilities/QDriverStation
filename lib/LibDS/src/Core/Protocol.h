@@ -13,11 +13,9 @@
 #include <DriverStation.h>
 #include <Core/DS_Config.h>
 
-class Protocol
-{
-public:
-    Protocol()
-    {
+class Protocol {
+  public:
+    Protocol() {
         m_sentFmsPackets = 0;
         m_sentRadioPackets = 0;
         m_sentRobotPackets = 0;
@@ -32,8 +30,7 @@ public:
      * This is used by the \c DriverStation to notify the user when the protocol
      * is loaded.
      */
-    virtual QString name()
-    {
+    virtual QString name() {
         return QObject::tr ("Generic Protocol");
     }
 
@@ -45,8 +42,7 @@ public:
      * \note If you do not re-implement this function, then the Driver Station
      *       will not send data to the FMS.
      */
-    virtual int fmsFrequency()
-    {
+    virtual int fmsFrequency() {
         return 1;
     }
 
@@ -58,8 +54,7 @@ public:
      * \note If you do not re-implement this function, then the Driver Station
      *       will not send data to the radio.
      */
-    virtual int radioFrequency()
-    {
+    virtual int radioFrequency() {
         return 1;
     }
 
@@ -71,40 +66,35 @@ public:
      * \note If you do not re-implement this function, then the Driver Station
      *       will not send data to the robot.
      */
-    virtual int robotFrequency()
-    {
+    virtual int robotFrequency() {
         return 1;
     }
 
     /**
      * Returns the maximum number of joysticks supported
      */
-    virtual int maxJoystickCount()
-    {
+    virtual int maxJoystickCount() {
         return 6;
     }
 
     /**
      * Returns the maximum ammount of POVs supported by the protocol
      */
-    virtual int maxPOVCount()
-    {
+    virtual int maxPOVCount() {
         return 12;
     }
 
     /**
      * Returns the maximum ammount of axes supported by the protocol
      */
-    virtual int maxAxisCount()
-    {
+    virtual int maxAxisCount() {
         return 12;
     }
 
     /**
      * Returns the maximum ammount of buttons supported by the protocol
      */
-    virtual int maxButtonCount()
-    {
+    virtual int maxButtonCount() {
         return 24;
     }
 
@@ -114,8 +104,7 @@ public:
      * \note If you do not re-implement this function, the protocol will not be
      *    able to receive data from the FMS.
      */
-    virtual int fmsInputPort()
-    {
+    virtual int fmsInputPort() {
         return DISABLED_PORT;
     }
 
@@ -125,8 +114,7 @@ public:
      * \note If you do not re-implement this function, the protocol will not be
      *    able to send data to the FMS.
      */
-    virtual int fmsOutputPort()
-    {
+    virtual int fmsOutputPort() {
         return DISABLED_PORT;
     }
 
@@ -136,8 +124,7 @@ public:
      * \note If you do not re-implement this function, the protocol will not be
      *    able to receive data from the radio.
      */
-    virtual int radioInputPort()
-    {
+    virtual int radioInputPort() {
         return DISABLED_PORT;
     }
 
@@ -147,8 +134,7 @@ public:
      * \note If you do not re-implement this function, the protocol will not be
      *    able to receive data from the robot.
      */
-    virtual int robotInputPort()
-    {
+    virtual int robotInputPort() {
         return DISABLED_PORT;
     }
 
@@ -158,8 +144,7 @@ public:
      * \note If you do not re-implement this function, the protocol will not be
      *    able to send data to the robot radio.
      */
-    virtual int radioOutputPort()
-    {
+    virtual int radioOutputPort() {
         return DISABLED_PORT;
     }
 
@@ -169,8 +154,7 @@ public:
      * \note If you do not re-implement this function, the protocol will not be
      *    able to send data to the robot.
      */
-    virtual int robotOutputPort()
-    {
+    virtual int robotOutputPort() {
         return DISABLED_PORT;
     }
 
@@ -180,8 +164,7 @@ public:
      * \note If you do not re-implement this function, the protocol will not be
      *    able to receive broadcasted messages from the robot.
      */
-    virtual int netconsoleInputPort()
-    {
+    virtual int netconsoleInputPort() {
         return DISABLED_PORT;
     }
 
@@ -191,8 +174,7 @@ public:
      * \note If you do not re-implement this function, the protocol will not be
      *    able to send broadcasted commands to the robot.
      */
-    virtual int netconsoleOutputPort()
-    {
+    virtual int netconsoleOutputPort() {
         return DISABLED_PORT;
     }
 
@@ -201,8 +183,7 @@ public:
      * This value can be used by the client to draw graphs, create car-like
      * dashboards and other cool things.
      */
-    virtual float nominalBatteryVoltage()
-    {
+    virtual float nominalBatteryVoltage() {
         return 12.80;
     }
 
@@ -211,8 +192,7 @@ public:
      * This value can be used by the client to draw graphs, calculate current
      * power output (in watts), do car-like dashboards and other cool things.
      */
-    virtual float nominalBatteryAmperage()
-    {
+    virtual float nominalBatteryAmperage() {
         return 17;
     }
 
@@ -250,8 +230,7 @@ public:
      * \note We recommend you to redefine this function in your protocol to
      *       avoid breaking it if the core library is changed.
      */
-    virtual DS::SocketType fmsSocketType()
-    {
+    virtual DS::SocketType fmsSocketType() {
         return DS::kSocketTypeUDP;
     }
 
@@ -264,8 +243,7 @@ public:
      * \note We recommend you to redefine this function in your protocol to
      *       avoid breaking it if the core library is changed.
      */
-    virtual DS::SocketType radioSocketType()
-    {
+    virtual DS::SocketType radioSocketType() {
         return DS::kSocketTypeUDP;
     }
 
@@ -278,8 +256,7 @@ public:
      * \note We recommend you to redefine this function in your protocol to
      *       avoid breaking it if the core library is changed.
      */
-    virtual DS::SocketType robotSocketType()
-    {
+    virtual DS::SocketType robotSocketType() {
         return DS::kSocketTypeUDP;
     }
 
@@ -289,8 +266,7 @@ public:
      * \note If you do not re-implement this function, the Driver Station will
      *       not be able to communicate with the radio.
      */
-    virtual QString defaultRadioAddress()
-    {
+    virtual QString defaultRadioAddress() {
         return QString();
     }
 
@@ -305,8 +281,7 @@ public:
      *       IP list with all LAN IPs based on the IP address(es) of the
      *       computer.
      */
-    virtual QStringList defaultRobotAddresses()
-    {
+    virtual QStringList defaultRobotAddresses() {
         return QStringList();
     }
 
@@ -314,8 +289,7 @@ public:
      * Updates the sent FMS packets counter and generates a client-to-FMS
      * packet using the protocol implementation code.
      */
-    QByteArray generateFMSPacket()
-    {
+    QByteArray generateFMSPacket() {
         ++m_sentFmsPackets;
         return getFMSPacket();
     }
@@ -324,8 +298,7 @@ public:
      * Updates the sent radio packets counter and generates a client-to-radio
      * packet using the protocol implementation code.
      */
-    QByteArray generateRadioPacket()
-    {
+    QByteArray generateRadioPacket() {
         ++m_sentRadioPackets;
         return getRadioPacket();
     }
@@ -334,8 +307,7 @@ public:
      * Updates the sent robot packets counter and generates a client-to-robot
      * packet using the protocol implementation code.
      */
-    QByteArray generateRobotPacket()
-    {
+    QByteArray generateRobotPacket() {
         ++m_sentRobotPackets;
         ++m_sentRobotPacketsSinceConnect;
 
@@ -346,8 +318,7 @@ public:
      * Lets the protocol implementation interpret the given \a data and updates
      * the received FMS packets counter.
      */
-    void readFMSPacket (const QByteArray& data)
-    {
+    void readFMSPacket (const QByteArray& data) {
         ++m_receivedFmsPackets;
         if (interpretFMSPacket (data))
             config()->updateFMSCommStatus (DS::kCommsWorking);
@@ -357,8 +328,7 @@ public:
      * Lets the protocol implementation interpret the given \a data and updates
      * the received radio packets counter.
      */
-    void readRadioPacket (const QByteArray& data)
-    {
+    void readRadioPacket (const QByteArray& data) {
         ++m_receivedRadioPackets;
         if (interpretRadioPacket (data))
             config()->updateRadioCommStatus (DS::kCommsWorking);
@@ -368,8 +338,7 @@ public:
      * Lets the protocol implementation interpret the given \a data and updates
      * the received robot packets counter.
      */
-    void readRobotPacket (const QByteArray& data)
-    {
+    void readRobotPacket (const QByteArray& data) {
         ++m_receivedRobotPackets;
 
         if (interpretRobotPacket (data) && !config()->isConnectedToRobot()) {
@@ -381,48 +350,42 @@ public:
     /**
      * Returns the number of packets sent to the FMS
      */
-    int sentFMSPackets()
-    {
+    int sentFMSPackets() {
         return m_sentFmsPackets;
     }
 
     /**
      * Returns the number of packets sent to the radio
      */
-    int sentRadioPackets()
-    {
+    int sentRadioPackets() {
         return m_sentRadioPackets;
     }
 
     /**
      * Returns the number of packets sent to the robot
      */
-    int sentRobotPackets()
-    {
+    int sentRobotPackets() {
         return m_sentRobotPackets;
     }
 
     /**
      * Returns the number of packets received from the FMS
      */
-    int receivedFMSPackets()
-    {
+    int receivedFMSPackets() {
         return m_receivedRobotPackets;
     }
 
     /**
      * Returns the number of packets received from the radio
      */
-    int receivedRadioPackets()
-    {
+    int receivedRadioPackets() {
         return m_receivedRobotPackets;
     }
 
     /**
      * Returns the number of packets received from the robot
      */
-    int receivedRobotPackets()
-    {
+    int receivedRobotPackets() {
         return m_receivedRobotPackets;
     }
 
@@ -433,25 +396,22 @@ public:
      * an unreal packet-loss ratio, since we would take into account the
      * number of packets sent before robot connection (which can be a lot).
      */
-    int sentRobotPacketsSinceConnect()
-    {
+    int sentRobotPacketsSinceConnect() {
         return m_sentRobotPacketsSinceConnect;
     }
 
-protected:
+  protected:
     /**
      * Gives direct access to the Driver Station variables/configs
      */
-    DS_Config* config()
-    {
+    DS_Config* config() {
         return DS_Config::getInstance();
     }
 
     /**
      * Gives direct access to the registered joysticks of the DS
      */
-    JoystickList* joysticks()
-    {
+    JoystickList* joysticks() {
         return DriverStation::getInstance()->joysticks();
     }
 
@@ -461,8 +421,7 @@ protected:
      * \note If you do not re-implement this function, it will generate an
      *       empty packet. Empty packets are ignored by the Driver Station.
      */
-    virtual QByteArray getFMSPacket()
-    {
+    virtual QByteArray getFMSPacket() {
         return QByteArray();
     }
 
@@ -472,8 +431,7 @@ protected:
      * \note If you do not re-implement this function, it will generate an
      *       empty packet. Empty packets are ignored by the Driver Station.
      */
-    virtual QByteArray getRadioPacket()
-    {
+    virtual QByteArray getRadioPacket() {
         return QByteArray();
     }
 
@@ -483,8 +441,7 @@ protected:
      * \note If you do not re-implement this function, it will generate an
      *       empty packet. Empty packets are ignored by the Driver Station.
      */
-    virtual QByteArray getRobotPacket()
-    {
+    virtual QByteArray getRobotPacket() {
         return QByteArray();
     }
 
@@ -492,8 +449,7 @@ protected:
      * Interprets the \a data received from the FMS and adjusts the Driver
      * Station properties accordingly.
      */
-    virtual bool interpretFMSPacket (const QByteArray& data)
-    {
+    virtual bool interpretFMSPacket (const QByteArray& data) {
         Q_UNUSED (data);
         return false;
     }
@@ -502,8 +458,7 @@ protected:
      * Interprets the \a data received from the radio and adjusts the Driver
      * Station properties accordingly.
      */
-    virtual bool interpretRadioPacket (const QByteArray& data)
-    {
+    virtual bool interpretRadioPacket (const QByteArray& data) {
         Q_UNUSED (data);
         return false;
     }
@@ -512,13 +467,12 @@ protected:
      * Interprets the \a data received from the robot and adjusts the Driver
      * Station properties accordingly.
      */
-    virtual bool interpretRobotPacket (const QByteArray& data)
-    {
+    virtual bool interpretRobotPacket (const QByteArray& data) {
         Q_UNUSED (data);
         return false;
     }
 
-private:
+  private:
     int m_sentFmsPackets;
     int m_sentRadioPackets;
     int m_sentRobotPackets;

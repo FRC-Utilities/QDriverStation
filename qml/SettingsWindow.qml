@@ -54,13 +54,13 @@ Window {
         /* Set the placeholder */
         customAddress.placeholder = DriverStation.defaultRobotAddress()
 
-        /* Set the PSC limit */
-        if (pscCheckbox.checked && psc.value > 0)
-            DriverStation.setParallelSocketCount (psc.value)
+        /* Set the scan rate */
+        if (scanRateCheckbox.checked && scanRate.value > 0)
+            DriverStation.setScanRate (scanRate.value)
         else {
-            psc.value = 0
-            pscCheckbox.checked = false
-            DriverStation.setParallelSocketCount (0)
+            scanRate.value = 0
+            scanRateCheckbox.checked = false
+            DriverStation.setScanRate (0)
         }
 
         /* Clear the custom robot address if needed */
@@ -98,7 +98,7 @@ Window {
         category: "SettingsWindow"
         property alias x: window.x
         property alias y: window.y
-        property alias psc: psc.value
+        property alias scanRate: scanRate.value
         property alias address: customAddress.text
         property alias promptOnQuit: promptOnQuit.checked
         property alias checkForUpdates: checkForUpdates.checked
@@ -253,46 +253,24 @@ Window {
                     }
 
                     //
-                    // PSC Settings
+                    // Scan rate Settings
                     //
                     ColumnLayout {
                         spacing: Globals.spacing
 
                         Checkbox {
-                            id: pscCheckbox
-                            checked: psc.value > 0
-                            text: qsTr ("Set the PSC* to:")
+                            id: scanRateCheckbox
+                            checked: scanRate.value > 0
+                            text: qsTr ("Set the scan rate to:")
                         }
 
                         Spinbox {
-                            id: psc
+                            id: scanRate
                             value: 0
                             minimumValue: 0
-                            maximumValue: 128
+                            maximumValue: 512
                             Layout.fillWidth: true
-                            enabled: pscCheckbox.checked
-                        }
-
-                        Label {
-                            size: small
-                            text: qsTr ("*PSC: Parallel Socket Count (0 = auto)")
-                        }
-
-                        Label {
-                            size: small
-                            Layout.fillWidth: true
-                            wrapMode: Text.WordWrap
-                            opacity: pscCheckbox.checked ? 1 : 0
-                            color: Globals.Colors.IndicatorWarning
-                            text: qsTr ("High PSC values can cause many " +
-                                        "problems. For your safety, the "  +
-                                        "maximum PSC value is 128.")
-
-                            Behavior on opacity {
-                                NumberAnimation {
-                                    duration: Globals.slowAnimation
-                                }
-                            }
+                            enabled: scanRateCheckbox.checked
                         }
                     }
                 }

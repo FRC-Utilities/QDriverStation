@@ -28,8 +28,7 @@
  * Listens for keyboard events in all the application and takes them
  * into account if they correspond to a shortcut.
  */
-bool Shortcuts::eventFilter (QObject* object, QEvent* event)
-{
+bool Shortcuts::eventFilter (QObject* object, QEvent* event) {
     Q_UNUSED (object);
 
     if (event->type() == QEvent::KeyPress) {
@@ -44,8 +43,6 @@ bool Shortcuts::eventFilter (QObject* object, QEvent* event)
             QJoysticks::getInstance()->updateInterfaces();
             break;
         }
-
-        return true;
     }
 
     return false;

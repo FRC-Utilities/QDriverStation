@@ -11,27 +11,26 @@
 
 #include <Core/ConfigurableSocket.h>
 
-class NetConsole : public QObject
-{
+class NetConsole : public QObject {
     Q_OBJECT
 
-public:
+  public:
     NetConsole();
     Q_INVOKABLE int inputPort() const;
     Q_INVOKABLE int outputPort() const;
 
-public slots:
+  public slots:
     void setInputPort (int port);
     void setOutputPort (int port);
     void sendMessage (const QString& message);
 
-private slots:
+  private slots:
     void onReadyRead();
 
-signals:
+  signals:
     void newMessage (const QString& message);
 
-private:
+  private:
     int m_inputPort;
     int m_outputPort;
 

@@ -13,25 +13,23 @@
 #include <QApplication>
 #include <DriverStation.h>
 
-namespace Ui
-{
+namespace Ui {
 class Window;
 }
 
-class Window : public QMainWindow
-{
+class Window : public QMainWindow {
     Q_OBJECT
 
-public:
+  public:
     explicit Window (QWidget* parent = 0);
     ~Window();
 
-public slots:
+  public slots:
     void onEnabledChanged();
     void updateControlMode();
     void updateVoltage (QString voltage);
 
-private:
+  private:
     Ui::Window* m_ui;
     DriverStation* m_driverStation;
 };

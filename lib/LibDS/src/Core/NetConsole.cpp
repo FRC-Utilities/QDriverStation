@@ -16,8 +16,7 @@
  * through the network. These messages are mostly robot logs or simple
  * client-to-robot commands for diagnostic purposes.
  */
-NetConsole::NetConsole()
-{
+NetConsole::NetConsole() {
     m_inputPort = 0;
     m_outputPort = 0;
     m_inputSocket  = new ConfigurableSocket (DS::kSocketTypeUDP);
@@ -30,16 +29,14 @@ NetConsole::NetConsole()
 /**
  * Returns the port in which we receive broadcasted robot messages
  */
-int NetConsole::inputPort() const
-{
+int NetConsole::inputPort() const {
     return m_inputPort;
 }
 
 /**
  * Returns the port in which we broadcast commands to the robot
  */
-int NetConsole::outputPort() const
-{
+int NetConsole::outputPort() const {
     return m_outputPort;
 }
 
@@ -48,8 +45,7 @@ int NetConsole::outputPort() const
  * If the \a port is set to \c 0, then the \c NetConsole will disable the
  * input socket.
  */
-void NetConsole::setInputPort (int port)
-{
+void NetConsole::setInputPort (int port) {
     qDebug() << "NetConsole input port set to" << port;
 
     m_inputPort = port;
@@ -67,8 +63,7 @@ void NetConsole::setInputPort (int port)
  * If the \a port is set to \c 0, then the \c NetConsole will disable the
  * output socket.
  */
-void NetConsole::setOutputPort (int port)
-{
+void NetConsole::setOutputPort (int port) {
     m_outputPort = port;
     qDebug() << "NetConsole output port set to" << port;
 }
@@ -77,8 +72,7 @@ void NetConsole::setOutputPort (int port)
  * Broadcasts the given \a message to the robot.
  * \note the output port must not be \c 0 in order for this to work
  */
-void NetConsole::sendMessage (const QString& message)
-{
+void NetConsole::sendMessage (const QString& message) {
     if (!message.isEmpty() && outputPort() > 0) {
         m_outputSocket->writeDatagram (message.toUtf8(),
                                        QHostAddress::Any,
@@ -91,8 +85,7 @@ void NetConsole::sendMessage (const QString& message)
 /**
  * Called when the input socket finishes receiving a datagram
  */
-void NetConsole::onReadyRead()
-{
+void NetConsole::onReadyRead() {
     QString message = QString::fromUtf8 (m_inputSocket->readAll());
     emit newMessage (message);
 

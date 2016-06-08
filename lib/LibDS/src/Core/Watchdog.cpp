@@ -22,24 +22,21 @@
  * turn will reset itself and try to re-establish communications with the robot
  * controller and the FMS.
  */
-Watchdog::Watchdog()
-{
+Watchdog::Watchdog() {
     connect (&m_timer, SIGNAL (timeout()), this, SIGNAL (expired()));
 }
 
 /**
  * Returns the expiration time of the watchdog in milliseconds
  */
-int Watchdog::expirationTime() const
-{
+int Watchdog::expirationTime() const {
     return m_timer.interval();
 }
 
 /**
  * Resets the watchdog and prevents it from expiring
  */
-void Watchdog::reset()
-{
+void Watchdog::reset() {
     m_timer.stop();
     m_timer.start (expirationTime());
 }
@@ -47,8 +44,7 @@ void Watchdog::reset()
 /**
  * Changes the expiration time and resets the watchdog
  */
-void Watchdog::setExpirationTime (int msecs)
-{
+void Watchdog::setExpirationTime (int msecs) {
     m_timer.setInterval (msecs);
     reset();
 }

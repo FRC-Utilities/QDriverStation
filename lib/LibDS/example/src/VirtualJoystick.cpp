@@ -23,14 +23,12 @@
 #include <DriverStation.h>
 #include "VirtualJoystick.h"
 
-VirtualJoystick::VirtualJoystick()
-{
+VirtualJoystick::VirtualJoystick() {
     qApp->installEventFilter (this);
     DriverStation::getInstance()->registerJoystick (6, 10, 1);
 }
 
-void VirtualJoystick::readAxes (int key, bool pressed)
-{
+void VirtualJoystick::readAxes (int key, bool pressed) {
     int axis = -1;
     float value = pressed ? 1 : 0;
 
@@ -87,8 +85,7 @@ void VirtualJoystick::readAxes (int key, bool pressed)
         DriverStation::getInstance()->updateAxis (0, axis, value);
 }
 
-void VirtualJoystick::readPOVs (int key, bool pressed)
-{
+void VirtualJoystick::readPOVs (int key, bool pressed) {
     int angle = 0;
 
     if (key == Qt::Key_Up)
@@ -107,8 +104,7 @@ void VirtualJoystick::readPOVs (int key, bool pressed)
     DriverStation::getInstance()->updatePOV (0, 0, angle);
 }
 
-void VirtualJoystick::readButtons (int key, bool pressed)
-{
+void VirtualJoystick::readButtons (int key, bool pressed) {
     int button = -1;
 
     if (key == Qt::Key_0)
@@ -136,15 +132,13 @@ void VirtualJoystick::readButtons (int key, bool pressed)
         DriverStation::getInstance()->updateButton (0, button, pressed);
 }
 
-void VirtualJoystick::processKeyEvent (QKeyEvent* event, bool pressed)
-{
+void VirtualJoystick::processKeyEvent (QKeyEvent* event, bool pressed) {
     readPOVs (event->key(), pressed);
     readAxes (event->key(), pressed);
     readButtons (event->key(), pressed);
 }
 
-bool VirtualJoystick::eventFilter (QObject* object, QEvent* event)
-{
+bool VirtualJoystick::eventFilter (QObject* object, QEvent* event) {
     Q_UNUSED (object);
 
     switch (event->type()) {

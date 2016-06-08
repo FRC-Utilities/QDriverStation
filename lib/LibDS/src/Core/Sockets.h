@@ -11,23 +11,21 @@
 
 #include <Core/ConfigurableSocket.h>
 
-class Sockets : public QObject
-{
+class Sockets : public QObject {
     Q_OBJECT
 
-public:
+  public:
     Sockets();
-    ~Sockets();
 
-    int socketCount() const;
+    int scanRate() const;
+    int customScanRate() const;
+
     int fmsInputPort() const;
     int fmsOutputPort() const;
     int radioInputPort() const;
     int robotInputPort() const;
     int radioOutputPort() const;
     int robotOutputPort() const;
-
-    int customSocketCount() const;
 
     QString radioAddress() const;
     QString robotAddress() const;
@@ -37,7 +35,7 @@ public:
     DS::SocketType radioSocketType() const;
     DS::SocketType robotSocketType() const;
 
-public slots:
+  public slots:
     void refreshAddressList();
     void sendToFMS (const QByteArray& data);
     void sendToRobot (const QByteArray& data);
@@ -54,38 +52,34 @@ public slots:
     void setRadioOutputPort (int port);
     void setRobotOutputPort (int port);
 
-    void setCustomSocketCount (int count);
+    void setScanRate (int count);
 
     void setFMSSocketType (const DS::SocketType& type);
     void setRadioSocketType (const DS::SocketType& type);
     void setRobotSocketType (const DS::SocketType& type);
 
-signals:
+  signals:
     void fmsPacketReceived (QByteArray data);
     void radioPacketReceived (QByteArray data);
     void robotPacketReceived (QByteArray data);
 
-private slots:
+  private slots:
     void readFMSSocket();
     void readRadioSocket();
     void readRobotSocket();
-    void clearSocketLists();
-    void generateSocketPairs();
     void generateLocalNetworkAddresses();
 
-private:
+  private:
     QString m_robotIp;
     QString m_radioIp;
     QStringList m_robotIpList;
 
-    ConfigurableSocket* m_robotSender;
     ConfigurableSocket* m_fmsSender;
     ConfigurableSocket* m_fmsReceiver;
     ConfigurableSocket* m_radioSender;
+    ConfigurableSocket* m_robotSender;
+    ConfigurableSocket* m_robotReceiver;
     ConfigurableSocket* m_radioReceiver;
-
-    QList<ConfigurableSocket*> m_robotSenderList;
-    QList<ConfigurableSocket*> m_robotInputSockets;
 
     int m_fmsInput;
     int m_fmsOutput;
@@ -94,7 +88,7 @@ private:
     int m_radioOutput;
     int m_robotOutput;
 
-    int m_socketCount;
+    int m_scanRate;
     int m_iterator;
 
     DS::SocketType m_fmsSocketType;

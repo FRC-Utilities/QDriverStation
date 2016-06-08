@@ -15,8 +15,7 @@
  * This class is used in the DS in order to be able to use both TCP and UDP
  * sockets to send and receive data from the robot.
  */
-ConfigurableSocket::ConfigurableSocket (const DS::SocketType& type)
-{
+ConfigurableSocket::ConfigurableSocket (const DS::SocketType& type) {
     m_socketType = type;
     connect (socket(), SIGNAL (readyRead()), this, SIGNAL (readyRead()));
 }
@@ -25,8 +24,7 @@ ConfigurableSocket::ConfigurableSocket (const DS::SocketType& type)
  * Returns the received data on the socket using the implementations
  * for each socket type.
  */
-QByteArray ConfigurableSocket::readAll()
-{
+QByteArray ConfigurableSocket::readAll() {
     QByteArray data;
 
     if (socketType() == DS::kSocketTypeTCP)
@@ -46,24 +44,21 @@ QByteArray ConfigurableSocket::readAll()
 /**
  * Returns the peer address of the socket
  */
-QString ConfigurableSocket::peerAddress()
-{
+QString ConfigurableSocket::peerAddress() {
     return m_peerAddress;
 }
 
 /**
  * Returns a pointer to the TCP socket
  */
-QTcpSocket* ConfigurableSocket::tcpSocket()
-{
+QTcpSocket* ConfigurableSocket::tcpSocket() {
     return &m_tcpSocket;
 }
 
 /**
  * Returns a pointer to the UDP socket
  */
-QUdpSocket* ConfigurableSocket::udpSocket()
-{
+QUdpSocket* ConfigurableSocket::udpSocket() {
     return &m_udpSocket;
 }
 
@@ -74,8 +69,7 @@ QUdpSocket* ConfigurableSocket::udpSocket()
  *
  * Possible scenarios include reading the received data :)
  */
-QAbstractSocket* ConfigurableSocket::socket()
-{
+QAbstractSocket* ConfigurableSocket::socket() {
     if (socketType() == DS::kSocketTypeTCP)
         return &m_tcpSocket;
 
@@ -86,8 +80,7 @@ QAbstractSocket* ConfigurableSocket::socket()
  * Returns the type of socket used. This function allows us to determine if
  * the socket is a TCP socket or an UDP socket.
  */
-DS::SocketType ConfigurableSocket::socketType()
-{
+DS::SocketType ConfigurableSocket::socketType() {
     return m_socketType;
 }
 
@@ -102,8 +95,7 @@ DS::SocketType ConfigurableSocket::socketType()
  * @return the numbers of bytes written
  */
 qint64 ConfigurableSocket::writeDatagram (const QByteArray& data,
-                                          const QString& ip, quint16 port)
-{
+                                          const QString& ip, quint16 port) {
     return writeDatagram (data, QHostAddress (ip), port);
 }
 
@@ -118,8 +110,7 @@ qint64 ConfigurableSocket::writeDatagram (const QByteArray& data,
  * @return the number of bytes written
  */
 qint64 ConfigurableSocket::writeDatagram (const QByteArray& data,
-                                          const QHostAddress& ip, quint16 port)
-{
+                                          const QHostAddress& ip, quint16 port) {
     if (socketType() == DS::kSocketTypeUDP)
         return m_udpSocket.writeDatagram (data, ip, port);
 
@@ -127,6 +118,17 @@ qint64 ConfigurableSocket::writeDatagram (const QByteArray& data,
         return m_tcpSocket.write (data);
 
     return -1;
+}
+
+/**
+ * Instructs the socket to listed from incoming data written in the given \a port
+ *
+ * @param port the local port in which we receive the data
+ * @param mode some bind flags (e.g. which allow us to obtain exclusive access
+ *             to the IP and port or to share that access)
+ */
+void ConfigurableSocket::bind (quint16 port, QAbstractSocket::BindMode mode) {
+    socket()->bind (port, mode);
 }
 
 /**
@@ -139,8 +141,7 @@ qint64 ConfigurableSocket::writeDatagram (const QByteArray& data,
  *             to the IP and port or to share that access)
  */
 void ConfigurableSocket::bind (const QString& ip, quint16 port,
-                               QAbstractSocket::BindMode mode)
-{
+                               QAbstractSocket::BindMode mode) {
     bind (QHostAddress (ip), port, mode);
 }
 
@@ -154,8 +155,7 @@ void ConfigurableSocket::bind (const QString& ip, quint16 port,
  *             to the IP and port or to share that access)
  */
 void ConfigurableSocket::bind (const QHostAddress& ip, quint16 port,
-                               QAbstractSocket::BindMode mode)
-{
+                               QAbstractSocket::BindMode mode) {
     m_peerAddress = ip.toString();
     socket()->bind (ip, port, mode);
 }
@@ -170,8 +170,7 @@ void ConfigurableSocket::bind (const QHostAddress& ip, quint16 port,
  */
 void ConfigurableSocket::connectToHost (const QString& host,
                                         quint16 port,
-                                        QIODevice::OpenMode mode)
-{
+                                        QIODevice::OpenMode mode) {
     connectToHost (QHostAddress (host), port, mode);
 }
 
@@ -185,8 +184,7 @@ void ConfigurableSocket::connectToHost (const QString& host,
  */
 void ConfigurableSocket::connectToHost (const QHostAddress& host,
                                         quint16 port,
-                                        QIODevice::OpenMode mode)
-{
+                                        QIODevice::OpenMode mode) {
     if (socketType() == DS::kSocketTypeTCP) {
         if (m_tcpSocket.state() != QAbstractSocket::UnconnectedState)
             m_tcpSocket.disconnectFromHost();

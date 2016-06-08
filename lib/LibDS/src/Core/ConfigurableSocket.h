@@ -22,7 +22,7 @@ signals:
     void readyRead();
 
 public:
-    explicit ConfigurableSocket (const DS::SocketType& type);
+    ConfigurableSocket (const DS::SocketType& type);
 
     QByteArray readAll();
     QString peerAddress();
@@ -35,6 +35,7 @@ public:
     qint64 writeDatagram (const QByteArray& data, const QHostAddress& ip, quint16 port);
 
 public slots:
+    void bind (quint16 port, QAbstractSocket::BindMode mode);
     void bind (const QString& ip, quint16 port, QAbstractSocket::BindMode mode);
     void bind (const QHostAddress& ip, quint16 port, QAbstractSocket::BindMode mode);
     void connectToHost (const QString& host, quint16 port, QIODevice::OpenMode mode);
