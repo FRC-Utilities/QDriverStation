@@ -414,7 +414,7 @@ class Protocol {
     /**
      * Gives direct access to the registered joysticks of the DS
      */
-    JoystickList* joysticks() {
+    DS_Joysticks* joysticks() {
         return DriverStation::getInstance()->joysticks();
     }
 

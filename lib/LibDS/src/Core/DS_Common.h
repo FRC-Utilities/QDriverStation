@@ -17,7 +17,10 @@
 #include <QStringList>
 
 #define DISABLED_PORT 0
-#define JoystickList QList<DS::Joystick*>
+#define DS_Joysticks QList<DS::Joystick*>
+#define DS_Schedule(time,object,slot) QTimer::singleShot (time, \
+                                                          Qt::PreciseTimer, \
+                                                          object, slot)
 
 /**
  * This allows us see the name of an enum when logging it (instead of displaying

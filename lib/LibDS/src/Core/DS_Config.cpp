@@ -391,6 +391,5 @@ void DS_Config::updateElapsedTime() {
                                  .arg (QString::number (msec).at (0)));
     }
 
-    QTimer::singleShot (100, Qt::PreciseTimer,
-                        this, SLOT (updateElapsedTime()));
+    DS_Schedule (200, this, SLOT (updateElapsedTime()));
 }

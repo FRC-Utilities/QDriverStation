@@ -24,6 +24,8 @@ import QtQuick 2.0
 import "../globals.js" as Globals
 
 Rectangle {
+    id: plot
+
     //
     // Defines the refresh interval (in milliseconds) of the graph
     //
@@ -104,7 +106,9 @@ Rectangle {
         property int currentPos: 0
 
         onTriggered: {
-            ++currentPos
+            if (plot.visible)
+                ++currentPos
+
             canvas.requestPaint()
             parent.refreshed()
         }
@@ -120,24 +124,28 @@ Rectangle {
         anchors.margins: parent.border.width
 
         onPaint: {
-            var context = getContext('2d')
+            /* Lazy is good sometimes */
+            if (plot.visible) {
+                /* Get drawing context */
+                var context = getContext('2d')
 
-            /* Set the bar color */
-            context.fillStyle = barColor
+                /* Set the bar color */
+                context.fillStyle = barColor
 
-            /* Calculate X and Y coordinates */
-            var yOffset = (1 - getLevel()) * height
-            var xOffset = timer.currentPos * rectWidth
+                /* Calculate X and Y coordinates */
+                var yOffset = (1 - getLevel()) * height
+                var xOffset = timer.currentPos * rectWidth
 
-            /* Reset the graph if it is greater than the width */
-            if (xOffset > canvas.width) {
-                xOffset = 0
-                timer.currentPos = 0
-                context.clearRect (0, 0, canvas.width, canvas.height)
+                /* Reset the graph if it is greater than the width */
+                if (xOffset > canvas.width) {
+                    xOffset = 0
+                    timer.currentPos = 0
+                    context.clearRect (0, 0, canvas.width, canvas.height)
+                }
+
+                /* Draw a single bar */
+                context.fillRect (xOffset, yOffset, rectWidth, height)
             }
-
-            /* Draw a single bar */
-            context.fillRect (xOffset, yOffset, rectWidth, height)
 
             /* Restart the timer */
             timer.restart()

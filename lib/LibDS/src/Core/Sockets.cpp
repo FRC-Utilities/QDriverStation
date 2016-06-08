@@ -407,8 +407,8 @@ void Sockets::setFMSSocketType (const DS::SocketType& type) {
     m_fmsSocketType = type;
 
     /* Delete FMS sockets */
-    free (m_fmsSender);
-    free (m_fmsReceiver);
+    delete m_fmsSender;
+    delete m_fmsReceiver;
 
     /* Create FMS sockets */
     m_fmsSender = new ConfigurableSocket (type);
@@ -432,8 +432,8 @@ void Sockets::setRadioSocketType (const DS::SocketType& type) {
     m_radioSocketType = type;
 
     /* Delete radio sockets */
-    free (m_radioSender);
-    free (m_radioReceiver);
+    delete m_radioSender;
+    delete m_radioReceiver;
 
     /* Create radio sockets */
     m_radioSender = new ConfigurableSocket (type);
@@ -457,8 +457,8 @@ void Sockets::setRobotSocketType (const DS::SocketType& type) {
     m_robotSocketType = type;
 
     /* Delete robot sockets */
-    free (m_robotSender);
-    free (m_robotReceiver);
+    delete m_robotSender;
+    delete m_robotReceiver;
 
     /* Create robot sockets */
     m_robotSender = new ConfigurableSocket (type);

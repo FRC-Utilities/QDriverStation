@@ -27,6 +27,7 @@
 #include <QStringList>
 #include <QJoysticks/JoysticksCommon.h>
 
+class QThread;
 class SDL_Joysticks;
 class VirtualJoystick;
 
@@ -59,6 +60,7 @@ class QJoysticks : public QObject {
 
   protected:
     explicit QJoysticks();
+    ~QJoysticks();
 
   signals:
     void countChanged();
@@ -77,6 +79,8 @@ class QJoysticks : public QObject {
     void onButtonEvent (const QJoystickButtonEvent& event);
 
   private:
+    QThread* m_thread;
+
     SDL_Joysticks* m_sdlJoysticks;
     VirtualJoystick* m_virtualJoystick;
 

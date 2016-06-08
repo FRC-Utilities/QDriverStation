@@ -21,6 +21,7 @@
  */
 
 #include <QDebug>
+#include <QThread>
 #include <QJoysticks.h>
 #include <QJoysticks/SDL_Joysticks.h>
 #include <QJoysticks/VirtualJoystick.h>
@@ -53,9 +54,16 @@ const QString BLACKLISTED_STR = " (" + QObject::tr ("Disabled") + ")";
  * Initializes and configures the SDL and virtual joystick modules.
  */
 QJoysticks::QJoysticks() {
+    /* Initialize input methods */
     m_sdlJoysticks = new SDL_Joysticks();
     m_virtualJoystick = new VirtualJoystick();
 
+    /* Move SDL joysticks to another thread */
+    m_thread = new QThread (this);
+    m_sdlJoysticks->moveToThread (m_thread);
+    m_thread->start (QThread::HighPriority);
+
+    /* Configure SDL joysticks */
     connect (sdlJoysticks(),    &SDL_Joysticks::POVEvent,
              this,              &QJoysticks::POVEvent);
     connect (sdlJoysticks(),    &SDL_Joysticks::axisEvent,
@@ -65,6 +73,7 @@ QJoysticks::QJoysticks() {
     connect (sdlJoysticks(),    &SDL_Joysticks::countChanged,
              this,              &QJoysticks::updateInterfaces);
 
+    /* Configure virtual joysticks */
     connect (virtualJoystick(), &VirtualJoystick::povEvent,
              this,              &QJoysticks::POVEvent);
     connect (virtualJoystick(), &VirtualJoystick::axisEvent,
@@ -74,12 +83,23 @@ QJoysticks::QJoysticks() {
     connect (virtualJoystick(), &VirtualJoystick::enabledChanged,
              this,              &QJoysticks::updateInterfaces);
 
+    /* React to own signals to create QML signals */
     connect (this, &QJoysticks::POVEvent,
              this, &QJoysticks::onPOVEvent);
     connect (this, &QJoysticks::axisEvent,
              this, &QJoysticks::onAxisEvent);
     connect (this, &QJoysticks::buttonEvent,
              this, &QJoysticks::onButtonEvent);
+}
+
+/**
+ * Stops the threads
+ */
+QJoysticks::~QJoysticks() {
+    m_thread->exit();
+
+    delete m_sdlJoysticks;
+    delete m_virtualJoystick;
 }
 
 /**

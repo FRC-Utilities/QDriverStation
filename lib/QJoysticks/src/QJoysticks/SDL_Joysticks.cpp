@@ -141,7 +141,7 @@ void SDL_Joysticks::update() {
         }
     }
 
-    QTimer::singleShot (20, this, SLOT (update()));
+    QTimer::singleShot (50, this, SLOT (update()));
 }
 
 /**

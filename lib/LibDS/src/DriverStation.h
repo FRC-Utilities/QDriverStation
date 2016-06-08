@@ -11,6 +11,8 @@
 
 #include <Core/DS_Base.h>
 
+class QTimer;
+class QThread;
 class Sockets;
 class Watchdog;
 class Protocol;
@@ -87,7 +89,7 @@ class DriverStation : public DS_Base {
     Q_INVOKABLE int getRealNumButtons (int joystick);
 
     Q_INVOKABLE int joystickCount();
-    Q_INVOKABLE JoystickList* joysticks();
+    Q_INVOKABLE DS_Joysticks* joysticks();
 
     Q_INVOKABLE Alliance alliance() const;
     Q_INVOKABLE Position position() const;
@@ -171,9 +173,12 @@ class DriverStation : public DS_Base {
     int m_radioInterval;
     int m_robotInterval;
 
-    JoystickList m_joysticks;
+    DS_Joysticks m_joysticks;
     QString m_customRadioAddress;
     QString m_customRobotAddress;
+
+    QThread* m_watchdogThread;
+    QThread* m_secondaryThread;
 
     Sockets* m_sockets;
     Protocol* m_protocol;

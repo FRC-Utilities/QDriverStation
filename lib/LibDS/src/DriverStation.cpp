@@ -36,11 +36,6 @@ static QString CONSOLE_MESSAGE (const QString& input) {
 DriverStation::DriverStation() {
     qDebug() << "Initializing DriverStation...";
 
-    /* Initialize the intervals to one second */
-    m_fmsInterval   = 1000;
-    m_radioInterval = 1000;
-    m_robotInterval = 1000;
-
     /* Initialize the protocol, but do not allow DS to send packets */
     m_init = false;
     m_running = false;
@@ -48,6 +43,9 @@ DriverStation::DriverStation() {
 
     /* Initialzie misc. variables */
     m_packetLoss = 0;
+    m_fmsInterval = 1000;
+    m_radioInterval = 1000;
+    m_robotInterval = 1000;
 
     /* Initialize DS modules & watchdogs */
     m_sockets = new Sockets;
@@ -55,6 +53,21 @@ DriverStation::DriverStation() {
     m_fmsWatchdog = new Watchdog;
     m_radioWatchdog = new Watchdog;
     m_robotWatchdog = new Watchdog;
+
+    /* Initialize threads */
+    m_watchdogThread = new QThread (this);
+    m_secondaryThread = new QThread (this);
+
+    /* Move modules to a highest priority thread */
+    m_sockets->moveToThread (m_secondaryThread);
+    m_console->moveToThread (m_secondaryThread);
+    m_secondaryThread->start (QThread::HighestPriority);
+
+    /* Move watchdogs to a high priority thread */
+    m_fmsWatchdog->moveToThread (m_watchdogThread);
+    m_radioWatchdog->moveToThread (m_watchdogThread);
+    m_robotWatchdog->moveToThread (m_watchdogThread);
+    m_watchdogThread->start (QThread::HighPriority);
 
     /* React when the sockets receive data from FMS, radio or robot */
     connect (m_sockets, SIGNAL (fmsPacketReceived   (QByteArray)),
@@ -134,6 +147,11 @@ DriverStation::DriverStation() {
 }
 
 DriverStation::~DriverStation() {
+    /* Stop threads */
+    m_watchdogThread->exit();
+    m_secondaryThread->exit();
+
+    /* Delete modules */
     delete m_sockets;
     delete m_console;
     delete m_fmsWatchdog;
@@ -462,7 +480,7 @@ int DriverStation::joystickCount() {
 /**
  * Returns the actual joysticks and their properties
  */
-JoystickList* DriverStation::joysticks() {
+DS_Joysticks* DriverStation::joysticks() {
     return &m_joysticks;
 }
 
@@ -761,7 +779,7 @@ void DriverStation::init() {
         updatePacketLoss();
 
         emit statusChanged (generalStatus());
-        QTimer::singleShot (200, Qt::PreciseTimer, this, SIGNAL (initialized()));
+        DS_Schedule (200, this, SIGNAL (initialized()));
 
         qDebug() << "DS engine started!";
     }
@@ -851,7 +869,7 @@ void DriverStation::switchToTeleoperated() {
  * protocol.
  */
 void DriverStation::reconfigureJoysticks() {
-    JoystickList list = m_joysticks;
+    DS_Joysticks list = m_joysticks;
     resetJoysticks();
 
     qDebug() << "Re-generating joystick list based on protocol preferences";
@@ -919,12 +937,11 @@ void DriverStation::setProtocol (Protocol* protocol) {
     /* Used to separate protocol init messages */
     QString separator = "";
 
-    /* Delete the current protocol */
+    /* Decommission the current protocol */
     if (m_protocol && protocol) {
-        qDebug() << "Decommissioning protocol" << m_protocol->name();
-
         separator = " ";
         free (m_protocol);
+        qDebug() << "Protocol" << m_protocol->name() << "decommissioned";
     }
 
     /* Re-assign the protocol, stop sending data */
@@ -950,15 +967,20 @@ void DriverStation::setProtocol (Protocol* protocol) {
         m_console->setInputPort       (m_protocol->netconsoleInputPort());
         m_console->setOutputPort      (m_protocol->netconsoleOutputPort());
 
-        /* Update packet intervals */
+        /* Update packet sender intervals */
         m_fmsInterval = 1000 / m_protocol->fmsFrequency();
         m_radioInterval = 1000 / m_protocol->radioFrequency();
         m_robotInterval = 1000 / m_protocol->robotFrequency();
 
         /* Update the watchdog expiration times */
-        m_fmsWatchdog->setExpirationTime (1000);
-        m_radioWatchdog->setExpirationTime (1000);
-        m_robotWatchdog->setExpirationTime (1000);
+        m_fmsWatchdog->setExpirationTime (m_fmsInterval * 50);
+        m_radioWatchdog->setExpirationTime (m_radioInterval * 50);
+        m_robotWatchdog->setExpirationTime (m_robotInterval * 50);
+
+        /* Make the intervals smaller to compensate for hardware delay */
+        m_fmsInterval -= (float) m_fmsInterval * 0.1;
+        m_radioInterval -= (float) m_radioInterval * 0.1;
+        m_robotInterval -= (float) m_robotInterval * 0.1;
 
         /* Update joystick config. to match protocol requirements */
         reconfigureJoysticks();
@@ -1214,8 +1236,7 @@ void DriverStation::sendFMSPacket() {
     if (protocol() && running())
         m_sockets->sendToFMS (protocol()->generateFMSPacket());
 
-    QTimer::singleShot (m_fmsInterval, Qt::PreciseTimer,
-                        this, SLOT (sendFMSPacket()));
+    DS_Schedule (m_fmsInterval, this, SLOT (sendFMSPacket()));
 }
 
 /**
@@ -1225,8 +1246,7 @@ void DriverStation::sendRadioPacket() {
     if (protocol() && running())
         m_sockets->sendToRadio (protocol()->generateRadioPacket());
 
-    QTimer::singleShot (m_radioInterval, Qt::PreciseTimer,
-                        this, SLOT (sendRadioPacket()));
+    DS_Schedule (m_radioInterval, this, SLOT (sendRadioPacket()));
 }
 
 /**
@@ -1236,8 +1256,7 @@ void DriverStation::sendRobotPacket() {
     if (protocol() && running())
         m_sockets->sendToRobot (protocol()->generateRobotPacket());
 
-    QTimer::singleShot (m_robotInterval, Qt::PreciseTimer,
-                        this, SLOT (sendRobotPacket()));
+    DS_Schedule (m_robotInterval, this, SLOT (sendRobotPacket()));
 }
 
 /**
@@ -1264,7 +1283,7 @@ void DriverStation::updatePacketLoss() {
         loss = (recvPackets / sentPackets) * 100;
 
     m_packetLoss = (int) loss;
-    QTimer::singleShot (250, Qt::PreciseTimer, this, SLOT (updatePacketLoss()));
+    DS_Schedule (250, this, SLOT (updatePacketLoss()));
 }
 
 /**
