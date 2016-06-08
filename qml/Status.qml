@@ -95,8 +95,7 @@ Item {
         timer.repeat = true
         timer.start()
 
-        Globals.morse ("..-", 440)
-        Globals.beep  (220, 150)
+        Globals.morse ("..-", 440, true)
     }
 
     //
