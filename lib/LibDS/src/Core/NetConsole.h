@@ -15,7 +15,9 @@ class NetConsole : public QObject {
     Q_OBJECT
 
   public:
-    NetConsole();
+    explicit NetConsole();
+    ~NetConsole();
+
     Q_INVOKABLE int inputPort() const;
     Q_INVOKABLE int outputPort() const;
 

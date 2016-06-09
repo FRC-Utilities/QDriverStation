@@ -15,14 +15,6 @@
 #define FLAGS QAbstractSocket::ShareAddress | QAbstractSocket::ReuseAddressHint
 // *INDENT-ON*
 
-/*
- * WARNING:
- *
- * The concept of this class is simple enough, however, there are a lot
- * of 'ugly hacks' here. Do not change anything unless you know what you are doing!
- * If you change something, expect something to break or to stop working!
- */
-
 Sockets::Sockets() {
     /* Initialze scanner variables */
     m_iterator        = 0;
@@ -57,6 +49,27 @@ Sockets::Sockets() {
 }
 
 /**
+ * Deletes all the sockets & disables the system
+ */
+Sockets::~Sockets() {
+    qDebug() << "Shutting down socket engine";
+
+    /* Ensure that we cannot send or receive anything */
+    setFMSInputPort (DISABLED_PORT);
+    setFMSOutputPort (DISABLED_PORT);
+    setRadioInputPort (DISABLED_PORT);
+    setRobotInputPort (DISABLED_PORT);
+    setRadioOutputPort (DISABLED_PORT);
+    setRobotOutputPort (DISABLED_PORT);
+
+    /* Delete all sockets */
+    foreach (ConfigurableSocket* socket, findChildren<ConfigurableSocket*>())
+        delete socket;
+
+    qDebug() << "Socket engine terminated";
+}
+
+/**
  * Returns the number of IPs probed per watchdog expiration time.
  * If the client/user did not assign a custom scan rate, then this function
  * will calculate an appropiate value based on the size of the robot IP list.
@@ -84,7 +97,7 @@ int Sockets::scanRate() const {
      */
     rate = qMin (rate, 128);
 
-    /* Do not let the scan rate be smaller than 1 */
+    /* In Russia, 0 divides you. Avoid that by setting 1 as minimum value */
     rate = qMax (rate, 1);
 
     /* Done! */
@@ -320,7 +333,7 @@ void Sockets::setAddressList (const QStringList& list) {
 void Sockets::setFMSInputPort (int port) {
     m_fmsInput = port;
 
-    if (m_fmsReceiver)
+    if (m_fmsReceiver && port != DISABLED_PORT)
         m_fmsReceiver->bind (port, FLAGS);
 
     qDebug() << "FMS input port set to" << port;
@@ -332,7 +345,7 @@ void Sockets::setFMSInputPort (int port) {
 void Sockets::setFMSOutputPort (int port) {
     m_fmsOutput = port;
 
-    if (m_fmsSender)
+    if (m_fmsSender && port != DISABLED_PORT)
         m_fmsSender->connectToHost (QHostAddress::Any, port, WRITE);
 
     qDebug() << "FMS output port set to" << port;
@@ -344,7 +357,7 @@ void Sockets::setFMSOutputPort (int port) {
 void Sockets::setRadioInputPort (int port) {
     m_radioInput = port;
 
-    if (m_radioReceiver)
+    if (m_radioReceiver && port != DISABLED_PORT)
         m_radioReceiver->bind (port, FLAGS);
 
     qDebug() << "Radio input port set to" << port;
@@ -356,7 +369,7 @@ void Sockets::setRadioInputPort (int port) {
 void Sockets::setRobotInputPort (int port) {
     m_robotInput = port;
 
-    if (m_robotReceiver)
+    if (m_robotReceiver && port != DISABLED_PORT)
         m_robotReceiver->bind (port, FLAGS);
 
     qDebug() << "Robot input port set to" << port;
@@ -368,7 +381,7 @@ void Sockets::setRobotInputPort (int port) {
 void Sockets::setRadioOutputPort (int port) {
     m_radioOutput = port;
 
-    if (m_radioSender)
+    if (m_radioSender && port != DISABLED_PORT)
         m_radioSender->connectToHost (radioAddress(), port, WRITE);
 
     qDebug() << "Radio output port set to" << port;
@@ -380,7 +393,7 @@ void Sockets::setRadioOutputPort (int port) {
 void Sockets::setRobotOutputPort (int port) {
     m_robotOutput = port;
 
-    if (m_robotSender)
+    if (m_robotSender && port != DISABLED_PORT)
         m_robotSender->connectToHost (robotAddress(), port, WRITE);
 
     qDebug() << "Robot output port set to" << port;
@@ -480,7 +493,7 @@ void Sockets::setRobotSocketType (const DS::SocketType& type) {
  * read its data.
  */
 void Sockets::readFMSSocket() {
-    if (m_fmsReceiver)
+    if (m_fmsReceiver && fmsInputPort() != DISABLED_PORT)
         emit fmsPacketReceived (m_fmsReceiver->readAll());
 }
 
@@ -490,7 +503,7 @@ void Sockets::readFMSSocket() {
  * before trying to read its data.
  */
 void Sockets::readRadioSocket() {
-    if (m_radioReceiver)
+    if (m_radioReceiver && radioInputPort() != DISABLED_PORT)
         emit radioPacketReceived (m_radioReceiver->readAll());
 }
 
@@ -499,6 +512,9 @@ void Sockets::readRadioSocket() {
  * first robot packet, giving a break to the modem.
  */
 void Sockets::readRobotSocket() {
+    if (robotInputPort() == DISABLED_PORT)
+        return;
+
     QByteArray data = m_robotReceiver->readAll();
 
     if (!data.isEmpty()) {

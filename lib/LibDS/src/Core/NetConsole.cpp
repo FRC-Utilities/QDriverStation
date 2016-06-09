@@ -19,11 +19,25 @@
 NetConsole::NetConsole() {
     m_inputPort = 0;
     m_outputPort = 0;
-    m_inputSocket  = new ConfigurableSocket (DS::kSocketTypeUDP);
+    m_inputSocket = new ConfigurableSocket (DS::kSocketTypeUDP);
     m_outputSocket = new ConfigurableSocket (DS::kSocketTypeUDP);
 
     connect (m_inputSocket, SIGNAL (readyRead()),
              this,            SLOT (onReadyRead()));
+}
+
+/**
+ * Disables the console and deletes sockets
+ */
+NetConsole::~NetConsole() {
+    qDebug() << "Stopping NetConsole...";
+
+    setInputPort (DISABLED_PORT);
+    setOutputPort (DISABLED_PORT);
+
+    delete m_inputSocket;
+
+    qDebug() << "NetConsole terminated";
 }
 
 /**

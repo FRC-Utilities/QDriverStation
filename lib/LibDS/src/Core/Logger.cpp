@@ -96,7 +96,7 @@ static void INIT_LOGGER() {
     QString time = GET_DATE_TIME ("MMM dd yyyy - HH:mm:ss AP");
 
     /* Get OS information */
-    QString sysV = "Unknown";
+    QString sysV;
 #if QT_VERSION >= QT_VERSION_CHECK (5, 4, 0)
     sysV = QSysInfo::prettyProductName();
 #else
@@ -106,6 +106,8 @@ static void INIT_LOGGER() {
     sysV = "Mac OSX";
 #elif defined Q_OS_LINUX
     sysV = "GNU/Linux";
+#else
+    sysV = "Unknown";
 #endif
 #endif
 

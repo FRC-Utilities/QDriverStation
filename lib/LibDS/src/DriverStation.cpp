@@ -54,16 +54,13 @@ DriverStation::DriverStation() {
     m_radioWatchdog = new Watchdog;
     m_robotWatchdog = new Watchdog;
 
-    /* Initialize threads */
-    m_watchdogThread = new QThread (this);
-    m_secondaryThread = new QThread (this);
-
-    /* Move modules to a highest priority thread */
-    m_sockets->moveToThread (m_secondaryThread);
-    m_console->moveToThread (m_secondaryThread);
-    m_secondaryThread->start (QThread::HighestPriority);
+    /* Move console to other thread */
+    m_modulesThread = new QThread (this);
+    m_console->moveToThread (m_modulesThread);
+    m_modulesThread->start (QThread::HighestPriority);
 
     /* Move watchdogs to a high priority thread */
+    m_watchdogThread = new QThread (this);
     m_fmsWatchdog->moveToThread (m_watchdogThread);
     m_radioWatchdog->moveToThread (m_watchdogThread);
     m_robotWatchdog->moveToThread (m_watchdogThread);
@@ -147,9 +144,14 @@ DriverStation::DriverStation() {
 }
 
 DriverStation::~DriverStation() {
-    /* Stop threads */
-    m_watchdogThread->exit();
-    m_secondaryThread->exit();
+    qDebug() << "Stopping the Driver Station...";
+
+    /* Stop operations */
+    stop();
+
+    /* Kill threads */
+    while (m_modulesThread->isRunning())  m_modulesThread->exit();
+    while (m_watchdogThread->isRunning()) m_watchdogThread->exit();
 
     /* Delete modules */
     delete m_sockets;
@@ -157,6 +159,9 @@ DriverStation::~DriverStation() {
     delete m_fmsWatchdog;
     delete m_radioWatchdog;
     delete m_robotWatchdog;
+
+    /* Append to log */
+    qDebug() << "Driver Station terminated";
 }
 
 /**
@@ -579,10 +584,6 @@ QString DriverStation::generalStatus() const {
     if (!isConnectedToRobot())
         return tr ("No Robot Communication");
 
-    /* Emergecy stopped */
-    else if (isEmergencyStopped())
-        return tr ("Emergency Stopped");
-
     /* No robot code */
     else if (!isRobotCodeRunning())
         return tr ("No Robot Code");
@@ -590,6 +591,10 @@ QString DriverStation::generalStatus() const {
     /* Voltage brownout (ouch!) */
     else if (isVoltageBrownout())
         return tr ("Voltage Brownout");
+
+    /* Emergecy stopped */
+    else if (isEmergencyStopped())
+        return tr ("Emergency Stopped");
 
     QString mode;
     QString enabled;
@@ -964,8 +969,8 @@ void DriverStation::setProtocol (Protocol* protocol) {
         m_sockets->setRobotOutputPort (m_protocol->robotOutputPort());
 
         /* Update NetConsole ports */
-        m_console->setInputPort       (m_protocol->netconsoleInputPort());
-        m_console->setOutputPort      (m_protocol->netconsoleOutputPort());
+        m_console->setInputPort (m_protocol->netconsoleInputPort());
+        m_console->setOutputPort (m_protocol->netconsoleOutputPort());
 
         /* Update packet sender intervals */
         m_fmsInterval = 1000 / m_protocol->fmsFrequency();
@@ -978,9 +983,9 @@ void DriverStation::setProtocol (Protocol* protocol) {
         m_robotWatchdog->setExpirationTime (m_robotInterval * 50);
 
         /* Make the intervals smaller to compensate for hardware delay */
-        m_fmsInterval -= (float) m_fmsInterval * 0.1;
-        m_radioInterval -= (float) m_radioInterval * 0.1;
-        m_robotInterval -= (float) m_robotInterval * 0.1;
+        m_fmsInterval -= static_cast<float>(m_fmsInterval) * 0.1;
+        m_radioInterval -= static_cast<float>(m_radioInterval) * 0.1;
+        m_robotInterval -= static_cast<float>(m_robotInterval) * 0.1;
 
         /* Update joystick config. to match protocol requirements */
         reconfigureJoysticks();
@@ -1221,10 +1226,8 @@ void DriverStation::resetRobot() {
     config()->updateOperationStatus (kNormal);
     config()->robotLogger()->registerWatchdogTimeout();
 
-    if (customRobotAddress().isEmpty()) {
-        m_sockets->setRobotAddress ("");
+    if (customRobotAddress().isEmpty())
         m_sockets->refreshAddressList();
-    }
 
     emit statusChanged (generalStatus());
 }
@@ -1272,17 +1275,13 @@ void DriverStation::updatePacketLoss() {
         sentPackets = protocol()->sentRobotPacketsSinceConnect();
     }
 
-    if (recvPackets <= 0 || sentPackets <= 0) {
-        if (recvPackets <= 0)
-            loss = 100;
-        if (sentPackets <= 0)
-            loss = 0;
-    }
+    if (recvPackets <= 0 || sentPackets <= 0)
+        loss = 100;
 
     else if (recvPackets < sentPackets)
         loss = (recvPackets / sentPackets) * 100;
 
-    m_packetLoss = (int) loss;
+    m_packetLoss = static_cast<int>(loss);
     DS_Schedule (250, this, SLOT (updatePacketLoss()));
 }
 

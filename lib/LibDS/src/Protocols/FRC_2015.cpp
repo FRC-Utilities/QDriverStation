@@ -82,6 +82,27 @@ enum Robot_Data {
 };
 
 /**
+ * Holds a battery voltage and does all the operations to get its parts
+ */
+struct BatteryVoltage {
+    float voltage;
+    quint16 integer;
+    quint16 decimal;
+
+    void updateValues (float volt) {
+        voltage = roundf (volt * 100) / 100;
+        integer = static_cast<int>(volt);
+        decimal = (volt - integer) * 100;
+    }
+
+    void updateValues (quint16 a, quint16 b) {
+        integer = a;
+        decimal = (roundf ((static_cast<float>(b) / 256) * 100) / 100) * 100;
+        voltage = integer + (static_cast<float>(decimal) / 100);
+    }
+};
+
+/**
  * Implements the 2015 FRC Communication protocol
  */
 FRC_2015::FRC_2015() {
@@ -242,14 +263,18 @@ QStringList FRC_2015::defaultRobotAddresses() {
  */
 QByteArray FRC_2015::getFMSPacket() {
     QByteArray data;
+
+    BatteryVoltage voltage;
+    voltage.updateValues (config()->voltage());
+
     data.append ((sentFMSPackets() & 0xff00) >> 8);
     data.append ((sentFMSPackets()) & 0xff);
     data.append (kFMS_DS_Version);
     data.append (getFMSControlCode());
     data.append ((config()->team() & 0xff00) >> 8);
     data.append ((config()->team()) & 0xff);
-    data.append ((int) config()->voltage());
-    data.append (config()->voltage() - (int) config()->voltage());
+    data.append (voltage.integer);
+    data.append (voltage.decimal);
     return data;
 }
 
@@ -344,11 +369,12 @@ bool FRC_2015::interpretRobotPacket (const QByteArray& data) {
         config()->setEmergencyStop (false);
 
     /* Calculate the voltage */
-    float voltage = (integer + ((float) (decimal) * 99 / 255 / 100));
-    config()->updateVoltage (voltage);
+    BatteryVoltage voltage;
+    voltage.updateValues (integer, decimal);
+    config()->updateVoltage (voltage.voltage);
 
     /* If voltage is 0, then robot is simulated */
-    config()->updateSimulated (config()->voltage() == 0);
+    config()->updateSimulated (voltage.voltage == 0.00);
 
     /* This is an extended packet, read its extra data */
     if (data.size() > 8) {

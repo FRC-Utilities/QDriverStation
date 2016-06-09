@@ -51,7 +51,7 @@ QQueue<BeepObject> BEEPS;
  * Calls the beeper when and generates the audio
  */
 void AUDIO_CALLBACK (void* beeper, quint8* stream, int length) {
-    Beeper* object = (Beeper*) beeper;
+    Beeper* object = static_cast<Beeper*>(beeper);
     object->generateSamples ((qint16*) stream, length / 2);
 }
 

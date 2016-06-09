@@ -22,7 +22,8 @@ signals:
     void readyRead();
 
 public:
-    ConfigurableSocket (const DS::SocketType& type);
+    explicit ConfigurableSocket (const DS::SocketType& type);
+    ~ConfigurableSocket();
 
     QByteArray readAll();
     QString peerAddress();
@@ -43,8 +44,8 @@ public slots:
 
 private:
     QString m_peerAddress;
-    QUdpSocket m_udpSocket;
-    QTcpSocket m_tcpSocket;
+    QUdpSocket* m_udpSocket;
+    QTcpSocket* m_tcpSocket;
     DS::SocketType m_socketType;
 };
 // *INDENT-ON*

@@ -29,8 +29,18 @@ import Qt.labs.settings 1.0
 import "widgets"
 import "globals.js" as Globals
 
-ApplicationWindow {
+Window {
     id: window
+    visible: false
+
+    //
+    // Trust me, I am an engineer
+    //
+    flags: Qt.Window |
+           Qt.WindowTitleHint |
+           Qt.WindowSystemMenuHint |
+           Qt.WindowCloseButtonHint |
+           Qt.WindowMinMaxButtonsHint
 
     //
     // If set to true, the window will dock to the bottom of the screen
@@ -42,15 +52,6 @@ ApplicationWindow {
     //
     property int oldX: 100
     property int oldY: 100
-
-    //
-    // Set window flags
-    //
-    flags: Qt.Window |
-           Qt.WindowTitleHint |
-           Qt.WindowSystemMenuHint |
-           Qt.WindowCloseButtonHint |
-           Qt.WindowMinimizeButtonHint
 
     //
     // Display the virtual joystick window (from anywhere in the app)
@@ -76,7 +77,9 @@ ApplicationWindow {
         if (docked) {
             showMaximized()
             y = Screen.desktopAvailableHeight - height
-        } else {
+        }
+
+        else {
             showNormal()
             width = minimumWidth
 
@@ -99,15 +102,11 @@ ApplicationWindow {
     onYChanged: oldY = !docked ? y : oldY
 
     //
-    // Animations, we all like 'em!
+    // Window geometry hacks
     //
-    Behavior on x { NumberAnimation { duration: Globals.slowAnimation } }
-    Behavior on y { NumberAnimation { duration: Globals.slowAnimation } }
-
-    //
-    // Define the size of the window
-    //
-    maximumHeight: minimumHeight
+    minimumWidth: layout.implicitWidth + (2 * layout.x)
+    minimumHeight: layout.implicitHeight + (2 * layout.y)
+    maximumHeight: layout.implicitHeight + (2 * layout.y)
 
     //
     // Misc. properties
@@ -157,8 +156,15 @@ ApplicationWindow {
     // Display the left tab, status controls and right tab horizontally
     //
     RowLayout {
-        anchors.fill: parent
-        anchors.margins: Globals.spacing
+        id: layout
+
+        //
+        // Don't touch this and don't use anchors, if you do, I will kill you
+        //
+        x: Globals.spacing
+        y: Globals.spacing
+        width: Math.max (implicitWidth, window.width - (2 * x))
+        height: Math.max (implicitHeight, window.height - (2 * y))
 
         //
         // Operator, Diagnostics, Preferences & Joysticks

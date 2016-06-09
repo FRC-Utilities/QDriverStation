@@ -177,8 +177,8 @@ class DriverStation : public DS_Base {
     QString m_customRadioAddress;
     QString m_customRobotAddress;
 
+    QThread* m_modulesThread;
     QThread* m_watchdogThread;
-    QThread* m_secondaryThread;
 
     Sockets* m_sockets;
     Protocol* m_protocol;

@@ -141,10 +141,5 @@ int main (int argc, char* argv[]) {
 #endif
 
     /* Start the application event loop */
-    int exit_code = app.exec();
-
-    /* Exit application */
-    qDebug() << "Exit code:" << exit_code;
-    qDebug() << "Application terminated normally";
-    return exit_code;
+    return app.exec();
 }

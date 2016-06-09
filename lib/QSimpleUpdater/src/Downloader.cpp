@@ -281,7 +281,7 @@ void Downloader::calculateTimeRemaining (qint64 received, qint64 total) {
             timeString = tr ("About %1 minutes").arg (int (timeRemaining + 0.5));
         }
 
-        else if (timeRemaining <= 60)
+        else
             timeString = tr ("%1 seconds").arg (int (timeRemaining + 0.5));
 
         m_ui->timeLabel->setText (tr ("Time remaining") + ": " + timeString);

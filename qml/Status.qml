@@ -35,6 +35,11 @@ ColumnLayout {
     property int flashes: 0
 
     //
+    // Defines the separation between the different components of the widget
+    //
+    property double spacerHeight: Globals.spacing / 2
+
+    //
     // These properties are updated when the DS emits the appropiate signals
     //
     property bool simulated: false
@@ -169,8 +174,8 @@ ColumnLayout {
     // Spacer
     //
     Item {
-        width: height
-        height: Globals.scale (10)
+        Layout.fillHeight: true
+        Layout.minimumHeight: spacerHeight
     }
 
     //
@@ -185,6 +190,7 @@ ColumnLayout {
         text: qsTr ("Simulated Robot")
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
+        Layout.minimumHeight: Globals.scale (34)
         color: Globals.Colors.AlternativeHighlight
     }
 
@@ -277,9 +283,8 @@ ColumnLayout {
     // Another spacer
     //
     Item {
-        width: height
         Layout.fillHeight: true
-        height: Globals.scale (10)
+        Layout.minimumHeight: spacerHeight
     }
 
     //
@@ -312,11 +317,11 @@ ColumnLayout {
     }
 
     //
-    // Yet another spacer
+    // (Yet) Another spacer
     //
     Item {
-        width: height
-        height: Globals.scale (10)
+        Layout.fillHeight: true
+        Layout.minimumHeight: spacerHeight
     }
 
     //
@@ -331,6 +336,7 @@ ColumnLayout {
         text: status.robotStatus
         verticalAlignment: Qt.AlignVCenter
         horizontalAlignment: Qt.AlignHCenter
+        Layout.minimumHeight: Globals.scale (42)
         wrapMode: Text.WrapAtWordBoundaryOrAnywhere
     }
 }

@@ -385,13 +385,13 @@ QByteArray FRC_2014::getJoystickData() {
             if (joystickExists && axis < numAxes)
                 data.append (joysticks()->at (i)->axes [axis] * 127);
             else
-                data.append ((char) 0x00);
+                data.append (static_cast<char>(0x00));
         }
 
         int button_data = 0;
         for (int button = 0; button < numButtons; ++button) {
             if (joystickExists && joysticks()->at (i)->buttons [button])
-                button_data |= (int) qPow (2, button);
+                button_data |= static_cast<int>(qPow (2, button));
         }
 
         data.append ((button_data & 0xff00) >> 8);

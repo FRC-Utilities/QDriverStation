@@ -9,6 +9,7 @@
 #ifndef _LIB_DS_COMMON_H
 #define _LIB_DS_COMMON_H
 
+#include <QTimer>
 #include <QtMath>
 #include <QDebug>
 #include <QObject>
@@ -16,7 +17,7 @@
 #include <QMetaObject>
 #include <QStringList>
 
-#define DISABLED_PORT 0
+#define DISABLED_PORT -1
 #define DS_Joysticks QList<DS::Joystick*>
 #define DS_Schedule(time,object,slot) QTimer::singleShot (time, \
                                                           Qt::PreciseTimer, \

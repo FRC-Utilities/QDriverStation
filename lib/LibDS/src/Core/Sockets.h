@@ -16,6 +16,7 @@ class Sockets : public QObject {
 
   public:
     Sockets();
+    ~Sockets();
 
     int scanRate() const;
     int customScanRate() const;

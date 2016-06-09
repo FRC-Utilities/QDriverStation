@@ -57,7 +57,7 @@ int Utilities::getCpuUsage() {
     PDH_FMT_COUNTERVALUE counterVal;
     PdhCollectQueryData (cpuQuery);
     PdhGetFormattedCounterValue (cpuTotal, PDH_FMT_DOUBLE, 0, &counterVal);
-    usage = (int) counterVal.doubleValue;
+    usage = static_cast<int>(counterVal.doubleValue);
 #endif
 
 #if defined Q_OS_MAC
@@ -105,9 +105,6 @@ int Utilities::getCpuUsage() {
 
     usage = (t * 10) + u;
 #endif
-
-    if (usage < 10)
-        usage = 10;
 
     return usage;
 }
