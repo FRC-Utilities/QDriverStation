@@ -153,6 +153,13 @@ Window {
     }
 
     //
+    // Due to how the WM works, animations look good on Mac OS X,
+    // but not on other systems, especially when docking the window.
+    //
+    Behavior on x { NumberAnimation { duration: cIsMac ? Globals.slowAnimation : 0 }}
+    Behavior on y { NumberAnimation { duration: cIsMac ? Globals.slowAnimation : 0 }}
+
+    //
     // Display the left tab, status controls and right tab horizontally
     //
     RowLayout {

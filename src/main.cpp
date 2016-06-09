@@ -103,6 +103,18 @@ int main (int argc, char* argv[]) {
     ratio = 1;
 #endif
 
+    /* Let QML know the operating system */
+    bool isMac = false;
+    bool isLinux = false;
+    bool isWindows = false;
+#if defined Q_OS_MAC
+    isMac = true;
+#elif defined Q_OS_WIN
+    isWindows = true;
+#else
+    isLinux = true;
+#endif
+
     qDebug() << "Scale factor set to:" << ratio;
 
     /* Initialize application modules */
@@ -120,8 +132,11 @@ int main (int argc, char* argv[]) {
     /* Load the QML interface */
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty ("cRatio",        ratio);
+    engine.rootContext()->setContextProperty ("cIsMac",        isMac);
+    engine.rootContext()->setContextProperty ("cIsLinux",      isLinux);
     engine.rootContext()->setContextProperty ("cBeeper",       &beeper);
     engine.rootContext()->setContextProperty ("cUpdater",      updater);
+    engine.rootContext()->setContextProperty ("cIsWindows",    isWindows);
     engine.rootContext()->setContextProperty ("QJoysticks",    qjoysticks);
     engine.rootContext()->setContextProperty ("cUtilities",    &utilities);
     engine.rootContext()->setContextProperty ("cDashboard",    &dashboards);
