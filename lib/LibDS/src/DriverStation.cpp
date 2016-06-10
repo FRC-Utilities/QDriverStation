@@ -154,11 +154,16 @@ DriverStation::~DriverStation() {
     while (m_watchdogThread->isRunning()) m_watchdogThread->exit();
 
     /* Delete modules */
-    delete m_sockets;
-    delete m_console;
-    delete m_fmsWatchdog;
-    delete m_radioWatchdog;
-    delete m_robotWatchdog;
+    if (m_sockets)
+        delete m_sockets;
+    if (m_console)
+        delete m_console;
+    if (m_fmsWatchdog)
+        delete m_fmsWatchdog;
+    if (m_radioWatchdog)
+        delete m_radioWatchdog;
+    if (m_robotWatchdog)
+        delete m_robotWatchdog;
 
     /* Append to log */
     qDebug() << "Driver Station terminated";

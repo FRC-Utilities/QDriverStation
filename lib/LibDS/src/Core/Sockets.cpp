@@ -63,8 +63,10 @@ Sockets::~Sockets() {
     setRobotOutputPort (DISABLED_PORT);
 
     /* Delete all sockets */
-    foreach (ConfigurableSocket* socket, findChildren<ConfigurableSocket*>())
-        delete socket;
+    foreach (ConfigurableSocket* socket, findChildren<ConfigurableSocket*>()) {
+        if (socket)
+            delete socket;
+    }
 
     qDebug() << "Socket engine terminated";
 }

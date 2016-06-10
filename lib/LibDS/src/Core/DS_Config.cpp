@@ -42,8 +42,11 @@ DS_Config::DS_Config() {
 }
 
 DS_Config::~DS_Config() {
-    delete m_timer;
-    delete m_robotLogger;
+    if (m_timer)
+        delete m_timer;
+
+    if (m_robotLogger)
+        delete m_robotLogger;
 }
 
 RobotLogger* DS_Config::robotLogger() {

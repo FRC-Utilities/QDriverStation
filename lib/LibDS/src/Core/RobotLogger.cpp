@@ -17,7 +17,8 @@ RobotLogger::RobotLogger() {
 }
 
 RobotLogger::~RobotLogger() {
-    delete m_timer;
+    if (m_timer)
+        delete m_timer;
 }
 
 void RobotLogger::registerWatchdogTimeout() {

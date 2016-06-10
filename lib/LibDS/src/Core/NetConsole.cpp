@@ -35,7 +35,11 @@ NetConsole::~NetConsole() {
     setInputPort (DISABLED_PORT);
     setOutputPort (DISABLED_PORT);
 
-    delete m_inputSocket;
+    if (m_inputSocket)
+        delete m_inputSocket;
+
+    if (m_outputSocket)
+        delete m_outputSocket;
 
     qDebug() << "NetConsole terminated";
 }
