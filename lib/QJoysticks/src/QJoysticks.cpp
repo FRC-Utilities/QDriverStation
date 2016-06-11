@@ -58,11 +58,6 @@ QJoysticks::QJoysticks() {
     m_sdlJoysticks = new SDL_Joysticks();
     m_virtualJoystick = new VirtualJoystick();
 
-    /* Move SDL joysticks to another thread */
-    m_thread = new QThread (this);
-    m_sdlJoysticks->moveToThread (m_thread);
-    m_thread->start (QThread::HighPriority);
-
     /* Configure SDL joysticks */
     connect (sdlJoysticks(),    &SDL_Joysticks::POVEvent,
              this,              &QJoysticks::POVEvent);
@@ -96,8 +91,6 @@ QJoysticks::QJoysticks() {
  * Stops the threads
  */
 QJoysticks::~QJoysticks() {
-    m_thread->exit();
-
     delete m_sdlJoysticks;
     delete m_virtualJoystick;
 }

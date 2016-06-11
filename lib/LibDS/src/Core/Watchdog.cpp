@@ -9,7 +9,8 @@
 #include "Watchdog.h"
 
 /**
- * @brief The Watchdog class
+ * \file Watchdog.h
+ * \class Watchdog
  *
  * The \c Watchdog class implements a simple software watchdog with the help of
  * the \c QTimer object.

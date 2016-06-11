@@ -10,11 +10,16 @@
 #include "NetConsole.h"
 
 /**
- * @brief The NetConsole class
+ * \file NetConsole.h
+ * \class NetConsole
  *
  * The \c NetConsole allows the client to receive and send broadcasted messages
  * through the network. These messages are mostly robot logs or simple
  * client-to-robot commands for diagnostic purposes.
+ */
+
+/**
+ * Initializes the NetConsole sockets
  */
 NetConsole::NetConsole() {
     m_inputPort = 0;

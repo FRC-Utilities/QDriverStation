@@ -23,6 +23,19 @@
 #include <QDesktopServices>
 
 /**
+ * \file DriverStation.h
+ * \class DriverStation
+ *
+ * The \c DriverStation class exposes the \c LibDS library to the application,
+ * and implements functions that allow the safe operation of robots, protocol
+ * switching/lodaing and joystick management.
+ *
+ * The \c DriverStation class provides several reduntant functions in order to
+ * be more user-friendly and giving application developers more flexibility
+ * regarding the use of LibDS types.
+ */
+
+/**
  * Formats the input message so that it looks nice on a text display widget
  */
 static QString CONSOLE_MESSAGE (const QString& input) {

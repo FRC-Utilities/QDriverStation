@@ -15,6 +15,38 @@
 #define FLAGS QAbstractSocket::ShareAddress | QAbstractSocket::ReuseAddressHint
 // *INDENT-ON*
 
+/**
+ * \file Sockets.h
+ * \class Sockets
+ *
+ * The \c Sockets class is in charge of sending and receiving data to and from
+ * the robot controller:
+ *
+ * A. Sending data from client to robot:
+ *    1) DS asks protocol to generate a client packet
+ *    2) Protocol generates data
+ *    3) DS accesses the generated data and sends the data to this class
+ *    4) This class sends the data to the robot using the properties specified
+ *       by each protocol (properties include: ports, UDP/TCP protocols, etc).
+ *    5) If the robot IP is not set (or we do not have comms. with robot), this
+ *       class will use a system of parallel sender sockets to detect the robot
+ *       faster.
+ *
+ * B. Receiving robot packets:
+ *    1) Robot sends a packet
+ *    2) We receive the packet. If we did not know the robot IP, we assign it
+ *       now and notify the DS that we "found" the robot.
+ *    3) We send the data to the DS.
+ *    4) In turn, the DS sends the data to the current protocol.
+ *    5) The protocol interprets the data and updates the necessary values using
+ *       the \c DS_Config class.
+ *    6) The \c DriverStation is notified that the DS_Config was changed, and
+ *       in turn, notifies the application/client of the changes.
+ *
+ * The processes outlined above are very similar for the robot, FMS and radio
+ * communication protocols.
+ */
+
 Sockets::Sockets() {
     /* Initialze scanner variables */
     m_iterator        = 0;

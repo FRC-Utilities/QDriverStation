@@ -13,6 +13,11 @@
 #include <DriverStation.h>
 #include <Core/DS_Config.h>
 
+/**
+ * \class Protocol
+ * The protocol class allows developers to create their own communication
+ * protocols for use with applications that support the LibDS.
+ */
 class Protocol {
   public:
     Protocol() {
