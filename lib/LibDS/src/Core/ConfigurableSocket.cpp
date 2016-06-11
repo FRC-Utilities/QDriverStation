@@ -27,11 +27,8 @@ ConfigurableSocket::ConfigurableSocket (const DS::SocketType& type) {
  * Deletes the sockets
  */
 ConfigurableSocket::~ConfigurableSocket() {
-    if (m_udpSocket)
-        delete m_udpSocket;
-
-    if (m_tcpSocket)
-        delete m_tcpSocket;
+    delete m_udpSocket;
+    delete m_tcpSocket;
 }
 
 /**

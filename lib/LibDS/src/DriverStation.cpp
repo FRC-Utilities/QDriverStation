@@ -20,7 +20,6 @@
 #include "Protocols/FRC_2016.h"
 
 #include <QUrl>
-#include <QThread>
 #include <QDesktopServices>
 
 /**
@@ -53,18 +52,6 @@ DriverStation::DriverStation() {
     m_fmsWatchdog = new Watchdog;
     m_radioWatchdog = new Watchdog;
     m_robotWatchdog = new Watchdog;
-
-    /* Move console to other thread */
-    m_modulesThread = new QThread (this);
-    m_console->moveToThread (m_modulesThread);
-    m_modulesThread->start (QThread::HighestPriority);
-
-    /* Move watchdogs to a high priority thread */
-    m_watchdogThread = new QThread (this);
-    m_fmsWatchdog->moveToThread (m_watchdogThread);
-    m_radioWatchdog->moveToThread (m_watchdogThread);
-    m_robotWatchdog->moveToThread (m_watchdogThread);
-    m_watchdogThread->start (QThread::HighPriority);
 
     /* React when the sockets receive data from FMS, radio or robot */
     connect (m_sockets, SIGNAL (fmsPacketReceived   (QByteArray)),
@@ -149,21 +136,12 @@ DriverStation::~DriverStation() {
     /* Stop operations */
     stop();
 
-    /* Kill threads */
-    while (m_modulesThread->isRunning())  m_modulesThread->exit();
-    while (m_watchdogThread->isRunning()) m_watchdogThread->exit();
-
     /* Delete modules */
-    if (m_sockets)
-        delete m_sockets;
-    if (m_console)
-        delete m_console;
-    if (m_fmsWatchdog)
-        delete m_fmsWatchdog;
-    if (m_radioWatchdog)
-        delete m_radioWatchdog;
-    if (m_robotWatchdog)
-        delete m_robotWatchdog;
+    delete m_sockets;
+    delete m_console;
+    delete m_fmsWatchdog;
+    delete m_radioWatchdog;
+    delete m_robotWatchdog;
 
     /* Append to log */
     qDebug() << "Driver Station terminated";

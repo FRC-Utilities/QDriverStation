@@ -12,7 +12,6 @@
 #include <Core/DS_Base.h>
 
 class QTimer;
-class QThread;
 class Sockets;
 class Watchdog;
 class Protocol;
@@ -176,9 +175,6 @@ class DriverStation : public DS_Base {
     DS_Joysticks m_joysticks;
     QString m_customRadioAddress;
     QString m_customRobotAddress;
-
-    QThread* m_modulesThread;
-    QThread* m_watchdogThread;
 
     Sockets* m_sockets;
     Protocol* m_protocol;

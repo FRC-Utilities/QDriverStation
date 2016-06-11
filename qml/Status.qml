@@ -200,6 +200,7 @@ ColumnLayout {
     RowLayout {
         visible: !simulated
         spacing: Globals.spacing
+        Layout.minimumHeight: Globals.scale (48)
 
         //
         // Voltage widget
