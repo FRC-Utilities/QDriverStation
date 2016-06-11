@@ -927,9 +927,10 @@ void DriverStation::setProtocol (Protocol* protocol) {
 
     /* Decommission the current protocol */
     if (m_protocol && protocol) {
+        qDebug() << "Protocol" << m_protocol->name() << "decommissioned";
+
         separator = " ";
         free (m_protocol);
-        qDebug() << "Protocol" << m_protocol->name() << "decommissioned";
     }
 
     /* Re-assign the protocol, stop sending data */
@@ -938,6 +939,8 @@ void DriverStation::setProtocol (Protocol* protocol) {
 
     /* Update DS config to match new protocol settings */
     if (m_protocol) {
+        qDebug() << "Configuring new protocol...";
+
         /* Update radio, FMS and robot socket types */
         m_sockets->setFMSSocketType   (m_protocol->fmsSocketType());
         m_sockets->setRadioSocketType (m_protocol->radioSocketType());
