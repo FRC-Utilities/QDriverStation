@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/WinT-3794/QDriverStation.svg?branch=master)](https://travis-ci.org/WinT-3794/QDriverStation)
 [![BitCoin donate button](https://img.shields.io/badge/bitcoin-donate-yellow.svg)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
-[![Github downloads](https://img.shields.io/github/downloads/wint-3794/qdriverstation/total.svg)](https://github.com/wint-3794/qdriverstation/releases/latest)
+[![Github downloads](https://img.shields.io/github/downloads/wint-3794/qdriverstation/total.svg)](https://github.com/wint-3794/qdriverstation/releases)
 
 The QDriverStation is a cross-platform and open-source alternative to the FRC Driver Station. It runs on both desktop devices (including laptops) and mobile devices (such as phones and tablets), making it easier for FRC teams test their robot code and make public presentations with their robots.
 
