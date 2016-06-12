@@ -62,7 +62,7 @@ ColumnLayout {
             iconSize: Globals.scale (12)
 
             onClicked: {
-                messages.editor.copy()
+                messages.copy()
                 messages.editor.append ("<font color=#888>** <font color=#AAA> "
                                         + qsTr ("Information")
                                         + ":</font> "

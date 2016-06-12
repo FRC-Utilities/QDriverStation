@@ -40,6 +40,12 @@ Window {
     maximumHeight: Globals.scale (320)
 
     //
+    // Default window position
+    //
+    x: (Screen.width - width) / 4
+    y: (Screen.height - height) / 4
+
+    //
     // Window properties
     //
     visible: false

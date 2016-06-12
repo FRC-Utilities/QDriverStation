@@ -22,10 +22,10 @@
 
 !define APPNAME                      "QDriverStation"
 !define UNIXNAME                     "qdriverstation"
-!define COMPANYNAME                  "WinT 3794"
+!define COMPANYNAME                  "QDriverStation Developers"
 !define DESCRIPTION                  "Open source alternative to the FRC DriverStation"
 !define VERSIONMAJOR                 16
-!define VERSIONMINOR                 6
+!define VERSIONMINOR                 06
 !define VERSIONBUILD                 0
 !define ESTIMATED_SIZE               61000
 !define MUI_ABORTWARNING
@@ -35,10 +35,10 @@
 !define MUI_FINISHPAGE_RUN_FUNCTION  "RunApplication"
 !define MUI_FINISHPAGE_LINK          "Visit project website"
 !define MUI_FINISHPAGE_LINK_LOCATION "http://qdriverstation.sourceforge.net"
-!define MUI_FINISHPAGE_SHOWREADME    "${INSTALL_DIR}\README-QDS.html"
+!define MUI_FINISHPAGE_SHOWREADME    "${INSTALL_DIR}\QDS-Readme.html"
 
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE "${APPNAME}\LICENSE.txt"
+!insertmacro MUI_PAGE_LICENSE "license.txt"
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
@@ -61,7 +61,7 @@ Name "${APPNAME}"
 ManifestDPIAware true
 InstallDir "${INSTALL_DIR}"
 RequestExecutionLevel admin
-OutFile "${UNIXNAME}-${VERSIONMAJOR}.${VERSIONMINOR}${VERSIONBUILD}-installer.exe"
+OutFile "${UNIXNAME}-${VERSIONMAJOR}.${VERSIONMINOR}${VERSIONBUILD}-setup.exe"
 
 Function .onInit
 	setShellVarContext all

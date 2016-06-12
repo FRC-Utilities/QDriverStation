@@ -39,6 +39,12 @@ Window {
     color: Globals.Colors.WindowBackground
 
     //
+    // Default window position
+    //
+    x: (Screen.width - width) / 4
+    y: (Screen.height - height) / 4
+
+    //
     // Set window flags
     //
     flags: Qt.Window |

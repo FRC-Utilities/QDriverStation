@@ -10,4 +10,5 @@ STEPS
 5. Place the "bin" folder in the application folder
 6. Place the files in the "goodies" folder in the application folder
 7. Copy the script and place it one directory above the application folder
-8. Compile the script, do not release it if you have any warning
+8. Copy the license.txt and place it one directory above the application folder
+9. Compile the script, do not release it if you have any warning

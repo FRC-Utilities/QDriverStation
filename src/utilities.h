@@ -33,6 +33,7 @@ class Utilities : public QObject {
     Q_INVOKABLE int getCpuUsage();
     Q_INVOKABLE int getBatteryLevel();
     Q_INVOKABLE bool isConnectedToPowerSource();
+    Q_INVOKABLE void copy (const QVariant& data);
 };
 
 #endif

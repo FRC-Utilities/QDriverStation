@@ -22,6 +22,9 @@
 
 #include "utilities.h"
 
+#include <QClipboard>
+#include <QApplication>
+
 #if defined Q_OS_WIN
 #include <pdh.h>
 #include <tchar.h>
@@ -198,4 +201,11 @@ bool Utilities::isConnectedToPowerSource() {
 
     return !data.contains ("discharging");
 #endif
+}
+
+/**
+ * Copies the given \a data to the system clipboard
+ */
+void Utilities::copy (const QVariant& data) {
+    qApp->clipboard()->setText (data.toString(), QClipboard::Clipboard);
 }

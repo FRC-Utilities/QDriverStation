@@ -1,6 +1,6 @@
 1 VERSIONINFO
-FILEVERSION 16,6,0,0
-PRODUCTVERSION 16,6,0,0
+FILEVERSION 16,06,0,0
+PRODUCTVERSION 16,06,0,0
 FILEOS 0x4
 FILETYPE 0x0
 BEGIN
@@ -10,12 +10,12 @@ BEGIN
     BEGIN
       VALUE "CompanyName",      "WinT 3794"
       VALUE "FileDescription",  "QDriverStation"
-      VALUE "FileVersion",      "16,6,0,0"
+      VALUE "FileVersion",      "16,06,0,0"
       VALUE "InternalName",     "QDriverStation"
       VALUE "LegalCopyright",   "Copyright \251 2015 WinT 3794"
       VALUE "OriginalFilename", "QDriverStation"
       VALUE "ProductName",      "QDriverStation"
-      VALUE "ProductVersion",   "16,6,0,0"
+      VALUE "ProductVersion",   "16,06,0,0"
     END
   END
 

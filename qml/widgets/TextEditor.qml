@@ -49,6 +49,28 @@ Item {
                                                                     Globals.Colors.TextAreaBackground
 
     //
+    // Copies the text to the system clipboard
+    //
+    function copy() {
+        /* Get current text */
+        var html = editor.getFormattedText (0, editor.length)
+
+        /* Remove HTML codes */
+        html = html.replace(/<style([\s\S]*?)<\/style>/gi, '');
+        html = html.replace(/<script([\s\S]*?)<\/script>/gi, '');
+        html = html.replace(/<\/div>/ig, '\n');
+        html = html.replace(/<\/li>/ig, '\n');
+        html = html.replace(/<li>/ig, '  *  ');
+        html = html.replace(/<\/ul>/ig, '\n');
+        html = html.replace(/<\/p>/ig, '\n');
+        html = html.replace(/<br\s*[\/]?>/gi, "\n");
+        html = html.replace(/<[^>]+>/ig, '');
+
+        /* Copy result to system clipboard */
+        cUtilities.copy (html)
+    }
+
+    //
     // Define a standard size for the widget
     //
     width: Globals.scale (250)
