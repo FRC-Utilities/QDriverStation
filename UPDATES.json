@@ -2,20 +2,20 @@
    "updates":{
       "windows":{
          "open-url":"",
-         "latest-version":"16.05",
-         "download-url":"https://github.com/wint-3794/qdriverstation/releases/latest",
+         "latest-version":"16.06",
+         "download-url":"https://github.com/WinT-3794/QDriverStation/releases/tag/v16.06-beta",
          "changelog":""
       },
       "osx":{
          "open-url":"",
-         "latest-version":"16.05",
-         "download-url":"https://github.com/wint-3794/qdriverstation/releases/latest",
+         "latest-version":"16.06",
+         "download-url":"https://github.com/WinT-3794/QDriverStation/releases/tag/v16.06-beta",
          "changelog":""
       },
       "linux":{
          "open-url":"",
-         "latest-version":"16.05",
-         "download-url":"https://github.com/wint-3794/qdriverstation/releases/latest",
+         "latest-version":"16.06",
+         "download-url":"https://github.com/WinT-3794/QDriverStation/releases/tag/v16.06-beta",
          "changelog":""
       }
    }
