@@ -34,6 +34,12 @@ Window {
     color: Globals.Colors.WindowBackground
 
     //
+    // Center window
+    //
+    x: (Screen.desktopAvailableWidth - width) / 2
+    y: (Screen.desktopAvailableHeight - height) / 2
+
+    //
     // Set window geometry
     //
     minimumWidth: Globals.scale (320)

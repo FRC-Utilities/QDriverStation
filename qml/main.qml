@@ -43,6 +43,20 @@ Window {
            Qt.WindowMinMaxButtonsHint
 
     //
+    // Gets the \c x value used in the initial launch
+    //
+    function getDefaultX() {
+        return (Screen.desktopAvailableWidth - getMinimumWidth()) / 2
+    }
+
+    //
+    // Gets the \c y value used in the initial launch
+    //
+    function getDefaultY() {
+        return Screen.desktopAvailableHeight - (getMinimumHeight() * 1.2)
+    }
+
+    //
     // If set to true, the window will dock to the bottom of the screen
     //
     property bool docked: false
@@ -50,8 +64,8 @@ Window {
     //
     // Holds the old values of x and y
     //
-    property int oldX: 100
-    property int oldY: 100
+    property int oldX: getDefaultX()
+    property int oldY: getDefaultY()
 
     //
     // Display the virtual joystick window (from anywhere in the app)
@@ -68,6 +82,20 @@ Window {
     }
 
     //
+    // Calculates the minimum width of the window
+    //
+    function getMinimumWidth() {
+        return layout.implicitWidth + (2 * layout.x)
+    }
+
+    //
+    // Calculates the minimum height of the window
+    //
+    function getMinimumHeight() {
+        return layout.implicitHeight + (2 * layout.y)
+    }
+
+    //
     // The actual docking procedures
     //
     function updateWindowMode() {
@@ -81,7 +109,7 @@ Window {
 
         else {
             showNormal()
-            width = minimumWidth
+            width = getMinimumWidth()
 
             x = oldX
             y = oldY
@@ -89,10 +117,10 @@ Window {
     }
 
     //
-    // Save window position if the window is not docked
+    // Initial position
     //
-    x: 100
-    y: 100
+    x: getDefaultX()
+    y: getDefaultY()
 
     //
     // Update custom variables
@@ -104,9 +132,9 @@ Window {
     //
     // Window geometry hacks
     //
-    minimumWidth: layout.implicitWidth + (2 * layout.x)
-    minimumHeight: layout.implicitHeight + (2 * layout.y)
-    maximumHeight: layout.implicitHeight + (2 * layout.y)
+    minimumWidth: getMinimumWidth()
+    minimumHeight: getMinimumHeight()
+    maximumHeight: getMinimumHeight()
 
     //
     // Misc. properties
