@@ -34,8 +34,8 @@ Window {
     title: qsTr ("Settings")
     minimumWidth: Globals.scale (420)
     maximumWidth: Globals.scale (420)
-    minimumHeight: Globals.scale (440)
-    maximumHeight: Globals.scale (440)
+    minimumHeight: Globals.scale (320)
+    maximumHeight: Globals.scale (320)
     color: Globals.Colors.WindowBackground
 
     //
@@ -59,15 +59,6 @@ Window {
     function apply() {
         /* Set the placeholder */
         customAddress.placeholder = DriverStation.defaultRobotAddress()
-
-        /* Set the scan rate */
-        if (scanRateCheckbox.checked && scanRate.value > 0)
-            DriverStation.setScanRate (scanRate.value)
-        else {
-            scanRate.value = 0
-            scanRateCheckbox.checked = false
-            DriverStation.setScanRate (0)
-        }
 
         /* Clear the custom robot address if needed */
         if (!customAddressCheck.checked)
@@ -104,7 +95,6 @@ Window {
         category: "SettingsWindow"
         property alias x: window.x
         property alias y: window.y
-        property alias scanRate: scanRate.value
         property alias address: customAddress.text
         property alias promptOnQuit: promptOnQuit.checked
         property alias checkForUpdates: checkForUpdates.checked
@@ -228,58 +218,7 @@ Window {
                             text: qsTr ("Prompt on quit")
                         }
                     }
-                }
-
-                Item {
-                    height: Globals.spacing * 2
-                }
-
-                //
-                // Advanced DS Options label
-                //
-                Label {
-                    font.bold: true
-                    text: qsTr ("Advanced DS Options") + ":"
-                }
-
-                //
-                // Advanced DS Options controls
-                //
-                RowLayout {
-                    Layout.fillWidth: true
-                    spacing: Globals.spacing
-
-                    //
-                    // Terminal icon
-                    //
-                    Icon {
-                        name: icons.fa_cogs
-                        size: Globals.scale (48)
-                        Layout.minimumWidth: 2 * size
-                    }
-
-                    //
-                    // Scan rate Settings
-                    //
-                    ColumnLayout {
-                        spacing: Globals.spacing
-
-                        Checkbox {
-                            id: scanRateCheckbox
-                            checked: scanRate.value > 0
-                            text: qsTr ("Set the scan rate to:")
-                        }
-
-                        Spinbox {
-                            id: scanRate
-                            value: 0
-                            minimumValue: 0
-                            maximumValue: 128 // Do not change this!
-                            Layout.fillWidth: true
-                            enabled: scanRateCheckbox.checked
-                        }
-                    }
-                }
+                }  
 
                 Item {
                     Layout.fillHeight: true

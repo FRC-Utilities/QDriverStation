@@ -563,8 +563,8 @@ QString DriverStation::radioAddress() const {
  */
 QString DriverStation::robotAddress() const {
     if (customRobotAddress().isEmpty()) {
-        if (!m_sockets->robotAddress().isEmpty())
-            return m_sockets->robotAddress();
+        if (!m_sockets->robotAddress().isNull())
+            return m_sockets->robotAddress().toString();
         else
             return "";
     }
@@ -652,8 +652,8 @@ QString DriverStation::defaultRadioAddress() const {
 QString DriverStation::defaultRobotAddress() const {
     /* Return first item of the address list of the current protocol */
     if (protocol())
-        if (protocol()->defaultRobotAddresses().count() > 0)
-            return protocol()->defaultRobotAddresses().at (0);
+        if (protocol()->defaultRobotAddress().count() > 0)
+            return protocol()->defaultRobotAddress().at (0);
 
     /* Return 10.xx.yy.2 */
     return getStaticIP (10, team(), 2);
@@ -895,20 +895,6 @@ void DriverStation::setTeam (int team) {
 }
 
 /**
- * Changes the number IPs probed per expiration time.
- * Increasing this value decreases the time needed to detect the robot,
- * but also uses more memory and can over-saturate the LAN access-point.
- *
- * If the \c count is set to \c 0, then the scanner system will calculate
- * an appropiate scan rate based on IP list size.
- */
-void DriverStation::setScanRate (int rate) {
-    m_sockets->setScanRate (rate);
-    if (m_init && (rate > 0 || m_sockets->customScanRate() > 0))
-        calculateScanSpeed();
-}
-
-/**
  * Removes the joystick at the given \a id
  */
 void DriverStation::removeJoystick (int id) {
@@ -935,14 +921,13 @@ void DriverStation::setEnabled (bool enabled) {
  * Loads and configures the given \a protocol in the DS system
  */
 void DriverStation::setProtocol (Protocol* protocol) {
-    /* Used to separate protocol init messages */
-    QString separator = "";
-
     /* Decommission the current protocol */
     if (m_protocol && protocol) {
         qDebug() << "Protocol" << m_protocol->name() << "decommissioned";
 
-        separator = " ";
+        emit newMessage (CONSOLE_MESSAGE (tr ("DS: %1 terminated")
+                                          .arg (m_protocol->name())));
+
         free (m_protocol);
     }
 
@@ -995,18 +980,10 @@ void DriverStation::setProtocol (Protocol* protocol) {
         resetRadio();
         resetRobot();
 
-        /* Update IP lists */
-        m_sockets->setAddressList (m_protocol->defaultRobotAddresses());
-
         /* Send a message telling that the protocol has been initialized */
         emit protocolChanged();
-        emit newMessage (separator);
         emit newMessage (CONSOLE_MESSAGE (tr ("DS: %1 initialized")
                                           .arg (m_protocol->name())));
-
-        /* Tell client how much time is needed for detecting robot */
-        if (m_sockets->customScanRate() == 0)
-            calculateScanSpeed();
 
         /* We're back in business */
         qDebug() << "Protocol" << protocol->name() << "ready for use";
@@ -1146,7 +1123,7 @@ void DriverStation::updateButton (int id, int button, bool state) {
  */
 void DriverStation::setCustomRobotAddress (const QString& address) {
     m_customRobotAddress = address;
-    m_sockets->setRobotAddress (customRobotAddress());
+    m_sockets->setRobotAddress (QHostAddress (customRobotAddress()));
 }
 
 /**
@@ -1155,7 +1132,7 @@ void DriverStation::setCustomRobotAddress (const QString& address) {
  * protocol.
  */
 void DriverStation::setCustomRadioAddress (const QString& address) {
-    m_sockets->setRadioAddress (address);
+    m_sockets->setRadioAddress (QHostAddress (address));
 }
 
 /**
@@ -1225,9 +1202,6 @@ void DriverStation::resetRobot() {
     config()->updateOperationStatus (kNormal);
     config()->robotLogger()->registerWatchdogTimeout();
 
-    if (customRobotAddress().isEmpty())
-        m_sockets->refreshAddressList();
-
     emit statusChanged (generalStatus());
 }
 
@@ -1282,31 +1256,6 @@ void DriverStation::updatePacketLoss() {
 
     m_packetLoss = static_cast<int>(loss);
     DS_Schedule (250, this, SLOT (updatePacketLoss()));
-}
-
-/**
- * Calculates the time required to detect the robot (assuming it is in one
- * of the LAN networks of the client computer)
- */
-void DriverStation::calculateScanSpeed() {
-    QString ipsCount = CONSOLE_MESSAGE (tr ("DS: Probing %1 IPs per cycle"));
-    QString scanTime = CONSOLE_MESSAGE (tr ("DS: It may take up to %1 seconds "
-                                            "to detect your robot"));
-
-    int time = m_sockets->addressList().count() / m_sockets->scanRate();
-    time *= m_robotWatchdog->expirationTime() / 1000;
-
-    /* It takes less than one second to detect the robot (in theory) */
-    if (time <= 1)
-        scanTime = CONSOLE_MESSAGE (tr ("DS: It should take less than 1 "
-                                        "second to detect yout robot"));
-
-    /* It takes 2 or more seconds to detect the robot */
-    else
-        scanTime = scanTime.arg (time);
-
-    emit newMessage (ipsCount.arg (m_sockets->scanRate()));
-    emit newMessage (scanTime);
 }
 
 /**

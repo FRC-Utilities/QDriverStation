@@ -127,7 +127,6 @@ class DriverStation : public DS_Base {
     void switchToTeleoperated();
     void reconfigureJoysticks();
     void setTeam (int team);
-    void setScanRate (int rate);
     void removeJoystick (int id);
     void setEnabled (bool enabled);
     void setProtocol (Protocol* protocol);
@@ -154,7 +153,6 @@ class DriverStation : public DS_Base {
     void sendRadioPacket();
     void sendRobotPacket();
     void updatePacketLoss();
-    void calculateScanSpeed();
     void readFMSPacket (const QByteArray& data);
     void readRadioPacket (const QByteArray& data);
     void readRobotPacket (const QByteArray& data);

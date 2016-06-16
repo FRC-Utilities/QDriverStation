@@ -275,7 +275,7 @@ class Protocol {
      *       not be able to communicate with the radio.
      */
     virtual QString defaultRadioAddress() {
-        return QString();
+        return DS::getStaticIP (10, config()->team(), 1);
     }
 
     /**
@@ -289,8 +289,8 @@ class Protocol {
      *       IP list with all LAN IPs based on the IP address(es) of the
      *       computer.
      */
-    virtual QStringList defaultRobotAddresses() {
-        return QStringList();
+    virtual QString defaultRobotAddress() {
+        return DS::getStaticIP (10, config()->team(), 2);
     }
 
     /**

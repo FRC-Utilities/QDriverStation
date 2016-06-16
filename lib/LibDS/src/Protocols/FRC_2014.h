@@ -44,7 +44,7 @@ class FRC_2014 : public Protocol {
 
     /* Default addresses */
     virtual QString defaultRadioAddress();
-    virtual QStringList defaultRobotAddresses();
+    virtual QString defaultRobotAddress();
 
     /* Packet generation functions */
     virtual QByteArray getFMSPacket();

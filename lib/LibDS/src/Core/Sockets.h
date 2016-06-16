@@ -9,94 +9,72 @@
 #ifndef _LIB_DS_SOCKETS_H
 #define _LIB_DS_SOCKETS_H
 
-#include <Core/ConfigurableSocket.h>
+#include <QHostAddress>
+#include <Core/DS_Base.h>
+
+class QUdpSocket;
+class QTcpSocket;
 
 class Sockets : public QObject {
     Q_OBJECT
+
+  signals:
+    void fmsPacketReceived (const QByteArray& data);
+    void radioPacketReceived (const QByteArray& data);
+    void robotPacketReceived (const QByteArray& data);
 
   public:
     Sockets();
     ~Sockets();
 
-    int scanRate() const;
-    int customScanRate() const;
-
-    int fmsInputPort() const;
-    int fmsOutputPort() const;
-    int radioInputPort() const;
-    int robotInputPort() const;
-    int radioOutputPort() const;
-    int robotOutputPort() const;
-
-    QString radioAddress() const;
-    QString robotAddress() const;
-    QStringList addressList() const;
-
-    DS::SocketType fmsSocketType() const;
-    DS::SocketType radioSocketType() const;
-    DS::SocketType robotSocketType() const;
+    QHostAddress fmsAddress() const;
+    QHostAddress radioAddress() const;
+    QHostAddress robotAddress() const;
 
   public slots:
-    void refreshAddressList();
-    void sendToFMS (const QByteArray& data);
-    void sendToRobot (const QByteArray& data);
-    void sendToRadio (const QByteArray& data);
-
-    void setRadioAddress (const QString& ip);
-    void setRobotAddress (const QString& ip);
-    void setAddressList (const QStringList& list);
-
     void setFMSInputPort (int port);
     void setFMSOutputPort (int port);
     void setRadioInputPort (int port);
     void setRobotInputPort (int port);
     void setRadioOutputPort (int port);
     void setRobotOutputPort (int port);
-
-    void setScanRate (int count);
-
-    void setFMSSocketType (const DS::SocketType& type);
-    void setRadioSocketType (const DS::SocketType& type);
-    void setRobotSocketType (const DS::SocketType& type);
-
-  signals:
-    void fmsPacketReceived (QByteArray data);
-    void radioPacketReceived (QByteArray data);
-    void robotPacketReceived (QByteArray data);
+    void sendToFMS (const QByteArray& data);
+    void sendToRobot (const QByteArray& data);
+    void sendToRadio (const QByteArray& data);
+    void setFMSSocketType (DS::SocketType type);
+    void setRadioSocketType (DS::SocketType type);
+    void setRobotSocketType (DS::SocketType type);
+    void setFMSAddress (const QHostAddress& address);
+    void setRadioAddress (const QHostAddress& address);
+    void setRobotAddress (const QHostAddress& address);
 
   private slots:
     void readFMSSocket();
     void readRadioSocket();
     void readRobotSocket();
-    void generateLocalNetworkAddresses();
 
   private:
-    QString m_robotIp;
-    QString m_radioIp;
-    QStringList m_robotIpList;
+    int m_robotIterator;
+    int m_fmsOutputPort;
+    int m_radioOutputPort;
+    int m_robotOutputPort;
 
-    ConfigurableSocket* m_fmsSender;
-    ConfigurableSocket* m_fmsReceiver;
-    ConfigurableSocket* m_radioSender;
-    ConfigurableSocket* m_robotSender;
-    ConfigurableSocket* m_robotReceiver;
-    ConfigurableSocket* m_radioReceiver;
+    QHostAddress m_fmsAddress;
+    QHostAddress m_robotAddress;
+    QHostAddress m_radioAddress;
 
-    QList<ConfigurableSocket*> m_socketList;
-
-    int m_fmsInput;
-    int m_fmsOutput;
-    int m_radioInput;
-    int m_robotInput;
-    int m_radioOutput;
-    int m_robotOutput;
-
-    int m_scanRate;
-    int m_iterator;
-
-    DS::SocketType m_fmsSocketType;
-    DS::SocketType m_radioSocketType;
-    DS::SocketType m_robotSocketType;
+    QUdpSocket* m_udpFmsSender;
+    QTcpSocket* m_tcpFmsSender;
+    QUdpSocket* m_udpRadioSender;
+    QTcpSocket* m_tcpRadioSender;
+    QUdpSocket* m_udpRobotSender;
+    QTcpSocket* m_tcpRobotSender;
+    QUdpSocket* m_udpFmsReceiver;
+    QTcpSocket* m_tcpFmsReceiver;
+    QUdpSocket* m_udpRadioReceiver;
+    QTcpSocket* m_tcpRadioReceiver;
+    QUdpSocket* m_udpRobotReceiver;
+    QTcpSocket* m_tcpRobotReceiver;
 };
 
 #endif

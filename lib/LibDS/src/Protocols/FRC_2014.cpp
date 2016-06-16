@@ -179,10 +179,8 @@ QString FRC_2014::defaultRadioAddress() {
 /**
  * Robot is located at 10.XX.YY.2
  */
-QStringList FRC_2014::defaultRobotAddresses() {
-    QStringList list;
-    list.append (DS::getStaticIP (10, config()->team(), 2));
-    return list;
+QString FRC_2014::defaultRobotAddress() {
+    return DS::getStaticIP (10, config()->team(), 2);
 }
 
 /**

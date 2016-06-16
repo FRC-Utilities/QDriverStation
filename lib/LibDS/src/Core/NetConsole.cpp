@@ -24,8 +24,8 @@
 NetConsole::NetConsole() {
     m_inputPort = 0;
     m_outputPort = 0;
-    m_inputSocket = new ConfigurableSocket (DS::kSocketTypeUDP);
-    m_outputSocket = new ConfigurableSocket (DS::kSocketTypeUDP);
+    m_inputSocket = new QUdpSocket (this);
+    m_outputSocket = new QUdpSocket (this);
 
     connect (m_inputSocket, SIGNAL (readyRead()),
              this,            SLOT (onReadyRead()));
@@ -69,10 +69,9 @@ void NetConsole::setInputPort (int port) {
     qDebug() << "NetConsole input port set to" << port;
 
     m_inputPort = port;
-    m_inputSocket->socket()->close();
-
-    if (inputPort() > 0) {
-        m_inputSocket->bind (QHostAddress::Any, inputPort(),
+    if (inputPort() != DISABLED_PORT) {
+        m_inputSocket->bind (QHostAddress ("0.0.0.0"),
+                             inputPort(),
                              QUdpSocket::ShareAddress |
                              QUdpSocket::ReuseAddressHint);
     }
@@ -95,10 +94,8 @@ void NetConsole::setOutputPort (int port) {
 void NetConsole::sendMessage (const QString& message) {
     if (!message.isEmpty() && outputPort() > 0) {
         m_outputSocket->writeDatagram (message.toUtf8(),
-                                       QHostAddress::Any,
+                                       QHostAddress::Broadcast,
                                        outputPort());
-
-        qDebug() << "NetConsole: sent" << message;
     }
 }
 
@@ -106,8 +103,13 @@ void NetConsole::sendMessage (const QString& message) {
  * Called when the input socket finishes receiving a datagram
  */
 void NetConsole::onReadyRead() {
-    QString message = QString::fromUtf8 (m_inputSocket->readAll());
-    emit newMessage (message);
+    QByteArray message;
 
-    qDebug() << "NetConsole: received" << message;
+    while (m_inputSocket->hasPendingDatagrams()) {
+        message.resize (m_inputSocket->pendingDatagramSize());
+        m_inputSocket->readDatagram (message.data(), message.size());
+    }
+
+    if (m_inputPort != DISABLED_PORT)
+        emit newMessage (QString::fromUtf8 (message));
 }
