@@ -285,8 +285,11 @@ bool FRC_2014::interpretRobotPacket (const QByteArray& data) {
     /* Update code status & voltage */
     bool hasCode = (integer != 0x37) && (decimal != 0x37);
     config()->setRobotCode (hasCode);
-    config()->updateSimulated (voltage == "12.43");
     config()->updateVoltage (hasCode ? voltage.toFloat() : 0);
+
+    /* Update simulation status */
+    if (receivedRobotPackets() > 10)
+        config()->updateSimulated (voltage == "12.43");
 
     /* Packet read successfully */
     return true;

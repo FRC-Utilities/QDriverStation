@@ -384,7 +384,8 @@ bool FRC_2015::interpretRobotPacket (const QByteArray& data) {
     config()->updateVoltage (voltage.voltage);
 
     /* If voltage is 0, then robot is simulated */
-    config()->updateSimulated (voltage.voltage == 0.00);
+    if (receivedRobotPackets() > 10)
+        config()->updateSimulated (voltage.voltage == 0.00);
 
     /* This is an extended packet, read its extra data */
     if (data.size() > 8) {

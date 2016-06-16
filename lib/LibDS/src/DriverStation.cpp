@@ -553,7 +553,7 @@ DS::VoltageStatus DriverStation::voltageStatus() const {
  */
 QString DriverStation::radioAddress() const {
     if (customRadioAddress().isEmpty())
-        return defaultRobotAddress();
+        return defaultRadioAddress();
 
     return customRadioAddress();
 }
@@ -650,12 +650,9 @@ QString DriverStation::defaultRadioAddress() const {
  * Returns the protocol-set robot address
  */
 QString DriverStation::defaultRobotAddress() const {
-    /* Return first item of the address list of the current protocol */
     if (protocol())
-        if (protocol()->defaultRobotAddress().count() > 0)
-            return protocol()->defaultRobotAddress().at (0);
+        return protocol()->defaultRobotAddress();
 
-    /* Return 10.xx.yy.2 */
     return getStaticIP (10, team(), 2);
 }
 
