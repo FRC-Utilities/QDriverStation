@@ -319,6 +319,7 @@ RowLayout {
             }
 
             Label {
+                Layout.fillWidth: true
                 text: qsTr ("PC Battery")
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignRight
