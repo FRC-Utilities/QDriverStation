@@ -68,23 +68,35 @@ Sockets::~Sockets() {
 }
 
 /**
- * Returns the FMS address (if known)
+ * Returns the FMS address. If the FMS protocol is based on UDP and we do not
+ * know the FMS address, then we will broadcast generated FMS datagrams.
  */
 QHostAddress Sockets::fmsAddress() const {
+    if (m_fmsAddress.isNull() && m_udpFmsSender)
+        return QHostAddress::Broadcast;
+
     return m_fmsAddress;
 }
 
 /**
- * Returns the radio address (if known)
+ * Returns the radio address. If the radio protocol is based on UDP and we do
+ * not know the radio address, then we will broadcast generated radio datagrams.
  */
 QHostAddress Sockets::radioAddress() const {
+    if (m_radioAddress.isNull() && m_udpRadioSender)
+        return QHostAddress::Broadcast;
+
     return m_radioAddress;
 }
 
 /**
- * Returns the robot address (if known)
+ * Returns the robot address. If the robot protocol is based on UDP and we do
+ * not know the robot address, then we will broadcast generated robot datagrams.
  */
 QHostAddress Sockets::robotAddress() const {
+    if (m_robotAddress.isNull() && m_udpRobotSender)
+        return QHostAddress::Broadcast;
+
     return m_robotAddress;
 }
 
@@ -160,16 +172,8 @@ void Sockets::sendToRobot (const QByteArray& data) {
     if (m_tcpRobotSender)
         m_tcpRobotSender->write (data);
 
-    if (m_udpRobotSender) {
-        QHostAddress address = robotAddress();
-
-        if (robotAddress().isNull())
-            address = QHostAddress::Broadcast;
-
-        m_udpRobotSender->writeDatagram (data,
-                                         QHostAddress::Broadcast,
-                                         m_robotOutputPort);
-    }
+    if (m_udpRobotSender)
+        m_udpRobotSender->writeDatagram (data, robotAddress(), m_robotOutputPort);
 }
 
 /**
