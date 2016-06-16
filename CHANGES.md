@@ -1,5 +1,9 @@
 # Changes
 
+### QDriverStation 16.06.1
+
+- Fix an issue that did not allow the DS to connect to the robot in some networks
+
 ### QDriverStation 16.06
 
 - Support for 2014 protocol
