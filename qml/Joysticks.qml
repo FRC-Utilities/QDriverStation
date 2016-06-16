@@ -188,7 +188,7 @@ Item {
         ColumnLayout {
             Layout.fillWidth: true
             spacing: Globals.spacing
-            Layout.minimumWidth: visible ? Globals.scale (156) : 0
+            Layout.minimumWidth: visible ? Globals.scale (112) : 0
 
             //
             // The "USB Devices" label
@@ -262,7 +262,7 @@ Item {
                         id: progressbar
                         minimumValue: 0
                         maximumValue: 200
-                        width: Globals.scale (72)
+                        width: Globals.scale (54)
                         text: qsTr ("Axis") + " " + index
                         height: getWidgetHeight (axes.model)
                         barColor: QJoysticks.isBlacklisted (currentJoystick) ?
@@ -385,7 +385,7 @@ Item {
                         enabled: false
                         minimumValue: 0
                         maximumValue: 360
-                        width: Globals.scale (64)
+                        width: Globals.scale (48)
 
                         Connections {
                             target: QJoysticks

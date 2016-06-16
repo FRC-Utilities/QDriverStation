@@ -49,7 +49,7 @@ Rectangle {
     //
     // Set height of widget and width of border
     //
-    height: Globals.scale (18)
+    height: Globals.scale (14)
     border.width: Globals.scale (1)
 
     //

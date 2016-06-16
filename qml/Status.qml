@@ -108,7 +108,9 @@ ColumnLayout {
     // Layout/geometry options
     //
     spacing: 0
-    Layout.margins: Globals.spacing
+    Layout.margins: 0
+    Layout.leftMargin: Globals.spacing
+    Layout.rightMargin: Globals.spacing
     Layout.minimumWidth: Globals.scale (144)
     Layout.preferredWidth: Globals.scale (144)
 
@@ -200,14 +202,14 @@ ColumnLayout {
     RowLayout {
         visible: !simulated
         spacing: Globals.spacing
-        Layout.minimumHeight: Globals.scale (48)
+        Layout.minimumHeight: Globals.scale (42)
 
         //
         // Voltage widget
         //
         Item {
-            width: Globals.scale (54)
-            height: Globals.scale (34)
+            width: Globals.scale (53)
+            height: Globals.scale (32)
 
             property var diodeHeight: height * 0.20
             property var backgroundColor: Globals.Colors.IconColor

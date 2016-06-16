@@ -207,7 +207,7 @@ Window {
         LeftTab {
             Layout.fillWidth: false
             Layout.fillHeight: true
-            Layout.minimumWidth: Globals.scale (460)
+            Layout.minimumWidth: Globals.scale (440)
             onWindowModeChanged: window.docked = isDocked
             onFlashStatusIndicators: status.flashStatusIndicators()
         }
@@ -227,7 +227,7 @@ Window {
         RightTab {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.minimumWidth: Globals.scale (520)
+            Layout.minimumWidth: Globals.scale (420)
         }
     }
 

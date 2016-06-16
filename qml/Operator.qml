@@ -81,8 +81,8 @@ RowLayout {
         Layout.fillWidth: false
         Layout.fillHeight: true
         spacing: Globals.spacing
-        Layout.minimumWidth: Globals.scale (172)
-        Layout.maximumWidth: Globals.scale (172)
+        Layout.minimumWidth: Globals.scale (155)
+        Layout.maximumWidth: Globals.scale (155)
 
         //
         // Robot modes selector
@@ -265,12 +265,8 @@ RowLayout {
         Layout.fillHeight: true
         rowSpacing: Globals.spacing
         columnSpacing: Globals.spacing
-
         Layout.minimumWidth: minWidth * 2
-        Layout.preferredWidth: maxWidth * 2
-
-        property int minWidth: Globals.scale (80)
-        property int maxWidth: Globals.scale (100)
+        property int minWidth: Globals.scale (102)
 
         //
         // Elapsed time caption
@@ -278,19 +274,20 @@ RowLayout {
         Label {
             Layout.fillWidth: true
             text: qsTr ("Elapsed Time")
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignRight
         }
 
         //
         // Elapsed time indicator
         //
         Label {
-            size: large
             text: "00:00.0"
             id: elapsedTime
             font.bold: true
             Layout.fillWidth: true
-            Layout.minimumWidth: grid.minWidth
-            Layout.maximumWidth: grid.maxWidth
+            size: Globals.scale (18)
+            Layout.rightMargin: Globals.spacing
             horizontalAlignment: Text.AlignRight
         }
 
@@ -315,13 +312,16 @@ RowLayout {
             Icon {
                 id: plug
                 name: icons.fa_plug
+                Layout.fillWidth: true
                 size: Globals.scale (10)
-                anchors.verticalCenter: parent.verticalCenter
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignRight
             }
 
             Label {
-                Layout.fillWidth: true
                 text: qsTr ("PC Battery")
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignRight
             }
         }
 
@@ -335,7 +335,7 @@ RowLayout {
             value: 0
             Layout.fillWidth: true
             Layout.minimumWidth: grid.minWidth
-            Layout.maximumWidth: grid.maxWidth
+            Layout.maximumWidth: grid.minWidth
             barColor: {
                 if (value > 60)
                     return Globals.Colors.HighlightColor
@@ -343,7 +343,7 @@ RowLayout {
                 else if (value > 25)
                     return Globals.Colors.CPUProgress
 
-                return Globals.Colors.IndicatorError
+                return Globals.Colors.LowBattery
             }
         }
 
@@ -353,6 +353,8 @@ RowLayout {
         Label {
             Layout.fillWidth: true
             text: qsTr ("PC CPU") + " %"
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignRight
         }
 
         //
@@ -366,7 +368,7 @@ RowLayout {
             Layout.fillWidth: true
             barColor: Globals.Colors.CPUProgress
             Layout.minimumWidth: grid.minWidth
-            Layout.maximumWidth: grid.maxWidth
+            Layout.maximumWidth: grid.minWidth
         }
 
         //
@@ -386,6 +388,8 @@ RowLayout {
         Label {
             text: qsTr ("Window")
             Layout.fillWidth: true
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignRight
         }
 
         //
@@ -406,7 +410,7 @@ RowLayout {
                 height: Globals.scale (24)
                 iconSize: Globals.scale (12)
                 Layout.minimumWidth: grid.minWidth / 2
-                Layout.maximumWidth: grid.maxWidth / 2
+                Layout.maximumWidth: grid.minWidth / 2
 
                 onClicked: {
                     normal.checked = true
@@ -427,7 +431,7 @@ RowLayout {
                 height: Globals.scale (24)
                 iconSize: Globals.scale (12)
                 Layout.minimumWidth: grid.minWidth / 2
-                Layout.maximumWidth: grid.maxWidth / 2
+                Layout.maximumWidth: grid.minWidth / 2
 
                 onClicked: {
                     docked.checked = true
@@ -445,6 +449,8 @@ RowLayout {
         Label {
             Layout.fillWidth: true
             text: qsTr ("Team Station")
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignRight
         }
 
         //
@@ -455,7 +461,7 @@ RowLayout {
             Layout.fillWidth: true
             height: Globals.scale (24)
             Layout.minimumWidth: grid.minWidth
-            Layout.maximumWidth: grid.maxWidth
+            Layout.maximumWidth: grid.minWidth
             model: DriverStation.teamStations()
             onCurrentIndexChanged: DriverStation.setTeamStation (currentIndex)
         }
