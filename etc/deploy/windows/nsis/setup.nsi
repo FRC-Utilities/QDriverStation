@@ -25,8 +25,8 @@
 !define COMPANYNAME                  "QDriverStation Developers"
 !define DESCRIPTION                  "Open source alternative to the FRC DriverStation"
 !define VERSIONMAJOR                 16
-!define VERSIONMINOR                 06
-!define VERSIONBUILD                 0
+!define VERSIONMINOR                 6
+!define VERSIONBUILD                 1
 !define ESTIMATED_SIZE               61000
 !define MUI_ABORTWARNING
 !define INSTALL_DIR                  "$PROGRAMFILES\${APPNAME}"
