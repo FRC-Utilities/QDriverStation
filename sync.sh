@@ -7,11 +7,13 @@
 
 # Sync LibDS code
 cd lib/LibDS
-pwd
+echo "LibDS"
+echo "--------------------------------------------------------------------------------"
 git add -A
 git commit -a -m "Sync code with QDriverStation"
 git push
 git submodule update
+clear
 
 # Sync QJoysticks code
 cd ../QJoysticks
@@ -20,6 +22,7 @@ git add -A
 git commit -a -m "Sync code with QDriverStation"
 git push
 git submodule update
+clear
 
 # Sync QSimpleUpdater code
 cd ../QSimpleUpdater
@@ -28,6 +31,7 @@ git add -A
 git commit -a -m "Sync code with QDriverStation"
 git push
 git submodule update
+clear
 
 # Sync main code
 cd ../../
@@ -35,3 +39,4 @@ pwd
 git add -A
 git commit -a
 git push
+clear
