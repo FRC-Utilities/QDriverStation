@@ -1,0 +1,9 @@
+[submodule "lib/LibDS"]
+	path = lib/LibDS
+	url = https://github.com/WinT-3794/LibDS
+[submodule "lib/QSimpleUpdater"]
+	path = lib/QSimpleUpdater
+	url = https://github.com/alex-spataru/QSimpleUpdater
+[submodule "lib/QJoysticks"]
+	path = lib/QJoysticks
+	url = https://github.com/alex-spataru/QJoysticks
