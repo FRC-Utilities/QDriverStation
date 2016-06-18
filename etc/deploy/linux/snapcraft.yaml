@@ -19,11 +19,12 @@ parts:
   qdriverstation:
     plugin: qmake
     source-type: git
-    source: ../../../ # Will be changed to the git repo once I get it working
+    source: https://github.com/WinT-3794/QDriverStation.git
     build-packages:
       - libsdl2-dev
       - qtbase5-dev
       - qttools5-dev 
+      - build-essential
       - libqt5webkit5-dev 
       - qtmultimedia5-dev
       - qtdeclarative5-dev 
