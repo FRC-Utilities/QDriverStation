@@ -31,21 +31,21 @@ QT += quick
 
 win32* {
     LIBS += -lPdh
-    RC_FILE = $$PWD/etc/deploy/windows/Info.rc
+    RC_FILE = $$PWD/etc/deploy/windows/resources/info.rc
 }
 
 macx* {
-    ICON = $$PWD/etc/deploy/mac-osx/AppIcon.icns
-    RC_FILE = $$PWD/etc/deploy/mac-osx/AppIcon.icns
-    QMAKE_INFO_PLIST = $$PWD/etc/deploy/mac-osx/Info.plist
+    ICON = $$PWD/etc/deploy/mac-osx/icon.icns
+    RC_FILE = $$PWD/etc/deploy/mac-osx/icon.icns
+    QMAKE_INFO_PLIST = $$PWD/etc/deploy/mac-osx/info.plist
 }
 
 linux:!android {
     target.path = /usr/bin
     icon.path = /usr/share/pixmaps
     desktop.path = /usr/share/applications
-    icon.files += $$PWD/etc/deploy/linux/setup/gui/qdriverstation.png
-    desktop.files += $$PWD/etc/deploy/linux/setup/gui/qdriverstation.desktop
+    icon.files += $$PWD/etc/deploy/linux/common/qdriverstation.png
+    desktop.files += $$PWD/etc/deploy/linux/common/qdriverstation.desktop
 
     TARGET = qdriverstation
     INSTALLS += target desktop icon

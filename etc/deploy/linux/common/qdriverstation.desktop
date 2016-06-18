@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=QDriverStation
+Comment=The QDriverStation is a cross-platform and open-source alternative to the FRC Driver Station. It supports the FRC 2009-2014 communication protocol and the FRC 2015-2016 protocol. Joystick input is handled via SDL, however, you can also operate your robot with a keyboard-based joystick.
+Exec=qdriverstation
+Terminal=false
+Type=Application
+StartupNotify=true
+Categories=Development;Education;Qt;Robotics;Utility;
+Icon=qdriverstation

@@ -1,0 +1,10 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: qdriverstation
+Source: http://qdriverstation.sf.net/
+
+Files: *
+Copyright: 2015-2016 Alex Spataru <alex_spataru@outlook.com>
+License: MIT
+
+License: MIT
+ This project is released under the MIT license. If a copy of the MIT license was not distributed with this file, you can obtain one at 
