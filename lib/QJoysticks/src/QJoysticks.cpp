@@ -188,7 +188,7 @@ bool QJoysticks::joystickExists (int index) {
     if ((index >= 0) && (count() > index))
         return true;
 
-    qWarning() << "Hey shithead! You requested an invalid joystick:" << index;
+    qWarning() << "You requested an invalid joystick:" << index;
     return false;
 }
 
@@ -257,7 +257,6 @@ QJoystickDevice* QJoysticks::getInputDevice (int index) {
     if (joystickExists (index))
         return inputDevices().at (index);
 
-    /* Troll the user, haha! */
     QJoystickDevice* device = new QJoystickDevice;
     device->id = -1;
     device->numAxes = 0;
@@ -274,6 +273,7 @@ QJoystickDevice* QJoysticks::getInputDevice (int index) {
  *
  * \note The joystick name will be changed based on the value of \a blacklisted
  * \note This function does not have effect if the given joystick does not exist
+ * \note Once the joystick is blacklisted, the joystick list will be updated
  */
 void QJoysticks::setBlacklisted (int index, bool blacklisted) {
     if (joystickExists (index)) {
@@ -296,11 +296,14 @@ void QJoysticks::setBlacklisted (int index, bool blacklisted) {
             settingsName.chop (BLACKLISTED_STR.length());
         }
 
+        bool changed = m_devices.at (index)->blacklisted != blacklisted;
+
         m_devices.at (index)->name = name;
         m_devices.at (index)->blacklisted = blacklisted;
         m_settings->setValue (settingsName, blacklisted);
 
-        emit countChanged();
+        if (changed)
+            updateInterfaces();
     }
 }
 
