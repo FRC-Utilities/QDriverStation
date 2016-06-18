@@ -31,7 +31,7 @@ QT += quick
 
 win32* {
     LIBS += -lPdh
-    RC_FILE = $$PWD/etc/deploy/windows/info.rc
+    RC_FILE = $$PWD/etc/deploy/windows/Info.rc
 }
 
 macx* {
@@ -42,11 +42,12 @@ macx* {
 
 linux:!android {
     target.path = /usr/bin
-    TARGET = qdriverstation
     icon.path = /usr/share/pixmaps
     desktop.path = /usr/share/applications
-    icon.files += $$PWD/etc/deploy/linux/qdriverstation.png
-    desktop.files += $$PWD/etc/deploy/linux/qdriverstation.desktop
+    icon.files += $$PWD/etc/deploy/linux/setup/gui/qdriverstation.png
+    desktop.files += $$PWD/etc/deploy/linux/setup/gui/qdriverstation.desktop
+
+    TARGET = qdriverstation
     INSTALLS += target desktop icon
 }
 
@@ -96,14 +97,14 @@ SOURCES += \
   $$PWD/src/utilities.cpp \
   $$PWD/src/beeper.cpp \
   $$PWD/src/dashboards.cpp \
-    src/shortcuts.cpp
+  $$PWD/src/shortcuts.cpp
   
 HEADERS += \
   $$PWD/src/utilities.h \
   $$PWD/src/beeper.h \
   $$PWD/src/dashboards.h \
   $$PWD/src/versions.h \
-    src/shortcuts.h
+  $$PWD/src/shortcuts.h
     
 RESOURCES += \
   $$PWD/qml/qml.qrc \

@@ -1,0 +1,49 @@
+name: qdriverstation
+version: 16.06.1
+summary: Open source clone of the FRC Driver Station
+description: The QDriverStation is a cross-platform and open-source alternative to the FRC Driver Station. It supports the FRC 2009-2014 communication protocol and the FRC 2015-2016 protocol.
+confinement: strict
+
+apps:
+  qdriverstation:
+    command: qt5-launch qdriverstation
+    plugs:
+      - x11
+      - network
+      - pulseaudio
+      - network-bind
+      - system-observe
+      - network-observe
+
+parts:
+  qdriverstation:
+    plugin: qmake
+    source-type: git
+    source: ../../../ # Will be changed to the git repo once I get it working
+    build-packages:
+      - libsdl2-dev
+      - qtbase5-dev
+      - qttools5-dev 
+      - libqt5webkit5-dev 
+      - qtmultimedia5-dev
+      - qtdeclarative5-dev 
+      - qttools5-dev-tools 
+    after: [qt5conf]
+  env:
+    plugin: nil
+    stage-packages:
+      - libsdl2-2.0-0
+      - libqt5gui5
+      - libqt5qml5
+      - libqt5quick5
+      - libqt5widgets5
+      - libqt5network5
+      - libqt5multimedia5
+      - libqt5declarative5
+      - qml-module-qtquick2
+      - qml-module-qtquick-window2
+      - qml-module-qtquick-layouts
+      - qml-module-qtquick-controls
+      - qml-module-qt-labs-settings
+    after: [qdriverstation]
+
