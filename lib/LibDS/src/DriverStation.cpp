@@ -777,7 +777,7 @@ void DriverStation::init() {
         updatePacketLoss();
 
         emit statusChanged (generalStatus());
-        DS_Schedule (200, this, SIGNAL (initialized()));
+        DS_Schedule (0, this, SIGNAL (initialized()));
 
         qDebug() << "DS engine started!";
     }

@@ -27,6 +27,7 @@
 #include <QStringList>
 #include <QJoysticks/JoysticksCommon.h>
 
+class QSettings;
 class SDL_Joysticks;
 class VirtualJoystick;
 
@@ -43,6 +44,7 @@ class QJoysticks : public QObject {
     Q_INVOKABLE int getNumButtons (int index);
     Q_INVOKABLE bool isBlacklisted (int index);
     Q_INVOKABLE bool joystickExists (int index);
+    Q_INVOKABLE QString getJoystickName (int index);
 
     Q_INVOKABLE QStringList deviceNames() const;
     QList<QJoystickDevice*> inputDevices() const;
@@ -78,6 +80,7 @@ class QJoysticks : public QObject {
     void onButtonEvent (const QJoystickButtonEvent& event);
 
   private:
+    QSettings* m_settings;
     SDL_Joysticks* m_sdlJoysticks;
     VirtualJoystick* m_virtualJoystick;
 

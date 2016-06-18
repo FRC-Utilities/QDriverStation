@@ -41,15 +41,19 @@ Item {
         axes.model = 0
         povs.model = 0
         buttons.model = 0
-        axes.model = DriverStation.getNumAxes (currentJoystick)
-        povs.model = DriverStation.getNumPOVs (currentJoystick)
-        buttons.model = DriverStation.getNumButtons (currentJoystick)
+
+        if (DriverStation.joystickCount() > currentJoystick) {
+            axes.model = DriverStation.getNumAxes (currentJoystick)
+            povs.model = DriverStation.getNumPOVs (currentJoystick)
+            buttons.model = DriverStation.getNumButtons (currentJoystick)
+        }
     }
 
     //
     // Updates the joystick list and re-generates the controls
     //
     function updateControls() {
+        listView.model = 0
         listView.model = QJoysticks.deviceNames()
 
         if (QJoysticks.count() > 0) {
@@ -103,9 +107,21 @@ Item {
         }
 
         /* Send joystick input data to DS */
-        onPovChanged: DriverStation.updatePOV (js, pov, angle)
-        onAxisChanged: DriverStation.updateAxis (js, axis, value)
-        onButtonChanged: DriverStation.updateButton (js, button, pressed)
+        onPovChanged: {
+            DriverStation.updatePOV (js,
+                                     pov,
+                                     QJoysticks.isBlacklisted (currentJoystick) ? 0 : angle)
+        }
+        onAxisChanged: {
+            DriverStation.updateAxis (js,
+                                      axis,
+                                      QJoysticks.isBlacklisted (currentJoystick) ? 0 : value)
+        }
+        onButtonChanged: {
+            DriverStation.updateButton (js,
+                                        button,
+                                        QJoysticks.isBlacklisted (currentJoystick) ? false : pressed)
+        }
     }
 
     Connections {
@@ -341,7 +357,7 @@ Item {
                             target: QJoysticks
                             onButtonChanged: {
                                 if (joysticks.currentJoystick === js
-                                    && button === index)
+                                        && button === index)
                                     value = pressed ? 1 : 0
                             }
                         }
@@ -391,7 +407,7 @@ Item {
                             target: QJoysticks
                             onPovChanged: {
                                 if (joysticks.currentJoystick === js
-                                    && pov === index)
+                                        && pov === index)
                                     spinbox.value = angle
                             }
                         }

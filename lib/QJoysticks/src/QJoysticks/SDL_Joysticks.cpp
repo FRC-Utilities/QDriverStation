@@ -82,7 +82,7 @@ SDL_Joysticks::SDL_Joysticks() {
         genericMappings.close();
     }
 
-    QTimer::singleShot (1500, Qt::PreciseTimer, this, SLOT (update()));
+    QTimer::singleShot (Qt::PreciseTimer, this, SLOT (update()));
 }
 
 /**
