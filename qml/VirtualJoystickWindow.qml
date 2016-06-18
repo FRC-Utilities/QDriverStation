@@ -34,6 +34,8 @@ Window {
     //
     // Window size
     //
+    width: minimumWidth
+    height: minimumHeight
     minimumWidth: Globals.scale (460)
     maximumWidth: Globals.scale (460)
     minimumHeight: Globals.scale (320)

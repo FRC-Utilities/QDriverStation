@@ -33,6 +33,14 @@ QT += widgets
 
 INCLUDEPATH += $$PWD/include
 
+macx || linux{
+    LIBS += -lcrypto -lssl
+}
+
+win32* {
+    LIBS += -L$$PWD/lib/OpenSSL-Win32/lib -llibeay32
+}
+
 SOURCES += \
     $$PWD/src/Updater.cpp \
     $$PWD/src/Downloader.cpp \

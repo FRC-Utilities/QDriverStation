@@ -31,6 +31,8 @@ import "globals.js" as Globals
 Window {
     id: window
     visible: false
+    width: minimumWidth
+    height: minimumHeight
     title: qsTr ("Settings")
     minimumWidth: Globals.scale (420)
     maximumWidth: Globals.scale (420)

@@ -217,6 +217,12 @@ class QSU_DECL Updater : public QObject {
     ///
     void setUpdateAvailable (bool available);
 
+    ///
+    /// Ensure that operations will continue smoothly, event if we have SSL
+    /// errors.
+    ///
+    void ignoreSslErrors (QNetworkReply* reply,QList<QSslError> error);
+
   private:
     ///
     /// Returns \c true if version \a x is greater than version \a y.

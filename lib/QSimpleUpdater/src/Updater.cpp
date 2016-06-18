@@ -77,10 +77,14 @@ Updater::Updater() {
     m_platform = "ios";
 #endif
 
+    // *INDENT-OFF*
     connect (m_downloader, SIGNAL (downloadFinished (QString, QString)),
              this,         SIGNAL (downloadFinished (QString, QString)));
     connect (m_manager,    SIGNAL (finished (QNetworkReply*)),
              this,           SLOT (onReply  (QNetworkReply*)));
+    connect (m_manager,    SIGNAL (sslErrors (QNetworkReply*, QList<QSslError>)),
+             this,           SLOT (ignoreSslErrors (QNetworkReply*, QList<QSslError>)));
+    // *INDENT-ON*
 }
 
 //==============================================================================
@@ -329,6 +333,15 @@ void Updater::setUpdateAvailable (bool available) {
 
         box.exec();
     }
+}
+
+//==============================================================================
+// Updater::ignoreSslErrors
+//==============================================================================
+
+void Updater::ignoreSslErrors (QNetworkReply* reply, QList<QSslError> error) {
+    if (reply)
+        reply->ignoreSslErrors (error);
 }
 
 //==============================================================================

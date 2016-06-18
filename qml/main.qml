@@ -132,6 +132,7 @@ Window {
     //
     // Window geometry hacks
     //
+    height: getMinimumHeight()
     minimumWidth: getMinimumWidth()
     minimumHeight: getMinimumHeight()
     maximumHeight: getMinimumHeight()
