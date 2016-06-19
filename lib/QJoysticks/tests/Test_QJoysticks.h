@@ -89,7 +89,7 @@ class Test_QJoysticks : public QObject {
 
     void verifyCrashAvoidance() {
         joysticks->resetJoysticks();
-        
+
         /* Try to access invalid joystick and see what happens */
         qDebug() << joysticks->getName (2);
         qDebug() << joysticks->getNumAxes (2);

@@ -268,37 +268,31 @@ void QJoysticks::setSortJoysticksByBlacklistState (bool sort) {
 /**
  * Blacklists or whitelists the joystick at the given \a index.
  *
- * \note The joystick name will be changed based on the value of \a blacklisted
  * \note This function does not have effect if the given joystick does not exist
  * \note Once the joystick is blacklisted, the joystick list will be updated
  */
 void QJoysticks::setBlacklisted (int index, bool blacklisted) {
     if (joystickExists (index)) {
-        QString name = getName (index);
-        QString settingsName = getName (index);
-
-        if (blacklisted && !name.contains (BLACKLISTED_STR, Qt::CaseSensitive)) {
-            name.append (BLACKLISTED_STR);
-
+        /* Netrualize the joystick */
+        if (blacklisted) {
             for (int i = 0; i < inputDevices().at (index)->numAxes; ++i)
                 emit axisChanged (index, i, 0);
+
             for (int i = 0; i < inputDevices().at (index)->numButtons; ++i)
                 emit buttonChanged (index, i, false);
+
             for (int i = 0; i < inputDevices().at (index)->numPOVs; ++i)
                 emit povChanged (index, i, 0);
         }
 
-        else if (!blacklisted && name.contains (BLACKLISTED_STR, Qt::CaseSensitive)) {
-            name.chop (BLACKLISTED_STR.length());
-            settingsName.chop (BLACKLISTED_STR.length());
-        }
-
+        /* See if blacklist value was actually changed */
         bool changed = m_devices.at (index)->blacklisted != blacklisted;
 
-        m_devices.at (index)->name = name;
+        /* Save settings */
         m_devices.at (index)->blacklisted = blacklisted;
-        m_settings->setValue (settingsName, blacklisted);
+        m_settings->setValue (getName (index), blacklisted);
 
+        /* Re-scan joysticks if blacklist value has changed */
         if (changed)
             updateInterfaces();
     }
