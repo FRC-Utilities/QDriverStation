@@ -87,6 +87,7 @@ QJoysticks::QJoysticks() {
              this, &QJoysticks::onButtonEvent);
 
     /* Configure the settings */
+    m_sortJoyticks = 0;
     m_settings = new QSettings (qApp->organizationName(), qApp->applicationName());
     m_settings->beginGroup ("Blacklisted Joysticks");
 }
@@ -185,17 +186,13 @@ bool QJoysticks::isBlacklisted (int index) {
  * the function returns \c false and warns the user through the console.
  */
 bool QJoysticks::joystickExists (int index) {
-    if ((index >= 0) && (count() > index))
-        return true;
-
-    qWarning() << "You requested an invalid joystick:" << index;
-    return false;
+    return (index >= 0) && (count() > index);
 }
 
 /**
  * Returns the name of the given joystick
  */
-QString QJoysticks::getJoystickName (int index) {
+QString QJoysticks::getName (int index) {
     if (joystickExists (index))
         return m_devices.at (index)->name;
 
@@ -249,23 +246,23 @@ VirtualJoystick* QJoysticks::virtualJoystick() const {
 
 /**
  * Returns a pointer to the device at the given \a index.
- *
- * \note If the joystick does not exist, the program will not crash, however,
- *       it will warn you through the console output
  */
 QJoystickDevice* QJoysticks::getInputDevice (int index) {
     if (joystickExists (index))
         return inputDevices().at (index);
 
-    QJoystickDevice* device = new QJoystickDevice;
-    device->id = -1;
-    device->numAxes = 0;
-    device->numPOVs = 0;
-    device->numButtons = 0;
-    device->name = "Invalid";
-    device->blacklisted = true;
+    return Q_NULLPTR;
+}
 
-    return device;
+/**
+ * If \a sort is set to true, then the device list will put all blacklisted
+ * joysticks at the end of the list
+ */
+void QJoysticks::setSortJoysticksByBlacklistState (bool sort) {
+    if (m_sortJoyticks != sort) {
+        m_sortJoyticks = sort;
+        updateInterfaces();
+    }
 }
 
 /**
@@ -277,8 +274,8 @@ QJoystickDevice* QJoysticks::getInputDevice (int index) {
  */
 void QJoysticks::setBlacklisted (int index, bool blacklisted) {
     if (joystickExists (index)) {
-        QString name = getJoystickName (index);
-        QString settingsName = getJoystickName (index);
+        QString name = getName (index);
+        QString settingsName = getName (index);
 
         if (blacklisted && !name.contains (BLACKLISTED_STR, Qt::CaseSensitive)) {
             name.append (BLACKLISTED_STR);
@@ -311,40 +308,60 @@ void QJoysticks::setBlacklisted (int index, bool blacklisted) {
  * 'Rescans' for new/removed joysticks and registers them again.
  */
 void QJoysticks::updateInterfaces() {
-    /* Remove all the joysticks */
     m_devices.clear();
 
-    /* Register non-blacklisted SDL joysticks */
-    foreach (QJoystickDevice* joystick, sdlJoysticks()->joysticks()) {
-        joystick->blacklisted = m_settings->value (joystick->name, false).toBool();
-        if (!joystick->blacklisted)
-            addInputDevice (joystick);
-    }
+    /* Put blacklisted joysticks at the bottom of the list */
+    if (m_sortJoyticks) {
+        /* Register non-blacklisted SDL joysticks */
+        foreach (QJoystickDevice* joystick, sdlJoysticks()->joysticks()) {
+            joystick->blacklisted = m_settings->value (joystick->name, false).toBool();
+            if (!joystick->blacklisted)
+                addInputDevice (joystick);
+        }
 
-    /* Register the virtual joystick (if its not blacklisted( */
-    if (virtualJoystick()->joystickEnabled()) {
-        QJoystickDevice* joystick = virtualJoystick()->joystick();
-        joystick->blacklisted = m_settings->value (joystick->name, false).toBool();
+        /* Register the virtual joystick (if its not blacklisted) */
+        if (virtualJoystick()->joystickEnabled()) {
+            QJoystickDevice* joystick = virtualJoystick()->joystick();
+            joystick->blacklisted = m_settings->value (joystick->name, false).toBool();
 
-        if (!joystick->blacklisted) {
-            addInputDevice (joystick);
-            virtualJoystick()->setJoystickID (inputDevices().count() - 1);
+            if (!joystick->blacklisted) {
+                addInputDevice (joystick);
+                virtualJoystick()->setJoystickID (inputDevices().count() - 1);
+            }
+        }
+
+        /* Register blacklisted SDL joysticks */
+        foreach (QJoystickDevice* joystick, sdlJoysticks()->joysticks()) {
+            joystick->blacklisted = m_settings->value (joystick->name, false).toBool();
+            if (joystick->blacklisted)
+                addInputDevice (joystick);
+        }
+
+        /* Register the virtual joystick (if its blacklisted) */
+        if (virtualJoystick()->joystickEnabled()) {
+            QJoystickDevice* joystick = virtualJoystick()->joystick();
+            joystick->blacklisted = m_settings->value (joystick->name, false).toBool();
+
+            if (joystick->blacklisted) {
+                addInputDevice (joystick);
+                virtualJoystick()->setJoystickID (inputDevices().count() - 1);
+            }
         }
     }
 
-    /* Register blacklisted SDL joysticks */
-    foreach (QJoystickDevice* joystick, sdlJoysticks()->joysticks()) {
-        joystick->blacklisted = m_settings->value (joystick->name, false).toBool();
-        if (joystick->blacklisted)
+    /* Sort normally */
+    else {
+        /* Register SDL joysticks */
+        foreach (QJoystickDevice* joystick, sdlJoysticks()->joysticks()) {
             addInputDevice (joystick);
-    }
+            joystick->blacklisted = m_settings->value (joystick->name, false).toBool();
+        }
 
-    /* Register the virtual joystick (if its blacklisted) */
-    if (virtualJoystick()->joystickEnabled()) {
-        QJoystickDevice* joystick = virtualJoystick()->joystick();
-        joystick->blacklisted = m_settings->value (joystick->name, false).toBool();
+        /* Register virtual joystick */
+        if (virtualJoystick()->joystickEnabled()) {
+            QJoystickDevice* joystick = virtualJoystick()->joystick();
+            joystick->blacklisted = m_settings->value (joystick->name, false).toBool();
 
-        if (joystick->blacklisted) {
             addInputDevice (joystick);
             virtualJoystick()->setJoystickID (inputDevices().count() - 1);
         }
@@ -374,9 +391,7 @@ void QJoysticks::setVirtualJoystickEnabled (bool enabled) {
  * Removes all the registered joysticks and emits appropiate signals.
  */
 void QJoysticks::resetJoysticks() {
-    qDeleteAll (m_devices);
     m_devices.clear();
-
     emit countChanged();
 }
 

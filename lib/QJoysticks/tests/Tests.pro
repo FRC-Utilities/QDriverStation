@@ -1,5 +1,7 @@
 #
-# Copyright (c) 2015-2016 Alex Spataru <alex_spataru@outlook.com>
+# This file is part of QJoysticks
+#
+# Copyright (c) 2016 Alex Spataru <alex_spataru@outlook.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -18,26 +20,15 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+#
 
-include ($$PWD/lib/SDL/SDL.pri)
+QT += testlib
+TARGET = QJoysticks_Test
 
-QT += gui
-QT += core
-QT += widgets
-
-INCLUDEPATH += $$PWD/src
-
-HEADERS += \
-    $$PWD/src/QJoysticks.h \
-    $$PWD/src/QJoysticks/JoysticksCommon.h \
-    $$PWD/src/QJoysticks/SDL_Joysticks.h \
-    $$PWD/src/QJoysticks/VirtualJoystick.h
+include ($$PWD/../QJoysticks.pri)
 
 SOURCES += \
-    $$PWD/src/QJoysticks.cpp \
-    $$PWD/src/QJoysticks/SDL_Joysticks.cpp \
-    $$PWD/src/QJoysticks/VirtualJoystick.cpp
+    $$PWD/main.cpp
 
-RESOURCES += \
-    $$PWD/etc/resources/qjoysticks-res.qrc
-
+HEADERS += \
+    $$PWD/Test_QJoysticks.h

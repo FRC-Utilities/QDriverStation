@@ -33,6 +33,7 @@ class VirtualJoystick;
 
 class QJoysticks : public QObject {
     Q_OBJECT
+    friend class Test_QJoysticks;
 
   public:
     static QJoysticks* getInstance();
@@ -44,7 +45,7 @@ class QJoysticks : public QObject {
     Q_INVOKABLE int getNumButtons (int index);
     Q_INVOKABLE bool isBlacklisted (int index);
     Q_INVOKABLE bool joystickExists (int index);
-    Q_INVOKABLE QString getJoystickName (int index);
+    Q_INVOKABLE QString getName (int index);
 
     Q_INVOKABLE QStringList deviceNames() const;
     QList<QJoystickDevice*> inputDevices() const;
@@ -57,6 +58,7 @@ class QJoysticks : public QObject {
     void updateInterfaces();
     void setVirtualJoystickRange (float range);
     void setVirtualJoystickEnabled (bool enabled);
+    void setSortJoysticksByBlacklistState (bool sort);
     void setBlacklisted (int index, bool blacklisted);
 
   protected:
@@ -80,6 +82,8 @@ class QJoysticks : public QObject {
     void onButtonEvent (const QJoystickButtonEvent& event);
 
   private:
+    bool m_sortJoyticks;
+
     QSettings* m_settings;
     SDL_Joysticks* m_sdlJoysticks;
     VirtualJoystick* m_virtualJoystick;

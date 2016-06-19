@@ -126,7 +126,7 @@ int main (int argc, char* argv[]) {
     QSimpleUpdater* updater = QSimpleUpdater::getInstance();
     DriverStation* driverstation = DriverStation::getInstance();
 
-    /* Shortcuts gets events sbefore virtual joystick */
+    /* Shortcuts gets events before virtual joystick */
     qApp->installEventFilter (&shortcuts);
 
     /* Load the QML interface */

@@ -138,7 +138,10 @@ Item {
     // Initialize the QJoysticks system and call updateControls(), which will
     // help us in the case that the virtual joystick is enabled
     //
-    Component.onCompleted: joysticks.updateControls()
+    Component.onCompleted: {
+        QJoysticks.setSortJoysticksByBlacklistState (true)
+        joysticks.updateControls()
+    }
 
     //
     // The "No Joysticks? No Problem" widget
