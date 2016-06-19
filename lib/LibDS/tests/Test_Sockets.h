@@ -13,13 +13,6 @@
 #include <Core/Sockets.h>
 
 //==============================================================================
-// GLOBAL VARIABLES
-//==============================================================================
-
-#define SOCKET_BIND_MODE QAbstractSocket::ShareAddress | \
-    QAbstractSocket::ReuseAddressHint
-
-//==============================================================================
 // SOCKET SENDER TESTS (UDP)
 //==============================================================================
 
@@ -45,9 +38,9 @@ class Test_SocketsSenderUDP : public QObject {
         sockets.setRadioOutputPort (radPort);
         sockets.setRobotOutputPort (robPort);
 
-        fmsReceiver.bind (DS_LISTENER, fmsPort, SOCKET_BIND_MODE);
-        radReceiver.bind (DS_LISTENER, radPort, SOCKET_BIND_MODE);
-        robReceiver.bind (DS_LISTENER, robPort, SOCKET_BIND_MODE);
+        fmsReceiver.bind (DS_LISTENER, fmsPort, DS_BIND_FLAGS);
+        radReceiver.bind (DS_LISTENER, radPort, DS_BIND_FLAGS);
+        robReceiver.bind (DS_LISTENER, robPort, DS_BIND_FLAGS);
 
         connect (&fmsReceiver, &QUdpSocket::readyRead, [=]() {
             fmsData = DS::readSocket (&fmsReceiver);
