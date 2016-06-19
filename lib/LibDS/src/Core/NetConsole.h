@@ -9,35 +9,26 @@
 #ifndef _LIB_DS_NETCONSOLE_H
 #define _LIB_DS_NETCONSOLE_H
 
-#include <QUdpSocket>
+#include <Core/DS_Base.h>
 
 class NetConsole : public QObject {
     Q_OBJECT
 
+  signals:
+    void newMessage (const QString& message);
+
   public:
     explicit NetConsole();
-    ~NetConsole();
-
-    Q_INVOKABLE int inputPort() const;
-    Q_INVOKABLE int outputPort() const;
 
   public slots:
     void setInputPort (int port);
     void setOutputPort (int port);
     void sendMessage (const QString& message);
 
-  private slots:
-    void onReadyRead();
-
-  signals:
-    void newMessage (const QString& message);
-
   private:
-    int m_inputPort;
     int m_outputPort;
-
-    QUdpSocket* m_inputSocket;
-    QUdpSocket* m_outputSocket;
+    QUdpSocket m_inputSocket;
+    QUdpSocket m_outputSocket;
 };
 
 #endif

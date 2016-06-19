@@ -14,14 +14,17 @@
 #include <QDebug>
 #include <QObject>
 #include <QDateTime>
+#include <QUdpSocket>
+#include <QTcpSocket>
 #include <QMetaObject>
 #include <QStringList>
+#include <QHostAddress>
 
-#define DISABLED_PORT -1
+/* Hacks */
 #define DS_Joysticks QList<DS::Joystick*>
 #define DS_Schedule(time,object,slot) QTimer::singleShot (time, \
-                                                          Qt::PreciseTimer, \
-                                                          object, slot)
+    Qt::PreciseTimer, \
+    object, slot)
 
 /**
  * This allows us see the name of an enum when logging it (instead of displaying
@@ -35,6 +38,22 @@
     friend Q_DECL_CONSTEXPR const char *qt_getEnumName(ENUM) \
     Q_DECL_NOEXCEPT { return #ENUM; }
 // *INDENT-ON*
+
+/**
+ * Ignore sockets with port set to -1
+ */
+const int DS_DISABLED_PORT = -1;
+
+/**
+ * Global socket listener address
+ */
+const QHostAddress DS_LISTENER = QHostAddress ("0.0.0.0");
+
+/**
+ * Global socket options
+ */
+const QAbstractSocket::BindMode DS_BIND_FLAGS = QAbstractSocket::ShareAddress |
+                                                QAbstractSocket::ReuseAddressHint;
 
 /**
  * Returns the location in where application files (e.g. logs) are stored
@@ -308,6 +327,32 @@ class DS : public QObject {
         }
 
         return "GMT0BST";
+    }
+
+    /**
+     * Reads the datagrams received by the given UDP \a socket
+     */
+    static inline QByteArray readSocket (QUdpSocket* socket) {
+        QByteArray data;
+
+        if (socket) {
+            while (socket->hasPendingDatagrams()) {
+                data.resize (socket->pendingDatagramSize());
+                socket->readDatagram (data.data(), data.size());
+            }
+        }
+
+        return data;
+    }
+
+    /**
+     * Reads the data received by the given TCP \a socket
+     */
+    static inline QByteArray readSocket (QTcpSocket* socket) {
+        if (socket)
+            return socket->readAll();
+
+        return QByteArray ("");
     }
 };
 

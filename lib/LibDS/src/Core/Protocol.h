@@ -110,7 +110,7 @@ class Protocol {
      *    able to receive data from the FMS.
      */
     virtual int fmsInputPort() {
-        return DISABLED_PORT;
+        return DS_DISABLED_PORT;
     }
 
     /**
@@ -120,7 +120,7 @@ class Protocol {
      *    able to send data to the FMS.
      */
     virtual int fmsOutputPort() {
-        return DISABLED_PORT;
+        return DS_DISABLED_PORT;
     }
 
     /**
@@ -130,7 +130,7 @@ class Protocol {
      *    able to receive data from the radio.
      */
     virtual int radioInputPort() {
-        return DISABLED_PORT;
+        return DS_DISABLED_PORT;
     }
 
     /**
@@ -140,7 +140,7 @@ class Protocol {
      *    able to receive data from the robot.
      */
     virtual int robotInputPort() {
-        return DISABLED_PORT;
+        return DS_DISABLED_PORT;
     }
 
     /**
@@ -150,7 +150,7 @@ class Protocol {
      *    able to send data to the robot radio.
      */
     virtual int radioOutputPort() {
-        return DISABLED_PORT;
+        return DS_DISABLED_PORT;
     }
 
     /**
@@ -160,7 +160,7 @@ class Protocol {
      *    able to send data to the robot.
      */
     virtual int robotOutputPort() {
-        return DISABLED_PORT;
+        return DS_DISABLED_PORT;
     }
 
     /**
@@ -170,7 +170,7 @@ class Protocol {
      *    able to receive broadcasted messages from the robot.
      */
     virtual int netconsoleInputPort() {
-        return DISABLED_PORT;
+        return DS_DISABLED_PORT;
     }
 
     /**
@@ -180,7 +180,7 @@ class Protocol {
      *    able to send broadcasted commands to the robot.
      */
     virtual int netconsoleOutputPort() {
-        return DISABLED_PORT;
+        return DS_DISABLED_PORT;
     }
 
     /**

@@ -9,7 +9,6 @@
 #include "DS_Config.h"
 #include "DriverStation.h"
 
-#include <QTimer>
 #include <QElapsedTimer>
 #include <Core/RobotLogger.h>
 

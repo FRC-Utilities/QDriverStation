@@ -7,21 +7,17 @@
  */
 
 #include "Sockets.h"
-
-#include <QUdpSocket>
-#include <QTcpSocket>
 #include <QNetworkInterface>
 
 /**
- * Used to receive data from any host
+ * Sets the socket options for the given \a socket
  */
-const QHostAddress LISTENER = QHostAddress ("0.0.0.0");
-
-/**
- * Trust me, don't change this ones
- */
-const QAbstractSocket::BindMode BIND_FLAGS = QAbstractSocket::ShareAddress |
-                                             QAbstractSocket::ReuseAddressHint;
+void CONFIGURE_SOCKET (QAbstractSocket* socket) {
+    if (socket) {
+        socket->setSocketOption (QAbstractSocket::LowDelayOption, 1);
+        socket->setSocketOption (QAbstractSocket::MulticastLoopbackOption, 0);
+    }
+}
 
 /**
  * Initializes the addresses, ports and sockets
@@ -44,9 +40,9 @@ Sockets::Sockets() {
     m_udpRobotReceiver = Q_NULLPTR;
     m_tcpRobotReceiver = Q_NULLPTR;
 
-    m_fmsOutputPort = DISABLED_PORT;
-    m_radioOutputPort = DISABLED_PORT;
-    m_robotOutputPort = DISABLED_PORT;
+    m_fmsOutputPort = DS_DISABLED_PORT;
+    m_radioOutputPort = DS_DISABLED_PORT;
+    m_robotOutputPort = DS_DISABLED_PORT;
 }
 
 /**
@@ -105,10 +101,10 @@ QHostAddress Sockets::robotAddress() const {
  */
 void Sockets::setFMSInputPort (int port) {
     if (m_tcpFmsReceiver)
-        m_tcpFmsReceiver->bind (LISTENER, port, BIND_FLAGS);
+        m_tcpFmsReceiver->bind (DS_LISTENER, port, DS_BIND_FLAGS);
 
     if (m_udpFmsReceiver)
-        m_udpFmsReceiver->bind (LISTENER, port, BIND_FLAGS);
+        m_udpFmsReceiver->bind (DS_LISTENER, port, DS_BIND_FLAGS);
 }
 
 /**
@@ -123,10 +119,10 @@ void Sockets::setFMSOutputPort (int port) {
  */
 void Sockets::setRadioInputPort (int port) {
     if (m_tcpRadioReceiver)
-        m_tcpRadioReceiver->bind (LISTENER, port, BIND_FLAGS);
+        m_tcpRadioReceiver->bind (DS_LISTENER, port, DS_BIND_FLAGS);
 
     if (m_udpRadioReceiver)
-        m_udpRadioReceiver->bind (LISTENER, port, BIND_FLAGS);
+        m_udpRadioReceiver->bind (DS_LISTENER, port, DS_BIND_FLAGS);
 }
 
 /**
@@ -134,10 +130,10 @@ void Sockets::setRadioInputPort (int port) {
  */
 void Sockets::setRobotInputPort (int port) {
     if (m_tcpRobotReceiver)
-        m_tcpRobotReceiver->bind (LISTENER, port, BIND_FLAGS);
+        m_tcpRobotReceiver->bind (DS_LISTENER, port, DS_BIND_FLAGS);
 
     if (m_udpRobotReceiver)
-        m_udpRobotReceiver->bind (LISTENER, port, BIND_FLAGS);
+        m_udpRobotReceiver->bind (DS_LISTENER, port, DS_BIND_FLAGS);
 }
 
 /**
@@ -205,6 +201,9 @@ void Sockets::setFMSSocketType (DS::SocketType type) {
         m_tcpFmsSender = new QTcpSocket (this);
         m_tcpFmsReceiver = new QTcpSocket (this);
 
+        CONFIGURE_SOCKET (m_tcpFmsSender);
+        CONFIGURE_SOCKET (m_tcpFmsReceiver);
+
         connect (m_tcpFmsReceiver, SIGNAL (readyRead()),
                  this,               SLOT (readFMSSocket()));
     }
@@ -212,6 +211,9 @@ void Sockets::setFMSSocketType (DS::SocketType type) {
     else {
         m_udpFmsSender = new QUdpSocket (this);
         m_udpFmsReceiver = new QUdpSocket (this);
+
+        CONFIGURE_SOCKET (m_udpFmsSender);
+        CONFIGURE_SOCKET (m_udpFmsReceiver);
 
         connect (m_udpFmsReceiver, SIGNAL (readyRead()),
                  this,               SLOT (readFMSSocket()));
@@ -236,6 +238,9 @@ void Sockets::setRadioSocketType (DS::SocketType type) {
         m_tcpRadioSender = new QTcpSocket (this);
         m_tcpRadioReceiver = new QTcpSocket (this);
 
+        CONFIGURE_SOCKET (m_tcpRadioSender);
+        CONFIGURE_SOCKET (m_tcpRadioReceiver);
+
         connect (m_tcpRadioReceiver, SIGNAL (readyRead()),
                  this,                 SLOT (readRadioSocket()));
     }
@@ -243,6 +248,9 @@ void Sockets::setRadioSocketType (DS::SocketType type) {
     else {
         m_udpRadioSender = new QUdpSocket (this);
         m_udpRadioReceiver = new QUdpSocket (this);
+
+        CONFIGURE_SOCKET (m_udpRadioSender);
+        CONFIGURE_SOCKET (m_udpRadioReceiver);
 
         connect (m_udpRadioReceiver, SIGNAL (readyRead()),
                  this,                 SLOT (readRadioSocket()));
@@ -265,6 +273,9 @@ void Sockets::setRobotSocketType (DS::SocketType type) {
         m_tcpRobotSender = new QTcpSocket (this);
         m_tcpRobotReceiver = new QTcpSocket (this);
 
+        CONFIGURE_SOCKET (m_tcpRobotSender);
+        CONFIGURE_SOCKET (m_tcpRobotReceiver);
+
         connect (m_tcpRobotReceiver, SIGNAL (readyRead()),
                  this,                 SLOT (readRobotSocket()));
     }
@@ -272,6 +283,9 @@ void Sockets::setRobotSocketType (DS::SocketType type) {
     else {
         m_udpRobotSender = new QUdpSocket (this);
         m_udpRobotReceiver = new QUdpSocket (this);
+
+        CONFIGURE_SOCKET (m_udpRobotSender);
+        CONFIGURE_SOCKET (m_udpRobotReceiver);
 
         connect (m_udpRobotReceiver, SIGNAL (readyRead()),
                  this,                 SLOT (readRobotSocket()));
@@ -313,17 +327,13 @@ void Sockets::readFMSSocket() {
     QHostAddress address;
 
     if (m_tcpFmsReceiver) {
-        data = m_tcpFmsReceiver->readAll();
+        data = DS::readSocket (m_tcpFmsReceiver);
         address = m_tcpFmsReceiver->peerAddress();
     }
 
     else if (m_udpFmsReceiver) {
+        data = DS::readSocket (m_udpFmsReceiver);
         address = m_udpFmsReceiver->peerAddress();
-
-        while (m_udpFmsReceiver->hasPendingDatagrams()) {
-            data.resize (m_udpFmsReceiver->pendingDatagramSize());
-            m_udpFmsReceiver->readDatagram (data.data(), data.size());
-        }
     }
 
     setFMSAddress (address);
@@ -338,17 +348,13 @@ void Sockets::readRadioSocket() {
     QHostAddress address;
 
     if (m_tcpRadioReceiver) {
-        data = m_tcpRadioReceiver->readAll();
+        data = DS::readSocket (m_tcpRadioReceiver);
         address = m_tcpRadioReceiver->peerAddress();
     }
 
     else if (m_udpRadioReceiver) {
+        data = DS::readSocket (m_udpRadioReceiver);
         address = m_udpRadioReceiver->peerAddress();
-
-        while (m_udpRadioReceiver->hasPendingDatagrams()) {
-            data.resize (m_udpRadioReceiver->pendingDatagramSize());
-            m_udpRadioReceiver->readDatagram (data.data(), data.size());
-        }
     }
 
     setRadioAddress (address);
@@ -363,17 +369,13 @@ void Sockets::readRobotSocket() {
     QHostAddress address;
 
     if (m_tcpRobotReceiver) {
-        data = m_tcpRobotReceiver->readAll();
+        data = DS::readSocket (m_tcpRobotReceiver);
         address = m_tcpRobotReceiver->peerAddress();
     }
 
     else if (m_udpRobotReceiver) {
+        data = DS::readSocket (m_udpRobotReceiver);
         address = m_udpRobotReceiver->peerAddress();
-
-        while (m_udpRobotReceiver->hasPendingDatagrams()) {
-            data.resize (m_udpRobotReceiver->pendingDatagramSize());
-            m_udpRobotReceiver->readDatagram (data.data(), data.size());
-        }
     }
 
     setRobotAddress (address);

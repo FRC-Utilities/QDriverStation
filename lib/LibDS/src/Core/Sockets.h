@@ -9,11 +9,7 @@
 #ifndef _LIB_DS_SOCKETS_H
 #define _LIB_DS_SOCKETS_H
 
-#include <QHostAddress>
 #include <Core/DS_Base.h>
-
-class QUdpSocket;
-class QTcpSocket;
 
 class Sockets : public QObject {
     Q_OBJECT
