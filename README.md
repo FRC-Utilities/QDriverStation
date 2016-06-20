@@ -14,27 +14,11 @@ The actual code that moves and manages a FRC robot is found in a [separate repos
 
 [![Feature Requests](http://feathub.com/WinT-3794/QDriverStation?format=svg)](http://feathub.com/WinT-3794/QDriverStation)
 
-### Download
-
-You can download the QDriverStation from GitHub or SourceForge. If you got the QDriverStation from another website, it was probably modified by another person and may contain adware or some nasty junk in it. Be advised that SourceForge is known for serving misleading advertisements.
-
-We strongly recommend you to download the installers from GitHub and **not from SourceForge**.
-
-**Download Links:**
-
-- [Download from GitHub](https://github.com/wint-3794/qdriverstation/releases/latest)
-- [Download from SourceForge](https://sourceforge.net/projects/qdriverstation/files/latest/download)
-
 ###### Note for Linux users
 
-While for the moment we don't build Linux packages, there are some packages of the QDriverStation made available by some members of the FRC community:
+If you happen to use ArchLinux, [lopsided98](https://github.com/lopsided98) configured a [repository](https://aur.archlinux.org/packages/qdriverstation-git/) for this project.
 
-- [ArchLinux package by lopsided98](https://aur.archlinux.org/packages/qdriverstation-git/)
-- [QDriverStation 0.14 DEB package](https://drive.google.com/file/d/0BwmIj7Fz03lXZ1JjYnhLVVdRR0E/view)
-
-For more information regarding Linux installers, check [this issue](https://github.com/WinT-3794/QDriverStation/issues/9).
-
-Check this [tutorial by Dakota Keeler](https://www.youtube.com/watch?v=G9DywTB9_cY) to build and install the QDriverStation on your Linux box.
+Until very recently, I did not generate Debian packages. [Dakota Keeler](https://github.com/bearzrobotics) provided a [package for version 0.14](https://drive.google.com/file/d/0BwmIj7Fz03lXZ1JjYnhLVVdRR0E/view) and made a [video tutorial](https://www.youtube.com/watch?v=G9DywTB9_cY) on how to compile the QDriverstation, which you may find very helpful.
 
 ### Install notes
 
@@ -44,7 +28,9 @@ Mac users will be prompted to download an additional driver for Xbox 360 control
 
 ###### Warning for Linux users
 
-Due to a kernel bug, the QDriverStation may detect an external mouse as a joystick. For more information, check [this issue](https://github.com/WinT-3794/QDriverStation/issues/13).
+Due to a kernel bug, the QDriverStation may detect an external mouse as a joystick. If that happens, just disable the faulty joystick/mouse by clicking on the power button next to its name:
+
+![Blacklisting Animation](animations/blacklist.gif)
 
 ### Build instructions
 
@@ -65,6 +51,8 @@ Alternatively, you can also use the following commands:
 - qmake
 - make
 - **Optional:** sudo make install
+ 
+You can check this [tutorial by Dakota Keeler](https://www.youtube.com/watch?v=G9DywTB9_cY) to compile the QDriverStation.
 
 ### Credits
 
