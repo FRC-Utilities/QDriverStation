@@ -35,6 +35,15 @@ class QJoysticks : public QObject {
     Q_OBJECT
     friend class Test_QJoysticks;
 
+  signals:
+    void countChanged();
+    void POVEvent (const QJoystickPOVEvent& event);
+    void axisEvent (const QJoystickAxisEvent& event);
+    void buttonEvent (const QJoystickButtonEvent& event);
+    void povChanged (const int js, const int pov, const int angle);
+    void axisChanged (const int js, const int axis, const float value);
+    void buttonChanged (const int js, const int button, const bool pressed);
+
   public:
     static QJoysticks* getInstance();
 
@@ -64,15 +73,6 @@ class QJoysticks : public QObject {
   protected:
     explicit QJoysticks();
     ~QJoysticks();
-
-  signals:
-    void countChanged();
-    void POVEvent (const QJoystickPOVEvent& event);
-    void axisEvent (const QJoystickAxisEvent& event);
-    void buttonEvent (const QJoystickButtonEvent& event);
-    void povChanged (int js, int pov, int angle);
-    void axisChanged (int js, int axis, const double value);
-    void buttonChanged (int js, int button, bool pressed);
 
   private slots:
     void resetJoysticks();

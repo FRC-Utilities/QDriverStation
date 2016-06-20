@@ -31,6 +31,12 @@
 class VirtualJoystick : public QObject {
     Q_OBJECT
 
+  signals:
+    void enabledChanged();
+    void povEvent (const QJoystickPOVEvent& event);
+    void axisEvent (const QJoystickAxisEvent& event);
+    void buttonEvent (const QJoystickButtonEvent& event);
+
   public:
     explicit VirtualJoystick();
 
@@ -42,12 +48,6 @@ class VirtualJoystick : public QObject {
     void setJoystickID (int id);
     void setAxisRange (float range);
     void setJoystickEnabled (bool enabled);
-
-  signals:
-    void enabledChanged();
-    void povEvent (const QJoystickPOVEvent& event);
-    void axisEvent (const QJoystickAxisEvent& event);
-    void buttonEvent (const QJoystickButtonEvent& event);
 
   private slots:
     void readAxes (int key, bool pressed);

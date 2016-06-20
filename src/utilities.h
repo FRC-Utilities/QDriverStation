@@ -30,6 +30,7 @@ class Utilities : public QObject {
 
   public:
     explicit Utilities();
+
     Q_INVOKABLE int getCpuUsage();
     Q_INVOKABLE int getBatteryLevel();
     Q_INVOKABLE bool isConnectedToPowerSource();

@@ -72,8 +72,7 @@ ColumnLayout {
 
         Button {
             text: qsTr ("Report Bug")
-            onClicked: Qt.openUrlExternally ("http://github.com/wint-3794/" +
-                                             "qdriverstation/issues")
+            onClicked: Qt.openUrlExternally ("http://github.com/wint-3794/qdriverstation/issues")
         }
     }
 }

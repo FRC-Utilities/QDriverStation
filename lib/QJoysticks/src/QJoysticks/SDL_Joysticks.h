@@ -30,18 +30,18 @@
 class SDL_Joysticks : public QObject {
     Q_OBJECT
 
+  signals:
+    void countChanged();
+    void POVEvent (const QJoystickPOVEvent& event);
+    void axisEvent (const QJoystickAxisEvent& event);
+    void buttonEvent (const QJoystickButtonEvent& event);
+
   public:
     explicit SDL_Joysticks();
     QList<QJoystickDevice*> joysticks();
 
   public slots:
     void rumble (const QJoystickRumble& request);
-
-  signals:
-    void countChanged();
-    void POVEvent (const QJoystickPOVEvent& event);
-    void axisEvent (const QJoystickAxisEvent& event);
-    void buttonEvent (const QJoystickButtonEvent& event);
 
   private slots:
     void update();
