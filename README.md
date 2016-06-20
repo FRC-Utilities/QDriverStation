@@ -30,7 +30,7 @@ Mac users will be prompted to download an additional driver for Xbox 360 control
 
 Due to a kernel bug, the QDriverStation may detect an external mouse as a joystick. If that happens, just disable the faulty joystick/mouse by clicking on the power button next to its name:
 
-![Blacklisting Animation](animations/blacklist.gif)
+![Blacklisting Animation](etc/animations/blacklist.gif)
 
 ### Build instructions
 
