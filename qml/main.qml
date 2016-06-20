@@ -104,10 +104,9 @@ Window {
 
         if (docked) {
             if (cIsLinux) {
-                maximumWidth = Screen.desktopAvailableWidth
-                minimumWidth = Screen.desktopAvailableWidth
-
+                x = 0
                 width = Screen.desktopAvailableWidth
+                minimumWidth = Screen.desktopAvailableWidth
             }
 
             else {
@@ -119,10 +118,8 @@ Window {
 
         else {
             showNormal()
-            maximumWidth = getMinimumWidth()
-            minimumWidth = getMinimumWidth()
-
             width = getMinimumWidth()
+            minimumWidth = getMinimumWidth()
 
             x = oldX
             y = oldY
@@ -149,6 +146,7 @@ Window {
     minimumWidth: getMinimumWidth()
     minimumHeight: getMinimumHeight()
     maximumHeight: getMinimumHeight()
+    onHeightChanged: height = getMinimumHeight()
 
     //
     // Misc. properties
