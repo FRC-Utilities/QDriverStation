@@ -41,6 +41,21 @@ RowLayout {
     signal windowModeChanged (var isDocked)
 
     //
+    // Updates the information displayed by the CPU usage and Battery level
+    // progressbars and hides/shows the plug icon
+    //
+    function updatePCInformation() {
+        plug.visible = cUtilities.isConnectedToAC()
+        cpuProgressBar.value = cUtilities.cpuUsage()
+        batteryProgressBar.value = cUtilities.batteryLevel()
+    }
+
+    //
+    // Display PC information when we start
+    //
+    Component.onCompleted: updatePCInformation()
+
+    //
     // Save the dock state and the selected alliance
     //
     Settings {
@@ -64,14 +79,9 @@ RowLayout {
     //
     Timer {
         repeat: true
-        interval: 1000
+        interval: 100
         Component.onCompleted: start()
-
-        onTriggered: {
-            cpuProgressBar.value = cUtilities.getCpuUsage()
-            plug.visible = cUtilities.isConnectedToPowerSource()
-            batteryProgressBar.value = cUtilities.getBatteryLevel()
-        }
+        onTriggered: updatePCInformation()
     }
 
     //

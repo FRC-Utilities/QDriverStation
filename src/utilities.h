@@ -23,7 +23,7 @@
 #ifndef _QDS_UTILITIES_H
 #define _QDS_UTILITIES_H
 
-#include <QObject>
+#include <QProcess>
 
 class Utilities : public QObject {
     Q_OBJECT
@@ -31,10 +31,29 @@ class Utilities : public QObject {
   public:
     explicit Utilities();
 
-    Q_INVOKABLE int getCpuUsage();
-    Q_INVOKABLE int getBatteryLevel();
-    Q_INVOKABLE bool isConnectedToPowerSource();
-    Q_INVOKABLE void copy (const QVariant& data);
+    Q_INVOKABLE int cpuUsage();
+    Q_INVOKABLE int batteryLevel();
+    Q_INVOKABLE bool isConnectedToAC();
+
+  public slots:
+    void copy (const QVariant& data);
+
+  private slots:
+    void updateCpuUsage();
+    void updateBatteryLevel();
+    void updateConnectedToAC();
+    void readCpuUsageProcess (int exit_code = 0);
+    void readBatteryLevelProcess (int exit_code = 0);
+    void readConnectedToACProcess (int exit_code = 0);
+
+  private:
+    int m_cpuUsage;
+    int m_batteryLevel;
+    bool m_connectedToAC;
+
+    QProcess m_cpuProcess;
+    QProcess m_batteryLevelProcess;
+    QProcess m_connectedToACProcess;
 };
 
 #endif
