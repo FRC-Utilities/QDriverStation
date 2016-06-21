@@ -1120,7 +1120,7 @@ void DriverStation::updateButton (int id, int button, bool state) {
  */
 void DriverStation::setCustomRobotAddress (const QString& address) {
     m_customRobotAddress = address;
-    m_sockets->setRobotAddress (QHostAddress (customRobotAddress()));
+    m_sockets->setRobotAddress (customRobotAddress());
 }
 
 /**
@@ -1129,7 +1129,7 @@ void DriverStation::setCustomRobotAddress (const QString& address) {
  * protocol.
  */
 void DriverStation::setCustomRadioAddress (const QString& address) {
-    m_sockets->setRadioAddress (QHostAddress (address));
+    m_sockets->setRadioAddress (address);
 }
 
 /**

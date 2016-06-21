@@ -13,6 +13,7 @@
 #include <QtMath>
 #include <QDebug>
 #include <QObject>
+#include <QHostInfo>
 #include <QDateTime>
 #include <QUdpSocket>
 #include <QTcpSocket>

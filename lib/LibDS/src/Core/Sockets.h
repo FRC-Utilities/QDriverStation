@@ -40,6 +40,9 @@ class Sockets : public QObject {
     void setFMSSocketType (DS::SocketType type);
     void setRadioSocketType (DS::SocketType type);
     void setRobotSocketType (DS::SocketType type);
+    void setFMSAddress (const QString& address);
+    void setRadioAddress (const QString& address);
+    void setRobotAddress (const QString& address);
     void setFMSAddress (const QHostAddress& address);
     void setRadioAddress (const QHostAddress& address);
     void setRobotAddress (const QHostAddress& address);
@@ -48,6 +51,12 @@ class Sockets : public QObject {
     void readFMSSocket();
     void readRadioSocket();
     void readRobotSocket();
+    void onFMSLookupFinished (const QHostInfo& info);
+    void onRadioLookupFinished (const QHostInfo& info);
+    void onRobotLookupFinished (const QHostInfo& info);
+
+  private:
+    QHostAddress getAddress (const QHostInfo& info);
 
   private:
     int m_robotIterator;

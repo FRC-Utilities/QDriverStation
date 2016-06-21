@@ -7,6 +7,8 @@
  */
 
 #include "Sockets.h"
+
+#include <QHostInfo>
 #include <QNetworkInterface>
 
 /**
@@ -23,10 +25,12 @@ void CONFIGURE_SOCKET (QAbstractSocket* socket) {
  * Initializes the addresses, ports and sockets
  */
 Sockets::Sockets() {
-    m_fmsAddress = QHostAddress::Any;
-    m_radioAddress = QHostAddress::Any;
-    m_robotAddress = QHostAddress::Any;
+    /* Assign invalid addresses */
+    m_fmsAddress = QHostAddress ("");
+    m_radioAddress = QHostAddress ("");
+    m_robotAddress = QHostAddress ("");
 
+    /* Assign null pointers to every socket */
     m_udpFmsSender = Q_NULLPTR;
     m_tcpFmsSender = Q_NULLPTR;
     m_udpRadioSender = Q_NULLPTR;
@@ -40,6 +44,7 @@ Sockets::Sockets() {
     m_udpRobotReceiver = Q_NULLPTR;
     m_tcpRobotReceiver = Q_NULLPTR;
 
+    /* Assign the initial ports */
     m_fmsOutputPort = DS_DISABLED_PORT;
     m_radioOutputPort = DS_DISABLED_PORT;
     m_robotOutputPort = DS_DISABLED_PORT;
@@ -68,9 +73,11 @@ Sockets::~Sockets() {
  * know the FMS address, then we will broadcast generated FMS datagrams.
  */
 QHostAddress Sockets::fmsAddress() const {
+    /* Broadcast data if address is invalid and we use UDP */
     if (m_fmsAddress.isNull() && m_udpFmsSender)
         return QHostAddress::Broadcast;
 
+    /* We use TCP or FMS address is known */
     return m_fmsAddress;
 }
 
@@ -79,9 +86,11 @@ QHostAddress Sockets::fmsAddress() const {
  * not know the radio address, then we will broadcast generated radio datagrams.
  */
 QHostAddress Sockets::radioAddress() const {
+    /* Broadcast data if address is invalid and we use UDP */
     if (m_radioAddress.isNull() && m_udpRadioSender)
         return QHostAddress::Broadcast;
 
+    /* We use TCP or radio address is known */
     return m_radioAddress;
 }
 
@@ -90,9 +99,11 @@ QHostAddress Sockets::radioAddress() const {
  * not know the robot address, then we will broadcast generated robot datagrams.
  */
 QHostAddress Sockets::robotAddress() const {
+    /* Broadcast data if address is invalid and we use UDP */
     if (m_robotAddress.isNull() && m_udpRobotSender)
         return QHostAddress::Broadcast;
 
+    /* We use TCP or robot address is known */
     return m_robotAddress;
 }
 
@@ -100,9 +111,11 @@ QHostAddress Sockets::robotAddress() const {
  * Changes the port in which we receive data from the FMS
  */
 void Sockets::setFMSInputPort (int port) {
+    /* Change the TCP listener */
     if (m_tcpFmsReceiver)
         m_tcpFmsReceiver->bind (DS_LISTENER, port, DS_BIND_FLAGS);
 
+    /* Change the UDP listener */
     if (m_udpFmsReceiver)
         m_udpFmsReceiver->bind (DS_LISTENER, port, DS_BIND_FLAGS);
 }
@@ -118,9 +131,11 @@ void Sockets::setFMSOutputPort (int port) {
  * Changes the port in which we receive data from the radio
  */
 void Sockets::setRadioInputPort (int port) {
+    /* Change the TCP listener */
     if (m_tcpRadioReceiver)
         m_tcpRadioReceiver->bind (DS_LISTENER, port, DS_BIND_FLAGS);
 
+    /* Change the UDP listener */
     if (m_udpRadioReceiver)
         m_udpRadioReceiver->bind (DS_LISTENER, port, DS_BIND_FLAGS);
 }
@@ -129,9 +144,11 @@ void Sockets::setRadioInputPort (int port) {
  * Changes the port in which we receive data from the robot
  */
 void Sockets::setRobotInputPort (int port) {
+    /* Change the TCP listener */
     if (m_tcpRobotReceiver)
         m_tcpRobotReceiver->bind (DS_LISTENER, port, DS_BIND_FLAGS);
 
+    /* Change the UDP listener */
     if (m_udpRobotReceiver)
         m_udpRobotReceiver->bind (DS_LISTENER, port, DS_BIND_FLAGS);
 }
@@ -154,9 +171,11 @@ void Sockets::setRobotOutputPort (int port) {
  * Sends the given \a data to the FMS
  */
 void Sockets::sendToFMS (const QByteArray& data) {
+    /* Send FMS data with TCP */
     if (m_tcpFmsSender)
         m_tcpFmsSender->write (data);
 
+    /* Send FMS data with UDP */
     if (m_udpFmsSender)
         m_udpFmsSender->writeDatagram (data, fmsAddress(), m_fmsOutputPort);
 }
@@ -165,9 +184,11 @@ void Sockets::sendToFMS (const QByteArray& data) {
  * Sends the given \a data to the robot
  */
 void Sockets::sendToRobot (const QByteArray& data) {
+    /* Send robot data with TCP */
     if (m_tcpRobotSender)
         m_tcpRobotSender->write (data);
 
+    /* Send robot data with UDP */
     if (m_udpRobotSender)
         m_udpRobotSender->writeDatagram (data, robotAddress(), m_robotOutputPort);
 }
@@ -176,9 +197,11 @@ void Sockets::sendToRobot (const QByteArray& data) {
  * Sends the given \a data to the radio
  */
 void Sockets::sendToRadio (const QByteArray& data) {
+    /* Send radio data with TCP */
     if (m_tcpRadioSender)
         m_tcpRadioSender->write (data);
 
+    /* Send radio data with UDP */
     if (m_udpRadioSender)
         m_udpRadioSender->writeDatagram (data, radioAddress(), m_radioOutputPort);
 }
@@ -187,16 +210,19 @@ void Sockets::sendToRadio (const QByteArray& data) {
  * Changes the set of sockets that will be used for FMS communications
  */
 void Sockets::setFMSSocketType (DS::SocketType type) {
+    /* Destroy all FMS sockets */
     delete m_udpFmsSender;
     delete m_tcpFmsSender;
     delete m_udpFmsReceiver;
     delete m_tcpFmsReceiver;
 
+    /* Assign a null pointer to all sockets, so that we do not crash */
     m_udpFmsSender = Q_NULLPTR;
     m_tcpFmsSender = Q_NULLPTR;
     m_udpFmsReceiver = Q_NULLPTR;
     m_tcpFmsReceiver = Q_NULLPTR;
 
+    /* FMS comms. will be done with TCP from now on */
     if (type == DS::kSocketTypeTCP) {
         m_tcpFmsSender = new QTcpSocket (this);
         m_tcpFmsReceiver = new QTcpSocket (this);
@@ -208,6 +234,7 @@ void Sockets::setFMSSocketType (DS::SocketType type) {
                  this,               SLOT (readFMSSocket()));
     }
 
+    /* FMS comms. will be done with UDP from now on */
     else {
         m_udpFmsSender = new QUdpSocket (this);
         m_udpFmsReceiver = new QUdpSocket (this);
@@ -224,16 +251,19 @@ void Sockets::setFMSSocketType (DS::SocketType type) {
  * Changes the set of sockets that will be used for radio communications
  */
 void Sockets::setRadioSocketType (DS::SocketType type) {
+    /* Destroy all radio sockets */
     delete m_udpRadioSender;
     delete m_tcpRadioSender;
     delete m_udpRadioReceiver;
     delete m_tcpRadioReceiver;
 
+    /* Assign a null pointer to all sockets, so that we do not crash */
     m_udpRadioSender = Q_NULLPTR;
     m_tcpRadioSender = Q_NULLPTR;
     m_udpRadioReceiver = Q_NULLPTR;
     m_tcpRadioReceiver = Q_NULLPTR;
 
+    /* Radio comms. will be done with TCP from now on */
     if (type == DS::kSocketTypeTCP) {
         m_tcpRadioSender = new QTcpSocket (this);
         m_tcpRadioReceiver = new QTcpSocket (this);
@@ -245,6 +275,7 @@ void Sockets::setRadioSocketType (DS::SocketType type) {
                  this,                 SLOT (readRadioSocket()));
     }
 
+    /* Radio comms. will be done with UDP from now on */
     else {
         m_udpRadioSender = new QUdpSocket (this);
         m_udpRadioReceiver = new QUdpSocket (this);
@@ -261,14 +292,17 @@ void Sockets::setRadioSocketType (DS::SocketType type) {
  * Changes the set of sockets that will be used for robot communications
  */
 void Sockets::setRobotSocketType (DS::SocketType type) {
+    /* Destroy all robot sockets */
     delete m_udpRobotSender;
     delete m_tcpRobotSender;
     delete m_udpRobotReceiver;
     delete m_tcpRobotReceiver;
 
+    /* Assign a null pointer to all sockets, so that we do not crash */
     m_udpRobotReceiver = Q_NULLPTR;
     m_tcpRobotReceiver = Q_NULLPTR;
 
+    /* Robot comms. will be done with TCP from now on */
     if (type == DS::kSocketTypeTCP) {
         m_tcpRobotSender = new QTcpSocket (this);
         m_tcpRobotReceiver = new QTcpSocket (this);
@@ -280,6 +314,7 @@ void Sockets::setRobotSocketType (DS::SocketType type) {
                  this,                 SLOT (readRobotSocket()));
     }
 
+    /* Robot comms. will be done with UDP from now on */
     else {
         m_udpRobotSender = new QUdpSocket (this);
         m_udpRobotReceiver = new QUdpSocket (this);
@@ -297,8 +332,13 @@ void Sockets::setRobotSocketType (DS::SocketType type) {
  * If the FMS address is set to an invalid value, then this class will
  * broadcast the data.
  */
-void Sockets::setFMSAddress (const QHostAddress& address) {
-    m_fmsAddress = address;
+void Sockets::setFMSAddress (const QString& address) {
+    setFMSAddress (QHostAddress (address));
+
+    /* Lookup the address if we do not know its IP */
+    if (m_fmsAddress.isNull() && !address.isEmpty())
+        QHostInfo::lookupHost (address,
+                               this, SLOT (onFMSLookupFinished(QHostInfo)));
 }
 
 /**
@@ -306,8 +346,13 @@ void Sockets::setFMSAddress (const QHostAddress& address) {
  * If the radio address is set to an invalid value, then this class will
  * broadcast the data.
  */
-void Sockets::setRadioAddress (const QHostAddress& address) {
-    m_radioAddress = address;
+void Sockets::setRadioAddress (const QString& address) {
+    setRadioAddress (QHostAddress (address));
+
+    /* Lookup the address if we do not know its IP */
+    if (m_radioAddress.isNull() && !address.isEmpty())
+        QHostInfo::lookupHost (address,
+                               this, SLOT (onRadioLookupFinished(QHostInfo)));
 }
 
 /**
@@ -315,8 +360,34 @@ void Sockets::setRadioAddress (const QHostAddress& address) {
  * If the robot address is set to an invalid value, then this class will
  * broadcast the data.
  */
+void Sockets::setRobotAddress (const QString& address) {
+    setRobotAddress (QHostAddress (address));
+
+    /* Lookup the address if we do not know its IP */
+    if (m_robotAddress.isNull() && !address.isEmpty())
+        QHostInfo::lookupHost (address,
+                               this, SLOT (onRobotLookupFinished(QHostInfo)));
+}
+
+void Sockets::setFMSAddress (const QHostAddress& address) {
+    if (m_fmsAddress != address) {
+        m_fmsAddress = address;
+        qDebug() << "FMS Address set to" << address.toString();
+    }
+}
+
+void Sockets::setRadioAddress (const QHostAddress& address) {
+    if (m_radioAddress != address) {
+        m_radioAddress = address;
+        qDebug() << "Radio Address set to" << address.toString();
+    }
+}
+
 void Sockets::setRobotAddress (const QHostAddress& address) {
-    m_robotAddress = address;
+    if (m_robotAddress != address) {
+        m_robotAddress = address;
+        qDebug() << "Robot Address set to" << address.toString();
+    }
 }
 
 /**
@@ -326,17 +397,22 @@ void Sockets::readFMSSocket() {
     QByteArray data;
     QHostAddress address;
 
+    /* FMS works over TCP */
     if (m_tcpFmsReceiver) {
         data = DS::readSocket (m_tcpFmsReceiver);
         address = m_tcpFmsReceiver->peerAddress();
     }
 
+    /* FMS works over UDP */
     else if (m_udpFmsReceiver) {
         data = DS::readSocket (m_udpFmsReceiver);
         address = m_udpFmsReceiver->peerAddress();
     }
 
+    /* We know the FMS address! */
     setFMSAddress (address);
+
+    /* Pass received data to DS & Protocol */
     emit fmsPacketReceived (data);
 }
 
@@ -347,17 +423,22 @@ void Sockets::readRadioSocket() {
     QByteArray data;
     QHostAddress address;
 
+    /* Radio works over TCP */
     if (m_tcpRadioReceiver) {
         data = DS::readSocket (m_tcpRadioReceiver);
         address = m_tcpRadioReceiver->peerAddress();
     }
 
+    /* Radio works over UDP */
     else if (m_udpRadioReceiver) {
         data = DS::readSocket (m_udpRadioReceiver);
         address = m_udpRadioReceiver->peerAddress();
     }
 
+    /* Finally! We know the radio address! */
     setRadioAddress (address);
+
+    /* Pass received data to DS & Protocol */
     emit radioPacketReceived (data);
 }
 
@@ -368,16 +449,55 @@ void Sockets::readRobotSocket() {
     QByteArray data;
     QHostAddress address;
 
+    /* Robot works over TCP */
     if (m_tcpRobotReceiver) {
         data = DS::readSocket (m_tcpRobotReceiver);
         address = m_tcpRobotReceiver->peerAddress();
     }
 
+    /* Robot works over UDP */
     else if (m_udpRobotReceiver) {
         data = DS::readSocket (m_udpRobotReceiver);
         address = m_udpRobotReceiver->peerAddress();
     }
 
+    /* We now know the robot address */
     setRobotAddress (address);
+
+    /* Pass received data to DS & Protocol */
     emit robotPacketReceived (data);
+}
+
+/**
+ * Assigns the found FMS IP
+ */
+void Sockets::onFMSLookupFinished (const QHostInfo& info) {
+    setFMSAddress (getAddress (info));
+}
+
+/**
+ * Assigns the found radio IP
+ */
+void Sockets::onRadioLookupFinished (const QHostInfo& info) {
+    setRadioAddress (getAddress (info));
+}
+
+/**
+ * Assigns the found robot IP
+ */
+void Sockets::onRobotLookupFinished (const QHostInfo& info) {
+    setRobotAddress (getAddress (info));
+}
+
+/**
+ * Gets the address (if any of the given host info response)
+ */
+QHostAddress Sockets::getAddress(const QHostInfo& info) {
+    /* Lookup is successfull (yay!) */
+    if (info.error() == QHostInfo::NoError && !info.addresses().isEmpty())
+        return info.addresses().first();
+
+    /* Lookup failed */
+    qDebug() << "Lookup failed with error:" << info.errorString();
+    return QHostAddress ("");
 }
