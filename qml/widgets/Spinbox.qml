@@ -52,9 +52,4 @@ SpinBox {
         textColor: Globals.Colors.TextAreaForeground
         selectionColor: Globals.Colors.HighlightColor
     }
-
-    //
-    // Beep when the value is changed
-    //
-    onValueChanged: enabled ? Globals.normalBeep() : undefined
 }
