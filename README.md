@@ -37,7 +37,7 @@ Due to a kernel bug, the QDriverStation may detect an external mouse as a joysti
 
 ###### Requirements
 
-The only requirement to compile the application is to have [Qt](http://www.qt.io/download-open-source/) installed in your system. The desktop application will compile with both Qt4 and Qt5.
+The only requirement to compile the application is to have [Qt](http://www.qt.io/download-open-source/) installed in your system. The desktop application will compile with Qt 5.2 or greater.
 
 - If you are using Linux, make sure that you have installed the following packages:
     - libsdl2-dev
@@ -57,6 +57,6 @@ You can check this [tutorial by Dakota Keeler](https://www.youtube.com/watch?v=G
 
 ### Credits
 
-This application was created by FRC team 3794 "WinT" from Metepec, Mexico.
+This application was created by [this guy](http://github.com/alex-spataru).
 
-Of course, many people outside of our team contributed in different ways to this project, you can find more details in the [contributors list](CONTRIBUTORS.md). Finally, we want to thank you for trying this little project, we sincerely hope that you enjoy our application and we would love some of your feedback.
+Of course, many people contributed in different ways to this project, you can find more details in the [contributors list](CONTRIBUTORS.md). Finally, we want to thank you for trying this little project, we sincerely hope that you enjoy our application and we would love some of your feedback.
