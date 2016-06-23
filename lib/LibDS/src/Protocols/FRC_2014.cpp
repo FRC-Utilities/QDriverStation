@@ -170,14 +170,14 @@ DS::SocketType FRC_2014::robotSocketType() {
 }
 
 /**
- * Radio is located at 10.XX.YY.1
+ * Radio is located at 10.TE.AM.1
  */
 QString FRC_2014::defaultRadioAddress() {
     return DS::getStaticIP (10, config()->team(), 1);
 }
 
 /**
- * Robot is located at 10.XX.YY.2
+ * Robot is located at 10.TE.AM.2
  */
 QString FRC_2014::defaultRobotAddress() {
     return DS::getStaticIP (10, config()->team(), 2);

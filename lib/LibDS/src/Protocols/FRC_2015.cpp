@@ -259,10 +259,7 @@ QString FRC_2015::defaultRadioAddress() {
 }
 
 /**
- * Return a list with the following robot addresses:
- *     - roboRIO-TEAM.local
- *     - 172.22.11.2
- *     - 10.TE.AM.2
+ * Default robot address is roboRIO-TEAM.local
  */
 QString FRC_2015::defaultRobotAddress() {
     return QString ("roboRIO-%1.local").arg (config()->team());

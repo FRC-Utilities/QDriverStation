@@ -16,11 +16,7 @@ QString FRC_2016::name() {
 }
 
 /**
- * Return a list with the following robot addresses:
- *     - roboRIO-TEAM-FRC.local
- *     - roboRIO-TEAM.local
- *     - 172.22.11.2
- *     - 10.TE.AM.2
+ * Default robot address is roboRIO-TEAM-FRC.local
  */
 QString FRC_2016::defaultRobotAddress() {
     return QString ("roboRIO-%1-FRC.local").arg (config()->team());
