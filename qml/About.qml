@@ -30,11 +30,13 @@ ColumnLayout {
     spacing: Globals.spacing
 
     //
-    // The information icon
+    // Built with Qt icon
     //
-    Icon {
-        size: Globals.scale (64)
-        name: icons.fa_info_circle
+    Image {
+        smooth: true
+        sourceSize.width: Globals.scale (64)
+        sourceSize.height: Globals.scale (64)
+        source: "qrc:/images/BuiltWithQt.svg"
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
