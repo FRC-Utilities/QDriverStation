@@ -8,7 +8,7 @@ Homepage: http://qdriverstation.sf.net/
 
 Package: qdriverstation
 Architecture: any
-Depends: libsdl2-2.0-0, libqt5gui5, libqt5qml5, libqt5quick5, libqt5widgets5, libqt5network5, libqt5multimedia5, libqt5declarative5, qml-module-qtquick2, qml-module-qtquick-window2, qml-module-qtquick-layouts, qml-module-qtquick-controls, qml-module-qt-labs-settings, ${misc:Depends}, ${shlibs:Depends}
+Depends: libsdl2-2.0-0 (>= 2.0.0), libqt5gui5 (>= 5.2), libqt5qml5 (>= 5.2), libqt5quick5 (>= 5.2), libqt5widgets5 (>= 5.2), libqt5network5 (>= 5.2), libqt5multimedia5 (>= 5.2), libqt5declarative5 (>= 5.2), qml-module-qtquick2 (>= 5.2), qml-module-qtquick-window2 (>= 5.2), qml-module-qtquick-layouts (>= 5.2), qml-module-qtquick-controls (>= 5.2), qml-module-qt-labs-settings (>= 5.2), ${misc:Depends}, ${shlibs:Depends}
 Description: Free and open-source clone of the FRC Driver Station
   The QDriverStation is a cross-platform and open-source alternative to the FRC Driver Station. It supports the FRC 2009-2014 communication protocol and the FRC 2015-2016 protocol. Joystick input is handled via SDL, however, you can also operate your robot with a keyboard-based joystick.
 
