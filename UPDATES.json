@@ -8,8 +8,8 @@
       },
       "osx":{
          "open-url":"",
-         "latest-version":"16.06.1",
-         "download-url":"https://github.com/WinT-3794/QDriverStation/releases/download/v16.06.2/qdriverstation-16.06.2-macintosh.zip",
+         "latest-version":"16.06.2",
+         "download-url":"https://raw.githubusercontent.com/WinT-3794/QDriverStation/updater/16.06.2/macintosh.zip",
          "changelog":""
       },
       "linux":{
