@@ -95,9 +95,9 @@ struct BatteryVoltage {
         decimal = (volt - integer) * 100;
     }
 
-    void updateValues (quint16 a, quint16 b) {
+    void updateValues (quint8 a, quint8 b) {
         integer = a;
-        decimal = (roundf ((static_cast<float>(b) / 256) * 100) / 100) * 100;
+        decimal = (roundf ((static_cast<float>(b) / 255) * 100) / 100) * 100;
         voltage = integer + (static_cast<float>(decimal) / 100);
     }
 };
@@ -356,8 +356,6 @@ bool FRC_2015::interpretRobotPacket (const QByteArray& data) {
     uint control = data.at (3);
     uint status  = data.at (4);
     uint request = data.at (7);
-    uint integer = data.at (5);
-    uint decimal = data.at (6);
 
     /* Generate control information */
     bool has_code       = (status & kRobotHasCode);
@@ -377,7 +375,7 @@ bool FRC_2015::interpretRobotPacket (const QByteArray& data) {
 
     /* Calculate the voltage */
     BatteryVoltage voltage;
-    voltage.updateValues (integer, decimal);
+    voltage.updateValues (data.at (5), data.at (6));
     config()->updateVoltage (voltage.voltage);
 
     /* If voltage is 0, then robot is simulated */
