@@ -3,19 +3,19 @@
       "windows":{
          "open-url":"",
          "latest-version":"16.06.2",
-         "download-url":"https://raw.githubusercontent.com/WinT-3794/QDriverStation/updater/16.06.2/windows.exe",
+         "download-url":"https://raw.githubusercontent.com/alex-spataru/qdriverstation-binaries/master/16.06.2/windows.exe",
          "changelog":""
       },
       "osx":{
          "open-url":"",
          "latest-version":"16.06.2",
-         "download-url":"https://raw.githubusercontent.com/WinT-3794/QDriverStation/updater/16.06.2/macintosh.zip",
+         "download-url":"https://raw.githubusercontent.com/alex-spataru/qdriverstation-binaries/master/16.06.2/macintosh.zip",
          "changelog":""
       },
       "linux":{
          "open-url":"",
-         "latest-version":"16.06.1",
-         "download-url":"https://github.com/WinT-3794/QDriverStation/releases/download/v16.06.2/qdriverstation-16.06.2-linux.deb",
+         "latest-version":"16.06.2",
+         "download-url":"https://raw.githubusercontent.com/alex-spataru/qdriverstation-binaries/master/16.06.2/linux.deb",
          "changelog":""
       }
    }
