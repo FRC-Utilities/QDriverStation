@@ -3,19 +3,19 @@
       "windows":{
          "open-url":"",
          "latest-version":"16.06.2",
-         "download-url":"https://raw.githubusercontent.com/alex-spataru/qdriverstation-binaries/master/16.06.2/windows.exe",
+         "download-url":"https://raw.githubusercontent.com/alex-spataru/qdriverstation-binaries/master/qds-redirect.html",
          "changelog":""
       },
       "osx":{
          "open-url":"",
          "latest-version":"16.06.2",
-         "download-url":"https://raw.githubusercontent.com/alex-spataru/qdriverstation-binaries/master/16.06.2/macintosh.zip",
+         "download-url":"https://raw.githubusercontent.com/alex-spataru/qdriverstation-binaries/master/qds-redirect.html",
          "changelog":""
       },
       "linux":{
          "open-url":"",
          "latest-version":"16.06.2",
-         "download-url":"https://raw.githubusercontent.com/alex-spataru/qdriverstation-binaries/master/16.06.2/linux.deb",
+         "download-url":"https://raw.githubusercontent.com/alex-spataru/qdriverstation-binaries/master/qds-redirect.html",
          "changelog":""
       }
    }
