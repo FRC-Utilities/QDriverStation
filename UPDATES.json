@@ -15,7 +15,7 @@
       "linux":{
          "open-url":"",
          "latest-version":"16.06.2",
-         "download-url":"https://github.com/WinT-3794/QDriverStation/releases/download/v16.06.2/qdriverstation-16.06.2-linux.deb",
+         "download-url":"https://github-cloud.s3.amazonaws.com/releases/42375715/dd97e95a-3ae2-11e6-9269-588ca45ddf22.deb?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAISTNZFOVBIJMK3TQ%2F20160625%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20160625T204604Z&X-Amz-Expires=300&X-Amz-Signature=901d030e5c6a5da26ca03c99fe3417e0ca22029f21f0cd03ab806e808035ee90&X-Amz-SignedHeaders=host&actor_id=4225542&response-content-disposition=attachment%3B%20filename%3Dqdriverstation-16.06.2-linux.deb&response-content-type=application%2Foctet-stream",
          "changelog":""
       }
    }
