@@ -266,8 +266,8 @@ bool FRC_2014::interpretRobotPacket (const QByteArray& data) {
 
     /* Read status echo code and voltage */
     uint opcode  = data.at (0);
-    uint integer = data.at (1);
-    uint decimal = data.at (2);
+    quint8 integer = data.at (1);
+    quint8 decimal = data.at (2);
 
     /* Parse the voltage (which is stored in a strange format) */
     QString voltage;
