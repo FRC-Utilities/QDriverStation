@@ -2,7 +2,7 @@
 
 # Variables
 license=mit
-project="qdriverstation-16.06.1"
+project="qdriverstation-16.06.2"
 authorEmail="alex_spataru@outlook.com"
 
 # Remove old build

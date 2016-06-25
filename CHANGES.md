@@ -1,5 +1,14 @@
 # Changes
 
+### QDriverStation 16.06.2
+
+- Minor UI improvements
+- Add automatic DNS/host lookup
+- Improve code for obtaining CPU usage & Battery status
+- Fix docked windows for Linux
+- Save blacklisted joysticks through sessions
+- Put blacklisted joysticks at the bottom of the joystick list
+
 ### QDriverStation 16.06.1
 
 - Fix an issue that did not allow the DS to connect to the robot in some networks

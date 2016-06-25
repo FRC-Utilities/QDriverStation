@@ -1,3 +1,14 @@
+qdriverstation (16.06.2) stable; urgency=low
+
+  * Minor UI improvements
+  * Automatic DNS/host lookup
+  * Improve code for obtaining CPU usage & Battery status
+  * Fix docked windows for Linux
+  * Save blacklisted joysticks through sessions
+  * Put blacklisted joysticks at the bottom of the joystick list
+
+ -- Alex Spataru <alex_spataru@outlook.com>  Fri, 24 Jun 2016 01:00:00 +0100
+
 qdriverstation (16.06.1) stable; urgency=low
 
   * Redesign the sockets module (fixes #22)
