@@ -1,4 +1,4 @@
-# [![Screenshot](/etc/screenshots/LabVIEW_Simulation.png)](https://github.com/WinT-3794/QDriverStation/tree/master/etc/screenshots)
+# [![Screenshot](/etc/screenshots/Ubuntu.png)](https://github.com/WinT-3794/QDriverStation/tree/master/etc/screenshots)
 
 [![Build Status](https://travis-ci.org/WinT-3794/QDriverStation.svg?branch=master)](https://travis-ci.org/WinT-3794/QDriverStation)
 [![Donate button](https://img.shields.io/badge/bitcoin-donate-brightgreen.svg)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
