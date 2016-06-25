@@ -76,8 +76,10 @@ Window {
     Component.onCompleted: {
         cBeeper.setEnabled (enableSoundEffects.checked)
 
-        if (checkForUpdates.checked)
+        if (checkForUpdates.checked) {
+            cUpdater.setDownloaderEnabled (cUpdaterUrl, false)
             cUpdater.checkForUpdates (cUpdaterUrl)
+        }
     }
 
     //
