@@ -179,8 +179,9 @@ Item {
         }
 
         Button {
+            width: Globals.scale (156)
+            text: qsTr ("More information") + "..."
             onClicked: window.showVirtualJoystickWindow()
-            text: qsTr ("Virtual Joystick Settings") + "..."
             anchors.horizontalCenter: parent.horizontalCenter
         }
     }
