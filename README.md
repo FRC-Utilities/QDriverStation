@@ -26,7 +26,7 @@ Until very recently, I did not generate Debian packages. [Dakota Keeler](https:/
 
 ###### Warnings
 
-Due to a kernel bug, the QDriverStation may detect an external mouse as a joystick. If that happens, just disable the faulty joystick/mouse by clicking on the power button next to its name:
+The QDriverStation may detect an external mouse (such as [this one](https://www.microsoft.com/hardware/en-ca/d/wireless-mouse-1000)) as a joystick. If that happens, just disable the faulty joystick/mouse by clicking on the power button next to its name:
 
 ![Blacklisting Animation](etc/animations/blacklist.gif)
 
