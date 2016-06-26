@@ -36,7 +36,7 @@ ColumnLayout {
         smooth: true
         sourceSize.width: Globals.scale (64)
         sourceSize.height: Globals.scale (64)
-        source: "qrc:/images/BuiltWithQt.svg"
+        source: "qrc:/images/BuiltWithQt.png"
         anchors.horizontalCenter: parent.horizontalCenter
     }
 

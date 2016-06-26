@@ -4,6 +4,6 @@
         <file>fonts/Ubuntu-Bold.ttf</file>
         <file>fonts/UbuntuMono.ttf</file>
         <file>fonts/Ubuntu-Regular.ttf</file>
-        <file>images/BuiltWithQt.svg</file>
+        <file>images/BuiltWithQt.png</file>
     </qresource>
 </RCC>
