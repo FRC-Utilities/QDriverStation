@@ -1,4 +1,4 @@
-# [![Screenshot](/etc/screenshots/Ubuntu.png)](https://github.com/WinT-3794/QDriverStation/tree/master/etc/screenshots)
+# [![Screenshot](/etc/screenshots/Macintosh.png)](https://github.com/WinT-3794/QDriverStation/tree/master/etc/screenshots)
 
 [![Build Status](https://travis-ci.org/WinT-3794/QDriverStation.svg?branch=master)](https://travis-ci.org/WinT-3794/QDriverStation)
 [![Donate button](https://img.shields.io/badge/bitcoin-donate-brightgreen.svg)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
@@ -52,7 +52,7 @@ Alternatively, you can also use the following commands:
 - qmake
 - make
 - **Optional:** sudo make install
- 
+
 You can check this [tutorial by Dakota Keeler](https://www.youtube.com/watch?v=G9DywTB9_cY) to compile the QDriverStation.
 
 ### Credits
