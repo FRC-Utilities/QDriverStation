@@ -7,9 +7,9 @@
          "changelog":""
       },
       "osx":{
-         "open-url":"",
+         "open-url":"http://github.com/wint-3794/releases/latest",
          "latest-version":"16.06.2",
-         "download-url":"https://raw.githubusercontent.com/alex-spataru/qdriverstation-binaries/master/qds-redirect.html",
+         "download-url":"",
          "changelog":""
       },
       "linux":{
