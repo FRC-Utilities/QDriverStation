@@ -1,21 +1,21 @@
 {
    "updates":{
       "windows":{
-         "open-url":"",
+         "open-url":"http://github.com/wint-3794/qdriverstation/releases/latest",
          "latest-version":"16.06.2",
-         "download-url":"https://raw.githubusercontent.com/alex-spataru/qdriverstation-binaries/master/qds-redirect.html",
+         "download-url":"",
          "changelog":""
       },
       "osx":{
-         "open-url":"http://github.com/wint-3794/releases/latest",
+         "open-url":"http://github.com/wint-3794/qdriverstation/releases/latest",
          "latest-version":"16.06.2",
          "download-url":"",
          "changelog":""
       },
       "linux":{
-         "open-url":"",
+         "open-url":"http://github.com/wint-3794/qdriverstation/releases/latest",
          "latest-version":"16.06.2",
-         "download-url":"https://raw.githubusercontent.com/alex-spataru/qdriverstation-binaries/master/qds-redirect.html",
+         "download-url":"",
          "changelog":""
       }
    }
