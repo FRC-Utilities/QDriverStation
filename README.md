@@ -2,7 +2,6 @@
 
 [![Build Status](https://travis-ci.org/FRC-Utilities/QDriverStation.svg?branch=master)](https://travis-ci.org/WinT-3794/QDriverStation)
 [![Donate button](https://img.shields.io/badge/bitcoin-donate-brightgreen.svg)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
-[![Built with Qt](https://img.shields.io/badge/built%20with-Qt-brightgreen.svg)](http://qt.io)
 [![Github All Releases](https://img.shields.io/github/downloads/frc-utilities/qdriverstation/total.svg?maxAge=2592000)](http://github.com/wint-3794/qdriverstation/releases/latest)
 
 The QDriverStation is a cross-platform and open-source alternative to the FRC Driver Station. It allows you to operate FRC robots with the major operating systems (Windows, Mac OSX and GNU/Linux). The QDriverStation is able to operate both 2009-2014 robots and 2015-2016 robots.
