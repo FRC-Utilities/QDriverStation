@@ -22,7 +22,7 @@
 
 !define APPNAME                      "QDriverStation"
 !define UNIXNAME                     "qdriverstation"
-!define COMPANYNAME                  "QDriverStation Developers"
+!define COMPANYNAME                  "FRC Utilities"
 !define DESCRIPTION                  "Open source alternative to the FRC DriverStation"
 !define VERSIONMAJOR                 16
 !define VERSIONMINOR                 6
