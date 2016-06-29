@@ -4,9 +4,9 @@ The QDriverStation is a cross-platform and open-source alternative to the FRC Dr
 
 The actual code that operates a FRC robot is found in a [separate repository](https://github.com/FRC-Utilities/LibDS), which you can use in your own Qt projects or change it to support older (and future) communication protocols.
 
-[![Build Status](https://travis-ci.org/FRC-Utilities/QDriverStation.svg?branch=master)](https://travis-ci.org/FRC-Utilities/QDriverStation)
-[![Donate button](https://img.shields.io/badge/bitcoin-donate-brightgreen.svg)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
-[![Github All Releases](https://img.shields.io/github/downloads/frc-utilities/qdriverstation/total.svg?maxAge=2592000)](http://github.com/wint-3794/qdriverstation/releases/latest)
+[![Build Status](https://img.shields.io/travis/FRC-Utilities/QDriverStation.svg?style=flat-square)](https://travis-ci.org/FRC-Utilities/QDriverStation)
+[![Donate button](https://img.shields.io/badge/bitcoin-donate-brightgreen.svg?style=flat-square)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
+[![Github All Releases](https://img.shields.io/github/downloads/frc-utilities/qdriverstation/total.svg?style=flat-square)](http://github.com/wint-3794/qdriverstation/releases/latest)
 
 ### Install notes
 
