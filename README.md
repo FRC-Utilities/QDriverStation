@@ -2,17 +2,15 @@
 
 The QDriverStation is a cross-platform and open-source alternative to the FRC Driver Station. It allows you to operate FRC robots with the major operating systems (Windows, Mac OSX and GNU/Linux). The QDriverStation is able to operate both 2009-2014 robots and 2015-2016 robots.
 
+The actual code that operates a FRC robot is found in a [separate repository](https://github.com/FRC-Utilities/LibDS), which you can use in your own Qt projects or change it to support older (and future) communication protocols.
+
 [![Build Status](https://travis-ci.org/FRC-Utilities/QDriverStation.svg?branch=master)](https://travis-ci.org/FRC-Utilities/QDriverStation)
 [![Donate button](https://img.shields.io/badge/bitcoin-donate-brightgreen.svg)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
 [![Github All Releases](https://img.shields.io/github/downloads/frc-utilities/qdriverstation/total.svg?maxAge=2592000)](http://github.com/wint-3794/qdriverstation/releases/latest)
 
-The actual code that operates a FRC robot is found in a [separate repository](https://github.com/WinT-3794/LibDS), which you can use in your own Qt projects or change it to support older (and future) communication protocols.
-
-Our application is free to use, share and modify. You are welcome to test it and see the code to understand how it works!
-
 ### Install notes
 
-You can download the QDriverStation from both [SourceForge](http://sf.net/p/qdriverstation) and [GitHub](http://github.com/wint-3794/qdrivertation). We recommend you to download QDriverStation from GitHub, since SourceForge is known for serving misleading advertisements.
+You can download the QDriverStation from both [SourceForge](http://sf.net/p/qdriverstation) and [GitHub](http://github.com/frc-utilities/qdrivertation/releases). We recommend you to download QDriverStation from GitHub, since SourceForge is known for serving misleading advertisements.
 
 Once you finish installing the software, you can launch it and begin driving your robot. Just be sure to input your team number and to verify that the joysticks are working correctly.
 
