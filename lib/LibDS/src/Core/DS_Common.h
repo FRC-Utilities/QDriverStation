@@ -9,6 +9,10 @@
 #ifndef _LIB_DS_COMMON_H
 #define _LIB_DS_COMMON_H
 
+//------------------------------------------------------------------------------
+// Qt includes
+//------------------------------------------------------------------------------
+
 #include <QTimer>
 #include <QtMath>
 #include <QDebug>
@@ -21,14 +25,13 @@
 #include <QStringList>
 #include <QHostAddress>
 
-// *INDENT-OFF*
-
 //------------------------------------------------------------------------------
 // Hacks to make the code more readable
 //------------------------------------------------------------------------------
 
 #define DS_Joysticks QList<DS::Joystick*>
-#define DS_Schedule(time,object,slot) QTimer::singleShot (time, Qt::PreciseTimer, object, slot)
+#define DS_Schedule(time,object,slot) \
+    QTimer::singleShot (time, Qt::PreciseTimer, object, slot)
 
 //------------------------------------------------------------------------------
 // Display name of enum instead of numerical value
@@ -46,36 +49,17 @@
 
 const int DS_DISABLED_PORT = -1;
 const QHostAddress DS_LISTENER = QHostAddress ("0.0.0.0");
-const QAbstractSocket::BindMode DS_BIND_FLAGS = QAbstractSocket::ShareAddress | QAbstractSocket::ReuseAddressHint;
-
-// *INDENT-ON*
+const QAbstractSocket::BindMode DS_BIND_FLAGS = \
+                                                QAbstractSocket::ShareAddress | QAbstractSocket::ReuseAddressHint;
 
 //------------------------------------------------------------------------------
 // Logger functions
 //------------------------------------------------------------------------------
 
-/**
- * Returns the location in where application files (e.g. logs) are stored
- */
+extern void DS_CLOSE_LOGS();
 extern QString DS_FILES_PATH();
-
-/**
- * Returns the location in where the log files are stored
- */
 extern QString DS_LOGGER_PATH();
-
-/**
- * Returns the localtion in which robot/protocol log files are stored
- */
 extern QString DS_ROBOT_LOGGER_PATH();
-
-/**
- * This function implements our own logger engine. Feel free to enable
- * it if you want!
- *
- * To enable it, write this in your \c main() function:
- * \c qInstallMessageHandler (DS_MESSAGE_HANDLER)
- */
 extern void DS_MESSAGE_HANDLER (QtMsgType type,
                                 const QMessageLogContext& context,
                                 const QString& data);

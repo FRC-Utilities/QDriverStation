@@ -158,6 +158,9 @@ DriverStation::~DriverStation() {
 
     /* Append to log */
     qDebug() << "Driver Station terminated";
+
+    /* Ensure that the log is closed */
+    DS_CLOSE_LOGS();
 }
 
 /**

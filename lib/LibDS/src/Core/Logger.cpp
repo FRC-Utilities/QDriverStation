@@ -14,12 +14,19 @@
 #include <QApplication>
 #include <QElapsedTimer>
 
-/* Ugly hacks to make code more readable */
+//------------------------------------------------------------------------------
+// Ugly hacks to make the code more readable
+//------------------------------------------------------------------------------
+
+#define CERR                  stderr
 #define PRINT_FMT             "%-14s %-13s %-12s\n"
 #define PRINT(string)         QString(string).toLocal8Bit().constData()
 #define GET_DATE_TIME(format) QDateTime::currentDateTime().toString(format)
 
-/* Global variables */
+//------------------------------------------------------------------------------
+// Global variables
+//------------------------------------------------------------------------------
+
 static FILE* DUMP;
 static QElapsedTimer TIMER;
 static bool INITIALIZED = false;
@@ -74,6 +81,16 @@ QString DS_ROBOT_LOGGER_PATH() {
 }
 
 /**
+ * Ensures that the logger is closed properly when the application quits
+ */
+void DS_CLOSE_LOGS() {
+    if (DUMP) {
+        qDebug() << "Log buffer closed normally";
+        fclose (DUMP);
+    }
+}
+
+/**
  * Creates the log dump file
  */
 static void INIT_LOGGER() {
@@ -82,13 +99,12 @@ static void INIT_LOGGER() {
     /* Construct file name */
     QString fpath = DS_LOGGER_PATH()
                     + "/"
-                    + GET_DATE_TIME ("MMM dd yyyy - HH_mm_ss")
+                    + GET_DATE_TIME ("MMM-dd-yyyy - HH_mm_ss")
                     + ".log";
 
     /* Open the dump file */
-    DUMP = fopen (fpath.toStdString().c_str(), "a");
-    if (!DUMP)
-        DUMP = stdout;
+    DUMP = fopen (fpath.toStdString().c_str(), "a+");
+    DUMP = !DUMP ? CERR : DUMP;
 
     /* Get app info */
     QString appN = qApp->applicationName();
@@ -122,10 +138,18 @@ static void INIT_LOGGER() {
     fprintf (DUMP, "%s\n",   PRINT (sysV));
     fprintf (DUMP, "%s\n",   PRINT (appN));
     fprintf (DUMP, "%s\n\n", PRINT (appV));
+    fprintf (CERR, "%s\n",   PRINT (sysV));
+    fprintf (CERR, "%s\n",   PRINT (appN));
+    fprintf (CERR, "%s\n\n", PRINT (appV));
 
     /* Start the table header */
     fprintf (DUMP, PRINT_FMT, "ELAPSED TIME", "ERROR LEVEL", "MESSAGE");
+    fprintf (CERR, PRINT_FMT, "ELAPSED TIME", "ERROR LEVEL", "MESSAGE");
     fprintf (DUMP, PRINT_FMT,
+             PRINT (REPEAT ("-", 14)),
+             PRINT (REPEAT ("-", 13)),
+             PRINT (REPEAT ("-", 32)));
+    fprintf (CERR, PRINT_FMT,
              PRINT (REPEAT ("-", 14)),
              PRINT (REPEAT ("-", 13)),
              PRINT (REPEAT ("-", 32)));
@@ -180,6 +204,9 @@ void DS_MESSAGE_HANDLER (QtMsgType type, const QMessageLogContext& context,
     }
 
     /* Write all logs to the dump file */
-    fprintf (DUMP,   PRINT_FMT, PRINT (time), PRINT (level), PRINT (data));
-    fprintf (stderr, PRINT_FMT, PRINT (time), PRINT (level), PRINT (data));
+    fprintf (DUMP, PRINT_FMT, PRINT (time), PRINT (level), PRINT (data));
+    fprintf (CERR, PRINT_FMT, PRINT (time), PRINT (level), PRINT (data));
+
+    /* Flush to write "instantly" */
+    fflush (DUMP);
 }
