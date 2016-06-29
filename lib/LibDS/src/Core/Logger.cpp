@@ -62,7 +62,7 @@ static void INIT_LOGGER() {
     /* Construct file name */
     QString fpath = DS_LOGGER_PATH()
                     + "/"
-                    + GET_DATE_TIME ("MMM-dd-yyyy - HH_mm_ss")
+                    + GET_DATE_TIME ("MMM dd yyyy - HH_mm_ss")
                     + ".log";
 
     /* Open the dump file */
