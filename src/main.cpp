@@ -100,7 +100,6 @@ const QString HELP = "Usage: qdriverstation [ options ... ]                 \n"
 //------------------------------------------------------------------------------
 
 // *INDENT-OFF*
-const QString LOGS_DIR = DS_LOGGER_PATH();
 const QString CONT_URL = "alex_spataru@outlook.com";
 const QString HTTP_URL = "http://qdriverstation.sf.net";
 const QString BUGS_URL = "http://github.com/FRC-Utilities/QDriverStation/issues";
@@ -165,8 +164,8 @@ static void reportBug() {
 }
 
 static void openLogsDir() {
-    qDebug() << LOGS.arg (LOGS_DIR).toStdString().c_str();
-    QDesktopServices::openUrl (QUrl::fromLocalFile (LOGS_DIR));
+    qDebug() << LOGS.arg (DS_LOGGER_PATH()).toStdString().c_str();
+    QDesktopServices::openUrl (QUrl::fromLocalFile (DS_LOGGER_PATH()));
 }
 
 static void openWebsite() {
@@ -199,6 +198,10 @@ int main (int argc, char* argv[]) {
     /* Initialize application */
     QString arguments;
     QApplication app (argc, argv);
+    app.setApplicationName    (APP_DSPNAME);
+    app.setOrganizationName   (APP_COMPANY);
+    app.setApplicationVersion (APP_VERSION);
+    app.setOrganizationDomain (APP_WEBSITE);
 
     /* Read command line arguments */
     if (app.arguments().count() >= 2)
@@ -234,12 +237,8 @@ int main (int argc, char* argv[]) {
     QTime* pElapsedTime = new QTime;
     pElapsedTime->start();
 
-    /* Register application info and install logger */
-    app.setApplicationName    (APP_DSPNAME);
-    app.setOrganizationName   (APP_COMPANY);
-    app.setApplicationVersion (APP_VERSION);
-    app.setOrganizationDomain (APP_WEBSITE);
-    qInstallMessageHandler    (DS_MESSAGE_HANDLER);
+    /* Install the more advanced logger */
+    qInstallMessageHandler (DS_MESSAGE_HANDLER);
 
     /* Initialize OS variables */
     bool isMac = false;
