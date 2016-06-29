@@ -30,9 +30,16 @@
 #include <iostream>
 #include <QApplication>
 #include <QJoysticks.h>
+#include <QDesktopServices>
+#include <QQmlApplicationEngine>
+
+//------------------------------------------------------------------------------
+// Library includes
+//------------------------------------------------------------------------------
+
+#include <stdio.h>
 #include <DriverStation.h>
 #include <QSimpleUpdater.h>
-#include <QQmlApplicationEngine>
 
 //------------------------------------------------------------------------------
 // Application includes
@@ -63,8 +70,46 @@
 #include <QSettings>
 #include <QMessageBox>
 #include <QDesktopServices>
+#endif
 
-void DownloadXboxDrivers() {
+//------------------------------------------------------------------------------
+// CLI messages
+//------------------------------------------------------------------------------
+
+const QString LOGS = "We instructed your file manager to navigate to:       \n"
+                     "    %1                                                \n"
+                     "If nothing happens, please navigate to that directory \n";
+
+const QString WEBS = "We instructed your web browser to navigate to:        \n"
+                     "    %1                                                \n"
+                     "If nothing happens, please navigate to that URL       \n";
+
+const QString HELP = "Usage: qdriverstation [ options ... ]                 \n"
+                     "                                                      \n"
+                     "Options include:                                      \n"
+                     "    -b, --bug       Report a bug                      \n"
+                     "    -h, --help      Show this message                 \n"
+                     "    -l, --logs      Open the logs directory           \n"
+                     "    -r, --reset     Reset/clear the settings          \n"
+                     "    -c, --contact   Contact the lead developer        \n"
+                     "    -v, --version   Display the application version   \n"
+                     "    -w, --website   Open a web site of this project   \n";
+
+//------------------------------------------------------------------------------
+// Website, contact info & other URLs
+//------------------------------------------------------------------------------
+
+const QString LOGS_DIR = DS_LOGGER_PATH();
+const QString CONT_URL = "alex_spataru@outlook.com";
+const QString HTTP_URL = "http://qdriverstation.sf.net";
+const QString BUGS_URL = "http://github.com/FRC-Utilities/QDriverStation/issues";
+
+//------------------------------------------------------------------------------
+// Download joystick drivers if needed
+//------------------------------------------------------------------------------
+
+static void DownloadXboxDrivers() {
+#ifdef Q_OS_MAC
     QSettings settings (APP_COMPANY, APP_DSPNAME);
 
     if (settings.value ("FirstLaunch", true).toBool()) {
@@ -90,19 +135,57 @@ void DownloadXboxDrivers() {
                                            "https://github.com/360Controller/"
                                            "360Controller/releases/latest"));
     }
-}
 #endif
+}
 
 //------------------------------------------------------------------------------
-// Application init functions
+// Utility functions
 //------------------------------------------------------------------------------
 
-int run (int argc, char* argv[]) {
-    /* Start the init. time counter */
-    QTime* pElapsedTime = new QTime;
-    pElapsedTime->start();
+static void showHelp() {
+    qDebug() << HELP.toStdString().c_str();
+}
 
-    /* Avoid UI scaling issues with Qt 5.6 */
+static void resetSettings() {
+    QSettings (APP_COMPANY, APP_DSPNAME).clear();
+    qDebug() << "QDriverStation settings cleared!";
+}
+
+static void contact() {
+    QString url = "mailto:" + CONT_URL;
+    QDesktopServices::openUrl (QUrl (url));
+    qDebug() << WEBS.arg (CONT_URL).toStdString().c_str();
+}
+
+static void reportBug() {
+    QDesktopServices::openUrl (QUrl (BUGS_URL));
+    qDebug() << WEBS.arg (BUGS_URL).toStdString().c_str();
+}
+
+static void openLogsDir() {
+    qDebug() << LOGS.arg (LOGS_DIR).toStdString().c_str();
+    QDesktopServices::openUrl (QUrl::fromLocalFile (LOGS_DIR));
+}
+
+static void openWebsite() {
+    QDesktopServices::openUrl (QUrl (HTTP_URL));
+    qDebug() << WEBS.arg (HTTP_URL).toStdString().c_str();
+}
+
+static void showVersion() {
+    QString appver = APP_DSPNAME + " version " + APP_VERSION;
+    QString author = "Written by Alex Spataru <" + CONT_URL + ">";
+
+    qDebug() << appver.toStdString().c_str();
+    qDebug() << author.toStdString().c_str();
+}
+
+//------------------------------------------------------------------------------
+// Application init
+//------------------------------------------------------------------------------
+
+int main (int argc, char* argv[]) {
+    /* Fix scalling issues */
 #if QT_VERSION >= QT_VERSION_CHECK (5, 6, 0)
 #if defined Q_OS_MAC
     QApplication::setAttribute (Qt::AA_EnableHighDpiScaling);
@@ -111,12 +194,50 @@ int run (int argc, char* argv[]) {
 #endif
 #endif
 
-    /* Start the application and register its information */
+    /* Initialize application */
+    QString arguments;
     QApplication app (argc, argv);
+
+    /* Read command line arguments */
+    if (app.arguments().count() >= 2)
+        arguments = app.arguments().at (1);
+
+    /* We have some arguments, read them */
+    if (!arguments.isEmpty() && arguments.startsWith ("-")) {
+        if (arguments == "-b" || arguments == "--bug")
+            reportBug();
+
+        else if (arguments == "-l" || arguments == "--logs")
+            openLogsDir();
+
+        else if (arguments == "-r" || arguments == "--reset")
+            resetSettings();
+
+        else if (arguments == "-c" || arguments == "--contact")
+            contact();
+
+        else if (arguments == "-v" || arguments == "--version")
+            showVersion();
+
+        else if (arguments == "-w" || arguments == "--website")
+            openWebsite();
+
+        else
+            showHelp();
+
+        return EXIT_SUCCESS;
+    }
+
+    /* Start the init. time counter */
+    QTime* pElapsedTime = new QTime;
+    pElapsedTime->start();
+
+    /* Register application info and install logger */
     app.setApplicationName    (APP_DSPNAME);
     app.setOrganizationName   (APP_COMPANY);
     app.setApplicationVersion (APP_VERSION);
     app.setOrganizationDomain (APP_WEBSITE);
+    qInstallMessageHandler    (DS_MESSAGE_HANDLER);
 
     /* Initialize OS variables */
     bool isMac = false;
@@ -152,7 +273,7 @@ int run (int argc, char* argv[]) {
     DriverStation* driverstation = DriverStation::getInstance();
 
     /* Shortcuts gets events before virtual joystick */
-    qApp->installEventFilter (&shortcuts);
+    app.installEventFilter (&shortcuts);
 
     /* Load the QML interface */
     QQmlApplicationEngine engine;
@@ -175,20 +296,13 @@ int run (int argc, char* argv[]) {
     if (engine.rootObjects().isEmpty())
         return EXIT_FAILURE;
 
-    /* Ask OS X users to download Xbox drivers */
-#ifdef Q_OS_MAC
+    /* Ask first-timers to download the xbox drivers */
     DownloadXboxDrivers();
-#endif
 
     /* Tell user how much time was needed to initialize the app */
     qDebug() << "Initialized in " << pElapsedTime->elapsed() << "milliseconds";
     delete pElapsedTime;
 
-    /* Start event loop */
+    /* Run normally */
     return app.exec();
-}
-
-int main (int argc, char* argv[]) {
-    qInstallMessageHandler (DS_MESSAGE_HANDLER);
-    return run (argc, argv);
 }
