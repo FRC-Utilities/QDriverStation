@@ -44,6 +44,76 @@ static QString REPEAT (QString input, int n) {
 }
 
 /**
+ * Adds a "section" to the log to make it easier to read
+ */
+static void ADD_HEADER (const QString& title) {
+    fprintf (DUMP, "%s\n", PRINT (REPEAT ("-", 72)));
+    fprintf (DUMP, "%s\n", PRINT (title.toUpper()));
+    fprintf (DUMP, "%s\n", PRINT (REPEAT ("-", 72)));
+    fprintf (DUMP, "%s\n", "");
+}
+
+/**
+ * Creates the log dump file
+ */
+static void INIT_LOGGER() {
+    TIMER.start();
+
+    /* Construct file name */
+    QString fpath = DS_LOGGER_PATH()
+                    + "/"
+                    + GET_DATE_TIME ("MMM-dd-yyyy - HH_mm_ss")
+                    + ".log";
+
+    /* Open the dump file */
+    DUMP = fopen (fpath.toStdString().c_str(), "a+");
+    DUMP = !DUMP ? CERR : DUMP;
+
+    /* Get app info */
+    QString appN = qApp->applicationName();
+    QString appV = qApp->applicationVersion();
+    QString time = GET_DATE_TIME ("MMM dd yyyy - HH:mm:ss AP");
+
+    /* Get OS information */
+    QString sysV;
+#if QT_VERSION >= QT_VERSION_CHECK (5, 4, 0)
+    sysV = QSysInfo::prettyProductName();
+#else
+#if defined Q_OS_WIN
+    sysV = "Windows";
+#elif defined Q_OS_MAC
+    sysV = "Mac OSX";
+#elif defined Q_OS_LINUX
+    sysV = "GNU/Linux";
+#else
+    sysV = "Unknown";
+#endif
+#endif
+
+    /* Add log header */
+    ADD_HEADER ("Start of log");
+
+    /* Format app info */
+    time.prepend ("Log created on:      ");
+    sysV.prepend ("Operating System:    ");
+    appN.prepend ("Application name:    ");
+    appV.prepend ("Application version: ");
+
+    /* Append app info */
+    fprintf (DUMP, "%s\n",   PRINT (time));
+    fprintf (DUMP, "%s\n",   PRINT (sysV));
+    fprintf (DUMP, "%s\n",   PRINT (appN));
+    fprintf (DUMP, "%s\n\n", PRINT (appV));
+
+    /* Start the table header */
+    fprintf (DUMP, "%s\n", PRINT (REPEAT ("-", 72)));
+    fprintf (DUMP, PRINT_FMT, "ELAPSED TIME", "ERROR LEVEL", "MESSAGE");
+    fprintf (DUMP, "%s\n", PRINT (REPEAT ("-", 72)));
+
+    INITIALIZED = true;
+}
+
+/**
  * Returns the path in which several application files are stored (e.g. logs)
  */
 QString DS_FILES_PATH() {
@@ -85,81 +155,12 @@ QString DS_ROBOT_LOGGER_PATH() {
  */
 void DS_CLOSE_LOGS() {
     if (DUMP && INITIALIZED) {
+        qDebug() << "Log buffer closed";
+
         INITIALIZED = false;
-
-        fprintf (DUMP, "%s\n", PRINT (REPEAT ("-", 72)));
-        fprintf (CERR, "%s\n", PRINT (REPEAT ("-", 72)));
-        fprintf (DUMP, "%s\n", PRINT ("END OF LOG, HAVE A NICE DAY!"));
-        fprintf (CERR, "%s\n", PRINT ("END OF LOG, HAVE A NICE DAY!"));
-        fprintf (DUMP, "%s\n", PRINT (REPEAT ("-", 72)));
-        fprintf (CERR, "%s\n", PRINT (REPEAT ("-", 72)));
-
+        ADD_HEADER ("End of log, have a nice day!");
         fclose (DUMP);
     }
-}
-
-/**
- * Creates the log dump file
- */
-static void INIT_LOGGER() {
-    TIMER.start();
-
-    /* Construct file name */
-    QString fpath = DS_LOGGER_PATH()
-                    + "/"
-                    + GET_DATE_TIME ("MMM-dd-yyyy - HH_mm_ss")
-                    + ".log";
-
-    /* Open the dump file */
-    DUMP = fopen (fpath.toStdString().c_str(), "a+");
-    DUMP = !DUMP ? CERR : DUMP;
-
-    /* Get app info */
-    QString appN = qApp->applicationName();
-    QString appV = qApp->applicationVersion();
-    QString time = GET_DATE_TIME ("MMM dd yyyy - HH:mm:ss AP");
-
-    /* Get OS information */
-    QString sysV;
-#if QT_VERSION >= QT_VERSION_CHECK (5, 4, 0)
-    sysV = QSysInfo::prettyProductName();
-#else
-#if defined Q_OS_WIN
-    sysV = "Windows";
-#elif defined Q_OS_MAC
-    sysV = "Mac OSX";
-#elif defined Q_OS_LINUX
-    sysV = "GNU/Linux";
-#else
-    sysV = "Unknown";
-#endif
-#endif
-
-    /* Format app info */
-    time.prepend ("Log created on:      ");
-    sysV.prepend ("Operating System:    ");
-    appN.prepend ("Application name:    ");
-    appV.prepend ("Application version: ");
-
-    /* Append app info */
-    fprintf (DUMP, "%s\n",   PRINT (time));
-    fprintf (DUMP, "%s\n",   PRINT (sysV));
-    fprintf (DUMP, "%s\n",   PRINT (appN));
-    fprintf (DUMP, "%s\n\n", PRINT (appV));
-
-    /* Start the table header */
-    fprintf (DUMP, PRINT_FMT, "ELAPSED TIME", "ERROR LEVEL", "MESSAGE");
-    fprintf (CERR, PRINT_FMT, "ELAPSED TIME", "ERROR LEVEL", "MESSAGE");
-    fprintf (DUMP, PRINT_FMT,
-             PRINT (REPEAT ("-", 14)),
-             PRINT (REPEAT ("-", 13)),
-             PRINT (REPEAT ("-", 32)));
-    fprintf (CERR, PRINT_FMT,
-             PRINT (REPEAT ("-", 14)),
-             PRINT (REPEAT ("-", 13)),
-             PRINT (REPEAT ("-", 32)));
-
-    INITIALIZED = true;
 }
 
 /**
