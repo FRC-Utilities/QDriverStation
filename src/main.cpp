@@ -181,6 +181,22 @@ static void showVersion() {
     qDebug() << author.toStdString().c_str();
 }
 
+static void superCow() {
+    QString cow = "\n"
+                  " ________________________________________   \n"
+                  "/ You are wise, witty and wonderful, but \\ \n"
+                  "| you spend too much time reading this   |  \n"
+                  "\\ sort of trash.                         / \n"
+                  " ----------------------------------------   \n"
+                  "        \\   ^__^                           \n"
+                  "         \\  (oo)\\_______                  \n"
+                  "            (__)\\       )\\/\\             \n"
+                  "                ||----w |                   \n"
+                  "                ||     ||                   \n";
+
+    qDebug() << cow.toStdString().c_str();
+}
+
 //------------------------------------------------------------------------------
 // Application init
 //------------------------------------------------------------------------------
@@ -226,6 +242,9 @@ int main (int argc, char* argv[]) {
 
         else if (arguments == "-w" || arguments == "--website")
             openWebsite();
+        
+        else if (arguments == "-s" || arguments == "--super-cow")
+            superCow();
 
         else
             showHelp();
