@@ -66,9 +66,9 @@ class DriverStation : public DS_Base {
     Q_INVOKABLE QString appLoggerPath() const;
     Q_INVOKABLE QString robotLoggerPath() const;
 
-    Q_INVOKABLE float maxBatteryVoltage() const;
-    Q_INVOKABLE float currentBatteryVoltage() const;
-    Q_INVOKABLE float nominalBatteryAmperage() const;
+    Q_INVOKABLE qreal maxBatteryVoltage() const;
+    Q_INVOKABLE qreal currentBatteryVoltage() const;
+    Q_INVOKABLE qreal nominalBatteryAmperage() const;
 
     Q_INVOKABLE int team() const;
     Q_INVOKABLE int cpuUsage() const;
@@ -137,7 +137,7 @@ class DriverStation : public DS_Base {
     void setControlMode (ControlMode mode);
     void updatePOV (int id, int pov, int angle);
     void setEnabled (EnableStatus statusChanged);
-    void updateAxis (int id, int axis, float value);
+    void updateAxis (int id, int axis, qreal value);
     void updateButton (int id, int button, bool state);
     void setCustomRobotAddress (const QString& address);
     void setCustomRadioAddress (const QString& address);

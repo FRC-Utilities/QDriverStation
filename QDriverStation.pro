@@ -64,22 +64,6 @@ OBJECTS_DIR = obj
 # Optimization flags
 #-------------------------------------------------------------------------------
 
-QMAKE_CXXFLAGS_RELEASE -= -O
-QMAKE_CXXFLAGS_RELEASE -= -O1
-QMAKE_CXXFLAGS_RELEASE -= -O2
-
-!win32* {
-    QMAKE_CXXFLAGS_RELEASE *= -Ofast
-}
-
-win32-gcc* {
-    QMAKE_CXXFLAGS_RELEASE *= -Ofast
-}
-
-win32-msvc* {
-    QMAKE_CXXFLAGS_RELEASE *= -Ot
-}
-
 #-------------------------------------------------------------------------------
 # Include other libraries
 #-------------------------------------------------------------------------------

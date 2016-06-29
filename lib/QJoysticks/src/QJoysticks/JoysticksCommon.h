@@ -55,7 +55,7 @@ struct QJoystickDevice {
  */
 struct QJoystickRumble {
     uint length;
-    float strength;
+    qreal strength;
     QJoystickDevice* joystick;
 };
 
@@ -81,7 +81,7 @@ struct QJoystickPOVEvent {
  */
 struct QJoystickAxisEvent {
     int axis;
-    float value;
+    qreal value;
     QJoystickDevice* joystick;
 };
 

@@ -20,6 +20,11 @@
  * THE SOFTWARE.
  */
 
+//------------------------------------------------------------------------------
+// Qt includes
+//------------------------------------------------------------------------------
+
+#include <QTime>
 #include <QtQml>
 #include <QScreen>
 #include <QApplication>
@@ -28,17 +33,29 @@
 #include <QSimpleUpdater.h>
 #include <QQmlApplicationEngine>
 
+//------------------------------------------------------------------------------
+// Application includes
+//------------------------------------------------------------------------------
+
 #include "beeper.h"
 #include "versions.h"
 #include "shortcuts.h"
 #include "utilities.h"
 #include "dashboards.h"
 
+//------------------------------------------------------------------------------
+// Fix compilation issues in Windows
+//------------------------------------------------------------------------------
+
 #ifdef Q_OS_WIN
 #ifdef main
 #undef main
 #endif
 #endif
+
+//------------------------------------------------------------------------------
+// Mac-specific initialization code
+//------------------------------------------------------------------------------
 
 #ifdef Q_OS_MAC
 #include <QObject>
@@ -56,21 +73,33 @@ void DownloadXboxDrivers() {
         box.setDefaultButton (QMessageBox::Yes);
 
         box.setWindowTitle (QObject::tr ("Download Joystick Drivers"));
-        box.setText (QObject::tr ("Do you want to install a driver for Xbox "
-                                  "joysticks?"));
-        box.setInformativeText (QObject::tr ("Clicking \"Yes\" will open a web "
-                                             "browser to download the drivers"));
+
+        box.setText (QObject::tr (
+                         "Do you want to install a driver "
+                         "for Xbox joysticks?"));
+
+        box.setInformativeText (QObject::tr (
+                                    "Clicking \"Yes\" will open a web "
+                                    "browser to download the drivers"));
 
         settings.setValue ("FirstLaunch", false);
 
         if (box.exec() == QMessageBox::Yes)
-            QDesktopServices::openUrl (QUrl ("https://github.com/360Controller/"
-                                             "360Controller/releases/latest"));
+            QDesktopServices::openUrl (QUrl (
+                                           "https://github.com/360Controller/"
+                                           "360Controller/releases/latest"));
     }
 }
 #endif
 
+//------------------------------------------------------------------------------
+// Main function
+//------------------------------------------------------------------------------
+
 int main (int argc, char* argv[]) {
+    QTime time;
+    time.start();
+
     /* Avoid UI scaling issues with Qt 5.6 */
 #if QT_VERSION >= QT_VERSION_CHECK (5, 6, 0)
 #if defined Q_OS_MAC
@@ -91,30 +120,28 @@ int main (int argc, char* argv[]) {
     qInstallMessageHandler (DS_MESSAGE_HANDLER);
     qDebug() << "Initializing application...";
 
-    /* Calculate the scale factor of the screen */
-    qreal ratio = (app.primaryScreen()->physicalDotsPerInch() / 100) * 0.9;
-
-    /* Scale factor is too small */
-    if (ratio < 1.2)
-        ratio = 1;
-
-    /* Mac already scales things */
-#if defined Q_OS_MAC
-    ratio = 1;
-#endif
+    /* Initialize OS variables */
+    bool isMac = false;
+    bool isUnx = false;
+    bool isWin = false;
 
     /* Let QML know the operating system */
-    bool isMac = false;
-    bool isLinux = false;
-    bool isWindows = false;
 #if defined Q_OS_MAC
     isMac = true;
 #elif defined Q_OS_WIN
-    isWindows = true;
+    isWin = true;
 #else
-    isLinux = true;
+    isUnx = true;
 #endif
 
+    /* Calculate the scale factor of the screen */
+    qreal ratio = (app.primaryScreen()->physicalDotsPerInch() / 100) * 0.9;
+
+    /* Scale factor is too small or OS is Mac */
+    if (ratio < 1.2 || isMac)
+        ratio = 1;
+
+    /* Report the scale factor */
     qDebug() << "Scale factor set to:" << ratio;
 
     /* Initialize application modules */
@@ -133,10 +160,10 @@ int main (int argc, char* argv[]) {
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty ("cRatio",        ratio);
     engine.rootContext()->setContextProperty ("cIsMac",        isMac);
-    engine.rootContext()->setContextProperty ("cIsLinux",      isLinux);
+    engine.rootContext()->setContextProperty ("cIsUnix",       isUnx);
+    engine.rootContext()->setContextProperty ("cIsWindows",    isWin);
     engine.rootContext()->setContextProperty ("cBeeper",       &beeper);
     engine.rootContext()->setContextProperty ("cUpdater",      updater);
-    engine.rootContext()->setContextProperty ("cIsWindows",    isWindows);
     engine.rootContext()->setContextProperty ("QJoysticks",    qjoysticks);
     engine.rootContext()->setContextProperty ("cUtilities",    &utilities);
     engine.rootContext()->setContextProperty ("cDashboard",    &dashboards);
@@ -156,5 +183,6 @@ int main (int argc, char* argv[]) {
 #endif
 
     /* Start the application event loop */
+    qDebug() << "Initialized in " << time.elapsed() << "milliseconds";
     return app.exec();
 }

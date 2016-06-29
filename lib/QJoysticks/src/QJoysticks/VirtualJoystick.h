@@ -40,13 +40,13 @@ class VirtualJoystick : public QObject {
   public:
     explicit VirtualJoystick();
 
-    float axisRange() const;
+    qreal axisRange() const;
     bool joystickEnabled() const;
     QJoystickDevice* joystick();
 
   public slots:
     void setJoystickID (int id);
-    void setAxisRange (float range);
+    void setAxisRange (qreal range);
     void setJoystickEnabled (bool enabled);
 
   private slots:
@@ -59,7 +59,7 @@ class VirtualJoystick : public QObject {
     bool eventFilter (QObject* object, QEvent* event);
 
   private:
-    float m_axisRange;
+    qreal m_axisRange;
     bool m_joystickEnabled;
     QJoystickDevice m_joystick;
 };

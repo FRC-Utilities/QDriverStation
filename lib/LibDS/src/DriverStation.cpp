@@ -119,8 +119,8 @@ DriverStation::DriverStation() {
              this,     SIGNAL (statusChanged (QString)));
     connect (config(), SIGNAL (teamChanged (int)),
              this,     SIGNAL (teamChanged (int)));
-    connect (config(), SIGNAL (voltageChanged (float)),
-             this,     SIGNAL (voltageChanged (float)));
+    connect (config(), SIGNAL (voltageChanged (qreal)),
+             this,     SIGNAL (voltageChanged (qreal)));
     connect (config(), SIGNAL (voltageChanged (QString)),
              this,     SIGNAL (voltageChanged (QString)));
     connect (config(), SIGNAL (voltageStatusChanged (VoltageStatus)),
@@ -289,7 +289,7 @@ QString DriverStation::robotLoggerPath() const {
  * This value, along with the \c currentBatteryVoltage() function, can be
  * used to draw graphs or do other cool stuff.
  */
-float DriverStation::maxBatteryVoltage() const {
+qreal DriverStation::maxBatteryVoltage() const {
     if (protocol())
         return protocol()->maxBatteryVoltage();
 
@@ -299,7 +299,7 @@ float DriverStation::maxBatteryVoltage() const {
 /**
  * Returns the current battery voltage of the robot
  */
-float DriverStation::currentBatteryVoltage() const {
+qreal DriverStation::currentBatteryVoltage() const {
     return config()->voltage();
 }
 
@@ -311,7 +311,7 @@ float DriverStation::currentBatteryVoltage() const {
  * You could do some cool stuff with this function, such as making a
  * dashboard similar to Tesla's car dashboard.
  */
-float DriverStation::nominalBatteryAmperage() const {
+qreal DriverStation::nominalBatteryAmperage() const {
     if (protocol())
         return protocol()->nominalBatteryAmperage();
 
@@ -734,7 +734,7 @@ bool DriverStation::registerJoystick (int axes,
 
         /* Initialize joystick values */
         joystick->povs = new int [joystick->numPOVs];
-        joystick->axes = new float [joystick->numAxes];
+        joystick->axes = new qreal [joystick->numAxes];
         joystick->buttons = new bool  [joystick->numButtons];
 
         /* Neutralize joystick values */
@@ -964,9 +964,9 @@ void DriverStation::setProtocol (Protocol* protocol) {
         m_robotWatchdog->setExpirationTime (m_robotInterval * 50);
 
         /* Make the intervals smaller to compensate for hardware delay */
-        m_fmsInterval -= static_cast<float>(m_fmsInterval) * 0.1;
-        m_radioInterval -= static_cast<float>(m_radioInterval) * 0.1;
-        m_robotInterval -= static_cast<float>(m_robotInterval) * 0.1;
+        m_fmsInterval -= static_cast<qreal>(m_fmsInterval) * 0.1;
+        m_radioInterval -= static_cast<qreal>(m_radioInterval) * 0.1;
+        m_robotInterval -= static_cast<qreal>(m_robotInterval) * 0.1;
 
         /* Update joystick config. to match protocol requirements */
         reconfigureJoysticks();
@@ -1088,7 +1088,7 @@ void DriverStation::setEnabled (EnableStatus status) {
  * Updates the \a value of the given \a axis of the joystick with the
  * specified \a id
  */
-void DriverStation::updateAxis (int id, int axis, float value) {
+void DriverStation::updateAxis (int id, int axis, qreal value) {
     if (joysticks()->count() > abs (id)) {
         if (joysticks()->at (id)->numAxes > axis) {
             joysticks()->at (id)->axes [abs (axis)] = value;
@@ -1236,9 +1236,9 @@ void DriverStation::sendRobotPacket() {
  * Calculates the current packet loss as a percent
  */
 void DriverStation::updatePacketLoss() {
-    float loss = 0;
-    float sentPackets = 0;
-    float recvPackets = 0;
+    qreal loss = 0;
+    qreal sentPackets = 0;
+    qreal recvPackets = 0;
 
     if (protocol()) {
         recvPackets = protocol()->receivedRobotPackets();

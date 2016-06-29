@@ -121,7 +121,7 @@ class DS_Base : public DS {
     /**
      * Emitted when the voltage of the robot is changed
      */
-    void voltageChanged (float voltage);
+    void voltageChanged (qreal voltage);
 
     /**
      * Emitted when the voltage of the robot is changed, the QString is already

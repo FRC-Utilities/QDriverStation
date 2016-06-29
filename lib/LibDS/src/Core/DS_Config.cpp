@@ -70,7 +70,7 @@ int DS_Config::diskUsage() const {
     return m_diskUsage;
 }
 
-float DS_Config::voltage() const {
+qreal DS_Config::voltage() const {
     if (isConnectedToRobot())
         return m_voltage;
 
@@ -210,7 +210,7 @@ void DS_Config::setEmergencyStop (bool estop) {
     updateOperationStatus (status);
 }
 
-void DS_Config::updateVoltage (float voltage) {
+void DS_Config::updateVoltage (qreal voltage) {
     /* Round voltage to two decimal places */
     m_voltage = roundf (voltage * 100) / 100;
 
@@ -220,7 +220,7 @@ void DS_Config::updateVoltage (float voltage) {
 
     /* Separate voltage into natural and decimal numbers */
     int integer = static_cast<int>(m_voltage);
-    int decimal = static_cast<float>(m_voltage - integer) * 100;
+    int decimal = static_cast<qreal>(m_voltage - integer) * 100;
 
     /* Convert the obtained numbers into strings */
     QString integer_str = QString::number (integer);

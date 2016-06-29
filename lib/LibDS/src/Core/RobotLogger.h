@@ -22,7 +22,7 @@ class RobotLogger : public QObject {
 
   public slots:
     void registerWatchdogTimeout();
-    void registerVoltage (float voltage);
+    void registerVoltage (qreal voltage);
     void registerRobotRAMUsage (int usage);
     void registerRobotCPUUsage (int usage);
     void registerAlliance (DS::Alliance alliance);

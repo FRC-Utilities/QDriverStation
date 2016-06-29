@@ -41,7 +41,7 @@ class QJoysticks : public QObject {
     void axisEvent (const QJoystickAxisEvent& event);
     void buttonEvent (const QJoystickButtonEvent& event);
     void povChanged (const int js, const int pov, const int angle);
-    void axisChanged (const int js, const int axis, const float value);
+    void axisChanged (const int js, const int axis, const qreal value);
     void buttonChanged (const int js, const int button, const bool pressed);
 
   public:
@@ -65,7 +65,7 @@ class QJoysticks : public QObject {
 
   public slots:
     void updateInterfaces();
-    void setVirtualJoystickRange (float range);
+    void setVirtualJoystickRange (qreal range);
     void setVirtualJoystickEnabled (bool enabled);
     void setSortJoysticksByBlacklistState (bool sort);
     void setBlacklisted (int index, bool blacklisted);

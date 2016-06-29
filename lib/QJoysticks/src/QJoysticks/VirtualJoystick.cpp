@@ -57,7 +57,7 @@ VirtualJoystick::VirtualJoystick() {
  * If you set an axis range of 0.8 to the virtual joystick, then it will report
  * values ranging from -0.8 to 0.8.
  */
-float VirtualJoystick::axisRange() const {
+qreal VirtualJoystick::axisRange() const {
     return m_axisRange;
 }
 
@@ -94,7 +94,7 @@ void VirtualJoystick::setJoystickID (int id) {
  * If you set an axis range of 1 (maximum), then the joystick will report axis
  * values ranging from -1 to 1.
  */
-void VirtualJoystick::setAxisRange (float range) {
+void VirtualJoystick::setAxisRange (qreal range) {
     range = fabs (range);
 
     if (range > 1)
@@ -117,7 +117,7 @@ void VirtualJoystick::setJoystickEnabled (bool enabled) {
  */
 void VirtualJoystick::readAxes (int key, bool pressed) {
     int axis = -1;
-    float value = axisRange() * (pressed ? 1 : 0);
+    qreal value = axisRange() * (pressed ? 1 : 0);
 
     /* Horizontal axis on thumb 1 */
     if (key == Qt::Key_D)

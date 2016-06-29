@@ -40,8 +40,8 @@ class FRC_2015 : public Protocol {
     virtual void onRobotWatchdogExpired();
 
     /* Battery information */
-    virtual float nominalBatteryVoltage();
-    virtual float nominalBatteryAmperage();
+    virtual qreal nominalBatteryVoltage();
+    virtual qreal nominalBatteryAmperage();
 
     /* Information regarding socket types */
     virtual DS::SocketType fmsSocketType();

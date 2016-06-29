@@ -26,21 +26,36 @@
 #include <QClipboard>
 #include <QApplication>
 
-#if defined Q_OS_WIN           /* Microsoft Windows Hacks */
+//------------------------------------------------------------------------------
+// Windows hacks
+//------------------------------------------------------------------------------
+
+#if defined Q_OS_WIN
 #include <pdh.h>
 #include <tchar.h>
 #include <windows.h>
+
 static PDH_HQUERY cpuQuery;
 static PDH_HCOUNTER cpuTotal;
 static SYSTEM_POWER_STATUS power;
+#endif
 
-#elif defined Q_OS_MAC         /* Mac OSX Hacks */
+//------------------------------------------------------------------------------
+// Mac OS hacks
+//------------------------------------------------------------------------------
+
+#if defined Q_OS_MAC
 static const QString CPU_CMD = "bash -c \"ps -A -o %cpu | "
                                "awk '{s+=$1} END {print s}'\"";
 static const QString BTY_CMD = "pmset -g batt";
 static const QString PWR_CMD = "pmset -g batt";
+#endif
 
-#elif defined Q_OS_LINUX       /* Linux Hacks */
+//------------------------------------------------------------------------------
+// Linux hacks
+//------------------------------------------------------------------------------
+
+#if defined Q_OS_LINUX
 static const QString CPU_CMD = "bash -c \"grep 'cpu ' /proc/stat | "
                                "awk '{usage=($2+$4)*100/($2+$4+$5)} "
                                "END {print usage}'\"";
@@ -50,13 +65,21 @@ static const QString BTY_CMD = "bash -c \"upower -i "
 static const QString PWR_CMD = "bash -c \"upower -i "
                                "$(upower -e | grep 'BAT') | "
                                "grep -E 'state|to\\ full|percentage'\"";
+#endif
 
-#else                          /* Aww sucks */
-#warning Your OS will not be able to get CPU and Battery information
+//------------------------------------------------------------------------------
+// Ensure that application compiles even if OS is not supported
+//------------------------------------------------------------------------------
+
+#if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined Q_OS_LINUX
 static const QString CPU_CMD = "";
 static const QString BTY_CMD = "";
 static const QString PWR_CMD = "";
 #endif
+
+//------------------------------------------------------------------------------
+// Start class code
+//------------------------------------------------------------------------------
 
 /**
  * Configures the class and nitializes the CPU querying process under Windows.

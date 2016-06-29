@@ -34,7 +34,7 @@
  * Holds information regarding a beep/wave sound
  */
 struct BeepObject {
-    float frequency;
+    qreal frequency;
     int samplesLeft;
 };
 
@@ -129,7 +129,7 @@ void Beeper::setEnabled (bool enabled) {
  * Generates a beep of the given \a frequency & \a duration (in milliseconds).
  * \note The request will be ignored if the beeper is disabled
  */
-void Beeper::beep (float frequency, int duration) {
+void Beeper::beep (qreal frequency, int duration) {
     if (m_enabled) {
         BeepObject beep_object;
         beep_object.frequency = frequency;

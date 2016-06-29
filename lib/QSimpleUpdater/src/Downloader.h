@@ -69,7 +69,7 @@ class Downloader : public QWidget {
     ///
     /// Rounds the \a input to the nearest integer
     ///
-    float round (const float& input);
+    qreal round (const qreal& input);
 
   signals:
     ///

@@ -370,7 +370,7 @@ void QJoysticks::updateInterfaces() {
  * Take into account that maximum axis values supported by the \c QJoysticks
  * system is from \c -1 to \c 1.
  */
-void QJoysticks::setVirtualJoystickRange (float range) {
+void QJoysticks::setVirtualJoystickRange (qreal range) {
     virtualJoystick()->setAxisRange (range);
 }
 

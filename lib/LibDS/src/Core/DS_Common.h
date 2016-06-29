@@ -21,40 +21,38 @@
 #include <QStringList>
 #include <QHostAddress>
 
-/* Hacks */
-#define DS_Joysticks QList<DS::Joystick*>
-#define DS_Schedule(time,object,slot) QTimer::singleShot (time, \
-    Qt::PreciseTimer, \
-    object, slot)
-
-/**
- * This allows us see the name of an enum when logging it (instead of displaying
- * its numerical output). This can be very helpful for anyone that will end up
- * reading the application logs.
- */
 // *INDENT-OFF*
+
+//------------------------------------------------------------------------------
+// Hacks to make the code more readable
+//------------------------------------------------------------------------------
+
+#define DS_Joysticks QList<DS::Joystick*>
+#define DS_Schedule(time,object,slot) QTimer::singleShot (time, Qt::PreciseTimer, object, slot)
+
+//------------------------------------------------------------------------------
+// Display name of enum instead of numerical value
+//------------------------------------------------------------------------------
+
 #define SMART_ENUM(ENUM) \
     friend Q_DECL_CONSTEXPR const QMetaObject *qt_getEnumMetaObject(ENUM) \
     Q_DECL_NOEXCEPT { return &staticMetaObject; } \
     friend Q_DECL_CONSTEXPR const char *qt_getEnumName(ENUM) \
     Q_DECL_NOEXCEPT { return #ENUM; }
+
+//------------------------------------------------------------------------------
+// Global variables
+//------------------------------------------------------------------------------
+
+const int DS_DISABLED_PORT = -1;
+const QHostAddress DS_LISTENER = QHostAddress ("0.0.0.0");
+const QAbstractSocket::BindMode DS_BIND_FLAGS = QAbstractSocket::ShareAddress | QAbstractSocket::ReuseAddressHint;
+
 // *INDENT-ON*
 
-/**
- * Ignore sockets with port set to -1
- */
-const int DS_DISABLED_PORT = -1;
-
-/**
- * Global socket listener address
- */
-const QHostAddress DS_LISTENER = QHostAddress ("0.0.0.0");
-
-/**
- * Global socket options
- */
-const QAbstractSocket::BindMode DS_BIND_FLAGS = QAbstractSocket::ShareAddress |
-                                                QAbstractSocket::ReuseAddressHint;
+//------------------------------------------------------------------------------
+// Logger functions
+//------------------------------------------------------------------------------
 
 /**
  * Returns the location in where application files (e.g. logs) are stored
@@ -81,6 +79,10 @@ extern QString DS_ROBOT_LOGGER_PATH();
 extern void DS_MESSAGE_HANDLER (QtMsgType type,
                                 const QMessageLogContext& context,
                                 const QString& data);
+
+//------------------------------------------------------------------------------
+// Common variables & data types
+//------------------------------------------------------------------------------
 
 /**
  * Holds the common data types shared between the \c DriverStation
@@ -209,7 +211,7 @@ class DS : public QObject {
         int realNumButtons = 0;
 
         int* povs;
-        float* axes;
+        qreal* axes;
         bool* buttons;
     };
 

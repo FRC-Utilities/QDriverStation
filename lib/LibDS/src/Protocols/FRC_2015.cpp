@@ -85,11 +85,11 @@ enum Robot_Data {
  * Holds a battery voltage and does all the operations to get its parts
  */
 struct BatteryVoltage {
-    float voltage;
+    qreal voltage;
     quint16 integer;
     quint16 decimal;
 
-    void updateValues (float volt) {
+    void updateValues (qreal volt) {
         voltage = roundf (volt * 100) / 100;
         integer = static_cast<int>(volt);
         decimal = (volt - integer) * 100;
@@ -97,8 +97,8 @@ struct BatteryVoltage {
 
     void updateValues (quint8 a, quint8 b) {
         integer = a;
-        decimal = (roundf ((static_cast<float>(b) / 255) * 100) / 100) * 100;
-        voltage = integer + (static_cast<float>(decimal) / 100);
+        decimal = (roundf ((static_cast<qreal>(b) / 255) * 100) / 100) * 100;
+        voltage = integer + (static_cast<qreal>(decimal) / 100);
     }
 };
 
@@ -226,14 +226,14 @@ void FRC_2015::onRobotWatchdogExpired() {
 /**
  * Returns the nominal/maximum voltage given by the robot battery.
  */
-float FRC_2015::nominalBatteryVoltage() {
+qreal FRC_2015::nominalBatteryVoltage() {
     return 14;
 }
 
 /**
  * Returns the nominal amperage given by the robot battery
  */
-float FRC_2015::nominalBatteryAmperage() {
+qreal FRC_2015::nominalBatteryAmperage() {
     return 17;
 }
 

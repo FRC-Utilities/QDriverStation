@@ -191,7 +191,7 @@ class Protocol {
      * It is also used to avoid reporting 37.00 V or 16'674'591 V.
      * Trust me, it happened: http://imgur.com/a/6ibog
      */
-    virtual float maxBatteryVoltage() {
+    virtual qreal maxBatteryVoltage() {
         return 14;
     }
 
@@ -200,7 +200,7 @@ class Protocol {
      * This value can be used by the client to draw graphs, calculate current
      * power output (in watts), do car-like dashboards and other cool things.
      */
-    virtual float nominalBatteryAmperage() {
+    virtual qreal nominalBatteryAmperage() {
         return 17;
     }
 

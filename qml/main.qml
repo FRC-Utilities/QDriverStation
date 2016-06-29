@@ -103,7 +103,7 @@ Window {
             return
 
         if (docked) {
-            if (cIsLinux) {
+            if (cIsUnix) {
                 x = 0
                 width = Screen.desktopAvailableWidth
                 minimumWidth = Screen.desktopAvailableWidth

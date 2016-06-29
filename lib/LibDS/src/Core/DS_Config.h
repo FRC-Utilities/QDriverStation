@@ -34,7 +34,7 @@ class DS_Config : public DS_Base {
     int cpuUsage() const;
     int ramUsage() const;
     int diskUsage() const;
-    float voltage() const;
+    qreal voltage() const;
     bool isEnabled() const;
     bool isSimulated() const;
     Alliance alliance() const;
@@ -65,7 +65,7 @@ class DS_Config : public DS_Base {
     void updateDiskUsage (int usage);
     void setBrownout (bool brownout);
     void setEmergencyStop (bool estop);
-    void updateVoltage (float voltage);
+    void updateVoltage (qreal voltage);
     void updateSimulated (bool simulated);
     void updateAlliance (Alliance alliance);
     void updatePosition (Position position);
@@ -94,7 +94,7 @@ class DS_Config : public DS_Base {
     int m_cpuUsage;
     int m_ramUsage;
     int m_diskUsage;
-    float m_voltage;
+    qreal m_voltage;
 
     Alliance m_alliance;
     Position m_position;

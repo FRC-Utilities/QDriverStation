@@ -24,7 +24,7 @@ RobotLogger::~RobotLogger() {
 void RobotLogger::registerWatchdogTimeout() {
 }
 
-void RobotLogger::registerVoltage (float voltage) {
+void RobotLogger::registerVoltage (qreal voltage) {
     Q_UNUSED (voltage);
 }
 

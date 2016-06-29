@@ -19,7 +19,7 @@ class Beeper : public QObject {
 
   public slots:
     void setEnabled (bool enabled);
-    void beep (float frequency, int duration);
+    void beep (qreal frequency, int duration);
 
   private:
     bool m_enabled;

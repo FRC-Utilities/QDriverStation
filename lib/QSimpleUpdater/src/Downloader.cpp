@@ -278,7 +278,7 @@ void Downloader::calculateTimeRemaining (qint64 received, qint64 total) {
 
     if (difference > 0) {
         QString timeString;
-        float timeRemaining = total / (received / difference);
+        qreal timeRemaining = total / (received / difference);
 
         if (timeRemaining > 7200) {
             timeRemaining /= 3600;
@@ -301,7 +301,7 @@ void Downloader::calculateTimeRemaining (qint64 received, qint64 total) {
 // Downloader::round
 //==============================================================================
 
-float Downloader::round (const float& input) {
+qreal Downloader::round (const qreal& input) {
     return roundf (input * 100) / 100;
 }
 
