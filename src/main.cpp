@@ -78,11 +78,11 @@
 
 const QString LOGS = "We instructed your file manager to navigate to:       \n"
                      "    %1                                                \n"
-                     "If nothing happens, please navigate to that directory \n";
+                     "If nothing happens, please navigate to that directory   ";
 
 const QString WEBS = "We instructed your web browser to navigate to:        \n"
                      "    %1                                                \n"
-                     "If nothing happens, please navigate to that URL       \n";
+                     "If nothing happens, please navigate to that URL         ";
 
 const QString HELP = "Usage: qdriverstation [ options ... ]                 \n"
                      "                                                      \n"
@@ -99,10 +99,12 @@ const QString HELP = "Usage: qdriverstation [ options ... ]                 \n"
 // Website, contact info & other URLs
 //------------------------------------------------------------------------------
 
+// *INDENT-OFF*
 const QString LOGS_DIR = DS_LOGGER_PATH();
 const QString CONT_URL = "alex_spataru@outlook.com";
 const QString HTTP_URL = "http://qdriverstation.sf.net";
 const QString BUGS_URL = "http://github.com/FRC-Utilities/QDriverStation/issues";
+// *INDENT-ON*
 
 //------------------------------------------------------------------------------
 // Download joystick drivers if needed
