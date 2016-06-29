@@ -84,8 +84,16 @@ QString DS_ROBOT_LOGGER_PATH() {
  * Ensures that the logger is closed properly when the application quits
  */
 void DS_CLOSE_LOGS() {
-    if (DUMP) {
-        qDebug() << "Log buffer closed normally";
+    if (DUMP && INITIALIZED) {
+        INITIALIZED = false;
+
+        fprintf (DUMP, "%s\n", PRINT (REPEAT ("-", 72)));
+        fprintf (CERR, "%s\n", PRINT (REPEAT ("-", 72)));
+        fprintf (DUMP, "%s\n", PRINT ("END OF LOG, HAVE A NICE DAY!"));
+        fprintf (CERR, "%s\n", PRINT ("END OF LOG, HAVE A NICE DAY!"));
+        fprintf (DUMP, "%s\n", PRINT (REPEAT ("-", 72)));
+        fprintf (CERR, "%s\n", PRINT (REPEAT ("-", 72)));
+
         fclose (DUMP);
     }
 }
@@ -138,9 +146,6 @@ static void INIT_LOGGER() {
     fprintf (DUMP, "%s\n",   PRINT (sysV));
     fprintf (DUMP, "%s\n",   PRINT (appN));
     fprintf (DUMP, "%s\n\n", PRINT (appV));
-    fprintf (CERR, "%s\n",   PRINT (sysV));
-    fprintf (CERR, "%s\n",   PRINT (appN));
-    fprintf (CERR, "%s\n\n", PRINT (appV));
 
     /* Start the table header */
     fprintf (DUMP, PRINT_FMT, "ELAPSED TIME", "ERROR LEVEL", "MESSAGE");

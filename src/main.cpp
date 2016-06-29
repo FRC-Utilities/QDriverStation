@@ -27,6 +27,7 @@
 #include <QTime>
 #include <QtQml>
 #include <QScreen>
+#include <iostream>
 #include <QApplication>
 #include <QJoysticks.h>
 #include <DriverStation.h>
@@ -93,12 +94,13 @@ void DownloadXboxDrivers() {
 #endif
 
 //------------------------------------------------------------------------------
-// Main function
+// Application init functions
 //------------------------------------------------------------------------------
 
-int main (int argc, char* argv[]) {
-    QTime time;
-    time.start();
+int run (int argc, char* argv[]) {
+    /* Start the init. time counter */
+    QTime* pElapsedTime = new QTime;
+    pElapsedTime->start();
 
     /* Avoid UI scaling issues with Qt 5.6 */
 #if QT_VERSION >= QT_VERSION_CHECK (5, 6, 0)
@@ -115,10 +117,6 @@ int main (int argc, char* argv[]) {
     app.setOrganizationName   (APP_COMPANY);
     app.setApplicationVersion (APP_VERSION);
     app.setOrganizationDomain (APP_WEBSITE);
-
-    /* Configure the logging system */
-    qInstallMessageHandler (DS_MESSAGE_HANDLER);
-    qDebug() << "Initializing application...";
 
     /* Initialize OS variables */
     bool isMac = false;
@@ -182,7 +180,15 @@ int main (int argc, char* argv[]) {
     DownloadXboxDrivers();
 #endif
 
-    /* Start the application event loop */
-    qDebug() << "Initialized in " << time.elapsed() << "milliseconds";
+    /* Tell user how much time was needed to initialize the app */
+    qDebug() << "Initialized in " << pElapsedTime->elapsed() << "milliseconds";
+    delete pElapsedTime;
+
+    /* Start event loop */
     return app.exec();
+}
+
+int main (int argc, char* argv[]) {
+    qInstallMessageHandler (DS_MESSAGE_HANDLER);
+    return run (argc, argv);
 }

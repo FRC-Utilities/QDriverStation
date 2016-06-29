@@ -193,11 +193,10 @@ Window {
     }
 
     //
-    // Due to how the WM works, animations look good on Mac OS X,
-    // but not on other systems, especially when docking the window.
+    // Animate window position when dock mode changes
     //
-    Behavior on x { NumberAnimation { duration: cIsMac ? Globals.slowAnimation : 0 }}
-    Behavior on y { NumberAnimation { duration: cIsMac ? Globals.slowAnimation : 0 }}
+    Behavior on x { NumberAnimation { duration: Globals.fastAnimation }}
+    Behavior on y { NumberAnimation { duration: Globals.slowAnimation }}
 
     //
     // Display the left tab, status controls and right tab horizontally
@@ -206,7 +205,8 @@ Window {
         id: layout
 
         //
-        // Don't touch this and don't use anchors, if you do, I will kill you
+        // This shit is not to be messed with. This is your god.
+        // Don't touch it, don't use anchors, if you do, I will kill you
         //
         x: Globals.spacing
         y: Globals.spacing
