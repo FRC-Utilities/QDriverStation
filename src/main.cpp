@@ -155,7 +155,7 @@ static void resetSettings() {
 static void contact() {
     QString url = "mailto:" + CONT_URL;
     QDesktopServices::openUrl (QUrl (url));
-    qDebug() << WEBS.arg (CONT_URL).toStdString().c_str();
+    qDebug() << WEBS.arg (url).toStdString().c_str();
 }
 
 static void reportBug() {
@@ -192,7 +192,8 @@ static void superCow() {
                   "         \\  (oo)\\_______                  \n"
                   "            (__)\\       )\\/\\             \n"
                   "                ||----w |                   \n"
-                  "                ||     ||                   \n";
+                  "                ||     ||                 \n\n"
+                  "             ~The super cow~                \n";
 
     qDebug() << cow.toStdString().c_str();
 }
