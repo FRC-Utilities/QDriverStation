@@ -61,8 +61,11 @@ RCC_DIR = qrc
 OBJECTS_DIR = obj
 
 #-------------------------------------------------------------------------------
-# Optimization flags
+# Compiler flags
 #-------------------------------------------------------------------------------
+
+# Uncomment to break the build and play around with ASM code :)
+# QMAKE_CXXFLAGS *= -S
 
 #-------------------------------------------------------------------------------
 # Include other libraries
