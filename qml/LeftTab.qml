@@ -33,6 +33,8 @@ RowLayout {
     signal flashStatusIndicators
     signal windowModeChanged (var isDocked)
 
+    Component.onCompleted: Globals.logInit ("Left Section")
+
     //
     // Contains the tab switcher buttons
     //

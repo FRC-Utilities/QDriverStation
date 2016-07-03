@@ -72,18 +72,22 @@ QStringList Dashboards::dashboardList() {
  */
 void Dashboards::openDashboard (int dashboard) {
     m_process.close();
+    QString command = "";
 
     switch (dashboard) {
     case kSFXDashboard:
-        m_process.start (SFX_COMMAND.arg (QDir::homePath()), QIODevice::ReadOnly);
+        command = SFX_COMMAND.arg (QDir::homePath());
         break;
     case kSmartDashboard:
-        m_process.start (SBD_COMMAND.arg (QDir::homePath()), QIODevice::ReadOnly);
+        command = SBD_COMMAND.arg (QDir::homePath());
         break;
 #if defined Q_OS_WIN
     case kLabVIEWDashboard:
-        m_process.start (LVD_COMMAND.arg (PROGRAM_FILES), QIODevice::ReadOnly);
+        command = LVD_COMMAND.arg (PROGRAM_FILES);
         break;
 #endif
     }
+
+    m_process.start (command, QIODevice::ReadOnly);
+    qDebug() << "Dashboard command set to:" << command.toStdString().c_str();
 }

@@ -141,6 +141,8 @@ Item {
     Component.onCompleted: {
         QJoysticks.setSortJoysticksByBlacklistState (true)
         joysticks.updateControls()
+
+        Globals.logInit ("Joysticks Tab")
     }
 
     //

@@ -28,6 +28,7 @@ import "globals.js" as Globals
 
 ColumnLayout {
     spacing: Globals.spacing
+    Component.onCompleted: Globals.logInit ("Messages/NetConsole Tab")
 
     //
     // Write to the console every time the DS receives a message

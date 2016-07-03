@@ -115,6 +115,7 @@ void Beeper::generateSamples (qint16* stream, int length) {
         /* Go to next beep object */
         if (beep.samplesLeft == 0)
             BEEPS.pop_front();
+
     }
 }
 

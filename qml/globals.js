@@ -110,6 +110,20 @@ function beep (frequency, time) {
 }
 
 //
+// Logs the given message to the console/log dump
+//
+function log (message) {
+    console.log ("qml: " + message)
+}
+
+//
+// Log that the given item has been initialized
+//
+function logInit (pluginName) {
+    log (pluginName + " initialized")
+}
+
+//
 // Parses the input text (already formatted in morse) and generates
 // the appropiate sounds. This is used in the status widget to generate
 // several sound tones.

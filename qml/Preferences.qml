@@ -43,6 +43,7 @@ RowLayout {
     }
 
     Component.onCompleted: {
+        Globals.logInit ("Preferences Tab")
         cDashboard.openDashboard (dashboard.currentIndex)
     }
 
