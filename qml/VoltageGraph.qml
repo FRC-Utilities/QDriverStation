@@ -55,7 +55,7 @@ Plot {
     //
     Connections {
         target: DriverStation
-        onProtocolChanged: maximumValue = DriverStation.maxBatteryVoltage()
+        onProtocolChanged: maximumValue = DriverStation.maxBatteryVoltage() + 1
     }
 
     //
