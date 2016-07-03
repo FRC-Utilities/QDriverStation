@@ -1,5 +1,5 @@
 /*
- * This code is not mine, it was stealed from:
+ * This code is based on the answer provided at:
  * http://stackoverflow.com/questions/10110905/simple-wave-generator-with-sdl-in-c
  */
 

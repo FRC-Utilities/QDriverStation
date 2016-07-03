@@ -876,9 +876,9 @@ void DriverStation::reconfigureJoysticks() {
     qDebug() << "Re-generating joystick list based on protocol preferences";
     qDebug() << protocol()->name() << "supports"
              << maxJoystickCount() << "joysticks with:"
-             << maxAxisCount() << "axes,"
-             << maxButtonCount() << "buttons and"
-             << maxPOVCount() << "POVs";
+             << maxAxisCount()     << "axes,"
+             << maxButtonCount()   << "buttons and"
+             << maxPOVCount()      << "POVs";
 
     foreach (Joystick* joystick, list) {
         registerJoystick (joystick->realNumAxes,
@@ -1243,17 +1243,21 @@ void DriverStation::updatePacketLoss() {
     qreal sentPackets = 0;
     qreal recvPackets = 0;
 
+    /* Protocol is valid, get the data from its counters */
     if (protocol()) {
         recvPackets = protocol()->receivedRobotPackets();
         sentPackets = protocol()->sentRobotPacketsSinceConnect();
     }
 
+    /* We have received no packets, or we haven't sent a packet yet */
     if (recvPackets <= 0 || sentPackets <= 0)
         loss = 100;
 
-    else if (recvPackets < sentPackets)
+    /* Get the actual loss */
+    else
         loss = (recvPackets / sentPackets) * 100;
 
+    /* Update packet loss & schedule next calculation */
     m_packetLoss = static_cast<int> (loss);
     DS_Schedule (250, this, SLOT (updatePacketLoss()));
 }
