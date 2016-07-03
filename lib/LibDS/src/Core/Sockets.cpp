@@ -369,6 +369,9 @@ void Sockets::setRobotAddress (const QString& address) {
                                this, SLOT (onRobotLookupFinished(QHostInfo)));
 }
 
+/**
+ * Changes the FMS address to the given \a address
+ */
 void Sockets::setFMSAddress (const QHostAddress& address) {
     if (m_fmsAddress != address) {
         m_fmsAddress = address;
@@ -376,6 +379,9 @@ void Sockets::setFMSAddress (const QHostAddress& address) {
     }
 }
 
+/**
+ * Changes the radio address to the given \a address
+ */
 void Sockets::setRadioAddress (const QHostAddress& address) {
     if (m_radioAddress != address) {
         m_radioAddress = address;
@@ -383,6 +389,9 @@ void Sockets::setRadioAddress (const QHostAddress& address) {
     }
 }
 
+/**
+ * Changes the robot address to the given \a address
+ */
 void Sockets::setRobotAddress (const QHostAddress& address) {
     if (m_robotAddress != address) {
         m_robotAddress = address;

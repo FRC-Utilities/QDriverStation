@@ -243,7 +243,7 @@ int main (int argc, char* argv[]) {
 
         else if (arguments == "-w" || arguments == "--website")
             openWebsite();
-        
+
         else if (arguments == "-s" || arguments == "--super-cow")
             superCow();
 
