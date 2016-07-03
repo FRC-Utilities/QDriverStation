@@ -254,14 +254,14 @@ DS::SocketType FRC_2015::robotSocketType() {
 /**
  * Default radio address is 10.TE.AM.1
  */
-QString FRC_2015::defaultRadioAddress() {
+QString FRC_2015::radioAddress() {
     return DS::getStaticIP (10, config()->team(), 1);
 }
 
 /**
  * Default robot address is roboRIO-TEAM.local
  */
-QString FRC_2015::defaultRobotAddress() {
+QString FRC_2015::robotAddress() {
     return QString ("roboRIO-%1.local").arg (config()->team());
 }
 

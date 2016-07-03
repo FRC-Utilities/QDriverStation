@@ -191,7 +191,7 @@ class Protocol {
      * It is also used to avoid reporting 37.00 V or 16'674'591 V.
      * Trust me, it happened: http://imgur.com/a/6ibog
      */
-    virtual qreal maxBatteryVoltage() {
+    virtual qreal nominalBatteryVOltage() {
         return 12.8;
     }
 
@@ -269,27 +269,42 @@ class Protocol {
     }
 
     /**
+     * Returns the IP address in which we should be able to find the FMS.
+     *
+     * If the returned address is invalid, unresolved (e.g. mDNS) or empty,
+     * the Driver Station will lookup the address, while broadcasting the
+     * generated FMS packages until the lookup receives a response.
+     *
+     * The default value that this function returns is 10.0.100, which is taken from:
+     * https://wpilib.screenstepslive.com/s/4485/m/24193/l/319135-ip-networking-at-the-event
+     */
+    virtual QString fmsAddress() {
+        return "10.0.100";
+    }
+
+    /**
      * Returns the IP address in which we should be able to find the radio.
      *
-     * \note If you do not re-implement this function, the Driver Station will
-     *       not be able to communicate with the radio.
+     * If the returned address is invalid, unresolved (e.g. mDNS) or empty,
+     * the Driver Station will lookup the address, while broadcasting the
+     * generated radio packages until the lookup receives a response.
+     *
+     * The default value that this function returns is 10.xx.yy.1
      */
-    virtual QString defaultRadioAddress() {
+    virtual QString radioAddress() {
         return DS::getStaticIP (10, config()->team(), 1);
     }
 
     /**
-     * Returns a list with the possible robot addresses defined by the protocol.
+     * Returns the IP address in which we should be able to find the robot.
      *
-     * \note The first address of this list will be considered as the default
-     *       robot address.
+     * If the returned address is invalid, unresolved (e.g. mDNS) or empty,
+     * the Driver Station will lookup the address, while broadcasting the
+     * generated robot packages until the lookup receives a response.
      *
-     * \note If you do not implement this function, the Driver Station will
-     *       still be able to detect the robot, since it generates a dynamic
-     *       IP list with all LAN IPs based on the IP address(es) of the
-     *       computer.
+     * The default value that this function returns is 10.xx.yy.2
      */
-    virtual QString defaultRobotAddress() {
+    virtual QString robotAddress() {
         return DS::getStaticIP (10, config()->team(), 2);
     }
 

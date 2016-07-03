@@ -59,6 +59,11 @@ DriverStation::DriverStation() {
     m_radioInterval = 1000;
     m_robotInterval = 1000;
 
+    /* Initialize custom addresses */
+    m_customFMSAddress = "";
+    m_customRadioAddress = "";
+    m_customRobotAddress = "";
+
     /* Initialize DS modules & watchdogs */
     m_sockets = new Sockets;
     m_console = new NetConsole;
@@ -294,7 +299,7 @@ QString DriverStation::robotLoggerPath() const {
  */
 qreal DriverStation::maxBatteryVoltage() const {
     if (protocol())
-        return protocol()->maxBatteryVoltage();
+        return protocol()->nominalBatteryVOltage();
 
     return 12.8;
 }
@@ -552,6 +557,16 @@ DS::VoltageStatus DriverStation::voltageStatus() const {
 }
 
 /**
+ * Returns the applied FMS address (be it DS-set or user-set)
+ */
+QString DriverStation::fmsAddress() const {
+    if (customFMSAddress().isEmpty())
+        return defaultFMSAddress();
+
+    return customFMSAddress();
+}
+
+/**
  * Returns the applied radio address (be it DS-set or user-set)
  */
 QString DriverStation::radioAddress() const {
@@ -565,12 +580,8 @@ QString DriverStation::radioAddress() const {
  * Returns the applied robot address (be it DS-set or user-set)
  */
 QString DriverStation::robotAddress() const {
-    if (customRobotAddress().isEmpty()) {
-        if (!m_sockets->robotAddress().isNull())
-            return m_sockets->robotAddress().toString();
-        else
-            return "";
-    }
+    if (customRobotAddress().isEmpty())
+        return defaultRobotAddress();
 
     return customRobotAddress();
 }
@@ -626,6 +637,13 @@ QString DriverStation::generalStatus() const {
 }
 
 /**
+ * Returns the user-set FMS address
+ */
+QString DriverStation::customFMSAddress() const {
+    return m_customFMSAddress;
+}
+
+/**
  * Returns the user-set radio address
  */
 QString DriverStation::customRadioAddress() const {
@@ -640,11 +658,21 @@ QString DriverStation::customRobotAddress() const {
 }
 
 /**
+ * Returns the protocol-set robot address
+ */
+QString DriverStation::defaultFMSAddress() const {
+    if (protocol())
+        return protocol()->fmsAddress();
+
+    return "10.0.100";
+}
+
+/**
  * Returns the protocol-set radio address
  */
 QString DriverStation::defaultRadioAddress() const {
     if (protocol())
-        return protocol()->defaultRadioAddress();
+        return protocol()->radioAddress();
 
     return getStaticIP (10, team(), 1);
 }
@@ -654,7 +682,7 @@ QString DriverStation::defaultRadioAddress() const {
  */
 QString DriverStation::defaultRobotAddress() const {
     if (protocol())
-        return protocol()->defaultRobotAddress();
+        return protocol()->robotAddress();
 
     return getStaticIP (10, team(), 2);
 }
@@ -771,16 +799,43 @@ void DriverStation::init() {
     if (!m_init) {
         m_init = true;
 
+        /*
+         * These functions are normally called when a
+         * watchdog expires, this ensures operational safety
+         * and syncs the UI with the DS status
+         */
         resetFMS();
         resetRadio();
         resetRobot();
+
+        /* Begin the packet sending loops - even if no protocol is loaded */
         sendFMSPacket();
         sendRadioPacket();
         sendRobotPacket();
+
+        /* Begin the packet loss updater loop */
         updatePacketLoss();
 
+        /*
+         * We cannot perform a lookup in the constructor functions
+         * of the DriverStation or the Socket classes, because the
+         * lookup function requires the DS to be *fully* initialized
+         * (so that the getInstance() function works).
+         *
+         * If you call this function in the constructor, the application
+         * will most probably hang or crash. For your own good, don't
+         * do that!
+         */
+        m_sockets->generalLookup();
+
+        /* Set the DS status string on the UI */
         emit statusChanged (generalStatus());
-        DS_Schedule (0, this, SIGNAL (initialized()));
+
+        /*
+         * Some UI impelentations can benefit from this
+         * (e.g. by beeping when the application and the DS are ready)
+         */
+        DS_Schedule (100, this, SIGNAL (initialized()));
 
         qDebug() << "DS engine started!";
     }
@@ -956,6 +1011,11 @@ void DriverStation::setProtocol (Protocol* protocol) {
         m_console->setInputPort (m_protocol->netconsoleInputPort());
         m_console->setOutputPort (m_protocol->netconsoleOutputPort());
 
+        /* Set protocol addresses */
+        m_sockets->setFMSAddress (fmsAddress());
+        m_sockets->setRadioAddress (radioAddress());
+        m_sockets->setRobotAddress (robotAddress());
+
         /* Update packet sender intervals */
         m_fmsInterval = 1000 / m_protocol->fmsFrequency();
         m_radioInterval = 1000 / m_protocol->radioFrequency();
@@ -1114,6 +1174,26 @@ void DriverStation::updateButton (int id, int button, bool state) {
 }
 
 /**
+ * Forces the system to look for the FMS at the given \a address
+ * instead of using the default FMS address specified by the current
+ * protocol.
+ */
+void DriverStation::setCustomFMS_Address (const QString& address) {
+    m_customFMSAddress = address;
+    m_sockets->setFMSAddress (address);
+}
+
+/**
+ * Forces the system to look for the robot radio at the given \a address
+ * instead of using the default radio address specified by the current
+ * protocol.
+ */
+void DriverStation::setCustomRadioAddress (const QString& address) {
+    m_customRadioAddress = address;
+    m_sockets->setRadioAddress (address);
+}
+
+/**
  * Forces the system to use the given \a address. This can be useful when
  * you already know the IP address of the robot, or you are simulating
  * your robot program with a specific virtual IP address.
@@ -1124,15 +1204,6 @@ void DriverStation::updateButton (int id, int button, bool state) {
 void DriverStation::setCustomRobotAddress (const QString& address) {
     m_customRobotAddress = address;
     m_sockets->setRobotAddress (customRobotAddress());
-}
-
-/**
- * Forces the system to look for the robot radio at the given \a address
- * instead of using the default radio address specified by the current
- * protocol.
- */
-void DriverStation::setCustomRadioAddress (const QString& address) {
-    m_sockets->setRadioAddress (address);
 }
 
 /**

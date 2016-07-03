@@ -100,11 +100,14 @@ class DriverStation : public DS_Base {
     Q_INVOKABLE CodeStatus robotCodeStatus() const;
     Q_INVOKABLE VoltageStatus voltageStatus() const;
 
+    Q_INVOKABLE QString fmsAddress() const;
     Q_INVOKABLE QString radioAddress() const;
     Q_INVOKABLE QString robotAddress() const;
     Q_INVOKABLE QString generalStatus() const;
+    Q_INVOKABLE QString customFMSAddress() const;
     Q_INVOKABLE QString customRadioAddress() const;
     Q_INVOKABLE QString customRobotAddress() const;
+    Q_INVOKABLE QString defaultFMSAddress() const;
     Q_INVOKABLE QString defaultRadioAddress() const;
     Q_INVOKABLE QString defaultRobotAddress() const;
     Q_INVOKABLE OperationStatus operationStatus() const;
@@ -139,8 +142,9 @@ class DriverStation : public DS_Base {
     void setEnabled (EnableStatus statusChanged);
     void updateAxis (int id, int axis, qreal value);
     void updateButton (int id, int button, bool state);
-    void setCustomRobotAddress (const QString& address);
+    void setCustomFMS_Address (const QString& address);
     void setCustomRadioAddress (const QString& address);
+    void setCustomRobotAddress (const QString& address);
     void setOperationStatus (OperationStatus statusChanged);
 
   private slots:
@@ -171,6 +175,7 @@ class DriverStation : public DS_Base {
     int m_robotInterval;
 
     DS_Joysticks m_joysticks;
+    QString m_customFMSAddress;
     QString m_customRadioAddress;
     QString m_customRobotAddress;
 

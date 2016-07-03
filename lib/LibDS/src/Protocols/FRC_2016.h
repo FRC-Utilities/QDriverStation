@@ -14,7 +14,7 @@
 class FRC_2016 : public FRC_2015 {
   public:
     virtual QString name();
-    virtual QString defaultRobotAddress();
+    virtual QString robotAddress();
 };
 
 #endif

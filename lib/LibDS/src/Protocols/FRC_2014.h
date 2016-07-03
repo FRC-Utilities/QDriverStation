@@ -47,8 +47,8 @@ class FRC_2014 : public Protocol {
     virtual DS::SocketType robotSocketType();
 
     /* Default addresses */
-    virtual QString defaultRadioAddress();
-    virtual QString defaultRobotAddress();
+    virtual QString radioAddress();
+    virtual QString robotAddress();
 
     /* Packet generation functions */
     virtual QByteArray getFMSPacket();

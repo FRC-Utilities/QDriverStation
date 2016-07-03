@@ -18,6 +18,6 @@ QString FRC_2016::name() {
 /**
  * Default robot address is roboRIO-TEAM-FRC.local
  */
-QString FRC_2016::defaultRobotAddress() {
+QString FRC_2016::robotAddress() {
     return QString ("roboRIO-%1-FRC.local").arg (config()->team());
 }

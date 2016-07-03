@@ -9,6 +9,7 @@
 #include "Sockets.h"
 
 #include <QHostInfo>
+#include <DriverStation.h>
 #include <QNetworkInterface>
 
 /**
@@ -105,6 +106,37 @@ QHostAddress Sockets::robotAddress() const {
 
     /* We use TCP or robot address is known */
     return m_robotAddress;
+}
+
+/**
+ * If any of the IPs used during the communications is not known,
+ * this function will ensure that the DS performs a lookup periodically
+ * until all addresses are known.
+ *
+ * This is especially useful when we are dealing with dynamic IPs, such as
+ * when the robot uses a mDNS address.
+ */
+void Sockets::generalLookup() {
+    /* Get the driver station pointer */
+    if (!m_driverStation)
+        m_driverStation = DriverStation::getInstance();
+
+    if (m_driverStation->running() && !m_driverStation->isConnectedToFMS()) {
+        /* Perform a FMS lookup */
+        if (m_fmsAddress.isNull())
+            setFMSAddress (m_driverStation->fmsAddress());
+
+        /* Perform a radio lookup */
+        if (m_radioAddress.isNull() && !m_driverStation->isConnectedToRadio())
+            setRadioAddress (m_driverStation->radioAddress());
+
+        /* Perform a robot lookup */
+        if (m_robotAddress.isNull() && !m_driverStation->isConnectedToRobot())
+            setRobotAddress (m_driverStation->robotAddress());
+    }
+
+    /* Wait and perform the lookup again */
+    DS_Schedule (2000, this, SLOT (generalLookup()));
 }
 
 /**
@@ -337,8 +369,7 @@ void Sockets::setFMSAddress (const QString& address) {
 
     /* Lookup the address if we do not know its IP */
     if (m_fmsAddress.isNull() && !address.isEmpty())
-        QHostInfo::lookupHost (address,
-                               this, SLOT (onFMSLookupFinished (QHostInfo)));
+        QHostInfo::lookupHost (address, this, SLOT (onFMSLookupFinished (QHostInfo)));
 }
 
 /**
@@ -351,8 +382,7 @@ void Sockets::setRadioAddress (const QString& address) {
 
     /* Lookup the address if we do not know its IP */
     if (m_radioAddress.isNull() && !address.isEmpty())
-        QHostInfo::lookupHost (address,
-                               this, SLOT (onRadioLookupFinished (QHostInfo)));
+        QHostInfo::lookupHost (address, this, SLOT (onRadioLookupFinished (QHostInfo)));
 }
 
 /**
@@ -365,8 +395,7 @@ void Sockets::setRobotAddress (const QString& address) {
 
     /* Lookup the address if we do not know its IP */
     if (m_robotAddress.isNull() && !address.isEmpty())
-        QHostInfo::lookupHost (address,
-                               this, SLOT (onRobotLookupFinished (QHostInfo)));
+        QHostInfo::lookupHost (address, this, SLOT (onRobotLookupFinished (QHostInfo)));
 }
 
 /**
@@ -502,11 +531,8 @@ void Sockets::onRobotLookupFinished (const QHostInfo& info) {
  * Gets the address (if any of the given host info response)
  */
 QHostAddress Sockets::getAddress (const QHostInfo& info) {
-    /* Lookup is successfull (yay!) */
     if (info.error() == QHostInfo::NoError && !info.addresses().isEmpty())
         return info.addresses().first();
 
-    /* Lookup failed */
-    qDebug() << "Lookup failed with error:" << info.errorString();
     return QHostAddress ("");
 }
