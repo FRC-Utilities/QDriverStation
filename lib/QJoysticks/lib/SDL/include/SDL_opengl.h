@@ -33,28 +33,28 @@
 #ifndef __IPHONEOS__
 
 #ifdef __WIN32__
-#define WIN32_LEAN_AND_MEAN
-#ifndef NOMINMAX
-#define NOMINMAX                /* Don't defined min() and max() */
-#endif
-#include <windows.h>
+    #define WIN32_LEAN_AND_MEAN
+    #ifndef NOMINMAX
+        #define NOMINMAX                /* Don't defined min() and max() */
+    #endif
+    #include <windows.h>
 #endif
 
 #ifdef __glext_h_
-/* Someone has already included glext.h */
-#define NO_SDL_GLEXT
+    /* Someone has already included glext.h */
+    #define NO_SDL_GLEXT
 #endif
 #ifndef NO_SDL_GLEXT
-#define __glext_h_              /* Don't let gl.h include glext.h */
+    #define __glext_h_              /* Don't let gl.h include glext.h */
 #endif
 #if defined(__MACOSX__)
-#include <OpenGL/gl.h>          /* Header File For The OpenGL Library */
-#define __X_GL_H
+    #include <OpenGL/gl.h>          /* Header File For The OpenGL Library */
+    #define __X_GL_H
 #else
-#include <GL/gl.h>              /* Header File For The OpenGL Library */
+    #include <GL/gl.h>              /* Header File For The OpenGL Library */
 #endif
 #ifndef NO_SDL_GLEXT
-#undef __glext_h_
+    #undef __glext_h_
 #endif
 
 /**

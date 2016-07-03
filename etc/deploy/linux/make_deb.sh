@@ -5,23 +5,25 @@ license=mit
 project="qdriverstation-16.06.2"
 authorEmail="alex_spataru@outlook.com"
 
-# Remove old build
+# Remove old build (if found)
 if [ -d "$project" ]; then
     printf '%s\n' "Removing old build ($project)"
     rm -rf "$project"
 fi
 
-# Generate folders
+# Generate build folders
 mkdir deb_build
 cd deb_build
 mkdir $project
 cd $project
 
-# Build binary
+# Compile the QDriverStation
 mkdir build
 cd build
 qmake -qt5 ../../../../../../QDriverStation.pro
 make -j4
+
+# Move QDriverStation binary and remove build files
 mv qdriverstation ../
 cd ..
 rm -r build
@@ -33,6 +35,6 @@ cp ../../common/qdriverstation.desktop qdriverstation.desktop
 # Copy debian config to build directory
 cp -avr ../../debian debian
 
-# Generate source build & debian package"
+# Generate the source build and the debian package
 dh_make -s -c $license -e $authorEmail --createorig
 dpkg-buildpackage

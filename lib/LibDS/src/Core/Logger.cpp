@@ -76,19 +76,19 @@ static void INIT_LOGGER() {
 
     /* Get OS information */
     QString sysV;
-#if QT_VERSION >= QT_VERSION_CHECK (5, 4, 0)
+    #if QT_VERSION >= QT_VERSION_CHECK (5, 4, 0)
     sysV = QSysInfo::prettyProductName();
-#else
-#if defined Q_OS_WIN
+    #else
+    #if defined Q_OS_WIN
     sysV = "Windows";
-#elif defined Q_OS_MAC
+    #elif defined Q_OS_MAC
     sysV = "Mac OSX";
-#elif defined Q_OS_LINUX
+    #elif defined Q_OS_LINUX
     sysV = "GNU/Linux";
-#else
+    #else
     sysV = "Unknown";
-#endif
-#endif
+    #endif
+    #endif
 
     /* Add log header */
     ADD_HEADER ("Start of log");

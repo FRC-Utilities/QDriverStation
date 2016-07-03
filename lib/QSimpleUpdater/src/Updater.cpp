@@ -65,17 +65,17 @@ Updater::Updater() {
     m_downloader = new Downloader();
     m_manager = new QNetworkAccessManager();
 
-#if defined Q_OS_WIN
+    #if defined Q_OS_WIN
     m_platform = "windows";
-#elif defined Q_OS_MAC
+    #elif defined Q_OS_MAC
     m_platform = "osx";
-#elif defined Q_OS_LINUX
+    #elif defined Q_OS_LINUX
     m_platform = "linux";
-#elif defined Q_OS_ANDROID
+    #elif defined Q_OS_ANDROID
     m_platform = "android";
-#elif defined Q_OS_IOS
+    #elif defined Q_OS_IOS
     m_platform = "ios";
-#endif
+    #endif
 
     connect (m_downloader, SIGNAL (downloadFinished (QString, QString)),
              this,         SIGNAL (downloadFinished (QString, QString)));

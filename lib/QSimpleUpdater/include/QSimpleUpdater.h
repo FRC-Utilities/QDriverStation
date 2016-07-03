@@ -35,11 +35,11 @@
 #include <QObject>
 
 #if defined (QSU_SHARED)
-#  define QSU_DECL Q_DECL_EXPORT
+    #define QSU_DECL Q_DECL_EXPORT
 #elif defined (QSU_IMPORT)
-#  define QSU_DECL Q_DECL_IMPORT
+    #define QSU_DECL Q_DECL_IMPORT
 #else
-#  define QSU_DECL
+    #define QSU_DECL
 #endif
 
 class Updater;

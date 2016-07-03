@@ -12,77 +12,77 @@
  * Holds the control mode flags sent to the robot
  */
 enum Robot_Control {
-    kTest          = 0x01, /**< Test operation mode */
-    kEnabled       = 0x04, /**< Sent when DS enables the robot */
-    kAutonomous    = 0x02, /**< Autonomous operation mode */
-    kTeleoperated  = 0x00, /**< Teleoperated operation mode */
-    kFMS_Attached  = 0x08, /**< Sent to robot when we are connected with FMS */
-    kEmergencyStop = 0x80, /**< Robot code is stopped */
+    cTest          = 0x01, /**< Test operation mode */
+    cEnabled       = 0x04, /**< Sent when DS enables the robot */
+    cAutonomous    = 0x02, /**< Autonomous operation mode */
+    cTeleoperated  = 0x00, /**< Teleoperated operation mode */
+    cFMS_Attached  = 0x08, /**< Sent to robot when we are connected with FMS */
+    cEmergencyStop = 0x80, /**< Robot code is stopped */
 };
 
 /**
  * Holds the different operation states sent to the robot
  */
 enum DS_Flags {
-    kRequestReboot      = 0x08, /**< Sent when DS wants a robot reboot */
-    kRequestNormal      = 0x80, /**< Sent when DS has comms. with robot */
-    kRequestUnconnected = 0x00, /**< Sent when DS has no comms. with robot */
-    kRequestRestartCode = 0x04, /**< Sent when DS wants to restart robot code */
+    cRequestReboot      = 0x08, /**< Sent when DS wants a robot reboot */
+    cRequestNormal      = 0x80, /**< Sent when DS has comms. with robot */
+    cRequestUnconnected = 0x00, /**< Sent when DS has no comms. with robot */
+    cRequestRestartCode = 0x04, /**< Sent when DS wants to restart robot code */
 };
 
 /**
  * Holds different flags that are sent to the FMS
  */
 enum FMS_Control {
-    kFMS_RadioPing  = 0x10, /**< Sent if TCP ping with radio is successfull */
-    kFMS_RobotPing  = 0x08, /**< Sent if TCP ping with robot is successfull */
-    kFMS_RobotComms = 0x20, /**< Sent if DS has comms. with robot */
-    kFMS_DS_Version = 0x00, /**< Sends DS version to the FMS */
+    cFMS_RadioPing  = 0x10, /**< Sent if TCP ping with radio is successfull */
+    cFMS_RobotPing  = 0x08, /**< Sent if TCP ping with robot is successfull */
+    cFMS_RobotComms = 0x20, /**< Sent if DS has comms. with robot */
+    cFMS_DS_Version = 0x00, /**< Sends DS version to the FMS */
 };
 
 /**
  * Holds the different tags/headers of each section of the sent packets
  */
 enum DS_Tags {
-    kTagDate     = 0x0f, /**< Staart of date & time section */
-    kTagGeneral  = 0x01, /**< Start of control/basic section */
-    kTagJoystick = 0x0c, /**< Start of joystick input section */
-    kTagTimezone = 0x10, /**< Start of timezone section */
+    cTagDate     = 0x0f, /**< Staart of date & time section */
+    cTagGeneral  = 0x01, /**< Start of control/basic section */
+    cTagJoystick = 0x0c, /**< Start of joystick input section */
+    cTagTimezone = 0x10, /**< Start of timezone section */
 };
 
 /**
  * Represents the different team stations
  */
 enum Stations {
-    kRed1  = 0x00, /**< Red Alliance, Position 1 */
-    kRed2  = 0x01, /**< Red Alliance, Position 2 */
-    kRed3  = 0x02, /**< Red Alliance, Position 3 */
-    kBlue1 = 0x03, /**< Blue Alliance, Position 1 */
-    kBlue2 = 0x04, /**< Blue Alliance, Position 2 */
-    kBlue3 = 0x05, /**< Blue Alliance, Position 3 */
+    cRed1  = 0x00, /**< Red Alliance, Position 1 */
+    cRed2  = 0x01, /**< Red Alliance, Position 2 */
+    cRed3  = 0x02, /**< Red Alliance, Position 3 */
+    cBlue1 = 0x03, /**< Blue Alliance, Position 1 */
+    cBlue2 = 0x04, /**< Blue Alliance, Position 2 */
+    cBlue3 = 0x05, /**< Blue Alliance, Position 3 */
 };
 
 /**
  * Represents the tags that can be sent by the robot with the extended packets
  */
 enum Robot_Tags {
-    kRTagCpuInfo     = 0x05, /**< Robot program sents CPU usage */
-    kRTagMemInfo     = 0x06, /**< Robot program sends RAM usage */
-    kRTagDiskInfo    = 0x04, /**< Robot program sends disk usage */
-    kRTagJoystickOut = 0x01, /**< Robot program wants to rumble joysticks */
+    cRTagCpuInfo     = 0x05, /**< Robot program sents CPU usage */
+    cRTagMemInfo     = 0x06, /**< Robot program sends RAM usage */
+    cRTagDiskInfo    = 0x04, /**< Robot program sends disk usage */
+    cRTagJoystickOut = 0x01, /**< Robot program wants to rumble joysticks */
 };
 
 /**
  * Different robot requests & operation status flags
  */
 enum Robot_Data {
-    kRequestTime     = 0x01, /**< Robot wants current date & time */
-    kRobotHasCode    = 0x20, /**< Robot has user code loaded */
-    kVoltageBrownout = 0x10, /**< Robot experiences a voltage brownout */
+    cRequestTime     = 0x01, /**< Robot wants current date & time */
+    cRobotHasCode    = 0x20, /**< Robot has user code loaded */
+    cVoltageBrownout = 0x10, /**< Robot experiences a voltage brownout */
 };
 
 /**
- * Holds a battery voltage and does all the operations to get its parts
+ * Holds a battery voltage and does everything needed to encode/decode it
  */
 struct BatteryVoltage {
     qreal voltage;
@@ -91,14 +91,14 @@ struct BatteryVoltage {
 
     void updateValues (qreal volt) {
         voltage = roundf (volt * 100) / 100;
-        integer = static_cast<int>(volt);
+        integer = static_cast<int> (volt);
         decimal = (volt - integer) * 100;
     }
 
-    void updateValues (quint8 a, quint8 b) {
+    void updateValues (DS_Byte a, DS_Byte b) {
         integer = a;
-        decimal = (roundf ((static_cast<qreal>(b) / 255) * 100) / 100) * 100;
-        voltage = integer + (static_cast<qreal>(decimal) / 100);
+        decimal = (roundf ((static_cast<qreal> (b) / 255) * 100) / 100) * 100;
+        voltage = integer + (static_cast<qreal> (decimal) / 100);
     }
 };
 
@@ -227,7 +227,7 @@ void FRC_2015::onRobotWatchdogExpired() {
  * Returns the nominal/maximum voltage given by the robot battery.
  */
 qreal FRC_2015::nominalBatteryVoltage() {
-    return 14;
+    return 13;
 }
 
 /**
@@ -270,18 +270,19 @@ QString FRC_2015::defaultRobotAddress() {
  */
 QByteArray FRC_2015::getFMSPacket() {
     QByteArray data;
-
     BatteryVoltage voltage;
+
     voltage.updateValues (config()->voltage());
 
     data.append ((sentFMSPackets() & 0xff00) >> 8);
     data.append ((sentFMSPackets()) & 0xff);
-    data.append (kFMS_DS_Version);
+    data.append (cFMS_DS_Version);
     data.append (getFMSControlCode());
     data.append ((config()->team() & 0xff00) >> 8);
     data.append ((config()->team()) & 0xff);
     data.append (voltage.integer);
     data.append (voltage.decimal);
+
     return data;
 }
 
@@ -290,13 +291,15 @@ QByteArray FRC_2015::getFMSPacket() {
  */
 QByteArray FRC_2015::getRobotPacket() {
     QByteArray data;
+
     data.append ((sentRobotPackets() & 0xff00) >> 8);
     data.append ((sentRobotPackets()) & 0xff);
-    data.append (kTagGeneral);
+    data.append (cTagGeneral);
     data.append (getControlCode());
     data.append (getRequestCode());
     data.append (getTeamStationCode());
     data.append (m_sendDateTime ? getTimezoneData() : getJoystickData());
+
     return data;
 }
 
@@ -310,18 +313,18 @@ QByteArray FRC_2015::getRobotPacket() {
  */
 bool FRC_2015::interpretFMSPacket (const QByteArray& data) {
     if (data.length() >= 22) {
-        quint8 control = data.at (3);
-        quint8 station = data.at (5);
+        DS_Byte control = data.at (3);
+        DS_Byte station = data.at (5);
 
         /* Change robot enabled state based on what FMS tells us to do*/
-        config()->setEnabled (control & kEnabled);
+        config()->setEnabled (control & cEnabled);
 
         /* Get FMS robot mode */
-        if (control & kTeleoperated)
+        if (control & cTeleoperated)
             config()->updateControlMode (DS::kControlTeleoperated);
-        else if (control & kAutonomous)
+        else if (control & cAutonomous)
             config()->updateControlMode (DS::kControlAutonomous);
-        else if (control & kTest)
+        else if (control & cTest)
             config()->updateControlMode (DS::kControlTest);
 
         /* Update to correct alliance and position */
@@ -353,19 +356,19 @@ bool FRC_2015::interpretRobotPacket (const QByteArray& data) {
     }
 
     /* Read robot packet */
-    uint control = data.at (3);
-    uint status  = data.at (4);
-    uint request = data.at (7);
+    DS_Byte control = data.at (3);
+    DS_Byte status  = data.at (4);
+    DS_Byte request = data.at (7);
 
     /* Generate control information */
-    bool has_code       = (status & kRobotHasCode);
-    bool e_stopped      = (control & kEmergencyStop);
-    bool voltage_brwn   = (control & kVoltageBrownout);
+    bool has_code       = (status & cRobotHasCode);
+    bool e_stopped      = (control & cEmergencyStop);
+    bool voltage_brwn   = (control & cVoltageBrownout);
 
     /* Update client information */
     config()->setRobotCode (has_code);
     config()->setBrownout  (voltage_brwn);
-    m_sendDateTime = (request == kRequestTime);
+    m_sendDateTime = (request == cRequestTime);
 
     /* Update emergency stop state */
     if (e_stopped && !config()->isEmergencyStopped())
@@ -388,6 +391,7 @@ bool FRC_2015::interpretRobotPacket (const QByteArray& data) {
         readExtended (QString::fromStdString (extended.substr (8)).toUtf8());
     }
 
+    /* Packet read, feed the watchdog some meat */
     return true;
 }
 
@@ -410,7 +414,7 @@ QByteArray FRC_2015::getTimezoneData() {
     QTime time = dt.time();
 
     /* Add current date/time */
-    data.append (kTagDate);
+    data.append (cTagDate);
     data.append ((time.msec() & 0xff00) >> 8);
     data.append ((time.msec()) & 0xff);
     data.append (time.second());
@@ -422,7 +426,7 @@ QByteArray FRC_2015::getTimezoneData() {
 
     /* Add timezone data */
     data.append (DS::timezone().length() + 1);
-    data.append (kTagTimezone);
+    data.append (cTagTimezone);
     data.append (DS::timezone());
 
     return data;
@@ -451,7 +455,7 @@ QByteArray FRC_2015::getJoystickData() {
 
         /* Add joystick information and put the section header */
         data.append (getJoystickSize (*joysticks()->at (i)) - 1);
-        data.append (kTagJoystick);
+        data.append (cTagJoystick);
 
         /* Add axis data */
         data.append (numAxes);
@@ -485,12 +489,14 @@ QByteArray FRC_2015::getJoystickData() {
  * code. This function is used to follow the instructions outlined by the
  * FMS packets.
  */
-DS::Alliance FRC_2015::getAlliance (quint8 station) {
-    if (station == kBlue1
-            || station == kBlue2
-            || station == kBlue3)
+DS::Alliance FRC_2015::getAlliance (DS_Byte station) {
+    /* Station code is any one of the blue  */
+    if (station == cBlue1
+            || station == cBlue2
+            || station == cBlue3)
         return DS::kAllianceBlue;
 
+    /* Station code is not blue, so it must be red */
     return DS::kAllianceRed;
 }
 
@@ -498,16 +504,20 @@ DS::Alliance FRC_2015::getAlliance (quint8 station) {
  * This function returns the position referenced by the given \a station code.
  * This function is used to follow the instructions outlined by the FMS packets.
  */
-DS::Position FRC_2015::getPosition (quint8 station) {
-    if (station == kRed1 || station == kBlue1)
+DS::Position FRC_2015::getPosition (DS_Byte station) {
+    /* We are on position 1, regardless of the alliance */
+    if (station == cRed1 || station == cBlue1)
         return DS::kPosition1;
 
-    if (station == kRed2 || station == kBlue2)
+    /* We are on position 2, regardless of the alliance */
+    if (station == cRed2 || station == cBlue2)
         return DS::kPosition2;
 
-    if (station == kRed3 || station == kBlue3)
+    /* We are on position 3, regardless of the alliance */
+    if (station == cRed3 || station == cBlue3)
         return DS::kPosition3;
 
+    /* I'll will chop of one of my balls if this happens */
     return DS::kPosition1;
 }
 
@@ -520,25 +530,29 @@ void FRC_2015::readExtended (const QByteArray& data) {
     if (data.isEmpty() || data.length() < 2)
         return;
 
-    uint tag = data.at (1);
+    DS_Byte tag = data.at (1);
 
-    if (tag == kRTagJoystickOut) {
+    /* Robot wants to "rumble" the joystick */
+    if (tag == cRTagJoystickOut) {
         /* TODO */
     }
 
-    else if (tag == kRTagCpuInfo) {
+    /* Packet contains information about the CPU */
+    else if (tag == cRTagCpuInfo) {
         int count = data.at (2);
         for (int i = 0; i < count; ++i)
             if (data.length() > i + 12)
                 config()->updateCpuUsage (data.at (i + 12));
     }
 
-    else if (tag == kRTagMemInfo) {
+    /* Packet contains information about the RAM */
+    else if (tag == cRTagMemInfo) {
         if (data.length() > 5)
             config()->updateRamUsage (data.at (5));
     }
 
-    else if (tag == kRTagDiskInfo) {
+    /* Packat contains information about the CANBUS */
+    else if (tag == cRTagDiskInfo) {
         if (data.length() > 5)
             config()->updateDiskUsage (data.at (5));
     }
@@ -552,31 +566,35 @@ void FRC_2015::readExtended (const QByteArray& data) {
  *    - The FMS attached keyword
  *    - The operation state (e-stop, normal)
  */
-uint FRC_2015::getControlCode() {
-    uint code = 0;
+DS_Byte FRC_2015::getControlCode() {
+    DS_Byte code = 0;
 
+    /* Get current control mode (Test, Auto or Teleop) */
     switch (config()->controlMode()) {
     case DS::kControlTest:
-        code |= kTest;
+        code |= cTest;
         break;
     case DS::kControlAutonomous:
-        code |= kAutonomous;
+        code |= cAutonomous;
         break;
     case DS::kControlTeleoperated:
-        code |= kTeleoperated;
+        code |= cTeleoperated;
         break;
     default:
         break;
     }
 
+    /* Let the robot know if we are connected to the FMS */
     if (config()->isFMSAttached())
-        code |= kFMS_Attached;
+        code |= cFMS_Attached;
 
+    /* Let the robot know if it should e-stop right now */
     if (config()->isEmergencyStopped())
-        code |= kEmergencyStop;
+        code |= cEmergencyStop;
 
+    /* Append the robot enabled state */
     if (config()->isEnabled())
-        code |= kEnabled;
+        code |= cEnabled;
 
     return code;
 }
@@ -587,17 +605,21 @@ uint FRC_2015::getControlCode() {
  *    - Reboot the RIO
  *    - Restart the robot code
  */
-uint FRC_2015::getRequestCode() {
-    uint code = kRequestUnconnected;
+DS_Byte FRC_2015::getRequestCode() {
+    /* Initialize a byte with the unconnected status (could trigger a resync in the robot) */
+    DS_Byte code = cRequestUnconnected;
 
+    /* Send a normal-operation status byte to the robot */
     if (config()->isConnectedToRobot())
-        code = kRequestNormal;
+        code = cRequestNormal;
 
+    /* Send a reboot request byte to the robot */
     if (config()->isConnectedToRobot() && m_rebootRobot)
-        code |= kRequestReboot;
+        code |= cRequestReboot;
 
+    /* Send a restart code request byte to the robot */
     if (config()->isConnectedToRobot() && m_restartCode)
-        code |= kRequestRestartCode;
+        code |= cRequestRestartCode;
 
     return code;
 }
@@ -614,35 +636,40 @@ uint FRC_2015::getRequestCode() {
  *    - Robot radio connected?
  *    - The operation state (e-stop, normal)
  */
-uint FRC_2015::getFMSControlCode() {
-    uint code = 0;
+DS_Byte FRC_2015::getFMSControlCode() {
+    DS_Byte code = 0x00;
 
+    /* Let the FMS know the operational status of the robot */
     switch (config()->controlMode()) {
     case DS::kControlTest:
-        code |= kTest;
+        code |= cTest;
         break;
     case DS::kControlAutonomous:
-        code |= kAutonomous;
+        code |= cAutonomous;
         break;
     case DS::kControlTeleoperated:
-        code |= kTeleoperated;
+        code |= cTeleoperated;
         break;
     default:
         break;
     }
 
+    /* Let the FMS know if robot is e-stopped */
     if (config()->isEmergencyStopped())
-        code |= kEmergencyStop;
+        code |= cEmergencyStop;
 
+    /* Let the FMS know if the robot is enabled */
     if (config()->isEnabled())
-        code |= kEnabled;
+        code |= cEnabled;
 
+    /* Let the FMS know if we are connected to radio */
     if (config()->isConnectedToRadio())
-        code |= kFMS_RadioPing;
+        code |= cFMS_RadioPing;
 
+    /* Let the FMS know if we are connected to robot */
     if (config()->isConnectedToRobot()) {
-        code |= kFMS_RobotComms;
-        code |= kFMS_RobotPing;
+        code |= cFMS_RobotComms;
+        code |= cFMS_RobotPing;
     }
 
     return code;
@@ -653,29 +680,33 @@ uint FRC_2015::getFMSControlCode() {
  * This value may be used by the robot program to use specialized autonomous
  * modes or adjust sensor input.
  */
-uint FRC_2015::getTeamStationCode() {
+DS_Byte FRC_2015::getTeamStationCode() {
+    /* Current config is set to position 1 */
     if (config()->position() == DS::kPosition1) {
         if (config()->alliance() == DS::kAllianceRed)
-            return kRed1;
+            return cRed1;
         else
-            return kBlue1;
+            return cBlue1;
     }
 
+    /* Current config is set to position 2 */
     if (config()->position() == DS::kPosition2) {
         if (config()->alliance() == DS::kAllianceRed)
-            return kRed2;
+            return cRed2;
         else
-            return kBlue2;
+            return cBlue2;
     }
 
+    /* Current config is set to position 3 */
     if (config()->position() == DS::kPosition3) {
         if (config()->alliance() == DS::kAllianceRed)
-            return kRed3;
+            return cRed3;
         else
-            return kBlue3;
+            return cBlue3;
     }
 
-    return kRed1;
+    /* I'll will chop my other ball if this happens */
+    return cRed1;
 }
 
 /**
@@ -685,7 +716,7 @@ uint FRC_2015::getTeamStationCode() {
  * This information will help the robot decide where a information starts and
  * ends for each attached joystick.
  */
-uint FRC_2015::getJoystickSize(const DS::Joystick& joystick) {
+DS_Byte FRC_2015::getJoystickSize (const DS::Joystick& joystick) {
     return  5
             + (joystick.numAxes > 0 ? joystick.numAxes : 0)
             + (joystick.numButtons / 8)

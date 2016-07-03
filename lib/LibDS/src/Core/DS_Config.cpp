@@ -219,8 +219,8 @@ void DS_Config::updateVoltage (qreal voltage) {
         m_voltage = DriverStation::getInstance()->maxBatteryVoltage();
 
     /* Separate voltage into natural and decimal numbers */
-    int integer = static_cast<int>(m_voltage);
-    int decimal = static_cast<qreal>(m_voltage - integer) * 100;
+    int integer = static_cast<int> (m_voltage);
+    int decimal = static_cast<qreal> (m_voltage - integer) * 100;
 
     /* Convert the obtained numbers into strings */
     QString integer_str = QString::number (integer);

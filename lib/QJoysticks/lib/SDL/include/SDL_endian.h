@@ -39,20 +39,20 @@
 /* @} */
 
 #ifndef SDL_BYTEORDER           /* Not defined in SDL_config.h? */
-#ifdef __linux__
-#include <endian.h>
-#define SDL_BYTEORDER  __BYTE_ORDER
-#else /* __linux __ */
-#if defined(__hppa__) || \
-    defined(__m68k__) || defined(mc68000) || defined(_M_M68K) || \
-    (defined(__MIPS__) && defined(__MISPEB__)) || \
-    defined(__ppc__) || defined(__POWERPC__) || defined(_M_PPC) || \
-    defined(__sparc__)
-#define SDL_BYTEORDER   SDL_BIG_ENDIAN
-#else
-#define SDL_BYTEORDER   SDL_LIL_ENDIAN
-#endif
-#endif /* __linux __ */
+    #ifdef __linux__
+        #include <endian.h>
+        #define SDL_BYTEORDER  __BYTE_ORDER
+    #else /* __linux __ */
+        #if defined(__hppa__) || \
+            defined(__m68k__) || defined(mc68000) || defined(_M_M68K) || \
+            (defined(__MIPS__) && defined(__MISPEB__)) || \
+            defined(__ppc__) || defined(__POWERPC__) || defined(_M_PPC) || \
+            defined(__sparc__)
+            #define SDL_BYTEORDER   SDL_BIG_ENDIAN
+        #else
+            #define SDL_BYTEORDER   SDL_LIL_ENDIAN
+        #endif
+    #endif /* __linux __ */
 #endif /* !SDL_BYTEORDER */
 
 
@@ -66,7 +66,7 @@ extern "C" {
  *  \file SDL_endian.h
  */
 #if defined(__GNUC__) && defined(__i386__) && \
-   !(__GNUC__ == 2 && __GNUC_MINOR__ == 95 /* broken gcc version */)
+!(__GNUC__ == 2 && __GNUC_MINOR__ == 95 /* broken gcc version */)
 SDL_FORCE_INLINE Uint16
 SDL_Swap16 (Uint16 x) {
     __asm__ ("xchgb %b0,%h0": "=q" (x):"0" (x));

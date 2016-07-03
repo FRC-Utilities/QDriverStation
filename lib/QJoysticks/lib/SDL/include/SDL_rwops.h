@@ -91,7 +91,7 @@ typedef struct SDL_RWops {
 
     Uint32 type;
     union {
-#if defined(ANDROID)
+        #if defined(ANDROID)
         struct {
             void* fileNameRef;
             void* inputStreamRef;
@@ -103,7 +103,7 @@ typedef struct SDL_RWops {
             long offset;
             int fd;
         } androidio;
-#elif defined(__WIN32__)
+        #elif defined(__WIN32__)
         struct {
             SDL_bool append;
             void* h;
@@ -113,14 +113,14 @@ typedef struct SDL_RWops {
                 size_t left;
             } buffer;
         } windowsio;
-#endif
+        #endif
 
-#ifdef HAVE_STDIO_H
+        #ifdef HAVE_STDIO_H
         struct {
             SDL_bool autoclose;
             FILE* fp;
         } stdio;
-#endif
+        #endif
         struct {
             Uint8* base;
             Uint8* here;

@@ -23,7 +23,7 @@
  */
 NetConsole::NetConsole() {
     m_outputPort = 0;
-    connect (&m_inputSocket, &QUdpSocket::readyRead, [=]() {
+    connect (&m_inputSocket, &QUdpSocket::readyRead, [ = ]() {
         emit newMessage (QString::fromUtf8 (DS::readSocket (&m_inputSocket)));
     });
 }

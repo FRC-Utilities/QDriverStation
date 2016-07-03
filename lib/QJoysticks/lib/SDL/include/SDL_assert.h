@@ -34,7 +34,7 @@ extern "C" {
 #ifdef SDL_DEFAULT_ASSERT_LEVEL
 #define SDL_ASSERT_LEVEL SDL_DEFAULT_ASSERT_LEVEL
 #elif defined(_DEBUG) || defined(DEBUG) || \
-      (defined(__GNUC__) && !defined(__OPTIMIZE__))
+(defined(__GNUC__) && !defined(__OPTIMIZE__))
 #define SDL_ASSERT_LEVEL 2
 #else
 #define SDL_ASSERT_LEVEL 1
@@ -143,9 +143,9 @@ __attribute__ ((analyzer_noreturn))
                 0, 0, #condition, 0, 0, 0, 0 \
             }; \
             const SDL_assert_state state = SDL_ReportAssertion(&assert_data, \
-                                                               SDL_FUNCTION, \
-                                                               SDL_FILE, \
-                                                               SDL_LINE); \
+                                           SDL_FUNCTION, \
+                                           SDL_FILE, \
+                                           SDL_LINE); \
             if (state == SDL_ASSERTION_RETRY) { \
                 continue; /* go again. */ \
             } else if (state == SDL_ASSERTION_BREAK) { \

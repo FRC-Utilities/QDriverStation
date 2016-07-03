@@ -31,50 +31,50 @@
 #include "SDL_config.h"
 
 #ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
+    #include <sys/types.h>
 #endif
 #ifdef HAVE_STDIO_H
-#include <stdio.h>
+    #include <stdio.h>
 #endif
 #if defined(STDC_HEADERS)
-# include <stdlib.h>
-# include <stddef.h>
-# include <stdarg.h>
+    #include <stdlib.h>
+    #include <stddef.h>
+    #include <stdarg.h>
 #else
-# if defined(HAVE_STDLIB_H)
-#  include <stdlib.h>
-# elif defined(HAVE_MALLOC_H)
-#  include <malloc.h>
-# endif
-# if defined(HAVE_STDDEF_H)
-#  include <stddef.h>
-# endif
-# if defined(HAVE_STDARG_H)
-#  include <stdarg.h>
-# endif
+    #if defined(HAVE_STDLIB_H)
+        #include <stdlib.h>
+    #elif defined(HAVE_MALLOC_H)
+        #include <malloc.h>
+    #endif
+    #if defined(HAVE_STDDEF_H)
+        #include <stddef.h>
+    #endif
+    #if defined(HAVE_STDARG_H)
+        #include <stdarg.h>
+    #endif
 #endif
 #ifdef HAVE_STRING_H
-# if !defined(STDC_HEADERS) && defined(HAVE_MEMORY_H)
-#  include <memory.h>
-# endif
-# include <string.h>
+    #if !defined(STDC_HEADERS) && defined(HAVE_MEMORY_H)
+        #include <memory.h>
+    #endif
+    #include <string.h>
 #endif
 #ifdef HAVE_STRINGS_H
-# include <strings.h>
+    #include <strings.h>
 #endif
 #if defined(HAVE_INTTYPES_H)
-# include <inttypes.h>
+    #include <inttypes.h>
 #elif defined(HAVE_STDINT_H)
-# include <stdint.h>
+    #include <stdint.h>
 #endif
 #ifdef HAVE_CTYPE_H
-# include <ctype.h>
+    #include <ctype.h>
 #endif
 #ifdef HAVE_MATH_H
-# include <math.h>
+    #include <math.h>
 #endif
 #if defined(HAVE_ICONV) && defined(HAVE_ICONV_H)
-# include <iconv.h>
+    #include <iconv.h>
 #endif
 
 /**
@@ -91,13 +91,13 @@
  */
 /* @{ */
 #ifdef __cplusplus
-#define SDL_reinterpret_cast(type, expression) reinterpret_cast<type>(expression)
-#define SDL_static_cast(type, expression) static_cast<type>(expression)
-#define SDL_const_cast(type, expression) const_cast<type>(expression)
+    #define SDL_reinterpret_cast(type, expression) reinterpret_cast<type>(expression)
+    #define SDL_static_cast(type, expression) static_cast<type>(expression)
+    #define SDL_const_cast(type, expression) const_cast<type>(expression)
 #else
-#define SDL_reinterpret_cast(type, expression) ((type)(expression))
-#define SDL_static_cast(type, expression) ((type)(expression))
-#define SDL_const_cast(type, expression) ((type)(expression))
+    #define SDL_reinterpret_cast(type, expression) ((type)(expression))
+    #define SDL_static_cast(type, expression) ((type)(expression))
+    #define SDL_const_cast(type, expression) ((type)(expression))
 #endif
 /* @} *//* Cast operators */
 
@@ -156,17 +156,17 @@ typedef uint64_t Uint64;
 
 
 #define SDL_COMPILE_TIME_ASSERT(name, x)               \
-       typedef int SDL_dummy_ ## name[(x) * 2 - 1]
+    typedef int SDL_dummy_ ## name[(x) * 2 - 1]
 /** \cond */
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS
-SDL_COMPILE_TIME_ASSERT (uint8, sizeof (Uint8) == 1);
-SDL_COMPILE_TIME_ASSERT (sint8, sizeof (Sint8) == 1);
-SDL_COMPILE_TIME_ASSERT (uint16, sizeof (Uint16) == 2);
-SDL_COMPILE_TIME_ASSERT (sint16, sizeof (Sint16) == 2);
-SDL_COMPILE_TIME_ASSERT (uint32, sizeof (Uint32) == 4);
-SDL_COMPILE_TIME_ASSERT (sint32, sizeof (Sint32) == 4);
-SDL_COMPILE_TIME_ASSERT (uint64, sizeof (Uint64) == 8);
-SDL_COMPILE_TIME_ASSERT (sint64, sizeof (Sint64) == 8);
+    SDL_COMPILE_TIME_ASSERT (uint8, sizeof (Uint8) == 1);
+    SDL_COMPILE_TIME_ASSERT (sint8, sizeof (Sint8) == 1);
+    SDL_COMPILE_TIME_ASSERT (uint16, sizeof (Uint16) == 2);
+    SDL_COMPILE_TIME_ASSERT (sint16, sizeof (Sint16) == 2);
+    SDL_COMPILE_TIME_ASSERT (uint32, sizeof (Uint32) == 4);
+    SDL_COMPILE_TIME_ASSERT (sint32, sizeof (Sint32) == 4);
+    SDL_COMPILE_TIME_ASSERT (uint64, sizeof (Uint64) == 8);
+    SDL_COMPILE_TIME_ASSERT (sint64, sizeof (Sint64) == 8);
 #endif /* DOXYGEN_SHOULD_IGNORE_THIS */
 /** \endcond */
 
@@ -256,7 +256,7 @@ extern DECLSPEC void* SDLCALL SDL_memset (void* dst, int c, size_t len);
 
 /* Note that memset() is a byte assignment and this is a 32-bit assignment, so they're not directly equivalent. */
 SDL_FORCE_INLINE void SDL_memset4 (void* dst, Uint32 val, size_t dwords) {
-#if defined(__GNUC__) && defined(i386)
+    #if defined(__GNUC__) && defined(i386)
     int u0, u1, u2;
     __asm__ __volatile__ (
         "cld \n\t"
@@ -265,7 +265,7 @@ SDL_FORCE_INLINE void SDL_memset4 (void* dst, Uint32 val, size_t dwords) {
         : "0" (dst), "1" (val), "2" (SDL_static_cast (Uint32, dwords))
         : "memory"
     );
-#else
+    #else
     size_t _n = (dwords + 3) / 4;
     Uint32* _p = SDL_static_cast (Uint32*, dst);
     Uint32 _val = (val);
@@ -283,7 +283,7 @@ SDL_FORCE_INLINE void SDL_memset4 (void* dst, Uint32 val, size_t dwords) {
             *_p++ = _val;
         } while ( --_n );
     }
-#endif
+    #endif
 }
 
 

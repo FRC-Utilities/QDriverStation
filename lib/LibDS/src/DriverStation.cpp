@@ -967,9 +967,9 @@ void DriverStation::setProtocol (Protocol* protocol) {
         m_robotWatchdog->setExpirationTime (m_robotInterval * 50);
 
         /* Make the intervals smaller to compensate for hardware delay */
-        m_fmsInterval -= static_cast<qreal>(m_fmsInterval) * 0.1;
-        m_radioInterval -= static_cast<qreal>(m_radioInterval) * 0.1;
-        m_robotInterval -= static_cast<qreal>(m_robotInterval) * 0.1;
+        m_fmsInterval -= static_cast<qreal> (m_fmsInterval) * 0.1;
+        m_radioInterval -= static_cast<qreal> (m_radioInterval) * 0.1;
+        m_robotInterval -= static_cast<qreal> (m_robotInterval) * 0.1;
 
         /* Update joystick config. to match protocol requirements */
         reconfigureJoysticks();
@@ -1254,7 +1254,7 @@ void DriverStation::updatePacketLoss() {
     else if (recvPackets < sentPackets)
         loss = (recvPackets / sentPackets) * 100;
 
-    m_packetLoss = static_cast<int>(loss);
+    m_packetLoss = static_cast<int> (loss);
     DS_Schedule (250, this, SLOT (updatePacketLoss()));
 }
 

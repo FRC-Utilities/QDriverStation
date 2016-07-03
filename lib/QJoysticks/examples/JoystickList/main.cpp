@@ -29,9 +29,9 @@
 #include <QJoysticks.h>
 
 #ifdef Q_OS_WIN
-#ifdef main
-#undef main
-#endif
+    #ifdef main
+        #undef main
+    #endif
 #endif
 
 void configureDarkStyle() {
@@ -50,7 +50,7 @@ void configureDarkStyle() {
     darkPalette.setColor (QPalette::Button,          QColor (53, 53, 53));
     darkPalette.setColor (QPalette::Link,            QColor (42, 130, 218));
     darkPalette.setColor (QPalette::Highlight,       QColor (42, 130, 218));
-    qApp->setPalette(darkPalette);
+    qApp->setPalette (darkPalette);
 }
 
 int main (int argc, char* argv[]) {
@@ -82,7 +82,7 @@ int main (int argc, char* argv[]) {
     /*
      * Load main.qml and run the application.
      */
-    qmlEngine.load (QUrl (QStringLiteral("qrc:/main.qml")));
+    qmlEngine.load (QUrl (QStringLiteral ("qrc:/main.qml")));
 
     return app.exec();
 }

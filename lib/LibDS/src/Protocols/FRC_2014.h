@@ -52,13 +52,13 @@ class FRC_2014 : public Protocol {
 
     /* Packet interpretation functions */
     virtual bool interpretFMSPacket (const QByteArray& data);
-    virtual bool interpretRobotPacket(const QByteArray& data);
+    virtual bool interpretRobotPacket (const QByteArray& data);
 
   protected:
-    virtual quint8 getAlliance();
-    virtual quint8 getPosition();
-    virtual quint8 getDigitalInput();
-    virtual quint8 getOperationCode();
+    virtual DS_Byte getAlliance();
+    virtual DS_Byte getPosition();
+    virtual DS_Byte getDigitalInput();
+    virtual DS_Byte getOperationCode();
     virtual QByteArray getJoystickData();
 
   private:

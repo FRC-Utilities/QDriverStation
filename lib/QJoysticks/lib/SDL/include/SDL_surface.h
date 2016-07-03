@@ -196,7 +196,7 @@ extern DECLSPEC int SDLCALL SDL_SaveBMP_RW
  *  Convenience macro.
  */
 #define SDL_SaveBMP(surface, file) \
-        SDL_SaveBMP_RW(surface, SDL_RWFromFile(file, "wb"), 1)
+    SDL_SaveBMP_RW(surface, SDL_RWFromFile(file, "wb"), 1)
 
 /**
  *  \brief Sets the RLE acceleration hint for a surface.

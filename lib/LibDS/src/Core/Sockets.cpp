@@ -338,7 +338,7 @@ void Sockets::setFMSAddress (const QString& address) {
     /* Lookup the address if we do not know its IP */
     if (m_fmsAddress.isNull() && !address.isEmpty())
         QHostInfo::lookupHost (address,
-                               this, SLOT (onFMSLookupFinished(QHostInfo)));
+                               this, SLOT (onFMSLookupFinished (QHostInfo)));
 }
 
 /**
@@ -352,7 +352,7 @@ void Sockets::setRadioAddress (const QString& address) {
     /* Lookup the address if we do not know its IP */
     if (m_radioAddress.isNull() && !address.isEmpty())
         QHostInfo::lookupHost (address,
-                               this, SLOT (onRadioLookupFinished(QHostInfo)));
+                               this, SLOT (onRadioLookupFinished (QHostInfo)));
 }
 
 /**
@@ -366,7 +366,7 @@ void Sockets::setRobotAddress (const QString& address) {
     /* Lookup the address if we do not know its IP */
     if (m_robotAddress.isNull() && !address.isEmpty())
         QHostInfo::lookupHost (address,
-                               this, SLOT (onRobotLookupFinished(QHostInfo)));
+                               this, SLOT (onRobotLookupFinished (QHostInfo)));
 }
 
 /**
@@ -501,7 +501,7 @@ void Sockets::onRobotLookupFinished (const QHostInfo& info) {
 /**
  * Gets the address (if any of the given host info response)
  */
-QHostAddress Sockets::getAddress(const QHostInfo& info) {
+QHostAddress Sockets::getAddress (const QHostInfo& info) {
     /* Lookup is successfull (yay!) */
     if (info.error() == QHostInfo::NoError && !info.addresses().isEmpty())
         return info.addresses().first();

@@ -42,15 +42,15 @@ class Test_SocketsSenderUDP : public QObject {
         radReceiver.bind (DS_LISTENER, radPort, DS_BIND_FLAGS);
         robReceiver.bind (DS_LISTENER, robPort, DS_BIND_FLAGS);
 
-        connect (&fmsReceiver, &QUdpSocket::readyRead, [=]() {
+        connect (&fmsReceiver, &QUdpSocket::readyRead, [ = ]() {
             fmsData = DS::readSocket (&fmsReceiver);
         });
 
-        connect (&radReceiver, &QUdpSocket::readyRead, [=]() {
+        connect (&radReceiver, &QUdpSocket::readyRead, [ = ]() {
             radData = DS::readSocket (&radReceiver);
         });
 
-        connect (&robReceiver, &QUdpSocket::readyRead, [=]() {
+        connect (&robReceiver, &QUdpSocket::readyRead, [ = ]() {
             robData = DS::readSocket (&robReceiver);
         });
 
@@ -117,15 +117,15 @@ class Test_SocketsSenderTCP : public QObject {
         radReceiver.connectToHost (address, radPort, QIODevice::ReadOnly);
         robReceiver.connectToHost (address, robPort, QIODevice::ReadOnly);
 
-        connect (&fmsReceiver, &QUdpSocket::readyRead, [=]() {
+        connect (&fmsReceiver, &QUdpSocket::readyRead, [ = ]() {
             fmsData = DS::readSocket (&fmsReceiver);
         });
 
-        connect (&radReceiver, &QUdpSocket::readyRead, [=]() {
+        connect (&radReceiver, &QUdpSocket::readyRead, [ = ]() {
             radData = DS::readSocket (&radReceiver);
         });
 
-        connect (&robReceiver, &QUdpSocket::readyRead, [=]() {
+        connect (&robReceiver, &QUdpSocket::readyRead, [ = ]() {
             robData = DS::readSocket (&robReceiver);
         });
 

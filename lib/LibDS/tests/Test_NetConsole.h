@@ -29,7 +29,7 @@ class Test_NetConsoleSender : public QObject {
         netconsole.setOutputPort (port);
         receiver.bind (DS_LISTENER, port, DS_BIND_FLAGS);
 
-        connect (&receiver, &QUdpSocket::readyRead, [=]() {
+        connect (&receiver, &QUdpSocket::readyRead, [ = ]() {
             received = QString::fromUtf8 (DS::readSocket (&receiver));
         });
 
@@ -63,7 +63,7 @@ class Test_NetConsoleReceiver : public QObject {
         message = "@Ahead)Together!FRC^2016";
 
         netconsole.setInputPort (port);
-        connect (&netconsole, &NetConsole::newMessage, [=](const QString& msg) {
+        connect (&netconsole, &NetConsole::newMessage, [ = ] (const QString & msg) {
             received = msg;
         });
 

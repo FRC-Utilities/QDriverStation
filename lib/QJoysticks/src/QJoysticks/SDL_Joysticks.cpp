@@ -51,11 +51,11 @@ static QString GENERIC_MAPPINGS;
  * Load a different generic/backup mapping for each operating system.
  */
 #if defined Q_OS_WIN
-#define GENERIC_MAPPINGS_PATH ":/QJoysticks/SDL/GenericMappings/Windows.txt"
+    #define GENERIC_MAPPINGS_PATH ":/QJoysticks/SDL/GenericMappings/Windows.txt"
 #elif defined Q_OS_MAC
-#define GENERIC_MAPPINGS_PATH ":/QJoysticks/SDL/GenericMappings/OSX.txt"
+    #define GENERIC_MAPPINGS_PATH ":/QJoysticks/SDL/GenericMappings/OSX.txt"
 #elif defined Q_OS_LINUX
-#define GENERIC_MAPPINGS_PATH ":/QJoysticks/SDL/GenericMappings/Linux.txt"
+    #define GENERIC_MAPPINGS_PATH ":/QJoysticks/SDL/GenericMappings/Linux.txt"
 #endif
 
 /**
@@ -266,7 +266,7 @@ QJoystickAxisEvent SDL_Joysticks::getAxisEvent (const SDL_Event* sdl_event) {
     QJoystickAxisEvent event;
 
     event.axis = sdl_event->caxis.axis;
-    event.value = static_cast<qreal>(sdl_event->caxis.value) / 32767;
+    event.value = static_cast<qreal> (sdl_event->caxis.value) / 32767;
     event.joystick = getJoystick (sdl_event->cdevice.which);
 
     return event;

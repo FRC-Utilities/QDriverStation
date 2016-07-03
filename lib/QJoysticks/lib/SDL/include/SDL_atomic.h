@@ -126,7 +126,7 @@ void _ReadWriteBarrier (void);
 #define SDL_CompilerBarrier()   __asm__ __volatile__ ("" : : : "memory")
 #else
 #define SDL_CompilerBarrier()   \
-{ SDL_SpinLock _tmp = 0; SDL_AtomicLock(&_tmp); SDL_AtomicUnlock(&_tmp); }
+    { SDL_SpinLock _tmp = 0; SDL_AtomicLock(&_tmp); SDL_AtomicUnlock(&_tmp); }
 #endif
 
 /**
