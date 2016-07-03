@@ -37,7 +37,7 @@ class FRC_2014 : public Protocol {
     virtual void rebootRobot();
     virtual void restartRobotCode();
     virtual void onRobotWatchdogExpired();
-    
+
     /* Battery information */
     virtual qreal nominalBatteryVoltage();
     virtual qreal nominalBatteryAmperage();
