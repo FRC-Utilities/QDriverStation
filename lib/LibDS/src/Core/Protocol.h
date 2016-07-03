@@ -192,7 +192,7 @@ class Protocol {
      * Trust me, it happened: http://imgur.com/a/6ibog
      */
     virtual qreal maxBatteryVoltage() {
-        return 14;
+        return 12.8;
     }
 
     /**

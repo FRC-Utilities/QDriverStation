@@ -296,7 +296,7 @@ qreal DriverStation::maxBatteryVoltage() const {
     if (protocol())
         return protocol()->maxBatteryVoltage();
 
-    return 14;
+    return 12.8;
 }
 
 /**

@@ -227,7 +227,7 @@ void FRC_2015::onRobotWatchdogExpired() {
  * Returns the nominal/maximum voltage given by the robot battery.
  */
 qreal FRC_2015::nominalBatteryVoltage() {
-    return 13;
+    return 12.8;
 }
 
 /**

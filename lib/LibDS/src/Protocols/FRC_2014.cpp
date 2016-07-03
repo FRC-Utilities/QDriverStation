@@ -144,6 +144,20 @@ void FRC_2014::onRobotWatchdogExpired() {
 }
 
 /**
+ * Returns the nominal/maximum voltage given by the robot battery.
+ */
+qreal FRC_2014::nominalBatteryVoltage() {
+    return 12.8;
+}
+
+/**
+ * Returns the nominal amperage given by the robot battery
+ */
+qreal FRC_2014::nominalBatteryAmperage() {
+    return 17;
+}
+
+/**
  * FMS communications work with UDP datagrams
  */
 DS::SocketType FRC_2014::fmsSocketType() {
