@@ -49,14 +49,14 @@ extern "C" {
  */
 SDL_FORCE_INLINE int
 SDL_MostSignificantBitIndex32 (Uint32 x) {
-    #if defined(__GNUC__) && __GNUC__ >= 4
+#if defined(__GNUC__) && __GNUC__ >= 4
     /* Count Leading Zeroes builtin in GCC.
      * http://gcc.gnu.org/onlinedocs/gcc-4.3.4/gcc/Other-Builtins.html
      */
     if (x == 0)
         return -1;
     return 31 - __builtin_clz (x);
-    #else
+#else
     /* Based off of Bit Twiddling Hacks by Sean Eron Anderson
      * <seander@cs.stanford.edu>, released in the public domain.
      * http://graphics.stanford.edu/~seander/bithacks.html#IntegerLog
@@ -78,7 +78,7 @@ SDL_MostSignificantBitIndex32 (Uint32 x) {
     }
 
     return msbIndex;
-    #endif
+#endif
 }
 
 /* Ends C function definitions when using C++ */

@@ -98,14 +98,14 @@ Utilities::Utilities() {
              this,                      SLOT (readConnectedToACProcess (int)));
 
     /* Configure Windows */
-    #ifdef Q_OS_WIN
+#ifdef Q_OS_WIN
     PdhOpenQuery (0, 0, &cpuQuery);
     PdhAddCounter (cpuQuery,
                    L"\\Processor(_Total)\\% Processor Time",
                    0,
                    &cpuTotal);
     PdhCollectQueryData (cpuQuery);
-    #endif
+#endif
 
     /* Start loop */
     updateCpuUsage();
@@ -156,15 +156,15 @@ void Utilities::copy (const QVariant& data) {
  * Queries for the current CPU usage
  */
 void Utilities::updateCpuUsage() {
-    #ifdef Q_OS_WIN
+#ifdef Q_OS_WIN
     PDH_FMT_COUNTERVALUE counterVal;
     PdhCollectQueryData (cpuQuery);
     PdhGetFormattedCounterValue (cpuTotal, PDH_FMT_DOUBLE, 0, &counterVal);
     m_cpuUsage = static_cast<int> (counterVal.doubleValue);
-    #else
+#else
     m_cpuProcess.terminate();
     m_cpuProcess.start (CPU_CMD, QIODevice::ReadOnly);
-    #endif
+#endif
 
     QTimer::singleShot (1000,
                         Qt::PreciseTimer,
@@ -175,13 +175,13 @@ void Utilities::updateCpuUsage() {
  * Queries for the current battery level
  */
 void Utilities::updateBatteryLevel() {
-    #ifdef Q_OS_WIN
+#ifdef Q_OS_WIN
     GetSystemPowerStatus (&power);
     m_batteryLevel = static_cast<int> (power.BatteryLifePercent);
-    #else
+#else
     m_batteryLevelProcess.terminate();
     m_batteryLevelProcess.start (BTY_CMD, QIODevice::ReadOnly);
-    #endif
+#endif
 
     QTimer::singleShot (1000,
                         Qt::PreciseTimer,
@@ -192,13 +192,13 @@ void Utilities::updateBatteryLevel() {
  * Queries for the current AC power source status
  */
 void Utilities::updateConnectedToAC() {
-    #ifdef Q_OS_WIN
+#ifdef Q_OS_WIN
     GetSystemPowerStatus (&power);
     m_connectedToAC = (power.ACLineStatus != 0);
-    #else
+#else
     m_connectedToACProcess.terminate();
     m_connectedToACProcess.start (PWR_CMD, QIODevice::ReadOnly);
-    #endif
+#endif
 
     QTimer::singleShot (1000,
                         Qt::PreciseTimer,
@@ -212,7 +212,7 @@ void Utilities::readCpuUsageProcess (int exit_code) {
     if (exit_code == EXIT_FAILURE)
         return;
 
-    #if defined Q_OS_MAC || defined Q_OS_LINUX
+#if defined Q_OS_MAC || defined Q_OS_LINUX
     m_cpuUsage = 0;
     m_cpuProcess.terminate();
     QByteArray data = m_cpuProcess.readAll();
@@ -229,7 +229,7 @@ void Utilities::readCpuUsageProcess (int exit_code) {
         /* Update information */
         m_cpuUsage = (t * 10) + u;
     }
-    #endif
+#endif
 }
 
 /**
@@ -239,7 +239,7 @@ void Utilities::readBatteryLevelProcess (int exit_code) {
     if (exit_code == EXIT_FAILURE)
         return;
 
-    #if defined Q_OS_MAC || defined Q_OS_LINUX
+#if defined Q_OS_MAC || defined Q_OS_LINUX
     m_batteryLevel = 0;
     m_batteryLevelProcess.terminate();
     QByteArray data = m_batteryLevelProcess.readAll();
@@ -258,7 +258,7 @@ void Utilities::readBatteryLevelProcess (int exit_code) {
         /* Update information */
         m_batteryLevel = (h * 100) + (t * 10) + u;
     }
-    #endif
+#endif
 }
 
 /**
@@ -268,13 +268,13 @@ void Utilities::readConnectedToACProcess (int exit_code) {
     if (exit_code == EXIT_FAILURE)
         return;
 
-    #if defined Q_OS_MAC || defined Q_OS_LINUX
+#if defined Q_OS_MAC || defined Q_OS_LINUX
     m_connectedToAC = false;
     m_connectedToACProcess.terminate();
     QByteArray data = m_connectedToACProcess.readAll();
 
     if (!data.isEmpty())
         m_connectedToAC = !data.contains ("discharging");
-    #endif
+#endif
 }
 

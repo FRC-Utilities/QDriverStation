@@ -119,34 +119,34 @@ struct SDL_SysWMmsg {
     SDL_version version;
     SDL_SYSWM_TYPE subsystem;
     union {
-        #if defined(SDL_VIDEO_DRIVER_WINDOWS)
+#if defined(SDL_VIDEO_DRIVER_WINDOWS)
         struct {
             HWND hwnd;                  /**< The window for the message */
             UINT msg;                   /**< The type of message */
             WPARAM wParam;              /**< WORD message parameter */
             LPARAM lParam;              /**< LONG message parameter */
         } win;
-        #endif
-        #if defined(SDL_VIDEO_DRIVER_X11)
+#endif
+#if defined(SDL_VIDEO_DRIVER_X11)
         struct {
             XEvent event;
         } x11;
-        #endif
-        #if defined(SDL_VIDEO_DRIVER_DIRECTFB)
+#endif
+#if defined(SDL_VIDEO_DRIVER_DIRECTFB)
         struct {
             DFBEvent event;
         } dfb;
-        #endif
-        #if defined(SDL_VIDEO_DRIVER_COCOA)
+#endif
+#if defined(SDL_VIDEO_DRIVER_COCOA)
         struct {
             /* No Cocoa window events yet */
         } cocoa;
-        #endif
-        #if defined(SDL_VIDEO_DRIVER_UIKIT)
+#endif
+#if defined(SDL_VIDEO_DRIVER_UIKIT)
         struct {
             /* No UIKit window events yet */
         } uikit;
-        #endif
+#endif
         /* Can't have an empty union */
         int dummy;
     } msg;
@@ -162,48 +162,48 @@ struct SDL_SysWMinfo {
     SDL_version version;
     SDL_SYSWM_TYPE subsystem;
     union {
-        #if defined(SDL_VIDEO_DRIVER_WINDOWS)
+#if defined(SDL_VIDEO_DRIVER_WINDOWS)
         struct {
             HWND window;                /**< The window handle */
         } win;
-        #endif
-        #if defined(SDL_VIDEO_DRIVER_X11)
+#endif
+#if defined(SDL_VIDEO_DRIVER_X11)
         struct {
             Display* display;           /**< The X11 display */
             Window window;              /**< The X11 window */
         } x11;
-        #endif
-        #if defined(SDL_VIDEO_DRIVER_DIRECTFB)
+#endif
+#if defined(SDL_VIDEO_DRIVER_DIRECTFB)
         struct {
             IDirectFB* dfb;             /**< The directfb main interface */
             IDirectFBWindow* window;    /**< The directfb window handle */
             IDirectFBSurface* surface;  /**< The directfb client surface */
         } dfb;
-        #endif
-        #if defined(SDL_VIDEO_DRIVER_COCOA)
+#endif
+#if defined(SDL_VIDEO_DRIVER_COCOA)
         struct {
             NSWindow* window;           /* The Cocoa window */
         } cocoa;
-        #endif
-        #if defined(SDL_VIDEO_DRIVER_UIKIT)
+#endif
+#if defined(SDL_VIDEO_DRIVER_UIKIT)
         struct {
             UIWindow* window;           /* The UIKit window */
         } uikit;
-        #endif
-        #if defined(SDL_VIDEO_DRIVER_WAYLAND)
+#endif
+#if defined(SDL_VIDEO_DRIVER_WAYLAND)
         struct {
             struct wl_display* display;            /**< Wayland display */
             struct wl_surface* surface;            /**< Wayland surface */
             struct wl_shell_surface*
                 shell_surface; /**< Wayland shell_surface (window manager handle) */
         } wl;
-        #endif
-        #if defined(SDL_VIDEO_DRIVER_MIR)
+#endif
+#if defined(SDL_VIDEO_DRIVER_MIR)
         struct {
             MirConnection* connection;  /**< Mir display server connection */
             MirSurface* surface;  /**< Mir surface */
         } mir;
-        #endif
+#endif
 
         /* Can't have an empty union */
         int dummy;

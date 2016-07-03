@@ -110,7 +110,7 @@ const QString BUGS_URL = "http://github.com/FRC-Utilities/QDriverStation/issues"
 //------------------------------------------------------------------------------
 
 static void DownloadXboxDrivers() {
-    #ifdef Q_OS_MAC
+#ifdef Q_OS_MAC
     QSettings settings (APP_COMPANY, APP_DSPNAME);
 
     if (settings.value ("FirstLaunch", true).toBool()) {
@@ -136,7 +136,7 @@ static void DownloadXboxDrivers() {
                                            "https://github.com/360Controller/"
                                            "360Controller/releases/latest"));
     }
-    #endif
+#endif
 }
 
 //------------------------------------------------------------------------------
@@ -204,13 +204,13 @@ static void superCow() {
 
 int main (int argc, char* argv[]) {
     /* Fix scalling issues */
-    #if QT_VERSION >= QT_VERSION_CHECK (5, 6, 0)
-    #if defined Q_OS_MAC
+#if QT_VERSION >= QT_VERSION_CHECK (5, 6, 0)
+#if defined Q_OS_MAC
     QApplication::setAttribute (Qt::AA_EnableHighDpiScaling);
-    #else
+#else
     QApplication::setAttribute (Qt::AA_DisableHighDpiScaling);
-    #endif
-    #endif
+#endif
+#endif
 
     /* Initialize application */
     QString arguments;
@@ -266,13 +266,13 @@ int main (int argc, char* argv[]) {
     bool isWin = false;
 
     /* Let QML know the operating system */
-    #if defined Q_OS_MAC
+#if defined Q_OS_MAC
     isMac = true;
-    #elif defined Q_OS_WIN
+#elif defined Q_OS_WIN
     isWin = true;
-    #else
+#else
     isUnx = true;
-    #endif
+#endif
 
     /* Calculate the scale factor of the screen */
     qreal ratio = (app.primaryScreen()->physicalDotsPerInch() / 100) * 0.9;

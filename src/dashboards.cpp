@@ -60,9 +60,9 @@ QStringList Dashboards::dashboardList() {
     list.append (tr ("SFX Dashboard"));
     list.append (tr ("SmartDashboard"));
 
-    #if defined Q_OS_WIN
+#if defined Q_OS_WIN
     list.append (tr ("LabVIEW Dashboard"));
-    #endif
+#endif
 
     return list;
 }
@@ -80,10 +80,10 @@ void Dashboards::openDashboard (int dashboard) {
     case kSmartDashboard:
         m_process.start (SBD_COMMAND.arg (QDir::homePath()), QIODevice::ReadOnly);
         break;
-        #if defined Q_OS_WIN
+#if defined Q_OS_WIN
     case kLabVIEWDashboard:
         m_process.start (LVD_COMMAND.arg (PROGRAM_FILES), QIODevice::ReadOnly);
         break;
-        #endif
+#endif
     }
 }

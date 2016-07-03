@@ -21,13 +21,13 @@ Window::Window (QWidget* parent) : QMainWindow (parent) {
     setFixedSize (minimumSizeHint());
 
     /* Set window title to {OS} Driver Station */
-    #if defined (Q_OS_LINUX)
+#if defined (Q_OS_LINUX)
     setWindowTitle (tr ("Linux Driver Station"));
-    #elif defined (Q_OS_MAC)
+#elif defined (Q_OS_MAC)
     setWindowTitle (tr ("Mac OSX Driver Station"));
-    #elif defined (Q_OS_WIN)
+#elif defined (Q_OS_WIN)
     setWindowTitle (tr ("Windows Driver Station"));
-    #endif
+#endif
 
     /* Fill the UI items with LibDS options */
     m_ui->Protocols->addItems (m_driverStation->protocols());
