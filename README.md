@@ -2,7 +2,7 @@
 
 The QDriverStation is a cross-platform and open-source alternative to the FRC Driver Station. It allows you to operate FRC robots with the major operating systems (Windows, Mac OSX and GNU/Linux). The QDriverStation is able to operate both 2009-2014 robots and 2015-2016 robots.
 
-The actual code that operates a FRC robot is found in a [separate repository](https://github.com/FRC-Utilities/LibDS), which you can use in your own Qt projects or change it to support older (and future) communication protocols.
+The actual code that operates a FRC robot is found in a [separate repository](https://github.com/FRC-Utilities/LibDS), which you can use in your own Qt projects or change it to support more communication protocols (such as [ROS](https://github.com/FRC-Utilities/QDriverStation/issues/21)).
 
 [![Build Status](https://img.shields.io/travis/FRC-Utilities/QDriverStation.svg?style=flat-square)](https://travis-ci.org/FRC-Utilities/QDriverStation)
 [![Donate button](https://img.shields.io/badge/bitcoin-donate-brightgreen.svg?style=flat-square)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
@@ -52,6 +52,6 @@ You can check this [tutorial by Dakota Keeler](https://www.youtube.com/watch?v=G
 
 ### Credits
 
-This application was created by [this guy](http://github.com/alex-spataru).
+This application was created by [Alex Spataru](http://github.com/alex-spataru).
 
 Of course, many people contributed in different ways to this project, you can find more details in the [contributors list](CONTRIBUTORS.md). Finally, we want to thank you for trying this little project, we sincerely hope that you enjoy our application and we would love some of your feedback.
