@@ -118,7 +118,7 @@ ColumnLayout {
     // Check if there is already a joystick connected to the computer
     //
     Component.onCompleted: {
-        Globals.logInit ("Status/Idiot Lights")
+        Globals.logInit ("Status Controls")
         joysticksLed.checked = QJoysticks.count() > 0
     }
 

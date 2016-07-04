@@ -45,6 +45,9 @@ Sockets::Sockets() {
     m_udpRobotReceiver = Q_NULLPTR;
     m_tcpRobotReceiver = Q_NULLPTR;
 
+    /* Initialize variables used for lookups */
+    m_driverStation = Q_NULLPTR;
+
     /* Assign the initial ports */
     m_fmsOutputPort = DS_DISABLED_PORT;
     m_radioOutputPort = DS_DISABLED_PORT;
@@ -55,12 +58,15 @@ Sockets::Sockets() {
  * Deletes all the sockets
  */
 Sockets::~Sockets() {
+    /* Delete sender sockets */
     delete m_udpFmsSender;
     delete m_tcpFmsSender;
     delete m_udpRadioSender;
     delete m_tcpRadioSender;
     delete m_udpRobotSender;
     delete m_tcpRobotSender;
+
+    /* Delete receiver sockets */
     delete m_udpFmsReceiver;
     delete m_tcpFmsReceiver;
     delete m_udpRadioReceiver;
@@ -116,7 +122,7 @@ QHostAddress Sockets::robotAddress() const {
  * This is especially useful when we are dealing with dynamic IPs, such as
  * when the robot uses a mDNS address.
  */
-void Sockets::performLookup() {
+void Sockets::performLookups() {
     /* Assign the driver station pointer */
     if (!m_driverStation)
         m_driverStation = DriverStation::getInstance();
@@ -140,7 +146,7 @@ void Sockets::performLookup() {
                                SLOT (onRobotLookupFinished (QHostInfo)));
 
     /* Wait and perform the lookup again */
-    DS_Schedule (2000, this, SLOT (performLookup()));
+    DS_Schedule (2000, this, SLOT (performLookups()));
 }
 
 /**

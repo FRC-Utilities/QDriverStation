@@ -80,7 +80,7 @@ DriverStation::DriverStation() {
              this,        SLOT (readRobotPacket     (QByteArray)));
 
     /* Begin the lookup process when the app initializes the DS */
-    connect (this, SIGNAL (initialized()), m_sockets, SLOT (performLookup()));
+    connect (this, SIGNAL (initialized()), m_sockets, SLOT (performLookups()));
 
     /* Sync DS signals with DS_Config signals */
     connect (config(), SIGNAL (allianceChanged (Alliance)),
@@ -810,7 +810,7 @@ void DriverStation::init() {
         sendRobotPacket();
         updatePacketLoss();
 
-        DS_Schedule (100, this, SLOT (finishInit()));
+        DS_Schedule (250, this, SLOT (finishInit()));
 
         qDebug() << "DS engine started!";
     }
