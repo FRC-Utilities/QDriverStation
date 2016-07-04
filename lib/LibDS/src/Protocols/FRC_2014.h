@@ -64,6 +64,9 @@ class FRC_2014 : public Protocol {
     virtual DS_Byte getDigitalInput();
     virtual DS_Byte getOperationCode();
     virtual QByteArray getJoystickData();
+    virtual DS::Alliance getAlliance (DS_Byte byte);
+    virtual DS::Position getPosition (DS_Byte byte);
+
 
   private:
     bool m_resync;

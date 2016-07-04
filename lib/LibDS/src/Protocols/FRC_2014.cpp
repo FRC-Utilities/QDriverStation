@@ -9,23 +9,37 @@
 #include "FRC_2014.h"
 
 /**
- * Protocol constants values, to avoid magic numbers...
+ * Constants used to encode the control byte
  */
-enum ProtocolConstants {
-    cEnabled          = 0x20,
-    cTestMode         = 0x02,
-    cAutonomous       = 0x10,
-    cTeleoperated     = 0x00,
-    cFMS_Attached     = 0x08,
-    cEmergencyStopOn  = 0x00,
-    cEmergencyStopOff = 0x40,
-    cResyncComms      = 0x04,
-    cRebootRobot      = 0x80,
-    cPosition1        = 0x31,
-    cPosition2        = 0x32,
-    cPosition3        = 0x33,
-    cAllianceRed      = 0x52,
-    cAllianceBlue     = 0x42,
+enum Control {
+    cEnabled          = 0x20, /**< DS enables the robot */
+    cTestMode         = 0x02, /**< Set operation mode to test mode */
+    cAutonomous       = 0x10, /**< Set operation mode to autonomous mode */
+    cTeleoperated     = 0x00, /**< Set operation mode to teleoperated mode */
+    cFMS_Attached     = 0x08, /**< Sent when DS has comms. with FMS */
+    cResyncComms      = 0x04, /**< Resyncs the communications with robot */
+    cRebootRobot      = 0x80, /**< Reboots the robot controller */
+    cEmergencyStopOn  = 0x00, /**< Enables the emergency stop */
+    cEmergencyStopOff = 0x40, /**< Disables the emergency stop */
+};
+
+/**
+ * Constants used to encode the alliance and position of the robot
+ */
+enum Stations {
+    cPosition1    = 0x31, /**< Position 1 */
+    cPosition2    = 0x32, /**< Position 2 */
+    cPosition3    = 0x33, /**< Position 3 */
+    cAllianceRed  = 0x52, /**< Red alliance */
+    cAllianceBlue = 0x42, /**< Blue alliance */
+};
+
+/**
+ * Constants used to encode the FMS states
+ */
+enum FMS {
+    cFMSAutonomous   = 0x53, /**< Sent by FMS to switch robot mode to Auto */
+    cFMSTeleoperated = 0x43, /**< Sent by FMS to switch robot mode to Teleop */
 };
 
 /**
@@ -45,10 +59,10 @@ QString FRC_2014::name() {
 }
 
 /**
- * Send FMS packets 2 times per second
+ * Send 10 FMS packets per second
  */
 int FRC_2014::fmsFrequency() {
-    return 2;
+    return 10;
 }
 
 /**
@@ -243,11 +257,53 @@ QByteArray FRC_2014::getRobotPacket() {
 }
 
 /**
- * \todo Implement this function
+ * Gets the team station and robot mode from the FMS
  */
 bool FRC_2014::interpretFMSPacket (const QByteArray& data) {
-    Q_UNUSED (data);
-    return false;
+    /* The packet is smaller than what it should be */
+    if (data.length() < 74) {
+        qWarning() << name() << "received an invalid FMS packet";
+        return false;
+    }
+
+    /* Read the parts of the packet that interest us */
+    DS_Byte robotmod = data.at (2);
+    DS_Byte alliance = data.at (3);
+    DS_Byte position = data.at (4);
+
+    /* Get the operation mode & enable status */
+    DS::ControlMode mode;
+    DS::EnableStatus enabled;
+    switch (robotmod) {
+    case (cFMSAutonomous):
+        enabled = DS::kDisabled;
+        mode = DS::kControlAutonomous;
+        break;
+    case (cFMSAutonomous | cEnabled):
+        enabled = DS::kEnabled;
+        mode = DS::kControlAutonomous;
+        break;
+    case (cFMSTeleoperated):
+        enabled = DS::kDisabled;
+        mode = DS::kControlTeleoperated;
+        break;
+    case (cFMSTeleoperated | cEnabled):
+        enabled = DS::kEnabled;
+        mode = DS::kControlTeleoperated;
+        break;
+    default:
+        enabled = DS::kDisabled;
+        mode = DS::kControlTeleoperated;
+        break;
+    }
+
+    /* Set robot mode and team station */
+    config()->updateEnabled (enabled);
+    config()->updateControlMode (mode);
+    config()->updateAlliance (getAlliance (alliance));
+    config()->updatePosition (getPosition (position));
+
+    return true;
 }
 
 /**
@@ -260,7 +316,7 @@ bool FRC_2014::interpretFMSPacket (const QByteArray& data) {
  *       the robot code is not running
  */
 bool FRC_2014::interpretRobotPacket (const QByteArray& data) {
-    /* The packet is smaller than it should be */
+    /* The packet is smaller than what it should be */
     if (data.length() < 1024) {
         qWarning() << name() << "received an invalid robot packet";
         return false;
@@ -414,4 +470,30 @@ QByteArray FRC_2014::getJoystickData() {
     }
 
     return data;
+}
+
+/**
+ * Gets the alliance from the received \a byte
+ */
+DS::Alliance FRC_2014::getAlliance (DS_Byte byte) {
+    if (byte == cAllianceBlue)
+        return DS::kAllianceBlue;
+
+    return DS::kAllianceRed;
+}
+
+/**
+ * Gets the position from the received \a byte
+ */
+DS::Position FRC_2014::getPosition (DS_Byte byte) {
+    if (byte == cPosition1)
+        return DS::kPosition1;
+
+    if (byte == cPosition2)
+        return DS::kPosition2;
+
+    if (byte == cPosition3)
+        return DS::kPosition3;
+
+    return DS::kPosition1;
 }

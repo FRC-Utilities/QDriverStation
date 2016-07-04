@@ -1,5 +1,14 @@
 # Changes
 
+### QDriverStation 16.07
+
+- Add some CLI options
+- Allow user to set custom radio & FMS IPs
+- Implement lookup loop
+- Improve handling of FMS packets
+- Minor improvements in code structure
+- Add code to interpret 2014 FMS packets
+
 ### QDriverStation 16.06.2
 
 - Minor UI improvements
