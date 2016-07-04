@@ -40,8 +40,8 @@
 
 /* Dashboard open commands */
 const QString LVD_COMMAND = "\"%1/FRC Dashboard/Dashboard.exe\"";
-const QString SFX_COMMAND = "java -jar \"%2/wpilib/tools/sfx.jar\"";
-const QString SBD_COMMAND = "java -jar \"%2/wpilib/tools/SmartDashboard.jar\"";
+const QString SFX_COMMAND = "java -jar \"%1/wpilib/tools/sfx.jar\"";
+const QString SBD_COMMAND = "java -jar \"%1/wpilib/tools/SmartDashboard.jar\"";
 
 /**
  * Configures the application to close the dashboard when it quits
