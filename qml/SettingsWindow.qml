@@ -36,8 +36,8 @@ Window {
     title: qsTr ("Settings")
     minimumWidth: Globals.scale (420)
     maximumWidth: Globals.scale (420)
-    minimumHeight: Globals.scale (302)
-    maximumHeight: Globals.scale (302)
+    minimumHeight: Globals.scale (340)
+    maximumHeight: Globals.scale (340)
     color: Globals.Colors.WindowBackground
 
     //
@@ -59,15 +59,13 @@ Window {
     // Applies the UI settings...
     //
     function apply() {
-        /* Set the placeholder */
-        customAddress.placeholder = DriverStation.defaultRobotAddress()
+        DriverStation.setCustomFMSAddress (fmsAddress.text)
+        DriverStation.setCustomRadioAddress (radioAddress.text)
+        DriverStation.setCustomRobotAddress (robotAddress.text)
 
-        /* Clear the custom robot address if needed */
-        if (!customAddressCheck.checked)
-            customAddress.text = ""
-
-        /* Apply the robot address */
-        DriverStation.setCustomRobotAddress (customAddress.text)
+        fmsAddress.placeholder = DriverStation.defaultFMSAddress()
+        radioAddress.placeholder = DriverStation.defaultRadioAddress()
+        robotAddress.placeholder = DriverStation.defaultRobotAddress()
     }
 
     //
@@ -91,7 +89,7 @@ Window {
         target: DriverStation
         onInitialized: apply()
         onProtocolChanged: apply()
-        onTeamChanged: customAddress.placeholder = DriverStation.defaultRobotAddress()
+        onTeamChanged: robotAddress.placeholder = DriverStation.defaultRobotAddress()
     }
 
     //
@@ -101,7 +99,7 @@ Window {
         category: "SettingsWindow"
         property alias x: window.x
         property alias y: window.y
-        property alias address: customAddress.text
+        property alias address: robotAddress.text
         property alias promptOnQuit: promptOnQuit.checked
         property alias checkForUpdates: checkForUpdates.checked
         property alias enableSoundEffects: enableSoundEffects.checked
@@ -131,7 +129,7 @@ Window {
                 //
                 Label {
                     font.bold: true
-                    text: qsTr ("Network Settings") + ":"
+                    text: qsTr ("Custom network addresses") + ":"
                 }
 
                 //
@@ -153,19 +151,38 @@ Window {
                     //
                     // Network settings checkbox & line edit
                     //
-                    ColumnLayout {
-                        spacing: Globals.spacing
+                    GridLayout {
+                        columns: 2
+                        rowSpacing: Globals.spacing
+                        columnSpacing: Globals.spacing
 
-                        Checkbox {
-                            id: customAddressCheck
-                            checked: customAddress.text.length > 0
-                            text: qsTr ("Use a custom robot address") + ":"
+                        Label {
+                            text: qsTr ("FMS") + ":"
                         }
 
                         LineEdit {
-                            id: customAddress
+                            id: fmsAddress
                             Layout.fillWidth: true
-                            enabled: customAddressCheck.checked
+                            placeholder: DriverStation.defaultFMSAddress()
+                        }
+
+                        Label {
+                            text: qsTr ("Radio") + ":"
+                        }
+
+                        LineEdit {
+                            id: radioAddress
+                            Layout.fillWidth: true
+                            placeholder: DriverStation.defaultRadioAddress()
+                        }
+
+                        Label {
+                            text: qsTr ("Robot") + ":"
+                        }
+
+                        LineEdit {
+                            id: robotAddress
+                            Layout.fillWidth: true
                             placeholder: DriverStation.defaultRobotAddress()
                         }
                     }

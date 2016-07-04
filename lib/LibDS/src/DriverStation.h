@@ -142,7 +142,7 @@ class DriverStation : public DS_Base {
     void setEnabled (EnableStatus statusChanged);
     void updateAxis (int id, int axis, qreal value);
     void updateButton (int id, int button, bool state);
-    void setCustomFMS_Address (const QString& address);
+    void setCustomFMSAddress   (const QString& address);
     void setCustomRadioAddress (const QString& address);
     void setCustomRobotAddress (const QString& address);
     void setOperationStatus (OperationStatus statusChanged);

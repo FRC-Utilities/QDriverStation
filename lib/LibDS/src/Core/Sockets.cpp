@@ -117,13 +117,14 @@ QHostAddress Sockets::robotAddress() const {
  * when the robot uses a mDNS address.
  */
 void Sockets::generalLookup() {
-    /* Get the driver station pointer */
+    /* Assign the driver station pointer */
     if (!m_driverStation)
         m_driverStation = DriverStation::getInstance();
 
-    if (m_driverStation->running() && !m_driverStation->isConnectedToFMS()) {
+
+    if (m_driverStation->running()) {
         /* Perform a FMS lookup */
-        if (m_fmsAddress.isNull())
+        if (m_fmsAddress.isNull()  && !m_driverStation->isConnectedToFMS())
             setFMSAddress (m_driverStation->fmsAddress());
 
         /* Perform a radio lookup */

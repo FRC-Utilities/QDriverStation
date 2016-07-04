@@ -88,6 +88,8 @@ void Dashboards::openDashboard (int dashboard) {
 #endif
     }
 
-    m_process.start (command, QIODevice::ReadOnly);
-    qDebug() << "Dashboard command set to:" << command.toStdString().c_str();
+    if (!command.isEmpty()) {
+        m_process.start (command, QIODevice::ReadOnly);
+        qDebug() << "Dashboard command set to:" << command.toStdString().c_str();
+    }
 }

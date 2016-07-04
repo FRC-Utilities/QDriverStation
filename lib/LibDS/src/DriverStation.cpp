@@ -1178,7 +1178,7 @@ void DriverStation::updateButton (int id, int button, bool state) {
  * instead of using the default FMS address specified by the current
  * protocol.
  */
-void DriverStation::setCustomFMS_Address (const QString& address) {
+void DriverStation::setCustomFMSAddress (const QString& address) {
     m_customFMSAddress = address;
     m_sockets->setFMSAddress (address);
 }
