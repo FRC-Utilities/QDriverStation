@@ -11,7 +11,6 @@
 
 #include <Core/DS_Base.h>
 
-class QTimer;
 class Sockets;
 class Watchdog;
 class Protocol;
@@ -153,6 +152,7 @@ class DriverStation : public DS_Base {
     void resetFMS();
     void resetRadio();
     void resetRobot();
+    void finishInit();
     void sendFMSPacket();
     void sendRadioPacket();
     void sendRobotPacket();

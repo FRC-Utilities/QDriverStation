@@ -29,7 +29,7 @@ class Sockets : public QObject {
     QHostAddress robotAddress() const;
 
   public slots:
-    void generalLookup();
+    void performLookup();
     void setFMSInputPort (int port);
     void setFMSOutputPort (int port);
     void setRadioInputPort (int port);

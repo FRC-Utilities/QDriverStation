@@ -79,6 +79,9 @@ DriverStation::DriverStation() {
     connect (m_sockets, SIGNAL (robotPacketReceived (QByteArray)),
              this,        SLOT (readRobotPacket     (QByteArray)));
 
+    /* Begin the lookup process when the app initializes the DS */
+    connect (this, SIGNAL (initialized()), m_sockets, SLOT (performLookup()));
+
     /* Sync DS signals with DS_Config signals */
     connect (config(), SIGNAL (allianceChanged (Alliance)),
              this,     SIGNAL (allianceChanged (Alliance)));
@@ -799,43 +802,15 @@ void DriverStation::init() {
     if (!m_init) {
         m_init = true;
 
-        /*
-         * These functions are normally called when a
-         * watchdog expires, this ensures operational safety
-         * and syncs the UI with the DS status
-         */
         resetFMS();
         resetRadio();
         resetRobot();
-
-        /* Begin the packet sending loops - even if no protocol is loaded */
         sendFMSPacket();
         sendRadioPacket();
         sendRobotPacket();
-
-        /* Begin the packet loss updater loop */
         updatePacketLoss();
 
-        /*
-         * We cannot perform a lookup in the constructor functions
-         * of the DriverStation or the Socket classes, because the
-         * lookup function requires the DS to be *fully* initialized
-         * (so that the getInstance() function works).
-         *
-         * If you call this function in the constructor, the application
-         * will most probably hang or crash. For your own good, don't
-         * do that!
-         */
-        m_sockets->generalLookup();
-
-        /* Set the DS status string on the UI */
-        emit statusChanged (generalStatus());
-
-        /*
-         * Some UI impelentations can benefit from this
-         * (e.g. by beeping when the application and the DS are ready)
-         */
-        DS_Schedule (100, this, SIGNAL (initialized()));
+        DS_Schedule (100, this, SLOT (finishInit()));
 
         qDebug() << "DS engine started!";
     }
@@ -1273,6 +1248,14 @@ void DriverStation::resetRobot() {
     config()->updateOperationStatus (kNormal);
     config()->robotLogger()->registerWatchdogTimeout();
 
+    emit statusChanged (generalStatus());
+}
+
+/**
+ * Notifies the UI that the DS has been initialized
+ */
+void DriverStation::finishInit() {
+    emit initialized();
     emit statusChanged (generalStatus());
 }
 
