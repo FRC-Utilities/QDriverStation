@@ -28,7 +28,6 @@ import "globals.js" as Globals
 
 ColumnLayout {
     spacing: Globals.spacing
-    Component.onCompleted: Globals.logInit ("About Tab")
 
     //
     // Built with Qt icon

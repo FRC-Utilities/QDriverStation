@@ -157,10 +157,7 @@ Window {
     //
     // Initialize the DS engine when the application starts
     //
-    Component.onCompleted: {
-        DriverStation.init()
-        Globals.logInit ("Main Window")
-    }
+    Component.onCompleted: DriverStation.init()
 
     Connections {
         target: DriverStation

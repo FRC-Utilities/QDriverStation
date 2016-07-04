@@ -154,9 +154,11 @@ class DriverStation : public DS_Base {
     void resetRobot();
     void finishInit();
     void sendFMSPacket();
+    void updateAddresses();
     void sendRadioPacket();
     void sendRobotPacket();
     void updatePacketLoss();
+    void updateAddresses (int unused);
     void readFMSPacket (const QByteArray& data);
     void readRadioPacket (const QByteArray& data);
     void readRobotPacket (const QByteArray& data);

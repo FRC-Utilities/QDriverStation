@@ -28,8 +28,6 @@ import "globals.js" as Globals
 
 RowLayout {
     spacing: Globals.spacing
-    Component.onCompleted: Globals.logInit ("Right Section")
-
     //
     // Contains the actual tab controls/buttons
     //

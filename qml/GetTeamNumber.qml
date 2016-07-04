@@ -70,7 +70,6 @@ Window {
     // Show the dialog if it is the first launch
     //
     Component.onCompleted: {
-        Globals.logInit ("GetTeamNumber Window")
         if (firstLaunch)
             show()
     }

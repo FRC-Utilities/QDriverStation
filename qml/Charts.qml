@@ -42,10 +42,7 @@ Item {
     //
     // Make sure that the "1 min" button is checked on start-up
     //
-    Component.onCompleted: {
-        oneMin.checked = true
-        Globals.logInit ("Charts Tab")
-    }
+    Component.onCompleted: oneMin.checked = true
 
     //
     // Displays all the widgets in a vertical layout

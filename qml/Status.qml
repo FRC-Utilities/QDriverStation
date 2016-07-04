@@ -117,10 +117,7 @@ ColumnLayout {
     //
     // Check if there is already a joystick connected to the computer
     //
-    Component.onCompleted: {
-        Globals.logInit ("Status Controls")
-        joysticksLed.checked = QJoysticks.count() > 0
-    }
+    Component.onCompleted:joysticksLed.checked = QJoysticks.count() > 0
 
     //
     // Update the joystick LED when a joystick is attached or removed

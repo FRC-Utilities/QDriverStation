@@ -28,7 +28,6 @@ import "globals.js" as Globals
 
 RowLayout {
     spacing: Globals.spacing
-    Component.onCompleted: Globals.logInit ("Diagnostics Tab")
 
     //
     // Update widgets according to DS events

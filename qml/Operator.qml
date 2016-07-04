@@ -53,10 +53,7 @@ RowLayout {
     //
     // Display PC information when we start
     //
-    Component.onCompleted: {
-        updatePCInformation()
-        Globals.logInit ("Operator Tab")
-    }
+    Component.onCompleted: updatePCInformation()
 
     //
     // Save the dock state and the selected alliance

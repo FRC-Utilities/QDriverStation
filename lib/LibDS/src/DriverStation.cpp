@@ -134,6 +134,10 @@ DriverStation::DriverStation() {
     connect (config(), SIGNAL (voltageStatusChanged (VoltageStatus)),
              this,     SIGNAL (voltageStatusChanged (VoltageStatus)));
 
+    /* Update the robot, radio & FMS IPs when the team number is changed */
+    connect (config(), SIGNAL (teamChanged (int)),
+             this,     SLOT   (updateAddresses (int)));
+
     /* Set default watchdog expiration times */
     m_fmsWatchdog->setExpirationTime (1000);
     m_radioWatchdog->setExpirationTime (1000);
@@ -986,11 +990,6 @@ void DriverStation::setProtocol (Protocol* protocol) {
         m_console->setInputPort (m_protocol->netconsoleInputPort());
         m_console->setOutputPort (m_protocol->netconsoleOutputPort());
 
-        /* Set protocol addresses */
-        m_sockets->setFMSAddress (fmsAddress());
-        m_sockets->setRadioAddress (radioAddress());
-        m_sockets->setRobotAddress (robotAddress());
-
         /* Update packet sender intervals */
         m_fmsInterval = 1000 / m_protocol->fmsFrequency();
         m_radioInterval = 1000 / m_protocol->radioFrequency();
@@ -1009,6 +1008,9 @@ void DriverStation::setProtocol (Protocol* protocol) {
         /* Update joystick config. to match protocol requirements */
         reconfigureJoysticks();
 
+        /* Set protocol addresses */
+        updateAddresses();
+
         /* Release the kraken */
         start();
         resetFMS();
@@ -1020,7 +1022,7 @@ void DriverStation::setProtocol (Protocol* protocol) {
         emit newMessage (CONSOLE_MESSAGE (tr ("DS: %1 initialized")
                                           .arg (m_protocol->name())));
 
-        /* We're back in business */
+        /* We're back in business motherfuckers! */
         qDebug() << "Protocol" << protocol->name() << "ready for use";
     }
 }
@@ -1155,7 +1157,7 @@ void DriverStation::updateButton (int id, int button, bool state) {
  */
 void DriverStation::setCustomFMSAddress (const QString& address) {
     m_customFMSAddress = address;
-    m_sockets->setFMSAddress (address);
+    m_sockets->setFMSAddress (fmsAddress());
 }
 
 /**
@@ -1165,7 +1167,7 @@ void DriverStation::setCustomFMSAddress (const QString& address) {
  */
 void DriverStation::setCustomRadioAddress (const QString& address) {
     m_customRadioAddress = address;
-    m_sockets->setRadioAddress (address);
+    m_sockets->setRadioAddress (radioAddress());
 }
 
 /**
@@ -1178,7 +1180,7 @@ void DriverStation::setCustomRadioAddress (const QString& address) {
  */
 void DriverStation::setCustomRobotAddress (const QString& address) {
     m_customRobotAddress = address;
-    m_sockets->setRobotAddress (customRobotAddress());
+    m_sockets->setRobotAddress (robotAddress());
 }
 
 /**
@@ -1271,6 +1273,16 @@ void DriverStation::sendFMSPacket() {
 }
 
 /**
+ * Ensures that the IP addresses are updated when the application changes the
+ * team number.
+ */
+void DriverStation::updateAddresses() {
+    m_sockets->setFMSAddress (fmsAddress());
+    m_sockets->setRadioAddress (radioAddress());
+    m_sockets->setRobotAddress (robotAddress());
+}
+
+/**
  * Generates and sends a new radio packet
  */
 void DriverStation::sendRadioPacket() {
@@ -1315,6 +1327,19 @@ void DriverStation::updatePacketLoss() {
     /* Update packet loss & schedule next calculation */
     m_packetLoss = static_cast<int> (loss);
     DS_Schedule (250, this, SLOT (updatePacketLoss()));
+}
+
+/**
+ * This overloaded function is called when the team number is changed
+ * (hence the \c int in the argument).
+ *
+ * As its name suggests, the input value is \a unused, this function was
+ * implemented to avoid possible errors in the Qt signal/slot system, while
+ * maintaining the functionality of the original \c updateAddresses() function
+ */
+void DriverStation::updateAddresses (int unused) {
+    Q_UNUSED (unused);
+    updateAddresses();
 }
 
 /**

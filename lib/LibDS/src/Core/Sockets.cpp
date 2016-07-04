@@ -387,7 +387,12 @@ void Sockets::setRobotSocketType (DS::SocketType type) {
  * broadcast the data.
  */
 void Sockets::setFMSAddress (const QString& address) {
-    setFMSAddress (QHostAddress (address));
+    QHostAddress ip = QHostAddress (address);
+
+    if (ip.isNull() && !address.isEmpty())
+        qDebug() << "FMS address" << address << "scheduled for lookup";
+
+    setFMSAddress (ip);
 }
 
 /**
@@ -396,7 +401,12 @@ void Sockets::setFMSAddress (const QString& address) {
  * broadcast the data.
  */
 void Sockets::setRadioAddress (const QString& address) {
-    setRadioAddress (QHostAddress (address));
+    QHostAddress ip = QHostAddress (address);
+
+    if (ip.isNull() && !address.isEmpty())
+        qDebug() << "FMS address" << address << "scheduled for lookup";
+
+    setRadioAddress (ip);
 }
 
 /**
@@ -405,7 +415,12 @@ void Sockets::setRadioAddress (const QString& address) {
  * broadcast the data.
  */
 void Sockets::setRobotAddress (const QString& address) {
-    setRobotAddress (QHostAddress (address));
+    QHostAddress ip = QHostAddress (address);
+
+    if (ip.isNull() && !address.isEmpty())
+        qDebug() << "Robot address" << address << "scheduled for lookup";
+
+    setRobotAddress (ip);
 }
 
 /**

@@ -42,25 +42,37 @@ RowLayout {
         property alias dashbaord: dashboard.currentIndex
     }
 
-    Component.onCompleted: {
-        Globals.logInit ("Preferences Tab")
-        cDashboard.openDashboard (dashboard.currentIndex)
-    }
+    //
+    // Open the dashboard on application launch
+    //
+    Component.onCompleted: cDashboard.openDashboard (dashboard.currentIndex)
 
+    //
+    // Update team number indicator/control if DS changes it
+    //
     Connections {
         target: DriverStation
         onTeamChanged: if (teamNumber.value !== team) teamNumber.value = team
     }
 
+    //
+    // Team number, dashboard & protocol selector
+    //
     ColumnLayout {
         spacing: Globals.scale (5)
         Layout.maximumWidth: parent.width * 0.5
 
+        //
+        // Team number label
+        //
         Label {
             font.bold: true
             text: qsTr ("Team Number") + ":"
         }
 
+        //
+        // Team number control
+        //
         Spinbox {
             id: teamNumber
             minimumValue: 0
@@ -70,11 +82,17 @@ RowLayout {
             onValueChanged: DriverStation.setTeam (value)
         }
 
+        //
+        // Dashboard label
+        //
         Label {
             font.bold: true
             text: qsTr ("Dashboard Type") + ":"
         }
 
+        //
+        // Dashboard selector
+        //
         Combobox {
             id: dashboard
             Layout.fillWidth: true
@@ -82,15 +100,24 @@ RowLayout {
             onCurrentIndexChanged: cDashboard.openDashboard (dashboard.currentIndex)
         }
 
+        //
+        // Vertical Spacer
+        //
         Item {
             Layout.fillHeight: true
         }
 
+        //
+        // Protocol label
+        //
         Label {
             font.bold: true
             text: qsTr ("Protocol") + ":"
         }
 
+        //
+        // Protocol selector
+        //
         Combobox {
             id: protocol
             Layout.fillWidth: true
@@ -99,20 +126,32 @@ RowLayout {
         }
     }
 
+    //
+    // Horizontal spacer
+    //
     Item {
         Layout.fillWidth: true
     }
 
+    //
+    // Practice timings
+    //
     ColumnLayout {
         Layout.fillWidth: true
         spacing: Globals.spacing
         Layout.maximumWidth: Globals.scale (150)
 
+        //
+        // Title label
+        //
         Label {
             font.bold: true
             text: qsTr ("Practice Timings") + ":"
         }
 
+        //
+        // Practice timings controls & labels
+        //
         GridLayout {
             columns: 2
             rowSpacing: Globals.scale (1)
@@ -123,6 +162,9 @@ RowLayout {
                 text: qsTr ("Countdown")
             }
 
+            //
+            // Countdown control
+            //
             Spinbox {
                 value: 5
                 id: countdown
@@ -136,6 +178,9 @@ RowLayout {
                 text: qsTr ("Autonomous")
             }
 
+            //
+            // Autonomous period
+            //
             Spinbox {
                 value: 15
                 id: autonomous
@@ -149,6 +194,9 @@ RowLayout {
                 text: qsTr ("Delay")
             }
 
+            //
+            // Delay timings
+            //
             Spinbox {
                 value: 1
                 id: delay
@@ -162,6 +210,9 @@ RowLayout {
                 text: qsTr ("Teleoperated")
             }
 
+            //
+            // Teleop period
+            //
             Spinbox {
                 value: 100
                 id: teleop
@@ -175,6 +226,9 @@ RowLayout {
                 text: qsTr ("End Game")
             }
 
+            //
+            // End game warning
+            //
             Spinbox {
                 value: 20
                 id: endGame
@@ -184,11 +238,17 @@ RowLayout {
             }
         }
 
+        //
+        // Put a vertical spacer to compact the controls
+        //
         Item {
             Layout.fillHeight: true
         }
     }
 
+    //
+    // Yet another horizontal spacer to keep things tidy
+    //
     Item {
         Layout.fillWidth: true
     }

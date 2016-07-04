@@ -78,7 +78,6 @@ Window {
     // Apply saved settings into QJoysticks
     //
     Component.onCompleted: {
-        Globals.logInit ("Virtual Joysticks Window")
         QJoysticks.setVirtualJoystickRange (spin.value / 100)
         QJoysticks.setVirtualJoystickEnabled (checkbox.checked)
     }
@@ -149,7 +148,7 @@ Window {
         //
         Spinbox {
             id: spin
-            value: 80
+            value: 100
             minimumValue: 0
             maximumValue: 100
             Layout.fillWidth: true

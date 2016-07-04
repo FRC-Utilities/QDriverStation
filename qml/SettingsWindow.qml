@@ -91,8 +91,6 @@ Window {
             cUpdater.setDownloaderEnabled (cUpdaterUrl, false)
             cUpdater.checkForUpdates (cUpdaterUrl)
         }
-
-        Globals.logInit ("Settings Window")
     }
 
     //
