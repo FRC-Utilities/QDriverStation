@@ -41,6 +41,22 @@ Window {
     color: Globals.Colors.WindowBackground
 
     //
+    // Used to obtain the placeholder of each custom IP box
+    //
+    function getPlaceholder (ip) {
+        return ip === "" ? qsTr ("Auto") : ip
+    }
+
+    //
+    // Changes the placeholder text of each custom IP box
+    //
+    function updatePlaceholders() {
+        fmsAddress.placeholder = getPlaceholder (DriverStation.defaultFMSAddress())
+        radioAddress.placeholder = getPlaceholder (DriverStation.defaultRadioAddress())
+        robotAddress.placeholder = getPlaceholder (DriverStation.defaultRobotAddress())
+    }
+
+    //
     // Default window position
     //
     x: (Screen.width - width) / 4
@@ -59,13 +75,10 @@ Window {
     // Applies the UI settings...
     //
     function apply() {
+        updatePlaceholders()
         DriverStation.setCustomFMSAddress (fmsAddress.text)
         DriverStation.setCustomRadioAddress (radioAddress.text)
         DriverStation.setCustomRobotAddress (robotAddress.text)
-
-        fmsAddress.placeholder = DriverStation.defaultFMSAddress()
-        radioAddress.placeholder = DriverStation.defaultRadioAddress()
-        robotAddress.placeholder = DriverStation.defaultRobotAddress()
     }
 
     //
@@ -89,7 +102,7 @@ Window {
         target: DriverStation
         onInitialized: apply()
         onProtocolChanged: apply()
-        onTeamChanged: robotAddress.placeholder = DriverStation.defaultRobotAddress()
+        onTeamChanged: updatePlaceholders()
     }
 
     //
@@ -163,7 +176,6 @@ Window {
                         LineEdit {
                             id: fmsAddress
                             Layout.fillWidth: true
-                            placeholder: DriverStation.defaultFMSAddress()
                         }
 
                         Label {
@@ -173,7 +185,6 @@ Window {
                         LineEdit {
                             id: radioAddress
                             Layout.fillWidth: true
-                            placeholder: DriverStation.defaultRadioAddress()
                         }
 
                         Label {
@@ -183,7 +194,6 @@ Window {
                         LineEdit {
                             id: robotAddress
                             Layout.fillWidth: true
-                            placeholder: DriverStation.defaultRobotAddress()
                         }
                     }
                 }

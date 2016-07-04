@@ -213,6 +213,10 @@ void Sockets::setRobotOutputPort (int port) {
  * Sends the given \a data to the FMS
  */
 void Sockets::sendToFMS (const QByteArray& data) {
+    /* Data is empty, why should we send it? */
+    if (data.isEmpty())
+        return;
+
     /* Send FMS data with TCP */
     if (m_tcpFmsSender)
         m_tcpFmsSender->write (data);
@@ -226,6 +230,10 @@ void Sockets::sendToFMS (const QByteArray& data) {
  * Sends the given \a data to the robot
  */
 void Sockets::sendToRobot (const QByteArray& data) {
+    /* Data is empty, why should we send it? */
+    if (data.isEmpty())
+        return;
+
     /* Send robot data with TCP */
     if (m_tcpRobotSender)
         m_tcpRobotSender->write (data);
@@ -239,6 +247,10 @@ void Sockets::sendToRobot (const QByteArray& data) {
  * Sends the given \a data to the radio
  */
 void Sockets::sendToRadio (const QByteArray& data) {
+    /* Data is empty, why should we send it? */
+    if (data.isEmpty())
+        return;
+
     /* Send radio data with TCP */
     if (m_tcpRadioSender)
         m_tcpRadioSender->write (data);

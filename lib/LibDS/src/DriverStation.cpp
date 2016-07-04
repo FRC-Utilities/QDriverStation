@@ -1260,10 +1260,11 @@ void DriverStation::finishInit() {
 }
 
 /**
- * Generates and sends a new FMS packet
+ * Generates and sends a new FMS packet only if we are already connected to
+ * the FMS
  */
 void DriverStation::sendFMSPacket() {
-    if (protocol() && running())
+    if (protocol() && running() && isConnectedToFMS())
         m_sockets->sendToFMS (protocol()->generateFMSPacket());
 
     DS_Schedule (m_fmsInterval, this, SLOT (sendFMSPacket()));

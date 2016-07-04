@@ -270,16 +270,14 @@ class Protocol {
 
     /**
      * Returns the IP address in which we should be able to find the FMS.
+     * Contrary to how the radio and the robot protocols work, we will not
+     * send FMS packets until we have received a packet from the FMS.
      *
-     * If the returned address is invalid, unresolved (e.g. mDNS) or empty,
-     * the Driver Station will lookup the address, while broadcasting the
-     * generated FMS packages until the lookup receives a response.
-     *
-     * The default value that this function returns is 10.0.100, which is taken from:
-     * https://wpilib.screenstepslive.com/s/4485/m/24193/l/319135-ip-networking-at-the-event
+     * The address is set to \a empty by default, the DS will set the appropiate
+     * FMS IP once it receives a packet from it.
      */
     virtual QString fmsAddress() {
-        return "10.0.100";
+        return "";
     }
 
     /**
