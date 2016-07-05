@@ -18,7 +18,12 @@
 // Ugly hacks to make the code more readable
 //------------------------------------------------------------------------------
 
-#define CERR                  stderr
+#if defined Q_OS_WIN
+#define COUT stdout
+#else
+#define COUT stderr
+#endif
+
 #define PRINT_FMT             "%-14s %-13s %-12s\n"
 #define PRINT(string)         QString(string).toLocal8Bit().constData()
 #define GET_DATE_TIME(format) QDateTime::currentDateTime().toString(format)
@@ -67,7 +72,7 @@ static void INIT_LOGGER() {
 
     /* Open the dump file */
     DUMP = fopen (fpath.toStdString().c_str(), "a+");
-    DUMP = !DUMP ? CERR : DUMP;
+    DUMP = !DUMP ? COUT : DUMP;
 
     /* Get app info */
     QString appN = qApp->applicationName();
@@ -211,7 +216,7 @@ void DS_MESSAGE_HANDLER (QtMsgType type, const QMessageLogContext& context,
 
     /* Write all logs to the dump file */
     fprintf (DUMP, PRINT_FMT, PRINT (time), PRINT (level), PRINT (data));
-    fprintf (CERR, PRINT_FMT, PRINT (time), PRINT (level), PRINT (data));
+    fprintf (COUT, PRINT_FMT, PRINT (time), PRINT (level), PRINT (data));
 
     /* Flush to write "instantly" */
     fflush (DUMP);
