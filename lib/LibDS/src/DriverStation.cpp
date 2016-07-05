@@ -1022,7 +1022,7 @@ void DriverStation::setProtocol (Protocol* protocol) {
         emit newMessage (CONSOLE_MESSAGE (tr ("DS: %1 initialized")
                                           .arg (m_protocol->name())));
 
-        /* We're back in business motherfuckers! */
+        /* We're back in business */
         qDebug() << "Protocol" << protocol->name() << "ready for use";
     }
 }
