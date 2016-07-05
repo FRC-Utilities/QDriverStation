@@ -1,7 +1,10 @@
 name: qdriverstation
 version: 16.07
 summary: Open source clone of the FRC Driver Station
-description: The QDriverStation is a cross-platform and open-source alternative to the FRC Driver Station. It supports the FRC 2009-2014 communication protocol and the FRC 2015-2016 protocol. Joystick input is handled via SDL, however, you can also operate your robot with a keyboard-based joystick.
+description: |
+  The QDriverStation is a cross-platform and open-source alternative to the FRC Driver Station. 
+  It supports the FRC 2009-2014 communication protocol and the FRC 2015-2016 protocol. 
+  Joystick input is handled via SDL, however, you can also operate your robot with a keyboard-based joystick.
 confinement: strict
 
 apps:
@@ -18,6 +21,7 @@ apps:
 parts:
   qdriverstation:
     plugin: qmake
+    qt-version: qt5
     source-type: git
     source: https://github.com/FRC-Utilities/QDriverStation.git
     build-packages:
@@ -29,9 +33,6 @@ parts:
       - qtmultimedia5-dev
       - qtdeclarative5-dev
       - qttools5-dev-tools
-    after: [qt5conf]
-  env:
-    plugin: nil
     stage-packages:
       - libsdl2-2.0-0
       - libqt5gui5
@@ -46,4 +47,4 @@ parts:
       - qml-module-qtquick-layouts
       - qml-module-qtquick-controls
       - qml-module-qt-labs-settings
-    after: [qdriverstation]
+    after: [qt5conf]
