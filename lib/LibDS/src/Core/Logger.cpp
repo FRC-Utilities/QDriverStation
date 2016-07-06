@@ -19,9 +19,9 @@
 //------------------------------------------------------------------------------
 
 #if defined Q_OS_WIN
-#define COUT stdout
+    #define COUT stdout
 #else
-#define COUT stderr
+    #define COUT stderr
 #endif
 
 #define PRINT_FMT             "%-14s %-13s %-12s\n"

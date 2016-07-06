@@ -23,6 +23,18 @@ void CONFIGURE_SOCKET (QAbstractSocket* socket) {
 }
 
 /**
+ * Returns the string used to display an IP in the console
+ */
+QString GET_CONSOLE_IP (const QHostAddress& address) {
+    QString ip = address.toString();
+
+    if (ip.isEmpty())
+        ip = "Auto";
+
+    return ip;
+}
+
+/**
  * Initializes the addresses, ports and sockets
  */
 Sockets::Sockets() {
@@ -429,7 +441,7 @@ void Sockets::setRobotAddress (const QString& address) {
 void Sockets::setFMSAddress (const QHostAddress& address) {
     if (m_fmsAddress != address) {
         m_fmsAddress = address;
-        qDebug() << "FMS Address set to" << address.toString();
+        qDebug() << "FMS Address set to" << GET_CONSOLE_IP (address);
     }
 }
 
@@ -439,7 +451,7 @@ void Sockets::setFMSAddress (const QHostAddress& address) {
 void Sockets::setRadioAddress (const QHostAddress& address) {
     if (m_radioAddress != address) {
         m_radioAddress = address;
-        qDebug() << "Radio Address set to" << address.toString();
+        qDebug() << "Radio Address set to" << GET_CONSOLE_IP (address);
     }
 }
 
@@ -449,7 +461,7 @@ void Sockets::setRadioAddress (const QHostAddress& address) {
 void Sockets::setRobotAddress (const QHostAddress& address) {
     if (m_robotAddress != address) {
         m_robotAddress = address;
-        qDebug() << "Robot Address set to" << address.toString();
+        qDebug() << "Robot Address set to" << GET_CONSOLE_IP (address);
     }
 }
 
