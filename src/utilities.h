@@ -23,6 +23,10 @@
 #ifndef _QDS_UTILITIES_H
 #define _QDS_UTILITIES_H
 
+#include <stdint.h>
+
+#include <utility>
+
 #include <QProcess>
 
 class Utilities : public QObject {
@@ -47,6 +51,9 @@ class Utilities : public QObject {
     void readConnectedToACProcess (int exit_code = 0);
 
   private:
+    std::pair<uint64_t, uint64_t> getCpuJiffies();
+    std::pair<uint64_t, uint64_t> m_pastCpuJiffies{0, 0};
+
     int m_cpuUsage;
     int m_batteryLevel;
     bool m_connectedToAC;

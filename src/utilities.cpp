@@ -26,6 +26,10 @@
 #include <QClipboard>
 #include <QApplication>
 
+#include <fstream>
+#include <regex>
+#include <string>
+
 //------------------------------------------------------------------------------
 // Windows hacks
 //------------------------------------------------------------------------------
@@ -56,9 +60,6 @@
 //------------------------------------------------------------------------------
 
 #if defined Q_OS_LINUX
-    static const QString CPU_CMD = "bash -c \"grep 'cpu ' /proc/stat | "
-    "awk '{usage=($2+$4)*100/($2+$4+$5)} "
-    "END {print usage}'\"";
     static const QString BTY_CMD = "bash -c \"upower -i "
     "$(upower -e | grep 'BAT') | "
     "grep -E 'state|to\\ full|percentage'\"";
@@ -161,9 +162,15 @@ void Utilities::updateCpuUsage() {
     PdhCollectQueryData (cpuQuery);
     PdhGetFormattedCounterValue (cpuTotal, PDH_FMT_DOUBLE, 0, &counterVal);
     m_cpuUsage = static_cast<int> (counterVal.doubleValue);
-#else
+#elif defined(Q_OS_MAC)
     m_cpuProcess.terminate();
     m_cpuProcess.start (CPU_CMD, QIODevice::ReadOnly);
+#elif defined(Q_OS_LINUX)
+    auto cpuJiffies = getCpuJiffies();
+
+    m_cpuUsage = (cpuJiffies.first - m_pastCpuJiffies.first) * 100 /
+                 (cpuJiffies.second - m_pastCpuJiffies.second);
+    m_pastCpuJiffies = cpuJiffies;
 #endif
 
     QTimer::singleShot (1000,
@@ -278,3 +285,20 @@ void Utilities::readConnectedToACProcess (int exit_code) {
 #endif
 }
 
+/**
+ * Reads the current count of CPU jiffies from /proc/stat and return a pair
+ * consisting of non-idle jiffies and total jiffies
+ */
+std::pair<uint64_t, uint64_t> Utilities::getCpuJiffies() {
+    std::ifstream in ("/proc/stat");
+    std::string line;
+    std::getline (in, line);
+
+    std::regex reg2 ("cpu  (\\d+) (\\d+) (\\d+) (\\d+) (\\d+) (\\d+) (\\d+) "
+                     "(\\d+) (\\d+) (\\d+)");
+    std::smatch match;
+    std::regex_match (line, match, reg2);
+    uint64_t nonIdleJiffies = std::stoi (match[1]) + std::stoi (match[3]);
+    uint64_t totalJiffies = nonIdleJiffies + std::stoi (match[4]);
+    return std::make_pair (nonIdleJiffies, totalJiffies);
+}
