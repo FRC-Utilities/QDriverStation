@@ -20,7 +20,7 @@ qdriverstation
 # Other build artifacts
 moc
 qrc
-
+.qmake.stash
 
 # The makefile--duh.
 Makefile
@@ -29,5 +29,6 @@ Makefile
 .idea
 
 QDriverStation.pro.user
+ui_Downloader.h
 
 *.DS_Store
