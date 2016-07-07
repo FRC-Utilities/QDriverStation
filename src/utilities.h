@@ -51,8 +51,10 @@ class Utilities : public QObject {
     void readConnectedToACProcess (int exit_code = 0);
 
   private:
+#if defined (Q_OS_LINUX)
     std::pair<uint64_t, uint64_t> getCpuJiffies();
     std::pair<uint64_t, uint64_t> m_pastCpuJiffies{0, 0};
+#endif
 
     int m_cpuUsage;
     int m_batteryLevel;

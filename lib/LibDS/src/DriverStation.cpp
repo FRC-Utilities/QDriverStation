@@ -1238,8 +1238,10 @@ void DriverStation::resetRadio() {
  * Called when the robot watchdog expires
  */
 void DriverStation::resetRobot() {
-    if (protocol())
+    if (protocol()) {
+        protocol()->resetLossCounter();
         protocol()->onRobotWatchdogExpired();
+    }
 
     config()->updateVoltage (0);
     config()->updateSimulated (false);
@@ -1306,26 +1308,22 @@ void DriverStation::sendRobotPacket() {
  * Calculates the current packet loss as a percent
  */
 void DriverStation::updatePacketLoss() {
-    qreal loss = 0;
+    qreal loss = 100;
     qreal sentPackets = 0;
     qreal recvPackets = 0;
 
     /* Protocol is valid, get the data from its counters */
     if (protocol()) {
-        recvPackets = protocol()->receivedRobotPackets();
+        recvPackets = protocol()->recvRobotPacketsSinceConnect();
         sentPackets = protocol()->sentRobotPacketsSinceConnect();
     }
 
-    /* We have received no packets, or we haven't sent a packet yet */
-    if (recvPackets <= 0 || sentPackets <= 0)
-        loss = 100;
-
-    /* Get the actual loss */
-    else
-        loss = (recvPackets / sentPackets) * 100;
+    /* Calculate packet loss */
+    if (recvPackets > 0 && recvPackets < sentPackets)
+        loss = (1 - (recvPackets / sentPackets)) * 100;
 
     /* Update packet loss & schedule next calculation */
-    m_packetLoss = static_cast<int> (loss);
+    m_packetLoss = qMax (1, static_cast<int> (loss));
     DS_Schedule (250, this, SLOT (updatePacketLoss()));
 }
 

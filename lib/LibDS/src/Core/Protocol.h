@@ -27,6 +27,8 @@ class Protocol {
         m_receivedFmsPackets = 0;
         m_receivedRadioPackets = 0;
         m_receivedRobotPackets = 0;
+
+        m_recvRobotPacketsSinceConnect = 0;
         m_sentRobotPacketsSinceConnect = 0;
     }
 
@@ -361,11 +363,21 @@ class Protocol {
      */
     void readRobotPacket (const QByteArray& data) {
         ++m_receivedRobotPackets;
+        ++m_recvRobotPacketsSinceConnect;
 
         if (interpretRobotPacket (data) && !config()->isConnectedToRobot()) {
-            m_sentRobotPacketsSinceConnect = 0;
+            resetLossCounter();
             config()->updateRobotCommStatus (DS::kCommsWorking);
         }
+    }
+
+    /**
+     * Ensures that the packet loss is calculated based on current values and
+     * not on previous robot packet loss data.
+     */
+    void resetLossCounter() {
+        m_recvRobotPacketsSinceConnect = 0;
+        m_sentRobotPacketsSinceConnect = 0;
     }
 
     /**
@@ -408,6 +420,17 @@ class Protocol {
      */
     int receivedRobotPackets() {
         return m_receivedRobotPackets;
+    }
+
+    /**
+     * Returns the number of packets received since robot connection.
+     * This is used to get an real-time packet loss percentage.
+     * If we use the \c receivedRobotPackets() to do that, we risk having
+     * an unreal packet-loss ratio, since we would take into account the
+     * number of packets received before a reset or something.
+     */
+    int recvRobotPacketsSinceConnect() {
+        return m_recvRobotPacketsSinceConnect;
     }
 
     /**
@@ -501,6 +524,7 @@ class Protocol {
     int m_receivedRadioPackets;
     int m_receivedRobotPackets;
 
+    int m_recvRobotPacketsSinceConnect;
     int m_sentRobotPacketsSinceConnect;
 };
 
