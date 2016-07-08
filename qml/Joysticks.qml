@@ -175,7 +175,7 @@ Item {
         Label {
             size: medium
             anchors.horizontalCenter: parent.horizontalCenter
-            text: qsTr ("You can also use the virtual joystick!")
+            text: qsTr ("You can also use the virtual joystick")
         }
 
         Button {
