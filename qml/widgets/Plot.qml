@@ -49,9 +49,9 @@ Rectangle {
     //
     // Display options
     //
-    property int value: 0
-    property int minimumValue: 0
-    property int maximumValue: 100
+    property double value: 0
+    property double minimumValue: 0
+    property double maximumValue: 100
 
     //
     // Emitted when the timer expires and a canvas repaint is done
