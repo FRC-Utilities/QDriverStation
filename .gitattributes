@@ -2,6 +2,7 @@
 doc/* linguist-documentation
 lib/*/doc/* linguist-documentation
 
-# Do not take into account deployment code & SDL headers
+# Do not take into account deployment code and library dependencies
 etc/* linguist-vendored
-lib/QJoysticks/lib/* linguist-vendored
+lib/*/etc/* linguist-vendored
+lib/*/lib/* linguist-vendored
