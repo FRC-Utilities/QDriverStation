@@ -1,3 +1,7 @@
+# Do not take into accout HTML and config. from Doxygen
 doc/* linguist-documentation
 lib/*/doc/* linguist-documentation
-lib/QJoysticks/lib/SDL/* linguist-vendored
+
+# Do not take into account deployment code & library code
+etc/* linguist-vendored
+lib/* linguist-vendored
