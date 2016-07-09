@@ -12,6 +12,9 @@
 #include <Core/Protocol.h>
 #include <Utilities/CRC32.h>
 
+/**
+ * \brief Implements the FRC 2009-2010 communication protocol
+ */
 class FRC_2014 : public Protocol {
   public:
     FRC_2014();

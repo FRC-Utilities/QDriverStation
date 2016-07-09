@@ -90,8 +90,7 @@ class DS : public QObject {
 
   public:
     /**
-     * @brief The ControlMode enum
-     * Represents the available control modes of the robot
+     * \brief Represents the available control modes of the robot
      */
     enum ControlMode {
         kControlTest,         /**< Dashboard controls individual actuators */
@@ -101,10 +100,7 @@ class DS : public QObject {
     SMART_ENUM (ControlMode)
 
     /**
-     * @brief The Alliance enum
-     * Represents the team alliance.
-     * The robot program may use this information to change its behavior
-     * (e.g adjust its sensors, change dashboard values, etc.)
+     * \brief Represents the team alliance.
      */
     enum Alliance {
         kAllianceRed,  /**< Set robot to red alliance */
@@ -113,9 +109,7 @@ class DS : public QObject {
     SMART_ENUM (Alliance)
 
     /**
-     * @brief The Position enum
-     * Represents the different team positions for each alliance.
-     * Again, the robot program may use this data to change its behavior.
+     * \brief Represents the different team positions for each alliance.
      */
     enum Position {
         kPosition1, /**< Position 1, regardless of alliance */
@@ -125,9 +119,7 @@ class DS : public QObject {
     SMART_ENUM (Position)
 
     /**
-     * @brief The CommStatus enum
-     * Represents the communication status between the client and the robot or
-     * the client and the radio.
+     * \brief Represents the communication status between the client and a target
      */
     enum CommStatus {
         kCommsWorking, /**< Communications with target have been established */
@@ -136,9 +128,7 @@ class DS : public QObject {
     SMART_ENUM (CommStatus)
 
     /**
-     * @brief The CodeStatus enum
-     * Represents the status of the robot code. The DS is only interested if
-     * the code is running or not (in order to be able to operate the robot).
+     * \brief Represents the status of the robot code.
      */
     enum CodeStatus {
         kCodeRunning, /**< Robot code is operational */
@@ -147,8 +137,7 @@ class DS : public QObject {
     SMART_ENUM (CodeStatus)
 
     /**
-     * @brief The EnableStatus enum
-     * Represents the enabled state of the robot.
+     * \brief Represents the enabled state of the robot.
      */
     enum EnableStatus {
         kEnabled,  /**< Robot is enabled */
@@ -157,8 +146,7 @@ class DS : public QObject {
     SMART_ENUM (EnableStatus)
 
     /**
-     * @brief the OperationStatus enum
-     * Represents the operation status of the robot.
+     * \brief Represents the operation status of the robot.
      */
     enum OperationStatus {
         kNormal,        /**< Robot program operates */
@@ -167,8 +155,7 @@ class DS : public QObject {
     SMART_ENUM (OperationStatus)
 
     /**
-     * @brief the VoltageStatus enum
-     * Represents the status of the robot power supply.
+     * \brief Represents the status of the robot power supply.
      * When the battery level is low or there are too many power spikes,
      * the robot may report a voltage brownout.
      */
@@ -179,7 +166,7 @@ class DS : public QObject {
     SMART_ENUM (VoltageStatus)
 
     /**
-     * Represents the socket types that can be used by the DS modules
+     * \brief Represents the socket types that can be used by the DS modules
      */
     enum SocketType {
         kSocketTypeUDP, /**< Represents a UDP socket */
@@ -188,23 +175,22 @@ class DS : public QObject {
     SMART_ENUM (SocketType)
 
     /**
-     * Represents a joystick and its respective properties
+     * \brief Represents a joystick and its respective properties
      */
     struct Joystick {
-        int numAxes = 0;
-        int numPOVs = 0;
-        int numButtons = 0;
-        int realNumAxes = 0;
-        int realNumPOVs = 0;
-        int realNumButtons = 0;
-
-        int* povs;
-        qreal* axes;
-        bool* buttons;
+        int* povs;              /**< Holds the POV angles array */
+        qreal* axes;            /**< Holds the axis values array */
+        bool* buttons;          /**< Holds the button states array */
+        int numAxes = 0;        /**< Holds the number of axes used by the DS */
+        int numPOVs = 0;        /**< Holds the number of POVs used by the DS */
+        int numButtons = 0;     /**< Holds the number of buttons used by the DS */
+        int realNumAxes = 0;    /**< Holds the number of axes of the joystick */
+        int realNumPOVs = 0;    /**< Holds the number of POVs of the joystick */
+        int realNumButtons = 0; /**< Holds the number of buttons of the joystick */
     };
 
     /**
-     * Returns a calculated IP address based on the team address.
+     * \brief Returns a calculated IP address based on the team address.
      *
      * For example:
      *    - \c getStaticIp ( 10, 3794, 1) would return \c 10.37.94.1
@@ -239,7 +225,7 @@ class DS : public QObject {
     }
 
     /**
-     * Returns the current timezone as a string
+     * \brief Returns the current timezone as a string
      */
     static inline QString timezone() {
         switch (QDateTime::currentDateTime().offsetFromUtc() / 3600) {
@@ -321,7 +307,7 @@ class DS : public QObject {
     }
 
     /**
-     * Reads the datagrams received by the given UDP \a socket
+     * \brief Reads the datagrams received by the given UDP \a socket
      */
     static inline QByteArray readSocket (QUdpSocket* socket) {
         QByteArray data;
@@ -337,7 +323,7 @@ class DS : public QObject {
     }
 
     /**
-     * Reads the data received by the given TCP \a socket
+     * \brief Reads the data received by the given TCP \a socket
      */
     static inline QByteArray readSocket (QTcpSocket* socket) {
         if (socket)

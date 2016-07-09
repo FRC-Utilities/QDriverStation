@@ -11,6 +11,9 @@
 
 #include <Protocols/FRC_2015.h>
 
+/**
+ * \brief Same as \c FRC_2015, but with different robot address
+ */
 class FRC_2016 : public FRC_2015 {
   public:
     virtual QString name();

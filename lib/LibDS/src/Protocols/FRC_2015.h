@@ -12,6 +12,9 @@
 #include <QTime>
 #include <Core/Protocol.h>
 
+/**
+ * \brief Implements the FRC 2015-2019 communication protocol
+ */
 class FRC_2015 : public Protocol {
   public:
     FRC_2015();

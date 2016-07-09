@@ -82,7 +82,7 @@ enum Robot_Data {
 };
 
 /**
- * Holds a battery voltage and does everything needed to encode/decode it
+ * \brief Holds a battery voltage bytes and resultant \c float
  */
 struct BatteryVoltage {
     qreal voltage;
