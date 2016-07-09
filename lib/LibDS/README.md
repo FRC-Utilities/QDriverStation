@@ -1,7 +1,7 @@
 ![Logo](etc/logo.png)
 
-[![Build Status](https://travis-ci.org/FRC-Utilities/LibDS.svg?branch=master)](https://travis-ci.org/WinT-3794/LibDS)
-[![Donate button](https://img.shields.io/badge/bitcoin-donate-brightgreen.svg)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
+[![Build Status](https://img.shields.io/travis/FRC-Utilities/LibDS.svg?style=flat-square)](https://travis-ci.org/WinT-3794/LibDS)
+[![Donate button](https://img.shields.io/badge/bitcoin-donate-brightgreen.svg?style=flat-square)](https://blockchain.info/address/1K85yLxjuqUmhkjP839R7C23XFhSxrefMx "Donate once-off to this project using BitCoin")
 
 The DriverStation library allows you to connect and manage a robot easily by providing an abstraction layer between an application and the network comununications between the robot and the host computer.
 
@@ -9,7 +9,7 @@ The library is written in C++ and the Qt framework, allowing it to be used in ma
 
 The QDriverStation and LibDS have received a lot of support from users and developers like you. To see a complete list of the contributors to these projects, click [here](https://github.com/FRC-Utilities/QDriverStation/blob/master/CONTRIBUTORS.md).
 
-You can find the documentation of the LibDS [here](https://qdriverstation.sf.net/documentation/libds/).
+Online documentation can be found [here](https://qdriverstation.sf.net/documentation/libds/).
 
 ### Project sections
 
