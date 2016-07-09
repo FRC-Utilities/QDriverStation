@@ -92,27 +92,74 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
+<p>Represents a joystick rumble request.  
+ <a href="../../df/d56/struct_q_joystick_rumble.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="../../df/d58/_joysticks_common_8h_source.html">JoysticksCommon.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:abde9faadc2c8c73c7709fd193ec12c1e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abde9faadc2c8c73c7709fd193ec12c1e"></a>
-uint&#160;</td><td class="memItemRight" valign="bottom"><b>length</b></td></tr>
+<tr class="memitem:abde9faadc2c8c73c7709fd193ec12c1e"><td class="memItemLeft" align="right" valign="top">uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d56/struct_q_joystick_rumble.html#abde9faadc2c8c73c7709fd193ec12c1e">length</a></td></tr>
 <tr class="separator:abde9faadc2c8c73c7709fd193ec12c1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a7b1dff46e5135fd9504eb7579a5e91"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a7b1dff46e5135fd9504eb7579a5e91"></a>
-qreal&#160;</td><td class="memItemRight" valign="bottom"><b>strength</b></td></tr>
+<tr class="memitem:a8a7b1dff46e5135fd9504eb7579a5e91"><td class="memItemLeft" align="right" valign="top">qreal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d56/struct_q_joystick_rumble.html#a8a7b1dff46e5135fd9504eb7579a5e91">strength</a></td></tr>
 <tr class="separator:a8a7b1dff46e5135fd9504eb7579a5e91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f7a110e87e6e9ff22fca34a631cfb2e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4f7a110e87e6e9ff22fca34a631cfb2e"></a>
-<a class="el" href="../../d5/dcc/struct_q_joystick_device.html">QJoystickDevice</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>joystick</b></td></tr>
+<tr class="memitem:a4f7a110e87e6e9ff22fca34a631cfb2e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/dcc/struct_q_joystick_device.html">QJoystickDevice</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d56/struct_q_joystick_rumble.html#a4f7a110e87e6e9ff22fca34a631cfb2e">joystick</a></td></tr>
 <tr class="separator:a4f7a110e87e6e9ff22fca34a631cfb2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Represents a joystick rumble request. This structure contains:</p><ul>
+<div class="textblock"><p>Represents a joystick rumble request. </p>
+<p>This structure contains:</p><ul>
 <li>A pointer to the joystick that should be rumbled</li>
 <li>The length (in milliseconds) of the rumble effect.</li>
 <li>The strength of the effect (from 0 to 1) </li>
 </ul>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a4f7a110e87e6e9ff22fca34a631cfb2e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d5/dcc/struct_q_joystick_device.html">QJoystickDevice</a>* QJoystickRumble::joystick</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The pointer to the target joystick </p>
+
+<p>Referenced by <a class="el" href="../../d9/df8/class_s_d_l___joysticks.html#a0817af463d8b74b6f8a128ab0b756617">SDL_Joysticks::rumble()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abde9faadc2c8c73c7709fd193ec12c1e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint QJoystickRumble::length</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The duration of the effect </p>
+
+<p>Referenced by <a class="el" href="../../d9/df8/class_s_d_l___joysticks.html#a0817af463d8b74b6f8a128ab0b756617">SDL_Joysticks::rumble()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8a7b1dff46e5135fd9504eb7579a5e91"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">qreal QJoystickRumble::strength</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Strength of the effect (0 to 1) </p>
+
+<p>Referenced by <a class="el" href="../../d9/df8/class_s_d_l___joysticks.html#a0817af463d8b74b6f8a128ab0b756617">SDL_Joysticks::rumble()</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="../../df/d58/_joysticks_common_8h_source.html">JoysticksCommon.h</a></li>
 </ul>
 </div><!-- contents -->

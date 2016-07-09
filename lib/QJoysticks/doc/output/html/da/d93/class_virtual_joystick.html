@@ -94,6 +94,11 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">VirtualJoystick Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Translates keyboard input to joystick input.  
+ <a href="../../da/d93/class_virtual_joystick.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d6/d7c/_virtual_joystick_8h_source.html">VirtualJoystick.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for VirtualJoystick:</div>
 <div class="dyncontent">
@@ -129,8 +134,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>buttonEvent</b> (cons
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa9a457d7e482bf67bbafec32994f0b10"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d93/class_virtual_joystick.html#aa9a457d7e482bf67bbafec32994f0b10">VirtualJoystick</a> ()</td></tr>
-<tr class="separator:aa9a457d7e482bf67bbafec32994f0b10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3201442dbdaeac06c8180377309ed154"><td class="memItemLeft" align="right" valign="top">qreal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d93/class_virtual_joystick.html#a3201442dbdaeac06c8180377309ed154">axisRange</a> () const </td></tr>
 <tr class="separator:a3201442dbdaeac06c8180377309ed154"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e1bff87282771b23b2f51aeab2f21a4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d93/class_virtual_joystick.html#a4e1bff87282771b23b2f51aeab2f21a4">joystickEnabled</a> () const </td></tr>
@@ -144,33 +147,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:ad9d85107d01219889064422a784d5c6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This class implements a virtual joystick device that uses the computer's keyboard as means to get the axis, button and POV values of the joystick. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aa9a457d7e482bf67bbafec32994f0b10"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">VirtualJoystick::VirtualJoystick </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Initializes the joystick and installs the global event filer to capture keyboard events anywhere in the application. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+<div class="textblock"><p>Translates keyboard input to joystick input. </p>
+<p>This class implements a virtual joystick device that uses the computer's keyboard as means to get the axis, button and POV values of the joystick. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a3201442dbdaeac06c8180377309ed154"></a>
 <div class="memitem">
 <div class="memproto">
@@ -313,7 +292,7 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Enables or disables the virtual joystick device. </p>
 
-<p>References <a class="el" href="../../da/d93/class_virtual_joystick.html#a3201442dbdaeac06c8180377309ed154">axisRange()</a>, <a class="el" href="../../da/d93/class_virtual_joystick.html#a34a56116049438a5c1fbd3886726f037">joystick()</a>, and <a class="el" href="../../da/d93/class_virtual_joystick.html#a4e1bff87282771b23b2f51aeab2f21a4">joystickEnabled()</a>.</p>
+<p>References <a class="el" href="../../dc/d22/struct_q_joystick_axis_event.html#ab27e65287e8cd45c5d815a7601d038c5">QJoystickAxisEvent::axis</a>, <a class="el" href="../../da/d93/class_virtual_joystick.html#a3201442dbdaeac06c8180377309ed154">axisRange()</a>, <a class="el" href="../../d4/d74/struct_q_joystick_button_event.html#a0b53a31e37287a605b3d2caa1c7ecb29">QJoystickButtonEvent::button</a>, <a class="el" href="../../da/d93/class_virtual_joystick.html#a34a56116049438a5c1fbd3886726f037">joystick()</a>, <a class="el" href="../../da/d93/class_virtual_joystick.html#a4e1bff87282771b23b2f51aeab2f21a4">joystickEnabled()</a>, and <a class="el" href="../../d3/d5c/struct_q_joystick_p_o_v_event.html#a021def038c4be20e09b26a118e8c2464">QJoystickPOVEvent::pov</a>.</p>
 
 <p>Referenced by <a class="el" href="../../df/df9/class_q_joysticks.html#a9aa53b1761048c15398be369cd229b7e">QJoysticks::setVirtualJoystickEnabled()</a>.</p>
 
@@ -340,8 +319,10 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Sets the ID of the virtual joystick device. The <code><a class="el" href="../../df/df9/class_q_joysticks.html">QJoysticks</a></code> will automatically change the <em>ID</em> of the virtual joystick when it scans for new joysticks.</p>
+<p>Sets the ID of the virtual joystick device. The <code><a class="el" href="../../df/df9/class_q_joysticks.html" title="Manages the input systems and communicates them with the application. ">QJoysticks</a></code> will automatically change the <em>ID</em> of the virtual joystick when it scans for new joysticks.</p>
 <p>The virtual joystick will ALWAYS be the last joystick to be registered. </p>
+
+<p>References <a class="el" href="../../d5/dcc/struct_q_joystick_device.html#a77fdca9a6e30ef69eddbfb8e725d706a">QJoystickDevice::id</a>.</p>
 
 <p>Referenced by <a class="el" href="../../df/df9/class_q_joysticks.html#ad46540bb96c23bef9dfc6284aee6e180">QJoysticks::updateInterfaces()</a>.</p>
 

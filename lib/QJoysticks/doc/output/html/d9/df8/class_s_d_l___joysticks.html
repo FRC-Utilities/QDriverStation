@@ -93,6 +93,11 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">SDL_Joysticks Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Translates SDL events into <code><a class="el" href="../../df/df9/class_q_joysticks.html" title="Manages the input systems and communicates them with the application. ">QJoysticks</a></code> events.  
+ <a href="../../d9/df8/class_s_d_l___joysticks.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d2/db5/_s_d_l___joysticks_8h_source.html">SDL_Joysticks.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for SDL_Joysticks:</div>
 <div class="dyncontent">
@@ -130,9 +135,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af1c923a52a0124a9b32b74f2062b9a17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This class is in charge of managing and operating real joysticks through the SDL API. The implementation procedure is the same for every operating system.</p>
+<div class="textblock"><p>Translates SDL events into <code><a class="el" href="../../df/df9/class_q_joysticks.html" title="Manages the input systems and communicates them with the application. ">QJoysticks</a></code> events. </p>
+<p>This class is in charge of managing and operating real joysticks through the SDL API. The implementation procedure is the same for every operating system.</p>
 <p>The only thing that differs from each operating system is the backup mapping applied in the case that we do not know what mapping to apply to a joystick.</p>
-<p>The joystick values are refreshed every 20 milliseconds through an event loop. </p>
+<dl class="section note"><dt>Note</dt><dd>The joystick values are refreshed every 20 milliseconds through a simple event loop. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ac0930e4bab06bd2126ecc4947063bf67"></a>
 <div class="memitem">
@@ -154,7 +160,7 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Load a different generic/backup mapping for each operating system. Initializes SDL, loads the generic mapping and loads the controller mappings database file into the SDL system. </p>
+<p>Load a different generic/backup mapping for each operating system. </p>
 
 </div>
 </div>
@@ -197,6 +203,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Based on the data contained in the <em>request</em>, this function will instruct the appropiate joystick to rumble for </p>
+
+<p>References <a class="el" href="../../dc/d22/struct_q_joystick_axis_event.html#ab27e65287e8cd45c5d815a7601d038c5">QJoystickAxisEvent::axis</a>, <a class="el" href="../../d5/dcc/struct_q_joystick_device.html#a484aa9ef817012b2e151f6cb12bc0a08">QJoystickDevice::blacklisted</a>, <a class="el" href="../../d4/d74/struct_q_joystick_button_event.html#a0b53a31e37287a605b3d2caa1c7ecb29">QJoystickButtonEvent::button</a>, <a class="el" href="../../d5/dcc/struct_q_joystick_device.html#a77fdca9a6e30ef69eddbfb8e725d706a">QJoystickDevice::id</a>, <a class="el" href="../../df/d56/struct_q_joystick_rumble.html#a4f7a110e87e6e9ff22fca34a631cfb2e">QJoystickRumble::joystick</a>, <a class="el" href="../../df/d56/struct_q_joystick_rumble.html#abde9faadc2c8c73c7709fd193ec12c1e">QJoystickRumble::length</a>, <a class="el" href="../../d5/dcc/struct_q_joystick_device.html#abc862e4add9e46d5126b6b5bee78b7af">QJoystickDevice::name</a>, <a class="el" href="../../d5/dcc/struct_q_joystick_device.html#afcdb1f8f0e2ac8aab631a97c818b16a4">QJoystickDevice::numAxes</a>, <a class="el" href="../../d5/dcc/struct_q_joystick_device.html#ad972d8e1406fbf968751293ca2303f5b">QJoystickDevice::numButtons</a>, <a class="el" href="../../d5/dcc/struct_q_joystick_device.html#abdbb6c26f5656fccb2cd3afe442005e7">QJoystickDevice::numPOVs</a>, <a class="el" href="../../d3/d5c/struct_q_joystick_p_o_v_event.html#a021def038c4be20e09b26a118e8c2464">QJoystickPOVEvent::pov</a>, and <a class="el" href="../../df/d56/struct_q_joystick_rumble.html#a8a7b1dff46e5135fd9504eb7579a5e91">QJoystickRumble::strength</a>.</p>
 
 </div>
 </div>

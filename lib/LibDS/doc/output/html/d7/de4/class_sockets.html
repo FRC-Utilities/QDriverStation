@@ -93,6 +93,11 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">Sockets Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Sends and receives data from the FMS, radio and robot targets.  
+ <a href="../../d7/de4/class_sockets.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d2/dc5/_sockets_8h_source.html">Sockets.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Sockets:</div>
 <div class="dyncontent">
@@ -157,10 +162,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>robotPacketReceived</
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a775b622ccb93825e12ef8beaea865ec1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/de4/class_sockets.html#a775b622ccb93825e12ef8beaea865ec1">Sockets</a> ()</td></tr>
-<tr class="separator:a775b622ccb93825e12ef8beaea865ec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0d9fb13a491492359abe3b42bc8ad21"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/de4/class_sockets.html#ad0d9fb13a491492359abe3b42bc8ad21">~Sockets</a> ()</td></tr>
-<tr class="separator:ad0d9fb13a491492359abe3b42bc8ad21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cecff1036ddbdf8128f6d41538f3c17"><td class="memItemLeft" align="right" valign="top">QHostAddress&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/de4/class_sockets.html#a0cecff1036ddbdf8128f6d41538f3c17">fmsAddress</a> () const </td></tr>
 <tr class="separator:a0cecff1036ddbdf8128f6d41538f3c17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb99f546ddaa32e1bef8086859512fe2"><td class="memItemLeft" align="right" valign="top">QHostAddress&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/de4/class_sockets.html#abb99f546ddaa32e1bef8086859512fe2">radioAddress</a> () const </td></tr>
@@ -168,40 +169,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a542eb13286ae5ad3e04dee47e0e3bd3e"><td class="memItemLeft" align="right" valign="top">QHostAddress&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/de4/class_sockets.html#a542eb13286ae5ad3e04dee47e0e3bd3e">robotAddress</a> () const </td></tr>
 <tr class="separator:a542eb13286ae5ad3e04dee47e0e3bd3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a775b622ccb93825e12ef8beaea865ec1"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Sockets::Sockets </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Initializes the addresses, ports and sockets </p>
-
-</div>
-</div>
-<a class="anchor" id="ad0d9fb13a491492359abe3b42bc8ad21"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Sockets::~Sockets </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Deletes all the sockets </p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Sends and receives data from the FMS, radio and robot targets. </p>
+<p>The <code><a class="el" href="../../d7/de4/class_sockets.html" title="Sends and receives data from the FMS, radio and robot targets. ">Sockets</a></code> class is in charge of sending and receiving data between the computer and the:</p><ul>
+<li>FMS (UDP or TCP)</li>
+<li>Radio (UDP or TCP)</li>
+<li>Robot (UDP or TCP)</li>
+</ul>
+<p>This class also performs the host lookup processes for each target if it is required (for example, when using mDNS targets). As a rule of thumb, this class will broadcast generated packets if we do not know the target IP.</p>
+<p>This class is controlled directly by the <code><a class="el" href="../../d0/ddd/class_driver_station.html" title="Exposes the functionality of the LibDS to the application. ">DriverStation</a></code>, which acts as a man-in-the-middle between the loaded <code><a class="el" href="../../d6/dcc/class_protocol.html" title="Base class for implementing communication protocols. ">Protocol</a></code> and the <code><a class="el" href="../../d7/de4/class_sockets.html" title="Sends and receives data from the FMS, radio and robot targets. ">Sockets</a></code> class. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a0cecff1036ddbdf8128f6d41538f3c17"></a>
 <div class="memitem">
 <div class="memproto">
@@ -240,7 +217,7 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>If any of the IPs used during the communications is not known, this function will ensure that the <a class="el" href="../../dd/d26/class_d_s.html">DS</a> performs a lookup periodically until all addresses are known.</p>
+<p>If any of the IPs used during the communications is not known, this function will ensure that the <a class="el" href="../../dd/d26/class_d_s.html" title="Defines the data types shared between the modules of the LibDS. ">DS</a> performs a lookup periodically until all addresses are known.</p>
 <p>This is especially useful when we are dealing with dynamic IPs, such as when the robot uses a mDNS address. </p>
 
 <p>References <a class="el" href="../../d0/ddd/class_driver_station.html#aa4f3f032f7163f9e8be7bbf0da5147f1">DriverStation::fmsAddress()</a>, <a class="el" href="../../d0/ddd/class_driver_station.html#a8cd2eeed0ee9ccf774287d656c0d5523">DriverStation::getInstance()</a>, <a class="el" href="../../d0/ddd/class_driver_station.html#a4619145e1e57e1a2a0dbad14b6b1d808">DriverStation::isConnectedToFMS()</a>, <a class="el" href="../../d0/ddd/class_driver_station.html#ae58e6a09ecf62cb27f030974d1fcf570">DriverStation::isConnectedToRadio()</a>, <a class="el" href="../../d0/ddd/class_driver_station.html#a92a9ed1c2e26b02d61a1d4e5c3e96057">DriverStation::isConnectedToRobot()</a>, <a class="el" href="../../d0/ddd/class_driver_station.html#a790cb4ce002a19997bad4b4ecc2784b0">DriverStation::radioAddress()</a>, and <a class="el" href="../../d0/ddd/class_driver_station.html#a6f7ac900ddc36323c0fe4da84321cd23">DriverStation::robotAddress()</a>.</p>

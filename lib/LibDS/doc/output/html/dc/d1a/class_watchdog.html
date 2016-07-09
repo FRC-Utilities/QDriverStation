@@ -93,6 +93,11 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">Watchdog Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Implements a simple watchdog used to reset comms. when needed.  
+ <a href="../../dc/d1a/class_watchdog.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d5/d31/_watchdog_8h_source.html">Watchdog.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Watchdog:</div>
 <div class="dyncontent">
@@ -121,7 +126,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3952c66a14d6cbce9bf6c83206dbc676"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The <code><a class="el" href="../../dc/d1a/class_watchdog.html">Watchdog</a></code> class implements a simple software watchdog with the help of the <code>QTimer</code> object.</p>
+<div class="textblock"><p>Implements a simple watchdog used to reset comms. when needed. </p>
+<p>The <code><a class="el" href="../../dc/d1a/class_watchdog.html" title="Implements a simple watchdog used to reset comms. when needed. ">Watchdog</a></code> class implements a simple software watchdog with the help of the <code>QTimer</code> object.</p>
 <p>During normal operation, the program periodically resets the watchdog timer to prevent it from expiring. If, due to an error, the program fails to reset or feed the watchdog, it shall expire and emit the appropiate signals.</p>
 <p>The expiration signal is then received by the current protocol, which in turn will reset itself and try to re-establish communications with the robot controller and the FMS. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
@@ -196,7 +202,7 @@ Public Member Functions</h2></td></tr>
 
 <p>References <a class="el" href="../../dc/d1a/class_watchdog.html#ad64f941736836164bf9049ead5ca31b2">reset()</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d0/ddd/class_driver_station.html#a343945cc9bbf870e0ada94b47f3fec92">DriverStation::DriverStation()</a>, and <a class="el" href="../../d0/ddd/class_driver_station.html#ac1b7682c79c7f686eb5e31ed74960dd5">DriverStation::setProtocol()</a>.</p>
+<p>Referenced by <a class="el" href="../../d0/ddd/class_driver_station.html#ac1b7682c79c7f686eb5e31ed74960dd5">DriverStation::setProtocol()</a>.</p>
 
 </div>
 </div>

@@ -87,12 +87,16 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
   <div class="summary">
 <a href="#pub-slots">Public Slots</a> &#124;
 <a href="#signals">Signals</a> &#124;
-<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="../../d6/dad/class_net_console-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">NetConsole Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Receives and sends broadcasted messages through the LAN.  
+ <a href="../../da/dde/class_net_console.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d8/d52/_net_console_8h_source.html">NetConsole.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for NetConsole:</div>
 <div class="dyncontent">
@@ -116,42 +120,11 @@ Signals</h2></td></tr>
 <tr class="memitem:a1c7d9166183b9c0155273eee58466438"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c7d9166183b9c0155273eee58466438"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>newMessage</b> (const QString &amp;message)</td></tr>
 <tr class="separator:a1c7d9166183b9c0155273eee58466438"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:ab6744d347c6bf967a2e9f14db36664a9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dde/class_net_console.html#ab6744d347c6bf967a2e9f14db36664a9">NetConsole</a> ()</td></tr>
-<tr class="separator:ab6744d347c6bf967a2e9f14db36664a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The <code><a class="el" href="../../da/dde/class_net_console.html">NetConsole</a></code> allows the client to receive and send broadcasted messages through the network. These messages are mostly robot logs or simple client-to-robot commands for diagnostic purposes. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ab6744d347c6bf967a2e9f14db36664a9"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">NetConsole::NetConsole </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Initializes the <a class="el" href="../../da/dde/class_net_console.html">NetConsole</a> sockets </p>
-
-<p>References <a class="el" href="../../dd/d26/class_d_s.html#a40771b4f5aa4c994573736054cad11e1">DS::readSocket()</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+<div class="textblock"><p>Receives and sends broadcasted messages through the LAN. </p>
+<p>The <code><a class="el" href="../../da/dde/class_net_console.html" title="Receives and sends broadcasted messages through the LAN. ">NetConsole</a></code> allows the client to receive and send broadcasted messages through the network. These messages are mostly robot logs or simple client-to-robot commands for diagnostic purposes. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a4e48881a6fc8cebd1f2d5adbe9ae7d10"></a>
 <div class="memitem">
 <div class="memproto">
@@ -198,7 +171,7 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Changes the port in which we receive broadcasted robot messages. If the <em>port</em> is set to <code>0</code>, then the <code><a class="el" href="../../da/dde/class_net_console.html">NetConsole</a></code> will disable the input socket. </p>
+<p>Changes the port in which we receive broadcasted robot messages. If the <em>port</em> is set to <code>0</code>, then the <code><a class="el" href="../../da/dde/class_net_console.html" title="Receives and sends broadcasted messages through the LAN. ">NetConsole</a></code> will disable the input socket. </p>
 
 <p>Referenced by <a class="el" href="../../d0/ddd/class_driver_station.html#ac1b7682c79c7f686eb5e31ed74960dd5">DriverStation::setProtocol()</a>.</p>
 
@@ -225,7 +198,7 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Changes the port in which we broadcast commands to the robot. If the <em>port</em> is set to <code>0</code>, then the <code><a class="el" href="../../da/dde/class_net_console.html">NetConsole</a></code> will disable the output socket. </p>
+<p>Changes the port in which we broadcast commands to the robot. If the <em>port</em> is set to <code>0</code>, then the <code><a class="el" href="../../da/dde/class_net_console.html" title="Receives and sends broadcasted messages through the LAN. ">NetConsole</a></code> will disable the output socket. </p>
 
 <p>Referenced by <a class="el" href="../../d0/ddd/class_driver_station.html#ac1b7682c79c7f686eb5e31ed74960dd5">DriverStation::setProtocol()</a>.</p>
 

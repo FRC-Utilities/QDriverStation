@@ -92,27 +92,74 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
+<p>Represents an POV event that can be triggered by a joystick.  
+ <a href="../../d3/d5c/struct_q_joystick_p_o_v_event.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="../../df/d58/_joysticks_common_8h_source.html">JoysticksCommon.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a021def038c4be20e09b26a118e8c2464"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a021def038c4be20e09b26a118e8c2464"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>pov</b></td></tr>
+<tr class="memitem:a021def038c4be20e09b26a118e8c2464"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d5c/struct_q_joystick_p_o_v_event.html#a021def038c4be20e09b26a118e8c2464">pov</a></td></tr>
 <tr class="separator:a021def038c4be20e09b26a118e8c2464"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c5f880d436de73d4b4ee3e00b192a60"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c5f880d436de73d4b4ee3e00b192a60"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>angle</b></td></tr>
+<tr class="memitem:a2c5f880d436de73d4b4ee3e00b192a60"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d5c/struct_q_joystick_p_o_v_event.html#a2c5f880d436de73d4b4ee3e00b192a60">angle</a></td></tr>
 <tr class="separator:a2c5f880d436de73d4b4ee3e00b192a60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9639266822f2e7acd260acd5433173d2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9639266822f2e7acd260acd5433173d2"></a>
-<a class="el" href="../../d5/dcc/struct_q_joystick_device.html">QJoystickDevice</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>joystick</b></td></tr>
+<tr class="memitem:a9639266822f2e7acd260acd5433173d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/dcc/struct_q_joystick_device.html">QJoystickDevice</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d5c/struct_q_joystick_p_o_v_event.html#a9639266822f2e7acd260acd5433173d2">joystick</a></td></tr>
 <tr class="separator:a9639266822f2e7acd260acd5433173d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Represents an POV event that can be triggered by a joystick. This structure contains:</p><ul>
+<div class="textblock"><p>Represents an POV event that can be triggered by a joystick. </p>
+<p>This structure contains:</p><ul>
 <li>A pointer to the joystick that triggered the event</li>
 <li>The POV number/ID</li>
 <li>The current POV angle </li>
 </ul>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a2c5f880d436de73d4b4ee3e00b192a60"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int QJoystickPOVEvent::angle</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The current angle of the POV </p>
+
+<p>Referenced by <a class="el" href="../../df/df9/class_q_joysticks.html#a9aa53b1761048c15398be369cd229b7e">QJoysticks::setVirtualJoystickEnabled()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9639266822f2e7acd260acd5433173d2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d5/dcc/struct_q_joystick_device.html">QJoystickDevice</a>* QJoystickPOVEvent::joystick</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pointer to the device that caused the event </p>
+
+<p>Referenced by <a class="el" href="../../df/df9/class_q_joysticks.html#a9aa53b1761048c15398be369cd229b7e">QJoysticks::setVirtualJoystickEnabled()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a021def038c4be20e09b26a118e8c2464"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int QJoystickPOVEvent::pov</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The numerical ID of the POV </p>
+
+<p>Referenced by <a class="el" href="../../d9/df8/class_s_d_l___joysticks.html#a0817af463d8b74b6f8a128ab0b756617">SDL_Joysticks::rumble()</a>, <a class="el" href="../../da/d93/class_virtual_joystick.html#abe2978ce90cbc91690dcfd86e0622417">VirtualJoystick::setJoystickEnabled()</a>, and <a class="el" href="../../df/df9/class_q_joysticks.html#a9aa53b1761048c15398be369cd229b7e">QJoysticks::setVirtualJoystickEnabled()</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="../../df/d58/_joysticks_common_8h_source.html">JoysticksCommon.h</a></li>
 </ul>
 </div><!-- contents -->

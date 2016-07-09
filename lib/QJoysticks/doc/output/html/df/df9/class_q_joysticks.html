@@ -89,13 +89,17 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="../../d0/dc3/class_q_joysticks-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">QJoysticks Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Manages the input systems and communicates them with the application.  
+ <a href="../../df/df9/class_q_joysticks.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../da/d93/_q_joysticks_8h_source.html">QJoysticks.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for QJoysticks:</div>
 <div class="dyncontent">
@@ -176,13 +180,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:acf3d2acd60f9483dbb273f07346fe23d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../df/df9/class_q_joysticks.html">QJoysticks</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/df9/class_q_joysticks.html#acf3d2acd60f9483dbb273f07346fe23d">getInstance</a> ()</td></tr>
 <tr class="separator:acf3d2acd60f9483dbb273f07346fe23d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:aa749b93c6cbf774f620c6d47c7112fa1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/df9/class_q_joysticks.html#aa749b93c6cbf774f620c6d47c7112fa1">QJoysticks</a> ()</td></tr>
-<tr class="separator:aa749b93c6cbf774f620c6d47c7112fa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf685c71474be880b51fbcadbdb1bddc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/df9/class_q_joysticks.html#aaf685c71474be880b51fbcadbdb1bddc">~QJoysticks</a> ()</td></tr>
-<tr class="separator:aaf685c71474be880b51fbcadbdb1bddc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
 <tr class="memitem:af8ca3d3af3f629af6495b7a227cf6fd9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af8ca3d3af3f629af6495b7a227cf6fd9"></a>
@@ -190,61 +187,11 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Test_QJoysticks</b><
 <tr class="separator:af8ca3d3af3f629af6495b7a227cf6fd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The <code><a class="el" href="../../df/df9/class_q_joysticks.html">QJoysticks</a></code> class is the "god-object" of this system. It manages every input system used by the application (e.g. SDL for real joysticks and keyboard for virtual joystick) and communicates every module/input system with the rest of the application through standarized types.</p>
-<p>The joysticks are assigned a numerical ID, which the <code><a class="el" href="../../df/df9/class_q_joysticks.html">QJoysticks</a></code> can use to identify them. The ID's start with <code>0</code> (as with a QList). The ID's are refreshed when a joystick is attached or removed. The first joystick that has been connected to the computer will have <code>0</code> as an ID, the second joystick will have <code>1</code> as an ID, and so on...</p>
+<div class="textblock"><p>Manages the input systems and communicates them with the application. </p>
+<p>The <code><a class="el" href="../../df/df9/class_q_joysticks.html" title="Manages the input systems and communicates them with the application. ">QJoysticks</a></code> class is the "god-object" of this system. It manages every input system used by the application (e.g. SDL for real joysticks and keyboard for virtual joystick) and communicates every module/input system with the rest of the application through standarized types.</p>
+<p>The joysticks are assigned a numerical ID, which the <code><a class="el" href="../../df/df9/class_q_joysticks.html" title="Manages the input systems and communicates them with the application. ">QJoysticks</a></code> can use to identify them. The ID's start with <code>0</code> (as with a QList). The ID's are refreshed when a joystick is attached or removed. The first joystick that has been connected to the computer will have <code>0</code> as an ID, the second joystick will have <code>1</code> as an ID, and so on...</p>
 <dl class="section note"><dt>Note</dt><dd>the virtual joystick will ALWAYS be the last joystick to be registered, even if it has been enabled before any SDL joystick has been attached. </dd></dl>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aa749b93c6cbf774f620c6d47c7112fa1"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QJoysticks::QJoysticks </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">explicit</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Initializes and configures the SDL and virtual joystick modules. </p>
-
-<p>References <a class="el" href="../../df/df9/class_q_joysticks.html#ae9ced0a1c30ad2f04b4244a2c1a2e3f9">sdlJoysticks()</a>, <a class="el" href="../../df/df9/class_q_joysticks.html#ad46540bb96c23bef9dfc6284aee6e180">updateInterfaces()</a>, and <a class="el" href="../../df/df9/class_q_joysticks.html#ae673f2c42ee10f32b7ef09f9c06cc98e">virtualJoystick()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aaf685c71474be880b51fbcadbdb1bddc"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QJoysticks::~QJoysticks </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Delete pointers </p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="ae08141261c71240a1497a29fb9fb1a9b"></a>
 <div class="memitem">
 <div class="memproto">
@@ -257,7 +204,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Test_QJoysticks</b><
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the number of joysticks that are attached to the computer and/or registered with the <code><a class="el" href="../../df/df9/class_q_joysticks.html">QJoysticks</a></code> system.</p>
+<p>Returns the number of joysticks that are attached to the computer and/or registered with the <code><a class="el" href="../../df/df9/class_q_joysticks.html" title="Manages the input systems and communicates them with the application. ">QJoysticks</a></code> system.</p>
 <dl class="section note"><dt>Note</dt><dd>This count also includes the virtual joystick (if its enabled) </dd></dl>
 
 <p>References <a class="el" href="../../df/df9/class_q_joysticks.html#a2e4c5c211ce2cd2b82f2066d720127a4">inputDevices()</a>.</p>
@@ -283,7 +230,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Test_QJoysticks</b><
 <dd>
 This list also includes the virtual joystick (if its enabled) </dd></dl>
 
-<p>References <a class="el" href="../../df/df9/class_q_joysticks.html#a2e4c5c211ce2cd2b82f2066d720127a4">inputDevices()</a>.</p>
+<p>References <a class="el" href="../../df/df9/class_q_joysticks.html#a2e4c5c211ce2cd2b82f2066d720127a4">inputDevices()</a>, and <a class="el" href="../../d5/dcc/struct_q_joystick_device.html#abc862e4add9e46d5126b6b5bee78b7af">QJoystickDevice::name</a>.</p>
 
 </div>
 </div>
@@ -369,7 +316,7 @@ This list also includes the virtual joystick (if its enabled) </dd></dl>
 <p>Returns the number of axes that the joystick at the given <em>index</em> has.</p>
 <dl class="section note"><dt>Note</dt><dd>If the joystick does not exist, this function will return <code>0</code> </dd></dl>
 
-<p>References <a class="el" href="../../df/df9/class_q_joysticks.html#a416555f9b0822557a0a98fbaf51002f3">getInputDevice()</a>, and <a class="el" href="../../df/df9/class_q_joysticks.html#a7e0f11b27ec83fbed6e7c65578edfcfb">joystickExists()</a>.</p>
+<p>References <a class="el" href="../../df/df9/class_q_joysticks.html#a416555f9b0822557a0a98fbaf51002f3">getInputDevice()</a>, <a class="el" href="../../df/df9/class_q_joysticks.html#a7e0f11b27ec83fbed6e7c65578edfcfb">joystickExists()</a>, and <a class="el" href="../../d5/dcc/struct_q_joystick_device.html#afcdb1f8f0e2ac8aab631a97c818b16a4">QJoystickDevice::numAxes</a>.</p>
 
 </div>
 </div>
@@ -389,7 +336,7 @@ This list also includes the virtual joystick (if its enabled) </dd></dl>
 <p>Returns the number of buttons that the joystick at the given <em>index</em> has.</p>
 <dl class="section note"><dt>Note</dt><dd>If the joystick does not exist, this function will return <code>0</code> </dd></dl>
 
-<p>References <a class="el" href="../../df/df9/class_q_joysticks.html#a416555f9b0822557a0a98fbaf51002f3">getInputDevice()</a>, and <a class="el" href="../../df/df9/class_q_joysticks.html#a7e0f11b27ec83fbed6e7c65578edfcfb">joystickExists()</a>.</p>
+<p>References <a class="el" href="../../df/df9/class_q_joysticks.html#a416555f9b0822557a0a98fbaf51002f3">getInputDevice()</a>, <a class="el" href="../../df/df9/class_q_joysticks.html#a7e0f11b27ec83fbed6e7c65578edfcfb">joystickExists()</a>, and <a class="el" href="../../d5/dcc/struct_q_joystick_device.html#ad972d8e1406fbf968751293ca2303f5b">QJoystickDevice::numButtons</a>.</p>
 
 </div>
 </div>
@@ -409,7 +356,7 @@ This list also includes the virtual joystick (if its enabled) </dd></dl>
 <p>Returns the number of POVs that the joystick at the given <em>index</em> has.</p>
 <dl class="section note"><dt>Note</dt><dd>If the joystick does not exist, this function will return <code>0</code> </dd></dl>
 
-<p>References <a class="el" href="../../df/df9/class_q_joysticks.html#a416555f9b0822557a0a98fbaf51002f3">getInputDevice()</a>, and <a class="el" href="../../df/df9/class_q_joysticks.html#a7e0f11b27ec83fbed6e7c65578edfcfb">joystickExists()</a>.</p>
+<p>References <a class="el" href="../../df/df9/class_q_joysticks.html#a416555f9b0822557a0a98fbaf51002f3">getInputDevice()</a>, <a class="el" href="../../df/df9/class_q_joysticks.html#a7e0f11b27ec83fbed6e7c65578edfcfb">joystickExists()</a>, and <a class="el" href="../../d5/dcc/struct_q_joystick_device.html#abdbb6c26f5656fccb2cd3afe442005e7">QJoystickDevice::numPOVs</a>.</p>
 
 </div>
 </div>
@@ -506,7 +453,7 @@ This list also includes the virtual joystick (if its enabled) </dd></dl>
 </div><div class="memdoc">
 <p>Returns a pointer to the SDL joysticks system. This can be used if you need to get more information regarding the joysticks registered and managed with SDL. </p>
 
-<p>Referenced by <a class="el" href="../../df/df9/class_q_joysticks.html#aa749b93c6cbf774f620c6d47c7112fa1">QJoysticks()</a>, and <a class="el" href="../../df/df9/class_q_joysticks.html#ad46540bb96c23bef9dfc6284aee6e180">updateInterfaces()</a>.</p>
+<p>Referenced by <a class="el" href="../../df/df9/class_q_joysticks.html#ad46540bb96c23bef9dfc6284aee6e180">updateInterfaces()</a>.</p>
 
 </div>
 </div>
@@ -600,7 +547,7 @@ Once the joystick is blacklisted, the joystick list will be updated </dd></dl>
 </div><div class="memdoc">
 <p>Enables or disables the virtual joystick </p>
 
-<p>References <a class="el" href="../../df/df9/class_q_joysticks.html#a31a59adc5932ea23a3582b0f6e481ec7">isBlacklisted()</a>, <a class="el" href="../../da/d93/class_virtual_joystick.html#abe2978ce90cbc91690dcfd86e0622417">VirtualJoystick::setJoystickEnabled()</a>, and <a class="el" href="../../df/df9/class_q_joysticks.html#ae673f2c42ee10f32b7ef09f9c06cc98e">virtualJoystick()</a>.</p>
+<p>References <a class="el" href="../../d3/d5c/struct_q_joystick_p_o_v_event.html#a2c5f880d436de73d4b4ee3e00b192a60">QJoystickPOVEvent::angle</a>, <a class="el" href="../../dc/d22/struct_q_joystick_axis_event.html#ab27e65287e8cd45c5d815a7601d038c5">QJoystickAxisEvent::axis</a>, <a class="el" href="../../d4/d74/struct_q_joystick_button_event.html#a0b53a31e37287a605b3d2caa1c7ecb29">QJoystickButtonEvent::button</a>, <a class="el" href="../../d5/dcc/struct_q_joystick_device.html#a77fdca9a6e30ef69eddbfb8e725d706a">QJoystickDevice::id</a>, <a class="el" href="../../df/df9/class_q_joysticks.html#a31a59adc5932ea23a3582b0f6e481ec7">isBlacklisted()</a>, <a class="el" href="../../d3/d5c/struct_q_joystick_p_o_v_event.html#a9639266822f2e7acd260acd5433173d2">QJoystickPOVEvent::joystick</a>, <a class="el" href="../../dc/d22/struct_q_joystick_axis_event.html#a6e868f2f8b7bb4342f31389a4ba46349">QJoystickAxisEvent::joystick</a>, <a class="el" href="../../d4/d74/struct_q_joystick_button_event.html#a616462ff1cff0cf07d93971a9ee0a1d2">QJoystickButtonEvent::joystick</a>, <a class="el" href="../../d3/d5c/struct_q_joystick_p_o_v_event.html#a021def038c4be20e09b26a118e8c2464">QJoystickPOVEvent::pov</a>, <a class="el" href="../../d4/d74/struct_q_joystick_button_event.html#a887b941b8d8ffe2ef90664bfcf28cb17">QJoystickButtonEvent::pressed</a>, <a class="el" href="../../da/d93/class_virtual_joystick.html#abe2978ce90cbc91690dcfd86e0622417">VirtualJoystick::setJoystickEnabled()</a>, <a class="el" href="../../dc/d22/struct_q_joystick_axis_event.html#a3cc39770f2ffc48ce84bbc8f0626735a">QJoystickAxisEvent::value</a>, and <a class="el" href="../../df/df9/class_q_joysticks.html#ae673f2c42ee10f32b7ef09f9c06cc98e">virtualJoystick()</a>.</p>
 
 </div>
 </div>
@@ -626,7 +573,7 @@ Once the joystick is blacklisted, the joystick list will be updated </dd></dl>
 </table>
 </div><div class="memdoc">
 <p>Changes the axis value range of the virtual joystick.</p>
-<p>Take into account that maximum axis values supported by the <code><a class="el" href="../../df/df9/class_q_joysticks.html">QJoysticks</a></code> system is from <code>-1</code> to <code>1</code>. </p>
+<p>Take into account that maximum axis values supported by the <code><a class="el" href="../../df/df9/class_q_joysticks.html" title="Manages the input systems and communicates them with the application. ">QJoysticks</a></code> system is from <code>-1</code> to <code>1</code>. </p>
 
 <p>References <a class="el" href="../../da/d93/class_virtual_joystick.html#aa19051519528f9723fcb4f3540c89099">VirtualJoystick::setAxisRange()</a>, and <a class="el" href="../../df/df9/class_q_joysticks.html#ae673f2c42ee10f32b7ef09f9c06cc98e">virtualJoystick()</a>.</p>
 
@@ -654,9 +601,9 @@ Once the joystick is blacklisted, the joystick list will be updated </dd></dl>
 </div><div class="memdoc">
 <p>'Rescans' for new/removed joysticks and registers them again. </p>
 
-<p>References <a class="el" href="../../df/df9/class_q_joysticks.html#ae08141261c71240a1497a29fb9fb1a9b">count()</a>, <a class="el" href="../../df/df9/class_q_joysticks.html#a2e4c5c211ce2cd2b82f2066d720127a4">inputDevices()</a>, <a class="el" href="../../da/d93/class_virtual_joystick.html#a34a56116049438a5c1fbd3886726f037">VirtualJoystick::joystick()</a>, <a class="el" href="../../df/df9/class_q_joysticks.html#ae9ced0a1c30ad2f04b4244a2c1a2e3f9">sdlJoysticks()</a>, <a class="el" href="../../da/d93/class_virtual_joystick.html#a746a7de4746074a076b00a61d7a08ea3">VirtualJoystick::setJoystickID()</a>, and <a class="el" href="../../df/df9/class_q_joysticks.html#ae673f2c42ee10f32b7ef09f9c06cc98e">virtualJoystick()</a>.</p>
+<p>References <a class="el" href="../../d5/dcc/struct_q_joystick_device.html#a484aa9ef817012b2e151f6cb12bc0a08">QJoystickDevice::blacklisted</a>, <a class="el" href="../../df/df9/class_q_joysticks.html#ae08141261c71240a1497a29fb9fb1a9b">count()</a>, <a class="el" href="../../df/df9/class_q_joysticks.html#a2e4c5c211ce2cd2b82f2066d720127a4">inputDevices()</a>, <a class="el" href="../../da/d93/class_virtual_joystick.html#a34a56116049438a5c1fbd3886726f037">VirtualJoystick::joystick()</a>, <a class="el" href="../../d5/dcc/struct_q_joystick_device.html#abc862e4add9e46d5126b6b5bee78b7af">QJoystickDevice::name</a>, <a class="el" href="../../df/df9/class_q_joysticks.html#ae9ced0a1c30ad2f04b4244a2c1a2e3f9">sdlJoysticks()</a>, <a class="el" href="../../da/d93/class_virtual_joystick.html#a746a7de4746074a076b00a61d7a08ea3">VirtualJoystick::setJoystickID()</a>, and <a class="el" href="../../df/df9/class_q_joysticks.html#ae673f2c42ee10f32b7ef09f9c06cc98e">virtualJoystick()</a>.</p>
 
-<p>Referenced by <a class="el" href="../../df/df9/class_q_joysticks.html#aa749b93c6cbf774f620c6d47c7112fa1">QJoysticks()</a>, <a class="el" href="../../df/df9/class_q_joysticks.html#abe46b8b32979a847b97866fb5d51529c">setBlacklisted()</a>, and <a class="el" href="../../df/df9/class_q_joysticks.html#a7397c0561724a81fd67f22fa05ef93b2">setSortJoysticksByBlacklistState()</a>.</p>
+<p>Referenced by <a class="el" href="../../df/df9/class_q_joysticks.html#abe46b8b32979a847b97866fb5d51529c">setBlacklisted()</a>, and <a class="el" href="../../df/df9/class_q_joysticks.html#a7397c0561724a81fd67f22fa05ef93b2">setSortJoysticksByBlacklistState()</a>.</p>
 
 </div>
 </div>
@@ -673,9 +620,9 @@ Once the joystick is blacklisted, the joystick list will be updated </dd></dl>
       </table>
 </div><div class="memdoc">
 <p>Returns a pointer to the virtual joystick system. This can be used if you need to get more information regarding the virtual joystick or want to change its properties directly.</p>
-<dl class="section note"><dt>Note</dt><dd>You can also change the properties of the virtual joysticks using the functions of the <code><a class="el" href="../../df/df9/class_q_joysticks.html">QJoysticks</a></code> system class </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>You can also change the properties of the virtual joysticks using the functions of the <code><a class="el" href="../../df/df9/class_q_joysticks.html" title="Manages the input systems and communicates them with the application. ">QJoysticks</a></code> system class </dd></dl>
 
-<p>Referenced by <a class="el" href="../../df/df9/class_q_joysticks.html#aa749b93c6cbf774f620c6d47c7112fa1">QJoysticks()</a>, <a class="el" href="../../df/df9/class_q_joysticks.html#a9aa53b1761048c15398be369cd229b7e">setVirtualJoystickEnabled()</a>, <a class="el" href="../../df/df9/class_q_joysticks.html#a91abd059fcfbc3384a078bf730f477fe">setVirtualJoystickRange()</a>, and <a class="el" href="../../df/df9/class_q_joysticks.html#ad46540bb96c23bef9dfc6284aee6e180">updateInterfaces()</a>.</p>
+<p>Referenced by <a class="el" href="../../df/df9/class_q_joysticks.html#a9aa53b1761048c15398be369cd229b7e">setVirtualJoystickEnabled()</a>, <a class="el" href="../../df/df9/class_q_joysticks.html#a91abd059fcfbc3384a078bf730f477fe">setVirtualJoystickRange()</a>, and <a class="el" href="../../df/df9/class_q_joysticks.html#ad46540bb96c23bef9dfc6284aee6e180">updateInterfaces()</a>.</p>
 
 </div>
 </div>

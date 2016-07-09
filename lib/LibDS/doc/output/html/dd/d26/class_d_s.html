@@ -95,6 +95,9 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
+<p>Defines the data types shared between the modules of the LibDS.  
+ <a href="../../dd/d26/class_d_s.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="../../d6/de3/_d_s___common_8h_source.html">DS_Common.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for DS:</div>
@@ -102,9 +105,9 @@ Inheritance diagram for DS:</div>
  <div class="center">
   <img src="../../dd/d26/class_d_s.png" usemap="#DS_map" alt=""/>
   <map id="DS_map" name="DS_map">
-<area href="../../d7/df0/class_d_s___base.html" alt="DS_Base" shape="rect" coords="48,112,134,136"/>
-<area href="../../d0/ddd/class_driver_station.html" alt="DriverStation" shape="rect" coords="0,168,86,192"/>
-<area href="../../dc/de6/class_d_s___config.html" alt="DS_Config" shape="rect" coords="96,168,182,192"/>
+<area href="../../d7/df0/class_d_s___base.html" title="Defines the base signals of the DriverStation and DS_Config classes. " alt="DS_Base" shape="rect" coords="48,112,134,136"/>
+<area href="../../d0/ddd/class_driver_station.html" title="Exposes the functionality of the LibDS to the application. " alt="DriverStation" shape="rect" coords="0,168,86,192"/>
+<area href="../../dc/de6/class_d_s___config.html" title="Updates the variables shared across the LibDS classes. " alt="DS_Config" shape="rect" coords="96,168,182,192"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -139,7 +142,7 @@ Public Types</h2></td></tr>
 <tr class="separator:ae69a660d28f13e0b69e577637e18cff2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0864de7bc20ff0031cc509a81e717659"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d26/class_d_s.html#a0864de7bc20ff0031cc509a81e717659">CodeStatus</a> { <a class="el" href="../../dd/d26/class_d_s.html#a0864de7bc20ff0031cc509a81e717659ace4f090afa51f7cc483b2e9aa0e1fa7f">kCodeRunning</a>, 
 <a class="el" href="../../dd/d26/class_d_s.html#a0864de7bc20ff0031cc509a81e717659a7d76ec928c19df73baa05d001634add3">kCodeFailing</a>
- }<tr class="memdesc:a0864de7bc20ff0031cc509a81e717659"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CodeStatus enum Represents the status of the robot code. The <a class="el" href="../../dd/d26/class_d_s.html">DS</a> is only interested if the code is running or not (in order to be able to operate the robot).  <a href="../../dd/d26/class_d_s.html#a0864de7bc20ff0031cc509a81e717659">More...</a><br /></td></tr>
+ }<tr class="memdesc:a0864de7bc20ff0031cc509a81e717659"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CodeStatus enum Represents the status of the robot code. The <a class="el" href="../../dd/d26/class_d_s.html" title="Defines the data types shared between the modules of the LibDS. ">DS</a> is only interested if the code is running or not (in order to be able to operate the robot).  <a href="../../dd/d26/class_d_s.html#a0864de7bc20ff0031cc509a81e717659">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:a0864de7bc20ff0031cc509a81e717659"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1cf8c02d78be82dffe437dd935b2af9"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d26/class_d_s.html#ad1cf8c02d78be82dffe437dd935b2af9">EnableStatus</a> { <a class="el" href="../../dd/d26/class_d_s.html#ad1cf8c02d78be82dffe437dd935b2af9a9fd6b85f1f7c5d0623fb8f52c406349b">kEnabled</a>, 
@@ -231,7 +234,8 @@ Q_DECL_CONSTEXPR const char *&#160;</td><td class="memItemRight" valign="bottom"
 <tr class="separator:a5bc1f406150a311917c9e0ec94723616"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Holds the common data types shared between the <code><a class="el" href="../../d0/ddd/class_driver_station.html">DriverStation</a></code> and the <code><a class="el" href="../../d6/dcc/class_protocol.html">Protocol</a></code> classes of this library. This data must be registered inside a QObject class in order to allow full support for QML applications. </p>
+<div class="textblock"><p>Defines the data types shared between the modules of the LibDS. </p>
+<p>Holds the common data types shared between the <code><a class="el" href="../../d0/ddd/class_driver_station.html" title="Exposes the functionality of the LibDS to the application. ">DriverStation</a></code> and the <code><a class="el" href="../../d6/dcc/class_protocol.html" title="Base class for implementing communication protocols. ">Protocol</a></code> classes of this library. This data must be registered inside a QObject class in order to allow full support for QML applications. </p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a class="anchor" id="a28079bc59eb9055b279990561d18164b"></a>
 <div class="memitem">
@@ -265,7 +269,7 @@ Q_DECL_CONSTEXPR const char *&#160;</td><td class="memItemRight" valign="bottom"
       </table>
 </div><div class="memdoc">
 
-<p>The CodeStatus enum Represents the status of the robot code. The <a class="el" href="../../dd/d26/class_d_s.html">DS</a> is only interested if the code is running or not (in order to be able to operate the robot). </p>
+<p>The CodeStatus enum Represents the status of the robot code. The <a class="el" href="../../dd/d26/class_d_s.html" title="Defines the data types shared between the modules of the LibDS. ">DS</a> is only interested if the code is running or not (in order to be able to operate the robot). </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a0864de7bc20ff0031cc509a81e717659ace4f090afa51f7cc483b2e9aa0e1fa7f"></a>kCodeRunning&#160;</td><td class="fielddoc">
 <p>Robot code is operational </p>
@@ -402,7 +406,7 @@ Q_DECL_CONSTEXPR const char *&#160;</td><td class="memItemRight" valign="bottom"
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Represents the socket types that can be used by the <a class="el" href="../../dd/d26/class_d_s.html">DS</a> modules </p>
+<p>Represents the socket types that can be used by the <a class="el" href="../../dd/d26/class_d_s.html" title="Defines the data types shared between the modules of the LibDS. ">DS</a> modules </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a83bfcda4b9afe9c5550f1b6f37cd0910ab313b4c1aeb192b0596e8560880a7b22"></a>kSocketTypeUDP&#160;</td><td class="fielddoc">
 <p>Represents a UDP socket </p>
@@ -482,7 +486,7 @@ Q_DECL_CONSTEXPR const char *&#160;</td><td class="memItemRight" valign="bottom"
 <li>And so on... </li>
 </ul>
 
-<p>Referenced by <a class="el" href="../../d0/ddd/class_driver_station.html#a766e1d333aa0fa75c149fa0922d3f253">DriverStation::defaultRadioAddress()</a>, <a class="el" href="../../d0/ddd/class_driver_station.html#ac20db062eaf81bbab37a1c59afe86862">DriverStation::defaultRobotAddress()</a>, <a class="el" href="../../dc/d1c/class_f_r_c__2014.html#a3305d41fb71a27ab33c4e1da6c072ed4">FRC_2014::radioAddress()</a>, <a class="el" href="../../d7/d2b/class_f_r_c__2015.html#a5f94b3da3f2c710656f35dbaab1cb512">FRC_2015::radioAddress()</a>, <a class="el" href="../../d6/dcc/class_protocol.html#a58f9e18190b0f28f542272c43fe128e8">Protocol::radioAddress()</a>, <a class="el" href="../../dc/d1c/class_f_r_c__2014.html#a4ab848e0a12ec21e91058129041090c4">FRC_2014::robotAddress()</a>, and <a class="el" href="../../d6/dcc/class_protocol.html#ab3d468b2e68ba806a9fdd97e25c4c363">Protocol::robotAddress()</a>.</p>
+<p>Referenced by <a class="el" href="../../dc/d1c/class_f_r_c__2014.html#a3305d41fb71a27ab33c4e1da6c072ed4">FRC_2014::radioAddress()</a>, <a class="el" href="../../d7/d2b/class_f_r_c__2015.html#a5f94b3da3f2c710656f35dbaab1cb512">FRC_2015::radioAddress()</a>, <a class="el" href="../../d6/dcc/class_protocol.html#a58f9e18190b0f28f542272c43fe128e8">Protocol::radioAddress()</a>, <a class="el" href="../../dc/d1c/class_f_r_c__2014.html#a4ab848e0a12ec21e91058129041090c4">FRC_2014::robotAddress()</a>, and <a class="el" href="../../d6/dcc/class_protocol.html#ab3d468b2e68ba806a9fdd97e25c4c363">Protocol::robotAddress()</a>.</p>
 
 </div>
 </div>
@@ -509,7 +513,7 @@ Q_DECL_CONSTEXPR const char *&#160;</td><td class="memItemRight" valign="bottom"
 </div><div class="memdoc">
 <p>Reads the datagrams received by the given UDP <em>socket</em> </p>
 
-<p>Referenced by <a class="el" href="../../da/dde/class_net_console.html#ab6744d347c6bf967a2e9f14db36664a9">NetConsole::NetConsole()</a>, and <a class="el" href="../../d7/de4/class_sockets.html#a6ee82d0282e90a7a731908581f10b2d8">Sockets::setRobotAddress()</a>.</p>
+<p>Referenced by <a class="el" href="../../d7/de4/class_sockets.html#a6ee82d0282e90a7a731908581f10b2d8">Sockets::setRobotAddress()</a>.</p>
 
 </div>
 </div>

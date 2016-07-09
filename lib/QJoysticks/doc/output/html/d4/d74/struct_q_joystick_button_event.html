@@ -92,27 +92,74 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
+<p>Represents a button event that can be triggered by a joystick.  
+ <a href="../../d4/d74/struct_q_joystick_button_event.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="../../df/d58/_joysticks_common_8h_source.html">JoysticksCommon.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a0b53a31e37287a605b3d2caa1c7ecb29"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0b53a31e37287a605b3d2caa1c7ecb29"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>button</b></td></tr>
+<tr class="memitem:a0b53a31e37287a605b3d2caa1c7ecb29"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d74/struct_q_joystick_button_event.html#a0b53a31e37287a605b3d2caa1c7ecb29">button</a></td></tr>
 <tr class="separator:a0b53a31e37287a605b3d2caa1c7ecb29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a887b941b8d8ffe2ef90664bfcf28cb17"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a887b941b8d8ffe2ef90664bfcf28cb17"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>pressed</b></td></tr>
+<tr class="memitem:a887b941b8d8ffe2ef90664bfcf28cb17"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d74/struct_q_joystick_button_event.html#a887b941b8d8ffe2ef90664bfcf28cb17">pressed</a></td></tr>
 <tr class="separator:a887b941b8d8ffe2ef90664bfcf28cb17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a616462ff1cff0cf07d93971a9ee0a1d2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a616462ff1cff0cf07d93971a9ee0a1d2"></a>
-<a class="el" href="../../d5/dcc/struct_q_joystick_device.html">QJoystickDevice</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>joystick</b></td></tr>
+<tr class="memitem:a616462ff1cff0cf07d93971a9ee0a1d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/dcc/struct_q_joystick_device.html">QJoystickDevice</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d74/struct_q_joystick_button_event.html#a616462ff1cff0cf07d93971a9ee0a1d2">joystick</a></td></tr>
 <tr class="separator:a616462ff1cff0cf07d93971a9ee0a1d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Represents a button event that can be triggered by a joystick. This structure contains:</p><ul>
+<div class="textblock"><p>Represents a button event that can be triggered by a joystick. </p>
+<p>This structure contains:</p><ul>
 <li>A pointer to the joystick that caused the event</li>
 <li>The button number/ID</li>
 <li>The current button state (pressed or not pressed) </li>
 </ul>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a0b53a31e37287a605b3d2caa1c7ecb29"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int QJoystickButtonEvent::button</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The numerical ID of the button </p>
+
+<p>Referenced by <a class="el" href="../../d9/df8/class_s_d_l___joysticks.html#a0817af463d8b74b6f8a128ab0b756617">SDL_Joysticks::rumble()</a>, <a class="el" href="../../da/d93/class_virtual_joystick.html#abe2978ce90cbc91690dcfd86e0622417">VirtualJoystick::setJoystickEnabled()</a>, and <a class="el" href="../../df/df9/class_q_joysticks.html#a9aa53b1761048c15398be369cd229b7e">QJoysticks::setVirtualJoystickEnabled()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a616462ff1cff0cf07d93971a9ee0a1d2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d5/dcc/struct_q_joystick_device.html">QJoystickDevice</a>* QJoystickButtonEvent::joystick</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pointer to the device that caused the event </p>
+
+<p>Referenced by <a class="el" href="../../df/df9/class_q_joysticks.html#a9aa53b1761048c15398be369cd229b7e">QJoysticks::setVirtualJoystickEnabled()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a887b941b8d8ffe2ef90664bfcf28cb17"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool QJoystickButtonEvent::pressed</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set to <code>true</code> if the button is pressed </p>
+
+<p>Referenced by <a class="el" href="../../df/df9/class_q_joysticks.html#a9aa53b1761048c15398be369cd229b7e">QJoysticks::setVirtualJoystickEnabled()</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="../../df/d58/_joysticks_common_8h_source.html">JoysticksCommon.h</a></li>
 </ul>
 </div><!-- contents -->

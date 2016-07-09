@@ -96,6 +96,9 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
+<p>Updates the variables shared across the LibDS classes.  
+ <a href="../../dc/de6/class_d_s___config.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="../../dc/d07/_d_s___config_8h_source.html">DS_Config.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for DS_Config:</div>
@@ -103,8 +106,8 @@ Inheritance diagram for DS_Config:</div>
  <div class="center">
   <img src="../../dc/de6/class_d_s___config.png" usemap="#DS_5FConfig_map" alt=""/>
   <map id="DS_5FConfig_map" name="DS_Config_map">
-<area href="../../d7/df0/class_d_s___base.html" alt="DS_Base" shape="rect" coords="0,112,73,136"/>
-<area href="../../dd/d26/class_d_s.html" alt="DS" shape="rect" coords="0,56,73,80"/>
+<area href="../../d7/df0/class_d_s___base.html" title="Defines the base signals of the DriverStation and DS_Config classes. " alt="DS_Base" shape="rect" coords="0,112,73,136"/>
+<area href="../../dd/d26/class_d_s.html" title="Defines the data types shared between the modules of the LibDS. " alt="DS" shape="rect" coords="0,56,73,80"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -312,7 +315,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:ae69a660d28f13e0b69e577637e18cff2 inherit pub_types_class_d_s"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0864de7bc20ff0031cc509a81e717659 inherit pub_types_class_d_s"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d26/class_d_s.html#a0864de7bc20ff0031cc509a81e717659">CodeStatus</a> { <a class="el" href="../../dd/d26/class_d_s.html#a0864de7bc20ff0031cc509a81e717659ace4f090afa51f7cc483b2e9aa0e1fa7f">kCodeRunning</a>, 
 <a class="el" href="../../dd/d26/class_d_s.html#a0864de7bc20ff0031cc509a81e717659a7d76ec928c19df73baa05d001634add3">kCodeFailing</a>
- }<tr class="memdesc:a0864de7bc20ff0031cc509a81e717659"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CodeStatus enum Represents the status of the robot code. The <a class="el" href="../../dd/d26/class_d_s.html">DS</a> is only interested if the code is running or not (in order to be able to operate the robot).  <a href="../../dd/d26/class_d_s.html#a0864de7bc20ff0031cc509a81e717659">More...</a><br /></td></tr>
+ }<tr class="memdesc:a0864de7bc20ff0031cc509a81e717659"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CodeStatus enum Represents the status of the robot code. The <a class="el" href="../../dd/d26/class_d_s.html" title="Defines the data types shared between the modules of the LibDS. ">DS</a> is only interested if the code is running or not (in order to be able to operate the robot).  <a href="../../dd/d26/class_d_s.html#a0864de7bc20ff0031cc509a81e717659">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:a0864de7bc20ff0031cc509a81e717659 inherit pub_types_class_d_s"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1cf8c02d78be82dffe437dd935b2af9 inherit pub_types_class_d_s"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d26/class_d_s.html#ad1cf8c02d78be82dffe437dd935b2af9">EnableStatus</a> { <a class="el" href="../../dd/d26/class_d_s.html#ad1cf8c02d78be82dffe437dd935b2af9a9fd6b85f1f7c5d0623fb8f52c406349b">kEnabled</a>, 
@@ -387,7 +390,8 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a7c3957fbc5c576b6505aa83990ebe84b inherit signals_class_d_s___base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This class updates the variables of the <code><a class="el" href="../../d0/ddd/class_driver_station.html">DriverStation</a></code> class without exposing potentionally dangerous/private functions to the client.</p>
+<div class="textblock"><p>Updates the variables shared across the LibDS classes. </p>
+<p>This class updates the variables of the <code><a class="el" href="../../d0/ddd/class_driver_station.html" title="Exposes the functionality of the LibDS to the application. ">DriverStation</a></code> class without exposing potentionally dangerous/private functions to the client.</p>
 <p>This class is meant to be used only by protocols, we could define these functions directly with each protocol, but this could increase memory usage and - if not managed correctly - cause a lot of issues with the event system of Qt. </p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="../../dc/d07/_d_s___config_8h_source.html">DS_Config.h</a></li>
