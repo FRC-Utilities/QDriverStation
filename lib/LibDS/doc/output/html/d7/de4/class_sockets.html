@@ -171,13 +171,9 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Sends and receives data from the FMS, radio and robot targets. </p>
-<p>The <code><a class="el" href="../../d7/de4/class_sockets.html" title="Sends and receives data from the FMS, radio and robot targets. ">Sockets</a></code> class is in charge of sending and receiving data between the computer and the:</p><ul>
-<li>FMS (UDP or TCP)</li>
-<li>Radio (UDP or TCP)</li>
-<li>Robot (UDP or TCP)</li>
-</ul>
 <p>This class also performs the host lookup processes for each target if it is required (for example, when using mDNS targets). As a rule of thumb, this class will broadcast generated packets if we do not know the target IP.</p>
-<p>This class is controlled directly by the <code><a class="el" href="../../d0/ddd/class_driver_station.html" title="Exposes the functionality of the LibDS to the application. ">DriverStation</a></code>, which acts as a man-in-the-middle between the loaded <code><a class="el" href="../../d6/dcc/class_protocol.html" title="Base class for implementing communication protocols. ">Protocol</a></code> and the <code><a class="el" href="../../d7/de4/class_sockets.html" title="Sends and receives data from the FMS, radio and robot targets. ">Sockets</a></code> class. </p>
+<p>This class is controlled directly by the <code><a class="el" href="../../d0/ddd/class_driver_station.html" title="Exposes the functionality of the LibDS to the application. ">DriverStation</a></code>, which acts as a man-in-the-middle between the loaded <code><a class="el" href="../../d6/dcc/class_protocol.html" title="Base class for implementing communication protocols. ">Protocol</a></code> and the <code><a class="el" href="../../d7/de4/class_sockets.html" title="Sends and receives data from the FMS, radio and robot targets. ">Sockets</a></code> class.</p>
+<dl class="section note"><dt>Note</dt><dd>The packets can be sent either with UDP or TCP packets (as defined by the DS/protocol) </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a0cecff1036ddbdf8128f6d41538f3c17"></a>
 <div class="memitem">

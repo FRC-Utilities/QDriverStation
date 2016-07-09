@@ -16,18 +16,15 @@ class DriverStation;
 /**
  * \brief Sends and receives data from the FMS, radio and robot targets
  *
- * The \c Sockets class is in charge of sending and receiving data between the
- * computer and the:
- *     - FMS (UDP or TCP)
- *     - Radio (UDP or TCP)
- *     - Robot (UDP or TCP)
- *
  * This class also performs the host lookup processes for each target if it is
  * required (for example, when using mDNS targets). As a rule of thumb, this
  * class will broadcast generated packets if we do not know the target IP.
  *
  * This class is controlled directly by the \c DriverStation, which acts as a
  * man-in-the-middle between the loaded \c Protocol and the \c Sockets class.
+ *
+ * \note The packets can be sent either with UDP or TCP packets (as defined by
+ *       the DS/protocol)
  */
 class Sockets : public QObject {
     Q_OBJECT

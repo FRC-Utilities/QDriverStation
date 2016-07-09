@@ -11,6 +11,12 @@
 
 #include <QByteArray>
 
+/**
+ * \brief Computes the CRC32 data checksum of a data stream.
+ *
+ * Can be used to get the CRC32 over a stream if used with checked input/output
+ * streams.
+ */
 class CRC32 {
   public:
     explicit CRC32();

@@ -9,16 +9,6 @@
 #include "CRC32.h"
 
 /**
- * \file CRC32.h
- * \class CRC32
- * Computes CRC32 data checksum of a data stream.
- * The actual CRC32 algorithm is described in RFC 1952
- * (GZIP file format specification version 4.3).
- * Can be used to get the CRC32 over a stream if used with checked input/output
- * streams.
- */
-
-/**
  * Generates the CRC table during initialization
  */
 CRC32::CRC32() {

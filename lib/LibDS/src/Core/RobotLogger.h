@@ -13,6 +13,12 @@
 
 class QElapsedTimer;
 
+/**
+ * \brief Logs robot-related variables, such as voltage and CPU usage
+ *
+ * This can be used later to diagnostic the operation of the robot or one of
+ * its components.
+ */
 class RobotLogger : public QObject {
     Q_OBJECT
 
