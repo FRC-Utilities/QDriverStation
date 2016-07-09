@@ -23,12 +23,16 @@
 #ifndef _QDS_UTILITIES_H
 #define _QDS_UTILITIES_H
 
-#include <stdint.h>
-
-#include <utility>
-
 #include <QProcess>
 
+#if defined Q_OS_LINUX
+    #include <utility>
+    #include <stdint.h>
+#endif
+
+/**
+ * \brief Provides CPU and Battery information to the QML interface
+ */
 class Utilities : public QObject {
     Q_OBJECT
 

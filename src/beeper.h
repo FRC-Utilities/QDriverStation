@@ -8,6 +8,9 @@
 
 #include <QObject>
 
+/**
+ * \brief Uses SDL to generate telephone-like sound tones on the fly
+ */
 class Beeper : public QObject {
     Q_OBJECT
 

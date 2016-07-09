@@ -27,6 +27,12 @@
 #include <QKeyEvent>
 #include <QApplication>
 
+/**
+ * \brief Listens for keyboard events and acts if a shortcut has been activated
+ *
+ * This allows us to implement safety features, such as triggering an emergency
+ * stop when pressing the spacebar, or disabling the robot when pressing enter.
+ */
 class Shortcuts : public QObject {
     Q_OBJECT
 

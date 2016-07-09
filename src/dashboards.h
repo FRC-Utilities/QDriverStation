@@ -25,6 +25,9 @@
 
 #include <QProcess>
 
+/**
+ * \brief Opens and closes the available FRC Dashboards
+ */
 class Dashboards : public QObject {
     Q_OBJECT
     Q_ENUMS (DashboardTypes)

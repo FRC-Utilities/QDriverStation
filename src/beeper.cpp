@@ -31,7 +31,7 @@
 #include <SDL_audio.h>
 
 /**
- * Holds information regarding a beep/wave sound
+ * \brief Holds information regarding a beep/wave sound
  */
 struct BeepObject {
     qreal frequency;
