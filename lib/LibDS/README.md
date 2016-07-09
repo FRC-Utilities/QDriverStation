@@ -9,7 +9,7 @@ The library is written in C++ and the Qt framework, allowing it to be used in ma
 
 The QDriverStation and LibDS have received a lot of support from users and developers like you. To see a complete list of the contributors to these projects, click [here](https://github.com/FRC-Utilities/QDriverStation/blob/master/CONTRIBUTORS.md).
 
-Online documentation can be found [here](https://qdriverstation.sf.net/documentation/libds/).
+Online documentation can be found [here](http://qdriverstation.sf.net/documentation/libds/).
 
 ### Project sections
 
