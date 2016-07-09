@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['shortcuts',['Shortcuts',['../dd/d97/class_shortcuts.html',1,'']]]
+  ['shortcuts',['Shortcuts',['../class_shortcuts.html',1,'']]]
 ];
