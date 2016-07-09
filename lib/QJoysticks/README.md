@@ -90,4 +90,4 @@ QJoysticks::getInstance()->setVirtualJoystickAxisRange (0.8);
 You cannot customize the axis range of the SDL joysticks.
 
 ## License
-This project is licensed under the MIT license. For more information, check the [LICENSE](LICENSE) file.
+This project is licensed under the MIT license. For more information, check the [LICENSE](LICENSE.md) file.
