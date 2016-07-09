@@ -4,7 +4,7 @@ The QJoysticks library allows your Qt application to read input from both real j
 
 SDL binaries and headers for Windows and OS X are already included in this library. Linux uses will need to install libsdl2-dev using the package manager of their distro of choice.
 
-Online documentation can be found [here](http://qdriverstation.sourceforge.net/documentation/qjoysticks/).
+Online documentation can be found [here](http://frc-utilities.github.io/documentation/qjoysticks/).
 
 ![Screenshot](/examples/JoystickList/screenshot.png)
 
