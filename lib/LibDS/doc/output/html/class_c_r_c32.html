@@ -86,6 +86,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_c_r_c32-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">CRC32 Class Reference</div>  </div>
@@ -107,6 +109,20 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ada7729bd38a502cfc1c256b4c587b8a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63ed869ad56e966513e95cac2049eaba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_r_c32.html#a63ed869ad56e966513e95cac2049eaba">update</a> (QByteArray buf, int off, int len)</td></tr>
 <tr class="separator:a63ed869ad56e966513e95cac2049eaba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:af6fb024596bb6f326cd8a0143e9638be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_r_c32.html#af6fb024596bb6f326cd8a0143e9638be">make_crc_table</a> ()</td></tr>
+<tr class="separator:af6fb024596bb6f326cd8a0143e9638be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a7dfbedaedd51738f5a9bf50799da1b2e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7dfbedaedd51738f5a9bf50799da1b2e"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>m_crc</b></td></tr>
+<tr class="separator:a7dfbedaedd51738f5a9bf50799da1b2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72819203a206dc32f2c2b68842cda05c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a72819203a206dc32f2c2b68842cda05c"></a>
+int *&#160;</td><td class="memItemRight" valign="bottom"><b>m_crc_table</b></td></tr>
+<tr class="separator:a72819203a206dc32f2c2b68842cda05c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Computes the <a class="el" href="class_c_r_c32.html" title="Computes the CRC32 data checksum of a data stream. ">CRC32</a> data checksum of a data stream. </p>
@@ -134,9 +150,37 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Generates the CRC table during initialization </p>
 
+<p>References <a class="el" href="class_c_r_c32.html#af6fb024596bb6f326cd8a0143e9638be">make_crc_table()</a>.</p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="af6fb024596bb6f326cd8a0143e9638be"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CRC32::make_crc_table </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Generates a table for fast CRC </p>
+
+<p>Referenced by <a class="el" href="class_c_r_c32.html#a450b845a91ef96b9e41cc1049cca52fc">CRC32()</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ada7729bd38a502cfc1c256b4c587b8a8"></a>
 <div class="memitem">
 <div class="memproto">

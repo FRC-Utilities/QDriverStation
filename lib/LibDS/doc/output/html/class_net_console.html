@@ -87,6 +87,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-slots">Public Slots</a> &#124;
 <a href="#signals">Signals</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_net_console-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">NetConsole Class Reference</div>  </div>
@@ -120,6 +121,18 @@ Signals</h2></td></tr>
 <tr class="memitem:a1c7d9166183b9c0155273eee58466438"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c7d9166183b9c0155273eee58466438"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>newMessage</b> (const QString &amp;message)</td></tr>
 <tr class="separator:a1c7d9166183b9c0155273eee58466438"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a918ce0cad7e0e570b2bdbc4e96a3b969"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a918ce0cad7e0e570b2bdbc4e96a3b969"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>m_outputPort</b></td></tr>
+<tr class="separator:a918ce0cad7e0e570b2bdbc4e96a3b969"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a721160c4ac535c52cf8b51227ec498e3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a721160c4ac535c52cf8b51227ec498e3"></a>
+QUdpSocket&#160;</td><td class="memItemRight" valign="bottom"><b>m_inputSocket</b></td></tr>
+<tr class="separator:a721160c4ac535c52cf8b51227ec498e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d4e659d1099fea14907f09af625892b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1d4e659d1099fea14907f09af625892b"></a>
+QUdpSocket&#160;</td><td class="memItemRight" valign="bottom"><b>m_outputSocket</b></td></tr>
+<tr class="separator:a1d4e659d1099fea14907f09af625892b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Receives and sends broadcasted messages through the LAN. </p>

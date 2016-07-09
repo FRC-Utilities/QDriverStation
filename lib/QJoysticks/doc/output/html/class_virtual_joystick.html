@@ -89,6 +89,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pri-slots">Private Slots</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_virtual_joystick-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">VirtualJoystick Class Reference</div>  </div>
@@ -145,6 +147,29 @@ Public Member Functions</h2></td></tr>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:ad9d85107d01219889064422a784d5c6e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_joystick.html#ad9d85107d01219889064422a784d5c6e">eventFilter</a> (QObject *object, QEvent *event)</td></tr>
 <tr class="separator:ad9d85107d01219889064422a784d5c6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-slots"></a>
+Private Slots</h2></td></tr>
+<tr class="memitem:ac0ec476a1ace9195fffc0774bf332357"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_joystick.html#ac0ec476a1ace9195fffc0774bf332357">readAxes</a> (int key, bool pressed)</td></tr>
+<tr class="separator:ac0ec476a1ace9195fffc0774bf332357"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70c1bbf238b3141525595d527247d3d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_joystick.html#a70c1bbf238b3141525595d527247d3d6">readPOVs</a> (int key, bool pressed)</td></tr>
+<tr class="separator:a70c1bbf238b3141525595d527247d3d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9d0aefa6e654d0a9e36bb913c83cac6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_joystick.html#ac9d0aefa6e654d0a9e36bb913c83cac6">readButtons</a> (int key, bool pressed)</td></tr>
+<tr class="separator:ac9d0aefa6e654d0a9e36bb913c83cac6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2fb0a0aba3723c1345420edb15da47f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_joystick.html#ae2fb0a0aba3723c1345420edb15da47f">processKeyEvent</a> (QKeyEvent *event, bool pressed)</td></tr>
+<tr class="separator:ae2fb0a0aba3723c1345420edb15da47f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a3f7f6e30dbdf50e94eccc44fe4250a09"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3f7f6e30dbdf50e94eccc44fe4250a09"></a>
+qreal&#160;</td><td class="memItemRight" valign="bottom"><b>m_axisRange</b></td></tr>
+<tr class="separator:a3f7f6e30dbdf50e94eccc44fe4250a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a99fdf6dc09d48fe57e98340139dac8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a99fdf6dc09d48fe57e98340139dac8"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_joystickEnabled</b></td></tr>
+<tr class="separator:a3a99fdf6dc09d48fe57e98340139dac8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8dde9f803affb3450c195f9a458bf640"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8dde9f803affb3450c195f9a458bf640"></a>
+<a class="el" href="struct_q_joystick_device.html">QJoystickDevice</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_joystick</b></td></tr>
+<tr class="separator:a8dde9f803affb3450c195f9a458bf640"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Translates keyboard input to joystick input. </p>
@@ -165,7 +190,7 @@ Protected Member Functions</h2></td></tr>
 <p>Returns the current axis range of the joystick. The axis range is an absolute value that represents the maximum value that the joystick can have.</p>
 <p>For example, the <code>QJoystick</code> system supports an axis range of 1 (-1 to 1). If you set an axis range of 0.8 to the virtual joystick, then it will report values ranging from -0.8 to 0.8. </p>
 
-<p>Referenced by <a class="el" href="class_virtual_joystick.html#abe2978ce90cbc91690dcfd86e0622417">setJoystickEnabled()</a>.</p>
+<p>Referenced by <a class="el" href="class_virtual_joystick.html#ac0ec476a1ace9195fffc0774bf332357">readAxes()</a>.</p>
 
 </div>
 </div>
@@ -203,6 +228,8 @@ Protected Member Functions</h2></td></tr>
 <p>"Listens" for keyboard presses or releases while any window or widget of the application is focused.</p>
 <dl class="section note"><dt>Note</dt><dd>This function may or may not detect keyboard events when the application is not focused. This depends on the operating system and the window manager that is being used. </dd></dl>
 
+<p>References <a class="el" href="class_virtual_joystick.html#ae2fb0a0aba3723c1345420edb15da47f">processKeyEvent()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a34a56116049438a5c1fbd3886726f037"></a>
@@ -219,7 +246,7 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Returns a pointer to the virtual josytick device. This can be used if you need to customize the virtual joystick (e.g. add new axes or buttons). </p>
 
-<p>Referenced by <a class="el" href="class_virtual_joystick.html#abe2978ce90cbc91690dcfd86e0622417">setJoystickEnabled()</a>, and <a class="el" href="class_q_joysticks.html#ad46540bb96c23bef9dfc6284aee6e180">QJoysticks::updateInterfaces()</a>.</p>
+<p>Referenced by <a class="el" href="class_virtual_joystick.html#ac0ec476a1ace9195fffc0774bf332357">readAxes()</a>, <a class="el" href="class_virtual_joystick.html#ac9d0aefa6e654d0a9e36bb913c83cac6">readButtons()</a>, <a class="el" href="class_virtual_joystick.html#a70c1bbf238b3141525595d527247d3d6">readPOVs()</a>, and <a class="el" href="class_q_joysticks.html#ad46540bb96c23bef9dfc6284aee6e180">QJoysticks::updateInterfaces()</a>.</p>
 
 </div>
 </div>
@@ -237,7 +264,164 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Returns <code>true</code> if the virtual joystick is enabled. </p>
 
-<p>Referenced by <a class="el" href="class_virtual_joystick.html#abe2978ce90cbc91690dcfd86e0622417">setJoystickEnabled()</a>.</p>
+<p>Referenced by <a class="el" href="class_virtual_joystick.html#ae2fb0a0aba3723c1345420edb15da47f">processKeyEvent()</a>, <a class="el" href="class_virtual_joystick.html#ac0ec476a1ace9195fffc0774bf332357">readAxes()</a>, <a class="el" href="class_virtual_joystick.html#ac9d0aefa6e654d0a9e36bb913c83cac6">readButtons()</a>, and <a class="el" href="class_virtual_joystick.html#a70c1bbf238b3141525595d527247d3d6">readPOVs()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae2fb0a0aba3723c1345420edb15da47f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VirtualJoystick::processKeyEvent </td>
+          <td>(</td>
+          <td class="paramtype">QKeyEvent *&#160;</td>
+          <td class="paramname"><em>event</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>pressed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Called when the event filter detects a keyboard event.</p>
+<p>This function prompts the joystick to update its axis, button and POV values based on the keys that have been pressed or released. </p>
+
+<p>References <a class="el" href="class_virtual_joystick.html#a4e1bff87282771b23b2f51aeab2f21a4">joystickEnabled()</a>, <a class="el" href="class_virtual_joystick.html#ac0ec476a1ace9195fffc0774bf332357">readAxes()</a>, <a class="el" href="class_virtual_joystick.html#ac9d0aefa6e654d0a9e36bb913c83cac6">readButtons()</a>, and <a class="el" href="class_virtual_joystick.html#a70c1bbf238b3141525595d527247d3d6">readPOVs()</a>.</p>
+
+<p>Referenced by <a class="el" href="class_virtual_joystick.html#ad9d85107d01219889064422a784d5c6e">eventFilter()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac0ec476a1ace9195fffc0774bf332357"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VirtualJoystick::readAxes </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>pressed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Polls the keyboard events and if required, reports a change in the axis values of the virtual joystick device. </p>
+
+<p>References <a class="el" href="struct_q_joystick_axis_event.html#ab27e65287e8cd45c5d815a7601d038c5">QJoystickAxisEvent::axis</a>, <a class="el" href="class_virtual_joystick.html#a3201442dbdaeac06c8180377309ed154">axisRange()</a>, <a class="el" href="class_virtual_joystick.html#a34a56116049438a5c1fbd3886726f037">joystick()</a>, and <a class="el" href="class_virtual_joystick.html#a4e1bff87282771b23b2f51aeab2f21a4">joystickEnabled()</a>.</p>
+
+<p>Referenced by <a class="el" href="class_virtual_joystick.html#ae2fb0a0aba3723c1345420edb15da47f">processKeyEvent()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac9d0aefa6e654d0a9e36bb913c83cac6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VirtualJoystick::readButtons </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>pressed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Polls the keyboard events and if required, reports a change in the button values of the virtual joystick device. </p>
+
+<p>References <a class="el" href="struct_q_joystick_button_event.html#a0b53a31e37287a605b3d2caa1c7ecb29">QJoystickButtonEvent::button</a>, <a class="el" href="class_virtual_joystick.html#a34a56116049438a5c1fbd3886726f037">joystick()</a>, and <a class="el" href="class_virtual_joystick.html#a4e1bff87282771b23b2f51aeab2f21a4">joystickEnabled()</a>.</p>
+
+<p>Referenced by <a class="el" href="class_virtual_joystick.html#ae2fb0a0aba3723c1345420edb15da47f">processKeyEvent()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a70c1bbf238b3141525595d527247d3d6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VirtualJoystick::readPOVs </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>pressed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Polls the keyboard events and if required, reports a change in the POV/hat values of the virtual joystick device. </p>
+
+<p>References <a class="el" href="class_virtual_joystick.html#a34a56116049438a5c1fbd3886726f037">joystick()</a>, <a class="el" href="class_virtual_joystick.html#a4e1bff87282771b23b2f51aeab2f21a4">joystickEnabled()</a>, and <a class="el" href="struct_q_joystick_p_o_v_event.html#a021def038c4be20e09b26a118e8c2464">QJoystickPOVEvent::pov</a>.</p>
+
+<p>Referenced by <a class="el" href="class_virtual_joystick.html#ae2fb0a0aba3723c1345420edb15da47f">processKeyEvent()</a>.</p>
 
 </div>
 </div>
@@ -291,8 +475,6 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Enables or disables the virtual joystick device. </p>
-
-<p>References <a class="el" href="struct_q_joystick_axis_event.html#ab27e65287e8cd45c5d815a7601d038c5">QJoystickAxisEvent::axis</a>, <a class="el" href="class_virtual_joystick.html#a3201442dbdaeac06c8180377309ed154">axisRange()</a>, <a class="el" href="struct_q_joystick_button_event.html#a0b53a31e37287a605b3d2caa1c7ecb29">QJoystickButtonEvent::button</a>, <a class="el" href="class_virtual_joystick.html#a34a56116049438a5c1fbd3886726f037">joystick()</a>, <a class="el" href="class_virtual_joystick.html#a4e1bff87282771b23b2f51aeab2f21a4">joystickEnabled()</a>, and <a class="el" href="struct_q_joystick_p_o_v_event.html#a021def038c4be20e09b26a118e8c2464">QJoystickPOVEvent::pov</a>.</p>
 
 <p>Referenced by <a class="el" href="class_q_joysticks.html#a9aa53b1761048c15398be369cd229b7e">QJoysticks::setVirtualJoystickEnabled()</a>.</p>
 

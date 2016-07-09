@@ -87,6 +87,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_protocol-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Protocol Class Reference</div>  </div>
@@ -218,6 +219,33 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a04680ab9f86735205b6a217f46ed54f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53b6a8135c58ab50764500d2a92708f6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_protocol.html#a53b6a8135c58ab50764500d2a92708f6">interpretRobotPacket</a> (const QByteArray &amp;data)</td></tr>
 <tr class="separator:a53b6a8135c58ab50764500d2a92708f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a174255ccabb2d75bfc2464b6de0860a7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a174255ccabb2d75bfc2464b6de0860a7"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>m_sentFmsPackets</b></td></tr>
+<tr class="separator:a174255ccabb2d75bfc2464b6de0860a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7112dad6290830a8e86ed07794b12c5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa7112dad6290830a8e86ed07794b12c5"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>m_sentRadioPackets</b></td></tr>
+<tr class="separator:aa7112dad6290830a8e86ed07794b12c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa63cc8583ff17f0afcfb656d8d9af4b6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa63cc8583ff17f0afcfb656d8d9af4b6"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>m_sentRobotPackets</b></td></tr>
+<tr class="separator:aa63cc8583ff17f0afcfb656d8d9af4b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27166964360e5bb30bb5e82a16f6a54a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a27166964360e5bb30bb5e82a16f6a54a"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>m_receivedFmsPackets</b></td></tr>
+<tr class="separator:a27166964360e5bb30bb5e82a16f6a54a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad86fdef713a8e370724c0148e8485bee"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad86fdef713a8e370724c0148e8485bee"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>m_receivedRadioPackets</b></td></tr>
+<tr class="separator:ad86fdef713a8e370724c0148e8485bee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96def0b198fa106f0c3ed0a713605d7e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a96def0b198fa106f0c3ed0a713605d7e"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>m_receivedRobotPackets</b></td></tr>
+<tr class="separator:a96def0b198fa106f0c3ed0a713605d7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4153eae73b4c08d9e8fcc0060d97d3c9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4153eae73b4c08d9e8fcc0060d97d3c9"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>m_recvRobotPacketsSinceConnect</b></td></tr>
+<tr class="separator:a4153eae73b4c08d9e8fcc0060d97d3c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4a8348163bc3951319f1327310f543a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af4a8348163bc3951319f1327310f543a"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>m_sentRobotPacketsSinceConnect</b></td></tr>
+<tr class="separator:af4a8348163bc3951319f1327310f543a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for implementing communication protocols. </p>
@@ -945,7 +973,7 @@ We recommend you to redefine this function in your protocol to avoid breaking it
 </div><div class="memdoc">
 <p>Called when the FMS watchdog expires </p>
 
-<p>Referenced by <a class="el" href="class_driver_station.html#ac8a8225db01f842243491267cb62e57c">DriverStation::setOperationStatus()</a>.</p>
+<p>Referenced by <a class="el" href="class_driver_station.html#acd8c6b17270b74b6c0b5a0c608dc904d">DriverStation::resetFMS()</a>.</p>
 
 </div>
 </div>
@@ -971,7 +999,7 @@ We recommend you to redefine this function in your protocol to avoid breaking it
 </div><div class="memdoc">
 <p>Called when the radio watchdog expires </p>
 
-<p>Referenced by <a class="el" href="class_driver_station.html#ac8a8225db01f842243491267cb62e57c">DriverStation::setOperationStatus()</a>.</p>
+<p>Referenced by <a class="el" href="class_driver_station.html#a11593ecbbeab4902303129f5420a1377">DriverStation::resetRadio()</a>.</p>
 
 </div>
 </div>
@@ -999,7 +1027,7 @@ We recommend you to redefine this function in your protocol to avoid breaking it
 
 <p>Reimplemented in <a class="el" href="class_f_r_c__2015.html#af9e545e8e23be9c552d6bab1a3ac7ec4">FRC_2015</a>, and <a class="el" href="class_f_r_c__2014.html#a67550e8bda506d19ac937c9259af5587">FRC_2014</a>.</p>
 
-<p>Referenced by <a class="el" href="class_driver_station.html#ac8a8225db01f842243491267cb62e57c">DriverStation::setOperationStatus()</a>.</p>
+<p>Referenced by <a class="el" href="class_driver_station.html#aaa7c9c077ec996e798e9f6eaef8198f7">DriverStation::resetRobot()</a>.</p>
 
 </div>
 </div>
@@ -1172,7 +1200,7 @@ We recommend you to redefine this function in your protocol to avoid breaking it
 
 <p>References <a class="el" href="class_protocol.html#a1a80363b686cb1e2ac5a043f7afad293">config()</a>, <a class="el" href="class_protocol.html#a118d019160f48687158df06a624d713f">interpretFMSPacket()</a>, and <a class="el" href="class_d_s.html#ae69a660d28f13e0b69e577637e18cff2a1ff2d5c5b83da3706f8da0176a7fc243">DS::kCommsWorking</a>.</p>
 
-<p>Referenced by <a class="el" href="class_driver_station.html#ac8a8225db01f842243491267cb62e57c">DriverStation::setOperationStatus()</a>.</p>
+<p>Referenced by <a class="el" href="class_driver_station.html#a57b27eea19e4e7cec1782d8c5383f7ba">DriverStation::readFMSPacket()</a>.</p>
 
 </div>
 </div>
@@ -1201,7 +1229,7 @@ We recommend you to redefine this function in your protocol to avoid breaking it
 
 <p>References <a class="el" href="class_protocol.html#a1a80363b686cb1e2ac5a043f7afad293">config()</a>, <a class="el" href="class_protocol.html#a04680ab9f86735205b6a217f46ed54f4">interpretRadioPacket()</a>, and <a class="el" href="class_d_s.html#ae69a660d28f13e0b69e577637e18cff2a1ff2d5c5b83da3706f8da0176a7fc243">DS::kCommsWorking</a>.</p>
 
-<p>Referenced by <a class="el" href="class_driver_station.html#ac8a8225db01f842243491267cb62e57c">DriverStation::setOperationStatus()</a>.</p>
+<p>Referenced by <a class="el" href="class_driver_station.html#a9300d83ba68c07c923951fa32694dd52">DriverStation::readRadioPacket()</a>.</p>
 
 </div>
 </div>
@@ -1230,7 +1258,7 @@ We recommend you to redefine this function in your protocol to avoid breaking it
 
 <p>References <a class="el" href="class_protocol.html#a1a80363b686cb1e2ac5a043f7afad293">config()</a>, <a class="el" href="class_protocol.html#a53b6a8135c58ab50764500d2a92708f6">interpretRobotPacket()</a>, <a class="el" href="class_d_s.html#ae69a660d28f13e0b69e577637e18cff2a1ff2d5c5b83da3706f8da0176a7fc243">DS::kCommsWorking</a>, and <a class="el" href="class_protocol.html#a3455eac0a73d6a774bb794a53290e44e">resetLossCounter()</a>.</p>
 
-<p>Referenced by <a class="el" href="class_driver_station.html#ac8a8225db01f842243491267cb62e57c">DriverStation::setOperationStatus()</a>.</p>
+<p>Referenced by <a class="el" href="class_driver_station.html#ad2a70df3d3dbf1fa9a9d772c864f7313">DriverStation::readRobotPacket()</a>.</p>
 
 </div>
 </div>
@@ -1358,7 +1386,7 @@ We recommend you to redefine this function in your protocol to avoid breaking it
 </div><div class="memdoc">
 <p>Returns the number of packets received since robot connection. This is used to get an real-time packet loss percentage. If we use the <code><a class="el" href="class_protocol.html#a3aa0ad8bbd59fae90bfde74ac4d9f2a0">receivedRobotPackets()</a></code> to do that, we risk having an unreal packet-loss ratio, since we would take into account the number of packets received before a reset or something. </p>
 
-<p>Referenced by <a class="el" href="class_driver_station.html#ac8a8225db01f842243491267cb62e57c">DriverStation::setOperationStatus()</a>.</p>
+<p>Referenced by <a class="el" href="class_driver_station.html#abd3e7ee528d9a3d7a21cb7f661f4aa90">DriverStation::updatePacketLoss()</a>.</p>
 
 </div>
 </div>
@@ -1384,7 +1412,7 @@ We recommend you to redefine this function in your protocol to avoid breaking it
 </div><div class="memdoc">
 <p>Ensures that the packet loss is calculated based on current values and not on previous robot packet loss data. </p>
 
-<p>Referenced by <a class="el" href="class_protocol.html#ae1c9300ce6477a4fd5c1fe950a0868ae">readRobotPacket()</a>, and <a class="el" href="class_driver_station.html#ac8a8225db01f842243491267cb62e57c">DriverStation::setOperationStatus()</a>.</p>
+<p>Referenced by <a class="el" href="class_protocol.html#ae1c9300ce6477a4fd5c1fe950a0868ae">readRobotPacket()</a>, and <a class="el" href="class_driver_station.html#aaa7c9c077ec996e798e9f6eaef8198f7">DriverStation::resetRobot()</a>.</p>
 
 </div>
 </div>
@@ -1664,7 +1692,7 @@ We recommend you to redefine this function in your protocol to avoid breaking it
 </div><div class="memdoc">
 <p>Returns the number of packets sent since robot connection. This is used to get an real-time packet loss percentage. If we use the <code><a class="el" href="class_protocol.html#a548560fe50062fb8d088b9c0c421ae62">sentRobotPackets()</a></code> to do that, we risk having an unreal packet-loss ratio, since we would take into account the number of packets sent before robot connection (which can be a lot). </p>
 
-<p>Referenced by <a class="el" href="class_driver_station.html#ac8a8225db01f842243491267cb62e57c">DriverStation::setOperationStatus()</a>.</p>
+<p>Referenced by <a class="el" href="class_driver_station.html#abd3e7ee528d9a3d7a21cb7f661f4aa90">DriverStation::updatePacketLoss()</a>.</p>
 
 </div>
 </div>

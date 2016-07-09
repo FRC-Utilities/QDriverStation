@@ -88,6 +88,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#pub-slots">Public Slots</a> &#124;
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-slots">Private Slots</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_s_d_l___joysticks-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">SDL_Joysticks Class Reference</div>  </div>
@@ -133,6 +136,35 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac0930e4bab06bd2126ecc4947063bf67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1c923a52a0124a9b32b74f2062b9a17"><td class="memItemLeft" align="right" valign="top">QList&lt; <a class="el" href="struct_q_joystick_device.html">QJoystickDevice</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_d_l___joysticks.html#af1c923a52a0124a9b32b74f2062b9a17">joysticks</a> ()</td></tr>
 <tr class="separator:af1c923a52a0124a9b32b74f2062b9a17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-slots"></a>
+Private Slots</h2></td></tr>
+<tr class="memitem:aeebfc5dd6916cf38d83f201e46c792b7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_d_l___joysticks.html#aeebfc5dd6916cf38d83f201e46c792b7">update</a> ()</td></tr>
+<tr class="separator:aeebfc5dd6916cf38d83f201e46c792b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe4b422b9e03b4f115480caf314fa82e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_d_l___joysticks.html#afe4b422b9e03b4f115480caf314fa82e">configureJoystick</a> (const SDL_Event *event)</td></tr>
+<tr class="separator:afe4b422b9e03b4f115480caf314fa82e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:aafabca5d253f657329f8a3f4736639d1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_d_l___joysticks.html#aafabca5d253f657329f8a3f4736639d1">getDynamicID</a> (int id)</td></tr>
+<tr class="separator:aafabca5d253f657329f8a3f4736639d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5eda0a8b0b73400efbefee517b41414"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_q_joystick_device.html">QJoystickDevice</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_d_l___joysticks.html#aa5eda0a8b0b73400efbefee517b41414">getJoystick</a> (int id)</td></tr>
+<tr class="separator:aa5eda0a8b0b73400efbefee517b41414"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae823ac5e1a3a7f0e40cc618595a75c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_q_joystick_p_o_v_event.html">QJoystickPOVEvent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_d_l___joysticks.html#aae823ac5e1a3a7f0e40cc618595a75c0">getPOVEvent</a> (const SDL_Event *sdl_event)</td></tr>
+<tr class="separator:aae823ac5e1a3a7f0e40cc618595a75c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70a16ab5425e036fbba1c3435754f6c3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_q_joystick_axis_event.html">QJoystickAxisEvent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_d_l___joysticks.html#a70a16ab5425e036fbba1c3435754f6c3">getAxisEvent</a> (const SDL_Event *sdl_event)</td></tr>
+<tr class="separator:a70a16ab5425e036fbba1c3435754f6c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a946e14671d949b329847471f9dbfe6ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_q_joystick_button_event.html">QJoystickButtonEvent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_d_l___joysticks.html#a946e14671d949b329847471f9dbfe6ca">getButtonEvent</a> (const SDL_Event *sdl_event)</td></tr>
+<tr class="separator:a946e14671d949b329847471f9dbfe6ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a19b238e8347ba7707f8fa0112618bb7c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a19b238e8347ba7707f8fa0112618bb7c"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>m_tracker</b></td></tr>
+<tr class="separator:a19b238e8347ba7707f8fa0112618bb7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae75dd3cc5ac17d34149cdfb43900c703"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae75dd3cc5ac17d34149cdfb43900c703"></a>
+QList&lt; <a class="el" href="struct_q_joystick_device.html">QJoystickDevice</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_joysticks</b></td></tr>
+<tr class="separator:ae75dd3cc5ac17d34149cdfb43900c703"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Translates SDL events into <code><a class="el" href="class_q_joysticks.html" title="Manages the input systems and communicates them with the application. ">QJoysticks</a></code> events. </p>
@@ -162,9 +194,182 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Load a different generic/backup mapping for each operating system. </p>
 
+<p>References <a class="el" href="class_s_d_l___joysticks.html#aeebfc5dd6916cf38d83f201e46c792b7">update()</a>.</p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="afe4b422b9e03b4f115480caf314fa82e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL_Joysticks::configureJoystick </td>
+          <td>(</td>
+          <td class="paramtype">const SDL_Event *&#160;</td>
+          <td class="paramname"><em>event</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Checks if the joystick referenced by the <em>event</em> can be initialized. If not, the function will apply a generic mapping to the joystick and attempt to initialize the joystick again. </p>
+
+<p>Referenced by <a class="el" href="class_s_d_l___joysticks.html#aeebfc5dd6916cf38d83f201e46c792b7">update()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a70a16ab5425e036fbba1c3435754f6c3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_q_joystick_axis_event.html">QJoystickAxisEvent</a> SDL_Joysticks::getAxisEvent </td>
+          <td>(</td>
+          <td class="paramtype">const SDL_Event *&#160;</td>
+          <td class="paramname"><em>sdl_event</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Reads the contents of the given <em>event</em> and constructs a new <code><a class="el" href="struct_q_joystick_axis_event.html" title="Represents an axis event that can be triggered by a joystick. ">QJoystickAxisEvent</a></code> to be used with the <code><a class="el" href="class_q_joysticks.html" title="Manages the input systems and communicates them with the application. ">QJoysticks</a></code> system. </p>
+
+<p>References <a class="el" href="struct_q_joystick_axis_event.html#ab27e65287e8cd45c5d815a7601d038c5">QJoystickAxisEvent::axis</a>, and <a class="el" href="class_s_d_l___joysticks.html#aa5eda0a8b0b73400efbefee517b41414">getJoystick()</a>.</p>
+
+<p>Referenced by <a class="el" href="class_s_d_l___joysticks.html#aeebfc5dd6916cf38d83f201e46c792b7">update()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a946e14671d949b329847471f9dbfe6ca"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_q_joystick_button_event.html">QJoystickButtonEvent</a> SDL_Joysticks::getButtonEvent </td>
+          <td>(</td>
+          <td class="paramtype">const SDL_Event *&#160;</td>
+          <td class="paramname"><em>sdl_event</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Reads the contents of the given <em>event</em> and constructs a new <code><a class="el" href="struct_q_joystick_button_event.html" title="Represents a button event that can be triggered by a joystick. ">QJoystickButtonEvent</a></code> to be used with the <code><a class="el" href="class_q_joysticks.html" title="Manages the input systems and communicates them with the application. ">QJoysticks</a></code> system. </p>
+
+<p>References <a class="el" href="struct_q_joystick_button_event.html#a0b53a31e37287a605b3d2caa1c7ecb29">QJoystickButtonEvent::button</a>, and <a class="el" href="class_s_d_l___joysticks.html#aa5eda0a8b0b73400efbefee517b41414">getJoystick()</a>.</p>
+
+<p>Referenced by <a class="el" href="class_s_d_l___joysticks.html#aeebfc5dd6916cf38d83f201e46c792b7">update()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aafabca5d253f657329f8a3f4736639d1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SDL_Joysticks::getDynamicID </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns a joystick ID compatible with the <code><a class="el" href="class_q_joysticks.html" title="Manages the input systems and communicates them with the application. ">QJoysticks</a></code> system. SDL assigns an ID to each joystick based on the order that they are attached, but it does not decrease the ID counter when a joystick is removed.</p>
+<p>As noted earlier, the <code><a class="el" href="class_q_joysticks.html" title="Manages the input systems and communicates them with the application. ">QJoysticks</a></code> maintains an ID system similar to the one used by a <code>QList</code>, since it eases the operation with most Qt classes and widgets. </p>
+
+<p>Referenced by <a class="el" href="class_s_d_l___joysticks.html#aa5eda0a8b0b73400efbefee517b41414">getJoystick()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa5eda0a8b0b73400efbefee517b41414"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_q_joystick_device.html">QJoystickDevice</a> * SDL_Joysticks::getJoystick </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the josytick device registered with the given <em>id</em>. If no joystick with the given <em>id</em> is found, then the function will warn the user through the console. </p>
+
+<p>References <a class="el" href="struct_q_joystick_device.html#a484aa9ef817012b2e151f6cb12bc0a08">QJoystickDevice::blacklisted</a>, <a class="el" href="class_s_d_l___joysticks.html#aafabca5d253f657329f8a3f4736639d1">getDynamicID()</a>, <a class="el" href="struct_q_joystick_device.html#a77fdca9a6e30ef69eddbfb8e725d706a">QJoystickDevice::id</a>, <a class="el" href="struct_q_joystick_device.html#abc862e4add9e46d5126b6b5bee78b7af">QJoystickDevice::name</a>, <a class="el" href="struct_q_joystick_device.html#afcdb1f8f0e2ac8aab631a97c818b16a4">QJoystickDevice::numAxes</a>, <a class="el" href="struct_q_joystick_device.html#ad972d8e1406fbf968751293ca2303f5b">QJoystickDevice::numButtons</a>, and <a class="el" href="struct_q_joystick_device.html#abdbb6c26f5656fccb2cd3afe442005e7">QJoystickDevice::numPOVs</a>.</p>
+
+<p>Referenced by <a class="el" href="class_s_d_l___joysticks.html#a70a16ab5425e036fbba1c3435754f6c3">getAxisEvent()</a>, <a class="el" href="class_s_d_l___joysticks.html#a946e14671d949b329847471f9dbfe6ca">getButtonEvent()</a>, <a class="el" href="class_s_d_l___joysticks.html#aae823ac5e1a3a7f0e40cc618595a75c0">getPOVEvent()</a>, and <a class="el" href="class_s_d_l___joysticks.html#af1c923a52a0124a9b32b74f2062b9a17">joysticks()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aae823ac5e1a3a7f0e40cc618595a75c0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_q_joystick_p_o_v_event.html">QJoystickPOVEvent</a> SDL_Joysticks::getPOVEvent </td>
+          <td>(</td>
+          <td class="paramtype">const SDL_Event *&#160;</td>
+          <td class="paramname"><em>sdl_event</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Reads the contents of the given <em>event</em> and constructs a new <code><a class="el" href="struct_q_joystick_p_o_v_event.html" title="Represents an POV event that can be triggered by a joystick. ">QJoystickPOVEvent</a></code> to be used with the <code><a class="el" href="class_q_joysticks.html" title="Manages the input systems and communicates them with the application. ">QJoysticks</a></code> system. </p>
+
+<p>References <a class="el" href="class_s_d_l___joysticks.html#aa5eda0a8b0b73400efbefee517b41414">getJoystick()</a>, and <a class="el" href="struct_q_joystick_p_o_v_event.html#a021def038c4be20e09b26a118e8c2464">QJoystickPOVEvent::pov</a>.</p>
+
+<p>Referenced by <a class="el" href="class_s_d_l___joysticks.html#aeebfc5dd6916cf38d83f201e46c792b7">update()</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="af1c923a52a0124a9b32b74f2062b9a17"></a>
 <div class="memitem">
 <div class="memproto">
@@ -178,6 +383,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Returns a list with all the registered joystick devices </p>
+
+<p>References <a class="el" href="class_s_d_l___joysticks.html#aa5eda0a8b0b73400efbefee517b41414">getJoystick()</a>.</p>
 
 </div>
 </div>
@@ -204,7 +411,35 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Based on the data contained in the <em>request</em>, this function will instruct the appropiate joystick to rumble for </p>
 
-<p>References <a class="el" href="struct_q_joystick_axis_event.html#ab27e65287e8cd45c5d815a7601d038c5">QJoystickAxisEvent::axis</a>, <a class="el" href="struct_q_joystick_device.html#a484aa9ef817012b2e151f6cb12bc0a08">QJoystickDevice::blacklisted</a>, <a class="el" href="struct_q_joystick_button_event.html#a0b53a31e37287a605b3d2caa1c7ecb29">QJoystickButtonEvent::button</a>, <a class="el" href="struct_q_joystick_device.html#a77fdca9a6e30ef69eddbfb8e725d706a">QJoystickDevice::id</a>, <a class="el" href="struct_q_joystick_rumble.html#a4f7a110e87e6e9ff22fca34a631cfb2e">QJoystickRumble::joystick</a>, <a class="el" href="struct_q_joystick_rumble.html#abde9faadc2c8c73c7709fd193ec12c1e">QJoystickRumble::length</a>, <a class="el" href="struct_q_joystick_device.html#abc862e4add9e46d5126b6b5bee78b7af">QJoystickDevice::name</a>, <a class="el" href="struct_q_joystick_device.html#afcdb1f8f0e2ac8aab631a97c818b16a4">QJoystickDevice::numAxes</a>, <a class="el" href="struct_q_joystick_device.html#ad972d8e1406fbf968751293ca2303f5b">QJoystickDevice::numButtons</a>, <a class="el" href="struct_q_joystick_device.html#abdbb6c26f5656fccb2cd3afe442005e7">QJoystickDevice::numPOVs</a>, <a class="el" href="struct_q_joystick_p_o_v_event.html#a021def038c4be20e09b26a118e8c2464">QJoystickPOVEvent::pov</a>, and <a class="el" href="struct_q_joystick_rumble.html#a8a7b1dff46e5135fd9504eb7579a5e91">QJoystickRumble::strength</a>.</p>
+<p>References <a class="el" href="struct_q_joystick_device.html#a77fdca9a6e30ef69eddbfb8e725d706a">QJoystickDevice::id</a>, <a class="el" href="struct_q_joystick_rumble.html#a4f7a110e87e6e9ff22fca34a631cfb2e">QJoystickRumble::joystick</a>, <a class="el" href="struct_q_joystick_rumble.html#abde9faadc2c8c73c7709fd193ec12c1e">QJoystickRumble::length</a>, and <a class="el" href="struct_q_joystick_rumble.html#a8a7b1dff46e5135fd9504eb7579a5e91">QJoystickRumble::strength</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aeebfc5dd6916cf38d83f201e46c792b7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL_Joysticks::update </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Polls for new SDL events and reacts to each event accordingly. </p>
+
+<p>References <a class="el" href="class_s_d_l___joysticks.html#afe4b422b9e03b4f115480caf314fa82e">configureJoystick()</a>, <a class="el" href="class_s_d_l___joysticks.html#a70a16ab5425e036fbba1c3435754f6c3">getAxisEvent()</a>, <a class="el" href="class_s_d_l___joysticks.html#a946e14671d949b329847471f9dbfe6ca">getButtonEvent()</a>, and <a class="el" href="class_s_d_l___joysticks.html#aae823ac5e1a3a7f0e40cc618595a75c0">getPOVEvent()</a>.</p>
+
+<p>Referenced by <a class="el" href="class_s_d_l___joysticks.html#ac0930e4bab06bd2126ecc4947063bf67">SDL_Joysticks()</a>.</p>
 
 </div>
 </div>

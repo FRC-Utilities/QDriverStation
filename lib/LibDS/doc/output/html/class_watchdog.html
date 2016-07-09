@@ -88,6 +88,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#pub-slots">Public Slots</a> &#124;
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_watchdog-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Watchdog Class Reference</div>  </div>
@@ -124,6 +125,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>expired</b> ()</td></
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3952c66a14d6cbce9bf6c83206dbc676"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_watchdog.html#a3952c66a14d6cbce9bf6c83206dbc676">expirationTime</a> () const </td></tr>
 <tr class="separator:a3952c66a14d6cbce9bf6c83206dbc676"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:accf9c8480e92340829793de29870dfdb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="accf9c8480e92340829793de29870dfdb"></a>
+QTimer&#160;</td><td class="memItemRight" valign="bottom"><b>m_timer</b></td></tr>
+<tr class="separator:accf9c8480e92340829793de29870dfdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implements a simple watchdog used to reset comms. when needed. </p>
@@ -173,7 +180,7 @@ Public Member Functions</h2></td></tr>
 
 <p>References <a class="el" href="class_watchdog.html#a3952c66a14d6cbce9bf6c83206dbc676">expirationTime()</a>.</p>
 
-<p>Referenced by <a class="el" href="class_watchdog.html#a806d2d0506df432c77911585e46b82f9">setExpirationTime()</a>, and <a class="el" href="class_driver_station.html#ac8a8225db01f842243491267cb62e57c">DriverStation::setOperationStatus()</a>.</p>
+<p>Referenced by <a class="el" href="class_driver_station.html#a57b27eea19e4e7cec1782d8c5383f7ba">DriverStation::readFMSPacket()</a>, <a class="el" href="class_driver_station.html#a9300d83ba68c07c923951fa32694dd52">DriverStation::readRadioPacket()</a>, <a class="el" href="class_driver_station.html#ad2a70df3d3dbf1fa9a9d772c864f7313">DriverStation::readRobotPacket()</a>, and <a class="el" href="class_watchdog.html#a806d2d0506df432c77911585e46b82f9">setExpirationTime()</a>.</p>
 
 </div>
 </div>
