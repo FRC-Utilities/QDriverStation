@@ -34,9 +34,6 @@ QString GET_CONSOLE_IP (const QHostAddress& address) {
     return ip;
 }
 
-/**
- * Initializes the addresses, ports and sockets
- */
 Sockets::Sockets() {
     /* Assign invalid addresses */
     m_fmsAddress = QHostAddress ("");
@@ -66,9 +63,6 @@ Sockets::Sockets() {
     m_robotOutputPort = DS_DISABLED_PORT;
 }
 
-/**
- * Deletes all the sockets
- */
 Sockets::~Sockets() {
     /* Delete sender sockets */
     delete m_udpFmsSender;

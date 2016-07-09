@@ -17,6 +17,17 @@ class Protocol;
 class DS_Config;
 class NetConsole;
 
+/**
+ * \brief Exposes the functionality of the LibDS to the application
+ *
+ * The \c DriverStation class exposes the \c LibDS library to the application,
+ * and implements functions that allow the safe operation of robots, protocol
+ * switching/lodaing and joystick management.
+ *
+ * The \c DriverStation class provides several reduntant functions in order to
+ * be more user-friendly and giving application developers more flexibility
+ * regarding the use of LibDS types.
+ */
 class DriverStation : public DS_Base {
     Q_OBJECT
     Q_ENUMS (ProtocolType)

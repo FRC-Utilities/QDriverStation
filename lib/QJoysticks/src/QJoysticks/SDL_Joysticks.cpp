@@ -26,20 +26,6 @@
 #include <QJoysticks/SDL_Joysticks.h>
 
 /**
- * \file SDL_Joysticks.h
- * \class SDL_Joysticks
- *
- * This class is in charge of managing and operating real joysticks through the
- * SDL API. The implementation procedure is the same for every operating system.
- *
- * The only thing that differs from each operating system is the backup mapping
- * applied in the case that we do not know what mapping to apply to a joystick.
- *
- * The joystick values are refreshed every 20 milliseconds through an event
- * loop.
- */
-
-/**
  * Holds a generic mapping to be applied to joysticks that have not been mapped
  * by the SDL project or by the database.
  *
@@ -58,10 +44,6 @@ static QString GENERIC_MAPPINGS;
     #define GENERIC_MAPPINGS_PATH ":/QJoysticks/SDL/GenericMappings/Linux.txt"
 #endif
 
-/**
- * Initializes SDL, loads the generic mapping and loads the controller mappings
- * database file into the SDL system.
- */
 SDL_Joysticks::SDL_Joysticks() {
     m_tracker = -1;
     SDL_Init (SDL_INIT_HAPTIC | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER);

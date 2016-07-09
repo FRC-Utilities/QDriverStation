@@ -9,18 +9,6 @@
 #include "DS_Common.h"
 #include "NetConsole.h"
 
-/**
- * \file NetConsole.h
- * \class NetConsole
- *
- * The \c NetConsole allows the client to receive and send broadcasted messages
- * through the network. These messages are mostly robot logs or simple
- * client-to-robot commands for diagnostic purposes.
- */
-
-/**
- * Initializes the NetConsole sockets
- */
 NetConsole::NetConsole() {
     m_outputPort = 0;
     connect (&m_inputSocket, &QUdpSocket::readyRead, [ = ]() {

@@ -71,6 +71,8 @@ extern void DS_MESSAGE_HANDLER (QtMsgType type,
 //------------------------------------------------------------------------------
 
 /**
+ * \brief Defines the data types shared between the modules of the LibDS
+ *
  * Holds the common data types shared between the \c DriverStation
  * and the \c Protocol classes of this library. This data must be registered
  * inside a QObject class in order to allow full support for QML applications.

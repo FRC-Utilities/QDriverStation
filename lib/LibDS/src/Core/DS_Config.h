@@ -15,6 +15,8 @@ class RobotLogger;
 class QElapsedTimer;
 
 /**
+ * \brief Updates the variables shared across the LibDS classes
+ *
  * This class updates the variables of the \c DriverStation class without
  * exposing potentionally dangerous/private functions to the client.
  *

@@ -28,6 +28,12 @@
 #include <QApplication>
 #include <QJoysticks/JoysticksCommon.h>
 
+/**
+ * \brief Translates keyboard input to joystick input
+ *
+ * This class implements a virtual joystick device that uses the computer's
+ * keyboard as means to get the axis, button and POV values of the joystick.
+ */
 class VirtualJoystick : public QObject {
     Q_OBJECT
 

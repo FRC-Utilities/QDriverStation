@@ -23,18 +23,6 @@
 #include <math.h>
 #include <QJoysticks/VirtualJoystick.h>
 
-/**
- * \file VirtualJoystick.h
- * \class VirtualJoystick
- *
- * This class implements a virtual joystick device that uses the computer's
- * keyboard as means to get the axis, button and POV values of the joystick.
- */
-
-/**
- * Initializes the joystick and installs the global event filer to capture
- * keyboard events anywhere in the application.
- */
 VirtualJoystick::VirtualJoystick() {
     m_axisRange = 1;
     m_joystickEnabled = false;

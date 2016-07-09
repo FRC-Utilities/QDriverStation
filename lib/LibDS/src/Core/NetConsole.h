@@ -11,6 +11,13 @@
 
 #include <Core/DS_Base.h>
 
+/**
+ * \brief Receives and sends broadcasted messages through the LAN
+ *
+ * The \c NetConsole allows the client to receive and send broadcasted messages
+ * through the network. These messages are mostly robot logs or simple
+ * client-to-robot commands for diagnostic purposes.
+ */
 class NetConsole : public QObject {
     Q_OBJECT
 

@@ -11,18 +11,30 @@
 
 #include <Core/DS_Common.h>
 
+/**
+ * \brief Defines the base signals of the \c DriverStation and \c DS_Config
+ *        classes
+ */
 class DS_Base : public DS {
     Q_OBJECT
 
   signals:
     /**
      * Emitted when the elapsed time since the robot has been enabled is
-     * changed
+     * changed.
+     *
+     * \note This signal is emitted periodically
+     * \note If you want to use this information in the UI, we recommend you to
+     *       bind to the \c elapsedTimeChanged(QString) signal, since it
+     *       already contains a pre-formatted time string with the appropiate
+     *       time value(s).
      */
     void elapsedTimeChanged (int msecs);
 
     /**
      * Emitted when the elapsed time is calculated again
+     *
+     * \note This signal is emitted periodically
      */
     void elapsedTimeChanged (QString string);
 

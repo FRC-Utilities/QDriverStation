@@ -23,28 +23,12 @@
 #include <QDesktopServices>
 
 /**
- * \file DriverStation.h
- * \class DriverStation
- *
- * The \c DriverStation class exposes the \c LibDS library to the application,
- * and implements functions that allow the safe operation of robots, protocol
- * switching/lodaing and joystick management.
- *
- * The \c DriverStation class provides several reduntant functions in order to
- * be more user-friendly and giving application developers more flexibility
- * regarding the use of LibDS types.
- */
-
-/**
  * Formats the input message so that it looks nice on a text display widget
  */
 static QString CONSOLE_MESSAGE (const QString& input) {
     return "<font color='#888'>** " + input + "</font>";
 }
 
-/**
- * Initializes the members of the DriverStation class
- */
 DriverStation::DriverStation() {
     qDebug() << "Initializing DriverStation...";
 
@@ -176,7 +160,10 @@ DriverStation::~DriverStation() {
 }
 
 /**
- * One instance to rule them all!
+ * Returns the one and only instance of the \c DriverStation class.
+ * The \c DriverStation class must be singleton to ensure the safe operation
+ * of the robot and also to ensure availability to the input and output sockets
+ * used by each protocol.
  */
 DriverStation* DriverStation::getInstance() {
     static DriverStation instance;
@@ -186,13 +173,20 @@ DriverStation* DriverStation::getInstance() {
 /**
  * Returns \c true if we have communications with the robot controller
  * and the robot code is running.
+ *
+ * \note This function will return \c false if the robot is emergency stopped.
  */
 bool DriverStation::canBeEnabled() {
     return isConnectedToRobot() && isRobotCodeRunning() && !isEmergencyStopped();
 }
 
 /**
- * Returns \c true if the DS is currently sending and receiving data
+ * Returns \c true if the DS is currently allowed to send and receive data.
+ * This function is called whenever we send a packet or when we receive a
+ * packet.
+ *
+ * \note If this function returns \c false, then the DS will ignore all incoming
+ *       packets and inhibit packet sending
  */
 bool DriverStation::running() const {
     return m_running;
@@ -303,12 +297,14 @@ QString DriverStation::robotLoggerPath() const {
  * Returns the nominal battery voltage of the robot.
  * This value, along with the \c currentBatteryVoltage() function, can be
  * used to draw graphs or do other cool stuff.
+ *
+ * \note If there is no protocol loaded, this function will return 0
  */
 qreal DriverStation::maxBatteryVoltage() const {
     if (protocol())
         return protocol()->nominalBatteryVOltage();
 
-    return 12.8;
+    return 0;
 }
 
 /**
@@ -334,7 +330,7 @@ qreal DriverStation::nominalBatteryAmperage() const {
 }
 
 /**
- * Returns the current team number
+ * Returns the current team number, which can be used by the client application.
  */
 int DriverStation::team() const {
     return config()->team();
@@ -365,7 +361,8 @@ int DriverStation::diskUsage() const {
 }
 
 /**
- * Returns the current packet loss percentage
+ * Returns the current packet loss percentage (from 0 to 100).
+ * \note This value is updated every 250 milliseconds.
  */
 int DriverStation::packetLoss() const {
     return m_packetLoss;
@@ -373,6 +370,7 @@ int DriverStation::packetLoss() const {
 
 /**
  * Returns the maximum number of POVs that a joystick can have
+ * \note If the protocol is invalid, this function will return 0
  */
 int DriverStation::maxPOVCount() const {
     if (protocol())
@@ -383,6 +381,7 @@ int DriverStation::maxPOVCount() const {
 
 /**
  * Returns the maximum number of axes that a joystick can have
+ * \note If the protocol is invalid, this function will return 0
  */
 int DriverStation::maxAxisCount() const {
     if (protocol())
@@ -393,6 +392,7 @@ int DriverStation::maxAxisCount() const {
 
 /**
  * Returns the maximum number of buttons that a joystick can have
+ * \note If the protocol is invalid, this function will return 0
  */
 int DriverStation::maxButtonCount() const {
     if (protocol())
@@ -403,6 +403,7 @@ int DriverStation::maxButtonCount() const {
 
 /**
  * Returns the maximum number of joysticks that the protocol can handle
+ * \note If the protocol is invalid, this function will return 0
  */
 int DriverStation::maxJoystickCount() const {
     if (protocol())
@@ -594,7 +595,8 @@ QString DriverStation::robotAddress() const {
 }
 
 /**
- * Returns the current status of the Driver Station
+ * Returns the current status of the Driver Station.
+ * This string is used in the large label below the status lights of the DS.
  */
 QString DriverStation::generalStatus() const {
     /* No robot communication */
@@ -665,33 +667,36 @@ QString DriverStation::customRobotAddress() const {
 }
 
 /**
- * Returns the protocol-set robot address
+ * Returns the protocol-set robot address.
+ * \note If the protocol is invalid, this function will return an empty string
  */
 QString DriverStation::defaultFMSAddress() const {
     if (protocol())
         return protocol()->fmsAddress();
 
-    return "10.0.100";
+    return "";
 }
 
 /**
- * Returns the protocol-set radio address
+ * Returns the protocol-set radio address.
+ * \note If the protocol is invalid, this function will return an empty string
  */
 QString DriverStation::defaultRadioAddress() const {
     if (protocol())
         return protocol()->radioAddress();
 
-    return getStaticIP (10, team(), 1);
+    return "";
 }
 
 /**
- * Returns the protocol-set robot address
+ * Returns the protocol-set robot address.
+ * \note If the protocol is invalid, this function will return an empty string
  */
 QString DriverStation::defaultRobotAddress() const {
     if (protocol())
         return protocol()->robotAddress();
 
-    return getStaticIP (10, team(), 2);
+    return "";
 }
 
 /**
@@ -733,6 +738,8 @@ QStringList DriverStation::teamStations() const {
 /**
  * Registers a new joystick with the given number of \a axes, \a buttons &
  * \a POVs hats.
+ *
+ * \note If joystick registration fails, this function will return \c false.
  */
 bool DriverStation::registerJoystick (int axes,
                                       int buttons,
@@ -800,7 +807,12 @@ bool DriverStation::registerJoystick (int axes,
 }
 
 /**
- * This function must be called in order to start DS operations
+ * This function must be called in order to start DS operations.
+ * It is recommended to call this function AFTER your UI has been initialized,
+ * so that the UI can react to the signals sent by the \c DriverStation.
+ *
+ * \note You can safely call this function several times, however, it will
+ *       only have effect the first time you call it.
  */
 void DriverStation::init() {
     if (!m_init) {
@@ -821,13 +833,13 @@ void DriverStation::init() {
 }
 
 /**
- * Reboots the robot controller
+ * Reboots the robot controller (if a protocol is loaded)
  */
 void DriverStation::rebootRobot() {
-    qDebug() << "Robot reboot triggered by DS...";
-
-    if (protocol())
+    if (protocol()) {
         protocol()->rebootRobot();
+        qDebug() << "Robot reboot triggered by DS...";
+    }
 }
 
 /**
@@ -852,7 +864,7 @@ void DriverStation::disableRobot() {
 }
 
 /**
- * Clears all the registered joysticks
+ * Removes all the registered joysticks
  */
 void DriverStation::resetJoysticks() {
     qDebug() << "Clearing all joysticks";
@@ -866,13 +878,13 @@ void DriverStation::resetJoysticks() {
 }
 
 /**
- * Restarts the robot code
+ * Restarts the robot code (if a protocol is loaded)
  */
 void DriverStation::restartRobotCode() {
-    qDebug() << "Robot code restart triggered by DS...";
-
-    if (protocol())
+    if (protocol()) {
         protocol()->restartRobotCode();
+        qDebug() << "Robot code restart triggered by DS...";
+    }
 }
 
 /**
@@ -902,6 +914,11 @@ void DriverStation::switchToTeleoperated() {
 /**
  * Re-registers all joysticks based on the criteria specified by the new
  * protocol.
+ *
+ * \note If the number of buttons of a joystick exceeds the number of buttons
+ *       supported by the protocol, the \c DriverStation will register only
+ *       the ammount of buttons supported by the protocol. The same process
+ *       takes place for axes and POVs.
  */
 void DriverStation::reconfigureJoysticks() {
     DS_Joysticks list = m_joysticks;
@@ -922,7 +939,9 @@ void DriverStation::reconfigureJoysticks() {
 }
 
 /**
- * Changes the team number
+ * Changes the team number to the given \a team.
+ * \note Calling this function will trigger a re-evaluation of the FMS, radio
+         and robot IPs (only if communications have not been established yet)
  */
 void DriverStation::setTeam (int team) {
     config()->updateTeam (team);
@@ -952,7 +971,13 @@ void DriverStation::setEnabled (bool enabled) {
 }
 
 /**
- * Loads and configures the given \a protocol in the DS system
+ * Loads and configures the given \a protocol with the LibDS system.
+ *
+ * \note Ths DS networking operations will be stopped while configuring the
+ *       new protocol. Once the protocol has been configured, the DS networking
+ *       operations will be resumed automatically.
+ * \note All joysticks will be reconfigured based on the standards set by the
+ *       new \a protocol.
  */
 void DriverStation::setProtocol (Protocol* protocol) {
     /* Decommission the current protocol */
@@ -1030,6 +1055,9 @@ void DriverStation::setProtocol (Protocol* protocol) {
 /**
  * If you are lazy enough to not wanting to use two function calls to
  * change the alliance & position of the robot, we've got you covered!
+ *
+ * Actually, this function is available so that the UI elements (such as a
+ * combobox with team stations) can interact directly with the \c DriverStation
  */
 void DriverStation::setTeamStation (int station) {
     switch ((TeamStation) station) {
@@ -1105,6 +1133,9 @@ void DriverStation::setControlMode (ControlMode mode) {
 /**
  * Updates the \a angle of the given \a pov of the joystick with the
  * specified \a id
+ *
+ * \note If the given joystick is invalid, this function will silently ignore
+ *       your request
  */
 void DriverStation::updatePOV (int id, int pov, int angle) {
     if (joysticks()->count() > abs (id)) {
@@ -1117,6 +1148,7 @@ void DriverStation::updatePOV (int id, int pov, int angle) {
 
 /**
  * Changes the enabled \a status of the robot.
+ *
  * \note This value can be overwritten by the FMS system or the robot
  *       application itself.
  */
@@ -1127,6 +1159,9 @@ void DriverStation::setEnabled (EnableStatus status) {
 /**
  * Updates the \a value of the given \a axis of the joystick with the
  * specified \a id
+ *
+ * \note If the given joystick is invalid, this function will silently ignore
+ *       your request
  */
 void DriverStation::updateAxis (int id, int axis, qreal value) {
     if (joysticks()->count() > abs (id)) {
@@ -1140,6 +1175,9 @@ void DriverStation::updateAxis (int id, int axis, qreal value) {
 /**
  * Updates the \a pressed state of the given \a button of the joystick with
  * the specified \a id
+ *
+ * \note If the given joystick is invalid, this function will silently ignore
+ *       your request
  */
 void DriverStation::updateButton (int id, int button, bool state) {
     if (joysticks()->count() > abs (id)) {
@@ -1375,15 +1413,21 @@ void DriverStation::readRobotPacket (const QByteArray& data) {
 
 /**
  * Returns a pointer to the \c DS_Config class, which is shared by the
- * \c DriverStation and the protocol
+ * \c DriverStation and the protocol.
+ *
+ * The point of having a config class is to allow the protocol to change the
+ * status of the \c DriverStation and the LibDS system without increasing the
+ * complexity of the \c Protocol and \c DriverStation classes, whilst ensuring
+ * that values are the same throughout the LibDS and that signals are only
+ * fired when necessary.
  */
 DS_Config* DriverStation::config() const {
     return DS_Config::getInstance();
 }
 
 /**
- * Returns a pointer to the current loaded protocol. Always check if the
- * pointer is not \c NULL before using it!
+ * Returns a pointer to the current loaded protocol.
+ * \warning Always check if the pointer is not \c NULL before using it!
  */
 Protocol* DriverStation::protocol() const {
     return m_protocol;

@@ -14,7 +14,8 @@
 #include <Core/DS_Config.h>
 
 /**
- * \class Protocol
+ * \brief Base class for implementing communication protocols
+ *
  * The protocol class allows developers to create their own communication
  * protocols for use with applications that support the LibDS.
  */
