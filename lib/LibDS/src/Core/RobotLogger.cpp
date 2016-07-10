@@ -108,6 +108,7 @@ void RobotLogger::serializeLogs() {
 
     /* Register voltage values */
     QVariantList volList;
+    volList.append ("Robot Voltage");
     for (int i = 0; i < m_voltages.count(); ++i) {
         QVariantMap map;
         map.insert ("voltage", m_voltages.at (i));
@@ -117,6 +118,7 @@ void RobotLogger::serializeLogs() {
 
     /* Register CPU usages */
     QVariantList cpuList;
+    cpuList.append ("CPU Usage");
     for (int i = 0; i < m_cpuUsages.count(); ++i) {
         QVariantMap map;
         map.insert ("CPU", m_cpuUsages.at (i));
@@ -126,6 +128,7 @@ void RobotLogger::serializeLogs() {
 
     /* Register RAM usages */
     QVariantList ramList;
+    ramList.append ("RAM Usage");
     for (int i = 0; i < m_ramUsages.count(); ++i) {
         QVariantMap map;
         map.insert ("RAM", m_ramUsages.at (i));
@@ -135,6 +138,7 @@ void RobotLogger::serializeLogs() {
 
     /* Register packet loss */
     QVariantList pktList;
+    pktList.append ("Packet Loss");
     for (int i = 0; i < m_pktLosses.count(); ++i) {
         QVariantMap map;
         map.insert ("loss", m_pktLosses.at (i));
@@ -145,10 +149,10 @@ void RobotLogger::serializeLogs() {
     /* Serialize registered data */
     QJsonArray array;
     QJsonDocument document;
-    array << "CPU Usage"     << QJsonValue::fromVariant (cpuList);
-    array << "RAM Usage"     << QJsonValue::fromVariant (ramList);
-    array << "Packet Loss"   << QJsonValue::fromVariant (pktList);
-    array << "Robot Voltage" << QJsonValue::fromVariant (volList);
+    array.append (QJsonValue::fromVariant (cpuList));
+    array.append (QJsonValue::fromVariant (ramList));
+    array.append (QJsonValue::fromVariant (pktList));
+    array.append (QJsonValue::fromVariant (volList));
     document.setArray (array);
 
     /* Save JSON document to disk */

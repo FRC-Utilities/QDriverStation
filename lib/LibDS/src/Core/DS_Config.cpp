@@ -9,6 +9,7 @@
 #include "DS_Config.h"
 #include "DriverStation.h"
 
+#include <QThread>
 #include <QElapsedTimer>
 #include <Core/RobotLogger.h>
 
@@ -37,6 +38,12 @@ DS_Config::DS_Config() {
     m_robotCommStatus = kCommsFailing;
     m_controlMode = kControlTeleoperated;
 
+    /* Move the robot logger to another thread */
+    QThread* robotLoggerThread = new QThread (this);
+    m_robotLogger->moveToThread (robotLoggerThread);
+    robotLoggerThread->start (QThread::NormalPriority);
+
+    /* Begin elapsed time loop */
     updateElapsedTime();
 }
 
