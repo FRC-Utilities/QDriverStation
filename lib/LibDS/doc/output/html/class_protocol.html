@@ -273,6 +273,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_sentRobotPacketsSinc
 </div><div class="memdoc">
 <p>Gives direct access to the Driver Station variables/configs </p>
 
+<p>References <a class="el" href="class_d_s___config.html#a1e29e8a798cd1e08c224e348028d2666">DS_Config::getInstance()</a>.</p>
+
 <p>Referenced by <a class="el" href="class_f_r_c__2014.html#a1bac743ce3a2359a8fd36b6da2e47f4c">FRC_2014::getAlliance()</a>, <a class="el" href="class_f_r_c__2014.html#a22f20a83fa348eaebfed881bbf31a4b9">FRC_2014::getOperationCode()</a>, <a class="el" href="class_f_r_c__2014.html#a3789b8aa9c85e34810954f1b81d1ce4e">FRC_2014::getPosition()</a>, <a class="el" href="class_f_r_c__2014.html#a64ccbd5568aec6a36dcc74a02bb2d75f">FRC_2014::getRobotPacket()</a>, <a class="el" href="class_f_r_c__2014.html#aa27eb2b9d7bade0f469646f6a2e2764e">FRC_2014::interpretFMSPacket()</a>, <a class="el" href="class_f_r_c__2014.html#af2e8ef9a5061818434859252649d37e3">FRC_2014::interpretRobotPacket()</a>, <a class="el" href="class_f_r_c__2014.html#a3305d41fb71a27ab33c4e1da6c072ed4">FRC_2014::radioAddress()</a>, <a class="el" href="class_protocol.html#a58f9e18190b0f28f542272c43fe128e8">radioAddress()</a>, <a class="el" href="class_protocol.html#af26d3ead84de80ab87e3e2203e14af7a">readFMSPacket()</a>, <a class="el" href="class_protocol.html#ae19049f3b0ed22b985b431a9c5698e42">readRadioPacket()</a>, <a class="el" href="class_protocol.html#ae1c9300ce6477a4fd5c1fe950a0868ae">readRobotPacket()</a>, <a class="el" href="class_f_r_c__2016.html#a7c338c5d766df26049a0b579246e4e1a">FRC_2016::robotAddress()</a>, <a class="el" href="class_f_r_c__2014.html#a4ab848e0a12ec21e91058129041090c4">FRC_2014::robotAddress()</a>, and <a class="el" href="class_protocol.html#ab3d468b2e68ba806a9fdd97e25c4c363">robotAddress()</a>.</p>
 
 </div>
@@ -298,7 +300,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_sentRobotPacketsSinc
 </table>
 </div><div class="memdoc">
 <p>Returns the IP address in which we should be able to find the FMS. Contrary to how the radio and the robot protocols work, we will not send FMS packets until we have received a packet from the FMS.</p>
-<p>The address is set to <em>empty</em> by default, the <a class="el" href="class_d_s.html" title="Defines the data types shared between the modules of the LibDS. ">DS</a> will set the appropiate FMS IP once it receives a packet from it. </p>
+<p>The address is set to <em>empty</em> by default, the <a class="el" href="class_d_s.html" title="Defines the data types shared between the modules of the LibDS. ">DS</a> will set the appropriate FMS IP once it receives a packet from it. </p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#a3e41245dea616f368711ffbf32a338b3">DriverStation::defaultFMSAddress()</a>.</p>
 
@@ -1198,7 +1200,7 @@ We recommend you to redefine this function in your protocol to avoid breaking it
 </div><div class="memdoc">
 <p>Lets the protocol implementation interpret the given <em>data</em> and updates the received FMS packets counter. </p>
 
-<p>References <a class="el" href="class_protocol.html#a1a80363b686cb1e2ac5a043f7afad293">config()</a>, <a class="el" href="class_protocol.html#a118d019160f48687158df06a624d713f">interpretFMSPacket()</a>, and <a class="el" href="class_d_s.html#ae69a660d28f13e0b69e577637e18cff2a1ff2d5c5b83da3706f8da0176a7fc243">DS::kCommsWorking</a>.</p>
+<p>References <a class="el" href="class_protocol.html#a1a80363b686cb1e2ac5a043f7afad293">config()</a>, <a class="el" href="class_protocol.html#a118d019160f48687158df06a624d713f">interpretFMSPacket()</a>, <a class="el" href="class_d_s.html#ae69a660d28f13e0b69e577637e18cff2a1ff2d5c5b83da3706f8da0176a7fc243">DS::kCommsWorking</a>, and <a class="el" href="class_d_s___config.html#a51629504f528e8ab0a66e1dd94fb589c">DS_Config::updateFMSCommStatus()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#a57b27eea19e4e7cec1782d8c5383f7ba">DriverStation::readFMSPacket()</a>.</p>
 
@@ -1227,7 +1229,7 @@ We recommend you to redefine this function in your protocol to avoid breaking it
 </div><div class="memdoc">
 <p>Lets the protocol implementation interpret the given <em>data</em> and updates the received radio packets counter. </p>
 
-<p>References <a class="el" href="class_protocol.html#a1a80363b686cb1e2ac5a043f7afad293">config()</a>, <a class="el" href="class_protocol.html#a04680ab9f86735205b6a217f46ed54f4">interpretRadioPacket()</a>, and <a class="el" href="class_d_s.html#ae69a660d28f13e0b69e577637e18cff2a1ff2d5c5b83da3706f8da0176a7fc243">DS::kCommsWorking</a>.</p>
+<p>References <a class="el" href="class_protocol.html#a1a80363b686cb1e2ac5a043f7afad293">config()</a>, <a class="el" href="class_protocol.html#a04680ab9f86735205b6a217f46ed54f4">interpretRadioPacket()</a>, <a class="el" href="class_d_s.html#ae69a660d28f13e0b69e577637e18cff2a1ff2d5c5b83da3706f8da0176a7fc243">DS::kCommsWorking</a>, and <a class="el" href="class_d_s___config.html#a04bda4a7d261bfe3a286ae3ddd7879df">DS_Config::updateRadioCommStatus()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#a9300d83ba68c07c923951fa32694dd52">DriverStation::readRadioPacket()</a>.</p>
 
@@ -1256,7 +1258,7 @@ We recommend you to redefine this function in your protocol to avoid breaking it
 </div><div class="memdoc">
 <p>Lets the protocol implementation interpret the given <em>data</em> and updates the received robot packets counter. </p>
 
-<p>References <a class="el" href="class_protocol.html#a1a80363b686cb1e2ac5a043f7afad293">config()</a>, <a class="el" href="class_protocol.html#a53b6a8135c58ab50764500d2a92708f6">interpretRobotPacket()</a>, <a class="el" href="class_d_s.html#ae69a660d28f13e0b69e577637e18cff2a1ff2d5c5b83da3706f8da0176a7fc243">DS::kCommsWorking</a>, and <a class="el" href="class_protocol.html#a3455eac0a73d6a774bb794a53290e44e">resetLossCounter()</a>.</p>
+<p>References <a class="el" href="class_protocol.html#a1a80363b686cb1e2ac5a043f7afad293">config()</a>, <a class="el" href="class_protocol.html#a53b6a8135c58ab50764500d2a92708f6">interpretRobotPacket()</a>, <a class="el" href="class_d_s.html#ae69a660d28f13e0b69e577637e18cff2a1ff2d5c5b83da3706f8da0176a7fc243">DS::kCommsWorking</a>, <a class="el" href="class_protocol.html#a3455eac0a73d6a774bb794a53290e44e">resetLossCounter()</a>, and <a class="el" href="class_d_s___config.html#a22cec310c1896c0c99f8982db28ade64">DS_Config::updateRobotCommStatus()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#ad2a70df3d3dbf1fa9a9d772c864f7313">DriverStation::readRobotPacket()</a>.</p>
 

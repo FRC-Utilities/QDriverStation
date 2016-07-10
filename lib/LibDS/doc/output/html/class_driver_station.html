@@ -561,7 +561,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Returns the current alliance (red or blue) of the robot. </p>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_d_s___config.html#a3dd9d63fed929f4586d46b42d77307bd">DS_Config::alliance()</a>, and <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_f_r_c__2014.html#a1bac743ce3a2359a8fd36b6da2e47f4c">FRC_2014::getAlliance()</a>, and <a class="el" href="class_f_r_c__2014.html#aa27eb2b9d7bade0f469646f6a2e2764e">FRC_2014::interpretFMSPacket()</a>.</p>
 
@@ -627,7 +627,9 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 <p>Returns a pointer to the <code><a class="el" href="class_d_s___config.html" title="Updates the variables shared across the LibDS classes. ">DS_Config</a></code> class, which is shared by the <code><a class="el" href="class_driver_station.html" title="Exposes the functionality of the LibDS to the application. ">DriverStation</a></code> and the protocol.</p>
 <p>The point of having a config class is to allow the protocol to change the status of the <code><a class="el" href="class_driver_station.html" title="Exposes the functionality of the LibDS to the application. ">DriverStation</a></code> and the LibDS system without increasing the complexity of the <code><a class="el" href="class_protocol.html" title="Base class for implementing communication protocols. ">Protocol</a></code> and <code><a class="el" href="class_driver_station.html" title="Exposes the functionality of the LibDS to the application. ">DriverStation</a></code> classes, whilst ensuring that values are the same throughout the LibDS and that signals are only fired when necessary. </p>
 
-<p>Referenced by <a class="el" href="class_driver_station.html#a1b738646ae43ccc9f1c83ec099b20348">alliance()</a>, <a class="el" href="class_driver_station.html#a6c4bb32f99703c134af79dd0d5641ba2">controlMode()</a>, <a class="el" href="class_driver_station.html#aca639f9d1df67426d2665c4700792edb">cpuUsage()</a>, <a class="el" href="class_driver_station.html#a4452305775fba200b1db251136380f51">currentBatteryVoltage()</a>, <a class="el" href="class_driver_station.html#af6196ccf609537ae11a412391e96d38d">diskUsage()</a>, <a class="el" href="class_driver_station.html#a1c3415c13ec012f25dbaa1f76a1b0a76">enableStatus()</a>, <a class="el" href="class_driver_station.html#a29a67e90aac4ae5c01de38d0b9922fa8">fmsCommStatus()</a>, <a class="el" href="class_driver_station.html#aa43978611316f4431ab1d844e1c373da">isSimulated()</a>, <a class="el" href="class_driver_station.html#a7dbba8dac31f42ad7952d956fb21774b">operationStatus()</a>, <a class="el" href="class_driver_station.html#a7b32926f5916188c236e3e348f42bd99">position()</a>, <a class="el" href="class_driver_station.html#a030641cf5faac3408d547c3648b30ad4">radioCommStatus()</a>, <a class="el" href="class_driver_station.html#a2d0db79942cacadaa00c01f560cdc0d7">ramUsage()</a>, <a class="el" href="class_driver_station.html#acd8c6b17270b74b6c0b5a0c608dc904d">resetFMS()</a>, <a class="el" href="class_driver_station.html#a11593ecbbeab4902303129f5420a1377">resetRadio()</a>, <a class="el" href="class_driver_station.html#aaa7c9c077ec996e798e9f6eaef8198f7">resetRobot()</a>, <a class="el" href="class_driver_station.html#a176d22ca46149f2f38303f9b6b77c3ad">robotCodeStatus()</a>, <a class="el" href="class_driver_station.html#a4d7807985643ad49d768f35dfafde47d">robotCommStatus()</a>, <a class="el" href="class_driver_station.html#ad3db59e5c290344a06d2ac6c2e10a634">setAlliance()</a>, <a class="el" href="class_driver_station.html#ab7d948268345a49c63ecdf3c60c5c0e2">setControlMode()</a>, <a class="el" href="class_driver_station.html#a8e30ede65b96a0558d31014aaa55e57f">setEnabled()</a>, <a class="el" href="class_driver_station.html#ac8a8225db01f842243491267cb62e57c">setOperationStatus()</a>, <a class="el" href="class_driver_station.html#a480acac3987d9a7bdc222e9975fcf527">setPosition()</a>, <a class="el" href="class_driver_station.html#a0c2e666a79a2e9afaf693d0ea70d642e">setTeam()</a>, <a class="el" href="class_driver_station.html#a0647be6fd9560adb6fea3a1d50b25ac2">team()</a>, and <a class="el" href="class_driver_station.html#a8e7b48fb8969e2e5a3d03a637a74e2ca">voltageStatus()</a>.</p>
+<p>References <a class="el" href="class_d_s___config.html#a1e29e8a798cd1e08c224e348028d2666">DS_Config::getInstance()</a>.</p>
+
+<p>Referenced by <a class="el" href="class_driver_station.html#a1b738646ae43ccc9f1c83ec099b20348">alliance()</a>, <a class="el" href="class_driver_station.html#a6c4bb32f99703c134af79dd0d5641ba2">controlMode()</a>, <a class="el" href="class_driver_station.html#aca639f9d1df67426d2665c4700792edb">cpuUsage()</a>, <a class="el" href="class_driver_station.html#a4452305775fba200b1db251136380f51">currentBatteryVoltage()</a>, <a class="el" href="class_driver_station.html#af6196ccf609537ae11a412391e96d38d">diskUsage()</a>, <a class="el" href="class_driver_station.html#a1c3415c13ec012f25dbaa1f76a1b0a76">enableStatus()</a>, <a class="el" href="class_driver_station.html#a29a67e90aac4ae5c01de38d0b9922fa8">fmsCommStatus()</a>, <a class="el" href="class_driver_station.html#aa43978611316f4431ab1d844e1c373da">isSimulated()</a>, <a class="el" href="class_driver_station.html#a7dbba8dac31f42ad7952d956fb21774b">operationStatus()</a>, <a class="el" href="class_driver_station.html#a7b32926f5916188c236e3e348f42bd99">position()</a>, <a class="el" href="class_driver_station.html#a030641cf5faac3408d547c3648b30ad4">radioCommStatus()</a>, <a class="el" href="class_driver_station.html#a2d0db79942cacadaa00c01f560cdc0d7">ramUsage()</a>, <a class="el" href="class_driver_station.html#acd8c6b17270b74b6c0b5a0c608dc904d">resetFMS()</a>, <a class="el" href="class_driver_station.html#a11593ecbbeab4902303129f5420a1377">resetRadio()</a>, <a class="el" href="class_driver_station.html#aaa7c9c077ec996e798e9f6eaef8198f7">resetRobot()</a>, <a class="el" href="class_driver_station.html#a176d22ca46149f2f38303f9b6b77c3ad">robotCodeStatus()</a>, <a class="el" href="class_driver_station.html#a4d7807985643ad49d768f35dfafde47d">robotCommStatus()</a>, <a class="el" href="class_driver_station.html#ad3db59e5c290344a06d2ac6c2e10a634">setAlliance()</a>, <a class="el" href="class_driver_station.html#ab7d948268345a49c63ecdf3c60c5c0e2">setControlMode()</a>, <a class="el" href="class_driver_station.html#a8e30ede65b96a0558d31014aaa55e57f">setEnabled()</a>, <a class="el" href="class_driver_station.html#ac8a8225db01f842243491267cb62e57c">setOperationStatus()</a>, <a class="el" href="class_driver_station.html#a480acac3987d9a7bdc222e9975fcf527">setPosition()</a>, <a class="el" href="class_driver_station.html#a0c2e666a79a2e9afaf693d0ea70d642e">setTeam()</a>, <a class="el" href="class_driver_station.html#a0647be6fd9560adb6fea3a1d50b25ac2">team()</a>, <a class="el" href="class_driver_station.html#abd3e7ee528d9a3d7a21cb7f661f4aa90">updatePacketLoss()</a>, and <a class="el" href="class_driver_station.html#a8e7b48fb8969e2e5a3d03a637a74e2ca">voltageStatus()</a>.</p>
 
 </div>
 </div>
@@ -645,7 +647,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Returns the current control mode (test, auto or teleop) of the robot. </p>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#a48b1d088379f61856a15b3d57e7ef70c">DS_Config::controlMode()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#a741231e356e84c502b9267caf89fb9a7">generalStatus()</a>, <a class="el" href="class_f_r_c__2014.html#a22f20a83fa348eaebfed881bbf31a4b9">FRC_2014::getOperationCode()</a>, <a class="el" href="class_driver_station.html#ae405cf6bf2b7d36a35ce41f4517ce6b9">isInAutonomous()</a>, <a class="el" href="class_driver_station.html#af1fe38b2cdfd52339b85d9d4aa12b762">isInTeleoperated()</a>, and <a class="el" href="class_driver_station.html#a41c259fe65bc81243934854019552865">isInTest()</a>.</p>
 
@@ -665,7 +667,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Returns the current CPU usage of the robot. Value range is from 0 to 100. </p>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#a1d463b51e3e910e0ad3b85bcbef8b0a0">DS_Config::cpuUsage()</a>.</p>
 
 </div>
 </div>
@@ -683,7 +685,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Returns the current battery voltage of the robot </p>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#ab3ed4e8b2c25dc5b2d55c6a173f5cc50">DS_Config::voltage()</a>.</p>
 
 </div>
 </div>
@@ -841,7 +843,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Returns the current disk usage of the robot. Value range is from 0 to 100. </p>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#ac583365c53f342257e5ffcbbf8d5d1eb">DS_Config::diskUsage()</a>.</p>
 
 </div>
 </div>
@@ -885,7 +887,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Returns the current enable status of the robot. </p>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#ae3948038bb6a40983bcda1e9f0835601">DS_Config::enableStatus()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#a741231e356e84c502b9267caf89fb9a7">generalStatus()</a>, and <a class="el" href="class_driver_station.html#a2b627319fa60bdb11164155b118a2d27">isEnabled()</a>.</p>
 
@@ -969,7 +971,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Returns the current client/FMS communication status. </p>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#a854573c662823062cdd18adbced7126e">DS_Config::fmsCommStatus()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#a4619145e1e57e1a2a0dbad14b6b1d808">isConnectedToFMS()</a>.</p>
 
@@ -1017,7 +1019,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Returns the one and only instance of the <code><a class="el" href="class_driver_station.html" title="Exposes the functionality of the LibDS to the application. ">DriverStation</a></code> class. The <code><a class="el" href="class_driver_station.html" title="Exposes the functionality of the LibDS to the application. ">DriverStation</a></code> class must be singleton to ensure the safe operation of the robot and also to ensure availability to the input and output sockets used by each protocol. </p>
 
-<p>Referenced by <a class="el" href="class_protocol.html#a58da8452f64d062b2589a7585cbf7365">Protocol::joysticks()</a>, and <a class="el" href="class_sockets.html#aa0dc2eed622ed1634777c6572a381d2e">Sockets::performLookups()</a>.</p>
+<p>Referenced by <a class="el" href="class_protocol.html#a58da8452f64d062b2589a7585cbf7365">Protocol::joysticks()</a>, <a class="el" href="class_sockets.html#a908eeaf063e7a0c343e3b81099034a6c">Sockets::onFMSLookupFinished()</a>, <a class="el" href="class_sockets.html#ab6d827e47f9d9a0fe3fda7c97357642a">Sockets::onRadioLookupFinished()</a>, <a class="el" href="class_sockets.html#aed28cbdb25eff46517ced019bd47b2cb">Sockets::onRobotLookupFinished()</a>, <a class="el" href="class_sockets.html#aa0dc2eed622ed1634777c6572a381d2e">Sockets::performLookups()</a>, <a class="el" href="class_d_s___config.html#a07f7ffe6dccb80d26c420a56853a0b2d">DS_Config::updateControlMode()</a>, <a class="el" href="class_d_s___config.html#a4ffa370e3996e4ecd9a968cc0709398f">DS_Config::updateEnabled()</a>, <a class="el" href="class_d_s___config.html#a51629504f528e8ab0a66e1dd94fb589c">DS_Config::updateFMSCommStatus()</a>, <a class="el" href="class_d_s___config.html#a44633c7ca207fa923213298dd8195aa9">DS_Config::updateOperationStatus()</a>, <a class="el" href="class_d_s___config.html#a00d6bbaebf4be18c1f707d24160d15de">DS_Config::updateRobotCodeStatus()</a>, <a class="el" href="class_d_s___config.html#a22cec310c1896c0c99f8982db28ade64">DS_Config::updateRobotCommStatus()</a>, <a class="el" href="class_d_s___config.html#a43cf87d1a7a1a35fdff70a9be9342b34">DS_Config::updateVoltage()</a>, and <a class="el" href="class_d_s___config.html#ad95561e8b8ceb4b3b2f0af90bbb85156">DS_Config::updateVoltageStatus()</a>.</p>
 
 </div>
 </div>
@@ -1348,7 +1350,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Returns <code>true</code> if the robot is a simulated robot </p>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#afe837e6b29b686d90f15be682e985c1f">DS_Config::isSimulated()</a>.</p>
 
 </div>
 </div>
@@ -1446,6 +1448,8 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 <dl class="section note"><dt>Note</dt><dd>If there is no protocol loaded, this function will return 0 </dd></dl>
 
 <p>References <a class="el" href="class_protocol.html#a70009626c1858767b69dd6fb9064cee9">Protocol::nominalBatteryVOltage()</a>, and <a class="el" href="class_driver_station.html#a22bd0259af9610258ac006c3f57f845d">protocol()</a>.</p>
+
+<p>Referenced by <a class="el" href="class_d_s___config.html#a43cf87d1a7a1a35fdff70a9be9342b34">DS_Config::updateVoltage()</a>.</p>
 
 </div>
 </div>
@@ -1568,7 +1572,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Returns the current operation status of the robot (normal or e-stop). </p>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#a87084678af3e53b3df23fcd83741b223">DS_Config::operationStatus()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#aad7d929108892bc5c34a20e6229ce2cf">isEmergencyStopped()</a>.</p>
 
@@ -1604,7 +1608,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Returns the current position (1, 2 or 3) of the robot. </p>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#a99fd2a309ed294b19a6b43bc88a312ed">DS_Config::position()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_f_r_c__2014.html#a3789b8aa9c85e34810954f1b81d1ce4e">FRC_2014::getPosition()</a>, and <a class="el" href="class_f_r_c__2014.html#aa27eb2b9d7bade0f469646f6a2e2764e">FRC_2014::interpretFMSPacket()</a>.</p>
 
@@ -1686,7 +1690,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Returns the current radio/FMS communication status. </p>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#a0d3a8fcfbe92089b03f8085378ed452a">DS_Config::radioCommStatus()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#ae58e6a09ecf62cb27f030974d1fcf570">isConnectedToRadio()</a>.</p>
 
@@ -1706,7 +1710,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Returns the current RAM usage of the robot. Value range is from 0 to 100. </p>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#a8dfbde1188f261a6b3189f0ef614dda7">DS_Config::ramUsage()</a>.</p>
 
 </div>
 </div>
@@ -1933,7 +1937,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Called when the FMS watchdog expires </p>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, <a class="el" href="class_d_s.html#ae69a660d28f13e0b69e577637e18cff2a822d1ee3ffdaead84b9c12c06700927d">DS::kCommsFailing</a>, <a class="el" href="class_protocol.html#a3f6ffdf4d728f720ea2578e235dbed50">Protocol::onFMSWatchdogExpired()</a>, and <a class="el" href="class_driver_station.html#a22bd0259af9610258ac006c3f57f845d">protocol()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, <a class="el" href="class_d_s.html#ae69a660d28f13e0b69e577637e18cff2a822d1ee3ffdaead84b9c12c06700927d">DS::kCommsFailing</a>, <a class="el" href="class_protocol.html#a3f6ffdf4d728f720ea2578e235dbed50">Protocol::onFMSWatchdogExpired()</a>, <a class="el" href="class_driver_station.html#a22bd0259af9610258ac006c3f57f845d">protocol()</a>, and <a class="el" href="class_d_s___config.html#a51629504f528e8ab0a66e1dd94fb589c">DS_Config::updateFMSCommStatus()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#a2a1910b1f3d075044e92348c6e635d74">init()</a>, and <a class="el" href="class_driver_station.html#ac1b7682c79c7f686eb5e31ed74960dd5">setProtocol()</a>.</p>
 
@@ -1989,7 +1993,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Called when the radio watchdog expires </p>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, <a class="el" href="class_d_s.html#ae69a660d28f13e0b69e577637e18cff2a822d1ee3ffdaead84b9c12c06700927d">DS::kCommsFailing</a>, <a class="el" href="class_protocol.html#a9750ebbcdc5948a3012e1d34b8ef1095">Protocol::onRadioWatchdogExpired()</a>, and <a class="el" href="class_driver_station.html#a22bd0259af9610258ac006c3f57f845d">protocol()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, <a class="el" href="class_d_s.html#ae69a660d28f13e0b69e577637e18cff2a822d1ee3ffdaead84b9c12c06700927d">DS::kCommsFailing</a>, <a class="el" href="class_protocol.html#a9750ebbcdc5948a3012e1d34b8ef1095">Protocol::onRadioWatchdogExpired()</a>, <a class="el" href="class_driver_station.html#a22bd0259af9610258ac006c3f57f845d">protocol()</a>, and <a class="el" href="class_d_s___config.html#a04bda4a7d261bfe3a286ae3ddd7879df">DS_Config::updateRadioCommStatus()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#a2a1910b1f3d075044e92348c6e635d74">init()</a>, and <a class="el" href="class_driver_station.html#ac1b7682c79c7f686eb5e31ed74960dd5">setProtocol()</a>.</p>
 
@@ -2017,7 +2021,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Called when the robot watchdog expires </p>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, <a class="el" href="class_driver_station.html#a741231e356e84c502b9267caf89fb9a7">generalStatus()</a>, <a class="el" href="class_d_s.html#a0864de7bc20ff0031cc509a81e717659a7d76ec928c19df73baa05d001634add3">DS::kCodeFailing</a>, <a class="el" href="class_d_s.html#ae69a660d28f13e0b69e577637e18cff2a822d1ee3ffdaead84b9c12c06700927d">DS::kCommsFailing</a>, <a class="el" href="class_d_s.html#ad1cf8c02d78be82dffe437dd935b2af9ad4d1e27370b2b27f8b2a743ec0c5de4b">DS::kDisabled</a>, <a class="el" href="class_d_s.html#af17652544b5ecd2acd8f474a5a7da049ab4e8bff0b363311864bc5a63cb53dfa4">DS::kNormal</a>, <a class="el" href="class_d_s.html#aed590a0722ba2106379000cf3bbc32cca5f4f29b857dc615fb1d4854d47883da3">DS::kVoltageNormal</a>, <a class="el" href="class_protocol.html#afdc88b37623949c78c16d1a3a09fde12">Protocol::onRobotWatchdogExpired()</a>, <a class="el" href="class_driver_station.html#a22bd0259af9610258ac006c3f57f845d">protocol()</a>, <a class="el" href="class_protocol.html#a3455eac0a73d6a774bb794a53290e44e">Protocol::resetLossCounter()</a>, and <a class="el" href="class_d_s___base.html#a737fbec3c6339ea1b10f6a8887597bc3">DS_Base::statusChanged()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, <a class="el" href="class_driver_station.html#a741231e356e84c502b9267caf89fb9a7">generalStatus()</a>, <a class="el" href="class_d_s.html#a0864de7bc20ff0031cc509a81e717659a7d76ec928c19df73baa05d001634add3">DS::kCodeFailing</a>, <a class="el" href="class_d_s.html#ae69a660d28f13e0b69e577637e18cff2a822d1ee3ffdaead84b9c12c06700927d">DS::kCommsFailing</a>, <a class="el" href="class_d_s.html#ad1cf8c02d78be82dffe437dd935b2af9ad4d1e27370b2b27f8b2a743ec0c5de4b">DS::kDisabled</a>, <a class="el" href="class_d_s.html#af17652544b5ecd2acd8f474a5a7da049ab4e8bff0b363311864bc5a63cb53dfa4">DS::kNormal</a>, <a class="el" href="class_d_s.html#aed590a0722ba2106379000cf3bbc32cca5f4f29b857dc615fb1d4854d47883da3">DS::kVoltageNormal</a>, <a class="el" href="class_protocol.html#afdc88b37623949c78c16d1a3a09fde12">Protocol::onRobotWatchdogExpired()</a>, <a class="el" href="class_driver_station.html#a22bd0259af9610258ac006c3f57f845d">protocol()</a>, <a class="el" href="class_protocol.html#a3455eac0a73d6a774bb794a53290e44e">Protocol::resetLossCounter()</a>, <a class="el" href="class_d_s___config.html#acadfedf7c410947286fb05666862a025">DS_Config::robotLogger()</a>, <a class="el" href="class_d_s___base.html#a737fbec3c6339ea1b10f6a8887597bc3">DS_Base::statusChanged()</a>, <a class="el" href="class_d_s___config.html#a4ffa370e3996e4ecd9a968cc0709398f">DS_Config::updateEnabled()</a>, <a class="el" href="class_d_s___config.html#a44633c7ca207fa923213298dd8195aa9">DS_Config::updateOperationStatus()</a>, <a class="el" href="class_d_s___config.html#a00d6bbaebf4be18c1f707d24160d15de">DS_Config::updateRobotCodeStatus()</a>, <a class="el" href="class_d_s___config.html#a22cec310c1896c0c99f8982db28ade64">DS_Config::updateRobotCommStatus()</a>, <a class="el" href="class_d_s___config.html#ab914f569e967ad4c5c8107940b39bece">DS_Config::updateSimulated()</a>, <a class="el" href="class_d_s___config.html#a43cf87d1a7a1a35fdff70a9be9342b34">DS_Config::updateVoltage()</a>, and <a class="el" href="class_d_s___config.html#ad95561e8b8ceb4b3b2f0af90bbb85156">DS_Config::updateVoltageStatus()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#a2a1910b1f3d075044e92348c6e635d74">init()</a>, and <a class="el" href="class_driver_station.html#ac1b7682c79c7f686eb5e31ed74960dd5">setProtocol()</a>.</p>
 
@@ -2083,7 +2087,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Returns the current status of the robot code </p>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#a0c313b26a4963ff4479d6cd53196e891">DS_Config::robotCodeStatus()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#adc4e9b285d20c0edf66dd6c037ec1527">isRobotCodeRunning()</a>.</p>
 
@@ -2103,7 +2107,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Returns the current robot/FMS communication status. </p>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#a6c889b0da86c8606f796c2ba96763b6a">DS_Config::robotCommStatus()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#a92a9ed1c2e26b02d61a1d4e5c3e96057">isConnectedToRobot()</a>.</p>
 
@@ -2251,7 +2255,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Updates the team <em>alliance</em>. </p><dl class="section note"><dt>Note</dt><dd>This value can be overwritten by the FMS system </dd></dl>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#a50d2a90c217f6a643fb4a677e622fdf1">DS_Config::updateAlliance()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#acd683f0c1916f892203acb8369d1572a">setTeamStation()</a>.</p>
 
@@ -2280,7 +2284,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Changes the control <em>mode</em> of the robot. </p><dl class="section note"><dt>Note</dt><dd>This value can be overwritten by the FMS system </dd></dl>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#a07f7ffe6dccb80d26c420a56853a0b2d">DS_Config::updateControlMode()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#a904635320ab7108fe6a1ed9dce994fb7">switchToAutonomous()</a>, <a class="el" href="class_driver_station.html#a66cab1706af1f196efbe150da52842f9">switchToTeleoperated()</a>, and <a class="el" href="class_driver_station.html#ae7414bae089e56c7aad41618abbb3aa7">switchToTestMode()</a>.</p>
 
@@ -2421,7 +2425,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 <p>Changes the enabled <em>status</em> of the robot.</p>
 <dl class="section note"><dt>Note</dt><dd>This value can be overwritten by the FMS system or the robot application itself. </dd></dl>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#a4ffa370e3996e4ecd9a968cc0709398f">DS_Config::updateEnabled()</a>.</p>
 
 </div>
 </div>
@@ -2453,7 +2457,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </ul>
 <p>If you are writting your own Driver Station client, we strongly encourage you to implement the hability to e-stop the robot in your custom client. </p>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#a44633c7ca207fa923213298dd8195aa9">DS_Config::updateOperationStatus()</a>.</p>
 
 </div>
 </div>
@@ -2480,7 +2484,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_customRobotAddre
 </div><div class="memdoc">
 <p>Updates the team <em>position</em> </p><dl class="section note"><dt>Note</dt><dd>This value can be overwritten by the FMS system </dd></dl>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#a1c5ee31f1c5db0dd1ccaf34d31850b31">DS_Config::updatePosition()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#acd683f0c1916f892203acb8369d1572a">setTeamStation()</a>.</p>
 
@@ -2569,7 +2573,7 @@ All joysticks will be reconfigured based on the standards set by the new <em>pro
 </div><div class="memdoc">
 <p>Changes the team number to the given <em>team</em>. </p><dl class="section note"><dt>Note</dt><dd>Calling this function will trigger a re-evaluation of the FMS, radio and robot IPs (only if communications have not been established yet) </dd></dl>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#a196bb08a2b7a93a433e24d1e3f43c19b">DS_Config::updateTeam()</a>.</p>
 
 </div>
 </div>
@@ -2745,7 +2749,7 @@ All joysticks will be reconfigured based on the standards set by the new <em>pro
 </div><div class="memdoc">
 <p>Returns the current team number, which can be used by the client application. </p>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#a2ced3cab98df9a102e090f43ecb97025">DS_Config::team()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_f_r_c__2014.html#a3305d41fb71a27ab33c4e1da6c072ed4">FRC_2014::radioAddress()</a>, and <a class="el" href="class_f_r_c__2014.html#a4ab848e0a12ec21e91058129041090c4">FRC_2014::robotAddress()</a>.</p>
 
@@ -2933,7 +2937,7 @@ All joysticks will be reconfigured based on the standards set by the new <em>pro
 </div><div class="memdoc">
 <p>Calculates the current packet loss as a percent </p>
 
-<p>References <a class="el" href="class_driver_station.html#a22bd0259af9610258ac006c3f57f845d">protocol()</a>, <a class="el" href="class_protocol.html#ae7f3986649a5ba77bd1512164909dac9">Protocol::recvRobotPacketsSinceConnect()</a>, and <a class="el" href="class_protocol.html#af811bf168fb34022a9557173e3ec5dea">Protocol::sentRobotPacketsSinceConnect()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, <a class="el" href="class_driver_station.html#a22bd0259af9610258ac006c3f57f845d">protocol()</a>, <a class="el" href="class_protocol.html#ae7f3986649a5ba77bd1512164909dac9">Protocol::recvRobotPacketsSinceConnect()</a>, <a class="el" href="class_d_s___config.html#acadfedf7c410947286fb05666862a025">DS_Config::robotLogger()</a>, and <a class="el" href="class_protocol.html#af811bf168fb34022a9557173e3ec5dea">Protocol::sentRobotPacketsSinceConnect()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#a2a1910b1f3d075044e92348c6e635d74">init()</a>.</p>
 
@@ -2997,7 +3001,7 @@ All joysticks will be reconfigured based on the standards set by the new <em>pro
 </div><div class="memdoc">
 <p>Returns the current voltage status (normal or brownout) of the robot. </p>
 
-<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">config()</a>, and <a class="el" href="class_d_s___config.html#a3f369ab7ddc52e35c1ff03fed8db45f9">DS_Config::voltageStatus()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#ae6591c307b089cd2b3647101384db332">isVoltageBrownout()</a>.</p>
 

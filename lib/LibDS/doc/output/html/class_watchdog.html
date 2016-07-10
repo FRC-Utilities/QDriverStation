@@ -135,7 +135,7 @@ QTimer&#160;</td><td class="memItemRight" valign="bottom"><b>m_timer</b></td></t
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implements a simple watchdog used to reset comms. when needed. </p>
 <p>The <code><a class="el" href="class_watchdog.html" title="Implements a simple watchdog used to reset comms. when needed. ">Watchdog</a></code> class implements a simple software watchdog with the help of the <code>QTimer</code> object.</p>
-<p>During normal operation, the program periodically resets the watchdog timer to prevent it from expiring. If, due to an error, the program fails to reset or feed the watchdog, it shall expire and emit the appropiate signals.</p>
+<p>During normal operation, the program periodically resets the watchdog timer to prevent it from expiring. If, due to an error, the program fails to reset or feed the watchdog, it shall expire and emit the appropriate signals.</p>
 <p>The expiration signal is then received by the current protocol, which in turn will reset itself and try to re-establish communications with the robot controller and the FMS. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a3952c66a14d6cbce9bf6c83206dbc676"></a>

@@ -254,6 +254,8 @@ static QByteArray&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 </div><div class="memdoc">
 <p>Emitted when the team alliance is changed (be it by client or FMS) </p>
 
+<p>Referenced by <a class="el" href="class_d_s___config.html#a50d2a90c217f6a643fb4a677e622fdf1">DS_Config::updateAlliance()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="ae2036b07df59a5f697f38e1e73f3bc61"></a>
@@ -278,6 +280,8 @@ static QByteArray&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 </table>
 </div><div class="memdoc">
 <p>Emitted when the robot code availability is changed </p>
+
+<p>Referenced by <a class="el" href="class_d_s___config.html#a00d6bbaebf4be18c1f707d24160d15de">DS_Config::updateRobotCodeStatus()</a>.</p>
 
 </div>
 </div>
@@ -304,6 +308,8 @@ static QByteArray&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 </div><div class="memdoc">
 <p>Emitted when the control mode of the robot is changed </p>
 
+<p>Referenced by <a class="el" href="class_d_s___config.html#a07f7ffe6dccb80d26c420a56853a0b2d">DS_Config::updateControlMode()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a699b6f9a90f7688facb49863c5116656"></a>
@@ -329,6 +335,8 @@ static QByteArray&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 </div><div class="memdoc">
 <p>Emitted when the robot reports a change in the CPU usage of the primary robot controller. </p>
 
+<p>Referenced by <a class="el" href="class_d_s___config.html#a9b973d174ececa6822798d0ce8bf3c2f">DS_Config::updateCpuUsage()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a7c3957fbc5c576b6505aa83990ebe84b"></a>
@@ -353,6 +361,8 @@ static QByteArray&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 </table>
 </div><div class="memdoc">
 <p>Emitted when the robot reports a change in the disk usage of the primary robot controller. </p>
+
+<p>Referenced by <a class="el" href="class_d_s___config.html#ab98a950cd2e0552cf513215ecdcf4f16">DS_Config::updateDiskUsage()</a>.</p>
 
 </div>
 </div>
@@ -380,7 +390,9 @@ static QByteArray&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <p>Emitted when the elapsed time since the robot has been enabled is changed.</p>
 <dl class="section note"><dt>Note</dt><dd>This signal is emitted periodically </dd>
 <dd>
-If you want to use this information in the UI, we recommend you to bind to the <code><a class="el" href="class_d_s___base.html#ada415535e5fa3019f9d41b3d8922949d">elapsedTimeChanged(QString)</a></code> signal, since it already contains a pre-formatted time string with the appropiate time value(s). </dd></dl>
+If you want to use this information in the UI, we recommend you to bind to the <code><a class="el" href="class_d_s___base.html#ada415535e5fa3019f9d41b3d8922949d">elapsedTimeChanged(QString)</a></code> signal, since it already contains a pre-formatted time string with the appropriate time value(s). </dd></dl>
+
+<p>Referenced by <a class="el" href="class_d_s___config.html#ab87597eda4b4731e7959ca99aa07fd16">DS_Config::updateElapsedTime()</a>.</p>
 
 </div>
 </div>
@@ -433,6 +445,8 @@ If you want to use this information in the UI, we recommend you to bind to the <
 </div><div class="memdoc">
 <p>Emitted when the robot is enabled or disabled </p>
 
+<p>Referenced by <a class="el" href="class_d_s___config.html#a4ffa370e3996e4ecd9a968cc0709398f">DS_Config::updateEnabled()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a9a82da6d15c8565f5728a624af4ad576"></a>
@@ -457,6 +471,8 @@ If you want to use this information in the UI, we recommend you to bind to the <
 </table>
 </div><div class="memdoc">
 <p>Emitted when the communication status with the FMS (Field Management System) is changed. </p>
+
+<p>Referenced by <a class="el" href="class_d_s___config.html#a51629504f528e8ab0a66e1dd94fb589c">DS_Config::updateFMSCommStatus()</a>.</p>
 
 </div>
 </div>
@@ -483,6 +499,8 @@ If you want to use this information in the UI, we recommend you to bind to the <
 </div><div class="memdoc">
 <p>Emitted when the software version of the robot controller is detected. </p>
 
+<p>Referenced by <a class="el" href="class_d_s___config.html#a32c442052c3637eeeb2a74393692bbf1">DS_Config::updateLibVersion()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a25240036a9d7d96387cd9ca2c6aa097a"></a>
@@ -507,6 +525,8 @@ If you want to use this information in the UI, we recommend you to bind to the <
 </table>
 </div><div class="memdoc">
 <p>Emitted when the operation status of the robot is changed, for example, when we connect to the robot (changed from <code>kDisconnected</code> to <code>kNormal</code>), or when the robot is emergency stopped (<code>kEmergencyStop</code>). </p>
+
+<p>Referenced by <a class="el" href="class_d_s___config.html#a44633c7ca207fa923213298dd8195aa9">DS_Config::updateOperationStatus()</a>.</p>
 
 </div>
 </div>
@@ -533,6 +553,8 @@ If you want to use this information in the UI, we recommend you to bind to the <
 </div><div class="memdoc">
 <p>Emitted when the PCM (Pneumatics Control Module) firmware version is detected. </p>
 
+<p>Referenced by <a class="el" href="class_d_s___config.html#a596bfce487ff00cc4257fb20b9b61dfd">DS_Config::updatePcmVersion()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a808d2e2c5531cf69190b88b01b86d6e9"></a>
@@ -558,6 +580,8 @@ If you want to use this information in the UI, we recommend you to bind to the <
 </div><div class="memdoc">
 <p>Emitted when the PDP (Power Distribution Panel) firmware version is detected. </p>
 
+<p>Referenced by <a class="el" href="class_d_s___config.html#af1a7ec8c71817af917a3f800f5da4b61">DS_Config::updatePdpVersion()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="aa2285a844ff94060d7ad0d5dedece5b0"></a>
@@ -582,6 +606,8 @@ If you want to use this information in the UI, we recommend you to bind to the <
 </table>
 </div><div class="memdoc">
 <p>Emitted when the team position (be it by client or FMS) </p>
+
+<p>Referenced by <a class="el" href="class_d_s___config.html#a1c5ee31f1c5db0dd1ccaf34d31850b31">DS_Config::updatePosition()</a>.</p>
 
 </div>
 </div>
@@ -633,6 +659,8 @@ If you want to use this information in the UI, we recommend you to bind to the <
 </div><div class="memdoc">
 <p>Emitted when the communication status with the radio is changed </p>
 
+<p>Referenced by <a class="el" href="class_d_s___config.html#a04bda4a7d261bfe3a286ae3ddd7879df">DS_Config::updateRadioCommStatus()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="aef2998f0d59645976ae966583358557d"></a>
@@ -657,6 +685,8 @@ If you want to use this information in the UI, we recommend you to bind to the <
 </table>
 </div><div class="memdoc">
 <p>Emitted when the robot reports a change in the RAM usage of the primary robot controller. </p>
+
+<p>Referenced by <a class="el" href="class_d_s___config.html#aa1f772718405cc6fc25fc4ac6a0a043c">DS_Config::updateRamUsage()</a>.</p>
 
 </div>
 </div>
@@ -708,6 +738,8 @@ If you want to use this information in the UI, we recommend you to bind to the <
 </div><div class="memdoc">
 <p>Emitted when the communication status with the robot is changed </p>
 
+<p>Referenced by <a class="el" href="class_d_s___config.html#a22cec310c1896c0c99f8982db28ade64">DS_Config::updateRobotCommStatus()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="ac0455913be4e533ebfa634dcc9146361"></a>
@@ -732,6 +764,8 @@ If you want to use this information in the UI, we recommend you to bind to the <
 </table>
 </div><div class="memdoc">
 <p>Emitted when protocol knows if the target robot is simulated or not </p>
+
+<p>Referenced by <a class="el" href="class_d_s___config.html#ab914f569e967ad4c5c8107940b39bece">DS_Config::updateSimulated()</a>.</p>
 
 </div>
 </div>
@@ -758,7 +792,7 @@ If you want to use this information in the UI, we recommend you to bind to the <
 </div><div class="memdoc">
 <p>Emitted when the robot or <a class="el" href="class_d_s.html" title="Defines the data types shared between the modules of the LibDS. ">DS</a> status is changed </p>
 
-<p>Referenced by <a class="el" href="class_driver_station.html#acbfb6ca6bae816ccad72f4c948e29b05">DriverStation::finishInit()</a>, and <a class="el" href="class_driver_station.html#aaa7c9c077ec996e798e9f6eaef8198f7">DriverStation::resetRobot()</a>.</p>
+<p>Referenced by <a class="el" href="class_driver_station.html#acbfb6ca6bae816ccad72f4c948e29b05">DriverStation::finishInit()</a>, <a class="el" href="class_driver_station.html#aaa7c9c077ec996e798e9f6eaef8198f7">DriverStation::resetRobot()</a>, <a class="el" href="class_d_s___config.html#a07f7ffe6dccb80d26c420a56853a0b2d">DS_Config::updateControlMode()</a>, <a class="el" href="class_d_s___config.html#a4ffa370e3996e4ecd9a968cc0709398f">DS_Config::updateEnabled()</a>, <a class="el" href="class_d_s___config.html#a51629504f528e8ab0a66e1dd94fb589c">DS_Config::updateFMSCommStatus()</a>, <a class="el" href="class_d_s___config.html#a44633c7ca207fa923213298dd8195aa9">DS_Config::updateOperationStatus()</a>, <a class="el" href="class_d_s___config.html#a00d6bbaebf4be18c1f707d24160d15de">DS_Config::updateRobotCodeStatus()</a>, <a class="el" href="class_d_s___config.html#a22cec310c1896c0c99f8982db28ade64">DS_Config::updateRobotCommStatus()</a>, and <a class="el" href="class_d_s___config.html#ad95561e8b8ceb4b3b2f0af90bbb85156">DS_Config::updateVoltageStatus()</a>.</p>
 
 </div>
 </div>
@@ -785,6 +819,8 @@ If you want to use this information in the UI, we recommend you to bind to the <
 </div><div class="memdoc">
 <p>Emitted when the team number is changed </p>
 
+<p>Referenced by <a class="el" href="class_d_s___config.html#a196bb08a2b7a93a433e24d1e3f43c19b">DS_Config::updateTeam()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="ab7945fbd911e328a027e0c876ce748d9"></a>
@@ -809,6 +845,8 @@ If you want to use this information in the UI, we recommend you to bind to the <
 </table>
 </div><div class="memdoc">
 <p>Emitted when the voltage of the robot is changed </p>
+
+<p>Referenced by <a class="el" href="class_d_s___config.html#a43cf87d1a7a1a35fdff70a9be9342b34">DS_Config::updateVoltage()</a>.</p>
 
 </div>
 </div>
@@ -859,6 +897,8 @@ If you want to use this information in the UI, we recommend you to bind to the <
 </table>
 </div><div class="memdoc">
 <p>Emitted when the voltage status of the robot is changed, for example, when the robot reports a brownout. </p>
+
+<p>Referenced by <a class="el" href="class_d_s___config.html#ad95561e8b8ceb4b3b2f0af90bbb85156">DS_Config::updateVoltageStatus()</a>.</p>
 
 </div>
 </div>
