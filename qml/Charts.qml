@@ -153,8 +153,8 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
             barColor: Globals.Colors.PacketLoss
-            onRefreshed: value = DriverStation.packetLoss()
-            Component.onCompleted: value = DriverStation.packetLoss()
+            onRefreshed: value = Math.max (1, DriverStation.packetLoss())
+            Component.onCompleted: value = Math.max (1, DriverStation.packetLoss())
         }
 
         //

@@ -1346,7 +1346,7 @@ void DriverStation::sendRobotPacket() {
  * Calculates the current packet loss as a percent
  */
 void DriverStation::updatePacketLoss() {
-    qreal loss = 100;
+    qreal loss = 0;
     qreal sentPackets = 0;
     qreal recvPackets = 0;
 
@@ -1357,11 +1357,13 @@ void DriverStation::updatePacketLoss() {
     }
 
     /* Calculate packet loss */
-    if (recvPackets > 0 && recvPackets < sentPackets)
+    if (recvPackets > 0 && sentPackets > 0)
         loss = (1 - (recvPackets / sentPackets)) * 100;
+    else if (!isConnectedToRobot())
+        loss = 100;
 
     /* Update packet loss */
-    m_packetLoss = qMax (1, static_cast<int> (loss));
+    m_packetLoss = static_cast<int> (loss);
     config()->robotLogger()->registerPacketLoss (m_packetLoss);
 
     /* Schedule next loss calculation */
