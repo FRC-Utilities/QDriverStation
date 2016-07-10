@@ -19,7 +19,7 @@
  *
  * During normal operation, the program periodically resets the watchdog timer
  * to prevent it from expiring. If, due to an error, the program fails to reset
- * or feed the watchdog, it shall expire and emit the appropiate signals.
+ * or feed the watchdog, it shall expire and emit the appropriate signals.
  *
  * The expiration signal is then received by the current protocol, which in
  * turn will reset itself and try to re-establish communications with the robot

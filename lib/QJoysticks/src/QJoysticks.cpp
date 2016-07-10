@@ -352,7 +352,7 @@ void QJoysticks::setVirtualJoystickEnabled (bool enabled) {
 }
 
 /**
- * Removes all the registered joysticks and emits appropiate signals.
+ * Removes all the registered joysticks and emits appropriate signals.
  */
 void QJoysticks::resetJoysticks() {
     m_devices.clear();

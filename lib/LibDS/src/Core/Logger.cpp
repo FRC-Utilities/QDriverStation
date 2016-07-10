@@ -36,6 +36,9 @@ static FILE* DUMP;
 static QElapsedTimer TIMER;
 static bool INITIALIZED = false;
 
+static QString appLogsFile;
+static QString robotLogsFile;
+
 /**
  * Repeats the \a input string \a n times and returns the resultant string
  */
@@ -64,14 +67,18 @@ static void ADD_HEADER (const QString& title) {
 static void INIT_LOGGER() {
     TIMER.start();
 
-    /* Construct file name */
-    QString fpath = DS_LOGGER_PATH()
+    /* Set file names */
+    appLogsFile = DS_APP_LOGGER_PATH()
+                  + "/"
+                  + GET_DATE_TIME ("MMM dd yyyy - HH_mm_ss")
+                  + ".log";
+    robotLogsFile = DS_ROBOT_LOGGER_PATH()
                     + "/"
                     + GET_DATE_TIME ("MMM dd yyyy - HH_mm_ss")
-                    + ".log";
+                    + ".json";
 
     /* Open the dump file */
-    DUMP = fopen (fpath.toStdString().c_str(), "a+");
+    DUMP = fopen (DS_APP_LOGS_FILE().toStdString().c_str(), "a+");
     DUMP = !DUMP ? COUT : DUMP;
 
     /* Get app info */
@@ -132,10 +139,24 @@ QString DS_FILES_PATH() {
 }
 
 /**
+ * Returns the file in which the application logs are written
+ */
+QString DS_APP_LOGS_FILE() {
+    return appLogsFile;
+}
+
+/**
+ * Returns the file in which the robot logs are written
+ */
+QString DS_ROBOT_LOGS_FILE() {
+    return robotLogsFile;
+}
+
+/**
  * Figures out where to place the application logs
  */
-QString DS_LOGGER_PATH() {
-    QDir dir = QDir (DS_FILES_PATH() + "/app-logs/");
+QString DS_APP_LOGGER_PATH() {
+    QDir dir = QDir (DS_FILES_PATH() + "/Logs/Client/");
 
     if (!dir.exists())
         dir.mkpath (".");
@@ -148,7 +169,7 @@ QString DS_LOGGER_PATH() {
  * stuff)
  */
 QString DS_ROBOT_LOGGER_PATH() {
-    QDir dir = QDir (DS_FILES_PATH() + "/robot-logs/");
+    QDir dir = QDir (DS_FILES_PATH() + "/Logs/Robot/");
     if (!dir.exists())
         dir.mkpath (".");
 

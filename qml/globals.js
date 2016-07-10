@@ -118,7 +118,7 @@ function log (message) {
 
 //
 // Parses the input text (already formatted in morse) and generates
-// the appropiate sounds. This is used in the status widget to generate
+// the appropriate sounds. This is used in the status widget to generate
 // several sound tones.
 //
 function morse (input, frequency) {

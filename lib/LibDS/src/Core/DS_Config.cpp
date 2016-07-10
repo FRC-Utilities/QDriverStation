@@ -45,31 +45,52 @@ DS_Config::~DS_Config() {
     delete m_robotLogger;
 }
 
+/**
+ * Returns the instance of the robot logger object
+ */
 RobotLogger* DS_Config::robotLogger() {
     return m_robotLogger;
 }
 
+/**
+ * Returns the one and only instance of
+ */
 DS_Config* DS_Config::getInstance() {
     static DS_Config instance;
     return &instance;
 }
 
+/**
+ * Returns the current team number
+ */
 int DS_Config::team() const {
     return m_team;
 }
 
+/**
+ * Returns the current CPU usage of the robot (0 - 100)
+ */
 int DS_Config::cpuUsage() const {
     return m_cpuUsage;
 }
 
+/**
+ * Returns the current RAM usage of the robot
+ */
 int DS_Config::ramUsage() const {
     return m_ramUsage;
 }
 
+/**
+ * Returns the current disk usage of the robot
+ */
 int DS_Config::diskUsage() const {
     return m_diskUsage;
 }
 
+/**
+ * Returns the current voltage of the robot
+ */
 qreal DS_Config::voltage() const {
     if (isConnectedToRobot())
         return m_voltage;
@@ -77,86 +98,159 @@ qreal DS_Config::voltage() const {
     return 0;
 }
 
+/**
+ * Returns \c true if the robot is enabled. Otherwise, it returns \c false
+ */
 bool DS_Config::isEnabled() const {
     return enableStatus() == DS::kEnabled;
 }
 
+/**
+ * Returns \c true if the robot is simulated. Otherwise, it returns \c false
+ */
 bool DS_Config::isSimulated() const {
     return m_simulated;
 }
 
+/**
+ * Returns the current alliance of the robot (be it user-set or FMS-set)
+ */
 DS::Alliance DS_Config::alliance() const {
     return m_alliance;
 }
 
+/**
+ * Returns the current position of the robot (be it user-set or FMS-set)
+ */
 DS::Position DS_Config::position() const {
     return m_position;
 }
 
+/**
+ * Returns \c true if the Driver Station is connected to the Field Management
+ * System (FMS).
+ */
 bool DS_Config::isFMSAttached() const {
     return fmsCommStatus() == DS::kCommsWorking;
 }
 
+/**
+ * Returns the library version of the robot
+ */
 QString DS_Config::libVersion() const {
     return m_libVersion;
 }
 
+/**
+ * Returns the PCM version of the robot
+ */
 QString DS_Config::pcmVersion() const {
     return m_pcmVersion;
 }
 
+/**
+ * Returns the PDP version of the robot
+ */
 QString DS_Config::pdpVersion() const {
     return m_pdpVersion;
 }
 
+/**
+ * Returns \c true if the robot is emergency stopped. Otherwise, it returns
+ * \c false.
+ */
 bool DS_Config::isEmergencyStopped() const {
     return operationStatus() == DS::kEmergencyStop;
 }
 
+/**
+ * Returns \c true if the robot code is running. Otherwise, it returns \c false
+ */
 bool DS_Config::isRobotCodeRunning() const {
     return robotCodeStatus() == DS::kCodeRunning;
 }
 
+/**
+ * Returns \c true if the Driver Station is connected to the radio. Otherwise,
+ * it returns \c false
+ */
 bool DS_Config::isConnectedToRadio() const {
     return radioCommStatus() == DS::kCommsWorking;
 }
 
+/**
+ * Returns \c true if the Driver Station is connected to the robot. Otherwise,
+ * it returns \c false
+ */
 bool DS_Config::isConnectedToRobot() const {
     return robotCommStatus() == DS::kCommsWorking;
 }
 
+/**
+ * Returns the current control mode of the robot
+ */
 DS::ControlMode DS_Config::controlMode() const {
     return m_controlMode;
 }
 
+/**
+ * Returns the current status of the FMS communications.
+ * \note You can also use the \c isConnectedToFMS() function
+ */
 DS::CommStatus DS_Config::fmsCommStatus() const {
     return m_fmsCommStatus;
 }
 
+/**
+ * Returns the current enabled status of the robot
+ * \note You can also use the \c isEnabled() function
+ */
 DS::EnableStatus DS_Config::enableStatus() const {
     return m_enableStatus;
 }
 
+/**
+ * Returns the current status of the radio communications
+ * \note You can also use the \c isConnectedToRadio() function
+ */
 DS::CommStatus DS_Config::radioCommStatus() const {
     return m_radioCommStatus;
 }
 
+/**
+ * Returns the current status of the robot communications
+ * \note You can also use the \c isConnectedToRobot() function
+ */
 DS::CommStatus DS_Config::robotCommStatus() const {
     return m_robotCommStatus;
 }
 
+/**
+ * Returns the current status of the robot code
+ * \note You can also use the \c isRobotCodeRunning() function
+ */
 DS::CodeStatus DS_Config::robotCodeStatus() const {
     return m_codeStatus;
 }
 
+/**
+ * Returns the current voltage brownout status of the robot.
+ */
 DS::VoltageStatus DS_Config::voltageStatus() const {
     return m_voltageStatus;
 }
 
+/**
+ * Returns the current operation status of the robot.
+ * \note You can also use the \c isEmergencyStopped() function
+ */
 DS::OperationStatus DS_Config::operationStatus() const {
     return m_operationStatus;
 }
 
+/**
+ * Changes the \a team number and fires the appropriate signals if required
+ */
 void DS_Config::updateTeam (int team) {
     if (m_team != team) {
         m_team = team;
@@ -166,6 +260,10 @@ void DS_Config::updateTeam (int team) {
     }
 }
 
+/**
+ * Changes the robot \a code status and fires the appropriate signals if
+ * required
+ */
 void DS_Config::setRobotCode (bool code) {
     DS::CodeStatus status = DS::kCodeFailing;
     if (code) status = DS::kCodeRunning;
@@ -173,6 +271,9 @@ void DS_Config::setRobotCode (bool code) {
     updateRobotCodeStatus (status);
 }
 
+/**
+ * Changes the \a enabled status and fires the appropriate signals if required
+ */
 void DS_Config::setEnabled (bool enabled) {
     DS::EnableStatus status = DS::kDisabled;
     if (enabled) status = DS::kEnabled;
@@ -180,22 +281,34 @@ void DS_Config::setEnabled (bool enabled) {
     updateEnabled (status);
 }
 
+/**
+ * Changes the CPU \a usage and fires the appropriate signals if required
+ */
 void DS_Config::updateCpuUsage (int usage) {
     m_cpuUsage = 0;
     emit cpuUsageChanged (usage);
 }
 
+/**
+ * Changes the RAM \a usage and fires the appropriate signals if required
+ */
 void DS_Config::updateRamUsage (int usage) {
     m_ramUsage = 0;
     emit ramUsageChanged (usage);
 }
 
+/**
+ * Changes the disk \a usage and fires the appropriate signals if required
+ */
 void DS_Config::updateDiskUsage (int usage) {
     m_diskUsage = 0;
     emit diskUsageChanged (usage);
 }
 
-
+/**
+ * Changes the voltage \a brownout status and fires the appropriate signals
+ * if required.
+ */
 void DS_Config::setBrownout (bool brownout) {
     DS::VoltageStatus status = DS::kVoltageNormal;
     if (brownout) status = DS::kVoltageBrownout;
@@ -203,6 +316,9 @@ void DS_Config::setBrownout (bool brownout) {
     updateVoltageStatus (status);
 }
 
+/**
+ * Changes the \a estop status and fires the appropriate signals if required
+ */
 void DS_Config::setEmergencyStop (bool estop) {
     DS::OperationStatus status = DS::kNormal;
     if (estop) status = DS::kEmergencyStop;
@@ -210,6 +326,9 @@ void DS_Config::setEmergencyStop (bool estop) {
     updateOperationStatus (status);
 }
 
+/**
+ * Changes the robot \a voltage and fires the appropriate signals if required
+ */
 void DS_Config::updateVoltage (qreal voltage) {
     /* Round voltage to two decimal places */
     m_voltage = roundf (voltage * 100) / 100;
@@ -233,13 +352,23 @@ void DS_Config::updateVoltage (qreal voltage) {
     /* Emit signals */
     emit voltageChanged (m_voltage);
     emit voltageChanged (integer_str + "." + decimal_str + " V");
+
+    /* Log robot voltage */
+    m_robotLogger->registerVoltage (m_voltage);
 }
 
+/**
+ * Changes the \a simulated status and fires the appropriate signals if
+ * required
+ */
 void DS_Config::updateSimulated (bool simulated) {
     m_simulated = simulated;
     emit simulatedChanged (simulated);
 }
 
+/**
+ * Changes the \a alliance and fires the appropriate signals if required
+ */
 void DS_Config::updateAlliance (Alliance alliance) {
     if (m_alliance != alliance) {
         m_alliance = alliance;
@@ -249,6 +378,9 @@ void DS_Config::updateAlliance (Alliance alliance) {
     emit allianceChanged (m_alliance);
 }
 
+/**
+ * Changes the \a position and fires the appropriate signals if required
+ */
 void DS_Config::updatePosition (Position position) {
     if (m_position != position) {
         m_position = position;
@@ -258,6 +390,10 @@ void DS_Config::updatePosition (Position position) {
     emit positionChanged (m_position);
 }
 
+/**
+ * Changes the robot code \a status and fires the appropriate signals if
+ * required
+ */
 void DS_Config::updateRobotCodeStatus (CodeStatus status) {
     if (m_codeStatus != status) {
         m_codeStatus = status;
@@ -268,6 +404,10 @@ void DS_Config::updateRobotCodeStatus (CodeStatus status) {
     emit statusChanged (DriverStation::getInstance()->generalStatus());
 }
 
+/**
+ * Changes the robot control \a mode and fires the appropriate signals if
+ * required
+ */
 void DS_Config::updateControlMode (ControlMode mode) {
     if (m_controlMode != mode) {
         m_controlMode = mode;
@@ -278,6 +418,10 @@ void DS_Config::updateControlMode (ControlMode mode) {
     emit statusChanged (DriverStation::getInstance()->generalStatus());
 }
 
+/**
+ * Changes the robot library \a version and fires the appropriate signals if
+ * required
+ */
 void DS_Config::updateLibVersion (const QString& version) {
     if (m_libVersion != version) {
         m_libVersion = version;
@@ -287,6 +431,9 @@ void DS_Config::updateLibVersion (const QString& version) {
     emit libVersionChanged (m_libVersion);
 }
 
+/**
+ * Changes the PCM \a version and fires the appropriate signals if required
+ */
 void DS_Config::updatePcmVersion (const QString& version) {
     if (m_pcmVersion != version) {
         m_pcmVersion = version;
@@ -296,6 +443,9 @@ void DS_Config::updatePcmVersion (const QString& version) {
     emit pcmVersionChanged (m_pcmVersion);
 }
 
+/**
+ * Changes the PDP/PDB \a version and fires the appropriate signals if required
+ */
 void DS_Config::updatePdpVersion (const QString& version) {
     if (m_pdpVersion != version) {
         m_pdpVersion = version;
@@ -305,6 +455,9 @@ void DS_Config::updatePdpVersion (const QString& version) {
     emit pdpVersionChanged (m_pdpVersion);
 }
 
+/**
+ * Changes the enabled \a status and fires the appropriate signals if required
+ */
 void DS_Config::updateEnabled (EnableStatus status) {
     if (m_enableStatus != status) {
         m_enableStatus = status;
@@ -324,6 +477,10 @@ void DS_Config::updateEnabled (EnableStatus status) {
     emit statusChanged (DriverStation::getInstance()->generalStatus());
 }
 
+/**
+ * Changes the FMS communication \a status and fires the appropriate signals
+ * if required
+ */
 void DS_Config::updateFMSCommStatus (CommStatus status) {
     if (m_fmsCommStatus != status) {
         m_fmsCommStatus = status;
@@ -334,6 +491,10 @@ void DS_Config::updateFMSCommStatus (CommStatus status) {
     emit statusChanged (DriverStation::getInstance()->generalStatus());
 }
 
+/**
+ * Changes the radio communication \a status and fires the appropriate signals
+ * if required
+ */
 void DS_Config::updateRadioCommStatus (CommStatus status) {
     if (m_radioCommStatus != status) {
         m_radioCommStatus = status;
@@ -343,6 +504,10 @@ void DS_Config::updateRadioCommStatus (CommStatus status) {
     emit radioCommStatusChanged (m_radioCommStatus);
 }
 
+/**
+ * Changes the robot communication \a status and fires the appropriate signals
+ * if required
+ */
 void DS_Config::updateRobotCommStatus (CommStatus status) {
     if (m_robotCommStatus != status) {
         m_robotCommStatus = status;
@@ -353,6 +518,10 @@ void DS_Config::updateRobotCommStatus (CommStatus status) {
     emit statusChanged (DriverStation::getInstance()->generalStatus());
 }
 
+/**
+ * Changes the voltage brownout \a status and fires the appropriate signals
+ * if required
+ */
 void DS_Config::updateVoltageStatus (VoltageStatus status) {
     if (m_voltageStatus != status) {
         m_voltageStatus = status;
@@ -364,6 +533,10 @@ void DS_Config::updateVoltageStatus (VoltageStatus status) {
 
 }
 
+/**
+ * Changes the robot operation \a status and fires the appropriate signals
+ * if required
+ */
 void DS_Config::updateOperationStatus (OperationStatus status) {
     if (m_operationStatus != status) {
         m_operationStatus = status;
@@ -374,6 +547,17 @@ void DS_Config::updateOperationStatus (OperationStatus status) {
     emit statusChanged (DriverStation::getInstance()->generalStatus());
 }
 
+/**
+ * Calculates the elapsed time since the robot has been enabled (regardless of
+ * the operation mode).
+ *
+ * This function is called every 100 milliseconds.
+ *
+ * \note This function will not run if there is no communication status with
+ *       the robot or if the robot is emergency stopped
+ * \note The elapsed time will be resetted when the user changes the control
+ *       mode of the robot
+ */
 void DS_Config::updateElapsedTime() {
     if (m_timerEnabled && isConnectedToRobot() && !isEmergencyStopped()) {
         quint32 msec = m_timer->elapsed();
@@ -390,5 +574,5 @@ void DS_Config::updateElapsedTime() {
                                  .arg (QString::number (msec).at (0)));
     }
 
-    DS_Schedule (200, this, SLOT (updateElapsedTime()));
+    DS_Schedule (100, this, SLOT (updateElapsedTime()));
 }

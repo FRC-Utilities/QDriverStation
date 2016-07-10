@@ -40,7 +40,7 @@ ColumnLayout {
     property double spacerHeight: Globals.spacing / 2
 
     //
-    // These properties are updated when the DS emits the appropiate signals
+    // These properties are updated when the DS emits the appropriate signals
     //
     property bool simulated: false
     property string teamNumber: DriverStation.team()

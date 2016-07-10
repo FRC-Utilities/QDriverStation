@@ -26,7 +26,7 @@ class DS_Base : public DS {
      * \note This signal is emitted periodically
      * \note If you want to use this information in the UI, we recommend you to
      *       bind to the \c elapsedTimeChanged(QString) signal, since it
-     *       already contains a pre-formatted time string with the appropiate
+     *       already contains a pre-formatted time string with the appropriate
      *       time value(s).
      */
     void elapsedTimeChanged (int msecs);

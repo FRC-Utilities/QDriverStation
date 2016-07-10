@@ -541,21 +541,24 @@ void Sockets::readRobotSocket() {
  * Assigns the found FMS IP
  */
 void Sockets::onFMSLookupFinished (const QHostInfo& info) {
-    setFMSAddress (getAddress (info));
+    if (!DriverStation::getInstance()->isConnectedToFMS())
+        setFMSAddress (getAddress (info));
 }
 
 /**
  * Assigns the found radio IP
  */
 void Sockets::onRadioLookupFinished (const QHostInfo& info) {
-    setRadioAddress (getAddress (info));
+    if (!DriverStation::getInstance()->isConnectedToRadio())
+        setRadioAddress (getAddress (info));
 }
 
 /**
  * Assigns the found robot IP
  */
 void Sockets::onRobotLookupFinished (const QHostInfo& info) {
-    setRobotAddress (getAddress (info));
+    if (!DriverStation::getInstance()->isConnectedToRobot())
+        setRobotAddress (getAddress (info));
 }
 
 /**

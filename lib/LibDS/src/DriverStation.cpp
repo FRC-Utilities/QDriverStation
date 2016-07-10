@@ -283,7 +283,7 @@ QString DriverStation::filesPath() const {
  * Returns the path in which application log files are stored
  */
 QString DriverStation::appLoggerPath() const {
-    return DS_LOGGER_PATH();
+    return DS_APP_LOGGER_PATH();
 }
 
 /**
@@ -1360,8 +1360,11 @@ void DriverStation::updatePacketLoss() {
     if (recvPackets > 0 && recvPackets < sentPackets)
         loss = (1 - (recvPackets / sentPackets)) * 100;
 
-    /* Update packet loss & schedule next calculation */
+    /* Update packet loss */
     m_packetLoss = qMax (1, static_cast<int> (loss));
+    config()->robotLogger()->registerPacketLoss (m_packetLoss);
+
+    /* Schedule next loss calculation */
     DS_Schedule (250, this, SLOT (updatePacketLoss()));
 }
 

@@ -221,7 +221,7 @@ void Downloader::onDownloadFinished() {
 }
 
 /**
- * Calculates the appropiate size units (bytes, KB or MB) for the received
+ * Calculates the appropriate size units (bytes, KB or MB) for the received
  * data and the total download size. Then, this function proceeds to update the
  * dialog controls/UI.
  */
@@ -281,7 +281,7 @@ void Downloader::updateProgress (qint64 received, qint64 total) {
  * Uses two time samples (from the current time and a previous sample) to
  * calculate how many bytes have been downloaded.
  *
- * Then, this function proceeds to calculate the appropiate units of time
+ * Then, this function proceeds to calculate the appropriate units of time
  * (hours, minutes or seconds) and constructs a user-friendly string, which
  * is displayed in the dialog.
  */

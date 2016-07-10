@@ -276,7 +276,7 @@ class Protocol {
      * Contrary to how the radio and the robot protocols work, we will not
      * send FMS packets until we have received a packet from the FMS.
      *
-     * The address is set to \a empty by default, the DS will set the appropiate
+     * The address is set to \a empty by default, the DS will set the appropriate
      * FMS IP once it receives a packet from it.
      */
     virtual QString fmsAddress() {

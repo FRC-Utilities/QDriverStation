@@ -29,6 +29,7 @@ class RobotLogger : public QObject {
   public slots:
     void registerWatchdogTimeout();
     void registerVoltage (qreal voltage);
+    void registerPacketLoss (int pktLoss);
     void registerRobotRAMUsage (int usage);
     void registerRobotCPUUsage (int usage);
     void registerAlliance (DS::Alliance alliance);
@@ -41,8 +42,26 @@ class RobotLogger : public QObject {
     void registerVoltageStatus (DS::VoltageStatus status);
     void registerOperationStatus (DS::OperationStatus status);
 
+  private slots:
+    void serializeLogs();
+
   private:
     QElapsedTimer* m_timer;
+
+    int m_previousRAM;
+    int m_previousCPU;
+    int m_previousLoss;
+    qreal m_previousVoltage;
+
+    QList<int> m_ramUsages;
+    QList<int> m_cpuUsages;
+    QList<int> m_pktLosses;
+    QList<qreal> m_voltages;
+
+    QList<qint64> m_ramTimings;
+    QList<qint64> m_cpuTimings;
+    QList<qint64> m_pktTimings;
+    QList<qint64> m_voltageTimings;
 };
 
 #endif

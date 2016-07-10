@@ -81,7 +81,7 @@ QList<QJoystickDevice*> SDL_Joysticks::joysticks() {
 
 /**
  * Based on the data contained in the \a request, this function will instruct
- * the appropiate joystick to rumble for
+ * the appropriate joystick to rumble for
  */
 void SDL_Joysticks::rumble (const QJoystickRumble& request) {
     SDL_Haptic* haptic = SDL_HapticOpen (request.joystick->id);
