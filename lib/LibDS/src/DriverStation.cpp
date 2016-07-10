@@ -19,6 +19,7 @@
 #include "Protocols/FRC_2015.h"
 #include "Protocols/FRC_2016.h"
 
+#include <QDir>
 #include <QUrl>
 #include <QDesktopServices>
 
@@ -273,10 +274,10 @@ bool DriverStation::isRobotCodeRunning() const {
 }
 
 /**
- * Returns the path in which different DS-related files are stored
+ * Returns the path in which application log files are stored
  */
-QString DriverStation::filesPath() const {
-    return DS_FILES_PATH();
+QString DriverStation::loggerPath() const {
+    return DS_LOGGER_PATH();
 }
 
 /**
@@ -707,6 +708,20 @@ DS::OperationStatus DriverStation::operationStatus() const {
 }
 
 /**
+ * Returns a list with all the application logs saved to the logs path
+ */
+QStringList DriverStation::appLogsList() const {
+    return QDir (appLoggerPath()).entryList (QStringList ("*.log"));
+}
+
+/**
+ * Returns a list with all the robot logs saved to the logs path
+ */
+QStringList DriverStation::robotLogsList() const {
+    return QDir (robotLoggerPath()).entryList (QStringList ("*.json"));
+}
+
+/**
  * Returns a list with the included protocols of the library.
  * This function is meant to be used to generate your UI elements and
  * seamessly use them with the \c setProtocolType() function.
@@ -853,7 +868,7 @@ void DriverStation::enableRobot() {
  * Opens the application logs in an explorer window
  */
 void DriverStation::openLogsPath() {
-    QDesktopServices::openUrl (QUrl::fromLocalFile (appLoggerPath()));
+    QDesktopServices::openUrl (QUrl::fromLocalFile (loggerPath()));
 }
 
 /**

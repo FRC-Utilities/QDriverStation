@@ -32,5 +32,6 @@
         <file>widgets/Plot.qml</file>
         <file>VoltageGraph.qml</file>
         <file>Charts.qml</file>
+        <file>LogsWindow.qml</file>
     </qresource>
 </RCC>

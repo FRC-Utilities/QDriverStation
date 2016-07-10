@@ -82,6 +82,13 @@ Window {
     }
 
     //
+    // Display the logs window (from anywhere in the app)
+    //
+    function showLogsWindow() {
+        logsWindow.show()
+    }
+
+    //
     // Calculates the minimum width of the window
     //
     function getMinimumWidth() {
@@ -255,6 +262,13 @@ Window {
     //
     VirtualJoystickWindow {
         id: virtualJoystickWindow
+    }
+
+    //
+    // The logs window
+    //
+    LogsWindow {
+        id: logsWindow
     }
 
     //

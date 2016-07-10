@@ -59,7 +59,7 @@ const QAbstractSocket::BindMode DS_BIND_FLAGS = \
 //------------------------------------------------------------------------------
 
 extern void DS_CLOSE_LOGS();
-extern QString DS_FILES_PATH();
+extern QString DS_LOGGER_PATH();
 extern QString DS_APP_LOGS_FILE();
 extern QString DS_ROBOT_LOGS_FILE();
 extern QString DS_APP_LOGGER_PATH();

@@ -47,7 +47,7 @@ ColumnLayout {
 
         Button {
             text: qsTr ("Logs") + "..."
-            onClicked: DriverStation.openLogsPath()
+            onClicked: window.showLogsWindow()
         }
 
         Item {

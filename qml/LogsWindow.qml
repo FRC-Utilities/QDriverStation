@@ -29,5 +29,272 @@ import "widgets"
 import "globals.js" as Globals
 
 Window {
+    id: window
 
+    //
+    // Window size
+    //
+    width: minimumWidth
+    height: minimumHeight
+    minimumWidth: Globals.scale (640)
+    minimumHeight: Globals.scale (420)
+
+    //
+    // Returns a list with the application log names
+    //
+    function appLogs() {
+        return DriverStation.appLogsList().reverse()
+    }
+
+    //
+    // Returns a list with the robot log names
+    //
+    function robotLogs() {
+        return DriverStation.robotLogsList().reverse()
+    }
+
+    //
+    // Returns a formatted name for the given log
+    //
+    function niceName (log) {
+        log = log.replace (/_/gi, ':')
+        log = log.replace(/.log/gi, '')
+        log = log.replace(/.json/gi, '')
+
+        return log
+    }
+
+    //
+    // Default window position
+    //
+    x: (Screen.width - width) / 4
+    y: (Screen.height - height) / 4
+
+    //
+    // Window properties
+    //
+    visible: false
+    title: qsTr ("Driver Station Logs")
+    color: Globals.Colors.WindowBackground
+
+    //
+    // Set window flags
+    //
+    flags: Qt.Window |
+           Qt.WindowTitleHint |
+           Qt.WindowSystemMenuHint |
+           Qt.WindowCloseButtonHint |
+           Qt.WindowMinimizeButtonHint
+
+    //
+    // Save settings
+    //
+    Settings {
+        category: "Logs Window"
+        property alias x: window.x
+        property alias y: window.y
+        property alias width: window.width
+        property alias height: window.height
+    }
+
+    //
+    // Main layout
+    //
+    RowLayout {
+        anchors.fill: parent
+        spacing: Globals.spacing
+        anchors.margins: Globals.spacing
+
+        //
+        // Navigator bar
+        //
+        ColumnLayout {
+            Layout.fillWidth: false
+            Layout.fillHeight: true
+            spacing: Globals.spacing
+
+            //
+            // Log selector
+            //
+            Label { text: qsTr ("Choose log file") }
+            TextEditor {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                backgroundColor: Globals.Colors.PanelBackground
+                foregroundColor: Globals.Colors.WidgetForeground
+
+                Component.onCompleted: {
+                    for (var i = 0; i < robotLogs().length; ++i)
+                        editor.append (niceName (robotLogs()[i]))
+                }
+            }
+
+            //
+            // Log file paths caption
+            //
+            RowLayout {
+                Label {
+                    Layout.fillWidth: true
+                    text: qsTr ("Path to log files")
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                Button {
+                    icon: icons.fa_folder_open
+                    onClicked: DriverStation.openLogsPath()
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+
+            //
+            // Log file paths text box
+            //
+            LineEdit {
+                editor.readOnly: true
+                Layout.fillWidth: true
+                text: DriverStation.loggerPath()
+                backgroundColor: Globals.Colors.PanelBackground
+                foregroundColor: Globals.Colors.WidgetForeground
+            }
+
+            //
+            // Messages box
+            //
+            Label { text: qsTr ("Messages") }
+            TextEditor {
+                editor.readOnly: true
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                editor.font.family: Globals.monoFont
+                editor.font.pixelSize: Globals.scale (11)
+                backgroundColor: Globals.Colors.PanelBackground
+                foregroundColor: Globals.Colors.WidgetForeground
+            }
+        }
+
+        //
+        // Log charts
+        //
+        Panel {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            ColumnLayout {
+                anchors.fill: parent
+                spacing: Globals.spacing
+                anchors.margins: Globals.spacing
+
+                //
+                // Log type selector
+                //
+                RowLayout {
+                    Layout.fillWidth: true
+
+                    Label {
+                        Layout.fillWidth: true
+                        text: qsTr ("Select Category") + ":"
+                    }
+
+                    Button {
+                        id: eventsBt
+                        checked: true
+                        text: qsTr ("Event Charts")
+
+                        onClicked: {
+                            eventsBt.checked = true
+                            consoleBt.checked = false
+
+                            eventCharts.visible = true
+                            consoleLogs.visible = false
+                        }
+                    }
+
+                    Button {
+                        id: consoleBt
+                        text: qsTr ("Console Logs")
+
+                        onClicked: {
+                            eventsBt.checked = false
+                            consoleBt.checked = true
+
+                            consoleLogs.visible = true
+                            eventCharts.visible = false
+                        }
+                    }
+                }
+
+                //
+                // Event charts
+                //
+                RowLayout {
+                    id: eventCharts
+                    visible: true
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    spacing: Globals.spacing
+
+                    //
+                    // Colors
+                    //
+                    property string pktColor: "blue"
+                    property string cpuColor: "red"
+                    property string ramColor: "orange"
+                    property string volColor: "yellow"
+
+                    //
+                    // Plot
+                    //
+                    Plot {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                    }
+
+                    //
+                    // Legends
+                    //
+                    ColumnLayout {
+                        Layout.fillWidth: false
+                        Layout.fillHeight: true
+                        spacing: Globals.spacing
+
+                        LED {
+                            text: qsTr ("Lost Packets")
+                            unpoweredColor: eventCharts.pktColor
+                        }
+
+                        LED {
+                            text: qsTr ("CPU") + " %"
+                            unpoweredColor: eventCharts.cpuColor
+                        }
+
+                        LED {
+                            text: qsTr ("RAM") + " %"
+                            unpoweredColor: eventCharts.ramColor
+                        }
+
+                        LED {
+                            text: qsTr ("Voltage") + " %"
+                            unpoweredColor: eventCharts.volColor
+                        }
+                    }
+                }
+
+                //
+                // Console logs
+                //
+                TextEditor {
+                    id: consoleLogs
+                    visible: false
+                    editor.readOnly: true
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    editor.textFormat: Text.PlainText
+                    editor.font.family: Globals.monoFont
+                    editor.font.pixelSize: Globals.scale (11)
+                    foregroundColor: Globals.Colors.WidgetForeground
+                    backgroundColor: Globals.Colors.WindowBackground
+                }
+            }
+        }
+    }
 }

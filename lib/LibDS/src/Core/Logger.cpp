@@ -13,6 +13,7 @@
 #include <QSysInfo>
 #include <QApplication>
 #include <QElapsedTimer>
+#include <DriverStation.h>
 
 //------------------------------------------------------------------------------
 // Ugly hacks to make the code more readable
@@ -34,6 +35,7 @@
 
 static FILE* DUMP;
 static QElapsedTimer TIMER;
+static bool CLOSED = false;
 static bool INITIALIZED = false;
 
 static QString appLogsFile;
@@ -67,14 +69,42 @@ static void ADD_HEADER (const QString& title) {
 static void INIT_LOGGER() {
     TIMER.start();
 
+    /* Get log count */
+    QDir logPath (DS_APP_LOGGER_PATH());
+    QDir robPath (DS_ROBOT_LOGGER_PATH());
+    int appLogCount = logPath.entryList (QStringList ("*.log")).count();
+    int robLogCount = robPath.entryList (QStringList ("*.json")).count();
+
+    /* Get app log number string (to ensure correct order up to 9999) */
+    QString appLogNumber = QString::number (appLogCount);
+    if (appLogCount < 10)
+        appLogNumber.prepend ("000");
+    else if (appLogCount < 100)
+        appLogNumber.prepend ("00");
+    else if (appLogCount < 1000)
+        appLogNumber.prepend ("0");
+
+    /* Get robot log number string (to ensure correct order up to 9999) */
+    QString robLogNumber = QString::number (robLogCount);
+    if (robLogCount < 10)
+        robLogNumber.prepend ("000");
+    else if (robLogCount < 100)
+        robLogNumber.prepend ("00");
+    else if (robLogCount < 1000)
+        robLogNumber.prepend ("0");
+
     /* Set file names */
     appLogsFile = DS_APP_LOGGER_PATH()
                   + "/"
-                  + GET_DATE_TIME ("MMM dd yyyy - HH_mm_ss")
+                  + "Log "
+                  + appLogNumber + " "
+                  + GET_DATE_TIME ("(MMM dd yyyy - HH_mm_ss)")
                   + ".log";
     robotLogsFile = DS_ROBOT_LOGGER_PATH()
                     + "/"
-                    + GET_DATE_TIME ("MMM dd yyyy - HH_mm_ss")
+                    + "Log "
+                    + robLogNumber + " "
+                    + GET_DATE_TIME ("(MMM dd yyyy - HH_mm_ss)")
                     + ".json";
 
     /* Open the dump file */
@@ -128,9 +158,9 @@ static void INIT_LOGGER() {
 /**
  * Returns the path in which several application files are stored (e.g. logs)
  */
-QString DS_FILES_PATH() {
-    QDir dir (QString ("%1/.%2/").arg (QDir::homePath(),
-                                       qApp->applicationName().toLower()));
+QString DS_LOGGER_PATH() {
+    QDir dir (QString ("%1/.%2/Logs").arg (QDir::homePath(),
+                                           qApp->applicationName().toLower()));
 
     if (!dir.exists())
         dir.mkpath (".");
@@ -156,7 +186,7 @@ QString DS_ROBOT_LOGS_FILE() {
  * Figures out where to place the application logs
  */
 QString DS_APP_LOGGER_PATH() {
-    QDir dir = QDir (DS_FILES_PATH() + "/Logs/Client/");
+    QDir dir = QDir (DS_LOGGER_PATH() + "/Client/");
 
     if (!dir.exists())
         dir.mkpath (".");
@@ -169,7 +199,7 @@ QString DS_APP_LOGGER_PATH() {
  * stuff)
  */
 QString DS_ROBOT_LOGGER_PATH() {
-    QDir dir = QDir (DS_FILES_PATH() + "/Logs/Robot/");
+    QDir dir = QDir (DS_LOGGER_PATH() + "/Robot/");
     if (!dir.exists())
         dir.mkpath (".");
 
@@ -181,10 +211,11 @@ QString DS_ROBOT_LOGGER_PATH() {
  */
 void DS_CLOSE_LOGS() {
     if (DUMP && INITIALIZED) {
-        qDebug() << "Log buffer closed";
-
+        CLOSED = true;
         INITIALIZED = false;
+        qDebug() << "Log buffer closed";
         ADD_HEADER ("End of log, have a nice day!");
+
         fclose (DUMP);
     }
 }
@@ -199,6 +230,10 @@ void DS_CLOSE_LOGS() {
 void DS_MESSAGE_HANDLER (QtMsgType type, const QMessageLogContext& context,
                          const QString& data) {
     Q_UNUSED (context);
+
+    /* Log already closed - quit */
+    if (CLOSED)
+        return;
 
     /* First call, create log file */
     if (!INITIALIZED)
