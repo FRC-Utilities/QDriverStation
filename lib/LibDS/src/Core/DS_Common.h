@@ -52,18 +52,18 @@
 const int DS_DISABLED_PORT = -1;
 const QHostAddress DS_LISTENER = QHostAddress ("0.0.0.0");
 const QAbstractSocket::BindMode DS_BIND_FLAGS = \
-                                                QAbstractSocket::ShareAddress | QAbstractSocket::ReuseAddressHint;
+                                                QAbstractSocket::ShareAddress |
+                                                QAbstractSocket::ReuseAddressHint;
 
 //------------------------------------------------------------------------------
 // Logger functions
 //------------------------------------------------------------------------------
 
-extern void DS_CLOSE_LOGS();
-extern QString DS_LOGGER_PATH();
-extern QString DS_APP_LOGS_FILE();
-extern QString DS_ROBOT_LOGS_FILE();
-extern QString DS_APP_LOGGER_PATH();
-extern QString DS_ROBOT_LOGGER_PATH();
+extern void DS_CLOSE_CONSOLE_LOG();
+extern QString DS_LOG_FILE();
+extern QString DS_LOGS_PATH();
+extern QString DS_CONSOLE_LOG();
+extern QString DS_LOGS_EXTENSION();
 extern void DS_MESSAGE_HANDLER (QtMsgType type,
                                 const QMessageLogContext& context,
                                 const QString& data);

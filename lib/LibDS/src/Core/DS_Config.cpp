@@ -11,11 +11,11 @@
 
 #include <QThread>
 #include <QElapsedTimer>
-#include <Core/RobotLogger.h>
+#include <Core/Logger.h>
 
 DS_Config::DS_Config() {
     m_timer = new QElapsedTimer;
-    m_robotLogger = new RobotLogger;
+    m_robotLogger = new Logger;
 
     m_team = 0;
     m_voltage = 0;
@@ -55,7 +55,7 @@ DS_Config::~DS_Config() {
 /**
  * Returns the instance of the robot logger object
  */
-RobotLogger* DS_Config::robotLogger() {
+Logger* DS_Config::robotLogger() {
     return m_robotLogger;
 }
 

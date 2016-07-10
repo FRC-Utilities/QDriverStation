@@ -13,7 +13,7 @@
 #include "Core/Watchdog.h"
 #include "Core/DS_Config.h"
 #include "Core/NetConsole.h"
-#include "Core/RobotLogger.h"
+#include "Core/Logger.h"
 
 #include "Protocols/FRC_2014.h"
 #include "Protocols/FRC_2015.h"
@@ -141,8 +141,6 @@ DriverStation::DriverStation() {
 }
 
 DriverStation::~DriverStation() {
-    qDebug() << "Stopping the Driver Station...";
-
     /* Stop operations */
     stop();
 
@@ -153,11 +151,8 @@ DriverStation::~DriverStation() {
     delete m_radioWatchdog;
     delete m_robotWatchdog;
 
-    /* Append to log */
-    qDebug() << "Driver Station terminated";
-
-    /* Ensure that the log is closed */
-    DS_CLOSE_LOGS();
+    /* Save logs */
+    config()->robotLogger()->saveLogs();
 }
 
 /**
@@ -276,22 +271,16 @@ bool DriverStation::isRobotCodeRunning() const {
 /**
  * Returns the path in which application log files are stored
  */
-QString DriverStation::loggerPath() const {
-    return DS_LOGGER_PATH();
+QString DriverStation::logsPath() const {
+    return DS_LOGS_PATH();
 }
 
 /**
- * Returns the path in which application log files are stored
+ * Returns a list with all the robot logs saved to the logs path
  */
-QString DriverStation::appLoggerPath() const {
-    return DS_APP_LOGGER_PATH();
-}
-
-/**
- * Returns the path in which robot log files are stored
- */
-QString DriverStation::robotLoggerPath() const {
-    return DS_ROBOT_LOGGER_PATH();
+QStringList DriverStation::logsList() const {
+    QString filters = "*" + DS_LOGS_EXTENSION();
+    return QDir (DS_LOGS_PATH()).entryList (QStringList (filters));
 }
 
 /**
@@ -708,20 +697,6 @@ DS::OperationStatus DriverStation::operationStatus() const {
 }
 
 /**
- * Returns a list with all the application logs saved to the logs path
- */
-QStringList DriverStation::appLogsList() const {
-    return QDir (appLoggerPath()).entryList (QStringList ("*.log"));
-}
-
-/**
- * Returns a list with all the robot logs saved to the logs path
- */
-QStringList DriverStation::robotLogsList() const {
-    return QDir (robotLoggerPath()).entryList (QStringList ("*.json"));
-}
-
-/**
  * Returns a list with the included protocols of the library.
  * This function is meant to be used to generate your UI elements and
  * seamessly use them with the \c setProtocolType() function.
@@ -868,7 +843,7 @@ void DriverStation::enableRobot() {
  * Opens the application logs in an explorer window
  */
 void DriverStation::openLogsPath() {
-    QDesktopServices::openUrl (QUrl::fromLocalFile (loggerPath()));
+    QDesktopServices::openUrl (QUrl::fromLocalFile (logsPath()));
 }
 
 /**

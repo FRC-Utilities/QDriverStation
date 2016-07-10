@@ -11,7 +11,7 @@
 
 #include <Core/DS_Base.h>
 
-class RobotLogger;
+class Logger;
 class QElapsedTimer;
 
 /**
@@ -89,7 +89,7 @@ class DS_Config : public DS_Base {
   protected:
     DS_Config();
     ~DS_Config();
-    RobotLogger* robotLogger();
+    Logger* robotLogger();
 
   private:
     int m_team;
@@ -116,7 +116,7 @@ class DS_Config : public DS_Base {
     bool m_timerEnabled;
 
     QElapsedTimer* m_timer;
-    RobotLogger* m_robotLogger;
+    Logger* m_robotLogger;
 };
 
 #endif

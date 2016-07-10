@@ -72,9 +72,8 @@ class DriverStation : public DS_Base {
     Q_INVOKABLE bool isConnectedToRadio() const;
     Q_INVOKABLE bool isRobotCodeRunning() const;
 
-    Q_INVOKABLE QString loggerPath() const;
-    Q_INVOKABLE QString appLoggerPath() const;
-    Q_INVOKABLE QString robotLoggerPath() const;
+    Q_INVOKABLE QString logsPath() const;
+    Q_INVOKABLE QStringList logsList() const;
 
     Q_INVOKABLE qreal maxBatteryVoltage() const;
     Q_INVOKABLE qreal currentBatteryVoltage() const;
@@ -121,9 +120,6 @@ class DriverStation : public DS_Base {
     Q_INVOKABLE QString defaultRadioAddress() const;
     Q_INVOKABLE QString defaultRobotAddress() const;
     Q_INVOKABLE OperationStatus operationStatus() const;
-
-    Q_INVOKABLE QStringList appLogsList() const;
-    Q_INVOKABLE QStringList robotLogsList() const;
 
     Q_INVOKABLE QStringList protocols() const;
     Q_INVOKABLE QStringList teamStations() const;

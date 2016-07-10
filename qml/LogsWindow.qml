@@ -40,17 +40,10 @@ Window {
     minimumHeight: Globals.scale (420)
 
     //
-    // Returns a list with the application log names
-    //
-    function appLogs() {
-        return DriverStation.appLogsList().reverse()
-    }
-
-    //
     // Returns a list with the robot log names
     //
-    function robotLogs() {
-        return DriverStation.robotLogsList().reverse()
+    function logs() {
+        return DriverStation.logsList().reverse()
     }
 
     //
@@ -58,8 +51,7 @@ Window {
     //
     function niceName (log) {
         log = log.replace (/_/gi, ':')
-        log = log.replace(/.log/gi, '')
-        log = log.replace(/.json/gi, '')
+        log = log.replace(/.qdslog/gi, '')
 
         return log
     }
@@ -114,9 +106,25 @@ Window {
             spacing: Globals.spacing
 
             //
+            // Choose log file caption & button
+            //
+            RowLayout {
+                Label {
+                    Layout.fillWidth: true
+                    text: qsTr ("Choose log file") + ": "
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                Button {
+                    icon: icons.fa_folder_open_o
+                    onClicked: DriverStation.openLogsPath()
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+
+            //
             // Log selector
             //
-            Label { text: qsTr ("Choose log file") }
             TextEditor {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
@@ -124,51 +132,9 @@ Window {
                 foregroundColor: Globals.Colors.WidgetForeground
 
                 Component.onCompleted: {
-                    for (var i = 0; i < robotLogs().length; ++i)
-                        editor.append (niceName (robotLogs()[i]))
+                    for (var i = 0; i < logs().length; ++i)
+                        editor.append (niceName (logs()[i]))
                 }
-            }
-
-            //
-            // Log file paths caption
-            //
-            RowLayout {
-                Label {
-                    Layout.fillWidth: true
-                    text: qsTr ("Path to log files")
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-
-                Button {
-                    icon: icons.fa_folder_open
-                    onClicked: DriverStation.openLogsPath()
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-            }
-
-            //
-            // Log file paths text box
-            //
-            LineEdit {
-                editor.readOnly: true
-                Layout.fillWidth: true
-                text: DriverStation.loggerPath()
-                backgroundColor: Globals.Colors.PanelBackground
-                foregroundColor: Globals.Colors.WidgetForeground
-            }
-
-            //
-            // Messages box
-            //
-            Label { text: qsTr ("Messages") }
-            TextEditor {
-                editor.readOnly: true
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                editor.font.family: Globals.monoFont
-                editor.font.pixelSize: Globals.scale (11)
-                backgroundColor: Globals.Colors.PanelBackground
-                foregroundColor: Globals.Colors.WidgetForeground
             }
         }
 

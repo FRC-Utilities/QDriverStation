@@ -164,8 +164,8 @@ static void reportBug() {
 }
 
 static void openLogsDir() {
-    qDebug() << LOGS.arg (DS_APP_LOGGER_PATH()).toStdString().c_str();
-    QDesktopServices::openUrl (QUrl::fromLocalFile (DS_APP_LOGGER_PATH()));
+    qDebug() << LOGS.arg (DS_LOGS_PATH()).toStdString().c_str();
+    QDesktopServices::openUrl (QUrl::fromLocalFile (DS_LOGS_PATH()));
 }
 
 static void openWebsite() {
