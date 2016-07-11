@@ -43,7 +43,7 @@ Window {
     // Returns a list with the robot log names
     //
     function logs() {
-        return DriverStation.logsList().reverse()
+        return DriverStation.availableLogs().reverse()
     }
 
     //

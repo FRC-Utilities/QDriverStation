@@ -23,7 +23,7 @@ NetConsole::NetConsole() {
  */
 void NetConsole::setInputPort (int port) {
     if (port != DS_DISABLED_PORT)
-        m_inputSocket.bind (DS_LISTENER, port, DS_BIND_FLAGS);
+        m_inputSocket.bind (DS_LISTENER, port, DS_BIND_MODE);
 }
 
 /**

@@ -15,7 +15,7 @@
 
 DS_Config::DS_Config() {
     m_timer = new QElapsedTimer;
-    m_robotLogger = new Logger;
+    m_logger = new Logger;
 
     m_team = 0;
     m_voltage = 0;
@@ -39,9 +39,9 @@ DS_Config::DS_Config() {
     m_controlMode = kControlTeleoperated;
 
     /* Move the robot logger to another thread */
-    QThread* robotLoggerThread = new QThread (this);
-    m_robotLogger->moveToThread (robotLoggerThread);
-    robotLoggerThread->start (QThread::NormalPriority);
+    QThread* thread = new QThread (this);
+    m_logger->moveToThread (thread);
+    thread->start (QThread::NormalPriority);
 
     /* Begin elapsed time loop */
     updateElapsedTime();
@@ -49,14 +49,14 @@ DS_Config::DS_Config() {
 
 DS_Config::~DS_Config() {
     delete m_timer;
-    delete m_robotLogger;
+    delete m_logger;
 }
 
 /**
  * Returns the instance of the robot logger object
  */
-Logger* DS_Config::robotLogger() {
-    return m_robotLogger;
+Logger* DS_Config::logger() {
+    return m_logger;
 }
 
 /**
@@ -361,7 +361,7 @@ void DS_Config::updateVoltage (qreal voltage) {
     emit voltageChanged (integer_str + "." + decimal_str + " V");
 
     /* Log robot voltage */
-    m_robotLogger->registerVoltage (m_voltage);
+    m_logger->registerVoltage (m_voltage);
 }
 
 /**
@@ -379,7 +379,7 @@ void DS_Config::updateSimulated (bool simulated) {
 void DS_Config::updateAlliance (Alliance alliance) {
     if (m_alliance != alliance) {
         m_alliance = alliance;
-        m_robotLogger->registerAlliance (alliance);
+        m_logger->registerAlliance (alliance);
     }
 
     emit allianceChanged (m_alliance);
@@ -391,7 +391,7 @@ void DS_Config::updateAlliance (Alliance alliance) {
 void DS_Config::updatePosition (Position position) {
     if (m_position != position) {
         m_position = position;
-        m_robotLogger->registerPosition (position);
+        m_logger->registerPosition (position);
     }
 
     emit positionChanged (m_position);
@@ -404,7 +404,7 @@ void DS_Config::updatePosition (Position position) {
 void DS_Config::updateRobotCodeStatus (CodeStatus status) {
     if (m_codeStatus != status) {
         m_codeStatus = status;
-        m_robotLogger->registerCodeStatus (status);
+        m_logger->registerCodeStatus (status);
     }
 
     emit codeStatusChanged (m_codeStatus);
@@ -418,7 +418,7 @@ void DS_Config::updateRobotCodeStatus (CodeStatus status) {
 void DS_Config::updateControlMode (ControlMode mode) {
     if (m_controlMode != mode) {
         m_controlMode = mode;
-        m_robotLogger->registerControlMode (mode);
+        m_logger->registerControlMode (mode);
     }
 
     emit controlModeChanged (m_controlMode);
@@ -477,7 +477,7 @@ void DS_Config::updateEnabled (EnableStatus status) {
         else
             m_timerEnabled = false;
 
-        m_robotLogger->registerEnableStatus (status);
+        m_logger->registerEnableStatus (status);
     }
 
     emit enabledChanged (m_enableStatus);
@@ -505,7 +505,7 @@ void DS_Config::updateFMSCommStatus (CommStatus status) {
 void DS_Config::updateRadioCommStatus (CommStatus status) {
     if (m_radioCommStatus != status) {
         m_radioCommStatus = status;
-        m_robotLogger->registerRadioCommStatus (status);
+        m_logger->registerRadioCommStatus (status);
     }
 
     emit radioCommStatusChanged (m_radioCommStatus);
@@ -518,7 +518,7 @@ void DS_Config::updateRadioCommStatus (CommStatus status) {
 void DS_Config::updateRobotCommStatus (CommStatus status) {
     if (m_robotCommStatus != status) {
         m_robotCommStatus = status;
-        m_robotLogger->registerRobotCommStatus (status);
+        m_logger->registerRobotCommStatus (status);
     }
 
     emit robotCommStatusChanged (m_robotCommStatus);
@@ -532,7 +532,7 @@ void DS_Config::updateRobotCommStatus (CommStatus status) {
 void DS_Config::updateVoltageStatus (VoltageStatus status) {
     if (m_voltageStatus != status) {
         m_voltageStatus = status;
-        m_robotLogger->registerVoltageStatus (status);
+        m_logger->registerVoltageStatus (status);
     }
 
     emit voltageStatusChanged (m_voltageStatus);
@@ -547,7 +547,7 @@ void DS_Config::updateVoltageStatus (VoltageStatus status) {
 void DS_Config::updateOperationStatus (OperationStatus status) {
     if (m_operationStatus != status) {
         m_operationStatus = status;
-        m_robotLogger->registerOperationStatus (status);
+        m_logger->registerOperationStatus (status);
     }
 
     emit operationStatusChanged (m_operationStatus);

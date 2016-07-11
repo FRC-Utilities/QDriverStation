@@ -76,10 +76,6 @@
 // CLI messages
 //------------------------------------------------------------------------------
 
-const QString LOGS = "We instructed your file manager to navigate to:       \n"
-                     "    %1                                                \n"
-                     "If nothing happens, please navigate to that directory   ";
-
 const QString WEBS = "We instructed your web browser to navigate to:        \n"
                      "    %1                                                \n"
                      "If nothing happens, please navigate to that URL         ";
@@ -89,7 +85,6 @@ const QString HELP = "Usage: qdriverstation [ options ... ]                 \n"
                      "Options include:                                      \n"
                      "    -b, --bug       Report a bug                      \n"
                      "    -h, --help      Show this message                 \n"
-                     "    -l, --logs      Open the logs directory           \n"
                      "    -r, --reset     Reset/clear the settings          \n"
                      "    -c, --contact   Contact the lead developer        \n"
                      "    -v, --version   Display the application version   \n"
@@ -163,11 +158,6 @@ static void reportBug() {
     qDebug() << WEBS.arg (BUGS_URL).toStdString().c_str();
 }
 
-static void openLogsDir() {
-    qDebug() << LOGS.arg (DS_LOGS_PATH()).toStdString().c_str();
-    QDesktopServices::openUrl (QUrl::fromLocalFile (DS_LOGS_PATH()));
-}
-
 static void openWebsite() {
     QDesktopServices::openUrl (QUrl (HTTP_URL));
     qDebug() << WEBS.arg (HTTP_URL).toStdString().c_str();
@@ -212,9 +202,6 @@ int main (int argc, char* argv[]) {
         if (arguments == "-b" || arguments == "--bug")
             reportBug();
 
-        else if (arguments == "-l" || arguments == "--logs")
-            openLogsDir();
-
         else if (arguments == "-r" || arguments == "--reset")
             resetSettings();
 
@@ -238,7 +225,7 @@ int main (int argc, char* argv[]) {
     pElapsedTime->start();
 
     /* Install the more advanced logger */
-    qInstallMessageHandler (DS_MESSAGE_HANDLER);
+    qInstallMessageHandler (DriverStation::logger);
 
     /* Initialize OS variables */
     bool isMac = false;

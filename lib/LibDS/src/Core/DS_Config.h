@@ -89,7 +89,7 @@ class DS_Config : public DS_Base {
   protected:
     DS_Config();
     ~DS_Config();
-    Logger* robotLogger();
+    Logger* logger();
 
   private:
     int m_team;
@@ -116,7 +116,7 @@ class DS_Config : public DS_Base {
     bool m_timerEnabled;
 
     QElapsedTimer* m_timer;
-    Logger* m_robotLogger;
+    Logger* m_logger;
 };
 
 #endif

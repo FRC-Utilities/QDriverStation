@@ -42,6 +42,9 @@ class DriverStation : public DS_Base {
 
   public:
     static DriverStation* getInstance();
+    static void logger (QtMsgType type,
+                        const QMessageLogContext& context,
+                        const QString& data);
 
     enum ProtocolType {
         kFRC2016 = 0,
@@ -73,7 +76,7 @@ class DriverStation : public DS_Base {
     Q_INVOKABLE bool isRobotCodeRunning() const;
 
     Q_INVOKABLE QString logsPath() const;
-    Q_INVOKABLE QStringList logsList() const;
+    Q_INVOKABLE QStringList availableLogs() const;
 
     Q_INVOKABLE qreal maxBatteryVoltage() const;
     Q_INVOKABLE qreal currentBatteryVoltage() const;

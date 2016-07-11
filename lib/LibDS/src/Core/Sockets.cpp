@@ -161,11 +161,11 @@ void Sockets::performLookups() {
 void Sockets::setFMSInputPort (int port) {
     /* Change the TCP listener */
     if (m_tcpFmsReceiver)
-        m_tcpFmsReceiver->bind (DS_LISTENER, port, DS_BIND_FLAGS);
+        m_tcpFmsReceiver->bind (DS_LISTENER, port, DS_BIND_MODE);
 
     /* Change the UDP listener */
     if (m_udpFmsReceiver)
-        m_udpFmsReceiver->bind (DS_LISTENER, port, DS_BIND_FLAGS);
+        m_udpFmsReceiver->bind (DS_LISTENER, port, DS_BIND_MODE);
 }
 
 /**
@@ -181,11 +181,11 @@ void Sockets::setFMSOutputPort (int port) {
 void Sockets::setRadioInputPort (int port) {
     /* Change the TCP listener */
     if (m_tcpRadioReceiver)
-        m_tcpRadioReceiver->bind (DS_LISTENER, port, DS_BIND_FLAGS);
+        m_tcpRadioReceiver->bind (DS_LISTENER, port, DS_BIND_MODE);
 
     /* Change the UDP listener */
     if (m_udpRadioReceiver)
-        m_udpRadioReceiver->bind (DS_LISTENER, port, DS_BIND_FLAGS);
+        m_udpRadioReceiver->bind (DS_LISTENER, port, DS_BIND_MODE);
 }
 
 /**
@@ -194,11 +194,11 @@ void Sockets::setRadioInputPort (int port) {
 void Sockets::setRobotInputPort (int port) {
     /* Change the TCP listener */
     if (m_tcpRobotReceiver)
-        m_tcpRobotReceiver->bind (DS_LISTENER, port, DS_BIND_FLAGS);
+        m_tcpRobotReceiver->bind (DS_LISTENER, port, DS_BIND_MODE);
 
     /* Change the UDP listener */
     if (m_udpRobotReceiver)
-        m_udpRobotReceiver->bind (DS_LISTENER, port, DS_BIND_FLAGS);
+        m_udpRobotReceiver->bind (DS_LISTENER, port, DS_BIND_MODE);
 }
 
 /**

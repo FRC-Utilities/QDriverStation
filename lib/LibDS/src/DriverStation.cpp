@@ -152,7 +152,7 @@ DriverStation::~DriverStation() {
     delete m_robotWatchdog;
 
     /* Save logs */
-    config()->robotLogger()->saveLogs();
+    config()->logger()->saveLogs();
 }
 
 /**
@@ -164,6 +164,17 @@ DriverStation::~DriverStation() {
 DriverStation* DriverStation::getInstance() {
     static DriverStation instance;
     return &instance;
+}
+
+/**
+ * Calls the custom Qt message handler of the LibDS
+ */
+void DriverStation::logger (QtMsgType type,
+                            const QMessageLogContext& context,
+                            const QString& data) {
+    DS_Config::getInstance()->logger()->messageHandler (type,
+            context,
+            data);
 }
 
 /**
@@ -272,15 +283,14 @@ bool DriverStation::isRobotCodeRunning() const {
  * Returns the path in which application log files are stored
  */
 QString DriverStation::logsPath() const {
-    return DS_LOGS_PATH();
+    return config()->logger()->logsPath();
 }
 
 /**
  * Returns a list with all the robot logs saved to the logs path
  */
-QStringList DriverStation::logsList() const {
-    QString filters = "*" + DS_LOGS_EXTENSION();
-    return QDir (DS_LOGS_PATH()).entryList (QStringList (filters));
+QStringList DriverStation::availableLogs() const {
+    return config()->logger()->availableLogs();
 }
 
 /**
@@ -1274,11 +1284,10 @@ void DriverStation::resetRobot() {
     config()->updateVoltage (0);
     config()->updateSimulated (false);
     config()->updateEnabled (kDisabled);
+    config()->updateOperationStatus (kNormal);
     config()->updateVoltageStatus (kVoltageNormal);
     config()->updateRobotCodeStatus (kCodeFailing);
     config()->updateRobotCommStatus (kCommsFailing);
-    config()->updateOperationStatus (kNormal);
-    config()->robotLogger()->registerWatchdogTimeout();
 
     emit statusChanged (generalStatus());
 }
@@ -1354,7 +1363,7 @@ void DriverStation::updatePacketLoss() {
 
     /* Update packet loss */
     m_packetLoss = static_cast<int> (loss);
-    config()->robotLogger()->registerPacketLoss (m_packetLoss);
+    config()->logger()->registerPacketLoss (m_packetLoss);
 
     /* Schedule next loss calculation */
     DS_Schedule (250, this, SLOT (updatePacketLoss()));

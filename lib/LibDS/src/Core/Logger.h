@@ -22,12 +22,18 @@ class Logger : public QObject {
     Q_OBJECT
 
   public:
-    Logger();
-    ~Logger();
+    explicit Logger();
+
+    QString logsPath() const;
+    QString extension() const;
+    QStringList availableLogs() const;
+
+    void messageHandler (QtMsgType type,
+                         const QMessageLogContext& context,
+                         const QString& data);
 
   public slots:
     void saveLogs();
-    void registerWatchdogTimeout();
     void registerVoltage (qreal voltage);
     void registerPacketLoss (int pktLoss);
     void registerRobotRAMUsage (int usage);
@@ -42,8 +48,18 @@ class Logger : public QObject {
     void registerVoltageStatus (DS::VoltageStatus status);
     void registerOperationStatus (DS::OperationStatus status);
 
+  private slots:
+    void closeLogs();
+    void initializeLogger();
+
   private:
     QElapsedTimer* m_timer;
+
+    FILE* m_dump;
+    bool m_closed;
+    bool m_initialized;
+    QString m_logFilePath;
+    QString m_dumpFilePath;
 
     int m_previousRAM;
     int m_previousCPU;
