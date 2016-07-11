@@ -67,7 +67,7 @@ Window {
         var log = DriverStation.logVariant()
 
         // No logs, get out!
-        if (logs().length < 1)
+        if (logs().length <= 0)
             return
 
         //
@@ -112,6 +112,14 @@ Window {
     title: qsTr ("QDriverStation Log File Viewer")
 
     //
+    // Show latest log on init
+    //
+    onVisibleChanged: {
+        if (visible)
+            selector.currentRow = 0
+    }
+
+    //
     // Save settings
     //
     Settings {
@@ -123,23 +131,11 @@ Window {
     }
 
     //
-    // Good ol' LibDS does most of the work for us
+    // Update the displayed data when user selects another log file
     //
     Connections {
         target: DriverStation
-
-        //
-        // Update the displayed data when user selects another log file
-        //
         onLogFileChanged: updateData()
-
-        //
-        // Show latest log on init
-        //
-        onInitialized: {
-            openLog (0)
-            selector.currentRow = 0
-        }
     }
 
     //
@@ -184,8 +180,8 @@ Window {
                 model: logs()
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                onClicked: openLog (currentRow)
                 Layout.minimumWidth: Globals.scale (220)
+                onCurrentRowChanged: openLog (currentRow)
 
                 Controls.TableViewColumn {
                     role: ""

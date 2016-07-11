@@ -40,8 +40,8 @@ Logger::Logger() {
 
     m_timer->start();
     m_logFilePath = logsPath() + "/"
-                    + GET_DATE_TIME ("yyyy_MM_dd hh_mm_ss ddd")
-                    + "." + extension();
+            + GET_DATE_TIME ("yyyy_MM_dd hh_mm_ss ddd")
+            + "." + extension();
 }
 
 /**
@@ -293,11 +293,11 @@ void Logger::closeLogs() {
     if (m_dump && m_initialized && !m_closed) {
         qDebug() << "Log buffer closed";
 
+        saveLogs();
+        fclose (m_dump);
+
         m_closed = true;
         m_initialized = false;
-
-        fclose (m_dump);
-        saveLogs();
     }
 }
 
@@ -320,8 +320,6 @@ void Logger::registerInitialEvents() {
         registerRadioCommStatus (DS::kCommsFailing);
         registerRobotCommStatus (DS::kCommsFailing);
         registerControlMode (DS::kControlTeleoperated);
-
-        saveLogs();
     }
 }
 
@@ -505,6 +503,9 @@ void Logger::initializeLogger() {
     m_dumpFilePath = QDir::tempPath() + "/QDriverStation.log";
     m_dump = fopen (m_dumpFilePath.toStdString().c_str(), "w");
     m_dump = !m_dump ? stderr : m_dump;
+
+    /* Save initial dump to DS log */
+    saveLogs();
 
     /* Get app info */
     QString appN = qApp->applicationName();
