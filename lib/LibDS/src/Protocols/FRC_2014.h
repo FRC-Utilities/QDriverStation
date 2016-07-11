@@ -17,7 +17,7 @@
  */
 class FRC_2014 : public Protocol {
   public:
-    FRC_2014();
+    explicit FRC_2014();
     virtual QString name();
 
     /* Packet frequency definitions */

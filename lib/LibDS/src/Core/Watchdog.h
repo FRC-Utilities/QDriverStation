@@ -32,7 +32,7 @@ class Watchdog : public QObject {
     void expired();
 
   public:
-    Watchdog();
+    explicit Watchdog();
     int expirationTime() const;
 
   public slots:

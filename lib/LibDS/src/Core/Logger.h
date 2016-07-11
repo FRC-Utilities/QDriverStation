@@ -14,7 +14,8 @@
 class QElapsedTimer;
 
 /**
- * \brief Logs robot data and application messages
+ * \brief Creates and reads files with robot events and application logs
+ *
  * This can be later used to diagnostic the robot or to diagnostic the
  * QDriverStation.
  */
@@ -27,13 +28,13 @@ class Logger : public QObject {
     QString logsPath() const;
     QString extension() const;
     QStringList availableLogs() const;
-
     void messageHandler (QtMsgType type,
                          const QMessageLogContext& context,
                          const QString& data);
 
   public slots:
     void saveLogs();
+    void registerInitialEvents();
     void registerVoltage (qreal voltage);
     void registerPacketLoss (int pktLoss);
     void registerRobotRAMUsage (int usage);
@@ -54,27 +55,53 @@ class Logger : public QObject {
 
   private:
     QElapsedTimer* m_timer;
+    bool m_eventsRegistered;
 
+    /* Used for console output (both to stderr and a dump file) */
     FILE* m_dump;
     bool m_closed;
     bool m_initialized;
     QString m_logFilePath;
     QString m_dumpFilePath;
 
+    /* Registers previous event data (to avoid creating huge logs) */
     int m_previousRAM;
     int m_previousCPU;
     int m_previousLoss;
     qreal m_previousVoltage;
+    DS::CodeStatus m_previousCodeStatus;
+    DS::ControlMode m_previousControlMode;
+    DS::CommStatus m_previousRadioCommStatus;
+    DS::CommStatus m_previousRobotCommStatus;
+    DS::EnableStatus m_previousEnabledStatus;
+    DS::VoltageStatus m_previousVoltageStatus;
+    DS::OperationStatus m_previousOperationStatus;
 
-    QList<int> m_ramUsages;
-    QList<int> m_cpuUsages;
-    QList<int> m_pktLosses;
-    QList<qreal> m_voltages;
+    /* These lists hold the events */
+    QList<int> m_pktLoss;
+    QList<int> m_ramUsage;
+    QList<int> m_cpuUsage;
+    QList<qreal> m_voltage;
+    QList<DS::CodeStatus> m_codeStatus;
+    QList<DS::ControlMode> m_controlMode;
+    QList<DS::CommStatus> m_radioCommStatus;
+    QList<DS::CommStatus> m_robotCommStatus;
+    QList<DS::EnableStatus> m_enabledStatus;
+    QList<DS::VoltageStatus> m_voltageStatus;
+    QList<DS::OperationStatus> m_operationStatus;
 
+    /* These lists hold the timeframes of each event */
     QList<qint64> m_ramTimings;
     QList<qint64> m_cpuTimings;
     QList<qint64> m_pktTimings;
     QList<qint64> m_voltageTimings;
+    QList<qint64> m_codeStatusTimings;
+    QList<qint64> m_controlModeTimings;
+    QList<qint64> m_enabledStatusTimings;
+    QList<qint64> m_voltageStatusTimings;
+    QList<qint64> m_operationStatusTimings;
+    QList<qint64> m_radioCommStatusTimings;
+    QList<qint64> m_robotCommStatusTimings;
 };
 
 #endif

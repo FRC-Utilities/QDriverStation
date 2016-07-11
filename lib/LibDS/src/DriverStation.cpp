@@ -141,17 +141,7 @@ DriverStation::DriverStation() {
 }
 
 DriverStation::~DriverStation() {
-    /* Stop operations */
     stop();
-
-    /* Delete modules */
-    delete m_sockets;
-    delete m_console;
-    delete m_fmsWatchdog;
-    delete m_radioWatchdog;
-    delete m_robotWatchdog;
-
-    /* Save logs */
     config()->logger()->saveLogs();
 }
 
@@ -817,6 +807,8 @@ bool DriverStation::registerJoystick (int axes,
 void DriverStation::init() {
     if (!m_init) {
         m_init = true;
+
+        config()->logger()->registerInitialEvents();
 
         resetFMS();
         resetRadio();

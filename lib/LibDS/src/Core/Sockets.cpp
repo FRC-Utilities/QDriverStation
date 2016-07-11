@@ -63,24 +63,6 @@ Sockets::Sockets() {
     m_robotOutputPort = DS_DISABLED_PORT;
 }
 
-Sockets::~Sockets() {
-    /* Delete sender sockets */
-    delete m_udpFmsSender;
-    delete m_tcpFmsSender;
-    delete m_udpRadioSender;
-    delete m_tcpRadioSender;
-    delete m_udpRobotSender;
-    delete m_tcpRobotSender;
-
-    /* Delete receiver sockets */
-    delete m_udpFmsReceiver;
-    delete m_tcpFmsReceiver;
-    delete m_udpRadioReceiver;
-    delete m_tcpRadioReceiver;
-    delete m_udpRobotReceiver;
-    delete m_tcpRobotReceiver;
-}
-
 /**
  * Returns the FMS address. If the FMS protocol is based on UDP and we do not
  * know the FMS address, then we will broadcast generated FMS datagrams.

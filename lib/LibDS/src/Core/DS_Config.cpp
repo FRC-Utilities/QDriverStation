@@ -47,11 +47,6 @@ DS_Config::DS_Config() {
     updateElapsedTime();
 }
 
-DS_Config::~DS_Config() {
-    delete m_timer;
-    delete m_logger;
-}
-
 /**
  * Returns the instance of the robot logger object
  */

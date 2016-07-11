@@ -88,7 +88,6 @@ class DS_Config : public DS_Base {
 
   protected:
     DS_Config();
-    ~DS_Config();
     Logger* logger();
 
   private:

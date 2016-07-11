@@ -21,7 +21,7 @@
  */
 class Protocol {
   public:
-    Protocol() {
+    explicit Protocol() {
         m_sentFmsPackets = 0;
         m_sentRadioPackets = 0;
         m_sentRobotPackets = 0;

@@ -20,7 +20,7 @@
 #define GET_DATE_TIME(format) QDateTime::currentDateTime().toString(format)
 
 /**
- * Repeats the \a input string \a n times and returns the resultant string
+ * Repeats the \a input string \a n times and returns the obtained string
  */
 static QString REPEAT (QString input, int n) {
     QString string;
@@ -35,12 +35,9 @@ Logger::Logger() {
     m_dump = Q_NULLPTR;
     m_timer = new QElapsedTimer;
 
-    m_closed = 0;
-    m_initialized = 0;
-    m_previousRAM = 0;
-    m_previousCPU = 0;
-    m_previousLoss = 0;
-    m_previousVoltage = 0;
+    m_closed = false;
+    m_initialized = false;
+    m_eventsRegistered = false;
 
     m_timer->start();
 }
@@ -138,22 +135,37 @@ void Logger::saveLogs() {
     /* Close the console dump file */
     closeLogs();
 
+    /* Get log number string (to ensure correct order up to 9999) */
+    QString logNumber = QString::number (availableLogs().count());
+    if (availableLogs().count() < 10)
+        logNumber.prepend ("000");
+    else if (availableLogs().count() < 100)
+        logNumber.prepend ("00");
+    else if (availableLogs().count() < 1000)
+        logNumber.prepend ("0");
+
+    /* Set the name of the DS log file */
+    m_logFilePath = logsPath() + "/"
+                    + "Log " + logNumber + " "
+                    + GET_DATE_TIME ("(MMM dd yyyy - HH_mm_ss)")
+                    + "." + extension();
+
     /* Register voltage values */
-    QVariantList volList;
-    volList.append ("Robot Voltage");
-    for (int i = 0; i < m_voltages.count(); ++i) {
+    QVariantList voltageList;
+    voltageList.append ("Robot Voltage");
+    for (int i = 0; i < m_voltage.count(); ++i) {
         QVariantMap map;
-        map.insert ("voltage", m_voltages.at (i));
+        map.insert ("voltage", m_voltage.at (i));
         map.insert ("time", m_voltageTimings.at (i));
-        volList.append (map);
+        voltageList.append (map);
     }
 
     /* Register CPU usages */
     QVariantList cpuList;
     cpuList.append ("CPU Usage");
-    for (int i = 0; i < m_cpuUsages.count(); ++i) {
+    for (int i = 0; i < m_cpuUsage.count(); ++i) {
         QVariantMap map;
-        map.insert ("CPU", m_cpuUsages.at (i));
+        map.insert ("CPU", m_cpuUsage.at (i));
         map.insert ("time", m_cpuTimings.at (i));
         cpuList.append (map);
     }
@@ -161,9 +173,9 @@ void Logger::saveLogs() {
     /* Register RAM usages */
     QVariantList ramList;
     ramList.append ("RAM Usage");
-    for (int i = 0; i < m_ramUsages.count(); ++i) {
+    for (int i = 0; i < m_ramUsage.count(); ++i) {
         QVariantMap map;
-        map.insert ("RAM", m_ramUsages.at (i));
+        map.insert ("RAM", m_ramUsage.at (i));
         map.insert ("time", m_ramTimings.at (i));
         ramList.append (map);
     }
@@ -171,20 +183,90 @@ void Logger::saveLogs() {
     /* Register packet loss */
     QVariantList pktList;
     pktList.append ("Packet Loss");
-    for (int i = 0; i < m_pktLosses.count(); ++i) {
+    for (int i = 0; i < m_pktLoss.count(); ++i) {
         QVariantMap map;
-        map.insert ("loss", m_pktLosses.at (i));
+        map.insert ("loss", m_pktLoss.at (i));
         map.insert ("time", m_pktTimings.at (i));
         pktList.append (map);
     }
 
-    /* Serialize registered data */
+    /* Register code status */
+    QVariantList codeStatusList;
+    for (int i = 0; i < m_codeStatus.count(); ++i) {
+        QVariantMap map;
+        map.insert ("code", m_codeStatus.at (i));
+        map.insert ("time", m_codeStatusTimings.at (i));
+        codeStatusList.append (map);
+    }
+
+    /* Register control modes */
+    QVariantList controlModeList;
+    for (int i = 0; i < m_controlMode.count(); ++i) {
+        QVariantMap map;
+        map.insert ("mode", m_controlMode.at (i));
+        map.insert ("time", m_controlModeTimings.at (i));
+        controlModeList.append (map);
+    }
+
+    /* Register voltage status */
+    QVariantList voltageStatusList;
+    for (int i = 0; i < m_voltageStatus.count(); ++i) {
+        QVariantMap map;
+        map.insert ("status", m_voltageStatus.at (i));
+        map.insert ("time", m_voltageStatusTimings.at (i));
+        voltageStatusList.append (map);
+    }
+
+    /* Register enabled status */
+    QVariantList enabledStatusList;
+    for (int i = 0; i < m_enabledStatus.count(); ++i) {
+        QVariantMap map;
+        map.insert ("enabled", m_enabledStatus.at (i));
+        map.insert ("time", m_enabledStatusTimings.at (i));
+        enabledStatusList.append (map);
+    }
+
+    /* Register operation status */
+    QVariantList operationStatusList;
+    for (int i = 0; i < m_operationStatus.count(); ++i) {
+        QVariantMap map;
+        map.insert ("operation", m_operationStatus.at (i));
+        map.insert ("time", m_operationStatusTimings.at (i));
+        operationStatusList.append (map);
+    }
+
+    /* Register radio comm. status */
+    QVariantList radioCommStatusList;
+    for (int i = 0; i < m_radioCommStatus.count(); ++i) {
+        QVariantMap map;
+        map.insert ("comm", m_radioCommStatus.at (i));
+        map.insert ("time", m_radioCommStatusTimings.at (i));
+        radioCommStatusList.append (map);
+    }
+
+    /* Register robot comm. status */
+    QVariantList robotCommStatusList;
+    for (int i = 0; i < m_robotCommStatus.count(); ++i) {
+        QVariantMap map;
+        map.insert ("comm", m_robotCommStatus.at (i));
+        map.insert ("time", m_robotCommStatusTimings.at (i));
+        robotCommStatusList.append (map);
+    }
+
+    /* Serialize event data */
     QJsonArray array;
     QJsonDocument document;
     array.append (QJsonValue::fromVariant (cpuList));
     array.append (QJsonValue::fromVariant (ramList));
     array.append (QJsonValue::fromVariant (pktList));
-    array.append (QJsonValue::fromVariant (volList));
+    array.append (QJsonValue::fromVariant (voltageList));
+    array.append (QJsonValue::fromVariant (codeStatusList));
+    array.append (QJsonValue::fromVariant (controlModeList));
+    array.append (QJsonValue::fromVariant (voltageStatusList));
+    array.append (QJsonValue::fromVariant (enabledStatusList));
+    array.append (QJsonValue::fromVariant (operationStatusList));
+    array.append (QJsonValue::fromVariant (radioCommStatusList));
+    array.append (QJsonValue::fromVariant (robotCommStatusList));
 
     /* Add application logs to JSON */
     QFile logs (m_dumpFilePath);
@@ -199,8 +281,30 @@ void Logger::saveLogs() {
     document.setArray (array);
     QFile file (m_logFilePath);
     if (file.open (QFile::WriteOnly)) {
-        file.write (document.toBinaryData());
+        file.write (document.toJson (QJsonDocument::Compact));
         file.close();
+    }
+}
+
+/**
+ * Registers the inital robot events in the event lists
+ */
+void Logger::registerInitialEvents() {
+    if (!m_eventsRegistered) {
+        m_eventsRegistered = true;
+
+        registerVoltage (0);
+        registerPacketLoss (0);
+        registerRobotRAMUsage (0);
+        registerRobotCPUUsage (0);
+        registerAlliance (DS::kAllianceRed);
+        registerEnableStatus (DS::kDisabled);
+        registerOperationStatus (DS::kNormal);
+        registerCodeStatus (DS::kCodeFailing);
+        registerVoltageStatus (DS::kVoltageNormal);
+        registerRadioCommStatus (DS::kCommsFailing);
+        registerRobotCommStatus (DS::kCommsFailing);
+        registerControlMode (DS::kControlTeleoperated);
     }
 }
 
@@ -212,7 +316,7 @@ void Logger::saveLogs() {
 void Logger::registerVoltage (qreal voltage) {
     if (m_previousVoltage != voltage) {
         m_previousVoltage = voltage;
-        m_voltages.append (voltage);
+        m_voltage.append (voltage);
         m_voltageTimings.append (m_timer->elapsed());
     }
 }
@@ -225,7 +329,7 @@ void Logger::registerVoltage (qreal voltage) {
 void Logger::registerPacketLoss (int pktLoss) {
     if (pktLoss != m_previousLoss) {
         m_previousLoss = pktLoss;
-        m_pktLosses.append (pktLoss);
+        m_pktLoss.append (pktLoss);
         m_pktTimings.append (m_timer->elapsed());
     }
 }
@@ -238,7 +342,7 @@ void Logger::registerPacketLoss (int pktLoss) {
 void Logger::registerRobotRAMUsage (int usage) {
     if (m_previousRAM != usage) {
         m_previousRAM = usage;
-        m_ramUsages.append (usage);
+        m_ramUsage.append (usage);
         m_ramTimings.append (m_timer->elapsed());
     }
 }
@@ -251,14 +355,13 @@ void Logger::registerRobotRAMUsage (int usage) {
 void Logger::registerRobotCPUUsage (int usage) {
     if (m_previousCPU != usage) {
         m_previousCPU = usage;
-        m_cpuUsages.append (usage);
+        m_cpuUsage.append (usage);
         m_cpuTimings.append (m_timer->elapsed());
     }
 }
 
 /**
  * Logs the given team \a alliance to the console output.
- * \todo Register this event on the robot events log
  */
 void Logger::registerAlliance (DS::Alliance alliance) {
     qDebug() << "Robot alliance set to" << alliance;
@@ -266,68 +369,105 @@ void Logger::registerAlliance (DS::Alliance alliance) {
 
 /**
  * Logs the given team \a position to the console output.
- * \todo Register this event on the robot events log
  */
 void Logger::registerPosition (DS::Position position) {
     qDebug() << "Robot possition set to" << position;
 }
 
 /**
- * Logs the given control \a mode to the console output.
- * \todo Register this event on the robot events log
+ * Registers the given control \a mode to the event lists.
+ * \note This value will only be registered if the given data is different
+ *       from the data registered earlier (to avoid creating huge log files)
  */
 void Logger::registerControlMode (DS::ControlMode mode) {
-    qDebug() << "Robot control mode set to" << mode;
+    if (m_previousControlMode != mode) {
+        m_previousControlMode = mode;
+        m_controlMode.append (mode);
+        m_controlModeTimings.append (m_timer->elapsed());
+    }
 }
 
 /**
- * Logs the given code \a status to the console output.
- * \todo Register this event on the robot events log
+ * Registers the given code \a status to the event lists.
+ * \note This value will only be registered if the given data is different
+ *       from the data registered earlier (to avoid creating huge log files)
  */
 void Logger::registerCodeStatus (DS::CodeStatus status) {
-    qDebug() << "Robot code status set to" << status;
+    if (m_previousCodeStatus != status) {
+        m_previousCodeStatus = status;
+        m_codeStatus.append (status);
+        m_codeStatusTimings.append (m_timer->elapsed());
+    }
 }
 
 /**
- * Logs the given enabled \a status to the console output.
- * \todo Register this event on the robot events log
+ * Registers the given enable \a status to the event lists.
+ * \note This value will only be registered if the given data is different
+ *       from the data registered earlier (to avoid creating huge log files)
  */
 void Logger::registerEnableStatus (DS::EnableStatus status) {
-    qDebug() << "Robot enabled status set to" << status;
+    if (m_previousEnabledStatus != status) {
+        m_previousEnabledStatus = status;
+        m_enabledStatus.append (status);
+        m_enabledStatusTimings.append (m_timer->elapsed());
+    }
 }
 
 /**
- * Logs the given radio communication \a status to the console output.
- * \todo Register this event on the robot events log
+ * Registers the given radio communication \a status to the event lists.
+ * \note This value will only be registered if the given data is different
+ *       from the data registered earlier (to avoid creating huge log files)
  */
 void Logger::registerRadioCommStatus (DS::CommStatus status) {
-    qDebug() << "Radio communication status set to" << status;
+    if (m_previousRadioCommStatus != status) {
+        m_previousRadioCommStatus = status;
+        m_radioCommStatus.append (status);
+        m_radioCommStatusTimings.append (m_timer->elapsed());
+    }
 }
 
 /**
- * Logs the given robot communication \a status to the console output.
- * \todo Register this event on the robot events log
+ * Registers the given robot communication \a status to the event lists.
+ * \note This value will only be registered if the given data is different
+ *       from the data registered earlier (to avoid creating huge log files)
  */
 void Logger::registerRobotCommStatus (DS::CommStatus status) {
-    qDebug() << "Robot communication status set to" << status;
+    if (m_previousRobotCommStatus != status) {
+        m_previousRobotCommStatus = status;
+        m_robotCommStatus.append (status);
+        m_robotCommStatusTimings.append (m_timer->elapsed());
+    }
 }
 
 /**
- * Logs the given voltage \a status to the console output.
- * \todo Register this event on the robot events log
+ * Registers the given voltage \a status to the event lists.
+ * \note This value will only be registered if the given data is different
+ *       from the data registered earlier (to avoid creating huge log files)
  */
 void Logger::registerVoltageStatus (DS::VoltageStatus status) {
-    qDebug() << "Robot voltage status set to" << status;
+    if (m_previousVoltageStatus != status) {
+        m_previousVoltageStatus = status;
+        m_voltageStatus.append (status);
+        m_voltageStatusTimings.append (m_timer->elapsed());
+    }
 }
 
 /**
- * Logs the given operation \a status to the console output.
- * \todo Register this event on the robot events log
+ * Registers the given operation \a status to the event lists.
+ * \note This value will only be registered if the given data is different
+ *       from the data registered earlier (to avoid creating huge log files)
  */
 void Logger::registerOperationStatus (DS::OperationStatus status) {
-    qDebug() << "Robot operation status set to" << status;
+    if (m_previousOperationStatus != status) {
+        m_previousOperationStatus = status;
+        m_operationStatus.append (status);
+        m_operationStatusTimings.append (m_timer->elapsed());
+    }
 }
 
+/**
+ * Closes the console log dump file
+ */
 void Logger::closeLogs() {
     if (m_dump && m_initialized && !m_closed) {
         qDebug() << "Log buffer closed";
@@ -351,23 +491,8 @@ void Logger::initializeLogger() {
     if (m_initialized) return;
     else m_initialized = true;
 
-    /* Get log number string (to ensure correct order up to 9999) */
-    QString logNumber = QString::number (availableLogs().count());
-    if (availableLogs().count() < 10)
-        logNumber.prepend ("000");
-    else if (availableLogs().count() < 100)
-        logNumber.prepend ("00");
-    else if (availableLogs().count() < 1000)
-        logNumber.prepend ("0");
-
-    /* Get the names of the log files */
-    m_dumpFilePath = QDir::tempPath() + "/QDriverStation.log";
-    m_logFilePath = logsPath() + "/"
-                    + "Log " + logNumber + " "
-                    + GET_DATE_TIME ("(MMM dd yyyy - HH_mm_ss)")
-                    + "." + extension();
-
     /* Open the dump file */
+    m_dumpFilePath = QDir::tempPath() + "/QDriverStation.log";
     m_dump = fopen (m_dumpFilePath.toStdString().c_str(), "w");
     m_dump = !m_dump ? stderr : m_dump;
 

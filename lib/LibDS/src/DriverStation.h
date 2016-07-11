@@ -177,7 +177,7 @@ class DriverStation : public DS_Base {
     void readRobotPacket (const QByteArray& data);
 
   protected:
-    DriverStation();
+    explicit DriverStation();
     ~DriverStation();
 
   private:

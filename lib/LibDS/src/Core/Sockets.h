@@ -35,8 +35,7 @@ class Sockets : public QObject {
     void robotPacketReceived (const QByteArray& data);
 
   public:
-    Sockets();
-    ~Sockets();
+    explicit Sockets();
 
     QHostAddress fmsAddress() const;
     QHostAddress radioAddress() const;
