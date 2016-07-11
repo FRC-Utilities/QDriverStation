@@ -28,6 +28,8 @@ class Logger : public QObject {
     QString logsPath() const;
     QString extension() const;
     QStringList availableLogs() const;
+    QJsonDocument openLog (const QString& name) const;
+
     void messageHandler (QtMsgType type,
                          const QMessageLogContext& context,
                          const QString& data);

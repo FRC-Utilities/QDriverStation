@@ -8,6 +8,7 @@
 - Improve handling of FMS packets
 - Minor improvements in code structure
 - Add code to interpret 2014 FMS packets
+- Implement logs window (with robot events)
 
 ### QDriverStation 16.06.2
 

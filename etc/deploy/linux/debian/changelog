@@ -6,6 +6,7 @@ qdriverstation (16.07) stable; urgency=low
   * Improve handling of FMS packets
   * Minor improvements in code structure
   * Add code to interpret 2014 FMS packets
+  * Implement logs window (with robot events)
 
  -- Alex Spataru <alex_spataru@outlook.com>  Mon, 4 Jul 2016 01:00:00 +0100
 

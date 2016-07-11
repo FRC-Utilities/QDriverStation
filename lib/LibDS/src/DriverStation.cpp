@@ -6,25 +6,42 @@
  * of this project.
  */
 
+//------------------------------------------------------------------------------
+// Class includes
+//------------------------------------------------------------------------------
+
 #include "DriverStation.h"
 
+//------------------------------------------------------------------------------
+// Import core section
+//------------------------------------------------------------------------------
+
+#include "Core/Logger.h"
 #include "Core/Sockets.h"
 #include "Core/Protocol.h"
 #include "Core/Watchdog.h"
 #include "Core/DS_Config.h"
 #include "Core/NetConsole.h"
-#include "Core/Logger.h"
+
+//------------------------------------------------------------------------------
+// Import protocols
+//------------------------------------------------------------------------------
 
 #include "Protocols/FRC_2014.h"
 #include "Protocols/FRC_2015.h"
 #include "Protocols/FRC_2016.h"
 
+//------------------------------------------------------------------------------
+// Import other Qt Dependencies
+//------------------------------------------------------------------------------
+
 #include <QDir>
 #include <QUrl>
+#include <QFileDialog>
 #include <QDesktopServices>
 
 /**
- * Formats the input message so that it looks nice on a text display widget
+ * Formats the input message so that it looks nice on a console display widget
  */
 static QString CONSOLE_MESSAGE (const QString& input) {
     return "<font color='#888'>** " + input + "</font>";
@@ -277,10 +294,24 @@ QString DriverStation::logsPath() const {
 }
 
 /**
+ * Returns the current JSON document as a variant list
+ */
+QVariant DriverStation::logVariant() const {
+    return logDocument().toVariant();
+}
+
+/**
  * Returns a list with all the robot logs saved to the logs path
  */
 QStringList DriverStation::availableLogs() const {
     return config()->logger()->availableLogs();
+}
+
+/**
+ * Returns the current JSON log document
+ */
+QJsonDocument DriverStation::logDocument() const {
+    return m_logDocument;
 }
 
 /**
@@ -825,6 +856,20 @@ void DriverStation::init() {
 }
 
 /**
+ * Shows an open file dialog and lets the user select a DS log file to load...
+ */
+void DriverStation::browseLogs() {
+    QString filter = "*." + config()->logger()->extension();
+    QString file = QFileDialog::getOpenFileName (Q_NULLPTR,
+                                                 tr ("Select a log file..."),
+                                                 logsPath(),
+                                                 filter);
+
+    if (!file.isEmpty())
+        openLog (file);
+}
+
+/**
  * Reboots the robot controller (if a protocol is loaded)
  */
 void DriverStation::rebootRobot() {
@@ -867,6 +912,15 @@ void DriverStation::resetJoysticks() {
         setEnabled (false);
 
     emit joystickCountChanged (joystickCount());
+}
+
+/**
+ * Changes the team number to the given \a team.
+ * \note Calling this function will trigger a re-evaluation of the FMS, radio
+         and robot IPs (only if communications have not been established yet)
+ */
+void DriverStation::setTeam (int team) {
+    config()->updateTeam (team);
 }
 
 /**
@@ -931,15 +985,6 @@ void DriverStation::reconfigureJoysticks() {
 }
 
 /**
- * Changes the team number to the given \a team.
- * \note Calling this function will trigger a re-evaluation of the FMS, radio
-         and robot IPs (only if communications have not been established yet)
- */
-void DriverStation::setTeam (int team) {
-    config()->updateTeam (team);
-}
-
-/**
  * Removes the joystick at the given \a id
  */
 void DriverStation::removeJoystick (int id) {
@@ -960,6 +1005,84 @@ void DriverStation::removeJoystick (int id) {
  */
 void DriverStation::setEnabled (bool enabled) {
     setEnabled (enabled ? DS::kEnabled : DS::kDisabled);
+}
+
+/**
+ * If you are lazy enough to not wanting to use two function calls to
+ * change the alliance & position of the robot, we've got you covered!
+ *
+ * Actually, this function is available so that the UI elements (such as a
+ * combobox with team stations) can interact directly with the \c DriverStation
+ */
+void DriverStation::setTeamStation (int station) {
+    switch ((TeamStation) station) {
+    case kRed1:
+        setPosition (kPosition1);
+        setAlliance (kAllianceRed);
+        break;
+    case kRed2:
+        setPosition (kPosition2);
+        setAlliance (kAllianceRed);
+        break;
+    case kRed3:
+        setPosition (kPosition3);
+        setAlliance (kAllianceRed);
+        break;
+    case kBlue1:
+        setPosition (kPosition1);
+        setAlliance (kAllianceBlue);
+        break;
+    case kBlue2:
+        setPosition (kPosition2);
+        setAlliance (kAllianceBlue);
+        break;
+    case kBlue3:
+        setPosition (kPosition3);
+        setAlliance (kAllianceBlue);
+        break;
+    }
+}
+
+/**
+ * Opens the given log file \a file and parses it as a JSON document
+ */
+void DriverStation::openLog (const QString& file) {
+    m_logDocument = config()->logger()->openLog (file);
+    emit logFileChanged();
+}
+
+/**
+ * Given the \c protocol, this function will initialize, load and configure
+ * the defined protocol.
+ *
+ * This function is meant to be used in co-junction of the list outputted
+ * by the \c protocols() function.
+ */
+void DriverStation::setProtocolType (int protocol) {
+    if ((ProtocolType) protocol == kFRC2016)
+        setProtocol (new FRC_2016);
+
+    if ((ProtocolType) protocol == kFRC2015)
+        setProtocol (new FRC_2015);
+
+    if ((ProtocolType) protocol == kFRC2014)
+        setProtocol (new FRC_2014);
+}
+
+/**
+ * Updates the team \a alliance.
+ * \note This value can be overwritten by the FMS system
+ */
+void DriverStation::setAlliance (Alliance alliance) {
+    config()->updateAlliance (alliance);
+}
+
+/**
+ * Updates the team \a position
+ * \note This value can be overwritten by the FMS system
+ */
+void DriverStation::setPosition (Position position) {
+    config()->updatePosition (position);
 }
 
 /**
@@ -1042,76 +1165,6 @@ void DriverStation::setProtocol (Protocol* protocol) {
         /* We're back in business */
         qDebug() << "Protocol" << protocol->name() << "ready for use";
     }
-}
-
-/**
- * If you are lazy enough to not wanting to use two function calls to
- * change the alliance & position of the robot, we've got you covered!
- *
- * Actually, this function is available so that the UI elements (such as a
- * combobox with team stations) can interact directly with the \c DriverStation
- */
-void DriverStation::setTeamStation (int station) {
-    switch ((TeamStation) station) {
-    case kRed1:
-        setPosition (kPosition1);
-        setAlliance (kAllianceRed);
-        break;
-    case kRed2:
-        setPosition (kPosition2);
-        setAlliance (kAllianceRed);
-        break;
-    case kRed3:
-        setPosition (kPosition3);
-        setAlliance (kAllianceRed);
-        break;
-    case kBlue1:
-        setPosition (kPosition1);
-        setAlliance (kAllianceBlue);
-        break;
-    case kBlue2:
-        setPosition (kPosition2);
-        setAlliance (kAllianceBlue);
-        break;
-    case kBlue3:
-        setPosition (kPosition3);
-        setAlliance (kAllianceBlue);
-        break;
-    }
-}
-
-/**
- * Given the \c protocol, this function will initialize, load and configure
- * the defined protocol.
- *
- * This function is meant to be used in co-junction of the list outputted
- * by the \c protocols() function.
- */
-void DriverStation::setProtocolType (int protocol) {
-    if ((ProtocolType) protocol == kFRC2016)
-        setProtocol (new FRC_2016);
-
-    if ((ProtocolType) protocol == kFRC2015)
-        setProtocol (new FRC_2015);
-
-    if ((ProtocolType) protocol == kFRC2014)
-        setProtocol (new FRC_2014);
-}
-
-/**
- * Updates the team \a alliance.
- * \note This value can be overwritten by the FMS system
- */
-void DriverStation::setAlliance (Alliance alliance) {
-    config()->updateAlliance (alliance);
-}
-
-/**
- * Updates the team \a position
- * \note This value can be overwritten by the FMS system
- */
-void DriverStation::setPosition (Position position) {
-    config()->updatePosition (position);
 }
 
 /**

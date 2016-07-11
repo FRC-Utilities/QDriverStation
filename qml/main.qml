@@ -212,7 +212,6 @@ Window {
         id: layout
 
         //
-        // This shit is not to be messed with. This is your god.
         // Don't touch it, don't use anchors, if you do, I will kill you
         //
         x: Globals.spacing

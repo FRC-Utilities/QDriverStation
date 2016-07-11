@@ -24,6 +24,7 @@
 #include <QMetaObject>
 #include <QStringList>
 #include <QHostAddress>
+#include <QJsonDocument>
 
 //------------------------------------------------------------------------------
 // Hacks to make the code more readable

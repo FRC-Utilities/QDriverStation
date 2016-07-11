@@ -90,7 +90,7 @@ ColumnLayout {
         Layout.fillHeight: true
         editor.textFormat: Text.RichText
         editor.font.family: Globals.monoFont
-        editor.font.pixelSize: Globals.scale (11)
+        editor.font.pixelSize: Globals.scale (13)
         foregroundColor: Globals.Colors.WidgetForeground
         backgroundColor: Globals.Colors.WindowBackground
     }

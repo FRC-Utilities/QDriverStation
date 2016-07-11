@@ -10,7 +10,6 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QApplication>
-#include <QJsonDocument>
 #include <QElapsedTimer>
 
 #include "Logger.h"
@@ -40,6 +39,10 @@ Logger::Logger() {
     m_eventsRegistered = false;
 
     m_timer->start();
+
+    m_logFilePath = logsPath() + "/"
+                    + GET_DATE_TIME ("yyyy_MM_dd hh_mm_ss ddd")
+                    + "." + extension();
 }
 
 /**
@@ -68,6 +71,21 @@ QString Logger::extension() const {
 QStringList Logger::availableLogs() const {
     QString filter = "*." + extension();
     return QDir (logsPath()).entryList (QStringList (filter));
+}
+
+/**
+ * Opens the given log \a file and parses its JSON data
+ */
+QJsonDocument Logger::openLog (const QString& name) const {
+    QFile file (name);
+    QJsonDocument document;
+
+    if (file.open (QFile::ReadOnly)) {
+        document = QJsonDocument::fromJson (file.readAll());
+        file.close();
+    }
+
+    return document;
 }
 
 /**
@@ -135,24 +153,8 @@ void Logger::saveLogs() {
     /* Close the console dump file */
     closeLogs();
 
-    /* Get log number string (to ensure correct order up to 9999) */
-    QString logNumber = QString::number (availableLogs().count());
-    if (availableLogs().count() < 10)
-        logNumber.prepend ("000");
-    else if (availableLogs().count() < 100)
-        logNumber.prepend ("00");
-    else if (availableLogs().count() < 1000)
-        logNumber.prepend ("0");
-
-    /* Set the name of the DS log file */
-    m_logFilePath = logsPath() + "/"
-                    + "Log " + logNumber + " "
-                    + GET_DATE_TIME ("(MMM dd yyyy - HH_mm_ss)")
-                    + "." + extension();
-
     /* Register voltage values */
     QVariantList voltageList;
-    voltageList.append ("Robot Voltage");
     for (int i = 0; i < m_voltage.count(); ++i) {
         QVariantMap map;
         map.insert ("voltage", m_voltage.at (i));
@@ -162,7 +164,6 @@ void Logger::saveLogs() {
 
     /* Register CPU usages */
     QVariantList cpuList;
-    cpuList.append ("CPU Usage");
     for (int i = 0; i < m_cpuUsage.count(); ++i) {
         QVariantMap map;
         map.insert ("CPU", m_cpuUsage.at (i));
@@ -172,7 +173,6 @@ void Logger::saveLogs() {
 
     /* Register RAM usages */
     QVariantList ramList;
-    ramList.append ("RAM Usage");
     for (int i = 0; i < m_ramUsage.count(); ++i) {
         QVariantMap map;
         map.insert ("RAM", m_ramUsage.at (i));
@@ -182,7 +182,6 @@ void Logger::saveLogs() {
 
     /* Register packet loss */
     QVariantList pktList;
-    pktList.append ("Packet Loss");
     for (int i = 0; i < m_pktLoss.count(); ++i) {
         QVariantMap map;
         map.insert ("loss", m_pktLoss.at (i));
@@ -271,10 +270,8 @@ void Logger::saveLogs() {
     /* Add application logs to JSON */
     QFile logs (m_dumpFilePath);
     if (logs.open (QFile::ReadOnly)) {
-        QVariantList list;
-        list.append ("Application Logs");
-        list.append (logs.readAll());
-        array.append (QJsonValue::fromVariant (list));
+        array.append (QJsonValue::fromVariant (logs.readAll()));
+        logs.close();
     }
 
     /* Save JSON document to disk */

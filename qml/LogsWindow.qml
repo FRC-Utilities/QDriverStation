@@ -23,6 +23,7 @@
 import QtQuick 2.0
 import QtQuick.Window 2.0
 import QtQuick.Layouts 1.0
+import QtQuick.Controls 1.4 as Controls
 import Qt.labs.settings 1.0
 
 import "widgets"
@@ -36,14 +37,26 @@ Window {
     //
     width: minimumWidth
     height: minimumHeight
-    minimumWidth: Globals.scale (640)
+    minimumWidth: Globals.scale (760)
     minimumHeight: Globals.scale (420)
 
     //
-    // Returns a list with the robot log names
+    // Returns a list with the robot log names.
+    // The list is reversed to put the latest logs on the top of the log
+    // selector table.
     //
     function logs() {
         return DriverStation.availableLogs().reverse()
+    }
+
+    //
+    // Opens the log at the given index
+    //
+    function openLog (index) {
+        var correctedIndex = (logs().length - 1) - index
+        DriverStation.openLog (DriverStation.logsPath()
+                               + "/"
+                               + DriverStation.availableLogs()[correctedIndex])
     }
 
     //
@@ -57,6 +70,39 @@ Window {
     }
 
     //
+    // Updates the events charts and the console log to match the log file that
+    // has been selected by the user.
+    //
+    function updateData() {
+        var log = DriverStation.logVariant()
+
+        //
+        // Read log data, check Logger::saveFile() serialization code for more
+        // information regarding the event registration order.
+        //
+        // Sorry for this, but I could not figure out how to register root keys
+        // in the JSON document (while being able to register the events).
+        //
+        var cpuUsge           = log [0]
+        var ramUsge           = log [1]
+        var pktLoss           = log [2]
+        var voltage           = log [3]
+        var codeStatus        = log [4]
+        var controlMode       = log [5]
+        var voltageStatus     = log [6]
+        var enabledStatus     = log [7]
+        var operationStatus   = log [8]
+        var radioCommStatus   = log [9]
+        var robotCommStatus   = log [10]
+        var applicationOutput = log [11]
+
+        //
+        // Update the UI with obtained data
+        //
+        output.text = applicationOutput
+    }
+
+    //
     // Default window position
     //
     x: (Screen.width - width) / 4
@@ -66,8 +112,8 @@ Window {
     // Window properties
     //
     visible: false
-    title: qsTr ("Driver Station Logs")
     color: Globals.Colors.WindowBackground
+    title: qsTr ("QDriverStation Log File Viewer")
 
     //
     // Set window flags
@@ -87,6 +133,14 @@ Window {
         property alias y: window.y
         property alias width: window.width
         property alias height: window.height
+    }
+
+    //
+    // Update displayed data when DS opens new log file
+    //
+    Connections {
+        target: DriverStation
+        onLogFileChanged: updateData()
     }
 
     //
@@ -116,8 +170,9 @@ Window {
                 }
 
                 Button {
+                    width: 2 * height
                     icon: icons.fa_folder_open_o
-                    onClicked: DriverStation.openLogsPath()
+                    onClicked: DriverStation.browseLogs()
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
@@ -125,15 +180,16 @@ Window {
             //
             // Log selector
             //
-            TextEditor {
+            Controls.TableView {
+                model: logs()
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                backgroundColor: Globals.Colors.PanelBackground
-                foregroundColor: Globals.Colors.WidgetForeground
 
-                Component.onCompleted: {
-                    for (var i = 0; i < logs().length; ++i)
-                        editor.append (niceName (logs()[i]))
+                onClicked: openLog (currentRow)
+
+                Controls.TableViewColumn {
+                    role: ""
+                    title: qsTr ("Log Name")
                 }
             }
         }
@@ -158,7 +214,7 @@ Window {
 
                     Label {
                         Layout.fillWidth: true
-                        text: qsTr ("Select Category") + ":"
+                        text: qsTr ("Select Log Category") + ":"
                     }
 
                     Button {
@@ -169,9 +225,8 @@ Window {
                         onClicked: {
                             eventsBt.checked = true
                             consoleBt.checked = false
-
+                            outputLogs.visible = false
                             eventCharts.visible = true
-                            consoleLogs.visible = false
                         }
                     }
 
@@ -182,8 +237,7 @@ Window {
                         onClicked: {
                             eventsBt.checked = false
                             consoleBt.checked = true
-
-                            consoleLogs.visible = true
+                            outputLogs.visible = true
                             eventCharts.visible = false
                         }
                     }
@@ -211,6 +265,7 @@ Window {
                     // Plot
                     //
                     Plot {
+                        id: plot
                         Layout.fillWidth: true
                         Layout.fillHeight: true
                     }
@@ -248,17 +303,35 @@ Window {
                 //
                 // Console logs
                 //
-                TextEditor {
-                    id: consoleLogs
+                ColumnLayout {
+                    id: outputLogs
                     visible: false
-                    editor.readOnly: true
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    editor.textFormat: Text.PlainText
-                    editor.font.family: Globals.monoFont
-                    editor.font.pixelSize: Globals.scale (11)
-                    foregroundColor: Globals.Colors.WidgetForeground
-                    backgroundColor: Globals.Colors.WindowBackground
+
+                    TextEditor {
+                        id: output
+                        editor.readOnly: true
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        editor.textFormat: Text.PlainText
+                        editor.font.family: Globals.monoFont
+                        editor.font.pixelSize: Globals.scale (13)
+                        foregroundColor: Globals.Colors.WidgetForeground
+                        backgroundColor: Globals.Colors.WindowBackground
+                    }
+
+                    Button {
+                        icon: icons.fa_copy
+                        width: Globals.scale (48)
+                        height: Globals.scale (24)
+                        iconSize: Globals.scale (12)
+
+                        onClicked: {
+                            output.copy()
+                            output.editor.append (qsTr ("Console output copied to clipboard"))
+                        }
+                    }
                 }
             }
         }

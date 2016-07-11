@@ -238,8 +238,8 @@ static QByteArray&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:acadfedf7c410947286fb05666862a025"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_robot_logger.html">RobotLogger</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_s___config.html#acadfedf7c410947286fb05666862a025">robotLogger</a> ()</td></tr>
-<tr class="separator:acadfedf7c410947286fb05666862a025"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac058fd98e1cf514dd47b1b08a7401a4f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_logger.html">Logger</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_s___config.html#ac058fd98e1cf514dd47b1b08a7401a4f">logger</a> ()</td></tr>
+<tr class="separator:ac058fd98e1cf514dd47b1b08a7401a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-slots"></a>
 Private Slots</h2></td></tr>
@@ -311,9 +311,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_timerEnabled</b></t
 <tr class="memitem:a88ce6017dbea2f5d1f037c2fb363f598"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a88ce6017dbea2f5d1f037c2fb363f598"></a>
 QElapsedTimer *&#160;</td><td class="memItemRight" valign="bottom"><b>m_timer</b></td></tr>
 <tr class="separator:a88ce6017dbea2f5d1f037c2fb363f598"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac68d93135cc336c29e9da93d2e9f2cea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac68d93135cc336c29e9da93d2e9f2cea"></a>
-<a class="el" href="class_robot_logger.html">RobotLogger</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_robotLogger</b></td></tr>
-<tr class="separator:ac68d93135cc336c29e9da93d2e9f2cea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fceeeccdbe8f00df7d0a9cc5465332a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2fceeeccdbe8f00df7d0a9cc5465332a"></a>
+<a class="el" href="class_logger.html">Logger</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_logger</b></td></tr>
+<tr class="separator:a2fceeeccdbe8f00df7d0a9cc5465332a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -558,7 +558,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Returns the one and only instance of </p>
 
-<p>Referenced by <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">DriverStation::config()</a>, and <a class="el" href="class_protocol.html#a1a80363b686cb1e2ac5a043f7afad293">Protocol::config()</a>.</p>
+<p>Referenced by <a class="el" href="class_driver_station.html#a46ecf629d74f6cd2ec3d627ea0402be2">DriverStation::config()</a>, <a class="el" href="class_protocol.html#a1a80363b686cb1e2ac5a043f7afad293">Protocol::config()</a>, and <a class="el" href="class_driver_station.html#ace6de99545caa8c38aaa3303c9b490b5">DriverStation::logger()</a>.</p>
 
 </div>
 </div>
@@ -710,6 +710,32 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ac058fd98e1cf514dd47b1b08a7401a4f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_logger.html">Logger</a> * DS_Config::logger </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the instance of the robot logger object </p>
+
+<p>Referenced by <a class="el" href="class_driver_station.html#a74178ca1eb475b08f5f96755b608781f">DriverStation::availableLogs()</a>, <a class="el" href="class_driver_station.html#ad7f872c8ad5d9f1008700f7d17ef60c8">DriverStation::browseLogs()</a>, <a class="el" href="class_driver_station.html#a2a1910b1f3d075044e92348c6e635d74">DriverStation::init()</a>, <a class="el" href="class_driver_station.html#ace6de99545caa8c38aaa3303c9b490b5">DriverStation::logger()</a>, <a class="el" href="class_driver_station.html#a37d6ffc0c15706c329213c05ed01f97f">DriverStation::logsPath()</a>, <a class="el" href="class_driver_station.html#ac15d20c2bc721cf4bd80ad6bc549f4a0">DriverStation::openLog()</a>, and <a class="el" href="class_driver_station.html#abd3e7ee528d9a3d7a21cb7f661f4aa90">DriverStation::updatePacketLoss()</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a87084678af3e53b3df23fcd83741b223"></a>
 <div class="memitem">
 <div class="memproto">
@@ -847,32 +873,6 @@ Additional Inherited Members</h2></td></tr>
 <p>Returns the current status of the robot communications </p><dl class="section note"><dt>Note</dt><dd>You can also use the <code><a class="el" href="class_d_s___config.html#ab8a7993fd02fa8225166e1be03449d96">isConnectedToRobot()</a></code> function </dd></dl>
 
 <p>Referenced by <a class="el" href="class_d_s___config.html#ab8a7993fd02fa8225166e1be03449d96">isConnectedToRobot()</a>, and <a class="el" href="class_driver_station.html#a4d7807985643ad49d768f35dfafde47d">DriverStation::robotCommStatus()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="acadfedf7c410947286fb05666862a025"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_robot_logger.html">RobotLogger</a> * DS_Config::robotLogger </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Returns the instance of the robot logger object </p>
-
-<p>Referenced by <a class="el" href="class_driver_station.html#aaa7c9c077ec996e798e9f6eaef8198f7">DriverStation::resetRobot()</a>, and <a class="el" href="class_driver_station.html#abd3e7ee528d9a3d7a21cb7f661f4aa90">DriverStation::updatePacketLoss()</a>.</p>
 
 </div>
 </div>
@@ -1027,7 +1027,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Changes the <em>alliance</em> and fires the appropriate signals if required </p>
 
-<p>References <a class="el" href="class_d_s___config.html#a3dd9d63fed929f4586d46b42d77307bd">alliance()</a>, and <a class="el" href="class_d_s___base.html#ab3dcbe70daa079d266e4704a678e720c">DS_Base::allianceChanged()</a>.</p>
+<p>References <a class="el" href="class_d_s___config.html#a3dd9d63fed929f4586d46b42d77307bd">alliance()</a>, <a class="el" href="class_d_s___base.html#ab3dcbe70daa079d266e4704a678e720c">DS_Base::allianceChanged()</a>, and <a class="el" href="class_logger.html#abbcff745e2101e9f04a80905f7ad9735">Logger::registerAlliance()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_f_r_c__2014.html#aa27eb2b9d7bade0f469646f6a2e2764e">FRC_2014::interpretFMSPacket()</a>, and <a class="el" href="class_driver_station.html#ad3db59e5c290344a06d2ac6c2e10a634">DriverStation::setAlliance()</a>.</p>
 
@@ -1056,7 +1056,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Changes the robot control <em>mode</em> and fires the appropriate signals if required </p>
 
-<p>References <a class="el" href="class_d_s___base.html#acee79a895f7f53c3f1ce3f87eb28d4ba">DS_Base::controlModeChanged()</a>, <a class="el" href="class_driver_station.html#a8cd2eeed0ee9ccf774287d656c0d5523">DriverStation::getInstance()</a>, and <a class="el" href="class_d_s___base.html#a737fbec3c6339ea1b10f6a8887597bc3">DS_Base::statusChanged()</a>.</p>
+<p>References <a class="el" href="class_d_s___base.html#acee79a895f7f53c3f1ce3f87eb28d4ba">DS_Base::controlModeChanged()</a>, <a class="el" href="class_driver_station.html#a8cd2eeed0ee9ccf774287d656c0d5523">DriverStation::getInstance()</a>, <a class="el" href="class_logger.html#a6c50ce645d2cf823fc4b186e496699d4">Logger::registerControlMode()</a>, and <a class="el" href="class_d_s___base.html#a737fbec3c6339ea1b10f6a8887597bc3">DS_Base::statusChanged()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_f_r_c__2014.html#aa27eb2b9d7bade0f469646f6a2e2764e">FRC_2014::interpretFMSPacket()</a>, and <a class="el" href="class_driver_station.html#ab7d948268345a49c63ecdf3c60c5c0e2">DriverStation::setControlMode()</a>.</p>
 
@@ -1169,7 +1169,7 @@ The elapsed time will be resetted when the user changes the control mode of the 
 </div><div class="memdoc">
 <p>Changes the enabled <em>status</em> and fires the appropriate signals if required </p>
 
-<p>References <a class="el" href="class_d_s___base.html#a202aec2c3af5db3dec0f0e052dcc9ae5">DS_Base::enabledChanged()</a>, <a class="el" href="class_driver_station.html#a8cd2eeed0ee9ccf774287d656c0d5523">DriverStation::getInstance()</a>, <a class="el" href="class_d_s.html#ad1cf8c02d78be82dffe437dd935b2af9a9fd6b85f1f7c5d0623fb8f52c406349b">DS::kEnabled</a>, and <a class="el" href="class_d_s___base.html#a737fbec3c6339ea1b10f6a8887597bc3">DS_Base::statusChanged()</a>.</p>
+<p>References <a class="el" href="class_d_s___base.html#a202aec2c3af5db3dec0f0e052dcc9ae5">DS_Base::enabledChanged()</a>, <a class="el" href="class_driver_station.html#a8cd2eeed0ee9ccf774287d656c0d5523">DriverStation::getInstance()</a>, <a class="el" href="class_d_s.html#ad1cf8c02d78be82dffe437dd935b2af9a9fd6b85f1f7c5d0623fb8f52c406349b">DS::kEnabled</a>, <a class="el" href="class_logger.html#a354a2f3b60064ad66714d4a4269eb937">Logger::registerEnableStatus()</a>, and <a class="el" href="class_d_s___base.html#a737fbec3c6339ea1b10f6a8887597bc3">DS_Base::statusChanged()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_f_r_c__2014.html#aa27eb2b9d7bade0f469646f6a2e2764e">FRC_2014::interpretFMSPacket()</a>, <a class="el" href="class_driver_station.html#aaa7c9c077ec996e798e9f6eaef8198f7">DriverStation::resetRobot()</a>, <a class="el" href="class_d_s___config.html#a2c06f5128a83e5319020ba9de6d1311e">setEnabled()</a>, and <a class="el" href="class_driver_station.html#a8e30ede65b96a0558d31014aaa55e57f">DriverStation::setEnabled()</a>.</p>
 
@@ -1254,7 +1254,7 @@ The elapsed time will be resetted when the user changes the control mode of the 
 </div><div class="memdoc">
 <p>Changes the robot operation <em>status</em> and fires the appropriate signals if required </p>
 
-<p>References <a class="el" href="class_driver_station.html#a8cd2eeed0ee9ccf774287d656c0d5523">DriverStation::getInstance()</a>, <a class="el" href="class_d_s___base.html#a25240036a9d7d96387cd9ca2c6aa097a">DS_Base::operationStatusChanged()</a>, and <a class="el" href="class_d_s___base.html#a737fbec3c6339ea1b10f6a8887597bc3">DS_Base::statusChanged()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a8cd2eeed0ee9ccf774287d656c0d5523">DriverStation::getInstance()</a>, <a class="el" href="class_d_s___base.html#a25240036a9d7d96387cd9ca2c6aa097a">DS_Base::operationStatusChanged()</a>, <a class="el" href="class_logger.html#a353ebdd4e4fce07a00ce2a9244ba0b5c">Logger::registerOperationStatus()</a>, and <a class="el" href="class_d_s___base.html#a737fbec3c6339ea1b10f6a8887597bc3">DS_Base::statusChanged()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_f_r_c__2014.html#af2e8ef9a5061818434859252649d37e3">FRC_2014::interpretRobotPacket()</a>, <a class="el" href="class_driver_station.html#aaa7c9c077ec996e798e9f6eaef8198f7">DriverStation::resetRobot()</a>, <a class="el" href="class_d_s___config.html#a06116ba98f8915f05d2080dc89385ef2">setEmergencyStop()</a>, and <a class="el" href="class_driver_station.html#ac8a8225db01f842243491267cb62e57c">DriverStation::setOperationStatus()</a>.</p>
 
@@ -1337,7 +1337,7 @@ The elapsed time will be resetted when the user changes the control mode of the 
 </div><div class="memdoc">
 <p>Changes the <em>position</em> and fires the appropriate signals if required </p>
 
-<p>References <a class="el" href="class_d_s___config.html#a99fd2a309ed294b19a6b43bc88a312ed">position()</a>, and <a class="el" href="class_d_s___base.html#aa2285a844ff94060d7ad0d5dedece5b0">DS_Base::positionChanged()</a>.</p>
+<p>References <a class="el" href="class_d_s___config.html#a99fd2a309ed294b19a6b43bc88a312ed">position()</a>, <a class="el" href="class_d_s___base.html#aa2285a844ff94060d7ad0d5dedece5b0">DS_Base::positionChanged()</a>, and <a class="el" href="class_logger.html#a83ebf7aae6f60a47a34e5132d35d8781">Logger::registerPosition()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_f_r_c__2014.html#aa27eb2b9d7bade0f469646f6a2e2764e">FRC_2014::interpretFMSPacket()</a>, and <a class="el" href="class_driver_station.html#a480acac3987d9a7bdc222e9975fcf527">DriverStation::setPosition()</a>.</p>
 
@@ -1366,7 +1366,7 @@ The elapsed time will be resetted when the user changes the control mode of the 
 </div><div class="memdoc">
 <p>Changes the radio communication <em>status</em> and fires the appropriate signals if required </p>
 
-<p>References <a class="el" href="class_d_s___base.html#a90da8d42498cae47d5e9b8aa2ca4142c">DS_Base::radioCommStatusChanged()</a>.</p>
+<p>References <a class="el" href="class_d_s___base.html#a90da8d42498cae47d5e9b8aa2ca4142c">DS_Base::radioCommStatusChanged()</a>, and <a class="el" href="class_logger.html#abbab1a61c3fa21a6b9db5f899b4653b4">Logger::registerRadioCommStatus()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_protocol.html#ae19049f3b0ed22b985b431a9c5698e42">Protocol::readRadioPacket()</a>, and <a class="el" href="class_driver_station.html#a11593ecbbeab4902303129f5420a1377">DriverStation::resetRadio()</a>.</p>
 
@@ -1422,7 +1422,7 @@ The elapsed time will be resetted when the user changes the control mode of the 
 </div><div class="memdoc">
 <p>Changes the robot code <em>status</em> and fires the appropriate signals if required </p>
 
-<p>References <a class="el" href="class_d_s___base.html#ae2036b07df59a5f697f38e1e73f3bc61">DS_Base::codeStatusChanged()</a>, <a class="el" href="class_driver_station.html#a8cd2eeed0ee9ccf774287d656c0d5523">DriverStation::getInstance()</a>, and <a class="el" href="class_d_s___base.html#a737fbec3c6339ea1b10f6a8887597bc3">DS_Base::statusChanged()</a>.</p>
+<p>References <a class="el" href="class_d_s___base.html#ae2036b07df59a5f697f38e1e73f3bc61">DS_Base::codeStatusChanged()</a>, <a class="el" href="class_driver_station.html#a8cd2eeed0ee9ccf774287d656c0d5523">DriverStation::getInstance()</a>, <a class="el" href="class_logger.html#a1431a4d4a19430090a472115d59a9bfd">Logger::registerCodeStatus()</a>, and <a class="el" href="class_d_s___base.html#a737fbec3c6339ea1b10f6a8887597bc3">DS_Base::statusChanged()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#aaa7c9c077ec996e798e9f6eaef8198f7">DriverStation::resetRobot()</a>, and <a class="el" href="class_d_s___config.html#ad76f52786c35a25a3a7c27d5667dee9c">setRobotCode()</a>.</p>
 
@@ -1451,7 +1451,7 @@ The elapsed time will be resetted when the user changes the control mode of the 
 </div><div class="memdoc">
 <p>Changes the robot communication <em>status</em> and fires the appropriate signals if required </p>
 
-<p>References <a class="el" href="class_driver_station.html#a8cd2eeed0ee9ccf774287d656c0d5523">DriverStation::getInstance()</a>, <a class="el" href="class_d_s___base.html#af000f7b68d29898af6c6891269dcc0b4">DS_Base::robotCommStatusChanged()</a>, and <a class="el" href="class_d_s___base.html#a737fbec3c6339ea1b10f6a8887597bc3">DS_Base::statusChanged()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a8cd2eeed0ee9ccf774287d656c0d5523">DriverStation::getInstance()</a>, <a class="el" href="class_logger.html#a85098e53207b8637ffc587cb44ed56a4">Logger::registerRobotCommStatus()</a>, <a class="el" href="class_d_s___base.html#af000f7b68d29898af6c6891269dcc0b4">DS_Base::robotCommStatusChanged()</a>, and <a class="el" href="class_d_s___base.html#a737fbec3c6339ea1b10f6a8887597bc3">DS_Base::statusChanged()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_protocol.html#ae1c9300ce6477a4fd5c1fe950a0868ae">Protocol::readRobotPacket()</a>, and <a class="el" href="class_driver_station.html#aaa7c9c077ec996e798e9f6eaef8198f7">DriverStation::resetRobot()</a>.</p>
 
@@ -1538,7 +1538,7 @@ The elapsed time will be resetted when the user changes the control mode of the 
 </div><div class="memdoc">
 <p>Changes the robot <em>voltage</em> and fires the appropriate signals if required </p>
 
-<p>References <a class="el" href="class_driver_station.html#a8cd2eeed0ee9ccf774287d656c0d5523">DriverStation::getInstance()</a>, <a class="el" href="class_driver_station.html#a3bbbc2ed4fd75ff1e42e35010031c0e0">DriverStation::maxBatteryVoltage()</a>, and <a class="el" href="class_d_s___base.html#ab7945fbd911e328a027e0c876ce748d9">DS_Base::voltageChanged()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a8cd2eeed0ee9ccf774287d656c0d5523">DriverStation::getInstance()</a>, <a class="el" href="class_driver_station.html#a3bbbc2ed4fd75ff1e42e35010031c0e0">DriverStation::maxBatteryVoltage()</a>, <a class="el" href="class_logger.html#a979a22524a1dabdbced6694430bcffc6">Logger::registerVoltage()</a>, and <a class="el" href="class_d_s___base.html#ab7945fbd911e328a027e0c876ce748d9">DS_Base::voltageChanged()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_f_r_c__2014.html#af2e8ef9a5061818434859252649d37e3">FRC_2014::interpretRobotPacket()</a>, and <a class="el" href="class_driver_station.html#aaa7c9c077ec996e798e9f6eaef8198f7">DriverStation::resetRobot()</a>.</p>
 
@@ -1567,7 +1567,7 @@ The elapsed time will be resetted when the user changes the control mode of the 
 </div><div class="memdoc">
 <p>Changes the voltage brownout <em>status</em> and fires the appropriate signals if required </p>
 
-<p>References <a class="el" href="class_driver_station.html#a8cd2eeed0ee9ccf774287d656c0d5523">DriverStation::getInstance()</a>, <a class="el" href="class_d_s___base.html#a737fbec3c6339ea1b10f6a8887597bc3">DS_Base::statusChanged()</a>, and <a class="el" href="class_d_s___base.html#a4a5ab4a2f65b78083acd4a525c21a19c">DS_Base::voltageStatusChanged()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a8cd2eeed0ee9ccf774287d656c0d5523">DriverStation::getInstance()</a>, <a class="el" href="class_logger.html#a37bf63774cb8fe3f5801e2b2d071a24c">Logger::registerVoltageStatus()</a>, <a class="el" href="class_d_s___base.html#a737fbec3c6339ea1b10f6a8887597bc3">DS_Base::statusChanged()</a>, and <a class="el" href="class_d_s___base.html#a4a5ab4a2f65b78083acd4a525c21a19c">DS_Base::voltageStatusChanged()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#aaa7c9c077ec996e798e9f6eaef8198f7">DriverStation::resetRobot()</a>, and <a class="el" href="class_d_s___config.html#a0bda31da428adaa0e5c556811ebafec3">setBrownout()</a>.</p>
 
