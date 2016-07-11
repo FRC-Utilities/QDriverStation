@@ -151,8 +151,10 @@ DriverStation::DriverStation() {
     connect (m_robotWatchdog, SIGNAL (expired()), this, SLOT (resetRobot()));
 
     /* Notify client when the NetConsole receives a new message */
-    connect (m_console, SIGNAL (newMessage (QString)),
-             this,      SIGNAL (newMessage (QString)));
+    connect (m_console,        SIGNAL (newMessage (QString)),
+             this,             SIGNAL (newMessage (QString)));
+    connect (m_console,        SIGNAL (newMessage (QString)),
+             config()->logger(), SLOT (registerNetConsoleMessage (QString)));
 
     qDebug() << "DriverStation initialized!";
 }

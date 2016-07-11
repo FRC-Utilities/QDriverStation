@@ -49,6 +49,7 @@ class Logger : public QObject {
     void registerRadioCommStatus (DS::CommStatus status);
     void registerRobotCommStatus (DS::CommStatus status);
     void registerVoltageStatus (DS::VoltageStatus status);
+    void registerNetConsoleMessage (const QString& message);
     void registerOperationStatus (DS::OperationStatus status);
 
   private slots:
@@ -56,6 +57,7 @@ class Logger : public QObject {
     void initializeLogger();
 
   private:
+    QString m_netConsole;
     QElapsedTimer* m_timer;
     bool m_eventsRegistered;
 

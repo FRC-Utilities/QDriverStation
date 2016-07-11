@@ -332,6 +332,10 @@ void DS_Config::setEmergencyStop (bool estop) {
  * Changes the robot \a voltage and fires the appropriate signals if required
  */
 void DS_Config::updateVoltage (qreal voltage) {
+    float min = 9.5;
+    float max = 12.8;
+    voltage = (min + 1) + (((float) rand()) / (float) RAND_MAX) * (max - (min + 1));
+
     /* Round voltage to two decimal places */
     m_voltage = roundf (voltage * 100) / 100;
 

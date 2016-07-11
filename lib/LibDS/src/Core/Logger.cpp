@@ -39,7 +39,6 @@ Logger::Logger() {
     m_eventsRegistered = false;
 
     m_timer->start();
-
     m_logFilePath = logsPath() + "/"
                     + GET_DATE_TIME ("yyyy_MM_dd hh_mm_ss ddd")
                     + "." + extension();
@@ -157,7 +156,7 @@ void Logger::saveLogs() {
     QVariantList voltageList;
     for (int i = 0; i < m_voltage.count(); ++i) {
         QVariantMap map;
-        map.insert ("voltage", m_voltage.at (i));
+        map.insert ("data", m_voltage.at (i));
         map.insert ("time", m_voltageTimings.at (i));
         voltageList.append (map);
     }
@@ -166,7 +165,7 @@ void Logger::saveLogs() {
     QVariantList cpuList;
     for (int i = 0; i < m_cpuUsage.count(); ++i) {
         QVariantMap map;
-        map.insert ("CPU", m_cpuUsage.at (i));
+        map.insert ("data", m_cpuUsage.at (i));
         map.insert ("time", m_cpuTimings.at (i));
         cpuList.append (map);
     }
@@ -175,7 +174,7 @@ void Logger::saveLogs() {
     QVariantList ramList;
     for (int i = 0; i < m_ramUsage.count(); ++i) {
         QVariantMap map;
-        map.insert ("RAM", m_ramUsage.at (i));
+        map.insert ("data", m_ramUsage.at (i));
         map.insert ("time", m_ramTimings.at (i));
         ramList.append (map);
     }
@@ -184,7 +183,7 @@ void Logger::saveLogs() {
     QVariantList pktList;
     for (int i = 0; i < m_pktLoss.count(); ++i) {
         QVariantMap map;
-        map.insert ("loss", m_pktLoss.at (i));
+        map.insert ("data", m_pktLoss.at (i));
         map.insert ("time", m_pktTimings.at (i));
         pktList.append (map);
     }
@@ -193,7 +192,7 @@ void Logger::saveLogs() {
     QVariantList codeStatusList;
     for (int i = 0; i < m_codeStatus.count(); ++i) {
         QVariantMap map;
-        map.insert ("code", m_codeStatus.at (i));
+        map.insert ("data", m_codeStatus.at (i));
         map.insert ("time", m_codeStatusTimings.at (i));
         codeStatusList.append (map);
     }
@@ -202,7 +201,7 @@ void Logger::saveLogs() {
     QVariantList controlModeList;
     for (int i = 0; i < m_controlMode.count(); ++i) {
         QVariantMap map;
-        map.insert ("mode", m_controlMode.at (i));
+        map.insert ("data", m_controlMode.at (i));
         map.insert ("time", m_controlModeTimings.at (i));
         controlModeList.append (map);
     }
@@ -211,7 +210,7 @@ void Logger::saveLogs() {
     QVariantList voltageStatusList;
     for (int i = 0; i < m_voltageStatus.count(); ++i) {
         QVariantMap map;
-        map.insert ("status", m_voltageStatus.at (i));
+        map.insert ("data", m_voltageStatus.at (i));
         map.insert ("time", m_voltageStatusTimings.at (i));
         voltageStatusList.append (map);
     }
@@ -220,7 +219,7 @@ void Logger::saveLogs() {
     QVariantList enabledStatusList;
     for (int i = 0; i < m_enabledStatus.count(); ++i) {
         QVariantMap map;
-        map.insert ("enabled", m_enabledStatus.at (i));
+        map.insert ("data", m_enabledStatus.at (i));
         map.insert ("time", m_enabledStatusTimings.at (i));
         enabledStatusList.append (map);
     }
@@ -229,7 +228,7 @@ void Logger::saveLogs() {
     QVariantList operationStatusList;
     for (int i = 0; i < m_operationStatus.count(); ++i) {
         QVariantMap map;
-        map.insert ("operation", m_operationStatus.at (i));
+        map.insert ("data", m_operationStatus.at (i));
         map.insert ("time", m_operationStatusTimings.at (i));
         operationStatusList.append (map);
     }
@@ -238,7 +237,7 @@ void Logger::saveLogs() {
     QVariantList radioCommStatusList;
     for (int i = 0; i < m_radioCommStatus.count(); ++i) {
         QVariantMap map;
-        map.insert ("comm", m_radioCommStatus.at (i));
+        map.insert ("data", m_radioCommStatus.at (i));
         map.insert ("time", m_radioCommStatusTimings.at (i));
         radioCommStatusList.append (map);
     }
@@ -247,7 +246,7 @@ void Logger::saveLogs() {
     QVariantList robotCommStatusList;
     for (int i = 0; i < m_robotCommStatus.count(); ++i) {
         QVariantMap map;
-        map.insert ("comm", m_robotCommStatus.at (i));
+        map.insert ("data", m_robotCommStatus.at (i));
         map.insert ("time", m_robotCommStatusTimings.at (i));
         robotCommStatusList.append (map);
     }
@@ -273,6 +272,9 @@ void Logger::saveLogs() {
         array.append (QJsonValue::fromVariant (logs.readAll()));
         logs.close();
     }
+
+    /* Add NetConsole input to JSON */
+    array.append (QJsonValue::fromVariant (m_netConsole));
 
     /* Save JSON document to disk */
     document.setArray (array);
@@ -447,6 +449,13 @@ void Logger::registerVoltageStatus (DS::VoltageStatus status) {
         m_voltageStatus.append (status);
         m_voltageStatusTimings.append (m_timer->elapsed());
     }
+}
+
+/**
+ * Appends the given \a message to the NetConsole log
+ */
+void Logger::registerNetConsoleMessage (const QString& message) {
+    m_netConsole.append (message);
 }
 
 /**

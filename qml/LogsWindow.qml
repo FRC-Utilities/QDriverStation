@@ -60,28 +60,22 @@ Window {
     }
 
     //
-    // Returns a formatted name for the given log
-    //
-    function niceName (log) {
-        log = log.replace (/_/gi, ':')
-        log = log.replace(/.qdslog/gi, '')
-
-        return log
-    }
-
-    //
     // Updates the events charts and the console log to match the log file that
     // has been selected by the user.
     //
     function updateData() {
         var log = DriverStation.logVariant()
 
+        // No logs, get out!
+        if (logs().length < 1)
+            return
+
         //
         // Read log data, check Logger::saveFile() serialization code for more
         // information regarding the event registration order.
         //
         // Sorry for this, but I could not figure out how to register root keys
-        // in the JSON document (while being able to register the events).
+        // in the JSON document without breaking the rest of it...
         //
         var cpuUsge           = log [0]
         var ramUsge           = log [1]
@@ -95,11 +89,13 @@ Window {
         var radioCommStatus   = log [9]
         var robotCommStatus   = log [10]
         var applicationOutput = log [11]
+        var netConsoleMessage = log [12]
 
         //
         // Update the UI with obtained data
         //
-        output.text = applicationOutput
+        appConsole.text = applicationOutput
+        netConsole.text = netConsoleMessage
     }
 
     //
@@ -136,11 +132,23 @@ Window {
     }
 
     //
-    // Update displayed data when DS opens new log file
+    // Good ol' LibDS does most of the work for us
     //
     Connections {
         target: DriverStation
+
+        //
+        // Update the displayed data when user selects another log file
+        //
         onLogFileChanged: updateData()
+
+        //
+        // Show latest log on init
+        //
+        onInitialized: {
+            openLog (0)
+            selector.currentRow = 0
+        }
     }
 
     //
@@ -181,11 +189,12 @@ Window {
             // Log selector
             //
             Controls.TableView {
+                id: selector
                 model: logs()
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-
                 onClicked: openLog (currentRow)
+                Layout.minimumWidth: Globals.scale (220)
 
                 Controls.TableViewColumn {
                     role: ""
@@ -195,7 +204,7 @@ Window {
         }
 
         //
-        // Log charts
+        // Log display controls
         //
         Panel {
             Layout.fillWidth: true
@@ -218,27 +227,45 @@ Window {
                     }
 
                     Button {
-                        id: eventsBt
+                        id: evnBt
                         checked: true
-                        text: qsTr ("Event Charts")
+                        text: qsTr ("Event Chart")
 
                         onClicked: {
-                            eventsBt.checked = true
-                            consoleBt.checked = false
-                            outputLogs.visible = false
-                            eventCharts.visible = true
+                            evnBt.checked = true
+                            appBt.checked = false
+                            netBt.checked = false
+                            evnPlot.visible = true
+                            netLogs.visible = false
+                            appLogs.visible = false
                         }
                     }
 
                     Button {
-                        id: consoleBt
-                        text: qsTr ("Console Logs")
+                        id: appBt
+                        text: qsTr ("App Logs")
 
                         onClicked: {
-                            eventsBt.checked = false
-                            consoleBt.checked = true
-                            outputLogs.visible = true
-                            eventCharts.visible = false
+                            appBt.checked = true
+                            netBt.checked = false
+                            evnBt.checked = false
+                            appLogs.visible = true
+                            netLogs.visible = false
+                            evnPlot.visible = false
+                        }
+                    }
+
+                    Button {
+                        id: netBt
+                        text: qsTr ("NetConsole")
+
+                        onClicked: {
+                            netBt.checked = true
+                            evnBt.checked = false
+                            appBt.checked = false
+                            netLogs.visible = true
+                            appLogs.visible = false
+                            evnPlot.visible = false
                         }
                     }
                 }
@@ -247,7 +274,7 @@ Window {
                 // Event charts
                 //
                 RowLayout {
-                    id: eventCharts
+                    id: evnPlot
                     visible: true
                     Layout.fillWidth: true
                     Layout.fillHeight: true
@@ -262,7 +289,7 @@ Window {
                     property string volColor: "yellow"
 
                     //
-                    // Plot
+                    // Plot (this will be a pain in the ass)
                     //
                     Plot {
                         id: plot
@@ -271,7 +298,7 @@ Window {
                     }
 
                     //
-                    // Legends
+                    // Graph legends
                     //
                     ColumnLayout {
                         Layout.fillWidth: false
@@ -280,22 +307,22 @@ Window {
 
                         LED {
                             text: qsTr ("Lost Packets")
-                            unpoweredColor: eventCharts.pktColor
+                            unpoweredColor: evnPlot.pktColor
                         }
 
                         LED {
                             text: qsTr ("CPU") + " %"
-                            unpoweredColor: eventCharts.cpuColor
+                            unpoweredColor: evnPlot.cpuColor
                         }
 
                         LED {
                             text: qsTr ("RAM") + " %"
-                            unpoweredColor: eventCharts.ramColor
+                            unpoweredColor: evnPlot.ramColor
                         }
 
                         LED {
                             text: qsTr ("Voltage") + " %"
-                            unpoweredColor: eventCharts.volColor
+                            unpoweredColor: evnPlot.volColor
                         }
                     }
                 }
@@ -304,13 +331,13 @@ Window {
                 // Console logs
                 //
                 ColumnLayout {
-                    id: outputLogs
+                    id: appLogs
                     visible: false
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 
                     TextEditor {
-                        id: output
+                        id: appConsole
                         editor.readOnly: true
                         Layout.fillWidth: true
                         Layout.fillHeight: true
@@ -328,8 +355,42 @@ Window {
                         iconSize: Globals.scale (12)
 
                         onClicked: {
-                            output.copy()
-                            output.editor.append (qsTr ("Console output copied to clipboard"))
+                            appConsole.copy()
+                            appConsole.editor.append (qsTr ("Console output copied to clipboard"))
+                        }
+                    }
+                }
+
+                //
+                // NetConsole logs
+                //
+                ColumnLayout {
+                    id: netLogs
+                    visible: false
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+                    TextEditor {
+                        id: netConsole
+                        editor.readOnly: true
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        editor.textFormat: Text.PlainText
+                        editor.font.family: Globals.monoFont
+                        editor.font.pixelSize: Globals.scale (13)
+                        foregroundColor: Globals.Colors.WidgetForeground
+                        backgroundColor: Globals.Colors.WindowBackground
+                    }
+
+                    Button {
+                        icon: icons.fa_copy
+                        width: Globals.scale (48)
+                        height: Globals.scale (24)
+                        iconSize: Globals.scale (12)
+
+                        onClicked: {
+                            netConsole.copy()
+                            netConsole.editor.append (qsTr ("NetConsole output copied to clipboard"))
                         }
                     }
                 }
