@@ -27,6 +27,7 @@ import "../globals.js" as Globals
 // This item is the ultimate expression of my lazyness
 //
 Rectangle {
+    radius: Globals.scale (5)
     border.width: Globals.scale (1)
     color: Globals.Colors.PanelBackground
     border.color: Globals.Colors.WidgetBorder
