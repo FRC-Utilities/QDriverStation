@@ -205,7 +205,7 @@ ColumnLayout {
         Layout.minimumHeight: Globals.scale (42)
 
         //
-        // Voltage widget
+        // Robot battery graph
         //
         Item {
             width: Globals.scale (53)
@@ -256,11 +256,11 @@ ColumnLayout {
                 anchors.topMargin: parent.diodeHeight + (cover.height / 2)
 
                 VoltageGraph {
-                    color: parent.color
                     anchors.fill: parent
                     border.color: parent.color
                     anchors.margins: Globals.scale (2)
                     anchors.topMargin: Globals.scale (0)
+                    color: Globals.Colors.WindowBackground
                     noCommsColor: Globals.Colors.WindowBackground
 
                     Component.onCompleted: setSpeed (24)
@@ -272,6 +272,9 @@ ColumnLayout {
             Layout.fillWidth: true
         }
 
+        //
+        // Voltage text (finally)
+        //
         Label {
             size: large
             font.bold: true
