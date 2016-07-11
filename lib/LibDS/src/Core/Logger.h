@@ -36,6 +36,7 @@ class Logger : public QObject {
 
   public slots:
     void saveLogs();
+    void closeLogs();
     void registerInitialEvents();
     void registerVoltage (qreal voltage);
     void registerPacketLoss (int pktLoss);
@@ -53,7 +54,6 @@ class Logger : public QObject {
     void registerOperationStatus (DS::OperationStatus status);
 
   private slots:
-    void closeLogs();
     void initializeLogger();
 
   private:

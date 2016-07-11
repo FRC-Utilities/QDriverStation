@@ -42,9 +42,6 @@ Logger::Logger() {
     m_logFilePath = logsPath() + "/"
                     + GET_DATE_TIME ("yyyy_MM_dd hh_mm_ss ddd")
                     + "." + extension();
-
-    DS_Schedule (1000, this, SLOT (saveLogs()));
-    connect (qApp, SIGNAL (aboutToQuit()), this, SLOT (closeLogs()));
 }
 
 /**
@@ -284,9 +281,24 @@ void Logger::saveLogs() {
         file.close();
     }
 
-    /* Overwrite log in five seconds */
+    /* Overwrite log in two seconds */
     if (!m_closed)
-        DS_Schedule (5000, this, SLOT (saveLogs()));
+        DS_Schedule (2000, this, SLOT (saveLogs()));
+}
+
+/**
+ * Closes the console log dump file
+ */
+void Logger::closeLogs() {
+    if (m_dump && m_initialized && !m_closed) {
+        qDebug() << "Log buffer closed";
+
+        m_closed = true;
+        m_initialized = false;
+
+        fclose (m_dump);
+        saveLogs();
+    }
 }
 
 /**
@@ -308,6 +320,8 @@ void Logger::registerInitialEvents() {
         registerRadioCommStatus (DS::kCommsFailing);
         registerRobotCommStatus (DS::kCommsFailing);
         registerControlMode (DS::kControlTeleoperated);
+
+        saveLogs();
     }
 }
 
@@ -472,21 +486,6 @@ void Logger::registerOperationStatus (DS::OperationStatus status) {
         m_previousOperationStatus = status;
         m_operationStatus.append (status);
         m_operationStatusTimings.append (m_timer->elapsed());
-    }
-}
-
-/**
- * Closes the console log dump file
- */
-void Logger::closeLogs() {
-    if (m_dump && m_initialized && !m_closed) {
-        qDebug() << "Log buffer closed";
-
-        m_closed = true;
-        m_initialized = false;
-
-        fclose (m_dump);
-        saveLogs();
     }
 }
 

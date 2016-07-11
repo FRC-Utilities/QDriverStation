@@ -161,7 +161,7 @@ DriverStation::DriverStation() {
 
 DriverStation::~DriverStation() {
     stop();
-    config()->logger()->saveLogs();
+    config()->logger()->closeLogs();
 }
 
 /**
