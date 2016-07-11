@@ -112,15 +112,6 @@ Window {
     title: qsTr ("QDriverStation Log File Viewer")
 
     //
-    // Set window flags
-    //
-    flags: Qt.Window |
-           Qt.WindowTitleHint |
-           Qt.WindowSystemMenuHint |
-           Qt.WindowCloseButtonHint |
-           Qt.WindowMinimizeButtonHint
-
-    //
     // Save settings
     //
     Settings {

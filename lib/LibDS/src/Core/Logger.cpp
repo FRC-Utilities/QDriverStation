@@ -42,6 +42,9 @@ Logger::Logger() {
     m_logFilePath = logsPath() + "/"
                     + GET_DATE_TIME ("yyyy_MM_dd hh_mm_ss ddd")
                     + "." + extension();
+
+    DS_Schedule (1000, this, SLOT (saveLogs()));
+    connect (qApp, SIGNAL (aboutToQuit()), this, SLOT (closeLogs()));
 }
 
 /**
@@ -144,14 +147,11 @@ void Logger::messageHandler (QtMsgType type,
 }
 
 /**
- * Saves the robot events and the application logs into a binary JSON file.
+ * Saves the robot events and the application logs into a compact JSON file.
  * This file can later be used by teams to diagnostic their robots or by the
  * LibDS developers to fix an issue.
  */
 void Logger::saveLogs() {
-    /* Close the console dump file */
-    closeLogs();
-
     /* Register voltage values */
     QVariantList voltageList;
     for (int i = 0; i < m_voltage.count(); ++i) {
@@ -283,6 +283,10 @@ void Logger::saveLogs() {
         file.write (document.toJson (QJsonDocument::Compact));
         file.close();
     }
+
+    /* Overwrite log in five seconds */
+    if (!m_closed)
+        DS_Schedule (5000, this, SLOT (saveLogs()));
 }
 
 /**
@@ -482,6 +486,7 @@ void Logger::closeLogs() {
         m_initialized = false;
 
         fclose (m_dump);
+        saveLogs();
     }
 }
 
