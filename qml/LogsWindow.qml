@@ -92,10 +92,12 @@ Window {
         var netConsoleMessage = log [12]
 
         //
-        // Update the UI with obtained data
+        // We use this hack so that the text is scrolled to the bottom
         //
-        appConsole.text = applicationOutput
-        netConsole.text = netConsoleMessage
+        appConsole.text = ""
+        netConsole.text = ""
+        appConsole.editor.append (applicationOutput)
+        netConsole.editor.append (netConsoleMessage)
     }
 
     //
@@ -207,6 +209,13 @@ Window {
                 //
                 RowLayout {
                     Layout.fillWidth: true
+
+                    Button {
+                        baseColor: "green"
+                        caption.font.bold: true
+                        text: qsTr ("Current Instance")
+                        visible: selector.currentRow === 0
+                    }
 
                     Label {
                         Layout.fillWidth: true

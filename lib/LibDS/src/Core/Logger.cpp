@@ -40,8 +40,8 @@ Logger::Logger() {
 
     m_timer->start();
     m_logFilePath = logsPath() + "/"
-            + GET_DATE_TIME ("yyyy_MM_dd hh_mm_ss ddd")
-            + "." + extension();
+                    + GET_DATE_TIME ("yyyy_MM_dd hh_mm_ss ddd")
+                    + "." + extension();
 }
 
 /**
@@ -281,9 +281,9 @@ void Logger::saveLogs() {
         file.close();
     }
 
-    /* Overwrite log in two seconds */
+    /* Overwrite log in one second */
     if (!m_closed)
-        DS_Schedule (2000, this, SLOT (saveLogs()));
+        DS_Schedule (1000, this, SLOT (saveLogs()));
 }
 
 /**

@@ -171,6 +171,7 @@ class DriverStation : public DS_Base {
     void resetRadio();
     void resetRobot();
     void finishInit();
+    void updateLogs();
     void sendFMSPacket();
     void updateAddresses();
     void sendRadioPacket();
@@ -193,6 +194,8 @@ class DriverStation : public DS_Base {
     int m_fmsInterval;
     int m_radioInterval;
     int m_robotInterval;
+
+    QString m_logDocumentPath;
 
     DS_Joysticks m_joysticks;
     QString m_customFMSAddress;

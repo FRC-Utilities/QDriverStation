@@ -842,6 +842,7 @@ void DriverStation::init() {
         m_init = true;
 
         config()->logger()->registerInitialEvents();
+        updateLogs();
 
         resetFMS();
         resetRadio();
@@ -1049,6 +1050,7 @@ void DriverStation::setTeamStation (int station) {
  * Opens the given log file \a file and parses it as a JSON document
  */
 void DriverStation::openLog (const QString& file) {
+    m_logDocumentPath = file;
     m_logDocument = config()->logger()->openLog (file);
     emit logFileChanged();
 }
@@ -1345,6 +1347,16 @@ void DriverStation::resetRobot() {
 void DriverStation::finishInit() {
     emit initialized();
     emit statusChanged (generalStatus());
+}
+
+/**
+ * Used to ensure that the log feed of the UI is constantly updated
+ */
+void DriverStation::updateLogs() {
+    if (!m_logDocumentPath.isEmpty())
+        openLog (m_logDocumentPath);
+
+    DS_Schedule (1000, this, SLOT (updateLogs()));
 }
 
 /**
