@@ -33,6 +33,11 @@ Window {
     id: window
 
     //
+    // If this returns true, then this is the log of the current instance
+    //
+    property bool currentRun: selector.currentRow === 0
+
+    //
     // Window size
     //
     width: minimumWidth
@@ -92,12 +97,30 @@ Window {
         var netConsoleMessage = log [12]
 
         //
-        // We use this hack so that the text is scrolled to the bottom
+        // We use this hack so that the app console behaves like a terminal
+        // control (only if the log is from the running instance)
         //
-        appConsole.text = ""
-        netConsole.text = ""
-        appConsole.editor.append (applicationOutput)
-        netConsole.editor.append (netConsoleMessage)
+        if (appConsole.text !== applicationOutput) {
+            if (currentRun) {
+                appConsole.text = ""
+                appConsole.editor.append (applicationOutput)
+            } else {
+                appConsole.text = applicationOutput
+            }
+        }
+
+        //
+        // We use this hack so that the net console behaves like a terminal
+        // control (only if the log is from the running instance)
+        //
+        if (netConsole.text !== netConsoleMessage) {
+            if (currentRun) {
+                netConsole.text = ""
+                netConsole.editor.append (netConsoleMessage)
+            } else {
+                netConsole.text = netConsoleMessage
+            }
+        }
     }
 
     //
@@ -169,7 +192,12 @@ Window {
                 Button {
                     width: 2 * height
                     icon: icons.fa_folder_open_o
-                    onClicked: DriverStation.browseLogs()
+                    onClicked: {
+                        openLog (1)
+                        selector.currentRow = 1
+                        DriverStation.browseLogs()
+                    }
+
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
@@ -211,15 +239,13 @@ Window {
                     Layout.fillWidth: true
 
                     Button {
-                        baseColor: "green"
                         caption.font.bold: true
-                        text: qsTr ("Current Instance")
-                        visible: selector.currentRow === 0
+                        text: currentRun ? qsTr ("Current Run") : qsTr ("Previous Run")
+                        baseColor: currentRun ? Globals.Colors.CurrentRun : Globals.Colors.PreviousRun
                     }
 
-                    Label {
+                    Item {
                         Layout.fillWidth: true
-                        text: qsTr ("Select Log Category") + ":"
                     }
 
                     Button {
