@@ -22,6 +22,9 @@ class QElapsedTimer;
 class Logger : public QObject {
     Q_OBJECT
 
+  signals:
+    void logsSaved (const QString& file);
+
   public:
     explicit Logger();
 

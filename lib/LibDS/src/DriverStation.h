@@ -38,8 +38,8 @@ class DriverStation : public DS_Base {
     void initialized();
     void logFileChanged();
     void protocolChanged();
-    void newMessage (QString message);
     void joystickCountChanged (int count);
+    void newMessage (const QString& message);
 
   public:
     static DriverStation* getInstance();
@@ -171,13 +171,13 @@ class DriverStation : public DS_Base {
     void resetRadio();
     void resetRobot();
     void finishInit();
-    void updateLogs();
     void sendFMSPacket();
     void updateAddresses();
     void sendRadioPacket();
     void sendRobotPacket();
     void updatePacketLoss();
     void updateAddresses (int unused);
+    void updateLogs (const QString& file);
     void readFMSPacket (const QByteArray& data);
     void readRadioPacket (const QByteArray& data);
     void readRobotPacket (const QByteArray& data);

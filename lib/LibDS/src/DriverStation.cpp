@@ -156,6 +156,10 @@ DriverStation::DriverStation() {
     connect (m_console,        SIGNAL (newMessage (QString)),
              config()->logger(), SLOT (registerNetConsoleMessage (QString)));
 
+    /* Update the current log file when the logger saves it (for live UI logs) */
+    connect (config()->logger(), SIGNAL (logsSaved  (QString)),
+             this,                 SLOT (updateLogs (QString)));
+
     qDebug() << "DriverStation initialized!";
 }
 
@@ -842,7 +846,6 @@ void DriverStation::init() {
         m_init = true;
 
         config()->logger()->registerInitialEvents();
-        updateLogs();
 
         resetFMS();
         resetRadio();
@@ -1350,16 +1353,6 @@ void DriverStation::finishInit() {
 }
 
 /**
- * Used to ensure that the log feed of the UI is constantly updated
- */
-void DriverStation::updateLogs() {
-    if (!m_logDocumentPath.isEmpty())
-        openLog (m_logDocumentPath);
-
-    DS_Schedule (1000, this, SLOT (updateLogs()));
-}
-
-/**
  * Generates and sends a new FMS packet only if we are already connected to
  * the FMS
  */
@@ -1439,6 +1432,14 @@ void DriverStation::updatePacketLoss() {
 void DriverStation::updateAddresses (int unused) {
     Q_UNUSED (unused);
     updateAddresses();
+}
+
+/**
+ * Used to ensure that the log feed of the UI is constantly updated
+ */
+void DriverStation::updateLogs (const QString& file) {
+    if (m_logDocumentPath.isEmpty() || file == m_logDocumentPath)
+        openLog (file);
 }
 
 /**

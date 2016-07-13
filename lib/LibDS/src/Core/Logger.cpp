@@ -279,6 +279,8 @@ void Logger::saveLogs() {
     if (file.open (QFile::WriteOnly)) {
         file.write (document.toJson (QJsonDocument::Compact));
         file.close();
+
+        emit logsSaved (m_logFilePath);
     }
 
     /* Overwrite log in one second */
@@ -399,6 +401,8 @@ void Logger::registerControlMode (DS::ControlMode mode) {
         m_previousControlMode = mode;
         m_controlMode.append (mode);
         m_controlModeTimings.append (m_timer->elapsed());
+
+        qDebug() << "Robot control mode set to" << mode;
     }
 }
 
@@ -412,6 +416,8 @@ void Logger::registerCodeStatus (DS::CodeStatus status) {
         m_previousCodeStatus = status;
         m_codeStatus.append (status);
         m_codeStatusTimings.append (m_timer->elapsed());
+
+        qDebug() << "Robot code status set to" << status;
     }
 }
 
@@ -425,6 +431,8 @@ void Logger::registerEnableStatus (DS::EnableStatus status) {
         m_previousEnabledStatus = status;
         m_enabledStatus.append (status);
         m_enabledStatusTimings.append (m_timer->elapsed());
+
+        qDebug() << "Robot enabled status set to" << status;
     }
 }
 
@@ -438,6 +446,8 @@ void Logger::registerRadioCommStatus (DS::CommStatus status) {
         m_previousRadioCommStatus = status;
         m_radioCommStatus.append (status);
         m_radioCommStatusTimings.append (m_timer->elapsed());
+
+        qDebug() << "Radio communication status set to" << status;
     }
 }
 
@@ -451,6 +461,8 @@ void Logger::registerRobotCommStatus (DS::CommStatus status) {
         m_previousRobotCommStatus = status;
         m_robotCommStatus.append (status);
         m_robotCommStatusTimings.append (m_timer->elapsed());
+
+        qDebug() << "Robot communication status set to" << status;
     }
 }
 
@@ -464,6 +476,8 @@ void Logger::registerVoltageStatus (DS::VoltageStatus status) {
         m_previousVoltageStatus = status;
         m_voltageStatus.append (status);
         m_voltageStatusTimings.append (m_timer->elapsed());
+
+        qDebug() << "Robot voltage status set to" << status;
     }
 }
 
@@ -484,6 +498,8 @@ void Logger::registerOperationStatus (DS::OperationStatus status) {
         m_previousOperationStatus = status;
         m_operationStatus.append (status);
         m_operationStatusTimings.append (m_timer->elapsed());
+
+        qDebug() << "Radio operation status set to" << status;
     }
 }
 
