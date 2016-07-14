@@ -92,7 +92,7 @@ Item {
     }
 
     //
-    // The settings window,
+    // The settings window
     //
     SettingsWindow {
         id: settingsWindow
