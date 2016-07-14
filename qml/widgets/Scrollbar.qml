@@ -21,7 +21,7 @@
  */
 
 import QtQuick 2.0
-import "../globals.js" as Globals
+import "../Globals.js" as Globals
 
 Item {
     id: container

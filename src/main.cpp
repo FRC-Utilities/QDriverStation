@@ -78,7 +78,7 @@
 
 const QString WEBS = "We instructed your web browser to navigate to:        \n"
                      "    %1                                                \n"
-                     "If nothing happens, please navigate to that URL         ";
+                     "If nothing happens, please navigate to that URL.        ";
 
 const QString HELP = "Usage: qdriverstation [ options ... ]                 \n"
                      "                                                      \n"

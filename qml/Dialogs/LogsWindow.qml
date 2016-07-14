@@ -26,8 +26,8 @@ import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.4 as Controls
 import Qt.labs.settings 1.0
 
-import "widgets"
-import "globals.js" as Globals
+import "../Widgets"
+import "../Globals.js" as Globals
 
 Window {
     id: window
@@ -42,7 +42,7 @@ Window {
     //
     width: minimumWidth
     height: minimumHeight
-    minimumWidth: Globals.scale (760)
+    minimumWidth: Globals.scale (820)
     minimumHeight: Globals.scale (420)
 
     //
@@ -82,19 +82,20 @@ Window {
         // Sorry for this, but I could not figure out how to register root keys
         // in the JSON document without breaking the rest of it...
         //
-        var cpuUsge           = log [0]
-        var ramUsge           = log [1]
-        var pktLoss           = log [2]
-        var voltage           = log [3]
-        var codeStatus        = log [4]
-        var controlMode       = log [5]
-        var voltageStatus     = log [6]
-        var enabledStatus     = log [7]
-        var operationStatus   = log [8]
-        var radioCommStatus   = log [9]
-        var robotCommStatus   = log [10]
-        var applicationOutput = log [11]
-        var netConsoleMessage = log [12]
+        var time              = log [0]
+        var cpuUsge           = log [1]
+        var ramUsge           = log [2]
+        var pktLoss           = log [3]
+        var voltage           = log [4]
+        var codeStatus        = log [5]
+        var controlMode       = log [6]
+        var voltageStatus     = log [7]
+        var enabledStatus     = log [8]
+        var operationStatus   = log [9]
+        var radioCommStatus   = log [10]
+        var robotCommStatus   = log [11]
+        var applicationOutput = log [12]
+        var netConsoleMessage = log [13]
 
         //
         // We use this hack so that the app console behaves like a terminal
@@ -121,6 +122,11 @@ Window {
                 netConsole.text = netConsoleMessage
             }
         }
+
+        //
+        // Change window title
+        //
+        window.title = qsTr ("QDriverStation Log Viewer (%1 seconds)").arg (time / 1000)
     }
 
     //
@@ -240,8 +246,9 @@ Window {
 
                     Button {
                         caption.font.bold: true
-                        text: currentRun ? qsTr ("Current Run") : qsTr ("Previous Run")
-                        baseColor: currentRun ? Globals.Colors.CurrentRun : Globals.Colors.PreviousRun
+                        baseColor: currentRun ? "#B9262E" : "#630008"
+                        text: currentRun ? qsTr ("Live Feed") :
+                                           qsTr ("Past Feed")
                     }
 
                     Item {
@@ -305,10 +312,10 @@ Window {
                     //
                     // Colors
                     //
-                    property string pktColor: "blue"
-                    property string cpuColor: "red"
-                    property string ramColor: "orange"
-                    property string volColor: "yellow"
+                    property string pktColor: "#001942"
+                    property string cpuColor: "#B9262E"
+                    property string ramColor: "#FF9923"
+                    property string volColor: "#81ACB5"
 
                     //
                     // Plot (this will be a pain in the ass)

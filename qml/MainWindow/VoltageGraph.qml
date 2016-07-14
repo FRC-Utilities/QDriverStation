@@ -22,8 +22,8 @@
 
 import QtQuick 2.0
 
-import "widgets"
-import "globals.js" as Globals
+import "../Widgets"
+import "../Globals.js" as Globals
 
 Plot {
     //

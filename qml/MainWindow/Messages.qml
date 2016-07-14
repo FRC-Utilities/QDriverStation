@@ -23,8 +23,8 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
 
-import "widgets"
-import "globals.js" as Globals
+import "../Widgets"
+import "../Globals.js" as Globals
 
 ColumnLayout {
     spacing: Globals.spacing
@@ -47,7 +47,7 @@ ColumnLayout {
 
         Button {
             text: qsTr ("Logs") + "..."
-            onClicked: window.showLogsWindow()
+            onClicked: app.showLogsWindow()
         }
 
         Item {

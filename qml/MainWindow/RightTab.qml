@@ -23,11 +23,12 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
 
-import "widgets"
-import "globals.js" as Globals
+import "../Widgets"
+import "../Globals.js" as Globals
 
 RowLayout {
     spacing: Globals.spacing
+
     //
     // Contains the actual tab controls/buttons
     //
@@ -134,7 +135,7 @@ RowLayout {
             caption.font.bold: true
             width: Globals.scale (36)
             height: Globals.scale (36)
-            onClicked: window.showSettingsWindow()
+            onClicked: app.showSettingsWindow()
         }
 
         Button {
@@ -142,7 +143,7 @@ RowLayout {
             caption.font.bold: true
             width: Globals.scale (36)
             height: Globals.scale (36)
-            onClicked: window.showVirtualJoystickWindow()
+            onClicked: app.showVirtualJoystickWindow()
         }
     }
 }

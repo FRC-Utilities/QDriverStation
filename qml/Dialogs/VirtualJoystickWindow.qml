@@ -25,8 +25,8 @@ import QtQuick.Window 2.0
 import QtQuick.Layouts 1.0
 import Qt.labs.settings 1.0
 
-import "widgets"
-import "globals.js" as Globals
+import "../Widgets"
+import "../Globals.js" as Globals
 
 Window {
     id: window

@@ -23,8 +23,8 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
 
-import "widgets"
-import "globals.js" as Globals
+import "../Widgets"
+import "../Globals.js" as Globals
 
 Item {
     id: joysticks
@@ -181,7 +181,7 @@ Item {
         Button {
             width: Globals.scale (156)
             text: qsTr ("More information") + "..."
-            onClicked: window.showVirtualJoystickWindow()
+            onClicked: app.showVirtualJoystickWindow()
             anchors.horizontalCenter: parent.horizontalCenter
         }
     }

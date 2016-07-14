@@ -99,5 +99,6 @@ RESOURCES += \
              
 OTHER_FILES += $$PWD/qml/*.qml
 OTHER_FILES += $$PWD/qml/*.js
-OTHER_FILES += $$PWD/qml/widgets/*.qml
-
+OTHER_FILES += $$PWD/qml/Dialogs/*.qml
+OTHER_FILES += $$PWD/qml/Widgets/*.qml
+OTHER_FILES += $$PWD/qml/MainWindow/*.qml

@@ -21,51 +21,13 @@
  */
 
 import QtQuick 2.0
-import QtQuick.Window 2.0
-import QtQuick.Layouts 1.0
-import QtQuick.Controls 1.0
-import Qt.labs.settings 1.0
 
-import "widgets"
-import "globals.js" as Globals
+import "Dialogs"
+import "MainWindow"
+import "Globals.js" as Globals
 
-Window {
-    id: window
-    visible: false
-
-    //
-    // Trust me, I am an engineer
-    //
-    flags: Qt.Window |
-           Qt.WindowTitleHint |
-           Qt.WindowSystemMenuHint |
-           Qt.WindowCloseButtonHint |
-           Qt.WindowMinMaxButtonsHint
-
-    //
-    // Gets the \c x value used in the initial launch
-    //
-    function getDefaultX() {
-        return (Screen.desktopAvailableWidth - getMinimumWidth()) / 2
-    }
-
-    //
-    // Gets the \c y value used in the initial launch
-    //
-    function getDefaultY() {
-        return Screen.desktopAvailableHeight - (getMinimumHeight() * 1.2)
-    }
-
-    //
-    // If set to true, the window will dock to the bottom of the screen
-    //
-    property bool docked: false
-
-    //
-    // Holds the old values of x and y
-    //
-    property int oldX: getDefaultX()
-    property int oldY: getDefaultY()
+Item {
+    id: app
 
     //
     // Display the virtual joystick window (from anywhere in the app)
@@ -89,97 +51,6 @@ Window {
     }
 
     //
-    // Calculates the minimum width of the window
-    //
-    function getMinimumWidth() {
-        return layout.implicitWidth + (2 * layout.x)
-    }
-
-    //
-    // Calculates the minimum height of the window
-    //
-    function getMinimumHeight() {
-        return layout.implicitHeight + (2 * layout.y)
-    }
-
-    //
-    // The actual docking procedures
-    //
-    function updateWindowMode() {
-        if (!visible)
-            return
-
-        if (docked) {
-            if (cIsUnix) {
-                x = 0
-                width = Screen.desktopAvailableWidth
-                minimumWidth = Screen.desktopAvailableWidth
-            }
-
-            else {
-                showMaximized()
-            }
-
-            y = Screen.desktopAvailableHeight - height
-        }
-
-        else {
-            showNormal()
-            width = getMinimumWidth()
-            minimumWidth = getMinimumWidth()
-
-            x = oldX
-            y = oldY
-        }
-    }
-
-    //
-    // Initial position
-    //
-    x: getDefaultX()
-    y: getDefaultY()
-
-    //
-    // Update custom variables
-    //
-    onDockedChanged: updateWindowMode()
-    onXChanged: oldX = !docked ? x : oldX
-    onYChanged: oldY = !docked ? y : oldY
-
-    //
-    // Window geometry hacks
-    //
-    height: getMinimumHeight()
-    minimumWidth: getMinimumWidth()
-    minimumHeight: getMinimumHeight()
-    maximumHeight: getMinimumHeight()
-    onHeightChanged: height = getMinimumHeight()
-
-    //
-    // Misc. properties
-    //
-    color: Globals.Colors.WindowBackground
-    title: appDspName + " - " + qsTr ("Version") + " " + appVersion
-
-    //
-    // Initialize the DS engine when the application starts
-    //
-    Component.onCompleted: DriverStation.init()
-
-    Connections {
-        target: DriverStation
-        onInitialized: {
-            Globals.beep (440, 100)
-            Globals.beep (220, 100)
-
-            if (!visible) {
-                visible = true
-                updateWindowMode()
-            }
-        }
-    }
-
-    //
     // Load the fonts used by the application
     //
     FontLoader { source: Qt.resolvedUrl ("qrc:/fonts/UbuntuMono.ttf")     }
@@ -188,64 +59,35 @@ Window {
     FontLoader { source: Qt.resolvedUrl ("qrc:/fonts/Ubuntu-Regular.ttf") }
 
     //
-    // Save window geometry
+    // Initialize the DS engine when the application starts
     //
-    Settings {
-        category: "MainWindow"
-        property alias x: window.x
-        property alias y: window.y
-        property alias oldX: window.oldX
-        property alias oldY: window.oldY
-        property alias docked: window.docked
+    Component.onCompleted: DriverStation.init()
+
+    //
+    // Beep and show the window when the DS is initialized
+    //
+    Connections {
+        target: DriverStation
+        onInitialized: {
+            Globals.beep (440, 100)
+            Globals.beep (220, 100)
+
+            if (!mainwindow.visible) {
+                mainwindow.visible = true
+                mainwindow.updateWindowMode()
+            }
+        }
     }
 
-    //
-    // Animate window position when dock mode changes
-    //
-    Behavior on x { NumberAnimation { duration: Globals.fastAnimation }}
-    Behavior on y { NumberAnimation { duration: Globals.slowAnimation }}
 
     //
-    // Display the left tab, status controls and right tab horizontally
+    // The Main window
     //
-    RowLayout {
-        id: layout
-
-        //
-        // Don't touch it, don't use anchors, if you do, I will kill you
-        //
-        x: Globals.spacing
-        y: Globals.spacing
-        width: Math.max (implicitWidth, window.width - (2 * x))
-        height: Math.max (implicitHeight, window.height - (2 * y))
-
-        //
-        // Operator, Diagnostics, Preferences & Joysticks
-        //
-        LeftTab {
-            Layout.fillWidth: false
-            Layout.fillHeight: true
-            Layout.minimumWidth: Globals.scale (440)
-            onWindowModeChanged: window.docked = isDocked
-            onFlashStatusIndicators: status.flashStatusIndicators()
-        }
-
-        //
-        // Robot status & LEDs
-        //
-        Status {
-            id: status
-            Layout.fillWidth: false
-            Layout.fillHeight: true
-        }
-
-        //
-        // Messages, CAN Metrics & About tabs
-        //
-        RightTab {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            Layout.minimumWidth: Globals.scale (420)
+    MainWindow {
+        id: mainwindow
+        onVisibleChanged: {
+            if (!visible)
+                Qt.quit()
         }
     }
 

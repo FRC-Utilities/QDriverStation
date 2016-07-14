@@ -50,8 +50,6 @@ var Colors = {
     'CPUProgress'               : "#DCAE00",
     'PacketLoss'                : "#DC9F00",
     'LowBattery'                : "#C81600",
-    'CurrentRun'                : "#00AE00",
-    'PreviousRun'               : "#AE8A00",
 }
 
 //

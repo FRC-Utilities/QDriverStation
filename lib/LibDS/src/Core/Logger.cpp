@@ -251,6 +251,7 @@ void Logger::saveLogs() {
     /* Serialize event data */
     QJsonArray array;
     QJsonDocument document;
+    array.append (QJsonValue::fromVariant (m_timer->elapsed()));
     array.append (QJsonValue::fromVariant (cpuList));
     array.append (QJsonValue::fromVariant (ramList));
     array.append (QJsonValue::fromVariant (pktList));
