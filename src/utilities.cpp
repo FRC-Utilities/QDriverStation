@@ -37,6 +37,7 @@
     #include <pdh.h>
     #include <tchar.h>
     #include <windows.h>
+    #include <windowsx.h>
 
     static PDH_HQUERY cpuQuery;
     static PDH_HCOUNTER cpuTotal;
@@ -59,9 +60,9 @@
 //------------------------------------------------------------------------------
 
 #if defined Q_OS_LINUX
-    #include <fstream>
     #include <regex>
     #include <string>
+    #include <fstream>
 
     static const QString BTY_CMD = "bash -c \"upower -i "
     "$(upower -e | grep 'BAT') | "
@@ -126,16 +127,20 @@ Utilities::Utilities() {
  */
 qreal Utilities::scaleRatio() {
     if (m_ratio < 1) {
+        m_ratio = 1;
         bool enabled = m_settings->value ("AutoScale", true).toBool();
 
-#if defined Q_OS_MAC
-        m_ratio = 1;
-#else
-        m_ratio = (qApp->primaryScreen()->physicalDotsPerInch() / 100) * 0.9;
+        if (enabled) {
+#if defined Q_OS_WIN
+            HDC screen = GetDC (Q_NULLPTR);
+            int hPixelsPerInch = GetDeviceCaps (screen, LOGPIXELSX);
+            int vPixelsPerInch = GetDeviceCaps (screen, LOGPIXELSY);
+            ReleaseDC (Q_NULLPTR, screen);
+            m_ratio = ((hPixelsPerInch + vPixelsPerInch) * 0.5) / 0x60;
+#elif defined Q_OS_LINUX
+            m_ratio = (qApp->primaryScreen()->physicalDotsPerInch() / 100) * 0.9;
 #endif
-
-        if (m_ratio < 1.2 || !enabled)
-            m_ratio = 1;
+        }
 
         qDebug() << "Scale factor set to:" << m_ratio;
     }

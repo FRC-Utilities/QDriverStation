@@ -30,7 +30,7 @@ QT += qml
 QT += quick
 
 win32* {
-    LIBS += -lPdh
+    LIBS += -lPdh -lgdi32
     RC_FILE = $$PWD/etc/deploy/windows/resources/info.rc
 }
 

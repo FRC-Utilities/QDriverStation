@@ -247,7 +247,7 @@ Window {
                         Checkbox {
                             checked: true
                             id: autoScale
-                            text: qsTr ("Scale UI to pixel density")
+                            text: qsTr ("Auto-scale text and UI items")
                         }
                     }
                 }  
