@@ -38,9 +38,9 @@ class Test_SocketsSenderUDP : public QObject {
         sockets.setRadioOutputPort (radPort);
         sockets.setRobotOutputPort (robPort);
 
-        fmsReceiver.bind (DS_LISTENER, fmsPort, DS_BIND_FLAGS);
-        radReceiver.bind (DS_LISTENER, radPort, DS_BIND_FLAGS);
-        robReceiver.bind (DS_LISTENER, robPort, DS_BIND_FLAGS);
+        fmsReceiver.bind (DS_LISTENER, fmsPort, DS_BIND_MODE);
+        radReceiver.bind (DS_LISTENER, radPort, DS_BIND_MODE);
+        robReceiver.bind (DS_LISTENER, robPort, DS_BIND_MODE);
 
         connect (&fmsReceiver, &QUdpSocket::readyRead, [ = ]() {
             fmsData = DS::readSocket (&fmsReceiver);

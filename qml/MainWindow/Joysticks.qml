@@ -84,7 +84,7 @@ Item {
     // Used for determining height of axis and button indicators
     //
     function getWidgetHeight (input) {
-        return joysticks.height * 0.7 / input
+        return Math.min (joysticks.height * 0.7 / input, Globals.scale (18))
     }
 
     //
@@ -221,7 +221,7 @@ Item {
             //
             // The list, with a custom control for each joystick
             //
-            ListView {
+            ListViewer {
                 id: listView
                 Layout.fillWidth: true
                 Layout.fillHeight: true

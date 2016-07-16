@@ -56,10 +56,6 @@ const QAbstractSocket::BindMode DS_BIND_MODE = \
                                                QAbstractSocket::ShareAddress |
                                                QAbstractSocket::ReuseAddressHint;
 
-//------------------------------------------------------------------------------
-// Common variables & data types
-//------------------------------------------------------------------------------
-
 /**
  * \brief Defines the data types shared between the modules of the LibDS
  *

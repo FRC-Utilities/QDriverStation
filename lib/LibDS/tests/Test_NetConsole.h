@@ -27,7 +27,7 @@ class Test_NetConsoleSender : public QObject {
         message = "@Ahead)Together!FRC^2016";
 
         netconsole.setOutputPort (port);
-        receiver.bind (DS_LISTENER, port, DS_BIND_FLAGS);
+        receiver.bind (DS_LISTENER, port, DS_BIND_MODE);
 
         connect (&receiver, &QUdpSocket::readyRead, [ = ]() {
             received = QString::fromUtf8 (DS::readSocket (&receiver));
