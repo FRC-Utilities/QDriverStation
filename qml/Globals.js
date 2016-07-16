@@ -78,7 +78,7 @@ var monoFont = "Ubuntu Mono"
 // Returns the adjusted input for the screen size and density
 //
 function scale (input) {
-    return input * cRatio;
+    return input * Utilities.scaleRatio();
 }
 
 //
@@ -106,7 +106,7 @@ function longBeep() {
 // Beep with a custom frequency (in HZ) and time (in milliseconds)
 //
 function beep (frequency, time) {
-    cBeeper.beep (frequency, time)
+    Beeper.beep (frequency, time)
 }
 
 //

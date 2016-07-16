@@ -76,6 +76,8 @@ Window {
     //
     function apply() {
         updatePlaceholders()
+        Beeper.setEnabled (enableSoundEffects.checked)
+        Utilities.setAutoScaleEnabled (autoScale.checked)
         DriverStation.setCustomFMSAddress (fmsAddress.text)
         DriverStation.setCustomRadioAddress (radioAddress.text)
         DriverStation.setCustomRobotAddress (robotAddress.text)
@@ -85,11 +87,11 @@ Window {
     // Check for updates (if we are allowed) & allow/disallow sounds
     //
     Component.onCompleted: {
-        cBeeper.setEnabled (enableSoundEffects.checked)
+        Beeper.setEnabled (enableSoundEffects.checked)
 
         if (checkForUpdates.checked) {
-            cUpdater.setDownloaderEnabled (cUpdaterUrl, false)
-            cUpdater.checkForUpdates (cUpdaterUrl)
+            Updater.setDownloaderEnabled (UpdaterUrl, false)
+            Updater.checkForUpdates (UpdaterUrl)
         }
     }
 
@@ -111,7 +113,7 @@ Window {
         property alias x: window.x
         property alias y: window.y
         property alias address: robotAddress.text
-        property alias promptOnQuit: promptOnQuit.checked
+        property alias autoScale: autoScale.checked
         property alias checkForUpdates: checkForUpdates.checked
         property alias enableSoundEffects: enableSoundEffects.checked
     }
@@ -240,13 +242,12 @@ Window {
                             checked: true
                             id: enableSoundEffects
                             text: qsTr ("Enable UI sound effects")
-                            onCheckedChanged: cBeeper.setEnabled (checked)
                         }
 
                         Checkbox {
                             checked: true
-                            id: promptOnQuit
-                            text: qsTr ("Prompt on quit")
+                            id: autoScale
+                            text: qsTr ("Scale UI to pixel density")
                         }
                     }
                 }  

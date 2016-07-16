@@ -26,7 +26,6 @@
 
 #include <QTime>
 #include <QtQml>
-#include <QScreen>
 #include <iostream>
 #include <QApplication>
 #include <QJoysticks.h>
@@ -241,16 +240,6 @@ int main (int argc, char* argv[]) {
     isUnx = true;
 #endif
 
-    /* Calculate the scale factor of the screen */
-    qreal ratio = (app.primaryScreen()->physicalDotsPerInch() / 100) * 0.9;
-
-    /* Scale factor is too small or OS is Mac */
-    if (ratio < 1.2 || isMac)
-        ratio = 1;
-
-    /* Report the scale factor */
-    qDebug() << "Scale factor set to:" << ratio;
-
     /* Initialize application modules */
     Beeper beeper;
     Utilities utilities;
@@ -265,18 +254,17 @@ int main (int argc, char* argv[]) {
 
     /* Load the QML interface */
     QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty ("cRatio",        ratio);
     engine.rootContext()->setContextProperty ("cIsMac",        isMac);
     engine.rootContext()->setContextProperty ("cIsUnix",       isUnx);
     engine.rootContext()->setContextProperty ("cIsWindows",    isWin);
-    engine.rootContext()->setContextProperty ("cBeeper",       &beeper);
-    engine.rootContext()->setContextProperty ("cUpdater",      updater);
+    engine.rootContext()->setContextProperty ("Beeper",        &beeper);
+    engine.rootContext()->setContextProperty ("Updater",       updater);
     engine.rootContext()->setContextProperty ("QJoysticks",    qjoysticks);
-    engine.rootContext()->setContextProperty ("cUtilities",    &utilities);
+    engine.rootContext()->setContextProperty ("Utilities",     &utilities);
     engine.rootContext()->setContextProperty ("cDashboard",    &dashboards);
     engine.rootContext()->setContextProperty ("appDspName",    APP_DSPNAME);
     engine.rootContext()->setContextProperty ("appVersion",    APP_VERSION);
-    engine.rootContext()->setContextProperty ("cUpdaterUrl",   URL_UPDATER);
+    engine.rootContext()->setContextProperty ("UpdaterUrl",    URL_UPDATER);
     engine.rootContext()->setContextProperty ("DriverStation", driverstation);
     engine.load (QUrl (QStringLiteral ("qrc:/qml/main.qml")));
 

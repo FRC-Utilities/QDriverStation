@@ -45,9 +45,9 @@ RowLayout {
     // progressbars and hides/shows the plug icon
     //
     function updatePCInformation() {
-        plug.visible = cUtilities.isConnectedToAC()
-        cpuProgressBar.value = cUtilities.cpuUsage()
-        batteryProgressBar.value = cUtilities.batteryLevel()
+        plug.visible = Utilities.isConnectedToAC()
+        cpuProgressBar.value = Utilities.cpuUsage()
+        batteryProgressBar.value = Utilities.batteryLevel()
     }
 
     //

@@ -30,6 +30,8 @@
     #include <stdint.h>
 #endif
 
+class QSettings;
+
 /**
  * \brief Provides CPU and Battery information to the QML interface
  */
@@ -41,10 +43,12 @@ class Utilities : public QObject {
 
     Q_INVOKABLE int cpuUsage();
     Q_INVOKABLE int batteryLevel();
+    Q_INVOKABLE qreal scaleRatio();
     Q_INVOKABLE bool isConnectedToAC();
 
   public slots:
     void copy (const QVariant& data);
+    void setAutoScaleEnabled (const bool enabled);
 
   private slots:
     void updateCpuUsage();
@@ -60,10 +64,12 @@ class Utilities : public QObject {
     std::pair<uint64_t, uint64_t> m_pastCpuJiffies{0, 0};
 #endif
 
+    qreal m_ratio;
     int m_cpuUsage;
     int m_batteryLevel;
     bool m_connectedToAC;
 
+    QSettings* m_settings;
     QProcess m_cpuProcess;
     QProcess m_batteryLevelProcess;
     QProcess m_connectedToACProcess;

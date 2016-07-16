@@ -67,7 +67,7 @@ Item {
         html = html.replace(/<[^>]+>/ig, '');
 
         /* Copy result to system clipboard */
-        cUtilities.copy (html)
+        Utilities.copy (html)
     }
 
     //

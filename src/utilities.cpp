@@ -23,6 +23,9 @@
 #include "utilities.h"
 
 #include <QTimer>
+#include <QDebug>
+#include <QScreen>
+#include <QSettings>
 #include <QClipboard>
 #include <QApplication>
 
@@ -86,9 +89,13 @@
  * Configures the class and nitializes the CPU querying process under Windows.
  */
 Utilities::Utilities() {
+    m_ratio = 0;
     m_cpuUsage = 0;
     m_batteryLevel = 0;
     m_connectedToAC = 0;
+
+    m_settings = new QSettings (qApp->organizationName(),
+                                qApp->applicationName());
 
     /* Read process data when they finish */
     connect (&m_cpuProcess,           SIGNAL (finished                 (int)),
@@ -112,6 +119,28 @@ Utilities::Utilities() {
     updateCpuUsage();
     updateBatteryLevel();
     updateConnectedToAC();
+}
+
+/**
+ * Returns the auto-calculates scale ratio
+ */
+qreal Utilities::scaleRatio() {
+    if (m_ratio < 1) {
+        bool enabled = m_settings->value ("AutoScale", true).toBool();
+
+#if defined Q_OS_MAC
+        m_ratio = 1;
+#else
+        m_ratio = (qApp->primaryScreen()->physicalDotsPerInch() / 100) * 0.9;
+#endif
+
+        if (m_ratio < 1.2 || !enabled)
+            m_ratio = 1;
+
+        qDebug() << "Scale factor set to:" << m_ratio;
+    }
+
+    return m_ratio;
 }
 
 /**
@@ -151,6 +180,14 @@ bool Utilities::isConnectedToAC() {
  */
 void Utilities::copy (const QVariant& data) {
     qApp->clipboard()->setText (data.toString(), QClipboard::Clipboard);
+}
+
+/**
+ * Enables or disables the autoscale feature.
+ * \note The application must be restarted for changes to take effect
+ */
+void Utilities::setAutoScaleEnabled (const bool enabled) {
+    m_settings->setValue ("AutoScale", enabled);
 }
 
 /**
