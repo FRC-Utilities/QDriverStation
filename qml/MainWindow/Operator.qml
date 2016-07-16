@@ -91,8 +91,8 @@ RowLayout {
         Layout.fillWidth: false
         Layout.fillHeight: true
         spacing: Globals.spacing
-        Layout.minimumWidth: Globals.scale (155)
-        Layout.maximumWidth: Globals.scale (155)
+        Layout.minimumWidth: Globals.scale (160)
+        Layout.maximumWidth: Globals.scale (160)
 
         //
         // Robot modes selector
@@ -212,8 +212,8 @@ RowLayout {
                 text: qsTr ("Enable")
                 caption.font.bold: true
                 implicitWidth: parent.width / 2
-                caption.size: Globals.scale (14)
-                implicitHeight: Globals.scale (48)
+                caption.size: Globals.scale (16)
+                implicitHeight: Globals.scale (56)
                 caption.color: checked ? Globals.Colors.EnableButtonSelected :
                                          Globals.Colors.EnableButtonUnselected
 
@@ -239,8 +239,8 @@ RowLayout {
                 text: qsTr ("Disable")
                 caption.font.bold: true
                 implicitWidth: parent.width / 2
-                caption.size: Globals.scale (14)
-                implicitHeight: Globals.scale (48)
+                caption.size: Globals.scale (16)
+                implicitHeight: Globals.scale (56)
                 caption.color: checked ? Globals.Colors.DisableButtonSelected :
                                          Globals.Colors.DisableButtonUnselected
 
