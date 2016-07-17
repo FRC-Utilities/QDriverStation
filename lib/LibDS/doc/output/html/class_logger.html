@@ -86,6 +86,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-slots">Public Slots</a> &#124;
+<a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pri-slots">Private Slots</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
@@ -112,6 +113,8 @@ Inheritance diagram for Logger:</div>
 Public Slots</h2></td></tr>
 <tr class="memitem:a1769f8a92e41b3f8b5a38d7b539c7b43"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a1769f8a92e41b3f8b5a38d7b539c7b43">saveLogs</a> ()</td></tr>
 <tr class="separator:a1769f8a92e41b3f8b5a38d7b539c7b43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab54f7d377822fb5b8e5064e6fc298423"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#ab54f7d377822fb5b8e5064e6fc298423">closeLogs</a> ()</td></tr>
+<tr class="separator:ab54f7d377822fb5b8e5064e6fc298423"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a789d39adc9a76bb5e1404518c4d3e604"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a789d39adc9a76bb5e1404518c4d3e604">registerInitialEvents</a> ()</td></tr>
 <tr class="separator:a789d39adc9a76bb5e1404518c4d3e604"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a979a22524a1dabdbced6694430bcffc6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a979a22524a1dabdbced6694430bcffc6">registerVoltage</a> (qreal voltage)</td></tr>
@@ -138,8 +141,16 @@ Public Slots</h2></td></tr>
 <tr class="separator:a85098e53207b8637ffc587cb44ed56a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37bf63774cb8fe3f5801e2b2d071a24c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a37bf63774cb8fe3f5801e2b2d071a24c">registerVoltageStatus</a> (<a class="el" href="class_d_s.html#aed590a0722ba2106379000cf3bbc32cc">DS::VoltageStatus</a> status)</td></tr>
 <tr class="separator:a37bf63774cb8fe3f5801e2b2d071a24c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77b64eb0e6a48b1456d4704f94f6617a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a77b64eb0e6a48b1456d4704f94f6617a">registerNetConsoleMessage</a> (const QString &amp;message)</td></tr>
+<tr class="separator:a77b64eb0e6a48b1456d4704f94f6617a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a353ebdd4e4fce07a00ce2a9244ba0b5c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a353ebdd4e4fce07a00ce2a9244ba0b5c">registerOperationStatus</a> (<a class="el" href="class_d_s.html#af17652544b5ecd2acd8f474a5a7da049">DS::OperationStatus</a> status)</td></tr>
 <tr class="separator:a353ebdd4e4fce07a00ce2a9244ba0b5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="signals"></a>
+Signals</h2></td></tr>
+<tr class="memitem:aaba5ced7710c6a2e42b929083bcbc88a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaba5ced7710c6a2e42b929083bcbc88a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>logsSaved</b> (const QString &amp;file)</td></tr>
+<tr class="separator:aaba5ced7710c6a2e42b929083bcbc88a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -156,13 +167,14 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-slots"></a>
 Private Slots</h2></td></tr>
-<tr class="memitem:ab54f7d377822fb5b8e5064e6fc298423"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#ab54f7d377822fb5b8e5064e6fc298423">closeLogs</a> ()</td></tr>
-<tr class="separator:ab54f7d377822fb5b8e5064e6fc298423"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa66afd5a78f7ca6b5815737958b687b7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#aa66afd5a78f7ca6b5815737958b687b7">initializeLogger</a> ()</td></tr>
 <tr class="separator:aa66afd5a78f7ca6b5815737958b687b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
+<tr class="memitem:ad43fc15a34551594bfce78f76c9f58b2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad43fc15a34551594bfce78f76c9f58b2"></a>
+QString&#160;</td><td class="memItemRight" valign="bottom"><b>m_netConsole</b></td></tr>
+<tr class="separator:ad43fc15a34551594bfce78f76c9f58b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3464aee8445d75285799c85b9094cabc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3464aee8445d75285799c85b9094cabc"></a>
 QElapsedTimer *&#160;</td><td class="memItemRight" valign="bottom"><b>m_timer</b></td></tr>
 <tr class="separator:a3464aee8445d75285799c85b9094cabc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -304,7 +316,7 @@ QList&lt; qint64 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_ro
 
 <p>References <a class="el" href="class_logger.html#a53437821ce9f1e4ef397b36c6992c159">extension()</a>, and <a class="el" href="class_logger.html#a3798367a4d16fe35669b45adc368a71c">logsPath()</a>.</p>
 
-<p>Referenced by <a class="el" href="class_driver_station.html#a74178ca1eb475b08f5f96755b608781f">DriverStation::availableLogs()</a>, and <a class="el" href="class_logger.html#a1769f8a92e41b3f8b5a38d7b539c7b43">saveLogs()</a>.</p>
+<p>Referenced by <a class="el" href="class_driver_station.html#a74178ca1eb475b08f5f96755b608781f">DriverStation::availableLogs()</a>.</p>
 
 </div>
 </div>
@@ -324,13 +336,13 @@ QList&lt; qint64 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_ro
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">slot</span></span>  </td>
+<span class="mlabels"><span class="mlabel">slot</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>Closes the console log dump file </p>
 
-<p>Referenced by <a class="el" href="class_logger.html#a1769f8a92e41b3f8b5a38d7b539c7b43">saveLogs()</a>.</p>
+<p>References <a class="el" href="class_logger.html#a1769f8a92e41b3f8b5a38d7b539c7b43">saveLogs()</a>.</p>
 
 </div>
 </div>
@@ -348,7 +360,7 @@ QList&lt; qint64 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_ro
 </div><div class="memdoc">
 <p>Returns the extension appended to the log files </p>
 
-<p>Referenced by <a class="el" href="class_logger.html#a4c680d06974b3f7b57bf4c01d4cbd987">availableLogs()</a>, <a class="el" href="class_driver_station.html#ad7f872c8ad5d9f1008700f7d17ef60c8">DriverStation::browseLogs()</a>, and <a class="el" href="class_logger.html#a1769f8a92e41b3f8b5a38d7b539c7b43">saveLogs()</a>.</p>
+<p>Referenced by <a class="el" href="class_logger.html#a4c680d06974b3f7b57bf4c01d4cbd987">availableLogs()</a>, and <a class="el" href="class_driver_station.html#ad7f872c8ad5d9f1008700f7d17ef60c8">DriverStation::browseLogs()</a>.</p>
 
 </div>
 </div>
@@ -377,6 +389,8 @@ QList&lt; qint64 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_ro
 <dd>
 The application name and version are also registered in the log </dd></dl>
 
+<p>References <a class="el" href="class_logger.html#a1769f8a92e41b3f8b5a38d7b539c7b43">saveLogs()</a>.</p>
+
 <p>Referenced by <a class="el" href="class_logger.html#a34747e515a634c0daa53915803cb2f68">messageHandler()</a>.</p>
 
 </div>
@@ -395,7 +409,7 @@ The application name and version are also registered in the log </dd></dl>
 </div><div class="memdoc">
 <p>Returns the path in which log files are saved </p>
 
-<p>Referenced by <a class="el" href="class_logger.html#a4c680d06974b3f7b57bf4c01d4cbd987">availableLogs()</a>, <a class="el" href="class_driver_station.html#a37d6ffc0c15706c329213c05ed01f97f">DriverStation::logsPath()</a>, and <a class="el" href="class_logger.html#a1769f8a92e41b3f8b5a38d7b539c7b43">saveLogs()</a>.</p>
+<p>Referenced by <a class="el" href="class_logger.html#a4c680d06974b3f7b57bf4c01d4cbd987">availableLogs()</a>, and <a class="el" href="class_driver_station.html#a37d6ffc0c15706c329213c05ed01f97f">DriverStation::logsPath()</a>.</p>
 
 </div>
 </div>
@@ -588,6 +602,31 @@ The application name and version are also registered in the log </dd></dl>
 <p>References <a class="el" href="class_d_s.html#a28079bc59eb9055b279990561d18164ba339f37848dabd9bec64030a09f894372">DS::kAllianceRed</a>, <a class="el" href="class_d_s.html#a0864de7bc20ff0031cc509a81e717659a7d76ec928c19df73baa05d001634add3">DS::kCodeFailing</a>, <a class="el" href="class_d_s.html#ae69a660d28f13e0b69e577637e18cff2a822d1ee3ffdaead84b9c12c06700927d">DS::kCommsFailing</a>, <a class="el" href="class_d_s.html#a2b36ebe570fdfca4c87b949cc2520bd6ab5dfac45fad6e20605fc661603466537">DS::kControlTeleoperated</a>, <a class="el" href="class_d_s.html#ad1cf8c02d78be82dffe437dd935b2af9ad4d1e27370b2b27f8b2a743ec0c5de4b">DS::kDisabled</a>, <a class="el" href="class_d_s.html#af17652544b5ecd2acd8f474a5a7da049ab4e8bff0b363311864bc5a63cb53dfa4">DS::kNormal</a>, <a class="el" href="class_d_s.html#aed590a0722ba2106379000cf3bbc32cca5f4f29b857dc615fb1d4854d47883da3">DS::kVoltageNormal</a>, <a class="el" href="class_logger.html#abbcff745e2101e9f04a80905f7ad9735">registerAlliance()</a>, <a class="el" href="class_logger.html#a1431a4d4a19430090a472115d59a9bfd">registerCodeStatus()</a>, <a class="el" href="class_logger.html#a6c50ce645d2cf823fc4b186e496699d4">registerControlMode()</a>, <a class="el" href="class_logger.html#a354a2f3b60064ad66714d4a4269eb937">registerEnableStatus()</a>, <a class="el" href="class_logger.html#a353ebdd4e4fce07a00ce2a9244ba0b5c">registerOperationStatus()</a>, <a class="el" href="class_logger.html#a9abc91c373922dabc72b9d1a8a513fa4">registerPacketLoss()</a>, <a class="el" href="class_logger.html#abbab1a61c3fa21a6b9db5f899b4653b4">registerRadioCommStatus()</a>, <a class="el" href="class_logger.html#a85098e53207b8637ffc587cb44ed56a4">registerRobotCommStatus()</a>, <a class="el" href="class_logger.html#a5144e1c2bc41d73f551ec9753507d923">registerRobotCPUUsage()</a>, <a class="el" href="class_logger.html#af9aeeb26cba932c7482b49f31ba4d464">registerRobotRAMUsage()</a>, <a class="el" href="class_logger.html#a979a22524a1dabdbced6694430bcffc6">registerVoltage()</a>, and <a class="el" href="class_logger.html#a37bf63774cb8fe3f5801e2b2d071a24c">registerVoltageStatus()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_driver_station.html#a2a1910b1f3d075044e92348c6e635d74">DriverStation::init()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a77b64eb0e6a48b1456d4704f94f6617a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Logger::registerNetConsoleMessage </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>message</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Appends the given <em>message</em> to the <a class="el" href="class_net_console.html" title="Receives and sends broadcasted messages through the LAN. ">NetConsole</a> log </p>
 
 </div>
 </div>
@@ -854,9 +893,9 @@ The application name and version are also registered in the log </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Saves the robot events and the application logs into a binary JSON file. This file can later be used by teams to diagnostic their robots or by the LibDS developers to fix an issue. </p>
+<p>Saves the robot events and the application logs into a compact JSON file. This file can later be used by teams to diagnostic their robots or by the LibDS developers to fix an issue. </p>
 
-<p>References <a class="el" href="class_logger.html#a4c680d06974b3f7b57bf4c01d4cbd987">availableLogs()</a>, <a class="el" href="class_logger.html#ab54f7d377822fb5b8e5064e6fc298423">closeLogs()</a>, <a class="el" href="class_logger.html#a53437821ce9f1e4ef397b36c6992c159">extension()</a>, and <a class="el" href="class_logger.html#a3798367a4d16fe35669b45adc368a71c">logsPath()</a>.</p>
+<p>Referenced by <a class="el" href="class_logger.html#ab54f7d377822fb5b8e5064e6fc298423">closeLogs()</a>, and <a class="el" href="class_logger.html#aa66afd5a78f7ca6b5815737958b687b7">initializeLogger()</a>.</p>
 
 </div>
 </div>
