@@ -34,14 +34,14 @@
 //------------------------------------------------------------------------------
 
 #if defined Q_OS_WIN
-#include <pdh.h>
-#include <tchar.h>
-#include <windows.h>
-#include <windowsx.h>
+    #include <pdh.h>
+    #include <tchar.h>
+    #include <windows.h>
+    #include <windowsx.h>
 
-static PDH_HQUERY cpuQuery;
-static PDH_HCOUNTER cpuTotal;
-static SYSTEM_POWER_STATUS power;
+    static PDH_HQUERY cpuQuery;
+    static PDH_HCOUNTER cpuTotal;
+    static SYSTEM_POWER_STATUS power;
 #endif
 
 //------------------------------------------------------------------------------
@@ -49,10 +49,10 @@ static SYSTEM_POWER_STATUS power;
 //------------------------------------------------------------------------------
 
 #if defined Q_OS_MAC
-static const QString CPU_CMD = "bash -c \"ps -A -o %cpu | "
-                               "awk '{s+=$1} END {print s}'\"";
-static const QString BTY_CMD = "pmset -g batt";
-static const QString PWR_CMD = "pmset -g batt";
+    static const QString CPU_CMD = "bash -c \"ps -A -o %cpu | "
+    "awk '{s+=$1} END {print s}'\"";
+    static const QString BTY_CMD = "pmset -g batt";
+    static const QString PWR_CMD = "pmset -g batt";
 #endif
 
 //------------------------------------------------------------------------------
@@ -60,16 +60,16 @@ static const QString PWR_CMD = "pmset -g batt";
 //------------------------------------------------------------------------------
 
 #if defined Q_OS_LINUX
-#include <regex>
-#include <string>
-#include <fstream>
+    #include <regex>
+    #include <string>
+    #include <fstream>
 
-static const QString BTY_CMD = "bash -c \"upower -i "
-                               "$(upower -e | grep 'BAT') | "
-                               "grep -E 'state|to\\ full|percentage'\"";
-static const QString PWR_CMD = "bash -c \"upower -i "
-                               "$(upower -e | grep 'BAT') | "
-                               "grep -E 'state|to\\ full|percentage'\"";
+    static const QString BTY_CMD = "bash -c \"upower -i "
+    "$(upower -e | grep 'BAT') | "
+    "grep -E 'state|to\\ full|percentage'\"";
+    static const QString PWR_CMD = "bash -c \"upower -i "
+    "$(upower -e | grep 'BAT') | "
+    "grep -E 'state|to\\ full|percentage'\"";
 #endif
 
 //------------------------------------------------------------------------------
@@ -77,9 +77,9 @@ static const QString PWR_CMD = "bash -c \"upower -i "
 //------------------------------------------------------------------------------
 
 #if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined Q_OS_LINUX
-static const QString CPU_CMD = "";
-static const QString BTY_CMD = "";
-static const QString PWR_CMD = "";
+    static const QString CPU_CMD = "";
+    static const QString BTY_CMD = "";
+    static const QString PWR_CMD = "";
 #endif
 
 //------------------------------------------------------------------------------
@@ -195,7 +195,7 @@ void Utilities::updateCpuUsage() {
     auto cpuJiffies = getCpuJiffies();
 
     m_cpuUsage = (cpuJiffies.first - m_pastCpuJiffies.first) * 100 /
-            (cpuJiffies.second - m_pastCpuJiffies.second);
+                 (cpuJiffies.second - m_pastCpuJiffies.second);
 
     m_pastCpuJiffies = cpuJiffies;
 #endif
