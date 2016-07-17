@@ -54,6 +54,7 @@ class Utilities : public QObject {
     void updateCpuUsage();
     void updateBatteryLevel();
     void updateConnectedToAC();
+    void calculateScaleRatio();
     void readCpuUsageProcess (int exit_code = 0);
     void readBatteryLevelProcess (int exit_code = 0);
     void readConnectedToACProcess (int exit_code = 0);

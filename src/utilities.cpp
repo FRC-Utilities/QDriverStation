@@ -34,14 +34,14 @@
 //------------------------------------------------------------------------------
 
 #if defined Q_OS_WIN
-    #include <pdh.h>
-    #include <tchar.h>
-    #include <windows.h>
-    #include <windowsx.h>
+#include <pdh.h>
+#include <tchar.h>
+#include <windows.h>
+#include <windowsx.h>
 
-    static PDH_HQUERY cpuQuery;
-    static PDH_HCOUNTER cpuTotal;
-    static SYSTEM_POWER_STATUS power;
+static PDH_HQUERY cpuQuery;
+static PDH_HCOUNTER cpuTotal;
+static SYSTEM_POWER_STATUS power;
 #endif
 
 //------------------------------------------------------------------------------
@@ -49,10 +49,10 @@
 //------------------------------------------------------------------------------
 
 #if defined Q_OS_MAC
-    static const QString CPU_CMD = "bash -c \"ps -A -o %cpu | "
-    "awk '{s+=$1} END {print s}'\"";
-    static const QString BTY_CMD = "pmset -g batt";
-    static const QString PWR_CMD = "pmset -g batt";
+static const QString CPU_CMD = "bash -c \"ps -A -o %cpu | "
+                               "awk '{s+=$1} END {print s}'\"";
+static const QString BTY_CMD = "pmset -g batt";
+static const QString PWR_CMD = "pmset -g batt";
 #endif
 
 //------------------------------------------------------------------------------
@@ -60,16 +60,16 @@
 //------------------------------------------------------------------------------
 
 #if defined Q_OS_LINUX
-    #include <regex>
-    #include <string>
-    #include <fstream>
+#include <regex>
+#include <string>
+#include <fstream>
 
-    static const QString BTY_CMD = "bash -c \"upower -i "
-    "$(upower -e | grep 'BAT') | "
-    "grep -E 'state|to\\ full|percentage'\"";
-    static const QString PWR_CMD = "bash -c \"upower -i "
-    "$(upower -e | grep 'BAT') | "
-    "grep -E 'state|to\\ full|percentage'\"";
+static const QString BTY_CMD = "bash -c \"upower -i "
+                               "$(upower -e | grep 'BAT') | "
+                               "grep -E 'state|to\\ full|percentage'\"";
+static const QString PWR_CMD = "bash -c \"upower -i "
+                               "$(upower -e | grep 'BAT') | "
+                               "grep -E 'state|to\\ full|percentage'\"";
 #endif
 
 //------------------------------------------------------------------------------
@@ -77,9 +77,9 @@
 //------------------------------------------------------------------------------
 
 #if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined Q_OS_LINUX
-    static const QString CPU_CMD = "";
-    static const QString BTY_CMD = "";
-    static const QString PWR_CMD = "";
+static const QString CPU_CMD = "";
+static const QString BTY_CMD = "";
+static const QString PWR_CMD = "";
 #endif
 
 //------------------------------------------------------------------------------
@@ -126,24 +126,8 @@ Utilities::Utilities() {
  * Returns the auto-calculates scale ratio
  */
 qreal Utilities::scaleRatio() {
-    if (m_ratio < 1) {
-        m_ratio = 1;
-        bool enabled = m_settings->value ("AutoScale", true).toBool();
-
-        if (enabled) {
-#if defined Q_OS_WIN
-            HDC screen = GetDC (Q_NULLPTR);
-            int hPixelsPerInch = GetDeviceCaps (screen, LOGPIXELSX);
-            int vPixelsPerInch = GetDeviceCaps (screen, LOGPIXELSY);
-            ReleaseDC (Q_NULLPTR, screen);
-            m_ratio = ((hPixelsPerInch + vPixelsPerInch) * 0.5) / 0x60;
-#elif defined Q_OS_LINUX
-            m_ratio = (qApp->primaryScreen()->physicalDotsPerInch() / 100) * 0.9;
-#endif
-        }
-
-        qDebug() << "Scale factor set to:" << m_ratio;
-    }
+    if (m_ratio < 1)
+        calculateScaleRatio();
 
     return m_ratio;
 }
@@ -211,7 +195,7 @@ void Utilities::updateCpuUsage() {
     auto cpuJiffies = getCpuJiffies();
 
     m_cpuUsage = (cpuJiffies.first - m_pastCpuJiffies.first) * 100 /
-                 (cpuJiffies.second - m_pastCpuJiffies.second);
+            (cpuJiffies.second - m_pastCpuJiffies.second);
 
     m_pastCpuJiffies = cpuJiffies;
 #endif
@@ -253,6 +237,35 @@ void Utilities::updateConnectedToAC() {
     QTimer::singleShot (1000,
                         Qt::PreciseTimer,
                         this, SLOT (updateConnectedToAC()));
+}
+
+/**
+ * Calculates the scale factor to apply to the UI.
+ * \note This function uses different procedures depending on the OS
+ */
+void Utilities::calculateScaleRatio() {
+    bool enabled = m_settings->value ("AutoScale", true).toBool();
+
+    /* Get scale factor using OS-specific code */
+#if defined Q_OS_WIN
+    HDC screen = GetDC (Q_NULLPTR);
+    m_ratio = (qreal) GetDeviceCaps (screen, LOGPIXELSX) / 96;
+    ReleaseDC (Q_NULLPTR, screen);
+#elif defined Q_OS_LINUX
+    m_ratio = qApp->primaryScreen()->physicalDotsPerInch() / 100;
+#endif
+
+    /* Ensure that values between x.40 and x.65 round down to x.40 */
+    qreal decimals = m_ratio - (int) m_ratio;
+    if (decimals >= 0.40 && decimals <= 0.65)
+        m_ratio -= (decimals - 0.40);
+
+    /* Ratio is too small to be useful to us */
+    if (!enabled || m_ratio < 1.1)
+        m_ratio = 1;
+
+    /* Brag about the obtained result */
+    qDebug() << "Scale factor set to:" << m_ratio;
 }
 
 /**
