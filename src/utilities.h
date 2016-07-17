@@ -26,8 +26,7 @@
 #include <QProcess>
 
 #if defined Q_OS_LINUX
-    #include <utility>
-    #include <stdint.h>
+    #include <QPair>
 #endif
 
 class QSettings;
@@ -61,8 +60,8 @@ class Utilities : public QObject {
 
   private:
 #if defined (Q_OS_LINUX)
-    std::pair<uint64_t, uint64_t> getCpuJiffies();
-    std::pair<uint64_t, uint64_t> m_pastCpuJiffies{0, 0};
+    QPair<quint64, quint64> getCpuJiffies();
+    QPair<quint64, quint64> m_pastCpuJiffies {0, 0};
 #endif
 
     qreal m_ratio;

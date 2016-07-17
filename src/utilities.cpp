@@ -60,9 +60,8 @@
 //------------------------------------------------------------------------------
 
 #if defined Q_OS_LINUX
-    #include <regex>
-    #include <string>
-    #include <fstream>
+    #include <QFile>
+    #include <QRegExp>
 
     static const QString BTY_CMD = "bash -c \"upower -i "
     "$(upower -e | grep 'BAT') | "
@@ -261,7 +260,7 @@ void Utilities::calculateScaleRatio() {
         m_ratio -= (decimals - 0.40);
 
     /* Ratio is too small to be useful to us */
-    if (!enabled || m_ratio < 1.1)
+    if (!enabled || m_ratio < 1.2)
         m_ratio = 1;
 
     /* Brag about the obtained result */
@@ -346,17 +345,21 @@ void Utilities::readConnectedToACProcess (int exit_code) {
  * Reads the current count of CPU jiffies from /proc/stat and return a pair
  * consisting of non-idle jiffies and total jiffies
  */
-std::pair<uint64_t, uint64_t> Utilities::getCpuJiffies() {
-    std::ifstream in ("/proc/stat");
-    std::string line;
-    std::getline (in, line);
+QPair<quint64, quint64> Utilities::getCpuJiffies() {
+    quint64 totalJiffies = 0;
+    quint64 nonIdleJiffies = 0;
 
-    std::regex reg2 ("cpu  (\\d+) (\\d+) (\\d+) (\\d+) (\\d+) (\\d+) (\\d+) "
-                     "(\\d+) (\\d+) (\\d+)");
-    std::smatch match;
-    std::regex_match (line, match, reg2);
-    uint64_t nonIdleJiffies = std::stoi (match[1]) + std::stoi (match[3]);
-    uint64_t totalJiffies = nonIdleJiffies + std::stoi (match[4]);
-    return std::make_pair (nonIdleJiffies, totalJiffies);
+    QFile file ("/proc/stat");
+    if (file.open (QFile::ReadOnly)) {
+        QString line = file.readLine();
+        QStringList jiffies = line.replace ("cpu  ", "").split (" ");
+
+        if (jiffies.count() > 3) {
+            nonIdleJiffies = jiffies.at (0).toInt() + jiffies.at (2).toInt();
+            totalJiffies = nonIdleJiffies + jiffies.at (3).toInt();
+        }
+    }
+
+    return qMakePair (nonIdleJiffies, totalJiffies);
 }
 #endif
