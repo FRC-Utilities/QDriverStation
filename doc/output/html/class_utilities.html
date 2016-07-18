@@ -112,6 +112,8 @@ Inheritance diagram for Utilities:</div>
 Public Slots</h2></td></tr>
 <tr class="memitem:a4391550468d1fa7a35084b0efdc0200b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities.html#a4391550468d1fa7a35084b0efdc0200b">copy</a> (const QVariant &amp;data)</td></tr>
 <tr class="separator:a4391550468d1fa7a35084b0efdc0200b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad45a5fd0cfaabf059e71aa189cbd0437"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities.html#ad45a5fd0cfaabf059e71aa189cbd0437">setAutoScaleEnabled</a> (const bool enabled)</td></tr>
+<tr class="separator:ad45a5fd0cfaabf059e71aa189cbd0437"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -121,6 +123,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a02c32229b377eb0bfa594d14c12415ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa87b55d91b9cbc79a270d18a15a891ee"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities.html#aa87b55d91b9cbc79a270d18a15a891ee">batteryLevel</a> ()</td></tr>
 <tr class="separator:aa87b55d91b9cbc79a270d18a15a891ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0de0e6c4dfdd3e1b882c98015cb70b1"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE qreal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities.html#ac0de0e6c4dfdd3e1b882c98015cb70b1">scaleRatio</a> ()</td></tr>
+<tr class="separator:ac0de0e6c4dfdd3e1b882c98015cb70b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44596be4aa71b0338ec3a5e9ae6a1a43"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities.html#a44596be4aa71b0338ec3a5e9ae6a1a43">isConnectedToAC</a> ()</td></tr>
 <tr class="separator:a44596be4aa71b0338ec3a5e9ae6a1a43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -132,6 +136,8 @@ Private Slots</h2></td></tr>
 <tr class="separator:a14e0a951810653f474187ae6babce42d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5431fbd9c7b537123b0848f97de56f1d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities.html#a5431fbd9c7b537123b0848f97de56f1d">updateConnectedToAC</a> ()</td></tr>
 <tr class="separator:a5431fbd9c7b537123b0848f97de56f1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc8dfeb5dbc1214d5a57c073cd92a1ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities.html#acc8dfeb5dbc1214d5a57c073cd92a1ac">calculateScaleRatio</a> ()</td></tr>
+<tr class="separator:acc8dfeb5dbc1214d5a57c073cd92a1ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b9561fdc2042325e2e6a29a4e3b69fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities.html#a9b9561fdc2042325e2e6a29a4e3b69fe">readCpuUsageProcess</a> (int exit_code=0)</td></tr>
 <tr class="separator:a9b9561fdc2042325e2e6a29a4e3b69fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2544492311e480d5475add816cfc33de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities.html#a2544492311e480d5475add816cfc33de">readBatteryLevelProcess</a> (int exit_code=0)</td></tr>
@@ -141,6 +147,9 @@ Private Slots</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
+<tr class="memitem:a90318478fee314d0c17e43a293dd73a5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a90318478fee314d0c17e43a293dd73a5"></a>
+qreal&#160;</td><td class="memItemRight" valign="bottom"><b>m_ratio</b></td></tr>
+<tr class="separator:a90318478fee314d0c17e43a293dd73a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64e853d9c9ccf8ad4b5bdeeb38c709e9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a64e853d9c9ccf8ad4b5bdeeb38c709e9"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>m_cpuUsage</b></td></tr>
 <tr class="separator:a64e853d9c9ccf8ad4b5bdeeb38c709e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,6 +159,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_batteryLevel</b></td
 <tr class="memitem:af87770e1f04971bc369ab229227fc939"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af87770e1f04971bc369ab229227fc939"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_connectedToAC</b></td></tr>
 <tr class="separator:af87770e1f04971bc369ab229227fc939"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a603724525a58ef0f372553923825d085"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a603724525a58ef0f372553923825d085"></a>
+QSettings *&#160;</td><td class="memItemRight" valign="bottom"><b>m_settings</b></td></tr>
+<tr class="separator:a603724525a58ef0f372553923825d085"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9daf9253e04e9a260735833f47d1e155"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9daf9253e04e9a260735833f47d1e155"></a>
 QProcess&#160;</td><td class="memItemRight" valign="bottom"><b>m_cpuProcess</b></td></tr>
 <tr class="separator:a9daf9253e04e9a260735833f47d1e155"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -203,6 +215,32 @@ QProcess&#160;</td><td class="memItemRight" valign="bottom"><b>m_connectedToACPr
       </table>
 </div><div class="memdoc">
 <p>Returns the current battery level (from 0 to 100) </p>
+
+</div>
+</div>
+<a class="anchor" id="acc8dfeb5dbc1214d5a57c073cd92a1ac"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Utilities::calculateScaleRatio </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Calculates the scale factor to apply to the UI. </p><dl class="section note"><dt>Note</dt><dd>This function uses different procedures depending on the OS </dd></dl>
+
+<p>Referenced by <a class="el" href="class_utilities.html#ac0de0e6c4dfdd3e1b882c98015cb70b1">scaleRatio()</a>.</p>
 
 </div>
 </div>
@@ -341,6 +379,49 @@ QProcess&#160;</td><td class="memItemRight" valign="bottom"><b>m_connectedToACPr
 <p>Reads the output of the process launched to get the CPU usage </p>
 
 <p>Referenced by <a class="el" href="class_utilities.html#ab1676c9ce35cf347a73d16f1094e1271">Utilities()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac0de0e6c4dfdd3e1b882c98015cb70b1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">qreal Utilities::scaleRatio </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the auto-calculates scale ratio </p>
+
+<p>References <a class="el" href="class_utilities.html#acc8dfeb5dbc1214d5a57c073cd92a1ac">calculateScaleRatio()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad45a5fd0cfaabf059e71aa189cbd0437"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Utilities::setAutoScaleEnabled </td>
+          <td>(</td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>enabled</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Enables or disables the autoscale feature. </p><dl class="section note"><dt>Note</dt><dd>The application must be restarted for changes to take effect </dd></dl>
 
 </div>
 </div>
