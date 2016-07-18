@@ -127,7 +127,7 @@ void Sockets::performLookups() {
  */
 void Sockets::setFMSInputPort (int port) {
     m_fmsInputPort = port;
-    bindSockets();
+    reconfigureInputSockets();
 }
 
 /**
@@ -142,7 +142,7 @@ void Sockets::setFMSOutputPort (int port) {
  */
 void Sockets::setRadioInputPort (int port) {
     m_radioInputPort = port;
-    bindSockets();
+    reconfigureInputSockets();
 }
 
 /**
@@ -150,7 +150,7 @@ void Sockets::setRadioInputPort (int port) {
  */
 void Sockets::setRobotInputPort (int port) {
     m_robotInputPort = port;
-    bindSockets();
+    reconfigureInputSockets();
 }
 
 /**
@@ -378,7 +378,7 @@ void Sockets::setRobotAddress (const QString& address) {
 void Sockets::setFMSAddress (const QHostAddress& address) {
     if (m_fmsAddress != address && !address.isNull()) {
         m_fmsAddress = address;
-        bindSockets();
+        reconfigureInputSockets();
         qDebug() << "FMS Address set to" << GET_CONSOLE_IP (address);
     }
 }
@@ -389,7 +389,7 @@ void Sockets::setFMSAddress (const QHostAddress& address) {
 void Sockets::setRadioAddress (const QHostAddress& address) {
     if (m_radioAddress != address && !address.isNull()) {
         m_radioAddress = address;
-        bindSockets();
+        reconfigureInputSockets();
         qDebug() << "Radio Address set to" << GET_CONSOLE_IP (address);
     }
 }
@@ -400,56 +400,8 @@ void Sockets::setRadioAddress (const QHostAddress& address) {
 void Sockets::setRobotAddress (const QHostAddress& address) {
     if (m_robotAddress != address && !address.isNull()) {
         m_robotAddress = address;
-        bindSockets();
+        reconfigureInputSockets();
         qDebug() << "Robot Address set to" << GET_CONSOLE_IP (address);
-    }
-}
-
-/**
- * Binds the input sockets to the respective (robot | radio | FMS) addresses and
- * incoming data ports
- */
-void Sockets::bindSockets() {
-    if (m_tcpFmsReceiver) {
-        m_tcpFmsReceiver->abort();
-        m_tcpFmsReceiver->bind (fmsAddress(),
-                                m_fmsInputPort,
-                                DS_BIND_MODE);
-    }
-
-    else if (m_udpFmsReceiver) {
-        m_udpFmsReceiver->abort();
-        m_udpFmsReceiver->bind (fmsAddress(),
-                                m_fmsInputPort,
-                                DS_BIND_MODE);
-    }
-
-    if (m_tcpRadioReceiver) {
-        m_tcpRadioReceiver->abort();
-        m_tcpRadioReceiver->bind (radioAddress(),
-                                  m_radioInputPort,
-                                  DS_BIND_MODE);
-    }
-
-    else if (m_udpRadioReceiver) {
-        m_udpRadioReceiver->abort();
-        m_udpRadioReceiver->bind (radioAddress(),
-                                  m_radioInputPort,
-                                  DS_BIND_MODE);
-    }
-
-    if (m_tcpRobotReceiver) {
-        m_tcpRobotReceiver->abort();
-        m_tcpRobotReceiver->bind (robotAddress(),
-                                  m_robotInputPort,
-                                  DS_BIND_MODE);
-    }
-
-    else if (m_udpRobotReceiver) {
-        m_udpRobotReceiver->abort();
-        m_udpRobotReceiver->bind (robotAddress(),
-                                  m_robotInputPort,
-                                  DS_BIND_MODE);
     }
 }
 
@@ -514,6 +466,54 @@ void Sockets::readRobotSocket() {
 
     setRobotAddress (address);
     emit robotPacketReceived (data);
+}
+
+/**
+ * Binds the input sockets to the respective (robot | radio | FMS) addresses and
+ * incoming data ports
+ */
+void Sockets::reconfigureInputSockets() {
+    if (m_tcpFmsReceiver) {
+        m_tcpFmsReceiver->abort();
+        m_tcpFmsReceiver->bind (fmsAddress(),
+                                m_fmsInputPort,
+                                DS_BIND_MODE);
+    }
+
+    else if (m_udpFmsReceiver) {
+        m_udpFmsReceiver->abort();
+        m_udpFmsReceiver->bind (fmsAddress(),
+                                m_fmsInputPort,
+                                DS_BIND_MODE);
+    }
+
+    if (m_tcpRadioReceiver) {
+        m_tcpRadioReceiver->abort();
+        m_tcpRadioReceiver->bind (radioAddress(),
+                                  m_radioInputPort,
+                                  DS_BIND_MODE);
+    }
+
+    else if (m_udpRadioReceiver) {
+        m_udpRadioReceiver->abort();
+        m_udpRadioReceiver->bind (radioAddress(),
+                                  m_radioInputPort,
+                                  DS_BIND_MODE);
+    }
+
+    if (m_tcpRobotReceiver) {
+        m_tcpRobotReceiver->abort();
+        m_tcpRobotReceiver->bind (robotAddress(),
+                                  m_robotInputPort,
+                                  DS_BIND_MODE);
+    }
+
+    else if (m_udpRobotReceiver) {
+        m_udpRobotReceiver->abort();
+        m_udpRobotReceiver->bind (robotAddress(),
+                                  m_robotInputPort,
+                                  DS_BIND_MODE);
+    }
 }
 
 /**
