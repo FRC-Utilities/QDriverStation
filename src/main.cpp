@@ -51,20 +51,6 @@
 #include "dashboards.h"
 
 //------------------------------------------------------------------------------
-// Fix compilation issues in Windows
-//------------------------------------------------------------------------------
-
-#ifdef Q_OS_WIN
-    #ifdef main
-        #if defined QT_NEEDS_QMAIN
-            #define SDL_main qMain
-        #else
-            #define SDL_main main
-        #endif
-    #endif
-#endif
-
-//------------------------------------------------------------------------------
 // Mac-specific initialization code
 //------------------------------------------------------------------------------
 

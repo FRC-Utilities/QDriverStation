@@ -51,7 +51,6 @@
 //------------------------------------------------------------------------------
 
 const int DS_DISABLED_PORT = -1;
-const QHostAddress DS_LISTENER = QHostAddress ("0.0.0.0");
 const QAbstractSocket::BindMode DS_BIND_MODE = \
                                                QAbstractSocket::ShareAddress |
                                                QAbstractSocket::ReuseAddressHint;

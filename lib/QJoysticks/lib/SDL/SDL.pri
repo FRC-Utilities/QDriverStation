@@ -2,6 +2,7 @@ INCLUDEPATH += $$PWD/include
 
 win32* {
     DEFINES += SDL_WIN
+    DEFINES += SDL_MAIN_HANDLED
 }
 
 win32-g++* {

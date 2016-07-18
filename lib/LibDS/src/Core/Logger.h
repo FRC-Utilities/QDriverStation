@@ -84,31 +84,18 @@ class Logger : public QObject {
     DS::VoltageStatus m_previousVoltageStatus;
     DS::OperationStatus m_previousOperationStatus;
 
-    /* These lists hold the events */
-    QList<int> m_pktLoss;
-    QList<int> m_ramUsage;
-    QList<int> m_cpuUsage;
-    QList<qreal> m_voltage;
-    QList<DS::CodeStatus> m_codeStatus;
-    QList<DS::ControlMode> m_controlMode;
-    QList<DS::CommStatus> m_radioCommStatus;
-    QList<DS::CommStatus> m_robotCommStatus;
-    QList<DS::EnableStatus> m_enabledStatus;
-    QList<DS::VoltageStatus> m_voltageStatus;
-    QList<DS::OperationStatus> m_operationStatus;
-
-    /* These lists hold the timeframes of each event */
-    QList<qint64> m_ramTimings;
-    QList<qint64> m_cpuTimings;
-    QList<qint64> m_pktTimings;
-    QList<qint64> m_voltageTimings;
-    QList<qint64> m_codeStatusTimings;
-    QList<qint64> m_controlModeTimings;
-    QList<qint64> m_enabledStatusTimings;
-    QList<qint64> m_voltageStatusTimings;
-    QList<qint64> m_operationStatusTimings;
-    QList<qint64> m_radioCommStatusTimings;
-    QList<qint64> m_robotCommStatusTimings;
+    /* These lists hold the information of each event */
+    QList<QPair<qint64, int>> m_pktLoss;
+    QList<QPair<qint64, int>> m_ramUsage;
+    QList<QPair<qint64, int>> m_cpuUsage;
+    QList<QPair<qint64, qreal>> m_voltage;
+    QList<QPair<qint64, DS::CodeStatus>> m_codeStatus;
+    QList<QPair<qint64, DS::ControlMode>> m_controlMode;
+    QList<QPair<qint64, DS::CommStatus>> m_radioCommStatus;
+    QList<QPair<qint64, DS::CommStatus>> m_robotCommStatus;
+    QList<QPair<qint64, DS::EnableStatus>> m_enabledStatus;
+    QList<QPair<qint64, DS::VoltageStatus>> m_voltageStatus;
+    QList<QPair<qint64, DS::OperationStatus>> m_operationStatus;
 };
 
 #endif

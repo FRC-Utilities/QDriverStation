@@ -1448,8 +1448,8 @@ void DriverStation::updateLogs (const QString& file) {
  */
 void DriverStation::readFMSPacket (const QByteArray& data) {
     if (protocol() && running()) {
-        m_fmsWatchdog->reset();
-        protocol()->readFMSPacket (data);
+        if (protocol()->readFMSPacket (data))
+            m_fmsWatchdog->reset();
     }
 }
 
@@ -1459,8 +1459,8 @@ void DriverStation::readFMSPacket (const QByteArray& data) {
  */
 void DriverStation::readRadioPacket (const QByteArray& data) {
     if (protocol() && running()) {
-        m_radioWatchdog->reset();
-        protocol()->readRadioPacket (data);
+        if (protocol()->readRadioPacket (data))
+            m_radioWatchdog->reset();
     }
 }
 
@@ -1470,8 +1470,8 @@ void DriverStation::readRadioPacket (const QByteArray& data) {
  */
 void DriverStation::readRobotPacket (const QByteArray& data) {
     if (protocol() && running()) {
-        m_robotWatchdog->reset();
-        protocol()->readRobotPacket (data);
+        if (protocol()->readRobotPacket (data))
+            m_robotWatchdog->reset();
     }
 }
 

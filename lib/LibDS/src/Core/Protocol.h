@@ -342,34 +342,49 @@ class Protocol {
      * Lets the protocol implementation interpret the given \a data and updates
      * the received FMS packets counter.
      */
-    void readFMSPacket (const QByteArray& data) {
+    bool readFMSPacket (const QByteArray& data) {
         ++m_receivedFmsPackets;
-        if (interpretFMSPacket (data))
+
+        if (interpretFMSPacket (data)) {
             config()->updateFMSCommStatus (DS::kCommsWorking);
+            return true;
+        }
+
+        return false;
     }
 
     /**
      * Lets the protocol implementation interpret the given \a data and updates
      * the received radio packets counter.
      */
-    void readRadioPacket (const QByteArray& data) {
+    bool readRadioPacket (const QByteArray& data) {
         ++m_receivedRadioPackets;
-        if (interpretRadioPacket (data))
+
+        if (interpretRadioPacket (data)) {
             config()->updateRadioCommStatus (DS::kCommsWorking);
+            return true;
+        }
+
+        return false;
     }
 
     /**
      * Lets the protocol implementation interpret the given \a data and updates
      * the received robot packets counter.
      */
-    void readRobotPacket (const QByteArray& data) {
+    bool readRobotPacket (const QByteArray& data) {
         ++m_receivedRobotPackets;
         ++m_recvRobotPacketsSinceConnect;
 
-        if (interpretRobotPacket (data) && !config()->isConnectedToRobot()) {
-            resetLossCounter();
+        if (interpretRobotPacket (data)) {
+            if (!config()->isConnectedToRobot())
+                resetLossCounter();
+
             config()->updateRobotCommStatus (DS::kCommsWorking);
+            return true;
         }
+
+        return false;
     }
 
     /**

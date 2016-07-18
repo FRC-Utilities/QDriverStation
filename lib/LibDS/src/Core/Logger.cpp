@@ -14,9 +14,14 @@
 
 #include "Logger.h"
 
+/* Used for the custom message handler */
 #define PRINT_FMT "%-14s %-13s %-12s\n"
 #define PRINT(string) QString(string).toLocal8Bit().constData()
 #define GET_DATE_TIME(format) QDateTime::currentDateTime().toString(format)
+
+/* JSON logger keys */
+const QString TIME = "t";
+const QString DATA = "d";
 
 /**
  * Repeats the \a input string \a n times and returns the obtained string
@@ -48,8 +53,10 @@ Logger::Logger() {
  * Returns the path in which log files are saved
  */
 QString Logger::logsPath() const {
-    QDir dir (QString ("%1/.%2/Logs/").arg (
-                  QDir::homePath(), qApp->applicationName().toLower()));
+    QDir dir (QString ("%1/.%2/%3/.logs/").arg (
+                  QDir::homePath(),
+                  qApp->applicationName().toLower(),
+                  qApp->applicationVersion().toLower()));
 
     if (!dir.exists())
         dir.mkpath (".");
@@ -153,8 +160,8 @@ void Logger::saveLogs() {
     QVariantList voltageList;
     for (int i = 0; i < m_voltage.count(); ++i) {
         QVariantMap map;
-        map.insert ("data", m_voltage.at (i));
-        map.insert ("time", m_voltageTimings.at (i));
+        map.insert (TIME, m_voltage.at (i).first);
+        map.insert (DATA, m_voltage.at (i).second);
         voltageList.append (map);
     }
 
@@ -162,8 +169,8 @@ void Logger::saveLogs() {
     QVariantList cpuList;
     for (int i = 0; i < m_cpuUsage.count(); ++i) {
         QVariantMap map;
-        map.insert ("data", m_cpuUsage.at (i));
-        map.insert ("time", m_cpuTimings.at (i));
+        map.insert (TIME, m_cpuUsage.at (i).first);
+        map.insert (DATA, m_cpuUsage.at (i).second);
         cpuList.append (map);
     }
 
@@ -171,8 +178,8 @@ void Logger::saveLogs() {
     QVariantList ramList;
     for (int i = 0; i < m_ramUsage.count(); ++i) {
         QVariantMap map;
-        map.insert ("data", m_ramUsage.at (i));
-        map.insert ("time", m_ramTimings.at (i));
+        map.insert (TIME, m_ramUsage.at (i).first);
+        map.insert (DATA, m_ramUsage.at (i).second);
         ramList.append (map);
     }
 
@@ -180,8 +187,8 @@ void Logger::saveLogs() {
     QVariantList pktList;
     for (int i = 0; i < m_pktLoss.count(); ++i) {
         QVariantMap map;
-        map.insert ("data", m_pktLoss.at (i));
-        map.insert ("time", m_pktTimings.at (i));
+        map.insert (TIME, m_pktLoss.at (i).first);
+        map.insert (DATA, m_pktLoss.at (i).second);
         pktList.append (map);
     }
 
@@ -189,8 +196,8 @@ void Logger::saveLogs() {
     QVariantList codeStatusList;
     for (int i = 0; i < m_codeStatus.count(); ++i) {
         QVariantMap map;
-        map.insert ("data", m_codeStatus.at (i));
-        map.insert ("time", m_codeStatusTimings.at (i));
+        map.insert (TIME, m_codeStatus.at (i).first);
+        map.insert (DATA, m_codeStatus.at (i).second);
         codeStatusList.append (map);
     }
 
@@ -198,8 +205,8 @@ void Logger::saveLogs() {
     QVariantList controlModeList;
     for (int i = 0; i < m_controlMode.count(); ++i) {
         QVariantMap map;
-        map.insert ("data", m_controlMode.at (i));
-        map.insert ("time", m_controlModeTimings.at (i));
+        map.insert (TIME, m_controlMode.at (i).first);
+        map.insert (DATA, m_controlMode.at (i).second);
         controlModeList.append (map);
     }
 
@@ -207,8 +214,8 @@ void Logger::saveLogs() {
     QVariantList voltageStatusList;
     for (int i = 0; i < m_voltageStatus.count(); ++i) {
         QVariantMap map;
-        map.insert ("data", m_voltageStatus.at (i));
-        map.insert ("time", m_voltageStatusTimings.at (i));
+        map.insert (TIME, m_voltageStatus.at (i).first);
+        map.insert (DATA, m_voltageStatus.at (i).second);
         voltageStatusList.append (map);
     }
 
@@ -216,8 +223,8 @@ void Logger::saveLogs() {
     QVariantList enabledStatusList;
     for (int i = 0; i < m_enabledStatus.count(); ++i) {
         QVariantMap map;
-        map.insert ("data", m_enabledStatus.at (i));
-        map.insert ("time", m_enabledStatusTimings.at (i));
+        map.insert (TIME, m_enabledStatus.at (i).first);
+        map.insert (DATA, m_enabledStatus.at (i).second);;
         enabledStatusList.append (map);
     }
 
@@ -225,8 +232,8 @@ void Logger::saveLogs() {
     QVariantList operationStatusList;
     for (int i = 0; i < m_operationStatus.count(); ++i) {
         QVariantMap map;
-        map.insert ("data", m_operationStatus.at (i));
-        map.insert ("time", m_operationStatusTimings.at (i));
+        map.insert (TIME, m_operationStatus.at (i).first);
+        map.insert (DATA, m_operationStatus.at (i).second);
         operationStatusList.append (map);
     }
 
@@ -234,8 +241,8 @@ void Logger::saveLogs() {
     QVariantList radioCommStatusList;
     for (int i = 0; i < m_radioCommStatus.count(); ++i) {
         QVariantMap map;
-        map.insert ("data", m_radioCommStatus.at (i));
-        map.insert ("time", m_radioCommStatusTimings.at (i));
+        map.insert (TIME, m_radioCommStatus.at (i).first);
+        map.insert (DATA, m_radioCommStatus.at (i).second);
         radioCommStatusList.append (map);
     }
 
@@ -243,8 +250,8 @@ void Logger::saveLogs() {
     QVariantList robotCommStatusList;
     for (int i = 0; i < m_robotCommStatus.count(); ++i) {
         QVariantMap map;
-        map.insert ("data", m_robotCommStatus.at (i));
-        map.insert ("time", m_robotCommStatusTimings.at (i));
+        map.insert (TIME, m_robotCommStatus.at (i).first);
+        map.insert (DATA, m_robotCommStatus.at (i).second);
         robotCommStatusList.append (map);
     }
 
@@ -334,8 +341,7 @@ void Logger::registerInitialEvents() {
 void Logger::registerVoltage (qreal voltage) {
     if (m_previousVoltage != voltage) {
         m_previousVoltage = voltage;
-        m_voltage.append (voltage);
-        m_voltageTimings.append (m_timer->elapsed());
+        m_voltage.append (qMakePair (m_timer->elapsed(), voltage));
     }
 }
 
@@ -347,8 +353,7 @@ void Logger::registerVoltage (qreal voltage) {
 void Logger::registerPacketLoss (int pktLoss) {
     if (pktLoss != m_previousLoss) {
         m_previousLoss = pktLoss;
-        m_pktLoss.append (pktLoss);
-        m_pktTimings.append (m_timer->elapsed());
+        m_pktLoss.append (qMakePair (m_timer->elapsed(), pktLoss));
     }
 }
 
@@ -360,8 +365,7 @@ void Logger::registerPacketLoss (int pktLoss) {
 void Logger::registerRobotRAMUsage (int usage) {
     if (m_previousRAM != usage) {
         m_previousRAM = usage;
-        m_ramUsage.append (usage);
-        m_ramTimings.append (m_timer->elapsed());
+        m_ramUsage.append (qMakePair (m_timer->elapsed(), usage));
     }
 }
 
@@ -373,8 +377,7 @@ void Logger::registerRobotRAMUsage (int usage) {
 void Logger::registerRobotCPUUsage (int usage) {
     if (m_previousCPU != usage) {
         m_previousCPU = usage;
-        m_cpuUsage.append (usage);
-        m_cpuTimings.append (m_timer->elapsed());
+        m_cpuUsage.append (qMakePair (m_timer->elapsed(), usage));
     }
 }
 
@@ -400,9 +403,7 @@ void Logger::registerPosition (DS::Position position) {
 void Logger::registerControlMode (DS::ControlMode mode) {
     if (m_previousControlMode != mode) {
         m_previousControlMode = mode;
-        m_controlMode.append (mode);
-        m_controlModeTimings.append (m_timer->elapsed());
-
+        m_controlMode.append (qMakePair (m_timer->elapsed(), mode));
         qDebug() << "Robot control mode set to" << mode;
     }
 }
@@ -415,9 +416,7 @@ void Logger::registerControlMode (DS::ControlMode mode) {
 void Logger::registerCodeStatus (DS::CodeStatus status) {
     if (m_previousCodeStatus != status) {
         m_previousCodeStatus = status;
-        m_codeStatus.append (status);
-        m_codeStatusTimings.append (m_timer->elapsed());
-
+        m_codeStatus.append (qMakePair (m_timer->elapsed(), status));
         qDebug() << "Robot code status set to" << status;
     }
 }
@@ -430,9 +429,7 @@ void Logger::registerCodeStatus (DS::CodeStatus status) {
 void Logger::registerEnableStatus (DS::EnableStatus status) {
     if (m_previousEnabledStatus != status) {
         m_previousEnabledStatus = status;
-        m_enabledStatus.append (status);
-        m_enabledStatusTimings.append (m_timer->elapsed());
-
+        m_enabledStatus.append (qMakePair (m_timer->elapsed(), status));
         qDebug() << "Robot enabled status set to" << status;
     }
 }
@@ -445,9 +442,7 @@ void Logger::registerEnableStatus (DS::EnableStatus status) {
 void Logger::registerRadioCommStatus (DS::CommStatus status) {
     if (m_previousRadioCommStatus != status) {
         m_previousRadioCommStatus = status;
-        m_radioCommStatus.append (status);
-        m_radioCommStatusTimings.append (m_timer->elapsed());
-
+        m_radioCommStatus.append (qMakePair (m_timer->elapsed(), status));
         qDebug() << "Radio communication status set to" << status;
     }
 }
@@ -460,9 +455,7 @@ void Logger::registerRadioCommStatus (DS::CommStatus status) {
 void Logger::registerRobotCommStatus (DS::CommStatus status) {
     if (m_previousRobotCommStatus != status) {
         m_previousRobotCommStatus = status;
-        m_robotCommStatus.append (status);
-        m_robotCommStatusTimings.append (m_timer->elapsed());
-
+        m_robotCommStatus.append (qMakePair (m_timer->elapsed(), status));
         qDebug() << "Robot communication status set to" << status;
     }
 }
@@ -475,9 +468,7 @@ void Logger::registerRobotCommStatus (DS::CommStatus status) {
 void Logger::registerVoltageStatus (DS::VoltageStatus status) {
     if (m_previousVoltageStatus != status) {
         m_previousVoltageStatus = status;
-        m_voltageStatus.append (status);
-        m_voltageStatusTimings.append (m_timer->elapsed());
-
+        m_voltageStatus.append (qMakePair (m_timer->elapsed(), status));
         qDebug() << "Robot voltage status set to" << status;
     }
 }
@@ -497,9 +488,7 @@ void Logger::registerNetConsoleMessage (const QString& message) {
 void Logger::registerOperationStatus (DS::OperationStatus status) {
     if (m_previousOperationStatus != status) {
         m_previousOperationStatus = status;
-        m_operationStatus.append (status);
-        m_operationStatusTimings.append (m_timer->elapsed());
-
+        m_operationStatus.append (qMakePair (m_timer->elapsed(), status));
         qDebug() << "Radio operation status set to" << status;
     }
 }

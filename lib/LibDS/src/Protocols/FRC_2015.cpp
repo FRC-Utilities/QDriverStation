@@ -371,10 +371,7 @@ bool FRC_2015::interpretRobotPacket (const QByteArray& data) {
     m_sendDateTime = (request == cRequestTime);
 
     /* Update emergency stop state */
-    if (e_stopped && !config()->isEmergencyStopped())
-        config()->setEmergencyStop (true);
-    else if (!e_stopped && config()->isEmergencyStopped())
-        config()->setEmergencyStop (false);
+    config()->setEmergencyStop (e_stopped);
 
     /* Calculate the voltage */
     BatteryVoltage voltage;

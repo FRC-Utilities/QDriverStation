@@ -63,15 +63,13 @@ class Sockets : public QObject {
     void setRobotAddress (const QHostAddress& address);
 
   private slots:
+    void bindSockets();
     void readFMSSocket();
     void readRadioSocket();
     void readRobotSocket();
     void onFMSLookupFinished (const QHostInfo& info);
     void onRadioLookupFinished (const QHostInfo& info);
     void onRobotLookupFinished (const QHostInfo& info);
-
-  private:
-    QHostAddress getAddress (const QHostInfo& info);
 
   private:
     int m_robotIterator;
@@ -82,6 +80,10 @@ class Sockets : public QObject {
     int m_fmsLookupId;
     int m_radioLookupId;
     int m_robotLookupId;
+
+    int m_fmsInputPort;
+    int m_robotInputPort;
+    int m_radioInputPort;
 
     QHostAddress m_fmsAddress;
     QHostAddress m_robotAddress;
