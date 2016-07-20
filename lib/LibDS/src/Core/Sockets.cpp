@@ -497,7 +497,7 @@ void Sockets::readRobotSocket() {
  * Assigns the found FMS IP
  */
 void Sockets::onFMSLookupFinished (const QHostInfo& info) {
-    if (fmsAddress().isNull() && !info.addresses().isEmpty())
+    if (m_fmsAddress.isNull() && !info.addresses().isEmpty())
         setFMSAddress (info.addresses().first());
 }
 
@@ -505,7 +505,7 @@ void Sockets::onFMSLookupFinished (const QHostInfo& info) {
  * Assigns the found radio IP
  */
 void Sockets::onRadioLookupFinished (const QHostInfo& info) {
-    if (radioAddress().isNull() && !info.addresses().isEmpty())
+    if (m_radioAddress.isNull() && !info.addresses().isEmpty())
         setRadioAddress (info.addresses().first());
 }
 
@@ -513,6 +513,6 @@ void Sockets::onRadioLookupFinished (const QHostInfo& info) {
  * Assigns the found robot IP
  */
 void Sockets::onRobotLookupFinished (const QHostInfo& info) {
-    if (robotAddress().isNull() && !info.addresses().isEmpty())
+    if (m_robotAddress.isNull() && !info.addresses().isEmpty())
         setRobotAddress (info.addresses().first());
 }

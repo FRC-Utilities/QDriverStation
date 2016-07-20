@@ -542,6 +542,7 @@ void DS_Config::updateVoltageStatus (VoltageStatus status) {
 void DS_Config::updateOperationStatus (OperationStatus status) {
     if (m_operationStatus != status) {
         m_operationStatus = status;
+        updateEnabled (DS::kDisabled);
         m_logger->registerOperationStatus (status);
     }
 

@@ -55,7 +55,7 @@ Logger::Logger() {
 QString Logger::logsPath() const {
     QDir dir (QString ("%1/.%2/%3/.logs/").arg (
                   QDir::homePath(),
-                  qApp->applicationName().toLower(),
+                  qApp->applicationName().toLower().replace (" ", "-"),
                   qApp->applicationVersion().toLower()));
 
     if (!dir.exists())

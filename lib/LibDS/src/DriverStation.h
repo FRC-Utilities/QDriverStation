@@ -145,6 +145,7 @@ class DriverStation : public DS_Base {
     void switchToTestMode();
     void switchToAutonomous();
     void switchToTeleoperated();
+    void triggerEmergencyStop();
     void reconfigureJoysticks();
     void removeJoystick (int id);
     void setEnabled (bool enabled);

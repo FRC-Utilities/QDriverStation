@@ -69,9 +69,9 @@ RowLayout {
     //
     Connections {
         target: DriverStation
-        onEnabledChanged: enable.checked = DriverStation.isEnabled()
         onControlModeChanged: enable.checked = false
         onElapsedTimeChanged: elapsedTime.text = string
+        onEnabledChanged: enable.checked = DriverStation.isEnabled()
     }
 
     //
