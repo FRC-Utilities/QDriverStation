@@ -66,16 +66,16 @@ class FRC_2015 : public Protocol {
     virtual QByteArray getTimezoneData();
     virtual QByteArray getJoystickData();
 
-    virtual DS::Alliance getAlliance (DS_Byte station);
-    virtual DS::Position getPosition (DS_Byte station);
+    virtual DS::Alliance getAlliance (DS_UByte station);
+    virtual DS::Position getPosition (DS_UByte station);
 
     virtual void readExtended (const QByteArray& data);
 
-    virtual DS_Byte getControlCode();
-    virtual DS_Byte getRequestCode();
-    virtual DS_Byte getFMSControlCode();
-    virtual DS_Byte getTeamStationCode();
-    virtual DS_Byte getJoystickSize (const DS::Joystick& joystick);
+    virtual DS_UByte getControlCode();
+    virtual DS_UByte getRequestCode();
+    virtual DS_UByte getFMSControlCode();
+    virtual DS_UByte getTeamStationCode();
+    virtual DS_UByte getJoystickSize (const DS::Joystick& joystick);
 
   private:
     bool m_restartCode;

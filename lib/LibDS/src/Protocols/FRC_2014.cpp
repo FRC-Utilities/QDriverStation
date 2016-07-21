@@ -236,18 +236,18 @@ QByteArray FRC_2014::getRobotPacket() {
     data.replace (8, joysticks.length(), joysticks);
 
     /* Add FRC Driver Station version (same as the one sent by 16.0.1) */
-    data[72] = (DS_Byte) 0x30;
-    data[73] = (DS_Byte) 0x34;
-    data[74] = (DS_Byte) 0x30;
-    data[75] = (DS_Byte) 0x31;
-    data[76] = (DS_Byte) 0x31;
-    data[77] = (DS_Byte) 0x36;
-    data[78] = (DS_Byte) 0x30;
-    data[79] = (DS_Byte) 0x30;
+    data[72] = (DS_UByte) 0x30;
+    data[73] = (DS_UByte) 0x34;
+    data[74] = (DS_UByte) 0x30;
+    data[75] = (DS_UByte) 0x31;
+    data[76] = (DS_UByte) 0x31;
+    data[77] = (DS_UByte) 0x36;
+    data[78] = (DS_UByte) 0x30;
+    data[79] = (DS_UByte) 0x30;
 
     /* Add CRC checksum */
     m_crc32.update (data);
-    DS_Byte checksum = m_crc32.value();
+    DS_UByte checksum = m_crc32.value();
     data[1020] = (checksum & 0xff000000) >> 24;
     data[1021] = (checksum & 0xff0000) >> 16;
     data[1022] = (checksum & 0xff00) >> 8;
@@ -267,9 +267,9 @@ bool FRC_2014::interpretFMSPacket (const QByteArray& data) {
     }
 
     /* Read the parts of the packet that interest us */
-    DS_Byte robotmod = data.at (2);
-    DS_Byte alliance = data.at (3);
-    DS_Byte position = data.at (4);
+    DS_UByte robotmod = data.at (2);
+    DS_UByte alliance = data.at (3);
+    DS_UByte position = data.at (4);
 
     /* Get the operation mode & enable status */
     DS::ControlMode mode;
@@ -323,9 +323,9 @@ bool FRC_2014::interpretRobotPacket (const QByteArray& data) {
     }
 
     /* Read status echo code and voltage */
-    DS_Byte opcode  = data.at (0);
-    DS_Byte integer = data.at (1);
-    DS_Byte decimal = data.at (2);
+    DS_UByte opcode  = data.at (0);
+    DS_UByte integer = data.at (1);
+    DS_UByte decimal = data.at (2);
 
     /* Parse the voltage (which is stored in a strange format) */
     QString voltage;
@@ -356,7 +356,7 @@ bool FRC_2014::interpretRobotPacket (const QByteArray& data) {
 /**
  * Returns the code that represents the current alliance color
  */
-DS_Byte FRC_2014::getAlliance() {
+DS_UByte FRC_2014::getAlliance() {
     if (config()->alliance() == DS::kAllianceBlue)
         return cAllianceBlue;
 
@@ -366,7 +366,7 @@ DS_Byte FRC_2014::getAlliance() {
 /**
  * Returns the code that represents the current team position
  */
-DS_Byte FRC_2014::getPosition() {
+DS_UByte FRC_2014::getPosition() {
     if (config()->position() == DS::kPosition1)
         return cPosition1;
 
@@ -382,7 +382,7 @@ DS_Byte FRC_2014::getPosition() {
 /**
  * \todo Allow the LibDS to support digital inputs
  */
-DS_Byte FRC_2014::getDigitalInput() {
+DS_UByte FRC_2014::getDigitalInput() {
     return 0x00;
 }
 
@@ -390,9 +390,9 @@ DS_Byte FRC_2014::getDigitalInput() {
  * Returns the code used to identify the enable status, control mode,
  * operation mode and operation flags.
  */
-DS_Byte FRC_2014::getOperationCode() {
-    DS_Byte code = cEmergencyStopOff;
-    DS_Byte enabled = config()->isEnabled() ? cEnabled : 0x00;
+DS_UByte FRC_2014::getOperationCode() {
+    DS_UByte code = cEmergencyStopOff;
+    DS_UByte enabled = config()->isEnabled() ? cEnabled : 0x00;
 
     /* Get the control mode (Test, Auto or TeleOp) */
     switch (config()->controlMode()) {
@@ -450,7 +450,7 @@ QByteArray FRC_2014::getJoystickData() {
         for (int axis = 0; axis < maxAxisCount(); ++axis) {
             /* Joystick connected, add real data */
             if (joystickExists && axis < numAxes)
-                data.append (joysticks()->at (i)->axes [axis] * 127);
+                data.append ((DS_SByte) (joysticks()->at (i)->axes [axis] * 127));
 
             /* Joystick disconnected, add neutral data */
             else
@@ -475,7 +475,7 @@ QByteArray FRC_2014::getJoystickData() {
 /**
  * Gets the alliance from the received \a byte
  */
-DS::Alliance FRC_2014::getAlliance (DS_Byte byte) {
+DS::Alliance FRC_2014::getAlliance (DS_UByte byte) {
     if (byte == cAllianceBlue)
         return DS::kAllianceBlue;
 
@@ -485,7 +485,7 @@ DS::Alliance FRC_2014::getAlliance (DS_Byte byte) {
 /**
  * Gets the position from the received \a byte
  */
-DS::Position FRC_2014::getPosition (DS_Byte byte) {
+DS::Position FRC_2014::getPosition (DS_UByte byte) {
     if (byte == cPosition1)
         return DS::kPosition1;
 

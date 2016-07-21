@@ -95,7 +95,7 @@ struct BatteryVoltage {
         decimal = (volt - integer) * 100;
     }
 
-    void updateValues (DS_Byte a, DS_Byte b) {
+    void updateValues (DS_UByte a, DS_UByte b) {
         integer = a;
         decimal = (roundf ((static_cast<qreal> (b) / 255) * 100) / 100) * 100;
         voltage = integer + (static_cast<qreal> (decimal) / 100);
@@ -313,8 +313,8 @@ QByteArray FRC_2015::getRobotPacket() {
  */
 bool FRC_2015::interpretFMSPacket (const QByteArray& data) {
     if (data.length() >= 22) {
-        DS_Byte control = data.at (3);
-        DS_Byte station = data.at (5);
+        DS_UByte control = data.at (3);
+        DS_UByte station = data.at (5);
 
         /* Change robot enabled state based on what FMS tells us to do*/
         config()->setEnabled (control & cEnabled);
@@ -356,9 +356,9 @@ bool FRC_2015::interpretRobotPacket (const QByteArray& data) {
     }
 
     /* Read robot packet */
-    DS_Byte control = data.at (3);
-    DS_Byte status  = data.at (4);
-    DS_Byte request = data.at (7);
+    DS_UByte control = data.at (3);
+    DS_UByte status  = data.at (4);
+    DS_UByte request = data.at (7);
 
     /* Generate control information */
     bool has_code       = (status & cRobotHasCode);
@@ -457,7 +457,7 @@ QByteArray FRC_2015::getJoystickData() {
         /* Add axis data */
         data.append (numAxes);
         for (int axis = 0; axis < numAxes; ++axis)
-            data.append (joysticks()->at (i)->axes [axis] * 127);
+            data.append ((DS_SByte) (joysticks()->at (i)->axes [axis] * 127));
 
         /* Generate button data */
         int buttonData = 0;
@@ -486,7 +486,7 @@ QByteArray FRC_2015::getJoystickData() {
  * code. This function is used to follow the instructions outlined by the
  * FMS packets.
  */
-DS::Alliance FRC_2015::getAlliance (DS_Byte station) {
+DS::Alliance FRC_2015::getAlliance (DS_UByte station) {
     /* Station code is any one of the blue  */
     if (station == cBlue1
             || station == cBlue2
@@ -501,7 +501,7 @@ DS::Alliance FRC_2015::getAlliance (DS_Byte station) {
  * This function returns the position referenced by the given \a station code.
  * This function is used to follow the instructions outlined by the FMS packets.
  */
-DS::Position FRC_2015::getPosition (DS_Byte station) {
+DS::Position FRC_2015::getPosition (DS_UByte station) {
     /* We are on position 1, regardless of the alliance */
     if (station == cRed1 || station == cBlue1)
         return DS::kPosition1;
@@ -527,7 +527,7 @@ void FRC_2015::readExtended (const QByteArray& data) {
     if (data.isEmpty() || data.length() < 2)
         return;
 
-    DS_Byte tag = data.at (1);
+    DS_UByte tag = data.at (1);
 
     /* Robot wants to "rumble" the joystick */
     if (tag == cRTagJoystickOut) {
@@ -563,8 +563,8 @@ void FRC_2015::readExtended (const QByteArray& data) {
  *    - The FMS attached keyword
  *    - The operation state (e-stop, normal)
  */
-DS_Byte FRC_2015::getControlCode() {
-    DS_Byte code = 0;
+DS_UByte FRC_2015::getControlCode() {
+    DS_UByte code = 0;
 
     /* Get current control mode (Test, Auto or Teleop) */
     switch (config()->controlMode()) {
@@ -602,9 +602,9 @@ DS_Byte FRC_2015::getControlCode() {
  *    - Reboot the RIO
  *    - Restart the robot code
  */
-DS_Byte FRC_2015::getRequestCode() {
+DS_UByte FRC_2015::getRequestCode() {
     /* Initialize a byte with the unconnected status (could trigger a resync in the robot) */
-    DS_Byte code = cRequestUnconnected;
+    DS_UByte code = cRequestUnconnected;
 
     /* Send a normal-operation status byte to the robot */
     if (config()->isConnectedToRobot())
@@ -633,8 +633,8 @@ DS_Byte FRC_2015::getRequestCode() {
  *    - Robot radio connected?
  *    - The operation state (e-stop, normal)
  */
-DS_Byte FRC_2015::getFMSControlCode() {
-    DS_Byte code = 0x00;
+DS_UByte FRC_2015::getFMSControlCode() {
+    DS_UByte code = 0x00;
 
     /* Let the FMS know the operational status of the robot */
     switch (config()->controlMode()) {
@@ -677,7 +677,7 @@ DS_Byte FRC_2015::getFMSControlCode() {
  * This value may be used by the robot program to use specialized autonomous
  * modes or adjust sensor input.
  */
-DS_Byte FRC_2015::getTeamStationCode() {
+DS_UByte FRC_2015::getTeamStationCode() {
     /* Current config is set to position 1 */
     if (config()->position() == DS::kPosition1) {
         if (config()->alliance() == DS::kAllianceRed)
@@ -713,7 +713,7 @@ DS_Byte FRC_2015::getTeamStationCode() {
  * This information will help the robot decide where a information starts and
  * ends for each attached joystick.
  */
-DS_Byte FRC_2015::getJoystickSize (const DS::Joystick& joystick) {
+DS_UByte FRC_2015::getJoystickSize (const DS::Joystick& joystick) {
     return  5
             + (joystick.numAxes > 0 ? joystick.numAxes : 0)
             + (joystick.numButtons / 8)

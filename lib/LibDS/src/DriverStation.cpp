@@ -47,6 +47,19 @@ static QString CONSOLE_MESSAGE (const QString& input) {
     return "<font color='#888'>** " + input + "</font>";
 }
 
+/**
+ * Ensures that the \a input real respects the given range (\a max, \a min)
+ */
+static qreal RANGE (qreal input, qreal max, qreal min) {
+    if (input > max)
+        return max;
+
+    if (input < min)
+        return min;
+
+    return input;
+}
+
 DriverStation::DriverStation() {
     qDebug() << "Initializing DriverStation...";
 
@@ -186,8 +199,8 @@ void DriverStation::logger (QtMsgType type,
                             const QMessageLogContext& context,
                             const QString& data) {
     DS_Config::getInstance()->logger()->messageHandler (type,
-                                                        context,
-                                                        data);
+            context,
+            data);
 }
 
 /**
@@ -1224,7 +1237,7 @@ void DriverStation::setEnabled (EnableStatus status) {
 void DriverStation::updateAxis (int id, int axis, qreal value) {
     if (joysticks()->count() > abs (id)) {
         if (joysticks()->at (id)->numAxes > axis)
-            joysticks()->at (id)->axes [abs (axis)] = value;
+            joysticks()->at (id)->axes [abs (axis)] = RANGE (value, 1, -1);
     }
 }
 

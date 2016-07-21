@@ -30,7 +30,8 @@
 // Hacks to make the code more readable
 //------------------------------------------------------------------------------
 
-#define DS_Byte quint8
+#define DS_SByte qint8
+#define DS_UByte quint8
 #define DS_Joysticks QList<DS::Joystick*>
 
 #define DS_Schedule(time,object,slot) \

@@ -62,13 +62,13 @@ class FRC_2014 : public Protocol {
     virtual bool interpretRobotPacket (const QByteArray& data);
 
   protected:
-    virtual DS_Byte getAlliance();
-    virtual DS_Byte getPosition();
-    virtual DS_Byte getDigitalInput();
-    virtual DS_Byte getOperationCode();
+    virtual DS_UByte getAlliance();
+    virtual DS_UByte getPosition();
+    virtual DS_UByte getDigitalInput();
+    virtual DS_UByte getOperationCode();
     virtual QByteArray getJoystickData();
-    virtual DS::Alliance getAlliance (DS_Byte byte);
-    virtual DS::Position getPosition (DS_Byte byte);
+    virtual DS::Alliance getAlliance (DS_UByte byte);
+    virtual DS::Position getPosition (DS_UByte byte);
 
 
   private:
