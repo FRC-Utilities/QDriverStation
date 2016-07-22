@@ -11,6 +11,7 @@
 
 #include <Core/DS_Base.h>
 
+class Lookup;
 class DriverStation;
 
 /**
@@ -36,6 +37,7 @@ class Sockets : public QObject {
 
   public:
     explicit Sockets();
+    ~Sockets();
 
     QHostAddress fmsAddress() const;
     QHostAddress radioAddress() const;
@@ -66,9 +68,9 @@ class Sockets : public QObject {
     void readFMSSocket();
     void readRadioSocket();
     void readRobotSocket();
-    void onFMSLookupFinished (const QHostInfo& info);
-    void onRadioLookupFinished (const QHostInfo& info);
-    void onRobotLookupFinished (const QHostInfo& info);
+    void onFMSLookupFinished (const QString& name, const QHostAddress& address);
+    void onRadioLookupFinished (const QString& name, const QHostAddress& address);
+    void onRobotLookupFinished (const QString& name, const QHostAddress& address);
 
   private:
     int m_robotIterator;
@@ -84,6 +86,9 @@ class Sockets : public QObject {
     QHostAddress m_robotAddress;
     QHostAddress m_radioAddress;
 
+    Lookup* m_fmsLookup;
+    Lookup* m_radioLookup;
+    Lookup* m_robotLookup;
     DriverStation* m_driverStation;
 
     QUdpSocket* m_udpFmsSender;

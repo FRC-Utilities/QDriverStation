@@ -358,7 +358,7 @@ QPair<quint64, quint64> Utilities::getCpuJiffies() {
             nonIdleJiffies = jiffies.at (0).toInt() + jiffies.at (2).toInt();
             totalJiffies = nonIdleJiffies + jiffies.at (3).toInt();
         }
-        
+
         file.close();
     }
 

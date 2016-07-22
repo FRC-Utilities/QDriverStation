@@ -44,7 +44,9 @@ HEADERS += \
     $$PWD/src/Core/DS_Base.h \
     $$PWD/src/Core/DS_Config.h \
     $$PWD/src/Core/DS_Common.h \
-    $$PWD/src/Core/Logger.h
+    $$PWD/src/Core/Logger.h \
+    $$PWD/src/Utilities/MulticastDNS.h \
+    $$PWD/src/Utilities/Lookup.h
 
 SOURCES += \
     $$PWD/src/Core/NetConsole.cpp \
@@ -56,4 +58,6 @@ SOURCES += \
     $$PWD/src/Utilities/CRC32.cpp \
     $$PWD/src/DriverStation.cpp \
     $$PWD/src/Core/DS_Config.cpp \
-    $$PWD/src/Core/Logger.cpp
+    $$PWD/src/Core/Logger.cpp \
+    $$PWD/src/Utilities/MulticastDNS.cpp \
+    $$PWD/src/Utilities/Lookup.cpp
