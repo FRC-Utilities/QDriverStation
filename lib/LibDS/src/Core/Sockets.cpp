@@ -512,7 +512,7 @@ void Sockets::onFMSLookupFinished (const QString& name,
                                    const QHostAddress& address) {
     if (m_fmsAddress.isNull()
             && !address.isNull()
-            && name == m_driverStation->fmsAddress())
+            && name.toLower() == m_driverStation->fmsAddress().toLower())
         setFMSAddress (address);
 }
 
@@ -523,7 +523,7 @@ void Sockets::onRadioLookupFinished (const QString& name,
                                      const QHostAddress& address) {
     if (m_radioAddress.isNull()
             && !address.isNull()
-            && name == m_driverStation->radioAddress())
+            && name.toLower() == m_driverStation->radioAddress().toLower())
         setRadioAddress (address);
 }
 
@@ -534,6 +534,6 @@ void Sockets::onRobotLookupFinished (const QString& name,
                                      const QHostAddress& address) {
     if (m_robotAddress.isNull()
             && !address.isNull()
-            && name == m_driverStation->robotAddress())
+            && name.toLower() == m_driverStation->robotAddress().toLower())
         setRobotAddress (address);
 }

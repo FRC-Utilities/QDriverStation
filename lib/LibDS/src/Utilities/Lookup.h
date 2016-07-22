@@ -11,6 +11,10 @@
 #include <QHostInfo>
 
 class MulticastDNS;
+
+/**
+ * @brief Performs host lookups to obtain socket-usable IP addresses
+ */
 class Lookup : public QObject {
     Q_OBJECT
 

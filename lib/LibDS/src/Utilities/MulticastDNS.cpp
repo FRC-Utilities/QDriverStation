@@ -101,7 +101,7 @@ void MulticastDNS::lookup (const QString& name) {
         QString local = "local";
         data.append (local.length());
         data.append (local.toUtf8());
-        data.append ((qint8) 0x00);
+        data.append ((char) 0x00);
         data.append (TWO_BYTES (kQueryQTYPE));
         data.append (TWO_BYTES (kQueryQCLASS));
 

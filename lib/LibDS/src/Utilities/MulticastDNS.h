@@ -10,6 +10,9 @@
 #include <QHostInfo>
 #include <QUdpSocket>
 
+/**
+ * @brief Implements a simple mDNS discovery service
+ */
 class MulticastDNS : public QObject {
     Q_OBJECT
 
