@@ -89,7 +89,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pri-slots">Private Slots</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_sockets-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -180,17 +179,12 @@ Private Slots</h2></td></tr>
 <tr class="separator:a2a877793f031b5930ab81b8e4be7504c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0d4e4513336f56d5678b489d4b5b56f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sockets.html#ab0d4e4513336f56d5678b489d4b5b56f">readRobotSocket</a> ()</td></tr>
 <tr class="separator:ab0d4e4513336f56d5678b489d4b5b56f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a908eeaf063e7a0c343e3b81099034a6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sockets.html#a908eeaf063e7a0c343e3b81099034a6c">onFMSLookupFinished</a> (const QHostInfo &amp;info)</td></tr>
-<tr class="separator:a908eeaf063e7a0c343e3b81099034a6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6d827e47f9d9a0fe3fda7c97357642a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sockets.html#ab6d827e47f9d9a0fe3fda7c97357642a">onRadioLookupFinished</a> (const QHostInfo &amp;info)</td></tr>
-<tr class="separator:ab6d827e47f9d9a0fe3fda7c97357642a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed28cbdb25eff46517ced019bd47b2cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sockets.html#aed28cbdb25eff46517ced019bd47b2cb">onRobotLookupFinished</a> (const QHostInfo &amp;info)</td></tr>
-<tr class="separator:aed28cbdb25eff46517ced019bd47b2cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:ad8aeb8d31b2e71c56a27123da05915be"><td class="memItemLeft" align="right" valign="top">QHostAddress&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sockets.html#ad8aeb8d31b2e71c56a27123da05915be">getAddress</a> (const QHostInfo &amp;info)</td></tr>
-<tr class="separator:ad8aeb8d31b2e71c56a27123da05915be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55da52c243ae31beafbadb08d0be9a00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sockets.html#a55da52c243ae31beafbadb08d0be9a00">onFMSLookupFinished</a> (const QString &amp;name, const QHostAddress &amp;address)</td></tr>
+<tr class="separator:a55da52c243ae31beafbadb08d0be9a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a602f5bf7254039531f99db1af1bada21"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sockets.html#a602f5bf7254039531f99db1af1bada21">onRadioLookupFinished</a> (const QString &amp;name, const QHostAddress &amp;address)</td></tr>
+<tr class="separator:a602f5bf7254039531f99db1af1bada21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a706305477df78ff56fa19f1d954a4c6b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sockets.html#a706305477df78ff56fa19f1d954a4c6b">onRobotLookupFinished</a> (const QString &amp;name, const QHostAddress &amp;address)</td></tr>
+<tr class="separator:a706305477df78ff56fa19f1d954a4c6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -224,6 +218,15 @@ QHostAddress&#160;</td><td class="memItemRight" valign="bottom"><b>m_robotAddres
 <tr class="memitem:a2bfa1c96f7e91a0471513819024a2270"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2bfa1c96f7e91a0471513819024a2270"></a>
 QHostAddress&#160;</td><td class="memItemRight" valign="bottom"><b>m_radioAddress</b></td></tr>
 <tr class="separator:a2bfa1c96f7e91a0471513819024a2270"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44a46278bdf1b862bf78845aea12c56c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a44a46278bdf1b862bf78845aea12c56c"></a>
+<a class="el" href="class_lookup.html">Lookup</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_fmsLookup</b></td></tr>
+<tr class="separator:a44a46278bdf1b862bf78845aea12c56c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a4acb42eb3aec76d6caca146fbdc2d2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0a4acb42eb3aec76d6caca146fbdc2d2"></a>
+<a class="el" href="class_lookup.html">Lookup</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_radioLookup</b></td></tr>
+<tr class="separator:a0a4acb42eb3aec76d6caca146fbdc2d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2eafb9d115518550c3a0cb90dffd347a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2eafb9d115518550c3a0cb90dffd347a"></a>
+<a class="el" href="class_lookup.html">Lookup</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_robotLookup</b></td></tr>
+<tr class="separator:a2eafb9d115518550c3a0cb90dffd347a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa144a8cf2fa4fb28a831bf61dc3c3a7b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa144a8cf2fa4fb28a831bf61dc3c3a7b"></a>
 <a class="el" href="class_driver_station.html">DriverStation</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_driverStation</b></td></tr>
 <tr class="separator:aa144a8cf2fa4fb28a831bf61dc3c3a7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -282,40 +285,13 @@ QTcpSocket *&#160;</td><td class="memItemRight" valign="bottom"><b>m_tcpRobotRec
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the FMS address. If the FMS protocol is based on UDP and we do not know the FMS address, then we will broadcast generated FMS datagrams. </p>
+<p>Returns the FMS address. </p>
 
 <p>Referenced by <a class="el" href="class_sockets.html#aa138a160c03e58fc39691c9c52978e3f">sendToFMS()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ad8aeb8d31b2e71c56a27123da05915be"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QHostAddress Sockets::getAddress </td>
-          <td>(</td>
-          <td class="paramtype">const QHostInfo &amp;&#160;</td>
-          <td class="paramname"><em>info</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Gets the address (if any of the given host info response) </p>
-
-<p>Referenced by <a class="el" href="class_sockets.html#a908eeaf063e7a0c343e3b81099034a6c">onFMSLookupFinished()</a>, <a class="el" href="class_sockets.html#ab6d827e47f9d9a0fe3fda7c97357642a">onRadioLookupFinished()</a>, and <a class="el" href="class_sockets.html#aed28cbdb25eff46517ced019bd47b2cb">onRobotLookupFinished()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a908eeaf063e7a0c343e3b81099034a6c"></a>
+<a class="anchor" id="a55da52c243ae31beafbadb08d0be9a00"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -325,9 +301,19 @@ QTcpSocket *&#160;</td><td class="memItemRight" valign="bottom"><b>m_tcpRobotRec
         <tr>
           <td class="memname">void Sockets::onFMSLookupFinished </td>
           <td>(</td>
-          <td class="paramtype">const QHostInfo &amp;&#160;</td>
-          <td class="paramname"><em>info</em></td><td>)</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const QHostAddress &amp;&#160;</td>
+          <td class="paramname"><em>address</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -338,13 +324,11 @@ QTcpSocket *&#160;</td><td class="memItemRight" valign="bottom"><b>m_tcpRobotRec
 </div><div class="memdoc">
 <p>Assigns the found FMS IP </p>
 
-<p>References <a class="el" href="class_sockets.html#ad8aeb8d31b2e71c56a27123da05915be">getAddress()</a>, <a class="el" href="class_driver_station.html#a8cd2eeed0ee9ccf774287d656c0d5523">DriverStation::getInstance()</a>, and <a class="el" href="class_sockets.html#a8304be6425b1fb631551c33befc58fd0">setFMSAddress()</a>.</p>
-
-<p>Referenced by <a class="el" href="class_sockets.html#aa0dc2eed622ed1634777c6572a381d2e">performLookups()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#aa4f3f032f7163f9e8be7bbf0da5147f1">DriverStation::fmsAddress()</a>, and <a class="el" href="class_sockets.html#a8304be6425b1fb631551c33befc58fd0">setFMSAddress()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ab6d827e47f9d9a0fe3fda7c97357642a"></a>
+<a class="anchor" id="a602f5bf7254039531f99db1af1bada21"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -354,9 +338,19 @@ QTcpSocket *&#160;</td><td class="memItemRight" valign="bottom"><b>m_tcpRobotRec
         <tr>
           <td class="memname">void Sockets::onRadioLookupFinished </td>
           <td>(</td>
-          <td class="paramtype">const QHostInfo &amp;&#160;</td>
-          <td class="paramname"><em>info</em></td><td>)</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const QHostAddress &amp;&#160;</td>
+          <td class="paramname"><em>address</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -367,13 +361,11 @@ QTcpSocket *&#160;</td><td class="memItemRight" valign="bottom"><b>m_tcpRobotRec
 </div><div class="memdoc">
 <p>Assigns the found radio IP </p>
 
-<p>References <a class="el" href="class_sockets.html#ad8aeb8d31b2e71c56a27123da05915be">getAddress()</a>, <a class="el" href="class_driver_station.html#a8cd2eeed0ee9ccf774287d656c0d5523">DriverStation::getInstance()</a>, and <a class="el" href="class_sockets.html#a4944e4fe695f92ce1fd5cc88dfdc9fc0">setRadioAddress()</a>.</p>
-
-<p>Referenced by <a class="el" href="class_sockets.html#aa0dc2eed622ed1634777c6572a381d2e">performLookups()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a790cb4ce002a19997bad4b4ecc2784b0">DriverStation::radioAddress()</a>, and <a class="el" href="class_sockets.html#a4944e4fe695f92ce1fd5cc88dfdc9fc0">setRadioAddress()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aed28cbdb25eff46517ced019bd47b2cb"></a>
+<a class="anchor" id="a706305477df78ff56fa19f1d954a4c6b"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -383,9 +375,19 @@ QTcpSocket *&#160;</td><td class="memItemRight" valign="bottom"><b>m_tcpRobotRec
         <tr>
           <td class="memname">void Sockets::onRobotLookupFinished </td>
           <td>(</td>
-          <td class="paramtype">const QHostInfo &amp;&#160;</td>
-          <td class="paramname"><em>info</em></td><td>)</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const QHostAddress &amp;&#160;</td>
+          <td class="paramname"><em>address</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -396,9 +398,7 @@ QTcpSocket *&#160;</td><td class="memItemRight" valign="bottom"><b>m_tcpRobotRec
 </div><div class="memdoc">
 <p>Assigns the found robot IP </p>
 
-<p>References <a class="el" href="class_sockets.html#ad8aeb8d31b2e71c56a27123da05915be">getAddress()</a>, <a class="el" href="class_driver_station.html#a8cd2eeed0ee9ccf774287d656c0d5523">DriverStation::getInstance()</a>, and <a class="el" href="class_sockets.html#a265d2d380fdb0ea91a6edf94ca59400c">setRobotAddress()</a>.</p>
-
-<p>Referenced by <a class="el" href="class_sockets.html#aa0dc2eed622ed1634777c6572a381d2e">performLookups()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#a6f7ac900ddc36323c0fe4da84321cd23">DriverStation::robotAddress()</a>, and <a class="el" href="class_sockets.html#a265d2d380fdb0ea91a6edf94ca59400c">setRobotAddress()</a>.</p>
 
 </div>
 </div>
@@ -425,7 +425,7 @@ QTcpSocket *&#160;</td><td class="memItemRight" valign="bottom"><b>m_tcpRobotRec
 <p>If any of the IPs used during the communications is not known, this function will ensure that the <a class="el" href="class_d_s.html" title="Defines the data types shared between the modules of the LibDS. ">DS</a> performs a lookup periodically until all addresses are known.</p>
 <p>This is especially useful when we are dealing with dynamic IPs, such as when the robot uses a mDNS address. </p>
 
-<p>References <a class="el" href="class_driver_station.html#aa4f3f032f7163f9e8be7bbf0da5147f1">DriverStation::fmsAddress()</a>, <a class="el" href="class_driver_station.html#a8cd2eeed0ee9ccf774287d656c0d5523">DriverStation::getInstance()</a>, <a class="el" href="class_driver_station.html#a4619145e1e57e1a2a0dbad14b6b1d808">DriverStation::isConnectedToFMS()</a>, <a class="el" href="class_driver_station.html#ae58e6a09ecf62cb27f030974d1fcf570">DriverStation::isConnectedToRadio()</a>, <a class="el" href="class_driver_station.html#a92a9ed1c2e26b02d61a1d4e5c3e96057">DriverStation::isConnectedToRobot()</a>, <a class="el" href="class_sockets.html#a908eeaf063e7a0c343e3b81099034a6c">onFMSLookupFinished()</a>, <a class="el" href="class_sockets.html#ab6d827e47f9d9a0fe3fda7c97357642a">onRadioLookupFinished()</a>, <a class="el" href="class_sockets.html#aed28cbdb25eff46517ced019bd47b2cb">onRobotLookupFinished()</a>, <a class="el" href="class_driver_station.html#a790cb4ce002a19997bad4b4ecc2784b0">DriverStation::radioAddress()</a>, and <a class="el" href="class_driver_station.html#a6f7ac900ddc36323c0fe4da84321cd23">DriverStation::robotAddress()</a>.</p>
+<p>References <a class="el" href="class_driver_station.html#aa4f3f032f7163f9e8be7bbf0da5147f1">DriverStation::fmsAddress()</a>, <a class="el" href="class_driver_station.html#a8cd2eeed0ee9ccf774287d656c0d5523">DriverStation::getInstance()</a>, <a class="el" href="class_driver_station.html#a4619145e1e57e1a2a0dbad14b6b1d808">DriverStation::isConnectedToFMS()</a>, <a class="el" href="class_driver_station.html#ae58e6a09ecf62cb27f030974d1fcf570">DriverStation::isConnectedToRadio()</a>, <a class="el" href="class_driver_station.html#a92a9ed1c2e26b02d61a1d4e5c3e96057">DriverStation::isConnectedToRobot()</a>, <a class="el" href="class_lookup.html#af67ea2ada6f6d15c1d1f4b7d8ca62d5b">Lookup::lookup()</a>, <a class="el" href="class_driver_station.html#a790cb4ce002a19997bad4b4ecc2784b0">DriverStation::radioAddress()</a>, and <a class="el" href="class_driver_station.html#a6f7ac900ddc36323c0fe4da84321cd23">DriverStation::robotAddress()</a>.</p>
 
 </div>
 </div>
@@ -441,7 +441,7 @@ QTcpSocket *&#160;</td><td class="memItemRight" valign="bottom"><b>m_tcpRobotRec
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the radio address. If the radio protocol is based on UDP and we do not know the radio address, then we will broadcast generated radio datagrams. </p>
+<p>Returns the radio address. </p>
 
 <p>Referenced by <a class="el" href="class_sockets.html#a4bd513efbb46b77322604ce43ce408e6">sendToRadio()</a>.</p>
 
@@ -543,7 +543,7 @@ QTcpSocket *&#160;</td><td class="memItemRight" valign="bottom"><b>m_tcpRobotRec
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the robot address. If the robot protocol is based on UDP and we do not know the robot address, then we will broadcast generated robot datagrams. </p>
+<p>Returns the robot address. If the robot address is not known, this function will return the local IP of the computer (e.g for simulations). </p>
 
 <p>Referenced by <a class="el" href="class_sockets.html#ad59fd38becd40eda17aa33357c7ffa71">sendToRobot()</a>.</p>
 
@@ -659,7 +659,7 @@ QTcpSocket *&#160;</td><td class="memItemRight" valign="bottom"><b>m_tcpRobotRec
 </div><div class="memdoc">
 <p>Changes the FMS address. If the FMS address is set to an invalid value, then this class will broadcast the data. </p>
 
-<p>Referenced by <a class="el" href="class_sockets.html#a908eeaf063e7a0c343e3b81099034a6c">onFMSLookupFinished()</a>, <a class="el" href="class_sockets.html#a4bd9fde075229e3f620d6bd9bc110084">readFMSSocket()</a>, <a class="el" href="class_driver_station.html#a2fe91dc01643617a667990c82de239c2">DriverStation::setCustomFMSAddress()</a>, and <a class="el" href="class_driver_station.html#a2e68dd00997ee3abb8d239c4f616e974">DriverStation::updateAddresses()</a>.</p>
+<p>Referenced by <a class="el" href="class_sockets.html#a55da52c243ae31beafbadb08d0be9a00">onFMSLookupFinished()</a>, <a class="el" href="class_sockets.html#a4bd9fde075229e3f620d6bd9bc110084">readFMSSocket()</a>, <a class="el" href="class_driver_station.html#a2fe91dc01643617a667990c82de239c2">DriverStation::setCustomFMSAddress()</a>, and <a class="el" href="class_driver_station.html#a2e68dd00997ee3abb8d239c4f616e974">DriverStation::updateAddresses()</a>.</p>
 
 </div>
 </div>
@@ -794,7 +794,7 @@ QTcpSocket *&#160;</td><td class="memItemRight" valign="bottom"><b>m_tcpRobotRec
 </div><div class="memdoc">
 <p>Changes the radio address. If the radio address is set to an invalid value, then this class will broadcast the data. </p>
 
-<p>Referenced by <a class="el" href="class_sockets.html#ab6d827e47f9d9a0fe3fda7c97357642a">onRadioLookupFinished()</a>, <a class="el" href="class_sockets.html#a2a877793f031b5930ab81b8e4be7504c">readRadioSocket()</a>, <a class="el" href="class_driver_station.html#a5c00e918c68c3087f1f32587b61ba0b0">DriverStation::setCustomRadioAddress()</a>, and <a class="el" href="class_driver_station.html#a2e68dd00997ee3abb8d239c4f616e974">DriverStation::updateAddresses()</a>.</p>
+<p>Referenced by <a class="el" href="class_sockets.html#a602f5bf7254039531f99db1af1bada21">onRadioLookupFinished()</a>, <a class="el" href="class_sockets.html#a2a877793f031b5930ab81b8e4be7504c">readRadioSocket()</a>, <a class="el" href="class_driver_station.html#a5c00e918c68c3087f1f32587b61ba0b0">DriverStation::setCustomRadioAddress()</a>, and <a class="el" href="class_driver_station.html#a2e68dd00997ee3abb8d239c4f616e974">DriverStation::updateAddresses()</a>.</p>
 
 </div>
 </div>
@@ -929,7 +929,7 @@ QTcpSocket *&#160;</td><td class="memItemRight" valign="bottom"><b>m_tcpRobotRec
 </div><div class="memdoc">
 <p>Changes the robot address. If the robot address is set to an invalid value, then this class will broadcast the data. </p>
 
-<p>Referenced by <a class="el" href="class_sockets.html#aed28cbdb25eff46517ced019bd47b2cb">onRobotLookupFinished()</a>, <a class="el" href="class_sockets.html#ab0d4e4513336f56d5678b489d4b5b56f">readRobotSocket()</a>, <a class="el" href="class_driver_station.html#a599c060b6993fd0a405fd5d9a45a3f14">DriverStation::setCustomRobotAddress()</a>, and <a class="el" href="class_driver_station.html#a2e68dd00997ee3abb8d239c4f616e974">DriverStation::updateAddresses()</a>.</p>
+<p>Referenced by <a class="el" href="class_sockets.html#a706305477df78ff56fa19f1d954a4c6b">onRobotLookupFinished()</a>, <a class="el" href="class_sockets.html#ab0d4e4513336f56d5678b489d4b5b56f">readRobotSocket()</a>, <a class="el" href="class_driver_station.html#a599c060b6993fd0a405fd5d9a45a3f14">DriverStation::setCustomRobotAddress()</a>, and <a class="el" href="class_driver_station.html#a2e68dd00997ee3abb8d239c4f616e974">DriverStation::updateAddresses()</a>.</p>
 
 </div>
 </div>

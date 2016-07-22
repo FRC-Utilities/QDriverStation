@@ -176,12 +176,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a129cdb1b3bf9d593544e85516c356720"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a584e8a6b24bc39fc3bbeb5b2680070d7"><td class="memItemLeft" align="right" valign="top">QByteArray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_protocol.html#a584e8a6b24bc39fc3bbeb5b2680070d7">generateRobotPacket</a> ()</td></tr>
 <tr class="separator:a584e8a6b24bc39fc3bbeb5b2680070d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af26d3ead84de80ab87e3e2203e14af7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_protocol.html#af26d3ead84de80ab87e3e2203e14af7a">readFMSPacket</a> (const QByteArray &amp;data)</td></tr>
-<tr class="separator:af26d3ead84de80ab87e3e2203e14af7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae19049f3b0ed22b985b431a9c5698e42"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_protocol.html#ae19049f3b0ed22b985b431a9c5698e42">readRadioPacket</a> (const QByteArray &amp;data)</td></tr>
-<tr class="separator:ae19049f3b0ed22b985b431a9c5698e42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1c9300ce6477a4fd5c1fe950a0868ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_protocol.html#ae1c9300ce6477a4fd5c1fe950a0868ae">readRobotPacket</a> (const QByteArray &amp;data)</td></tr>
-<tr class="separator:ae1c9300ce6477a4fd5c1fe950a0868ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54486de62e2f040f5677e2d651a10113"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_protocol.html#a54486de62e2f040f5677e2d651a10113">readFMSPacket</a> (const QByteArray &amp;data)</td></tr>
+<tr class="separator:a54486de62e2f040f5677e2d651a10113"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0e591590664c3826ff530ebf5e89647"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_protocol.html#ac0e591590664c3826ff530ebf5e89647">readRadioPacket</a> (const QByteArray &amp;data)</td></tr>
+<tr class="separator:ac0e591590664c3826ff530ebf5e89647"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afee2c18e88515e3911992d07b374edf9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_protocol.html#afee2c18e88515e3911992d07b374edf9">readRobotPacket</a> (const QByteArray &amp;data)</td></tr>
+<tr class="separator:afee2c18e88515e3911992d07b374edf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3455eac0a73d6a774bb794a53290e44e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_protocol.html#a3455eac0a73d6a774bb794a53290e44e">resetLossCounter</a> ()</td></tr>
 <tr class="separator:a3455eac0a73d6a774bb794a53290e44e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b97878c17555bfb11bcab2f3e115c1f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_protocol.html#a1b97878c17555bfb11bcab2f3e115c1f">sentFMSPackets</a> ()</td></tr>
@@ -275,7 +275,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_sentRobotPacketsSinc
 
 <p>References <a class="el" href="class_d_s___config.html#a1e29e8a798cd1e08c224e348028d2666">DS_Config::getInstance()</a>.</p>
 
-<p>Referenced by <a class="el" href="class_f_r_c__2014.html#a1bac743ce3a2359a8fd36b6da2e47f4c">FRC_2014::getAlliance()</a>, <a class="el" href="class_f_r_c__2014.html#a22f20a83fa348eaebfed881bbf31a4b9">FRC_2014::getOperationCode()</a>, <a class="el" href="class_f_r_c__2014.html#a3789b8aa9c85e34810954f1b81d1ce4e">FRC_2014::getPosition()</a>, <a class="el" href="class_f_r_c__2014.html#a64ccbd5568aec6a36dcc74a02bb2d75f">FRC_2014::getRobotPacket()</a>, <a class="el" href="class_f_r_c__2014.html#aa27eb2b9d7bade0f469646f6a2e2764e">FRC_2014::interpretFMSPacket()</a>, <a class="el" href="class_f_r_c__2014.html#af2e8ef9a5061818434859252649d37e3">FRC_2014::interpretRobotPacket()</a>, <a class="el" href="class_f_r_c__2014.html#a3305d41fb71a27ab33c4e1da6c072ed4">FRC_2014::radioAddress()</a>, <a class="el" href="class_protocol.html#a58f9e18190b0f28f542272c43fe128e8">radioAddress()</a>, <a class="el" href="class_protocol.html#af26d3ead84de80ab87e3e2203e14af7a">readFMSPacket()</a>, <a class="el" href="class_protocol.html#ae19049f3b0ed22b985b431a9c5698e42">readRadioPacket()</a>, <a class="el" href="class_protocol.html#ae1c9300ce6477a4fd5c1fe950a0868ae">readRobotPacket()</a>, <a class="el" href="class_f_r_c__2016.html#a7c338c5d766df26049a0b579246e4e1a">FRC_2016::robotAddress()</a>, <a class="el" href="class_f_r_c__2014.html#a4ab848e0a12ec21e91058129041090c4">FRC_2014::robotAddress()</a>, and <a class="el" href="class_protocol.html#ab3d468b2e68ba806a9fdd97e25c4c363">robotAddress()</a>.</p>
+<p>Referenced by <a class="el" href="class_f_r_c__2014.html#ae9de962e23b7b991e6006c64382ce902">FRC_2014::getAlliance()</a>, <a class="el" href="class_f_r_c__2014.html#a84edd8ca7731160c99fc8b271fb44ec6">FRC_2014::getOperationCode()</a>, <a class="el" href="class_f_r_c__2014.html#aa3c7f91ede420d6bc11fd9318be8cb22">FRC_2014::getPosition()</a>, <a class="el" href="class_f_r_c__2014.html#a64ccbd5568aec6a36dcc74a02bb2d75f">FRC_2014::getRobotPacket()</a>, <a class="el" href="class_f_r_c__2014.html#aa27eb2b9d7bade0f469646f6a2e2764e">FRC_2014::interpretFMSPacket()</a>, <a class="el" href="class_f_r_c__2014.html#af2e8ef9a5061818434859252649d37e3">FRC_2014::interpretRobotPacket()</a>, <a class="el" href="class_f_r_c__2014.html#a3305d41fb71a27ab33c4e1da6c072ed4">FRC_2014::radioAddress()</a>, <a class="el" href="class_protocol.html#a58f9e18190b0f28f542272c43fe128e8">radioAddress()</a>, <a class="el" href="class_protocol.html#a54486de62e2f040f5677e2d651a10113">readFMSPacket()</a>, <a class="el" href="class_protocol.html#ac0e591590664c3826ff530ebf5e89647">readRadioPacket()</a>, <a class="el" href="class_protocol.html#afee2c18e88515e3911992d07b374edf9">readRobotPacket()</a>, <a class="el" href="class_f_r_c__2016.html#a7c338c5d766df26049a0b579246e4e1a">FRC_2016::robotAddress()</a>, <a class="el" href="class_f_r_c__2014.html#a4ab848e0a12ec21e91058129041090c4">FRC_2014::robotAddress()</a>, and <a class="el" href="class_protocol.html#ab3d468b2e68ba806a9fdd97e25c4c363">robotAddress()</a>.</p>
 
 </div>
 </div>
@@ -614,7 +614,7 @@ We recommend you to redefine this function in your protocol to avoid breaking it
 
 <p>Reimplemented in <a class="el" href="class_f_r_c__2015.html#a1c62f3239f4b11841c0edfdbe27c6cba">FRC_2015</a>, and <a class="el" href="class_f_r_c__2014.html#aa27eb2b9d7bade0f469646f6a2e2764e">FRC_2014</a>.</p>
 
-<p>Referenced by <a class="el" href="class_protocol.html#af26d3ead84de80ab87e3e2203e14af7a">readFMSPacket()</a>.</p>
+<p>Referenced by <a class="el" href="class_protocol.html#a54486de62e2f040f5677e2d651a10113">readFMSPacket()</a>.</p>
 
 </div>
 </div>
@@ -641,7 +641,7 @@ We recommend you to redefine this function in your protocol to avoid breaking it
 </div><div class="memdoc">
 <p>Interprets the <em>data</em> received from the radio and adjusts the Driver Station properties accordingly. </p>
 
-<p>Referenced by <a class="el" href="class_protocol.html#ae19049f3b0ed22b985b431a9c5698e42">readRadioPacket()</a>.</p>
+<p>Referenced by <a class="el" href="class_protocol.html#ac0e591590664c3826ff530ebf5e89647">readRadioPacket()</a>.</p>
 
 </div>
 </div>
@@ -670,7 +670,7 @@ We recommend you to redefine this function in your protocol to avoid breaking it
 
 <p>Reimplemented in <a class="el" href="class_f_r_c__2015.html#a8181532d5b491905c283997002946f2a">FRC_2015</a>, and <a class="el" href="class_f_r_c__2014.html#af2e8ef9a5061818434859252649d37e3">FRC_2014</a>.</p>
 
-<p>Referenced by <a class="el" href="class_protocol.html#ae1c9300ce6477a4fd5c1fe950a0868ae">readRobotPacket()</a>.</p>
+<p>Referenced by <a class="el" href="class_protocol.html#afee2c18e88515e3911992d07b374edf9">readRobotPacket()</a>.</p>
 
 </div>
 </div>
@@ -1177,7 +1177,7 @@ We recommend you to redefine this function in your protocol to avoid breaking it
 
 </div>
 </div>
-<a class="anchor" id="af26d3ead84de80ab87e3e2203e14af7a"></a>
+<a class="anchor" id="a54486de62e2f040f5677e2d651a10113"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1185,7 +1185,7 @@ We recommend you to redefine this function in your protocol to avoid breaking it
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Protocol::readFMSPacket </td>
+          <td class="memname">bool Protocol::readFMSPacket </td>
           <td>(</td>
           <td class="paramtype">const QByteArray &amp;&#160;</td>
           <td class="paramname"><em>data</em></td><td>)</td>
@@ -1202,11 +1202,9 @@ We recommend you to redefine this function in your protocol to avoid breaking it
 
 <p>References <a class="el" href="class_protocol.html#a1a80363b686cb1e2ac5a043f7afad293">config()</a>, <a class="el" href="class_protocol.html#a118d019160f48687158df06a624d713f">interpretFMSPacket()</a>, <a class="el" href="class_d_s.html#ae69a660d28f13e0b69e577637e18cff2a1ff2d5c5b83da3706f8da0176a7fc243">DS::kCommsWorking</a>, and <a class="el" href="class_d_s___config.html#a51629504f528e8ab0a66e1dd94fb589c">DS_Config::updateFMSCommStatus()</a>.</p>
 
-<p>Referenced by <a class="el" href="class_driver_station.html#a57b27eea19e4e7cec1782d8c5383f7ba">DriverStation::readFMSPacket()</a>.</p>
-
 </div>
 </div>
-<a class="anchor" id="ae19049f3b0ed22b985b431a9c5698e42"></a>
+<a class="anchor" id="ac0e591590664c3826ff530ebf5e89647"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1214,7 +1212,7 @@ We recommend you to redefine this function in your protocol to avoid breaking it
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Protocol::readRadioPacket </td>
+          <td class="memname">bool Protocol::readRadioPacket </td>
           <td>(</td>
           <td class="paramtype">const QByteArray &amp;&#160;</td>
           <td class="paramname"><em>data</em></td><td>)</td>
@@ -1231,11 +1229,9 @@ We recommend you to redefine this function in your protocol to avoid breaking it
 
 <p>References <a class="el" href="class_protocol.html#a1a80363b686cb1e2ac5a043f7afad293">config()</a>, <a class="el" href="class_protocol.html#a04680ab9f86735205b6a217f46ed54f4">interpretRadioPacket()</a>, <a class="el" href="class_d_s.html#ae69a660d28f13e0b69e577637e18cff2a1ff2d5c5b83da3706f8da0176a7fc243">DS::kCommsWorking</a>, and <a class="el" href="class_d_s___config.html#a04bda4a7d261bfe3a286ae3ddd7879df">DS_Config::updateRadioCommStatus()</a>.</p>
 
-<p>Referenced by <a class="el" href="class_driver_station.html#a9300d83ba68c07c923951fa32694dd52">DriverStation::readRadioPacket()</a>.</p>
-
 </div>
 </div>
-<a class="anchor" id="ae1c9300ce6477a4fd5c1fe950a0868ae"></a>
+<a class="anchor" id="afee2c18e88515e3911992d07b374edf9"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1243,7 +1239,7 @@ We recommend you to redefine this function in your protocol to avoid breaking it
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Protocol::readRobotPacket </td>
+          <td class="memname">bool Protocol::readRobotPacket </td>
           <td>(</td>
           <td class="paramtype">const QByteArray &amp;&#160;</td>
           <td class="paramname"><em>data</em></td><td>)</td>
@@ -1259,8 +1255,6 @@ We recommend you to redefine this function in your protocol to avoid breaking it
 <p>Lets the protocol implementation interpret the given <em>data</em> and updates the received robot packets counter. </p>
 
 <p>References <a class="el" href="class_protocol.html#a1a80363b686cb1e2ac5a043f7afad293">config()</a>, <a class="el" href="class_protocol.html#a53b6a8135c58ab50764500d2a92708f6">interpretRobotPacket()</a>, <a class="el" href="class_d_s.html#ae69a660d28f13e0b69e577637e18cff2a1ff2d5c5b83da3706f8da0176a7fc243">DS::kCommsWorking</a>, <a class="el" href="class_protocol.html#a3455eac0a73d6a774bb794a53290e44e">resetLossCounter()</a>, and <a class="el" href="class_d_s___config.html#a22cec310c1896c0c99f8982db28ade64">DS_Config::updateRobotCommStatus()</a>.</p>
-
-<p>Referenced by <a class="el" href="class_driver_station.html#ad2a70df3d3dbf1fa9a9d772c864f7313">DriverStation::readRobotPacket()</a>.</p>
 
 </div>
 </div>
@@ -1414,7 +1408,7 @@ We recommend you to redefine this function in your protocol to avoid breaking it
 </div><div class="memdoc">
 <p>Ensures that the packet loss is calculated based on current values and not on previous robot packet loss data. </p>
 
-<p>Referenced by <a class="el" href="class_protocol.html#ae1c9300ce6477a4fd5c1fe950a0868ae">readRobotPacket()</a>, and <a class="el" href="class_driver_station.html#aaa7c9c077ec996e798e9f6eaef8198f7">DriverStation::resetRobot()</a>.</p>
+<p>Referenced by <a class="el" href="class_protocol.html#afee2c18e88515e3911992d07b374edf9">readRobotPacket()</a>, and <a class="el" href="class_driver_station.html#aaa7c9c077ec996e798e9f6eaef8198f7">DriverStation::resetRobot()</a>.</p>
 
 </div>
 </div>
