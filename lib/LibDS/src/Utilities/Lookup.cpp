@@ -23,10 +23,14 @@ Lookup::Lookup() {
  *
  * \note If the host \a name has already been found, the lookup will be
  *       canceled, but a signal will be emitted for the client to use
- * \note If the host \a name is empty, the lookup will be canceled
  * \note If the host \a name ends with ".local", the integrated mDNSResponder
  *       will lookup the given host \a name (only if the OS does not provide
  *       its own implementation of mDNS).
+ * \warning If the host \a name is empty, the lookup will be canceled
+ * \warning If the \a name does not contain dots (.) or colons (:), the lookup
+ *          will be canceled to avoid crashes on Android devices
+ * \warning If the \a name ends with a dot (.) or a colon (:), the lookup will be
+ *          canceled to avoid crashes on Android devices.
  */
 void Lookup::lookup (const QString& name) {
     if (name.isEmpty())
@@ -40,8 +44,14 @@ void Lookup::lookup (const QString& name) {
     if (name.endsWith (".local", Qt::CaseInsensitive))
         m_mDNS->lookup (name);
 
-    else
-        QHostInfo::lookupHost (name, this, SLOT (onLookupFinished (QHostInfo)));
+    else {
+        bool containsValidChars = name.contains (".") || name.contains (":");
+        bool doesNotEndWithDots = !name.endsWith (".") && !name.endsWith (":");
+
+        if (containsValidChars && doesNotEndWithDots)
+            QHostInfo::lookupHost (name,
+                                   this, SLOT (onLookupFinished (QHostInfo)));
+    }
 }
 
 /**
