@@ -7,15 +7,14 @@
  */
 
 #include <QTimer>
+#include <qMDNS.h>
 
 #include "Lookup.h"
-#include "MulticastDNS.h"
 
 Lookup::Lookup() {
     clearCache();
-    m_mDNS = new MulticastDNS;
-    connect (m_mDNS, SIGNAL (finished (QHostInfo)),
-             this,     SLOT (onLookupFinished (QHostInfo)));
+    connect (qMDNS::getInstance(), &qMDNS::hostFound,
+             this,                 &Lookup::onLookupFinished);
 }
 
 /**
@@ -23,35 +22,18 @@ Lookup::Lookup() {
  *
  * \note If the host \a name has already been found, the lookup will be
  *       canceled, but a signal will be emitted for the client to use
- * \note If the host \a name ends with ".local", the integrated mDNSResponder
- *       will lookup the given host \a name (only if the OS does not provide
- *       its own implementation of mDNS).
  * \warning If the host \a name is empty, the lookup will be canceled
- * \warning If the \a name does not contain dots (.) or colons (:), the lookup
- *          will be canceled to avoid crashes on Android devices
- * \warning If the \a name ends with a dot (.) or a colon (:), the lookup will be
- *          canceled to avoid crashes on Android devices.
  */
 void Lookup::lookup (const QString& name) {
     if (name.isEmpty())
         return;
 
-    if (found (name)) {
+    if (isOnCache (name)) {
         emit lookupFinished (name, getAddress (name));
         return;
     }
 
-    if (name.endsWith (".local", Qt::CaseInsensitive))
-        m_mDNS->lookup (name);
-
-    else {
-        bool containsValidChars = name.contains (".") || name.contains (":");
-        bool doesNotEndWithDots = !name.endsWith (".") && !name.endsWith (":");
-
-        if (containsValidChars && doesNotEndWithDots)
-            QHostInfo::lookupHost (name,
-                                   this, SLOT (onLookupFinished (QHostInfo)));
-    }
+    qMDNS::getInstance()->lookup (name);
 }
 
 /**
@@ -76,7 +58,7 @@ void Lookup::onLookupFinished (const QHostInfo& info) {
     if (address.isNull())
         return;
 
-    if (!found (info.hostName()))
+    if (!isOnCache (info.hostName()))
         m_hosts.append (qMakePair (info.hostName(), address));
 
     emit lookupFinished (info.hostName(), address);
@@ -86,7 +68,7 @@ void Lookup::onLookupFinished (const QHostInfo& info) {
  * Returns \c true if the given host \a name has already been found by the
  * lookup mechanism(s).
  */
-bool Lookup::found (const QString& name) {
+bool Lookup::isOnCache (const QString& name) {
     return !getAddress (name).isNull();
 }
 

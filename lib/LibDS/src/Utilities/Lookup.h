@@ -10,8 +10,6 @@
 #include <QObject>
 #include <QHostInfo>
 
-class MulticastDNS;
-
 /**
  * @brief Performs host lookups to obtain socket-usable IP addresses
  */
@@ -32,10 +30,9 @@ class Lookup : public QObject {
     void onLookupFinished (const QHostInfo& info);
 
   private:
-    bool found (const QString& name);
+    bool isOnCache (const QString& name);
     QHostAddress getAddress (const QString& name);
 
   private:
-    MulticastDNS* m_mDNS;
     QList<QPair<QString, QHostAddress>> m_hosts;
 };

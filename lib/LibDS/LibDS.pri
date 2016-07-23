@@ -26,6 +26,8 @@ CODECFORSRC = UTF-8
 CONFIG += c++11
 INCLUDEPATH += $$PWD/src
 
+include ($$PWD/lib/qMDNS/qMDNS.pri)
+
 QT += core
 QT += network
 QT += widgets
@@ -45,7 +47,6 @@ HEADERS += \
     $$PWD/src/Core/DS_Config.h \
     $$PWD/src/Core/DS_Common.h \
     $$PWD/src/Core/Logger.h \
-    $$PWD/src/Utilities/MulticastDNS.h \
     $$PWD/src/Utilities/Lookup.h
 
 SOURCES += \
@@ -59,5 +60,4 @@ SOURCES += \
     $$PWD/src/DriverStation.cpp \
     $$PWD/src/Core/DS_Config.cpp \
     $$PWD/src/Core/Logger.cpp \
-    $$PWD/src/Utilities/MulticastDNS.cpp \
     $$PWD/src/Utilities/Lookup.cpp

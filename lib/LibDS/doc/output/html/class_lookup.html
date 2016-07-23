@@ -95,6 +95,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Lookup Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Performs host lookups to obtain socket-usable IP addresses.  
+ <a href="class_lookup.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="_lookup_8h_source.html">Lookup.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Lookup:</div>
 <div class="dyncontent">
@@ -124,21 +129,20 @@ Private Slots</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:aa507398d753922b4a726606db254c4ce"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lookup.html#aa507398d753922b4a726606db254c4ce">found</a> (const QString &amp;name)</td></tr>
-<tr class="separator:aa507398d753922b4a726606db254c4ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad57f6da761302d116762a85e27b46051"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lookup.html#ad57f6da761302d116762a85e27b46051">isOnCache</a> (const QString &amp;name)</td></tr>
+<tr class="separator:ad57f6da761302d116762a85e27b46051"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b901932ccebf3d2b5bdf2082617c60c"><td class="memItemLeft" align="right" valign="top">QHostAddress&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lookup.html#a9b901932ccebf3d2b5bdf2082617c60c">getAddress</a> (const QString &amp;name)</td></tr>
 <tr class="separator:a9b901932ccebf3d2b5bdf2082617c60c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a484edf5653e769fbc6a9559761df073e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a484edf5653e769fbc6a9559761df073e"></a>
-<a class="el" href="class_multicast_d_n_s.html">MulticastDNS</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_mDNS</b></td></tr>
-<tr class="separator:a484edf5653e769fbc6a9559761df073e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abed428d7b932a7858b58128513468fa3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abed428d7b932a7858b58128513468fa3"></a>
 QList&lt; QPair&lt; QString, QHostAddress &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_hosts</b></td></tr>
 <tr class="separator:abed428d7b932a7858b58128513468fa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Performs host lookups to obtain socket-usable IP addresses. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a8cdb678e227bd7aad17bfa24e647f3a7"></a>
 <div class="memitem">
 <div class="memproto">
@@ -160,35 +164,6 @@ QList&lt; QPair&lt; QString, QHostAddress &gt; &gt;&#160;</td><td class="memItem
 </table>
 </div><div class="memdoc">
 <p>Removes the host list cache periodically (every 10 seconds) </p>
-
-</div>
-</div>
-<a class="anchor" id="aa507398d753922b4a726606db254c4ce"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Lookup::found </td>
-          <td>(</td>
-          <td class="paramtype">const QString &amp;&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Returns <code>true</code> if the given host <em>name</em> has already been found by the lookup mechanism(s). </p>
-
-<p>References <a class="el" href="class_lookup.html#a9b901932ccebf3d2b5bdf2082617c60c">getAddress()</a>.</p>
-
-<p>Referenced by <a class="el" href="class_lookup.html#af67ea2ada6f6d15c1d1f4b7d8ca62d5b">lookup()</a>, and <a class="el" href="class_lookup.html#a97c556f9be21b71ed64ac5ea0826a113">onLookupFinished()</a>.</p>
 
 </div>
 </div>
@@ -216,7 +191,36 @@ QList&lt; QPair&lt; QString, QHostAddress &gt; &gt;&#160;</td><td class="memItem
 <p>Returns the IP address associated with the given host <em>name</em>.</p>
 <p>If the host <em>name</em> is not on the found hosts list, then this function will return an empty IP address (which will prompt the <code><a class="el" href="class_lookup.html#af67ea2ada6f6d15c1d1f4b7d8ca62d5b">lookup()</a></code> function to find the given host <em>name</em>). </p>
 
-<p>Referenced by <a class="el" href="class_lookup.html#aa507398d753922b4a726606db254c4ce">found()</a>, and <a class="el" href="class_lookup.html#af67ea2ada6f6d15c1d1f4b7d8ca62d5b">lookup()</a>.</p>
+<p>Referenced by <a class="el" href="class_lookup.html#ad57f6da761302d116762a85e27b46051">isOnCache()</a>, and <a class="el" href="class_lookup.html#af67ea2ada6f6d15c1d1f4b7d8ca62d5b">lookup()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad57f6da761302d116762a85e27b46051"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Lookup::isOnCache </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns <code>true</code> if the given host <em>name</em> has already been found by the lookup mechanism(s). </p>
+
+<p>References <a class="el" href="class_lookup.html#a9b901932ccebf3d2b5bdf2082617c60c">getAddress()</a>.</p>
+
+<p>Referenced by <a class="el" href="class_lookup.html#af67ea2ada6f6d15c1d1f4b7d8ca62d5b">lookup()</a>, and <a class="el" href="class_lookup.html#a97c556f9be21b71ed64ac5ea0826a113">onLookupFinished()</a>.</p>
 
 </div>
 </div>
@@ -242,13 +246,10 @@ QList&lt; QPair&lt; QString, QHostAddress &gt; &gt;&#160;</td><td class="memItem
 </table>
 </div><div class="memdoc">
 <p>Performs a lookup of the given <em>host</em> name</p>
-<dl class="section note"><dt>Note</dt><dd>If the host <em>name</em> has already been found, the lookup will be canceled, but a signal will be emitted for the client to use </dd>
-<dd>
-If the host <em>name</em> is empty, the lookup will be canceled </dd>
-<dd>
-If the host <em>name</em> ends with ".local", the integrated mDNSResponder will lookup the given host <em>name</em> (only if the OS does not provide its own implementation of mDNS). </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>If the host <em>name</em> has already been found, the lookup will be canceled, but a signal will be emitted for the client to use </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>If the host <em>name</em> is empty, the lookup will be canceled </dd></dl>
 
-<p>References <a class="el" href="class_lookup.html#aa507398d753922b4a726606db254c4ce">found()</a>, <a class="el" href="class_lookup.html#a9b901932ccebf3d2b5bdf2082617c60c">getAddress()</a>, <a class="el" href="class_multicast_d_n_s.html#a2c099bdc50600ca980be637f2b085a95">MulticastDNS::lookup()</a>, and <a class="el" href="class_lookup.html#a97c556f9be21b71ed64ac5ea0826a113">onLookupFinished()</a>.</p>
+<p>References <a class="el" href="class_lookup.html#a9b901932ccebf3d2b5bdf2082617c60c">getAddress()</a>, and <a class="el" href="class_lookup.html#ad57f6da761302d116762a85e27b46051">isOnCache()</a>.</p>
 
 <p>Referenced by <a class="el" href="class_sockets.html#aa0dc2eed622ed1634777c6572a381d2e">Sockets::performLookups()</a>.</p>
 
@@ -278,9 +279,7 @@ If the host <em>name</em> ends with ".local", the integrated mDNSResponder will 
 <p>Called when a lookup request is finished. This function will notify the client when a host name has been resolved into a valid IP address and will update the 'found hosts' list.</p>
 <dl class="section note"><dt>Note</dt><dd>If the address stored in the given host <em>info</em> is empty, this function will not emit a signal nor update the found hosts list. </dd></dl>
 
-<p>References <a class="el" href="class_lookup.html#aa507398d753922b4a726606db254c4ce">found()</a>.</p>
-
-<p>Referenced by <a class="el" href="class_lookup.html#af67ea2ada6f6d15c1d1f4b7d8ca62d5b">lookup()</a>.</p>
+<p>References <a class="el" href="class_lookup.html#ad57f6da761302d116762a85e27b46051">isOnCache()</a>.</p>
 
 </div>
 </div>
