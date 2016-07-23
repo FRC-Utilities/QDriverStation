@@ -40,8 +40,10 @@ void Console::run() {
         else if (input == "lookup" || input == "l")
             promptLookup();
 
-        else if (input == "quit" || input == "q")
-            exit (EXIT_SUCCESS);
+        else if (input == "quit" || input == "q") {
+            m_enabled = false;
+            qApp->quit();
+        }
 
         else
             showHelp();

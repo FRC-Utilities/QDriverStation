@@ -130,6 +130,9 @@ QString qMDNS::getAddress (const QString& string) {
     if (!string.endsWith (".local") && !string.contains ("."))
         address = string + ".local";
 
+    if (string.endsWith ("."))
+        return "";
+
     return address;
 }
 
@@ -167,6 +170,8 @@ void qMDNS::lookup (const QString& name, const bool preferIPv6) {
 
     /* Ensure that we host name is a valid DNS address */
     QString address = getAddress (name);
+    if (address.isEmpty())
+        return;
 
     /* Check if we are dealing with a normal DNS address */
     if (!address.endsWith (".local", Qt::CaseInsensitive)) {
