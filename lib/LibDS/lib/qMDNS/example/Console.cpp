@@ -17,9 +17,15 @@
 #include <iostream>
 
 Console::Console() {
+    m_timer = new QTimer (this);
+    m_mDNS = qMDNS::getInstance();
+
     enableUserInput();
-    connect (qMDNS::getInstance(), &qMDNS::hostFound,
-             this,                 &Console::onDeviceDiscovered);
+
+    connect (m_timer, &QTimer::timeout,
+             this,    &Console::enableUserInput);
+    connect (m_mDNS,  &qMDNS::hostFound,
+             this,    &Console::onDeviceDiscovered);
 }
 
 /**
@@ -68,7 +74,7 @@ void Console::showHelp() {
  * Displays the local computer's host name to the user
  */
 void Console::showHostName() {
-    QString name = qMDNS::getInstance()->hostName();
+    QString name = m_mDNS->hostName();
 
     if (name.isEmpty())
         qDebug() << "You have not set a host name yet, "
@@ -122,14 +128,14 @@ void Console::promptSetHost() {
  */
 void Console::lookup (QString name) {
     disableUserInput();
-    qMDNS::getInstance()->lookup (name);
+    m_mDNS->lookup (name);
 }
 
 /**
  * Instructs the qMDNS to change the local computer's host \a name
  */
 void Console::setHostName (QString name) {
-    qMDNS::getInstance()->setHostName (name);
+    m_mDNS->setHostName (name);
 }
 
 void Console::onDeviceDiscovered (const QHostInfo& info) {
@@ -158,6 +164,7 @@ void Console::enableUserInput() {
 void Console::disableUserInput() {
     if (m_enabled) {
         m_enabled = false;
-        QTimer::singleShot (5000, Qt::PreciseTimer, this, SLOT (enableUserInput()));
+        m_timer->stop();
+        m_timer->start (5000);
     }
 }

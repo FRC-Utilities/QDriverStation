@@ -23,19 +23,20 @@ const QHostAddress IPV4_ADDRESS = QHostAddress ("224.0.0.251");
 /*
  * mDNS/DNS operation flags
  */
-const uint16_t kQR_Query       = 0x00;
-const uint16_t kQR_Response    = 0x80;
+const uint16_t kQR_Query       = 0x0000;
+const uint16_t kQR_Response    = 0x8000;
 const uint16_t kRecordA        = 0x0001;
 const uint16_t kRecordAAAA     = 0x001C;
 const uint16_t kNsecType       = 0x002F;
 const uint16_t kFQDN_Separator = 0x0000;
 const uint16_t kFQDN_Length    = 0xC00C;
-const uint16_t kInternetClass  = 0x8001;
+const uint16_t kIN_BitFlush    = 0x8001;
+const uint16_t kIN_Normal      = 0x0001;
 
 /*
  * DNS query properties
  */
-const uint16_t kQuery_QDCOUNT = 0x01;
+const uint16_t kQuery_QDCOUNT = 0x02;
 const uint16_t kQuery_ANCOUNT = 0x00;
 const uint16_t kQuery_NSCOUNT = 0x00;
 const uint16_t kQuery_ARCOUNT = 0x00;
@@ -92,11 +93,13 @@ const QUdpSocket::BindMode BIND_MODE = QUdpSocket::ShareAddress |
 
 qMDNS::qMDNS() {
     m_ttl = 120;
-    m_queryID = 0;
 
-    m_IPv4Socket = new QUdpSocket;
-    m_IPv6Socket = new QUdpSocket;
+    m_sender = new QUdpSocket (this);
+    m_IPv4Socket = new QUdpSocket (this);
+    m_IPv6Socket = new QUdpSocket (this);
 
+    m_IPv4Socket->setSocketOption (QUdpSocket::MulticastLoopbackOption, 0);
+    m_IPv6Socket->setSocketOption (QUdpSocket::MulticastLoopbackOption, 0);
     m_IPv4Socket->bind (QHostAddress::AnyIPv4, MDNS_PORT, BIND_MODE);
     m_IPv6Socket->bind (QHostAddress::AnyIPv6, MDNS_PORT, BIND_MODE);
     m_IPv4Socket->joinMulticastGroup (IPV4_ADDRESS);
@@ -144,24 +147,12 @@ void qMDNS::setTTL (const uint32_t ttl) {
 }
 
 /**
- * Changes the host name of the client computer
- */
-void qMDNS::setHostName (const QString& name) {
-    if (name.contains (".") && !name.endsWith (".local")) {
-        qWarning() << "Invalid domain name";
-        return;
-    }
-
-    m_hostName = getAddress (name);
-}
-
-/**
  * Performs a mDNS lookup to find the given host \a name.
  * If \a preferIPv6 is set to \c true, then this function will generate a
  * packet that requests an AAAA-type Resource Record instead of an A-type
  * Resource Record.
  */
-void qMDNS::lookup (const QString& name, const bool preferIPv6) {
+void qMDNS::lookup (const QString& name) {
     /* The host name is empty, abort lookup */
     if (name.isEmpty()) {
         qWarning() << Q_FUNC_INFO << "Empty host name specified";
@@ -194,7 +185,7 @@ void qMDNS::lookup (const QString& name, const bool preferIPv6) {
         }
 
         /* Create header & flags */
-        data.append (ENCODE_16_BIT (m_queryID));
+        data.append (ENCODE_16_BIT (0));
         data.append (ENCODE_16_BIT (kQR_Query));
         data.append (ENCODE_16_BIT (kQuery_QDCOUNT));
         data.append (ENCODE_16_BIT (kQuery_ANCOUNT));
@@ -209,13 +200,19 @@ void qMDNS::lookup (const QString& name, const bool preferIPv6) {
         data.append (domain.length());
         data.append (domain.toUtf8());
 
-        /* Add FQDN/TLD separator, record type and class type */
+        /* Add FQDN/TLD separator */
         data.append (kFQDN_Separator);
-        data.append (ENCODE_16_BIT (preferIPv6 ? kRecordAAAA : kRecordA));
-        data.append (ENCODE_16_BIT (kInternetClass));
 
-        /* Increment the query/transaction ID for the next packet */
-        ++m_queryID;
+        /* Add IPv4 record type */
+        data.append (ENCODE_16_BIT (kRecordA));
+        data.append (ENCODE_16_BIT (kIN_Normal));
+
+        /* Add FQDN length */
+        data.append (ENCODE_16_BIT (kFQDN_Length));
+
+        /* Add IPv6 record type */
+        data.append (ENCODE_16_BIT (kRecordAAAA));
+        data.append (ENCODE_16_BIT (kIN_Normal));
 
         /* Send the datagram */
         sendPacket (data);
@@ -223,8 +220,19 @@ void qMDNS::lookup (const QString& name, const bool preferIPv6) {
 }
 
 /**
- * Called when we receive data from a mDNS service on the network.
- * \note We will only take into account mDNS response packets, not queries.
+ * Changes the host name of the client computer
+ */
+void qMDNS::setHostName (const QString& name) {
+    if (name.contains (".") && !name.endsWith (".local")) {
+        qWarning() << "Invalid domain name";
+        return;
+    }
+
+    m_hostName = getAddress (name);
+}
+
+/**
+ * Called when we receive data from a mDNS client on the network.
  */
 void qMDNS::onReadyRead() {
     QByteArray data;
@@ -240,7 +248,7 @@ void qMDNS::onReadyRead() {
 
     /* Packet is a valid mDNS datagram */
     if (data.length() > MIN_LENGTH) {
-        uint8_t flag = data.at (2);
+        uint16_t flag = DECODE_16_BIT (data.at (2), data.at (3));
 
         if (flag == kQR_Query)
             readQuery (data);
@@ -292,10 +300,11 @@ void qMDNS::readQuery (const QByteArray& data) {
  * Sends the given \a data to both the IPv4 and IPv6 mDNS multicast groups
  */
 void qMDNS::sendPacket (const QByteArray& data) {
-    if (!data.isEmpty()) {
-        m_IPv4Socket->writeDatagram (data, IPV4_ADDRESS, MDNS_PORT);
-        m_IPv6Socket->writeDatagram (data, IPV6_ADDRESS, MDNS_PORT);
-    }
+    if (data.isEmpty())
+        return;
+
+    if (m_sender->writeDatagram (data, IPV4_ADDRESS, MDNS_PORT) > 0)
+        m_sender->writeDatagram (data, IPV6_ADDRESS, MDNS_PORT);
 }
 
 /**
@@ -372,7 +381,7 @@ void qMDNS::sendResponse (const uint16_t query_id) {
 
         /* Add IPv4 information */
         data.append (ENCODE_16_BIT (kRecordA));
-        data.append (ENCODE_16_BIT (kInternetClass));
+        data.append (ENCODE_16_BIT (kIN_BitFlush));
         data.append (ENCODE_32_BIT (m_ttl));
         data.append (ENCODE_16_BIT (sizeof (ipv4)));
         data.append (ENCODE_32_BIT (ipv4));
@@ -384,7 +393,7 @@ void qMDNS::sendResponse (const uint16_t query_id) {
         foreach (QIPv6Address ip, ipv6) {
             /* Add IPv6 information */
             data.append (ENCODE_16_BIT (kRecordAAAA));
-            data.append (ENCODE_16_BIT (kInternetClass));
+            data.append (ENCODE_16_BIT (kIN_BitFlush));
             data.append (ENCODE_32_BIT (m_ttl));
             data.append (ENCODE_16_BIT (sizeof (ip.c)));
 
@@ -401,11 +410,11 @@ void qMDNS::sendResponse (const uint16_t query_id) {
 
         /* Add NSEC data */
         data.append (ENCODE_16_BIT (kNsecType));
-        data.append (ENCODE_16_BIT (kInternetClass));
+        data.append (ENCODE_16_BIT (kIN_BitFlush));
         data.append (ENCODE_32_BIT (m_ttl));
         data.append (ENCODE_16_BIT (nsec_length));
 
-        /* Send the data */
+        /* Send the response */
         sendPacket (data);
     }
 }
@@ -498,7 +507,7 @@ QString qMDNS::getIPv4FromResponse (const QByteArray& data,
     uint16_t classCode = DECODE_16_BIT (data.at (n + 3), data.at (n + 4));
 
     /* Check if type and class codes are good */
-    if (typeCode != kRecordA || classCode != kInternetClass)
+    if (typeCode != kRecordA || classCode != kIN_BitFlush)
         return ip;
 
     /* Skip TTL indicator and obtain the number of address bytes */
@@ -558,7 +567,7 @@ QStringList qMDNS::getIPv6FromResponse (const QByteArray& data,
         /* Get the IP type and class codes */
         uint16_t typeCode  = DECODE_16_BIT (data.at (n + 1), data.at (n + 2));
         uint16_t classCode = DECODE_16_BIT (data.at (n + 3), data.at (n + 4));
-        isIPv6 = (typeCode == kRecordAAAA && classCode == kInternetClass);
+        isIPv6 = (typeCode == kRecordAAAA && classCode == kIN_BitFlush);
 
         /* IP type and class codes are OK, extract IP */
         if (isIPv6) {
