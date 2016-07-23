@@ -92,7 +92,7 @@ const QUdpSocket::BindMode BIND_MODE = QUdpSocket::ShareAddress |
                                        QUdpSocket::ReuseAddressHint;
 
 qMDNS::qMDNS() {
-    m_ttl = 120;
+    m_ttl = 4500;
 
     m_sender = new QUdpSocket (this);
     m_IPv4Socket = new QUdpSocket (this);
@@ -347,10 +347,12 @@ void qMDNS::sendResponse (const uint16_t query_id) {
         /* Get local IPs */
         quint32 ipv4 = 0;
         QList<QIPv6Address> ipv6;
-        foreach (QHostAddress address, QNetworkInterface::allAddresses()) {
+        foreach (QHostAddress address,
+                 QHostInfo::fromName (QHostInfo::localHostName()).addresses()) {
             if (!address.isLoopback()) {
                 if (address.protocol() == QAbstractSocket::IPv4Protocol)
                     ipv4 = address.toIPv4Address();
+
                 if (address.protocol() == QAbstractSocket::IPv6Protocol)
                     ipv6.append (address.toIPv6Address());
             }
@@ -379,11 +381,13 @@ void qMDNS::sendResponse (const uint16_t query_id) {
         data.append (domain.toUtf8());
         data.append (kFQDN_Separator);
 
-        /* Add IPv4 information */
+        /* Add IPv4 address header */
         data.append (ENCODE_16_BIT (kRecordA));
         data.append (ENCODE_16_BIT (kIN_BitFlush));
         data.append (ENCODE_32_BIT (m_ttl));
         data.append (ENCODE_16_BIT (sizeof (ipv4)));
+
+        /* Add IPv4 bytes */
         data.append (ENCODE_32_BIT (ipv4));
 
         /* Add FQDN offset */
@@ -391,7 +395,6 @@ void qMDNS::sendResponse (const uint16_t query_id) {
 
         /* Add IPv6 addresses */
         foreach (QIPv6Address ip, ipv6) {
-            /* Add IPv6 information */
             data.append (ENCODE_16_BIT (kRecordAAAA));
             data.append (ENCODE_16_BIT (kIN_BitFlush));
             data.append (ENCODE_32_BIT (m_ttl));
