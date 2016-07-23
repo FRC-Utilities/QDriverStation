@@ -331,7 +331,7 @@ void qMDNS::sendResponse (const uint16_t query_id) {
         QString domain = hostName().split (".").last();
 
         /* Get local IPs */
-        quint32 ipv4;
+        quint32 ipv4 = 0;
         QList<QIPv6Address> ipv6;
         foreach (QHostAddress address, QNetworkInterface::allAddresses()) {
             if (!address.isLoopback()) {
