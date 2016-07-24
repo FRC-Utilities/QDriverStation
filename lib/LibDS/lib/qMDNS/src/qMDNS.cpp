@@ -13,41 +13,45 @@
 #include <QHostAddress>
 #include <QNetworkInterface>
 
+#ifdef Q_OS_LINUX
+    #include <sys/socket.h>
+#endif
+
 /*
  * DNS port and mutlicast addresses
  */
-const uint16_t MDNS_PORT = 5353;
+const quint16 MDNS_PORT = 5353;
 const QHostAddress IPV6_ADDRESS = QHostAddress ("FF02::FB");
 const QHostAddress IPV4_ADDRESS = QHostAddress ("224.0.0.251");
 
 /*
  * mDNS/DNS operation flags
  */
-const uint16_t kQR_Query       = 0x0000;
-const uint16_t kQR_Response    = 0x8000;
-const uint16_t kRecordA        = 0x0001;
-const uint16_t kRecordAAAA     = 0x001C;
-const uint16_t kNsecType       = 0x002F;
-const uint16_t kFQDN_Separator = 0x0000;
-const uint16_t kFQDN_Length    = 0xC00C;
-const uint16_t kIN_BitFlush    = 0x8001;
-const uint16_t kIN_Normal      = 0x0001;
+const quint16 kQR_Query       = 0x0000;
+const quint16 kQR_Response    = 0x8000;
+const quint16 kRecordA        = 0x0001;
+const quint16 kRecordAAAA     = 0x001C;
+const quint16 kNsecType       = 0x002F;
+const quint16 kFQDN_Separator = 0x0000;
+const quint16 kFQDN_Length    = 0xC00C;
+const quint16 kIN_BitFlush    = 0x8001;
+const quint16 kIN_Normal      = 0x0001;
 
 /*
  * DNS query properties
  */
-const uint16_t kQuery_QDCOUNT = 0x02;
-const uint16_t kQuery_ANCOUNT = 0x00;
-const uint16_t kQuery_NSCOUNT = 0x00;
-const uint16_t kQuery_ARCOUNT = 0x00;
+const quint16 kQuery_QDCOUNT = 0x02;
+const quint16 kQuery_ANCOUNT = 0x00;
+const quint16 kQuery_NSCOUNT = 0x00;
+const quint16 kQuery_ARCOUNT = 0x00;
 
 /*
  * DNS response properties
  */
-const uint16_t kResponse_QDCOUNT = 0x00;
-const uint16_t kResponse_ANCOUNT = 0x01;
-const uint16_t kResponse_NSCOUNT = 0x00;
-const uint16_t kResponse_ARCOUNT = 0x02;
+const quint16 kResponse_QDCOUNT = 0x00;
+const quint16 kResponse_ANCOUNT = 0x01;
+const quint16 kResponse_NSCOUNT = 0x00;
+const quint16 kResponse_ARCOUNT = 0x02;
 
 /* Packet constants */
 const int MIN_LENGTH = 13;
@@ -58,7 +62,7 @@ const int IP6_LENGTH = IPI_LENGTH + 16;
 /**
  * Encondes the 16-bit \a number as two 8-bit numbers in a byte array
  */
-QByteArray ENCODE_16_BIT (uint16_t number) {
+QByteArray ENCODE_16_BIT (quint16 number) {
     QByteArray data;
     data.append ((number & 0xff00) >> 8);
     data.append ((number & 0xff));
@@ -68,7 +72,7 @@ QByteArray ENCODE_16_BIT (uint16_t number) {
 /**
  * Encodes the 32-bit \a number as four 8-bit numbers
  */
-QByteArray ENCODE_32_BIT (uint32_t number) {
+QByteArray ENCODE_32_BIT (quint32 number) {
     QByteArray data;
     data.append ((number & 0xff000000UL) >> 24);
     data.append ((number & 0x00ff0000UL) >> 16);
@@ -80,33 +84,61 @@ QByteArray ENCODE_32_BIT (uint32_t number) {
 /**
  * Obtains the 16-bit number stored in the \a upper and \a lower 8-bit numbers
  */
-uint16_t DECODE_16_BIT (uint8_t upper, uint8_t lower) {
-    return (uint16_t) ((upper << 8) | lower);
+quint16 DECODE_16_BIT (quint8 upper, quint8 lower) {
+    return (quint16) ((upper << 8) | lower);
 }
 
 /**
- * Represents the flags that the UDP socket uses to 'listen' for incoming
- * mDNS Packets.
+ * Binds the given \a socket to the given \a address and \a port.
+ * Under GNU/Linux, this function implements a workaround of QTBUG-33419.
  */
-const QUdpSocket::BindMode BIND_MODE = QUdpSocket::ShareAddress |
-                                       QUdpSocket::ReuseAddressHint;
+bool BIND (QUdpSocket* socket, const QHostAddress& address, const int port) {
+    if (!socket)
+        return false;
+
+#ifdef Q_OS_LINUX
+    int reuse = 1;
+    int domain = PF_UNSPEC;
+
+    if (address.protocol() == QAbstractSocket::IPv4Protocol)
+        domain = PF_INET;
+    else if (address.protocol() == QAbstractSocket::IPv6Protocol)
+        domain = PF_INET6;
+
+    socket->setSocketDescriptor (::socket (domain, SOCK_DGRAM, 0),
+                                 QUdpSocket::UnconnectedState);
+
+    setsockopt (socket->socketDescriptor(), SOL_SOCKET, SO_REUSEADDR,
+                &reuse, sizeof (reuse));
+#endif
+
+    return socket->bind (address, port,
+                         QUdpSocket::ShareAddress |
+                         QUdpSocket::ReuseAddressHint);
+}
 
 qMDNS::qMDNS() {
+    /* Set default TTL to 4500 seconds */
     m_ttl = 4500;
 
-    m_sender = new QUdpSocket (this);
+    /* Initialize sockets */
     m_IPv4Socket = new QUdpSocket (this);
     m_IPv6Socket = new QUdpSocket (this);
 
-    m_IPv4Socket->setSocketOption (QUdpSocket::MulticastLoopbackOption, 0);
-    m_IPv6Socket->setSocketOption (QUdpSocket::MulticastLoopbackOption, 0);
-    m_IPv4Socket->bind (QHostAddress::AnyIPv4, MDNS_PORT, BIND_MODE);
-    m_IPv6Socket->bind (QHostAddress::AnyIPv6, MDNS_PORT, BIND_MODE);
-    m_IPv4Socket->joinMulticastGroup (IPV4_ADDRESS);
-    m_IPv6Socket->joinMulticastGroup (IPV6_ADDRESS);
+    /* Read and interpret data received from mDNS group */
+    connect (m_IPv4Socket, &QUdpSocket::readyRead, this, &qMDNS::onReadyRead);
+    connect (m_IPv6Socket, &QUdpSocket::readyRead, this, &qMDNS::onReadyRead);
 
-    connect (m_IPv4Socket, SIGNAL (readyRead()), this, SLOT (onReadyRead()));
-    connect (m_IPv6Socket, SIGNAL (readyRead()), this, SLOT (onReadyRead()));
+    /* Bind the sockets to the mDNS multicast group */
+    if (BIND (m_IPv4Socket, QHostAddress::AnyIPv4, MDNS_PORT))
+        m_IPv4Socket->joinMulticastGroup (IPV4_ADDRESS);
+    if (BIND (m_IPv6Socket, QHostAddress::AnyIPv6, MDNS_PORT))
+        m_IPv6Socket->joinMulticastGroup (IPV6_ADDRESS);
+}
+
+qMDNS::~qMDNS() {
+    delete m_IPv4Socket;
+    delete m_IPv6Socket;
 }
 
 /**
@@ -142,7 +174,7 @@ QString qMDNS::getAddress (const QString& string) {
 /**
  * Changes the TTL send to other computers in the mDNS network
  */
-void qMDNS::setTTL (const uint32_t ttl) {
+void qMDNS::setTTL (const quint32 ttl) {
     m_ttl = ttl;
 }
 
@@ -201,7 +233,7 @@ void qMDNS::lookup (const QString& name) {
         data.append (domain.toUtf8());
 
         /* Add FQDN/TLD separator */
-        data.append (kFQDN_Separator);
+        data.append ((char) kFQDN_Separator);
 
         /* Add IPv4 record type */
         data.append (ENCODE_16_BIT (kRecordA));
@@ -248,7 +280,7 @@ void qMDNS::onReadyRead() {
 
     /* Packet is a valid mDNS datagram */
     if (data.length() > MIN_LENGTH) {
-        uint16_t flag = DECODE_16_BIT (data.at (2), data.at (3));
+        quint16 flag = DECODE_16_BIT (data.at (2), data.at (3));
 
         if (flag == kQR_Query)
             readQuery (data);
@@ -300,11 +332,10 @@ void qMDNS::readQuery (const QByteArray& data) {
  * Sends the given \a data to both the IPv4 and IPv6 mDNS multicast groups
  */
 void qMDNS::sendPacket (const QByteArray& data) {
-    if (data.isEmpty())
-        return;
-
-    if (m_sender->writeDatagram (data, IPV4_ADDRESS, MDNS_PORT) > 0)
-        m_sender->writeDatagram (data, IPV6_ADDRESS, MDNS_PORT);
+    if (!data.isEmpty()) {
+        m_IPv4Socket->writeDatagram (data, IPV4_ADDRESS, MDNS_PORT);
+        m_IPv6Socket->writeDatagram (data, IPV6_ADDRESS, MDNS_PORT);
+    }
 }
 
 /**
@@ -336,7 +367,7 @@ void qMDNS::readResponse (const QByteArray& data) {
  * - Our IPv4 address
  * - Our IPv6 address
  */
-void qMDNS::sendResponse (const uint16_t query_id) {
+void qMDNS::sendResponse (const quint16 query_id) {
     if (!hostName().isEmpty() && hostName().endsWith (".local")) {
         QByteArray data;
 
@@ -347,11 +378,10 @@ void qMDNS::sendResponse (const uint16_t query_id) {
         /* Get local IPs */
         quint32 ipv4 = 0;
         QList<QIPv6Address> ipv6;
-        foreach (QHostAddress address,
-                 QHostInfo::fromName (QHostInfo::localHostName()).addresses()) {
+        foreach (QHostAddress address, QNetworkInterface::allAddresses()) {
             if (!address.isLoopback()) {
                 if (address.protocol() == QAbstractSocket::IPv4Protocol)
-                    ipv4 = address.toIPv4Address();
+                    ipv4 = (ipv4 == 0 ? address.toIPv4Address() : ipv4);
 
                 if (address.protocol() == QAbstractSocket::IPv6Protocol)
                     ipv6.append (address.toIPv6Address());
@@ -379,7 +409,7 @@ void qMDNS::sendResponse (const uint16_t query_id) {
         /* Add domain data and FQDN/TLD separator */
         data.append (domain.length());
         data.append (domain.toUtf8());
-        data.append (kFQDN_Separator);
+        data.append ((char) kFQDN_Separator);
 
         /* Add IPv4 address header */
         data.append (ENCODE_16_BIT (kRecordA));
@@ -506,19 +536,19 @@ QString qMDNS::getIPv4FromResponse (const QByteArray& data,
         return ip;
 
     /* Get the IP type and class codes */
-    uint16_t typeCode  = DECODE_16_BIT (data.at (n + 1), data.at (n + 2));
-    uint16_t classCode = DECODE_16_BIT (data.at (n + 3), data.at (n + 4));
+    quint16 typeCode  = DECODE_16_BIT (data.at (n + 1), data.at (n + 2));
+    quint16 classCode = DECODE_16_BIT (data.at (n + 3), data.at (n + 4));
 
     /* Check if type and class codes are good */
     if (typeCode != kRecordA || classCode != kIN_BitFlush)
         return ip;
 
     /* Skip TTL indicator and obtain the number of address bytes */
-    uint8_t length = data.at (n + IPI_LENGTH);
+    quint8 length = data.at (n + IPI_LENGTH);
 
     /* Append each IPv4 address byte (and decimal dots) to the IP string */
     for (int i = 1; i < length + 1; ++i) {
-        ip += QString::number ((uint8_t) data.at (n + IPI_LENGTH + i));
+        ip += QString::number ((quint8) data.at (n + IPI_LENGTH + i));
         ip += (i < length) ? "." : "";
     }
 
@@ -568,21 +598,21 @@ QStringList qMDNS::getIPv6FromResponse (const QByteArray& data,
             break;
 
         /* Get the IP type and class codes */
-        uint16_t typeCode  = DECODE_16_BIT (data.at (n + 1), data.at (n + 2));
-        uint16_t classCode = DECODE_16_BIT (data.at (n + 3), data.at (n + 4));
+        quint16 typeCode  = DECODE_16_BIT (data.at (n + 1), data.at (n + 2));
+        quint16 classCode = DECODE_16_BIT (data.at (n + 3), data.at (n + 4));
         isIPv6 = (typeCode == kRecordAAAA && classCode == kIN_BitFlush);
 
         /* IP type and class codes are OK, extract IP */
         if (isIPv6) {
             /* Skip TTL indicator and obtain the number of address bytes */
-            uint8_t length = data.at (n + IPI_LENGTH);
+            quint8 length = data.at (n + IPI_LENGTH);
 
             /* Append each IPv6 address byte (encoded as hex) to the IP string */
             QString ip = "";
             for (int i = 1; i < length + 1; ++i) {
                 /* Get the hexadecimal representation of the byte */
                 QString byte;
-                byte.setNum ((uint8_t) data.at (n + i + IPI_LENGTH), 16);
+                byte.setNum ((quint8) data.at (n + i + IPI_LENGTH), 16);
 
                 /* Add the obtained string */
                 ip += byte;

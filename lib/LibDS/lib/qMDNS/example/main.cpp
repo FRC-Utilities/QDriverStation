@@ -17,9 +17,10 @@ int main (int argc, char** argv) {
 #if defined Q_OS_WIN
     system ("cls");
 #else
-    system ("clear");
+    Q_UNUSED (system ("clear"));
 #endif
 
+    qDebug() << "qMDNS Example Project";
     qDebug() << "Welcome, type \"help\" to get started.\n";
 
     Console console;
