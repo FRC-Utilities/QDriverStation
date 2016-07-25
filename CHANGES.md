@@ -3,12 +3,14 @@
 ### QDriverStation 16.07
 
 - Add some CLI options
+- Add integrated mDNS responder
+- Save logs as JSON files
 - Allow user to set custom radio & FMS IPs
-- Implement lookup loop
 - Improve handling of FMS packets
 - Minor improvements in code structure
 - Add code to interpret 2014 FMS packets
-- Implement logs window (with robot events)
+- Implement logs window (netconsole + app logs)
+- Fix communication issues
 
 ### QDriverStation 16.06.2
 
