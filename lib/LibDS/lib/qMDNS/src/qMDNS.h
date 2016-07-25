@@ -41,11 +41,12 @@ class qMDNS : public QObject {
 
   protected:
     explicit qMDNS();
+    ~qMDNS();
 
   public slots:
-    void setTTL (const uint32_t ttl);
+    void setTTL (const quint32 ttl);
+    void lookup (const QString& name);
     void setHostName (const QString& name);
-    void lookup (const QString& name, const bool preferIPv6 = false);
 
   private slots:
     void onReadyRead();
@@ -62,8 +63,7 @@ class qMDNS : public QObject {
                                                   const QString& host);
 
   private:
-    uint32_t m_ttl;
-    uint16_t m_queryID;
+    quint32 m_ttl;
     QString m_hostName;
     QUdpSocket* m_IPv4Socket;
     QUdpSocket* m_IPv6Socket;

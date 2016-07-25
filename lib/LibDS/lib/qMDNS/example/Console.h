@@ -9,6 +9,9 @@
 #include <QObject>
 #include <QHostInfo>
 
+class qMDNS;
+class QTimer;
+
 class Console : public QObject {
     Q_OBJECT
 
@@ -31,4 +34,6 @@ class Console : public QObject {
 
   private:
     bool m_enabled;
+    qMDNS* m_mDNS;
+    QTimer* m_timer;
 };
