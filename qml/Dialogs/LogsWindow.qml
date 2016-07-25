@@ -324,6 +324,12 @@ Window {
                         id: plot
                         Layout.fillWidth: true
                         Layout.fillHeight: true
+
+                        Label {
+                            size: large
+                            anchors.centerIn: parent
+                            text: qsTr ("Coming soon") + "..."
+                        }
                     }
 
                     //
