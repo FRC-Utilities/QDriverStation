@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>QDriverStation</string>
 	<key>CFBundleGetInfoString</key>
-	<string>16.07, Copyright © 2015-2016 Alex Spataru</string>
+	<string>16.08, Copyright © 2015-2016 Alex Spataru</string>
 	<key>CFBundleIconFile</key>
 	<string>icon</string>
 	<key>CFBundleIdentifier</key>

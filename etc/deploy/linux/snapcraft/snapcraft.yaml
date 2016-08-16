@@ -1,5 +1,5 @@
 name: qdriverstation
-version: 16.07
+version: 16.08
 summary: Open source clone of the FRC Driver Station
 description: |
   The QDriverStation is a cross-platform and open-source alternative to the FRC Driver Station. 

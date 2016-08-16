@@ -1,3 +1,9 @@
+qdriverstation (16.08) stable; urgency=low
+
+  * Fix issue where we the QDriverStation could not detect robot code with 2009/2014 robots
+
+ -- Alex Spataru <alex_spataru@outlook.com>  Mon, 4 Jul 2016 01:00:00 +0100
+ 
 qdriverstation (16.07) stable; urgency=low
 
   * Add CLI options
