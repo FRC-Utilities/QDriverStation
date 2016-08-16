@@ -322,10 +322,8 @@ bool FRC_2014::interpretRobotPacket (const QByteArray& data) {
         return false;
     }
 
-    /* Read status echo code and voltage */
-    DS_UByte opcode  = data.at (0);
-    DS_UByte integer = data.at (1);
-    DS_UByte decimal = data.at (2);
+    /* Read status echo code */
+    DS_UByte opcode = data.at (0);
 
     /* Parse the voltage (which is stored in a strange format) */
     QString voltage;
@@ -340,10 +338,9 @@ bool FRC_2014::interpretRobotPacket (const QByteArray& data) {
     if (opcode == cEmergencyStopOn && !config()->isEmergencyStopped())
         config()->updateOperationStatus (DS::kEmergencyStop);
 
-    /* Update code status & voltage */
-    bool hasCode = (integer != 0x37) && (decimal != 0x37);
-    config()->setRobotCode (hasCode);
-    config()->updateVoltage (hasCode ? voltage.toDouble() : 0);
+    /* Let's asume that robot code is present */
+    config()->setRobotCode (true);
+    config()->updateVoltage (voltage.toDouble());
 
     /* Update simulation status */
     if (receivedRobotPackets() > 10)
