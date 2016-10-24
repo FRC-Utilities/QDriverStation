@@ -44,7 +44,7 @@ Item {
 
         if (DriverStation.joystickCount() > currentJoystick) {
             axes.model = DriverStation.getNumAxes (currentJoystick)
-            povs.model = DriverStation.getNumPOVs (currentJoystick)
+            povs.model = DriverStation.getNumHats (currentJoystick)
             buttons.model = DriverStation.getNumButtons (currentJoystick)
         }
     }
@@ -93,34 +93,31 @@ Item {
     //
     Connections {
         target: QJoysticks
-        onCountChanged: {
-            /* Reset UI controls */
-            updateControls()
 
-            /* Register joysticks with DS */
+        onCountChanged: {
+            updateControls()
             DriverStation.resetJoysticks()
+
             for (var i = 0; i < QJoysticks.count(); ++i) {
-                DriverStation.registerJoystick (QJoysticks.getNumAxes (i),
-                                                QJoysticks.getNumButtons (i),
-                                                QJoysticks.getNumPOVs (i))
+                DriverStation.addJoystick (QJoysticks.getNumAxes (i),
+                                           QJoysticks.getNumPOVs (i),
+                                           QJoysticks.getNumButtons (i))
             }
         }
 
-        /* Send joystick input data to DS */
         onPovChanged: {
-            DriverStation.updatePOV (js,
-                                     pov,
-                                     QJoysticks.isBlacklisted (currentJoystick) ? 0 : angle)
+            var val = QJoysticks.isBlacklisted (currentJoystick) ? 0 : angle
+            DriverStation.setJoystickHat (js, pov, val)
         }
+
         onAxisChanged: {
-            DriverStation.updateAxis (js,
-                                      axis,
-                                      QJoysticks.isBlacklisted (currentJoystick) ? 0 : value)
+            var val = QJoysticks.isBlacklisted (currentJoystick) ? 0 : value
+            DriverStation.setJoystickAxis (js, axis, val)
         }
+
         onButtonChanged: {
-            DriverStation.updateButton (js,
-                                        button,
-                                        QJoysticks.isBlacklisted (currentJoystick) ? false : pressed)
+            var val = QJoysticks.isBlacklisted (currentJoystick) ? false : pressed
+            DriverStation.setJoystickButton (js, button, val)
         }
     }
 
@@ -240,7 +237,6 @@ Item {
                     onBlacklistedChanged: {
                         var blacklisted = !QJoysticks.isBlacklisted (jsIndex)
                         QJoysticks.setBlacklisted (jsIndex, blacklisted)
-                        updateControls()
                     }
                 }
             }

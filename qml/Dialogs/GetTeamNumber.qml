@@ -108,7 +108,7 @@ Window {
                 onClicked: {
                     close()
                     firstLaunch = false
-                    DriverStation.setTeam (teamNumber.value)
+                    DriverStation.setTeamNumber (teamNumber.value)
                 }
             }
         }
