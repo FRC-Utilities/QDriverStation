@@ -259,7 +259,7 @@ Window {
         }
 
         //
-        // The close button
+        // Dialog buttons
         //
         RowLayout {
             Layout.fillWidth: true
@@ -269,7 +269,7 @@ Window {
             }
 
             Button {
-                text: qsTr ("Close")
+                text: qsTr ("Apply")
                 onClicked: {
                     apply()
                     close()

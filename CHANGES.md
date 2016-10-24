@@ -1,5 +1,16 @@
 # Changes
 
+### QDriverStation 16.10
+
+- Transition to LibDS-C, which does not depend on Qt and is more efficient
+- Re-implement logging system
+- Avoid crashes when inputing invalid network addresses
+- Change 'Close' button to 'Apply' in settings dialog
+
+### QDriverStation 16.08
+
+- Fix issue where we the QDriverStation could not detect robot code with 2009/2014 robots
+
 ### QDriverStation 16.07
 
 - Add some CLI options
