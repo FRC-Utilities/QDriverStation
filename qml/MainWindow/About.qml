@@ -30,15 +30,15 @@ ColumnLayout {
     spacing: Globals.spacing
 
     //
-    // Built with Qt icon
+    // The icon of the button
     //
-    Image {
-        smooth: true
-        sourceSize.width: Globals.scale (64)
-        sourceSize.height: Globals.scale (64)
-        source: "qrc:/images/BuiltWithQt.png"
+    Icon {
+        color: "#fff"
+        name: icons.fa_cogs
+        size: Globals.scale (64)
         anchors.horizontalCenter: parent.horizontalCenter
     }
+
 
     //
     // A large label displaying the application name
@@ -55,8 +55,8 @@ ColumnLayout {
     //
     Label {
         size: medium
-        text: qsTr ("Version") + " " + appVersion
         anchors.horizontalCenter: parent.horizontalCenter
+        text: qsTr ("Version") + " " + appVersion + " " + appCodName
     }
 
     //

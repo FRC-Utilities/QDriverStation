@@ -251,6 +251,7 @@ int main (int argc, char* argv[]) {
     engine.rootContext()->setContextProperty ("cDashboard",    &dashboards);
     engine.rootContext()->setContextProperty ("appDspName",    APP_DSPNAME);
     engine.rootContext()->setContextProperty ("appVersion",    APP_VERSION);
+    engine.rootContext()->setContextProperty ("appCodName",    APP_CODNAME);
     engine.rootContext()->setContextProperty ("UpdaterUrl",    URL_UPDATER);
     engine.rootContext()->setContextProperty ("DriverStation", driverstation);
     engine.load (QUrl (QStringLiteral ("qrc:/qml/main.qml")));
