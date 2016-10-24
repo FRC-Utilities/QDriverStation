@@ -22,9 +22,11 @@
 
 #include "DriverStation.h"
 
+#include <math.h>
+#include <LibDS.h>
+
 #include <QTimer>
 #include <QDebug>
-#include <LibDS.h>
 #include <QHostAddress>
 #include <QApplication>
 
@@ -220,6 +222,35 @@ bool DriverStation::emergencyStopped() const {
  */
 qreal DriverStation::voltage() const {
     return (qreal) DS_GetRobotVoltage();
+}
+
+/**
+ * Returns the current voltage as a string, this function ensures that
+ * the voltage will always display two decimals, even if the number is
+ * an integer (e.g. this function will return "12.00 V")
+ */
+QString DriverStation::voltageString() const {
+    /* Round voltage to two decimal places */
+    qreal volt = roundf (voltage() * 100) / 100;
+
+    /* Avoid this: http://i.imgur.com/iAAi1bX.png */
+    if (volt > maximumBatteryVoltage())
+        volt = maximumBatteryVoltage();
+
+    /* Separate voltage into natural and decimal numbers */
+    int integer = static_cast<int> (volt);
+    int decimal = static_cast<qreal> (volt - integer) * 100;
+
+    /* Convert the obtained numbers into strings */
+    QString integer_str = QString::number (integer);
+    QString decimal_str = QString::number (decimal);
+
+    /* Prepend a 0 to the decimal numbers if required */
+    if (decimal < 10)
+        decimal_str.prepend ("0");
+
+    /* Construct final string */
+    return integer_str + "." + decimal_str + " V";
 }
 
 /**

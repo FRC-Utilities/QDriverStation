@@ -87,6 +87,7 @@ class DriverStation : public QObject {
     Q_INVOKABLE bool emergencyStopped() const;
 
     Q_INVOKABLE qreal voltage() const;
+    Q_INVOKABLE QString voltageString() const;
     Q_INVOKABLE qreal maximumBatteryVoltage() const;
 
     Q_INVOKABLE Control controlMode() const;

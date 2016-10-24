@@ -146,7 +146,7 @@ ColumnLayout {
 
         onVoltageChanged: {
             if (DriverStation.connectedToRobot())
-                robotVoltage = voltageString
+                robotVoltage = DriverStation.voltageString()
             else
                 robotVoltage = Globals.invalidStr
         }
