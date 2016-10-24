@@ -43,9 +43,9 @@ ColumnLayout {
     // These properties are updated when the DS emits the appropriate signals
     //
     property bool simulated: false
-    property string teamNumber: DriverStation.team()
     property string robotVoltage: Globals.invalidStr
     property string robotStatus: qsTr ("Loading") + "..."
+    property string teamNumber: DriverStation.teamNumber()
 
     //
     // Used to perfom the error animation when the user tries to enable
@@ -133,14 +133,19 @@ ColumnLayout {
     //
     Connections {
         target: DriverStation
-        onTeamChanged: teamNumber = team
         onStatusChanged: robotStatus = status
-        onSimulatedChanged: simulated = isSimulation
-        onCodeStatusChanged: codeLed.checked = DriverStation.isRobotCodeRunning()
-        onRobotCommStatusChanged: communicationsLed.checked = DriverStation.isConnectedToRobot()
+        onTeamNumberChanged: teamNumber = DriverStation.teamNumber()
+
+        onRobotCodeChanged:{
+            codeLed.checked = DriverStation.hasRobotCode()
+        }
+
+        onRobotCommunicationsChanged: {
+            communicationsLed.checked = DriverStation.connectedToRobot()
+        }
 
         onVoltageChanged: {
-            if (DriverStation.isConnectedToRobot())
+            if (DriverStation.connectedToRobot())
                 robotVoltage = voltageString
             else
                 robotVoltage = Globals.invalidStr

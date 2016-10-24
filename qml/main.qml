@@ -61,21 +61,15 @@ Item {
     //
     // Initialize the DS engine when the application starts
     //
-    Component.onCompleted: DriverStation.init()
+    Component.onCompleted: {
+        DriverStation.start()
 
-    //
-    // Beep and show the window when the DS is initialized
-    //
-    Connections {
-        target: DriverStation
-        onInitialized: {
-            Globals.beep (440, 100)
-            Globals.beep (220, 100)
+        Globals.beep (440, 100)
+        Globals.beep (220, 100)
 
-            if (!mainwindow.visible) {
-                mainwindow.visible = true
-                mainwindow.updateWindowMode()
-            }
+        if (!mainwindow.visible) {
+            mainwindow.visible = true
+            mainwindow.updateWindowMode()
         }
     }
 

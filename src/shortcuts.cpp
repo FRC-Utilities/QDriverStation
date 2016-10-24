@@ -30,10 +30,10 @@ bool Shortcuts::eventFilter (QObject* object, QEvent* event) {
     if (event->type() == QEvent::KeyPress) {
         switch (static_cast <QKeyEvent*> (event)->key()) {
         case Qt::Key_Space:
-            DriverStation::getInstance()->setOperationStatus (DS::kEmergencyStop);
+            DriverStation::getInstance()->setEmergencyStopped (true);
             break;
         case Qt::Key_Enter:
-            DriverStation::getInstance()->setEnabled (false);
+            DriverStation::getInstance()->setEnabled (true);
             break;
         case Qt::Key_F1:
             QJoysticks::getInstance()->updateInterfaces();

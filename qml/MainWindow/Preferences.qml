@@ -52,7 +52,10 @@ RowLayout {
     //
     Connections {
         target: DriverStation
-        onTeamChanged: if (teamNumber.value !== team) teamNumber.value = team
+        onTeamNumberChanged: {
+            if (teamNumber.value !== DriverStation.teamNumber())
+                teamNumber.value = DriverStation.teamNumber()
+        }
     }
 
     //
@@ -78,8 +81,8 @@ RowLayout {
             minimumValue: 0
             maximumValue: 9999
             Layout.fillWidth: true
-            value: DriverStation.team()
-            onValueChanged: DriverStation.setTeam (value)
+            value: DriverStation.teamNumber()
+            onValueChanged: DriverStation.setTeamNumber (value)
         }
 
         //
@@ -122,7 +125,7 @@ RowLayout {
             id: protocol
             Layout.fillWidth: true
             model: DriverStation.protocols()
-            onCurrentIndexChanged: DriverStation.setProtocolType (currentIndex)
+            onCurrentIndexChanged: DriverStation.setProtocol (currentIndex)
         }
     }
 

@@ -87,10 +87,11 @@ Window {
     // Check for updates (if we are allowed) & allow/disallow sounds
     //
     Component.onCompleted: {
+        apply()
         Beeper.setEnabled (enableSoundEffects.checked)
 
         if (checkForUpdates.checked) {
-            Updater.setDownloaderEnabled (UpdaterUrl, false)
+            Updater.setDownloaderEnabled (UpdaterUrl, true)
             Updater.checkForUpdates (UpdaterUrl)
         }
     }
@@ -100,9 +101,8 @@ Window {
     //
     Connections {
         target: DriverStation
-        onInitialized: apply()
         onProtocolChanged: apply()
-        onTeamChanged: updatePlaceholders()
+        onTeamNumberChanged: updatePlaceholders()
     }
 
     //

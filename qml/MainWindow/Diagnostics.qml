@@ -34,17 +34,22 @@ RowLayout {
     //
     Connections {
         target: DriverStation
-        onLibVersionChanged: lib.text = version
-        onPcmVersionChanged: pcm.text = version
-        onPdpVersionChanged: pdb.text = version
-
         onRamUsageChanged: ram.text = usage + "%"
         onCpuUsageChanged: cpu.text = usage + "%"
+        onCanUsageChanged: cpu.text = usage + "%"
         onDiskUsageChanged: disk.text = usage + "%"
         
-        onFmsCommStatusChanged: fms.checked = DriverStation.isConnectedToFMS()
-        onRadioCommStatusChanged: radio.checked = DriverStation.isConnectedToRadio()
-        onRobotCommStatusChanged: robot.checked = DriverStation.isConnectedToRobot()
+        onFmsCommunicationsChanged: {
+            fms.checked = DriverStation.connectedToFMS()
+        }
+
+        onRadioCommunicationsChanged: {
+            radio.checked = DriverStation.connectedToRadio()
+        }
+
+        onRobotCommunicationsChanged: {
+            robot.checked = DriverStation.connectedToRobot()
+        }
     }
 
     //
@@ -99,7 +104,7 @@ RowLayout {
             Button {
                 Layout.fillWidth: true
                 text: qsTr ("Restart Code")
-                onClicked: DriverStation.restartCode()
+                onClicked: DriverStation.restartRobotCode()
             }
         }
     }
@@ -127,43 +132,7 @@ RowLayout {
             columnSpacing: Globals.spacing
 
             Label {
-                text: qsTr ("RIO")
-            }
-
-            Label {
-                id: rio
-                text: Globals.invalidStr
-            }
-
-            Label {
-                text: qsTr ("LIB")
-            }
-
-            Label {
-                id: lib
-                text: Globals.invalidStr
-            }
-
-            Label {
-                text: qsTr ("PCM")
-            }
-
-            Label {
-                id: pcm
-                text: Globals.invalidStr
-            }
-
-            Label {
-                text: qsTr ("PDB/PDP")
-            }
-
-            Label {
-                id: pdb
-                text: Globals.invalidStr
-            }
-
-            Label {
-                text: qsTr ("CPU")
+                text: qsTr ("CPU Usage")
             }
 
             Label {
@@ -172,7 +141,7 @@ RowLayout {
             }
 
             Label {
-                text: qsTr ("RAM")
+                text: qsTr ("RAM Usage")
             }
 
             Label {
@@ -181,11 +150,20 @@ RowLayout {
             }
 
             Label {
-                text: qsTr ("DISK")
+                text: qsTr ("Disk Usage")
             }
 
             Label {
                 id: disk
+                text: Globals.invalidStr
+            }
+
+            Label {
+                text: qsTr ("CAN Utilization")
+            }
+
+            Label {
+                id: can
                 text: Globals.invalidStr
             }
         }

@@ -213,9 +213,6 @@ int main (int argc, char* argv[]) {
     QTime* pElapsedTime = new QTime;
     pElapsedTime->start();
 
-    /* Install the more advanced logger */
-    qInstallMessageHandler (DriverStation::logger);
-
     /* Initialize OS variables */
     bool isMac = false;
     bool isUnx = false;

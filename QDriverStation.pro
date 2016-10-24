@@ -71,8 +71,8 @@ OBJECTS_DIR = obj
 # Include other libraries
 #-------------------------------------------------------------------------------
 
-include ($$PWD/lib/LibDS/LibDS.pri)
 include ($$PWD/lib/QJoysticks/QJoysticks.pri)
+include ($$PWD/lib/LibDS/wrappers/Qt/LibDS-Qt.pri)
 include ($$PWD/lib/QSimpleUpdater/QSimpleUpdater.pri)
 
 #-------------------------------------------------------------------------------

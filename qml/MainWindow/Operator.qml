@@ -471,9 +471,9 @@ RowLayout {
             id: alliances
             Layout.fillWidth: true
             height: Globals.scale (24)
+            model: DriverStation.stations()
             Layout.minimumWidth: grid.minWidth
             Layout.maximumWidth: grid.minWidth
-            model: DriverStation.teamStations()
             onCurrentIndexChanged: DriverStation.setTeamStation (currentIndex)
         }
     }

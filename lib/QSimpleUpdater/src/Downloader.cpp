@@ -200,9 +200,13 @@ void Downloader::onDownloadFinished() {
     if (!data.isEmpty()) {
         QString name = m_reply->url().toString().split ("/").last();
 
-        /* Handle HTML redirections automatically */
-        if (data.startsWith ("<html") || data.startsWith ("<!DOCTYPE html"))
-            name.append (".html");
+        /* Check if we need to redirect */
+        QUrl url = m_reply->attribute (
+                       QNetworkRequest::RedirectionTargetAttribute).toUrl();
+        if (!url.isEmpty()) {
+            startDownload (url);
+            return;
+        }
 
         /* Save downloaded data to disk */
         QFile file (QDir::tempPath() + "/" + name);
@@ -221,7 +225,7 @@ void Downloader::onDownloadFinished() {
 }
 
 /**
- * Calculates the appropriate size units (bytes, KB or MB) for the received
+ * Calculates the appropiate size units (bytes, KB or MB) for the received
  * data and the total download size. Then, this function proceeds to update the
  * dialog controls/UI.
  */
@@ -281,7 +285,7 @@ void Downloader::updateProgress (qint64 received, qint64 total) {
  * Uses two time samples (from the current time and a previous sample) to
  * calculate how many bytes have been downloaded.
  *
- * Then, this function proceeds to calculate the appropriate units of time
+ * Then, this function proceeds to calculate the appropiate units of time
  * (hours, minutes or seconds) and constructs a user-friendly string, which
  * is displayed in the dialog.
  */

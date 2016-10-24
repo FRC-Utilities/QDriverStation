@@ -1,63 +1,44 @@
-#
-# Copyright (c) 2016 Alex Spataru <alex_spataru@outlook.com>
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
-#
+INCLUDEPATH += $$PWD/include
 
-CODECFORTR = UTF-8
-CODECFORSRC = UTF-8
+!macx* {
+    LIBS += -pthread
+}
 
-CONFIG += c++11
-INCLUDEPATH += $$PWD/src
-
-include ($$PWD/lib/qMDNS/qMDNS.pri)
-
-QT += core
-QT += network
-QT += widgets
-QT += multimedia
+win32* {
+    LIBS += -lws2_32
+}
 
 HEADERS += \
-    $$PWD/src/Core/NetConsole.h \
-    $$PWD/src/Core/Protocol.h \
-    $$PWD/src/Core/Sockets.h \
-    $$PWD/src/Core/Watchdog.h \
-    $$PWD/src/Protocols/FRC_2014.h \
-    $$PWD/src/Protocols/FRC_2015.h \
-    $$PWD/src/Protocols/FRC_2016.h \
-    $$PWD/src/Utilities/CRC32.h \
-    $$PWD/src/DriverStation.h \
-    $$PWD/src/Core/DS_Base.h \
-    $$PWD/src/Core/DS_Config.h \
-    $$PWD/src/Core/DS_Common.h \
-    $$PWD/src/Core/Logger.h \
-    $$PWD/src/Utilities/Lookup.h
+    $$PWD/include/DS_Client.h \
+    $$PWD/include/DS_Config.h \
+    $$PWD/include/DS_Events.h \
+    $$PWD/include/DS_Joysticks.h \
+    $$PWD/include/DS_Types.h \
+    $$PWD/include/DS_Utils.h \
+    $$PWD/include/LibDS.h \
+    $$PWD/include/DS_Array.h \
+    $$PWD/include/DS_Socket.h \
+    $$PWD/include/DS_Protocol.h \
+    $$PWD/include/DS_DefaultProtocols.h \
+    $$PWD/include/DS_Timer.h \
+    $$PWD/include/DS_Queue.h
 
 SOURCES += \
-    $$PWD/src/Core/NetConsole.cpp \
-    $$PWD/src/Core/Sockets.cpp \
-    $$PWD/src/Core/Watchdog.cpp \
-    $$PWD/src/Protocols/FRC_2014.cpp \
-    $$PWD/src/Protocols/FRC_2015.cpp \
-    $$PWD/src/Protocols/FRC_2016.cpp \
-    $$PWD/src/Utilities/CRC32.cpp \
-    $$PWD/src/DriverStation.cpp \
-    $$PWD/src/Core/DS_Config.cpp \
-    $$PWD/src/Core/Logger.cpp \
-    $$PWD/src/Utilities/Lookup.cpp
+    $$PWD/src/protocols/frc_2014.c \
+    $$PWD/src/protocols/frc_2015.c \
+    $$PWD/src/protocols/frc_2016.c \
+    $$PWD/src/client.c \
+    $$PWD/src/config.c \
+    $$PWD/src/events.c \
+    $$PWD/src/init.c \
+    $$PWD/src/joysticks.c \
+    $$PWD/src/protocols.c \
+    $$PWD/src/socket.c \
+    $$PWD/src/utils.c \
+    $$PWD/src/crc32.c \
+    $$PWD/src/array.c \
+    $$PWD/src/timer.c \
+    $$PWD/src/queue.c
+    
+include ($$PWD/lib/SDS/SDS.pri)
+include ($$PWD/lib/Socky/Socky.pri)
