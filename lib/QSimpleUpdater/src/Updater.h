@@ -42,14 +42,15 @@ class Downloader;
 /**
  * \brief Downloads and interprests the update definition file
  */
-class QSU_DECL Updater : public QObject {
+class QSU_DECL Updater : public QObject
+{
     Q_OBJECT
 
-  signals:
+signals:
     void checkingFinished (const QString& url);
     void downloadFinished (const QString& url, const QString& filepath);
 
-  public:
+public:
     Updater();
     ~Updater();
 
@@ -68,7 +69,7 @@ class QSU_DECL Updater : public QObject {
     bool downloaderEnabled() const;
     bool useCustomInstallProcedures() const;
 
-  public slots:
+public slots:
     void checkForUpdates();
     void setUrl (const QString& url);
     void setModuleName (const QString& name);
@@ -79,14 +80,14 @@ class QSU_DECL Updater : public QObject {
     void setPlatformKey (const QString& platformKey);
     void setUseCustomInstallProcedures (const bool& custom);
 
-  private slots:
+private slots:
     void onReply (QNetworkReply* reply);
     void setUpdateAvailable (const bool& available);
 
-  private:
+private:
     bool compare (const QString& x, const QString& y);
 
-  private:
+private:
     QString m_url;
 
     bool m_notifyOnUpdate;

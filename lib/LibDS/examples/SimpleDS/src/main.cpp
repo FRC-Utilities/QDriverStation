@@ -27,7 +27,8 @@
 #include "Window.h"
 #include "VirtualJoystick.h"
 
-int main (int argc, char* argv[]) {
+int main (int argc, char* argv[])
+{
     QApplication app (argc, argv);
 
     /* Initialize the Driver Station */

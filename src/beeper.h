@@ -11,20 +11,21 @@
 /**
  * \brief Uses SDL to generate telephone-like sound tones on the fly
  */
-class Beeper : public QObject {
+class Beeper : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     explicit Beeper();
     ~Beeper();
 
     void generateSamples (qint16* stream, int length);
 
-  public slots:
+public slots:
     void setEnabled (bool enabled);
     void beep (qreal frequency, int duration);
 
-  private:
+private:
     bool m_enabled;
     double m_angle;
 };

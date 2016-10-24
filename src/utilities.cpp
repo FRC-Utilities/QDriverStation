@@ -88,7 +88,8 @@
 /**
  * Configures the class and nitializes the CPU querying process under Windows.
  */
-Utilities::Utilities() {
+Utilities::Utilities()
+{
     m_ratio = 0;
     m_cpuUsage = 0;
     m_batteryLevel = 0;
@@ -124,7 +125,8 @@ Utilities::Utilities() {
 /**
  * Returns the auto-calculates scale ratio
  */
-qreal Utilities::scaleRatio() {
+qreal Utilities::scaleRatio()
+{
     if (m_ratio < 1)
         calculateScaleRatio();
 
@@ -134,7 +136,8 @@ qreal Utilities::scaleRatio() {
 /**
  * Returns the current CPU usage (from 0 to 100)
  */
-int Utilities::cpuUsage() {
+int Utilities::cpuUsage()
+{
     m_cpuUsage = abs (m_cpuUsage);
 
     if (m_cpuUsage <= 100)
@@ -146,7 +149,8 @@ int Utilities::cpuUsage() {
 /**
  * Returns the current battery level (from 0 to 100)
  */
-int Utilities::batteryLevel() {
+int Utilities::batteryLevel()
+{
     m_batteryLevel = abs (m_batteryLevel);
 
     if (m_batteryLevel <= 100)
@@ -159,14 +163,16 @@ int Utilities::batteryLevel() {
  * Returns \c true if the computer is connected to a power source or the
  * battery is not discharging.
  */
-bool Utilities::isConnectedToAC() {
+bool Utilities::isConnectedToAC()
+{
     return m_connectedToAC;
 }
 
 /**
  * Copies the given \a data to the system clipboard
  */
-void Utilities::copy (const QVariant& data) {
+void Utilities::copy (const QVariant& data)
+{
     qApp->clipboard()->setText (data.toString(), QClipboard::Clipboard);
 }
 
@@ -174,14 +180,16 @@ void Utilities::copy (const QVariant& data) {
  * Enables or disables the autoscale feature.
  * \note The application must be restarted for changes to take effect
  */
-void Utilities::setAutoScaleEnabled (const bool enabled) {
+void Utilities::setAutoScaleEnabled (const bool enabled)
+{
     m_settings->setValue ("AutoScale", enabled);
 }
 
 /**
  * Queries for the current CPU usage
  */
-void Utilities::updateCpuUsage() {
+void Utilities::updateCpuUsage()
+{
 #if defined Q_OS_WIN
     PDH_FMT_COUNTERVALUE counterVal;
     PdhCollectQueryData (cpuQuery);
@@ -207,7 +215,8 @@ void Utilities::updateCpuUsage() {
 /**
  * Queries for the current battery level
  */
-void Utilities::updateBatteryLevel() {
+void Utilities::updateBatteryLevel()
+{
 #if defined Q_OS_WIN
     GetSystemPowerStatus (&power);
     m_batteryLevel = static_cast<int> (power.BatteryLifePercent);
@@ -224,7 +233,8 @@ void Utilities::updateBatteryLevel() {
 /**
  * Queries for the current AC power source status
  */
-void Utilities::updateConnectedToAC() {
+void Utilities::updateConnectedToAC()
+{
 #if defined Q_OS_WIN
     GetSystemPowerStatus (&power);
     m_connectedToAC = (power.ACLineStatus != 0);
@@ -242,7 +252,8 @@ void Utilities::updateConnectedToAC() {
  * Calculates the scale factor to apply to the UI.
  * \note This function uses different procedures depending on the OS
  */
-void Utilities::calculateScaleRatio() {
+void Utilities::calculateScaleRatio()
+{
     bool enabled = m_settings->value ("AutoScale", true).toBool();
 
     /* Get scale factor using OS-specific code */
@@ -270,7 +281,8 @@ void Utilities::calculateScaleRatio() {
 /**
  * Reads the output of the process launched to get the CPU usage
  */
-void Utilities::readCpuUsageProcess (int exit_code) {
+void Utilities::readCpuUsageProcess (int exit_code)
+{
     if (exit_code == EXIT_FAILURE)
         return;
 
@@ -297,7 +309,8 @@ void Utilities::readCpuUsageProcess (int exit_code) {
 /**
  * Reads the output of the process launched to get the battery level
  */
-void Utilities::readBatteryLevelProcess (int exit_code) {
+void Utilities::readBatteryLevelProcess (int exit_code)
+{
     if (exit_code == EXIT_FAILURE)
         return;
 
@@ -326,7 +339,8 @@ void Utilities::readBatteryLevelProcess (int exit_code) {
 /**
  * Reads the output of the process launched to get the AC power source status
  */
-void Utilities::readConnectedToACProcess (int exit_code) {
+void Utilities::readConnectedToACProcess (int exit_code)
+{
     if (exit_code == EXIT_FAILURE)
         return;
 
@@ -345,7 +359,8 @@ void Utilities::readConnectedToACProcess (int exit_code) {
  * Reads the current count of CPU jiffies from /proc/stat and return a pair
  * consisting of non-idle jiffies and total jiffies
  */
-QPair<quint64, quint64> Utilities::getCpuJiffies() {
+QPair<quint64, quint64> Utilities::getCpuJiffies()
+{
     quint64 totalJiffies = 0;
     quint64 nonIdleJiffies = 0;
 

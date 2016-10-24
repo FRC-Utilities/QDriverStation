@@ -24,7 +24,8 @@
 #include <QJoysticks.h>
 #include <DriverStation.h>
 
-bool Shortcuts::eventFilter (QObject* object, QEvent* event) {
+bool Shortcuts::eventFilter (QObject* object, QEvent* event)
+{
     Q_UNUSED (object);
 
     if (event->type() == QEvent::KeyPress) {

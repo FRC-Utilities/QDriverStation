@@ -34,10 +34,11 @@ class QSettings;
 /**
  * \brief Provides CPU and Battery information to the QML interface
  */
-class Utilities : public QObject {
+class Utilities : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     explicit Utilities();
 
     Q_INVOKABLE int cpuUsage();
@@ -45,11 +46,11 @@ class Utilities : public QObject {
     Q_INVOKABLE qreal scaleRatio();
     Q_INVOKABLE bool isConnectedToAC();
 
-  public slots:
+public slots:
     void copy (const QVariant& data);
     void setAutoScaleEnabled (const bool enabled);
 
-  private slots:
+private slots:
     void updateCpuUsage();
     void updateBatteryLevel();
     void updateConnectedToAC();
@@ -58,7 +59,7 @@ class Utilities : public QObject {
     void readBatteryLevelProcess (int exit_code = 0);
     void readConnectedToACProcess (int exit_code = 0);
 
-  private:
+private:
 #if defined (Q_OS_LINUX)
     QPair<quint64, quint64> getCpuJiffies();
     QPair<quint64, quint64> m_pastCpuJiffies {0, 0};

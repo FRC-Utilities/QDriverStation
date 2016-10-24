@@ -394,41 +394,47 @@ void DS_ConfigureProtocol (DS_Protocol* ptr)
 /**
  * Returns the number of sent FMS packets
  */
-int DS_SentFMSPackets() {
+int DS_SentFMSPackets()
+{
     return sent_fms_packets;
 }
 
 /**
  * Returns the number of sent radio packets
  */
-int DS_SentRadioPackets() {
+int DS_SentRadioPackets()
+{
     return sent_radio_packets;
 }
 
 /**
  * Returns the number of sent robot packets
  */
-int DS_SentRobotPackets() {
+int DS_SentRobotPackets()
+{
     return sent_robot_packets;
 }
 
 /**
  * Returns the number of received FMS packets
  */
-int DS_ReceivedFMSPackets() {
+int DS_ReceivedFMSPackets()
+{
     return received_fms_packets;
 }
 
 /**
  * Returns the number of received radio packets
  */
-int DS_ReceivedRadioPackets() {
+int DS_ReceivedRadioPackets()
+{
     return received_radio_packets;
 }
 
 /**
  * Returns the number of received robot packets
  */
-int DS_ReceivedRobotPackets() {
+int DS_ReceivedRobotPackets()
+{
     return received_robot_packets;
 }

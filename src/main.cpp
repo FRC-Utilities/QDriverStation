@@ -93,7 +93,8 @@ const QString BUGS_URL = "http://github.com/FRC-Utilities/QDriverStation/issues"
 // Download joystick drivers if needed
 //------------------------------------------------------------------------------
 
-static void DownloadXboxDrivers() {
+static void DownloadXboxDrivers()
+{
 #ifdef Q_OS_MAC
     QSettings settings (APP_COMPANY, APP_DSPNAME);
 
@@ -127,32 +128,38 @@ static void DownloadXboxDrivers() {
 // Utility functions
 //------------------------------------------------------------------------------
 
-static void showHelp() {
+static void showHelp()
+{
     qDebug() << HELP.toStdString().c_str();
 }
 
-static void resetSettings() {
+static void resetSettings()
+{
     QSettings (APP_COMPANY, APP_DSPNAME).clear();
     qDebug() << "QDriverStation settings cleared!";
 }
 
-static void contact() {
+static void contact()
+{
     QString url = "mailto:" + CONT_URL;
     QDesktopServices::openUrl (QUrl (url));
     qDebug() << WEBS.arg (url).toStdString().c_str();
 }
 
-static void reportBug() {
+static void reportBug()
+{
     QDesktopServices::openUrl (QUrl (BUGS_URL));
     qDebug() << WEBS.arg (BUGS_URL).toStdString().c_str();
 }
 
-static void openWebsite() {
+static void openWebsite()
+{
     QDesktopServices::openUrl (QUrl (HTTP_URL));
     qDebug() << WEBS.arg (HTTP_URL).toStdString().c_str();
 }
 
-static void showVersion() {
+static void showVersion()
+{
     QString appver = APP_DSPNAME + " version " + APP_VERSION;
     QString author = "Written by Alex Spataru <" + CONT_URL + ">";
 
@@ -164,7 +171,8 @@ static void showVersion() {
 // Application init
 //------------------------------------------------------------------------------
 
-int main (int argc, char* argv[]) {
+int main (int argc, char* argv[])
+{
     /* Fix scalling issues */
 #if QT_VERSION >= QT_VERSION_CHECK (5, 6, 0)
 #if defined Q_OS_MAC

@@ -18,19 +18,20 @@ class Window;
 
 class QSimpleUpdater;
 
-class Window : public QMainWindow {
+class Window : public QMainWindow
+{
     Q_OBJECT
 
-  public:
+public:
     explicit Window (QWidget* parent = 0);
     ~Window();
 
-  public slots:
+public slots:
     void resetFields();
     void checkForUpdates();
     void updateChangelog (QString url);
 
-  private:
+private:
     Ui::Window* m_ui;
     QSimpleUpdater* m_updater;
 };

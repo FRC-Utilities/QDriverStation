@@ -26,10 +26,11 @@
 #include <QObject>
 #include <DS_Protocol.h>
 
-class DriverStation : public QObject {
+class DriverStation : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     static DriverStation* getInstance();
 
     enum Control {
@@ -111,7 +112,7 @@ class DriverStation : public QObject {
     Q_INVOKABLE QStringList stations() const;
     Q_INVOKABLE QStringList protocols() const;
 
-  public slots:
+public slots:
     void start();
     void rebootRobot();
     void resetJoysticks();
@@ -138,14 +139,14 @@ class DriverStation : public QObject {
     void setJoystickAxis (int joystick, int axis, float value);
     void setJoystickButton (int joystick, int button, bool pressed);
 
-  private slots:
+private slots:
     void quitDS();
     void processEvents();
 
-  private:
+private:
     bool addressIsValid (const QString& address);
 
-  signals:
+signals:
     void protocolChanged();
     void joystickCountChanged();
     void canUsageChanged (const int usage);

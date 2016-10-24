@@ -28,7 +28,8 @@
 /**
  * Initialize the event filter and register a joystick
  */
-VirtualJoystick::VirtualJoystick() {
+VirtualJoystick::VirtualJoystick()
+{
     /* Listen for keyboard events */
     qApp->installEventFilter (this);
 
@@ -40,7 +41,8 @@ VirtualJoystick::VirtualJoystick() {
 /**
  * Obtains the axis values from the pressed keyboard keys
  */
-void VirtualJoystick::readAxes (int key, bool pressed) {
+void VirtualJoystick::readAxes (int key, bool pressed)
+{
     int axis = -1;
     float value = pressed ? 1 : 0;
 
@@ -100,7 +102,8 @@ void VirtualJoystick::readAxes (int key, bool pressed) {
 /**
  * Obtains the POV/hat angle from the pressed keyboard keys
  */
-void VirtualJoystick::readPOVs (int key, bool pressed) {
+void VirtualJoystick::readPOVs (int key, bool pressed)
+{
     int angle = 0;
 
     if (key == Qt::Key_Up)
@@ -123,7 +126,8 @@ void VirtualJoystick::readPOVs (int key, bool pressed) {
 /**
  * Obtains the buttons states from the pressed keyboard keys
  */
-void VirtualJoystick::readButtons (int key, bool pressed) {
+void VirtualJoystick::readButtons (int key, bool pressed)
+{
     int button = -1;
 
     if (key == Qt::Key_0)
@@ -155,7 +159,8 @@ void VirtualJoystick::readButtons (int key, bool pressed) {
 /**
  * Called whenever Qt registers a new keyboard event
  */
-void VirtualJoystick::processKeyEvent (QKeyEvent* event, bool pressed) {
+void VirtualJoystick::processKeyEvent (QKeyEvent* event, bool pressed)
+{
     readPOVs (event->key(), pressed);
     readAxes (event->key(), pressed);
     readButtons (event->key(), pressed);
@@ -164,7 +169,8 @@ void VirtualJoystick::processKeyEvent (QKeyEvent* event, bool pressed) {
 /**
  * Filters all the Qt events and extracts information from any keyboard event
  */
-bool VirtualJoystick::eventFilter (QObject* object, QEvent* event) {
+bool VirtualJoystick::eventFilter (QObject* object, QEvent* event)
+{
     Q_UNUSED (object);
 
     switch (event->type()) {

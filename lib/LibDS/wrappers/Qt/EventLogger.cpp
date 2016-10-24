@@ -31,21 +31,24 @@
 /**
  * Connects the signals/slots between the \c DriverStation and the logger
  */
-DSEventLogger::DSEventLogger() {
+DSEventLogger::DSEventLogger()
+{
     connectSlots();
 }
 
 /**
  * Closes the log file
  */
-DSEventLogger::~DSEventLogger() {
+DSEventLogger::~DSEventLogger()
+{
 
 }
 
 /**
  * Returns a pointer to the only instance of this class
  */
-DSEventLogger* DSEventLogger::getInstance() {
+DSEventLogger* DSEventLogger::getInstance()
+{
     static DSEventLogger instance;
     return &instance;
 }
@@ -53,119 +56,136 @@ DSEventLogger* DSEventLogger::getInstance() {
 /**
  * Creates a new log file and instructs Qt to use a custom logger filter
  */
-void DSEventLogger::start() {
+void DSEventLogger::start()
+{
 
 }
 
 /**
  * Called when the DS reports a change of the robot's CAN utilization
  */
-void DSEventLogger::onCANUsageChanged (int usage) {
+void DSEventLogger::onCANUsageChanged (int usage)
+{
     Q_UNUSED (usage);
 }
 
 /**
  * Called when the DS reports a change of the robot's CPU usage
  */
-void DSEventLogger::onCPUUsageChanged (int usage) {
+void DSEventLogger::onCPUUsageChanged (int usage)
+{
     Q_UNUSED (usage);
 }
 
 /**
  * Called when the DS reports a change of the robot's RAM usage
  */
-void DSEventLogger::onRAMUsageChanged (int usage) {
+void DSEventLogger::onRAMUsageChanged (int usage)
+{
     Q_UNUSED (usage);
 }
 
 /**
  * Called when the DS reports a new NetConsole message
  */
-void DSEventLogger::onNewMessage (QString message) {
+void DSEventLogger::onNewMessage (QString message)
+{
     Q_UNUSED (message);
 }
 
 /**
  * Called when the DS reports a change of the robot's disk usage
  */
-void DSEventLogger::onDiskUsageChanged (int usage) {
+void DSEventLogger::onDiskUsageChanged (int usage)
+{
     Q_UNUSED (usage);
 }
 
 /**
  * Called when the DS reports a change of the enabled status
  */
-void DSEventLogger::onEnabledChanged (bool enabled) {
+void DSEventLogger::onEnabledChanged (bool enabled)
+{
     LOG << "Robot enabled state set to" << enabled;
 }
 
 /**
  * Called when the DS reports a change of the team number
  */
-void DSEventLogger::onTeamNumberChanged (int number) {
+void DSEventLogger::onTeamNumberChanged (int number)
+{
     LOG << "Team number set to" << number;
 }
 
 /**
  * Called when the DS reports a change in the robot voltage
  */
-void DSEventLogger::onVoltageChanged (float voltage) {
+void DSEventLogger::onVoltageChanged (float voltage)
+{
     Q_UNUSED (voltage);
 }
 
 /**
  * Called when the DS reports a change in the robot code status
  */
-void DSEventLogger::onRobotCodeChanged (bool robotCode) {
+void DSEventLogger::onRobotCodeChanged (bool robotCode)
+{
     LOG << "Robot code status set to" << robotCode;
 }
 
 /**
  * Called when the DS reports a change in the FMS communications status
  */
-void DSEventLogger::onFMSCommunicationsChanged (bool connected) {
+void DSEventLogger::onFMSCommunicationsChanged (bool connected)
+{
     LOG << "FMS communications set to" << connected;
 }
 
 /**
  * Called when the DS reports a change in the radio communications status
  */
-void DSEventLogger::onRadioCommunicationsChanged (bool connected) {
+void DSEventLogger::onRadioCommunicationsChanged (bool connected)
+{
     LOG << "Radio communications set to" << connected;
 }
 
 /**
  * Called when the DS reports a change in the robot communications status
  */
-void DSEventLogger::onRobotCommunicationsChanged (bool connected) {
+void DSEventLogger::onRobotCommunicationsChanged (bool connected)
+{
     LOG << "Robot communications set to" << connected;
 }
 
 /**
  * Called when the DS reports a change in the emergency stop status
  */
-void DSEventLogger::onEmergencyStoppedChanged (bool emergencyStopped) {
+void DSEventLogger::onEmergencyStoppedChanged (bool emergencyStopped)
+{
     LOG << "ESTOP set to" << emergencyStopped;
 }
 
 /**
  * Called when the DS reports a change in the robot control mode
  */
-void DSEventLogger::onControlModeChanged (DriverStation::Control mode) {
+void DSEventLogger::onControlModeChanged (DriverStation::Control mode)
+{
     LOG << "Robot control mode set to" << mode;
 }
 
 /**
  * Called when the DS reports a change in the team alliance
  */
-void DSEventLogger::onAllianceChanged (DriverStation::Alliance alliance) {
+void DSEventLogger::onAllianceChanged (DriverStation::Alliance alliance)
+{
     LOG << "Team alliance set to" << alliance;
 }
 
 /**
  * Called when the DS reports a change in the team position
  */
-void DSEventLogger::onPositionChanged (DriverStation::Position position) {
+void DSEventLogger::onPositionChanged (DriverStation::Position position)
+{
     LOG << "Team position set to" << position;
 }
 
@@ -173,7 +193,8 @@ void DSEventLogger::onPositionChanged (DriverStation::Position position) {
  * Allows the logger class to react when the DriverStation receives a
  * new event from the LibDS library
  */
-void DSEventLogger::connectSlots() {
+void DSEventLogger::connectSlots()
+{
     DriverStation* ds = DriverStation::getInstance();
 
     connect (ds,   &DriverStation::canUsageChanged,

@@ -50,7 +50,8 @@ QQueue<BeepObject> BEEPS;
 /**
  * Calls the beeper when and generates the audio
  */
-void AUDIO_CALLBACK (void* beeper, quint8* stream, int length) {
+void AUDIO_CALLBACK (void* beeper, quint8* stream, int length)
+{
     Beeper* object = static_cast<Beeper*> (beeper);
     object->generateSamples ((qint16*) stream, length / 2);
 }
@@ -58,7 +59,8 @@ void AUDIO_CALLBACK (void* beeper, quint8* stream, int length) {
 /**
  * Configures the audio spec
  */
-Beeper::Beeper() {
+Beeper::Beeper()
+{
     m_angle = 0;
     m_enabled = false;
 
@@ -84,12 +86,14 @@ Beeper::Beeper() {
 /**
  * Stop using the SDL audio when destroying this class
  */
-Beeper::~Beeper() {
+Beeper::~Beeper()
+{
     SDL_CloseAudio();
     SDL_UnlockAudio();
 }
 
-void Beeper::generateSamples (qint16* stream, int length) {
+void Beeper::generateSamples (qint16* stream, int length)
+{
     int i = 0;
     while (i < length) {
 
@@ -122,7 +126,8 @@ void Beeper::generateSamples (qint16* stream, int length) {
 /**
  * Enables or disables the sound output
  */
-void Beeper::setEnabled (bool enabled) {
+void Beeper::setEnabled (bool enabled)
+{
     m_enabled = enabled;
 }
 
@@ -130,7 +135,8 @@ void Beeper::setEnabled (bool enabled) {
  * Generates a beep of the given \a frequency & \a duration (in milliseconds).
  * \note The request will be ignored if the beeper is disabled
  */
-void Beeper::beep (qreal frequency, int duration) {
+void Beeper::beep (qreal frequency, int duration)
+{
     if (m_enabled) {
         BeepObject beep_object;
         beep_object.frequency = frequency;

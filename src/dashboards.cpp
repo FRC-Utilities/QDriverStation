@@ -46,7 +46,8 @@ const QString SBD_COMMAND = "java -jar \"%1/wpilib/tools/SmartDashboard.jar\"";
 /**
  * Configures the application to close the dashboard when it quits
  */
-Dashboards::Dashboards() {
+Dashboards::Dashboards()
+{
     connect (qApp, SIGNAL (aboutToQuit()), &m_process, SLOT (terminate()));
 }
 
@@ -54,7 +55,8 @@ Dashboards::Dashboards() {
  * Returns a list with the available dashboards.
  * \note This list may differ from operating system to operating system
  */
-QStringList Dashboards::dashboardList() {
+QStringList Dashboards::dashboardList()
+{
     QStringList list;
     list.append (tr ("None"));
     list.append (tr ("SFX Dashboard"));
@@ -70,7 +72,8 @@ QStringList Dashboards::dashboardList() {
 /**
  * Opens the given \a dashboard process
  */
-void Dashboards::openDashboard (int dashboard) {
+void Dashboards::openDashboard (int dashboard)
+{
     m_process.close();
     QString command = "";
 

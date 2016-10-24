@@ -28,11 +28,12 @@
 /**
  * \brief Opens and closes the available FRC Dashboards
  */
-class Dashboards : public QObject {
+class Dashboards : public QObject
+{
     Q_OBJECT
     Q_ENUMS (DashboardTypes)
 
-  public:
+public:
     explicit Dashboards();
 
     enum DashboardTypes {
@@ -44,10 +45,10 @@ class Dashboards : public QObject {
 
     Q_INVOKABLE QStringList dashboardList();
 
-  public slots:
+public slots:
     void openDashboard (int dashboard);
 
-  private:
+private:
     QProcess m_process;
 };
 

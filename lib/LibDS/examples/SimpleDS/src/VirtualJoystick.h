@@ -25,19 +25,20 @@
 
 #include <QKeyEvent>
 
-class VirtualJoystick : public QObject {
+class VirtualJoystick : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     explicit VirtualJoystick();
 
-  private slots:
+private slots:
     void readAxes (int key, bool pressed);
     void readPOVs (int key, bool pressed);
     void readButtons (int key, bool pressed);
     void processKeyEvent (QKeyEvent* event, bool pressed);
 
-  protected:
+protected:
     bool eventFilter (QObject* object, QEvent* event);
 };
 

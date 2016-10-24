@@ -12,11 +12,13 @@
 #include <QtTest>
 #include <QJoysticks.h>
 
-class Test_QJoysticks : public QObject {
+class Test_QJoysticks : public QObject
+{
     Q_OBJECT
 
-  private slots:
-    void initTestCase() {
+private slots:
+    void initTestCase()
+    {
         /* Get the QJoysticks instance */
         joysticks = QJoysticks::getInstance();
 
@@ -29,7 +31,8 @@ class Test_QJoysticks : public QObject {
         device.blacklisted = false;
     }
 
-    void checkJoystickCount() {
+    void checkJoystickCount()
+    {
         /* Clear joysticks & register only 1 joystick */
         joysticks->resetJoysticks();
         joysticks->addInputDevice (&device);
@@ -38,7 +41,8 @@ class Test_QJoysticks : public QObject {
         QVERIFY (joysticks->count() == 1);
     }
 
-    void checkJoystickProperties() {
+    void checkJoystickProperties()
+    {
         joysticks->resetJoysticks();
         joysticks->addInputDevice (&device);
 
@@ -49,7 +53,8 @@ class Test_QJoysticks : public QObject {
         QVERIFY (joysticks->getNumButtons (0) == device.numButtons);
     }
 
-    void checkBlacklistedCount() {
+    void checkBlacklistedCount()
+    {
         /* Add virtual joystick & blacklist it */
         joysticks->resetJoysticks();
         joysticks->setVirtualJoystickEnabled (true);
@@ -59,7 +64,8 @@ class Test_QJoysticks : public QObject {
         QVERIFY (joysticks->nonBlacklistedCount() < joysticks->count());
     }
 
-    void checkDiagnosticFunctions() {
+    void checkDiagnosticFunctions()
+    {
         joysticks->resetJoysticks();
         joysticks->addInputDevice (&device);
 
@@ -70,7 +76,8 @@ class Test_QJoysticks : public QObject {
         QVERIFY (joysticks->joystickExists (1) == false);
     }
 
-    void checkPointers() {
+    void checkPointers()
+    {
         /* Check pointers to interfaces */
         QVERIFY (joysticks->sdlJoysticks());
         QVERIFY (joysticks->virtualJoystick());
@@ -87,7 +94,8 @@ class Test_QJoysticks : public QObject {
         QVERIFY (joysticks->getInputDevice (0) == &device);
     }
 
-    void verifyCrashAvoidance() {
+    void verifyCrashAvoidance()
+    {
         joysticks->resetJoysticks();
 
         /* Try to access invalid joystick and see what happens */
@@ -99,7 +107,7 @@ class Test_QJoysticks : public QObject {
         qDebug() << joysticks->getInputDevice (2);
     }
 
-  private:
+private:
     QJoysticks* joysticks;
     QJoystickDevice device;
 };

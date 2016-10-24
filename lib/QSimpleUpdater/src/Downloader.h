@@ -43,23 +43,24 @@ class QNetworkAccessManager;
 /**
  * \brief Implements an integrated file downloader with a nice UI
  */
-class Downloader : public QWidget {
+class Downloader : public QWidget
+{
     Q_OBJECT
 
-  signals:
+signals:
     void downloadFinished (const QString& url, const QString& filepath);
 
-  public:
+public:
     explicit Downloader (QWidget* parent = 0);
     ~Downloader();
 
     bool useCustomInstallProcedures() const;
 
-  public slots:
+public slots:
     void startDownload (const QUrl& url);
     void setUseCustomInstallProcedures (const bool& custom);
 
-  private slots:
+private slots:
     void openDownload();
     void installUpdate();
     void cancelDownload();
@@ -68,10 +69,10 @@ class Downloader : public QWidget {
     void updateProgress (qint64 received, qint64 total);
     void calculateTimeRemaining (qint64 received, qint64 total);
 
-  private:
+private:
     qreal round (const qreal& input);
 
-  private:
+private:
     uint m_startTime;
     QString m_filePath;
     Ui::Downloader* m_ui;

@@ -63,14 +63,15 @@ class Updater;
  * By default, the downloader will try to open the file as if you opened it
  * from a file manager or a web browser (with the "file:*" url).
  */
-class QSU_DECL QSimpleUpdater : public QObject {
+class QSU_DECL QSimpleUpdater : public QObject
+{
     Q_OBJECT
 
-  signals:
+signals:
     void checkingFinished (const QString& url);
     void downloadFinished (const QString& url, const QString& filepath);
 
-  public:
+public:
     static QSimpleUpdater* getInstance();
 
     bool getNotifyOnUpdate (const QString& url) const;
@@ -87,7 +88,7 @@ class QSU_DECL QSimpleUpdater : public QObject {
     QString getLatestVersion (const QString& url) const;
     QString getModuleVersion (const QString& url) const;
 
-  public slots:
+public slots:
     void checkForUpdates (const QString& url);
     void setModuleName (const QString& url, const QString& name);
     void setNotifyOnUpdate (const QString& url, const bool& notify);
@@ -97,10 +98,10 @@ class QSU_DECL QSimpleUpdater : public QObject {
     void setDownloaderEnabled (const QString& url, const bool& enabled);
     void setUseCustomInstallProcedures (const QString& url, const bool& custom);
 
-  protected:
+protected:
     ~QSimpleUpdater();
 
-  private:
+private:
     Updater* getUpdater (const QString& url) const;
 };
 

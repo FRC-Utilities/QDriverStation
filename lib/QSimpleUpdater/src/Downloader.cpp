@@ -39,7 +39,8 @@
 
 #include "Downloader.h"
 
-Downloader::Downloader (QWidget* parent) : QWidget (parent) {
+Downloader::Downloader (QWidget* parent) : QWidget (parent)
+{
     m_ui = new Ui::Downloader;
     m_ui->setupUi (this);
 
@@ -67,7 +68,8 @@ Downloader::Downloader (QWidget* parent) : QWidget (parent) {
     setFixedSize (minimumSizeHint());
 }
 
-Downloader::~Downloader() {
+Downloader::~Downloader()
+{
     delete m_ui;
     delete m_reply;
     delete m_manager;
@@ -78,14 +80,16 @@ Downloader::~Downloader() {
  * finished (you can use the \c QSimpleUpdater signals to know when the
  * download is completed).
  */
-bool Downloader::useCustomInstallProcedures() const {
+bool Downloader::useCustomInstallProcedures() const
+{
     return m_useCustomProcedures;
 }
 
 /**
  * Begins downloading the file at the given \a url
  */
-void Downloader::startDownload (const QUrl& url) {
+void Downloader::startDownload (const QUrl& url)
+{
     /* Reset UI */
     m_ui->progressBar->setValue (0);
     m_ui->stopButton->setText (tr ("Stop"));
@@ -112,7 +116,8 @@ void Downloader::startDownload (const QUrl& url) {
  * \note If the downloaded file is not found, then the function will alert the
  *       user about the error.
  */
-void Downloader::openDownload() {
+void Downloader::openDownload()
+{
     if (!m_filePath.isEmpty())
         QDesktopServices::openUrl (QUrl::fromLocalFile (m_filePath));
 
@@ -132,7 +137,8 @@ void Downloader::openDownload() {
  *       signals fired by the \c QSimpleUpdater to install the update with your
  *       own implementations/code.
  */
-void Downloader::installUpdate() {
+void Downloader::installUpdate()
+{
     if (useCustomInstallProcedures())
         return;
 
@@ -163,7 +169,8 @@ void Downloader::installUpdate() {
  * Prompts the user if he/she wants to cancel the download and cancels the
  * download if the user agrees to do that.
  */
-void Downloader::cancelDownload() {
+void Downloader::cancelDownload()
+{
     if (!m_reply->isFinished()) {
         QMessageBox box;
         box.setWindowTitle (tr ("Updater"));
@@ -189,7 +196,8 @@ void Downloader::cancelDownload() {
  *       will be resumed when the OS opens a web-browser with the redirection
  *       notice.
  */
-void Downloader::onDownloadFinished() {
+void Downloader::onDownloadFinished()
+{
     m_ui->stopButton->setText    (tr ("Close"));
     m_ui->downloadLabel->setText (tr ("Download complete!"));
     m_ui->timeLabel->setText     (tr ("The installer will open separately")
@@ -229,7 +237,8 @@ void Downloader::onDownloadFinished() {
  * data and the total download size. Then, this function proceeds to update the
  * dialog controls/UI.
  */
-void Downloader::calculateSizes (qint64 received, qint64 total) {
+void Downloader::calculateSizes (qint64 received, qint64 total)
+{
     QString totalSize;
     QString receivedSize;
 
@@ -260,7 +269,8 @@ void Downloader::calculateSizes (qint64 received, qint64 total) {
  * Uses the \a received and \a total parameters to get the download progress
  * and update the progressbar value on the dialog.
  */
-void Downloader::updateProgress (qint64 received, qint64 total) {
+void Downloader::updateProgress (qint64 received, qint64 total)
+{
     if (total > 0) {
         m_ui->progressBar->setMinimum (0);
         m_ui->progressBar->setMaximum (100);
@@ -289,7 +299,8 @@ void Downloader::updateProgress (qint64 received, qint64 total) {
  * (hours, minutes or seconds) and constructs a user-friendly string, which
  * is displayed in the dialog.
  */
-void Downloader::calculateTimeRemaining (qint64 received, qint64 total) {
+void Downloader::calculateTimeRemaining (qint64 received, qint64 total)
+{
     uint difference = QDateTime::currentDateTime().toTime_t() - m_startTime;
 
     if (difference > 0) {
@@ -316,7 +327,8 @@ void Downloader::calculateTimeRemaining (qint64 received, qint64 total) {
 /**
  * Rounds the given \a input to two decimal places
  */
-qreal Downloader::round (const qreal& input) {
+qreal Downloader::round (const qreal& input)
+{
     return roundf (input * 100) / 100;
 }
 
@@ -327,6 +339,7 @@ qreal Downloader::round (const qreal& input) {
  * Use the signals fired by the \c QSimpleUpdater to implement your own install
  * procedures.
  */
-void Downloader::setUseCustomInstallProcedures (const bool& custom) {
+void Downloader::setUseCustomInstallProcedures (const bool& custom)
+{
     m_useCustomProcedures = custom;
 }

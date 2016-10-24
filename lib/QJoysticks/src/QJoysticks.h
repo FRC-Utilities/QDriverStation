@@ -48,11 +48,12 @@ class VirtualJoystick;
  * \note the virtual joystick will ALWAYS be the last joystick to be registered,
  *       even if it has been enabled before any SDL joystick has been attached.
  */
-class QJoysticks : public QObject {
+class QJoysticks : public QObject
+{
     Q_OBJECT
     friend class Test_QJoysticks;
 
-  signals:
+signals:
     void countChanged();
     void POVEvent (const QJoystickPOVEvent& event);
     void axisEvent (const QJoystickAxisEvent& event);
@@ -61,7 +62,7 @@ class QJoysticks : public QObject {
     void axisChanged (const int js, const int axis, const qreal value);
     void buttonChanged (const int js, const int button, const bool pressed);
 
-  public:
+public:
     static QJoysticks* getInstance();
 
     Q_INVOKABLE int count() const;
@@ -80,25 +81,25 @@ class QJoysticks : public QObject {
     VirtualJoystick* virtualJoystick() const;
     QJoystickDevice* getInputDevice (int index);
 
-  public slots:
+public slots:
     void updateInterfaces();
     void setVirtualJoystickRange (qreal range);
     void setVirtualJoystickEnabled (bool enabled);
     void setSortJoysticksByBlacklistState (bool sort);
     void setBlacklisted (int index, bool blacklisted);
 
-  protected:
+protected:
     explicit QJoysticks();
     ~QJoysticks();
 
-  private slots:
+private slots:
     void resetJoysticks();
     void addInputDevice (QJoystickDevice* device);
     void onPOVEvent (const QJoystickPOVEvent& event);
     void onAxisEvent (const QJoystickAxisEvent& event);
     void onButtonEvent (const QJoystickButtonEvent& event);
 
-  private:
+private:
     bool m_sortJoyticks;
 
     QSettings* m_settings;

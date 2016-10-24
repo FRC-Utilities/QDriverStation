@@ -240,8 +240,8 @@ int DS_GetRobotCode()
 int DS_GetCanBeEnabled()
 {
     return DS_GetRobotCode()
-            && !DS_GetEmergencyStopped()
-            && DS_GetRobotCommunications();
+           && !DS_GetEmergencyStopped()
+           && DS_GetRobotCommunications();
 }
 
 /**

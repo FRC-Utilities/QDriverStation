@@ -24,18 +24,21 @@
 
 #include "DriverStation.h"
 
-class DSEventLogger : public QObject {
+class DSEventLogger : public QObject
+{
     Q_OBJECT
 
-  public:
-    void start();
+public:
     static DSEventLogger* getInstance();
 
-  private:
+public slots:
+    void start();
+
+private:
     DSEventLogger();
     ~DSEventLogger();
 
-  private slots:
+private slots:
     void onCANUsageChanged (int usage);
     void onCPUUsageChanged (int usage);
     void onRAMUsageChanged (int usage);
@@ -53,6 +56,6 @@ class DSEventLogger : public QObject {
     void onAllianceChanged (DriverStation::Alliance alliance);
     void onPositionChanged (DriverStation::Position position);
 
-  private:
+private:
     void connectSlots();
 };

@@ -41,7 +41,8 @@ static bool initialized = 0;
  *
  * \returns the obtained \c SDS string
  */
-static sds qstring_to_sds (const QString& string) {
+static sds qstring_to_sds (const QString& string)
+{
     return sdsnew (string.toStdString().c_str());
 }
 
@@ -52,7 +53,8 @@ static sds qstring_to_sds (const QString& string) {
  *
  * \returns the obtained \c QString
  */
-static QString sds_to_qstring (const sds string) {
+static QString sds_to_qstring (const sds string)
+{
     if (string)
         return QString (string);
 
@@ -65,7 +67,8 @@ static QString sds_to_qstring (const sds string) {
  *
  * \returns the only instance of this class
  */
-DriverStation* DriverStation::getInstance() {
+DriverStation* DriverStation::getInstance()
+{
     static DriverStation instance;
     return &instance;
 }
@@ -73,21 +76,24 @@ DriverStation* DriverStation::getInstance() {
 /**
  * Returns the packet loss percentage between the FMS and the client
  */
-int DriverStation::fmsPacketLoss() const {
+int DriverStation::fmsPacketLoss() const
+{
     return (qreal) (DS_ReceivedFMSPackets() / DS_SentFMSPackets()) * 100;
 }
 
 /**
  * Returns the packet loss percentage between the radio and the client
  */
-int DriverStation::radioPacketLoss() const {
+int DriverStation::radioPacketLoss() const
+{
     return (qreal) (DS_ReceivedRadioPackets() / DS_SentRadioPackets()) * 100;
 }
 
 /**
  * Returns the packet loss percentage between the robot and the client
  */
-int DriverStation::robotPacketLoss() const {
+int DriverStation::robotPacketLoss() const
+{
     return (qreal) (DS_ReceivedRobotPackets() / DS_SentRobotPackets()) * 100;
 }
 
@@ -95,14 +101,16 @@ int DriverStation::robotPacketLoss() const {
  * Returns the team number used by the LibDS,
  * use the \c setTeamNumber() function to change it
  */
-int DriverStation::teamNumber() const {
+int DriverStation::teamNumber() const
+{
     return DS_GetTeamNumber();
 }
 
 /**
  * Returns the number of joysticks registered with the Driver Station
  */
-int DriverStation::joystickCount() const {
+int DriverStation::joystickCount() const
+{
     return DS_GetJoystickCount();
 }
 
@@ -110,7 +118,8 @@ int DriverStation::joystickCount() const {
  * Returns the number of axes that the given \a joystick has.
  * If the joystick does not exist, this function will return \c 0
  */
-int DriverStation::getNumAxes (const int joystick) const {
+int DriverStation::getNumAxes (const int joystick) const
+{
     return DS_GetJoystickNumAxes (joystick);
 }
 
@@ -118,7 +127,8 @@ int DriverStation::getNumAxes (const int joystick) const {
  * Returns the number of hats that the given \a joystick has.
  * If the joystick does not exist, this function will return \c 0
  */
-int DriverStation::getNumHats (const int joystick) const {
+int DriverStation::getNumHats (const int joystick) const
+{
     return DS_GetJoystickNumHats (joystick);
 }
 
@@ -126,7 +136,8 @@ int DriverStation::getNumHats (const int joystick) const {
  * Returns the number of buttons that the given \a joystick has.
  * If the joystick does not exist, this function will return \c 0
  */
-int DriverStation::getNumButtons (const int joystick) const {
+int DriverStation::getNumButtons (const int joystick) const
+{
     return DS_GetJoystickNumButtons (joystick);
 }
 
@@ -134,7 +145,8 @@ int DriverStation::getNumButtons (const int joystick) const {
  * Returns the current enabled state of the robot,
  * you can change it with the \c setEnabled() function
  */
-bool DriverStation::isEnabled() const {
+bool DriverStation::isEnabled() const
+{
     return DS_GetRobotEnabled();
 }
 
@@ -144,7 +156,8 @@ bool DriverStation::isEnabled() const {
  * or with the \c switchToAutonomous(), \c switchToTestMode() or
  * \c switchToTeleoperated() functions
  */
-bool DriverStation::isTestMode() const {
+bool DriverStation::isTestMode() const
+{
     return (controlMode() == kControlTest);
 }
 
@@ -155,14 +168,16 @@ bool DriverStation::isTestMode() const {
  *   - The robot code is loaded
  *   - The robot is not emergency stopped
  */
-bool DriverStation::canBeEnabled() const {
+bool DriverStation::canBeEnabled() const
+{
     return DS_GetCanBeEnabled();
 }
 
 /**
  * Returns \c true if the robot code is present
  */
-bool DriverStation::hasRobotCode() const {
+bool DriverStation::hasRobotCode() const
+{
     return DS_GetRobotCode();
 }
 
@@ -172,7 +187,8 @@ bool DriverStation::hasRobotCode() const {
  * or with the \c switchToAutonomous(), \c switchToTestMode() or
  * \c switchToTeleoperated() functions
  */
-bool DriverStation::isAutonomous() const {
+bool DriverStation::isAutonomous() const
+{
     return (controlMode() == kControlAutonomous);
 }
 
@@ -182,28 +198,32 @@ bool DriverStation::isAutonomous() const {
  * or with the \c switchToAutonomous(), \c switchToTestMode() or
  * \c switchToTeleoperated() functions
  */
-bool DriverStation::isTeleoperated() const {
+bool DriverStation::isTeleoperated() const
+{
     return (controlMode() == kControlTeleoperated);
 }
 
 /**
  * Returns \c true if the Driver Station has communications with the FMS
  */
-bool DriverStation::connectedToFMS() const {
+bool DriverStation::connectedToFMS() const
+{
     return DS_GetFMSCommunications();
 }
 
 /**
  * Returns \c true if the Driver Station has communications with the robot radio
  */
-bool DriverStation::connectedToRadio() const {
+bool DriverStation::connectedToRadio() const
+{
     return DS_GetRadioCommunications();
 }
 
 /**
  * Returns \c true if the Driver Station has communications with the robot
  */
-bool DriverStation::connectedToRobot() const {
+bool DriverStation::connectedToRobot() const
+{
     return DS_GetRobotCommunications();
 }
 
@@ -213,14 +233,16 @@ bool DriverStation::connectedToRobot() const {
  *
  * You can trigger an emergency stop with the \c setEmergencyStopped() function
  */
-bool DriverStation::emergencyStopped() const {
+bool DriverStation::emergencyStopped() const
+{
     return DS_GetEmergencyStopped();
 }
 
 /**
  * Returns the current voltage reported by the robot and the loaded protocol
  */
-qreal DriverStation::voltage() const {
+qreal DriverStation::voltage() const
+{
     return (qreal) DS_GetRobotVoltage();
 }
 
@@ -229,7 +251,8 @@ qreal DriverStation::voltage() const {
  * the voltage will always display two decimals, even if the number is
  * an integer (e.g. this function will return "12.00 V")
  */
-QString DriverStation::voltageString() const {
+QString DriverStation::voltageString() const
+{
     /* Round voltage to two decimal places */
     qreal volt = roundf (voltage() * 100) / 100;
 
@@ -257,7 +280,8 @@ QString DriverStation::voltageString() const {
  * Returns the maximum battery voltage specified by the current protocol.
  * This value can be used to genereate graphs or enchance the user interface
  */
-qreal DriverStation::maximumBatteryVoltage() const {
+qreal DriverStation::maximumBatteryVoltage() const
+{
     return (qreal) DS_GetMaximumBatteryVoltage();
 }
 
@@ -268,7 +292,8 @@ qreal DriverStation::maximumBatteryVoltage() const {
  *    - \c kControlAutonomous
  *    - \c kControlTeleoperated
  */
-DriverStation::Control DriverStation::controlMode() const {
+DriverStation::Control DriverStation::controlMode() const
+{
     switch (DS_GetControlMode()) {
     case DS_CONTROL_TEST:
         return kControlTest;
@@ -299,7 +324,8 @@ DriverStation::Control DriverStation::controlMode() const {
  * You can also use the \c teamAlliance() and \c teamPosition() functions to
  * obtain the individual alliance and position of the DS/robot.
  */
-DriverStation::Station DriverStation::teamStation() const {
+DriverStation::Station DriverStation::teamStation() const
+{
     if (teamAlliance() == kAllianceRed) {
         switch (teamPosition()) {
         case kPosition1:
@@ -344,7 +370,8 @@ DriverStation::Station DriverStation::teamStation() const {
  *
  * Related functions: \c teamPosition() and \c teamStation()
  */
-DriverStation::Alliance DriverStation::teamAlliance() const {
+DriverStation::Alliance DriverStation::teamAlliance() const
+{
     switch (DS_GetAlliance()) {
     case DS_ALLIANCE_RED:
         return kAllianceRed;
@@ -368,7 +395,8 @@ DriverStation::Alliance DriverStation::teamAlliance() const {
  *
  * Related functions: \c teamAlliance() and \c teamStation()
  */
-DriverStation::Position DriverStation::teamPosition() const {
+DriverStation::Position DriverStation::teamPosition() const
+{
     switch (DS_GetPosition()) {
     case DS_POSITION_1:
         return kPosition1;
@@ -389,7 +417,8 @@ DriverStation::Position DriverStation::teamPosition() const {
  * Returns the internet address that the Driver Station is using to communicate
  * with the Field Management System.
  */
-QString DriverStation::appliedFMSAddress() const {
+QString DriverStation::appliedFMSAddress() const
+{
     return sds_to_qstring (DS_GetAppliedFMSAddress());
 }
 
@@ -397,7 +426,8 @@ QString DriverStation::appliedFMSAddress() const {
  * Returns the internet address that the Driver Station is using to communicate
  * with the robot radio.
  */
-QString DriverStation::appliedRadioAddress() const {
+QString DriverStation::appliedRadioAddress() const
+{
     return sds_to_qstring (DS_GetAppliedRadioAddress());
 }
 
@@ -405,28 +435,32 @@ QString DriverStation::appliedRadioAddress() const {
  * Returns the internet address that the Driver Station is using to communicate
  * with the robot controller.
  */
-QString DriverStation::appliedRobotAddress() const {
+QString DriverStation::appliedRobotAddress() const
+{
     return sds_to_qstring (DS_GetAppliedRobotAddress());
 }
 
 /**
  * Returns the FMS address recommended by the loaded protocol
  */
-QString DriverStation::defaultFMSAddress() const {
+QString DriverStation::defaultFMSAddress() const
+{
     return sds_to_qstring (DS_GetDefaultFMSAddress());
 }
 
 /**
  * Returns the radio address recommended by the loaded protocol
  */
-QString DriverStation::defaultRadioAddress() const {
+QString DriverStation::defaultRadioAddress() const
+{
     return sds_to_qstring (DS_GetDefaultRadioAddress());
 }
 
 /**
  * Returns the robot address recommended by the loaded protocol
  */
-QString DriverStation::defaultRobotAddress() const {
+QString DriverStation::defaultRobotAddress() const
+{
     return sds_to_qstring (DS_GetDefaultRobotAddress());
 }
 
@@ -443,7 +477,8 @@ QString DriverStation::defaultRobotAddress() const {
  *    - Autonomous Enabled/Disabled
  *    - Test Enabled/Disabled
  */
-QString DriverStation::generalStatus() const {
+QString DriverStation::generalStatus() const
+{
     return sds_to_qstring (DS_GetStatusString());
 }
 
@@ -451,7 +486,8 @@ QString DriverStation::generalStatus() const {
  * Returns the user-set FMS address, use the \c setCustomFMSAddress() function
  * to change this value.
  */
-QString DriverStation::customFMSAddress() const {
+QString DriverStation::customFMSAddress() const
+{
     return sds_to_qstring (DS_GetCustomFMSAddress());
 }
 
@@ -459,7 +495,8 @@ QString DriverStation::customFMSAddress() const {
  * Returns the user-set radio address, use the \c setCustomRadioAddress()
  * function to change this value.
  */
-QString DriverStation::customRadioAddress() const {
+QString DriverStation::customRadioAddress() const
+{
     return sds_to_qstring (DS_GetCustomRadioAddress());
 }
 
@@ -467,7 +504,8 @@ QString DriverStation::customRadioAddress() const {
  * Returns the user-set robot address, use the \c setCustomRobotAddress()
  * function to change this value.
  */
-QString DriverStation::customRobotAddress() const {
+QString DriverStation::customRobotAddress() const
+{
     return sds_to_qstring (DS_GetCustomRobotAddress());
 }
 
@@ -476,7 +514,8 @@ QString DriverStation::customRobotAddress() const {
  * You can use the value indexes of this list directly with the
  * \c setTeamStation() function
  */
-QStringList DriverStation::stations() const {
+QStringList DriverStation::stations() const
+{
     QStringList list;
 
     list.append (tr ("Red 1"));
@@ -494,7 +533,8 @@ QStringList DriverStation::stations() const {
  * You can use the value indexes of this list directly with the \c setProtocol()
  * function.
  */
-QStringList DriverStation::protocols() const {
+QStringList DriverStation::protocols() const
+{
     QStringList list;
 
     list.append (tr ("FRC 2016"));
@@ -508,7 +548,8 @@ QStringList DriverStation::protocols() const {
  * Initializes the LibDS system and instructs the class to close the LibDS
  * before the Qt application is closed.
  */
-void DriverStation::start() {
+void DriverStation::start()
+{
     if (!initialized) {
         DS_Init();
         processEvents();
@@ -520,7 +561,8 @@ void DriverStation::start() {
 /**
  * Reboots the robot controller
  */
-void DriverStation::rebootRobot() {
+void DriverStation::rebootRobot()
+{
     LOG << "Requesting robot reboot...";
     DS_RebootRobot();
 }
@@ -528,7 +570,8 @@ void DriverStation::rebootRobot() {
 /**
  * Removes all the registered joysticks from the Driver Station
  */
-void DriverStation::resetJoysticks() {
+void DriverStation::resetJoysticks()
+{
     LOG << "Resetting joysticks...";
     DS_JoysticksReset();
     emit joystickCountChanged();
@@ -537,7 +580,8 @@ void DriverStation::resetJoysticks() {
 /**
  * Restarts the robot code process in the robot controller
  */
-void DriverStation::restartRobotCode() {
+void DriverStation::restartRobotCode()
+{
     LOG << "Requesting robot code restart...";
     DS_RestartRobotCode();
 }
@@ -545,7 +589,8 @@ void DriverStation::restartRobotCode() {
 /**
  * Disables the robot and switches its control mode to \c kControlTest
  */
-void DriverStation::switchToTestMode() {
+void DriverStation::switchToTestMode()
+{
     setEnabled (false);
     setControlMode (kControlTest);
 }
@@ -553,7 +598,8 @@ void DriverStation::switchToTestMode() {
 /**
  * Disables the robot and switches its control mode to \c kControlAutonomous
  */
-void DriverStation::switchToAutonomous() {
+void DriverStation::switchToAutonomous()
+{
     setEnabled (false);
     setControlMode (kControlAutonomous);
 }
@@ -561,7 +607,8 @@ void DriverStation::switchToAutonomous() {
 /**
  * Disables the robot and switches its control mode to \c kControlTeleoperated
  */
-void DriverStation::switchToTeleoperated() {
+void DriverStation::switchToTeleoperated()
+{
     setEnabled (false);
     setControlMode (kControlTeleoperated);
 }
@@ -569,7 +616,8 @@ void DriverStation::switchToTeleoperated() {
 /**
  * Disables or enables the robot
  */
-void DriverStation::setEnabled (const bool enabled) {
+void DriverStation::setEnabled (const bool enabled)
+{
     LOG << "Setting enabled state to" << enabled;
     DS_SetRobotEnabled (enabled);
 }
@@ -579,7 +627,8 @@ void DriverStation::setEnabled (const bool enabled) {
  * \note Changing the team number will trigger a refresh in the internet
  *       addresses used to communicate with the FMS, radio and robot.
  */
-void DriverStation::setTeamNumber (const int number) {
+void DriverStation::setTeamNumber (const int number)
+{
     LOG << "Changing team number to" << number;
 
     DS_SetTeamNumber (number);
@@ -591,7 +640,8 @@ void DriverStation::setTeamNumber (const int number) {
  *
  * \param protocol the new communication protocol to use
  */
-void DriverStation::setProtocol (DS_Protocol* protocol) {
+void DriverStation::setProtocol (DS_Protocol* protocol)
+{
     if (protocol) {
         LOG << "Loading protocol" << protocol;
 
@@ -608,7 +658,8 @@ void DriverStation::setProtocol (DS_Protocol* protocol) {
 /**
  * Changes the control \a mode of the robot
  */
-void DriverStation::setControlMode (const Control mode) {
+void DriverStation::setControlMode (const Control mode)
+{
     LOG << "Setting control mode to" << mode;
 
     switch (mode) {
@@ -633,7 +684,8 @@ void DriverStation::setControlMode (const Control mode) {
  * \note You can use this function directly with the index values given by the
  *       \c protocols() function
  */
-void DriverStation::setProtocol (const int protocol) {
+void DriverStation::setProtocol (const int protocol)
+{
     switch ((Protocol) protocol) {
     case kProtocol2014:
         setProtocol (DS_GetProtocolFRC_2014());
@@ -666,7 +718,8 @@ void DriverStation::setProtocol (const int protocol) {
  * \note You can use this function directly with the output given by the \c
  *       \c stations() function
  */
-void DriverStation::setTeamStation (const int station) {
+void DriverStation::setTeamStation (const int station)
+{
     switch ((Station) station) {
     case kStationRed1:
         setTeamPosition (kPosition1);
@@ -702,7 +755,8 @@ void DriverStation::setTeamStation (const int station) {
  *    - \c kAllianceRed (0)
  *    - \c kAllianceBlue (1)
  */
-void DriverStation::setTeamAlliance (const int alliance) {
+void DriverStation::setTeamAlliance (const int alliance)
+{
     LOG << "Setting alliance to" << alliance;
 
     switch ((Alliance) alliance) {
@@ -721,7 +775,8 @@ void DriverStation::setTeamAlliance (const int alliance) {
  *    - \c kPosition2 (1)
  *    - \c kPosition3 (2)
  */
-void DriverStation::setTeamPosition (const int position) {
+void DriverStation::setTeamPosition (const int position)
+{
     LOG << "Setting position to" << position;
 
     switch ((Position) position) {
@@ -740,7 +795,8 @@ void DriverStation::setTeamPosition (const int position) {
 /**
  * Changes the emergency stopped state of the robot
  */
-void DriverStation::setEmergencyStopped (const bool stopped) {
+void DriverStation::setEmergencyStopped (const bool stopped)
+{
     LOG << "Setting ESTOP to" << stopped;
     DS_SetEmergencyStopped (stopped);
 }
@@ -748,7 +804,8 @@ void DriverStation::setEmergencyStopped (const bool stopped) {
 /**
  * Forces the LibDS to use the given \a address to communicate with the FMS
  */
-void DriverStation::setCustomFMSAddress (const QString& address) {
+void DriverStation::setCustomFMSAddress (const QString& address)
+{
     if (addressIsValid (address) || address.isEmpty()) {
         LOG << "Using new FMS address" << address;
         DS_SetCustomFMSAddress (qstring_to_sds (address));
@@ -758,7 +815,8 @@ void DriverStation::setCustomFMSAddress (const QString& address) {
 /**
  * Forces the LibDS to use the given \a address to communicate with the radio
  */
-void DriverStation::setCustomRadioAddress (const QString& address) {
+void DriverStation::setCustomRadioAddress (const QString& address)
+{
     if (addressIsValid (address) || address.isEmpty()) {
         LOG << "Using new radio address" << address;
         DS_SetCustomRadioAddress (qstring_to_sds (address));
@@ -768,7 +826,8 @@ void DriverStation::setCustomRadioAddress (const QString& address) {
 /**
  * Forces the LibDS to use the given \a address to communicate with the robot
  */
-void DriverStation::setCustomRobotAddress (const QString& address) {
+void DriverStation::setCustomRobotAddress (const QString& address)
+{
     if (addressIsValid (address) || address.isEmpty()) {
         LOG << "Using new robot address" << address;
         DS_SetCustomRobotAddress (qstring_to_sds (address));
@@ -778,7 +837,8 @@ void DriverStation::setCustomRobotAddress (const QString& address) {
 /**
  * Broadcasts/sends the given \a message to the NetConsole network
  */
-void DriverStation::sendNetConsoleMessage (const QString& message) {
+void DriverStation::sendNetConsoleMessage (const QString& message)
+{
     if (!message.isEmpty())
         DS_SendNetConsoleMessage (qstring_to_sds (message));
 }
@@ -790,7 +850,8 @@ void DriverStation::sendNetConsoleMessage (const QString& message) {
  * \param hats the number of hats/povs of the new joystick
  * \param buttons the number of buttons of the new joystick
  */
-void DriverStation::addJoystick (int axes, int hats, int buttons) {
+void DriverStation::addJoystick (int axes, int hats, int buttons)
+{
     DS_JoysticksAdd (axes, hats, buttons);
 
     LOG << "Registered new joystick with"
@@ -808,7 +869,8 @@ void DriverStation::addJoystick (int axes, int hats, int buttons) {
  * \param hat the ID of the hat to update (e.g. 0 for primary hat)
  * \param angle the new angle to apply to the hat
  */
-void DriverStation::setJoystickHat (int joystick, int hat, int angle) {
+void DriverStation::setJoystickHat (int joystick, int hat, int angle)
+{
     DS_SetJoystickHat (joystick, hat, angle);
 }
 
@@ -821,7 +883,8 @@ void DriverStation::setJoystickHat (int joystick, int hat, int angle) {
  *
  * \note the \a value must have a range from \c -1 to \c 1
  */
-void DriverStation::setJoystickAxis (int joystick, int axis, float value) {
+void DriverStation::setJoystickAxis (int joystick, int axis, float value)
+{
     DS_SetJoystickAxis (joystick, axis, value);
 }
 
@@ -832,7 +895,8 @@ void DriverStation::setJoystickAxis (int joystick, int axis, float value) {
  * \param button the ID of the button to update (e.g. 0 for A in an Xbox stick)
  * \param pressed the new pressed state of the button
  */
-void DriverStation::setJoystickButton (int joystick, int button, bool pressed) {
+void DriverStation::setJoystickButton (int joystick, int button, bool pressed)
+{
     DS_SetJoystickButton (joystick, button, pressed);
 }
 
@@ -840,7 +904,8 @@ void DriverStation::setJoystickButton (int joystick, int button, bool pressed) {
  * Breaks the internal loops of the LibDS, de-allocates its assets and
  * closes all the network sockets used by the library
  */
-void DriverStation::quitDS() {
+void DriverStation::quitDS()
+{
     LOG << "Stopping DS Engine...";
     DS_Close();
     LOG << "DS Engine Stopped";
@@ -850,7 +915,8 @@ void DriverStation::quitDS() {
  * Polls for new LibDS events and emits Qt signals as appropiate.
  * This function is called every 5 milliseconds.
  */
-void DriverStation::processEvents() {
+void DriverStation::processEvents()
+{
     DS_Event event;
     while (DS_PollEvent (&event)) {
         switch (event.type) {
@@ -913,7 +979,8 @@ void DriverStation::processEvents() {
  *
  * \param address the network address to check for validity
  */
-bool DriverStation::addressIsValid (const QString& address) {
+bool DriverStation::addressIsValid (const QString& address)
+{
     /* This is a valid mDNS address */
     if (address.endsWith (".local"))
         return true;

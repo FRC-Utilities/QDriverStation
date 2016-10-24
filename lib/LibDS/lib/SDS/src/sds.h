@@ -66,7 +66,8 @@ struct sdshdr_h_ {
 #  define INLINE inline
 #endif
 
-static INLINE size_t sdslen (const sds s) {
+static INLINE size_t sdslen (const sds s)
+{
     struct sdshdr_h_ *sh = (struct sdshdr_h_*)
                            (s - (int)offsetof (struct sdshdr_h_, buf));
 
@@ -74,7 +75,8 @@ static INLINE size_t sdslen (const sds s) {
     return sh->len;
 }
 
-static INLINE size_t sdsavail (const sds s) {
+static INLINE size_t sdsavail (const sds s)
+{
     struct sdshdr_h_ *sh = (struct sdshdr_h_*)
                            (s - (int)offsetof (struct sdshdr_h_, buf));
 
