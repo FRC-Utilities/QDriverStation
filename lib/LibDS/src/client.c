@@ -437,7 +437,12 @@ void DS_SetCustomFMSAddress (const char* address)
     if (strlen (address) > 0) {
         DS_FREESTR (custom_fms_address);
         custom_fms_address = sdsnew (address);
+        CFG_ReconfigureAddresses (RECONFIGURE_FMS);
+    }
 
+    else {
+        DS_FREESTR (custom_fms_address);
+        custom_fms_address = sdsempty();
         CFG_ReconfigureAddresses (RECONFIGURE_FMS);
     }
 }
@@ -450,7 +455,12 @@ void DS_SetCustomRadioAddress (const char* address)
     if (strlen (address) > 0) {
         DS_FREESTR (custom_radio_address);
         custom_radio_address = sdsnew (address);
+        CFG_ReconfigureAddresses (RECONFIGURE_RADIO);
+    }
 
+    else {
+        DS_FREESTR (custom_radio_address);
+        custom_radio_address = sdsempty();
         CFG_ReconfigureAddresses (RECONFIGURE_RADIO);
     }
 }
@@ -463,7 +473,12 @@ void DS_SetCustomRobotAddress (const char* address)
     if (strlen (address) > 0) {
         DS_FREESTR (custom_robot_address);
         custom_robot_address = sdsnew (address);
+        CFG_ReconfigureAddresses (RECONFIGURE_ROBOT);
+    }
 
+    else {
+        DS_FREESTR (custom_robot_address);
+        custom_robot_address = sdsempty();
         CFG_ReconfigureAddresses (RECONFIGURE_ROBOT);
     }
 }

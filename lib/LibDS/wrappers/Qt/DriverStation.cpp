@@ -564,6 +564,7 @@ void DriverStation::setProtocol (DS_Protocol* protocol) {
     if (protocol) {
         LOG << "Loading protocol" << protocol;
 
+        start();
         DS_ConfigureProtocol (protocol);
 
         emit protocolChanged();
