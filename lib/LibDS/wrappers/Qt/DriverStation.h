@@ -24,6 +24,7 @@
 #define _DRIVERSTATION_H
 
 #include <QObject>
+#include <QStringList>
 #include <DS_Protocol.h>
 
 class DriverStation : public QObject
