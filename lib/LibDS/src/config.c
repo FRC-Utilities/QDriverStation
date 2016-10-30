@@ -403,6 +403,8 @@ void CFG_SetFMSCommunications (const int communications)
         event.fms.type = DS_FMS_COMMS_CHANGED;
         event.fms.connected = fms_communications;
         DS_AddEvent (&event);
+
+        DS_ResetFMSPackets();
     }
 }
 
@@ -418,6 +420,8 @@ void CFG_SetRadioCommunications (const int communications)
         event.radio.type = DS_RADIO_COMMS_CHANGED;
         event.radio.connected = fms_communications;
         DS_AddEvent (&event);
+
+        DS_ResetRadioPackets();
     }
 }
 
@@ -430,6 +434,8 @@ void CFG_SetRobotCommunications (const int communications)
         robot_communications = to_boolean (communications);
         create_robot_event (DS_ROBOT_COMMS_CHANGED);
         create_robot_event (DS_STATUS_STRING_CHANGED);
+
+        DS_ResetRobotPackets();
     }
 }
 

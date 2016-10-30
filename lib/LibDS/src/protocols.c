@@ -79,12 +79,12 @@ static sds netcs_data = NULL;
 /*
  * Holds the sent/received packets
  */
-static int sent_fms_packets = 1;
-static int sent_radio_packets = 1;
-static int sent_robot_packets = 1;
-static int received_fms_packets = 1;
-static int received_radio_packets = 1;
-static int received_robot_packets = 1;
+static int sent_fms_packets = 0;
+static int sent_radio_packets = 0;
+static int sent_robot_packets = 0;
+static int received_fms_packets = 0;
+static int received_radio_packets = 0;
+static int received_robot_packets = 0;
 
 /*
  * The thread ID for the protocol event loop
@@ -396,7 +396,7 @@ void DS_ConfigureProtocol (DS_Protocol* ptr)
  */
 int DS_SentFMSPackets()
 {
-    return sent_fms_packets;
+    return DS_Max (1, sent_fms_packets);
 }
 
 /**
@@ -404,7 +404,7 @@ int DS_SentFMSPackets()
  */
 int DS_SentRadioPackets()
 {
-    return sent_radio_packets;
+    return DS_Max (1, sent_radio_packets);
 }
 
 /**
@@ -412,7 +412,7 @@ int DS_SentRadioPackets()
  */
 int DS_SentRobotPackets()
 {
-    return sent_robot_packets;
+    return DS_Max (1, sent_robot_packets);
 }
 
 /**
@@ -437,4 +437,34 @@ int DS_ReceivedRadioPackets()
 int DS_ReceivedRobotPackets()
 {
     return received_robot_packets;
+}
+
+/**
+ * Resets the number of sent/received FMS packets.
+ * This function is called when the connection state with the FMS is changed
+ */
+void DS_ResetFMSPackets()
+{
+    sent_fms_packets = 0;
+    received_fms_packets = 0;
+}
+
+/**
+ * Resets the number of sent/received radio packets.
+ * This function is called when the connection state with the radio is changed
+ */
+void DS_ResetRadioPackets()
+{
+    sent_radio_packets = 0;
+    received_radio_packets = 0;
+}
+
+/**
+ * Resets the number of sent/received robot packets.
+ * This function is called when the connection state with the robot is changed
+ */
+void DS_ResetRobotPackets()
+{
+    sent_robot_packets = 0;
+    received_robot_packets = 0;
 }

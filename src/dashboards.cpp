@@ -48,7 +48,7 @@ const QString SBD_COMMAND = "java -jar \"%1/wpilib/tools/SmartDashboard.jar\"";
  */
 Dashboards::Dashboards()
 {
-    connect (qApp, SIGNAL (aboutToQuit()), &m_process, SLOT (terminate()));
+    connect (qApp, SIGNAL (aboutToQuit()), &m_process, SLOT (kill()));
 }
 
 /**
@@ -74,7 +74,7 @@ QStringList Dashboards::dashboardList()
  */
 void Dashboards::openDashboard (int dashboard)
 {
-    m_process.close();
+    m_process.kill();
     QString command = "";
 
     switch (dashboard) {

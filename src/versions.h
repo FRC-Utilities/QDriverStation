@@ -26,11 +26,12 @@
 #include <QString>
 
 // *INDENT-OFF*
-static const QString APP_CODNAME = "Worf";
 static const QString APP_VERSION = "16.10";
 static const QString APP_DSPNAME = "QDriverStation";
+static const QString CONTACT_URL = "alex_spataru@outlook.com";
 static const QString APP_COMPANY = "QDriverStation Developers";
-static const QString APP_WEBSITE = "http://qdriverstation.sf.net";
+static const QString APP_WEBSITE = "http://frc-utilities.github.io/";
+static const QString APP_REPBUGS = "http://github.com/FRC-Utilities/QDriverStation/issues";
 static const QString URL_UPDATER = "https://raw.githubusercontent.com/FRC-Utilities/QDriverStation/master/UPDATES.json";
 // *INDENT-ON*
 

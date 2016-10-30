@@ -80,16 +80,6 @@ const QString HELP = "Usage: qdriverstation [ options ... ]                 \n"
                      "    -w, --website   Open a web site of this project   \n";
 
 //------------------------------------------------------------------------------
-// Website, contact info & other URLs
-//------------------------------------------------------------------------------
-
-// *INDENT-OFF*
-const QString CONT_URL = "alex_spataru@outlook.com";
-const QString HTTP_URL = "http://qdriverstation.sf.net";
-const QString BUGS_URL = "http://github.com/FRC-Utilities/QDriverStation/issues";
-// *INDENT-ON*
-
-//------------------------------------------------------------------------------
 // Download joystick drivers if needed
 //------------------------------------------------------------------------------
 
@@ -141,27 +131,27 @@ static void resetSettings()
 
 static void contact()
 {
-    QString url = "mailto:" + CONT_URL;
+    QString url = "mailto:" + CONTACT_URL;
     QDesktopServices::openUrl (QUrl (url));
     qDebug() << WEBS.arg (url).toStdString().c_str();
 }
 
 static void reportBug()
 {
-    QDesktopServices::openUrl (QUrl (BUGS_URL));
-    qDebug() << WEBS.arg (BUGS_URL).toStdString().c_str();
+    QDesktopServices::openUrl (QUrl (APP_REPBUGS));
+    qDebug() << WEBS.arg (APP_REPBUGS).toStdString().c_str();
 }
 
 static void openWebsite()
 {
-    QDesktopServices::openUrl (QUrl (HTTP_URL));
-    qDebug() << WEBS.arg (HTTP_URL).toStdString().c_str();
+    QDesktopServices::openUrl (QUrl (APP_WEBSITE));
+    qDebug() << WEBS.arg (APP_WEBSITE).toStdString().c_str();
 }
 
 static void showVersion()
 {
     QString appver = APP_DSPNAME + " version " + APP_VERSION;
-    QString author = "Written by Alex Spataru <" + CONT_URL + ">";
+    QString author = "Written by Alex Spataru <" + CONTACT_URL + ">";
 
     qDebug() << appver.toStdString().c_str();
     qDebug() << author.toStdString().c_str();
@@ -182,13 +172,19 @@ int main (int argc, char* argv[])
 #endif
 #endif
 
+    /* Set application info */
+    QApplication::setApplicationName    (APP_DSPNAME);
+    QApplication::setOrganizationName   (APP_COMPANY);
+    QApplication::setApplicationVersion (APP_VERSION);
+    QApplication::setOrganizationDomain (APP_WEBSITE);
+
+    /* Set application attributes */
+    QApplication::setAttribute (Qt::AA_UseDesktopOpenGL);
+    QApplication::setAttribute (Qt::AA_ShareOpenGLContexts);
+
     /* Initialize application */
     QString arguments;
     QApplication app (argc, argv);
-    app.setApplicationName    (APP_DSPNAME);
-    app.setOrganizationName   (APP_COMPANY);
-    app.setApplicationVersion (APP_VERSION);
-    app.setOrganizationDomain (APP_WEBSITE);
 
     /* Read command line arguments */
     if (app.arguments().count() >= 2)
@@ -217,9 +213,9 @@ int main (int argc, char* argv[])
         return EXIT_SUCCESS;
     }
 
-    /* Start the init. time counter */
-    QTime* pElapsedTime = new QTime;
-    pElapsedTime->start();
+    /* Start the initialization time clock */
+    QTime timer;
+    timer.start();
 
     /* Initialize OS variables */
     bool isMac = false;
@@ -259,7 +255,8 @@ int main (int argc, char* argv[])
     engine.rootContext()->setContextProperty ("cDashboard",    &dashboards);
     engine.rootContext()->setContextProperty ("appDspName",    APP_DSPNAME);
     engine.rootContext()->setContextProperty ("appVersion",    APP_VERSION);
-    engine.rootContext()->setContextProperty ("appCodName",    APP_CODNAME);
+    engine.rootContext()->setContextProperty ("appWebsite",    APP_WEBSITE);
+    engine.rootContext()->setContextProperty ("appRepBugs",    APP_REPBUGS);
     engine.rootContext()->setContextProperty ("UpdaterUrl",    URL_UPDATER);
     engine.rootContext()->setContextProperty ("DriverStation", driverstation);
     engine.load (QUrl (QStringLiteral ("qrc:/qml/main.qml")));
@@ -268,12 +265,11 @@ int main (int argc, char* argv[])
     if (engine.rootObjects().isEmpty())
         return EXIT_FAILURE;
 
+    /* Tell user how much time was needed to initialize the app */
+    qDebug() << "Initialized in " << timer.elapsed() << "milliseconds";
+
     /* Ask first-timers to download the xbox drivers */
     DownloadXboxDrivers();
-
-    /* Tell user how much time was needed to initialize the app */
-    qDebug() << "Initialized in " << pElapsedTime->elapsed() << "milliseconds";
-    delete pElapsedTime;
 
     /* Run normally */
     return app.exec();

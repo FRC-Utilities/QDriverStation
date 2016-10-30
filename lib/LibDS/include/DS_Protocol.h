@@ -78,6 +78,10 @@ extern int DS_ReceivedFMSPackets();
 extern int DS_ReceivedRadioPackets();
 extern int DS_ReceivedRobotPackets();
 
+extern void DS_ResetFMSPackets();
+extern void DS_ResetRadioPackets();
+extern void DS_ResetRobotPackets();
+
 extern DS_Protocol* DS_CurrentProtocol();
 
 #ifdef __cplusplus

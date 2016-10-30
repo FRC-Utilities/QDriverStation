@@ -24,6 +24,8 @@
 #-------------------------------------------------------------------------------
 
 CONFIG += app
+CONFIG += qtquickcompiler
+
 TARGET = QDriverStation
 
 QT += qml

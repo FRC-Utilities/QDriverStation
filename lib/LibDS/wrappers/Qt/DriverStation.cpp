@@ -96,7 +96,11 @@ int DriverStation::robotPacketLoss() const
 {
     qreal sent = (qreal) DS_SentRobotPackets();
     qreal recv = (qreal) DS_ReceivedRobotPackets();
-    return (recv / sent) * 100;
+
+    if (sent > 0)
+        return (1 - (recv / sent)) * 100;
+
+    return 100;
 }
 
 /**

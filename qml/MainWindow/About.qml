@@ -55,8 +55,8 @@ ColumnLayout {
     //
     Label {
         size: medium
+        text: qsTr ("Version") + " " + appVersion
         anchors.horizontalCenter: parent.horizontalCenter
-        text: qsTr ("Version") + " " + appVersion + " " + appCodName
     }
 
     //
@@ -69,12 +69,12 @@ ColumnLayout {
 
         Button {
             text: qsTr ("Visit Website")
-            onClicked: Qt.openUrlExternally ("http://qdriverstation.sf.net/")
+            onClicked: Qt.openUrlExternally (appWebsite)
         }
 
         Button {
             text: qsTr ("Report Bug")
-            onClicked: Qt.openUrlExternally ("http://github.com/FRC-Utilities/QDriverStation/issues")
+            onClicked: Qt.openUrlExternally (appRepBugs)
         }
     }
 }

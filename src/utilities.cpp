@@ -325,7 +325,7 @@ void Utilities::readBatteryLevelProcess (int exit_code)
         int t = data.at (data.indexOf ("%") - 2) - '0'; // Tens
         int u = data.at (data.indexOf ("%") - 1) - '0'; // Units
 
-        /* Check if rocess data is invalid */
+        /* Check if process data is invalid */
         if (h < 0) h = 0;
         if (t < 0) t = 0;
         if (u < 0) u = 0;
