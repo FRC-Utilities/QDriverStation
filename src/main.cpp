@@ -177,11 +177,7 @@ int main (int argc, char* argv[])
     QApplication::setOrganizationName   (APP_COMPANY);
     QApplication::setApplicationVersion (APP_VERSION);
     QApplication::setOrganizationDomain (APP_WEBSITE);
-
-    /* Set application attributes */
-    QApplication::setAttribute (Qt::AA_UseDesktopOpenGL);
-    QApplication::setAttribute (Qt::AA_ShareOpenGLContexts);
-
+    
     /* Initialize application */
     QString arguments;
     QApplication app (argc, argv);
