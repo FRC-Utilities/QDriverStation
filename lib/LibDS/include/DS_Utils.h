@@ -45,7 +45,7 @@ extern "C" {
 #define DS_FREE(ptr)    if (ptr != NULL) { free    (ptr); ptr = NULL; }
 #define DS_FREESTR(str) if (str != NULL) { sdsfree (str); str = NULL; }
 
-extern uint32_t DS_CRC32 (uint32_t crc, const void* buf, size_t size);
+extern uint32_t DS_CRC32 (const void* buf, size_t size);
 
 extern int DS_StopThread (pthread_t thread);
 extern sds DS_Append (sds string, char data);

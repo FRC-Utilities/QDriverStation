@@ -335,7 +335,7 @@ static sds create_robot_packet()
     data [79] = (uint8_t) 0x30;
 
     /* Add CRC32 checksum */
-    uint8_t checksum = DS_CRC32 (crc32, data, sizeof (data));
+    uint32_t checksum = DS_CRC32 (data, sizeof (data));
     data [1020] = (checksum & 0xff000000) >> 24;
     data [1021] = (checksum & 0xff0000) >> 16;
     data [1022] = (checksum & 0xff00) >> 8;
