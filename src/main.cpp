@@ -177,7 +177,7 @@ int main (int argc, char* argv[])
     QApplication::setOrganizationName   (APP_COMPANY);
     QApplication::setApplicationVersion (APP_VERSION);
     QApplication::setOrganizationDomain (APP_WEBSITE);
-    
+
     /* Initialize application */
     QString arguments;
     QApplication app (argc, argv);
