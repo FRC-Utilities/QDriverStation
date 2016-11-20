@@ -50,11 +50,6 @@ static const uint8_t cFMSAutonomous    = 0x53;
 static const uint8_t cFMSTeleoperated  = 0x43;
 
 /*
- * CRC32 code
- */
-static uint32_t crc32 = 0;
-
-/*
  * Sent robot acket counters, they are used as packet IDs
  */
 static unsigned int sent_robot_packets = 0;
