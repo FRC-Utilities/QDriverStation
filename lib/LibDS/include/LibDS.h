@@ -40,6 +40,7 @@ extern "C" {
 
 extern void DS_Init();
 extern void DS_Close();
+extern int DS_Initialized();
 
 #ifdef __cplusplus
 }

@@ -403,16 +403,7 @@ int read_robot_packet (const sds data)
     if (sdslen (data) < 1024)
         return 0;
 
-    /*
-     * Get the voltage bytes, which are stored in a weird way:
-     *  - The hex representation is the 'human readable' value
-     *  - For example, if the robot has a voltage of 12.14 volts,
-     *    then the DS will receive a packet with the following
-     *    voltage bytes: 0x12 and 0x14 (18 and 20 in decimal)
-     *  - Since we cannot use these values directly, we need
-     *    to obtain the 'machine readable' values, to do this,
-     *    we'll simply use a rule of three for the job
-     */
+    /* Calculate voltage using the (old & reliable) rule of three */
     uint8_t upper = ((uint8_t) data [1] * 12) / 0x12;
     uint8_t lower = ((uint8_t) data [2] * 12) / 0x12;
 

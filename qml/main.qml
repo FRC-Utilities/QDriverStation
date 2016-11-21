@@ -62,15 +62,20 @@ Item {
     // Initialize the DS engine when the application starts
     //
     Component.onCompleted: {
-        DriverStation.start()
-
-        Globals.beep (440, 100)
-        Globals.beep (220, 100)
-
         if (!mainwindow.visible) {
             mainwindow.visible = true
             mainwindow.updateWindowMode()
         }
+
+        if (getTeamNumber.firstLaunch) {
+            getTeamNumber.visibile = true
+            getTeamNumber.showNormal()
+        }
+
+        DriverStation.start()
+
+        Globals.beep (440, 100)
+        Globals.beep (220, 100)
     }
 
 

@@ -42,15 +42,15 @@ class Downloader;
 /**
  * \brief Downloads and interprests the update definition file
  */
-class QSU_DECL Updater : public QObject
-{
+class QSU_DECL Updater : public QObject {
     Q_OBJECT
 
-signals:
+  signals:
     void checkingFinished (const QString& url);
     void downloadFinished (const QString& url, const QString& filepath);
+    void appcastDownloaded (const QString& url, const QByteArray& data);
 
-public:
+  public:
     Updater();
     ~Updater();
 
@@ -63,33 +63,36 @@ public:
     QString moduleVersion() const;
     QString latestVersion() const;
 
+    bool customAppcast() const;
     bool notifyOnUpdate() const;
     bool notifyOnFinish() const;
     bool updateAvailable() const;
     bool downloaderEnabled() const;
     bool useCustomInstallProcedures() const;
 
-public slots:
+  public slots:
     void checkForUpdates();
     void setUrl (const QString& url);
     void setModuleName (const QString& name);
-    void setNotifyOnUpdate (const bool& notify);
-    void setNotifyOnFinish (const bool& notify);
+    void setNotifyOnUpdate (const bool notify);
+    void setNotifyOnFinish (const bool notify);
     void setModuleVersion (const QString& version);
-    void setDownloaderEnabled (const bool& enabled);
+    void setDownloaderEnabled (const bool enabled);
     void setPlatformKey (const QString& platformKey);
-    void setUseCustomInstallProcedures (const bool& custom);
+    void setUseCustomAppcast (const bool customAppcast);
+    void setUseCustomInstallProcedures (const bool custom);
 
-private slots:
+  private slots:
     void onReply (QNetworkReply* reply);
-    void setUpdateAvailable (const bool& available);
+    void setUpdateAvailable (const bool available);
 
-private:
+  private:
     bool compare (const QString& x, const QString& y);
 
-private:
+  private:
     QString m_url;
 
+    bool m_customAppcast;
     bool m_notifyOnUpdate;
     bool m_notifyOnFinish;
     bool m_updateAvailable;

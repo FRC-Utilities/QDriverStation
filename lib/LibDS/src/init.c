@@ -32,7 +32,7 @@ static int init = 0;
  */
 void DS_Init()
 {
-    if (init == 0) {
+    if (!DS_Initialized()) {
         init = 1;
 
         Timers_Init();
@@ -52,14 +52,23 @@ void DS_Init()
  */
 void DS_Close()
 {
-    if (init) {
+    if (DS_Initialized()) {
         init = 0;
+
+        Timers_Close();
+        Sockets_Close();
+        Protocols_Close();
+        Joysticks_Close();
 
         Events_Close();
         Client_Close();
-        Timers_Close();
-        Sockets_Close();
-        Joysticks_Close();
-        Protocols_Close();
     }
+}
+
+/**
+ * Returns \c 1 if the DS is initialized, \c 0 if not
+ */
+int DS_Initialized()
+{
+    return init;
 }

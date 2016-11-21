@@ -58,4 +58,12 @@ private slots:
 
 private:
     void connectSlots();
+
+private:
+    int m_cpuUsage;
+    int m_canUsage;
+    int m_ramUsage;
+    int m_diskUsage;
+
+    bool m_enabled;
 };

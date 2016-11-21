@@ -26,8 +26,7 @@
 #include <QtTest>
 #include <Downloader.h>
 
-class Test_Downloader : public QObject
-{
+class Test_Downloader : public QObject {
     Q_OBJECT
 };
 

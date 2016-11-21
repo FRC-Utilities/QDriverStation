@@ -35,11 +35,11 @@
 #include <QObject>
 
 #if defined (QSU_SHARED)
-    #define QSU_DECL Q_DECL_EXPORT
+#define QSU_DECL Q_DECL_EXPORT
 #elif defined (QSU_IMPORT)
-    #define QSU_DECL Q_DECL_IMPORT
+#define QSU_DECL Q_DECL_IMPORT
 #else
-    #define QSU_DECL
+#define QSU_DECL
 #endif
 
 class Updater;
@@ -63,17 +63,18 @@ class Updater;
  * By default, the downloader will try to open the file as if you opened it
  * from a file manager or a web browser (with the "file:*" url).
  */
-class QSU_DECL QSimpleUpdater : public QObject
-{
+class QSU_DECL QSimpleUpdater : public QObject {
     Q_OBJECT
 
-signals:
+  signals:
     void checkingFinished (const QString& url);
+    void appcastDownloaded (const QString& url, const QByteArray& data);
     void downloadFinished (const QString& url, const QString& filepath);
 
-public:
+  public:
     static QSimpleUpdater* getInstance();
 
+    bool usesCustomAppcast (const QString& url) const;
     bool getNotifyOnUpdate (const QString& url) const;
     bool getNotifyOnFinish (const QString& url) const;
     bool getUpdateAvailable (const QString& url) const;
@@ -88,20 +89,21 @@ public:
     QString getLatestVersion (const QString& url) const;
     QString getModuleVersion (const QString& url) const;
 
-public slots:
+  public slots:
     void checkForUpdates (const QString& url);
     void setModuleName (const QString& url, const QString& name);
-    void setNotifyOnUpdate (const QString& url, const bool& notify);
-    void setNotifyOnFinish (const QString& url, const bool& notify);
+    void setNotifyOnUpdate (const QString& url, const bool notify);
+    void setNotifyOnFinish (const QString& url, const bool notify);
     void setPlatformKey (const QString& url, const QString& platform);
     void setModuleVersion (const QString& url, const QString& version);
-    void setDownloaderEnabled (const QString& url, const bool& enabled);
-    void setUseCustomInstallProcedures (const QString& url, const bool& custom);
+    void setDownloaderEnabled (const QString& url, const bool enabled);
+    void setUseCustomAppcast (const QString& url, const bool customAppcast);
+    void setUseCustomInstallProcedures (const QString& url, const bool custom);
 
-protected:
+  protected:
     ~QSimpleUpdater();
 
-private:
+  private:
     Updater* getUpdater (const QString& url) const;
 };
 

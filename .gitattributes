@@ -6,3 +6,8 @@ lib/*/doc/* linguist-documentation
 etc/* linguist-vendored
 lib/*/etc/* linguist-vendored
 lib/*/lib/* linguist-vendored
+lib/*/examples/* linguist-vendored
+
+# Normalize line endings
+*text eol=lf
+

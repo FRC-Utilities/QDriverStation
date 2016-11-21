@@ -30,8 +30,6 @@
 #include <QHostAddress>
 #include <QApplication>
 
-static bool initialized = 0;
-
 #define LOG qDebug() << "DS Client:"
 
 /**
@@ -556,7 +554,7 @@ QStringList DriverStation::protocols() const
  */
 void DriverStation::start()
 {
-    if (!initialized) {
+    if (!DS_Initialized()) {
         DS_Init();
         processEvents();
         emit statusChanged (sds_to_qstring (DS_GetStatusString()));
@@ -813,8 +811,17 @@ void DriverStation::setEmergencyStopped (const bool stopped)
 void DriverStation::setCustomFMSAddress (const QString& address)
 {
     if (addressIsValid (address) || address.isEmpty()) {
-        LOG << "Using new FMS address" << address;
-        DS_SetCustomFMSAddress (qstring_to_sds (address));
+        if (!address.isEmpty()) {
+            LOG << "Using new FMS address" << address;
+            DS_SetCustomFMSAddress (qstring_to_sds (address));
+        }
+
+        else {
+            LOG << "Using default FMS address"
+                << sds_to_qstring (DS_GetDefaultFMSAddress());
+
+            DS_SetCustomFMSAddress ("");
+        }
     }
 }
 
@@ -824,8 +831,17 @@ void DriverStation::setCustomFMSAddress (const QString& address)
 void DriverStation::setCustomRadioAddress (const QString& address)
 {
     if (addressIsValid (address) || address.isEmpty()) {
-        LOG << "Using new radio address" << address;
-        DS_SetCustomRadioAddress (qstring_to_sds (address));
+        if (!address.isEmpty()) {
+            LOG << "Using new radio address" << address;
+            DS_SetCustomRadioAddress (qstring_to_sds (address));
+        }
+
+        else {
+            LOG << "Using default radio address"
+                << sds_to_qstring (DS_GetDefaultRadioAddress());
+
+            DS_SetCustomRadioAddress ("");
+        }
     }
 }
 
@@ -835,8 +851,17 @@ void DriverStation::setCustomRadioAddress (const QString& address)
 void DriverStation::setCustomRobotAddress (const QString& address)
 {
     if (addressIsValid (address) || address.isEmpty()) {
-        LOG << "Using new robot address" << address;
-        DS_SetCustomRobotAddress (qstring_to_sds (address));
+        if (!address.isEmpty()) {
+            LOG << "Using new robot address" << address;
+            DS_SetCustomRobotAddress (qstring_to_sds (address));
+        }
+
+        else {
+            LOG << "Using default robot address"
+                << sds_to_qstring (DS_GetDefaultRobotAddress());
+
+            DS_SetCustomRobotAddress ("");
+        }
     }
 }
 
@@ -912,9 +937,11 @@ void DriverStation::setJoystickButton (int joystick, int button, bool pressed)
  */
 void DriverStation::quitDS()
 {
-    LOG << "Stopping DS Engine...";
-    DS_Close();
-    LOG << "DS Engine Stopped";
+    if (DS_Initialized()) {
+        LOG << "Stopping DS Engine...";
+        DS_Close();
+        LOG << "DS Engine Stopped";
+    }
 }
 
 /**
@@ -987,17 +1014,15 @@ void DriverStation::processEvents()
  */
 bool DriverStation::addressIsValid (const QString& address)
 {
-    /* This is a valid mDNS address */
-    if (address.endsWith (".local"))
+    /* This is a valid mDNS/DNS address */
+    if (address.endsWith (".local", Qt::CaseInsensitive) ||
+        address.endsWith (".lan",   Qt::CaseInsensitive) ||
+        address.endsWith (".com",   Qt::CaseInsensitive) ||
+        address.endsWith (".net",   Qt::CaseInsensitive) ||
+        address.endsWith (".com",   Qt::CaseInsensitive))
         return true;
 
-    /* Check if address is a valid IPv4 address*/
-    QHostAddress host (address);
-    if (!host.isNull()) {
-        if (address.split (".").count() == 4)
-            return true;
-    }
-
-    /* This is an invalid IPv4 address */
-    return false;
+    /* Address is valid IPv4/IPv6 */
+    QHostAddress ip (address);
+    return !ip.isNull();
 }

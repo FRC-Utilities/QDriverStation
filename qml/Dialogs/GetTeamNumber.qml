@@ -30,6 +30,7 @@ import "../Globals.js" as Globals
 
 Window {
     id: dialog
+    visible: false
     title: appDspName
     color: Globals.Colors.WindowBackground
 
@@ -64,14 +65,6 @@ Window {
 
     Settings {
         property alias firstLaunch: dialog.firstLaunch
-    }
-
-    //
-    // Show the dialog if it is the first launch
-    //
-    Component.onCompleted: {
-        if (firstLaunch)
-            show()
     }
 
     //
