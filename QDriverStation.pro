@@ -28,6 +28,8 @@ CONFIG += qtquickcompiler
 
 TARGET = QDriverStation
 
+QT_SELECT = qt5 qmake
+
 QT += qml
 QT += quick
 
