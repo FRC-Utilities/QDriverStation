@@ -22,6 +22,8 @@ Mac users will be prompted to download an additional driver for Xbox 360 control
 
 If you happen to use ArchLinux, [lopsided98](https://github.com/lopsided98) configured a [repository](https://aur.archlinux.org/packages/qdriverstation-git/) for this project.
 
+If you are on [Solus](https://solus-project.com/) you can install it through the software center or type  'sudo eopkg it qdriverstation' in the terminal.
+
 Until very recently, I did not generate Debian packages. [Dakota Keeler](https://github.com/bearzrobotics) provided a [package for version 0.14](https://drive.google.com/file/d/0BwmIj7Fz03lXZ1JjYnhLVVdRR0E/view) and made a [video tutorial](https://www.youtube.com/watch?v=G9DywTB9_cY) on how to compile the QDriverstation, which you may find very helpful.
 
 ###### Warnings
