@@ -12,7 +12,7 @@ You can find the online documentation of the QDriverStation and its sub-projects
 
 ### Install notes
 
-You can download the QDriverStation from both [SourceForge](http://sf.net/p/qdriverstation) and [GitHub](http://github.com/FRC-Utilities/QDriverStation/releases). We recommend you to download QDriverStation from GitHub, since SourceForge is known for serving misleading advertisements.
+You can download the QDriverStation from [GitHub](http://github.com/FRC-Utilities/QDriverStation/releases).
 
 Once you finish installing the software, you can launch it and begin driving your robot. Just be sure to input your team number and to verify that the joysticks are working correctly.
 
