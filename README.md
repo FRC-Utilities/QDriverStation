@@ -12,7 +12,7 @@ You can find the online documentation of the QDriverStation and its sub-projects
 
 ### Install notes
 
-You can download the QDriverStation from both [SourceForge](http://sf.net/p/qdriverstation) and [GitHub](http://github.com/FRC-Utilities/QDriverStation/releases). We recommend you to download QDriverStation from GitHub, since SourceForge is known for serving misleading advertisements.
+You can download the QDriverStation from [GitHub](http://github.com/FRC-Utilities/QDriverStation/releases).
 
 Once you finish installing the software, you can launch it and begin driving your robot. Just be sure to input your team number and to verify that the joysticks are working correctly.
 
@@ -21,6 +21,8 @@ Mac users will be prompted to download an additional driver for Xbox 360 control
 ###### Note for Linux users
 
 If you happen to use ArchLinux, [lopsided98](https://github.com/lopsided98) configured a [repository](https://aur.archlinux.org/packages/qdriverstation-git/) for this project.
+
+If you are on [Solus](https://solus-project.com/) you can install it through the software center or type  'sudo eopkg it qdriverstation' in the terminal.
 
 Until very recently, I did not generate Debian packages. [Dakota Keeler](https://github.com/bearzrobotics) provided a [package for version 0.14](https://drive.google.com/file/d/0BwmIj7Fz03lXZ1JjYnhLVVdRR0E/view) and made a [video tutorial](https://www.youtube.com/watch?v=G9DywTB9_cY) on how to compile the QDriverstation, which you may find very helpful.
 
