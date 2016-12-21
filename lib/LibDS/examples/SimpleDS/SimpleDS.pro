@@ -4,7 +4,6 @@ QT += network
 
 CONFIG += c++11
 
-include ($$PWD/../../LibDS.pri)
 include ($$PWD/../../wrappers/Qt/LibDS-Qt.pri)
 
 TEMPLATE = app

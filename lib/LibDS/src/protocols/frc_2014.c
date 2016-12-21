@@ -513,7 +513,6 @@ DS_Protocol* DS_GetProtocolFRC_2014()
     /* Define FMS socket properties */
     DS_Socket fms_socket = DS_SocketEmpty();
     fms_socket.disabled = 0;
-    fms_socket.address = "";
     fms_socket.in_port = 1120;
     fms_socket.out_port = 1160;
     fms_socket.type = DS_SOCKET_UDP;

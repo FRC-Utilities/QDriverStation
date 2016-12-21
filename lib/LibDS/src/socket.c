@@ -196,7 +196,7 @@ DS_Socket DS_SocketEmpty()
     socket.out_port = 0;
     socket.disabled = 0;
     socket.broadcast = 0;
-    socket.address = sdsempty();
+    socket.address = NULL;
     socket.type = DS_SOCKET_UDP;
 
     /* Fill socket info structure */
@@ -369,8 +369,10 @@ void DS_SocketChangeAddress (DS_Socket* ptr, sds address)
     DS_SocketClose (ptr);
 
     /* Re-assign the address */
-    if (sdscmp (ptr->address, address) != 0)
+    if (sdscmp (ptr->address, address) != 0) {
+        DS_FREESTR (ptr->address);
         ptr->address = sdsdup (address);
+    }
 
     /* Re-configure the socket */
     DS_SocketOpen (ptr);
