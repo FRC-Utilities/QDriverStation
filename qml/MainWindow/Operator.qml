@@ -156,7 +156,6 @@ RowLayout {
                 name: icons.fa_plug
                 Layout.fillWidth: true
                 size: Globals.scale (10)
-                verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignRight
                 opacity: Utilities.connectedToAC ? 1 : 0
                 Behavior on opacity { NumberAnimation{} }

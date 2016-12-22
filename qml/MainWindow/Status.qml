@@ -238,7 +238,6 @@ ColumnLayout {
     // Robot status
     //
     Label {
-        id: rstatus
         size: large
         font.bold: true
         Layout.fillWidth: true

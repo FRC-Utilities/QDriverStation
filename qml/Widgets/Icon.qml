@@ -25,25 +25,10 @@ import QtQuick 2.0
 Label {
     id: label
 
-    //
-    // Using the "name" property is more intuitive than using the
-    // "text" property to specify the icon to load
-    //
+    property var icons: Icons {}
     property alias name: label.text
 
-    //
-    // The list of icon names
-    //
-    property var icons: Icons {}
-
-    //
-    // Use the FontAwesome font instead of the UI font
-    //
     font.family: "FontAwesome"
-
-    //
-    // Center the text
-    //
     verticalAlignment: Text.AlignVCenter
     horizontalAlignment: Text.AlignHCenter
 }

@@ -24,39 +24,14 @@ import QtQuick 2.0
 import "../Globals.js" as Globals
 
 Text {
-    //
-    // Holds the size of the text, this can be a custom assigned
-    // value or one of the predefined sizes of this control
-    //
     property int size: normal
-
-    //
-    // Predefined text sizes, use them when possible to maintain
-    // UI consistency throughout the application
-    //
     readonly property int small:  Globals.scale (10)
     readonly property int large:  Globals.scale (16)
     readonly property int normal: Globals.scale (12)
     readonly property int medium: Globals.scale (14)
 
-    //
-    // Ensure that the text is not pixelated or edgy
-    //
     smooth: true
-
-    //
-    // Font and color properties
-    //
     font.pixelSize: size
     font.family: Globals.uiFont
     color: Globals.Colors.Foreground
-
-    //
-    // Perform a simple transition animation when the color is changed
-    //
-    Behavior on color {
-        ColorAnimation {
-            duration: Globals.fastAnimation
-        }
-    }
 }
