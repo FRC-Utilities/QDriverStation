@@ -24,6 +24,9 @@
 
 #include <QFile>
 #include <QDebug>
+#include <QTimer>
+#include <QJsonArray>
+#include <QJsonObject>
 #include <QJsonDocument>
 
 #define LOG qDebug() << "DS Events:"
@@ -33,6 +36,7 @@
  */
 DSEventLogger::DSEventLogger()
 {
+    saveData();
     connectSlots();
 }
 
@@ -54,11 +58,12 @@ DSEventLogger* DSEventLogger::getInstance()
 }
 
 /**
- * Creates a new log file and instructs Qt to use a custom logger filter
+ * Saves the current log information to a local file using the JSON format
+ * \note This function is called every 5 seconds
  */
-void DSEventLogger::start()
+void DSEventLogger::saveData()
 {
-
+    QTimer::singleShot (500, Qt::PreciseTimer, this, SLOT (saveData()));
 }
 
 /**

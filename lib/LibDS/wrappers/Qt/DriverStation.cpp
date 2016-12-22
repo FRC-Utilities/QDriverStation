@@ -25,6 +25,7 @@
 #include <math.h>
 #include <LibDS.h>
 
+#include <QTime>
 #include <QTimer>
 #include <QDebug>
 #include <QHostAddress>
@@ -148,33 +149,6 @@ int DriverStation::teamNumber() const
 int DriverStation::joystickCount() const
 {
     return DS_GetJoystickCount();
-}
-
-/**
- * Returns the number of axes that the given \a joystick has.
- * If the joystick does not exist, this function will return \c 0
- */
-int DriverStation::getNumAxes (const int joystick) const
-{
-    return DS_GetJoystickNumAxes (joystick);
-}
-
-/**
- * Returns the number of hats that the given \a joystick has.
- * If the joystick does not exist, this function will return \c 0
- */
-int DriverStation::getNumHats (const int joystick) const
-{
-    return DS_GetJoystickNumHats (joystick);
-}
-
-/**
- * Returns the number of buttons that the given \a joystick has.
- * If the joystick does not exist, this function will return \c 0
- */
-int DriverStation::getNumButtons (const int joystick) const
-{
-    return DS_GetJoystickNumButtons (joystick);
 }
 
 /**
@@ -501,6 +475,17 @@ QString DriverStation::defaultRobotAddress() const
 }
 
 /**
+ * Returns the elapsed time since the robot has been enabled
+ */
+QString DriverStation::elapsedTime()
+{
+    if (m_elapsedTime.isEmpty())
+        m_elapsedTime = "00:00.0";
+
+    return m_elapsedTime;
+}
+
+/**
  * Returns the current status of the robot/DS.
  * This string is meant to be used directly by the clien application,
  * the DS has no real use for it.
@@ -581,6 +566,33 @@ QStringList DriverStation::protocols() const
 }
 
 /**
+ * Returns the number of axes that the given \a joystick has.
+ * If the joystick does not exist, this function will return \c 0
+ */
+int DriverStation::getNumAxes (const int joystick) const
+{
+    return DS_GetJoystickNumAxes (joystick);
+}
+
+/**
+ * Returns the number of hats that the given \a joystick has.
+ * If the joystick does not exist, this function will return \c 0
+ */
+int DriverStation::getNumHats (const int joystick) const
+{
+    return DS_GetJoystickNumHats (joystick);
+}
+
+/**
+ * Returns the number of buttons that the given \a joystick has.
+ * If the joystick does not exist, this function will return \c 0
+ */
+int DriverStation::getNumButtons (const int joystick) const
+{
+    return DS_GetJoystickNumButtons (joystick);
+}
+
+/**
  * Initializes the LibDS system and instructs the class to close the LibDS
  * before the Qt application is closed.
  */
@@ -589,6 +601,7 @@ void DriverStation::start()
     if (!DS_Initialized()) {
         DS_Init();
         processEvents();
+        updateElapsedTime();
         emit statusChanged (sds_to_qstring (DS_GetStatusString()));
         connect (qApp, SIGNAL (aboutToQuit()), this, SLOT (quitDS()));
     }
@@ -628,6 +641,10 @@ void DriverStation::restartRobotCode()
 void DriverStation::setEnabled (const bool enabled)
 {
     LOG << "Setting enabled state to" << enabled;
+
+    if (enabled)
+        resetElapsedTime();
+
     DS_SetRobotEnabled (enabled);
 }
 
@@ -1023,6 +1040,42 @@ void DriverStation::processEvents()
     }
 
     QTimer::singleShot (5, Qt::CoarseTimer, this, SLOT (processEvents()));
+}
+
+/**
+ * Restarts the elapsed time counter
+ */
+void DriverStation::resetElapsedTime()
+{
+    m_time.restart();
+    m_elapsedTime.clear();
+    emit elapsedTimeChanged (elapsedTime());
+}
+
+/**
+ * Updates the elapsed time and formats it as a string only if the robot
+ * is currently enabled
+ */
+void DriverStation::updateElapsedTime()
+{
+    if (isEnabled()) {
+        int milliseconds = m_time.elapsed();
+        int seconds = (milliseconds / 1000);
+        int minutes = (seconds / 60) % 60;
+
+        seconds = seconds % 60;
+        milliseconds = milliseconds % 1000;
+
+        m_elapsedTime = QString ("%1:%2.%3")
+                        .arg (minutes, 2, 10, QLatin1Char ('0'))
+                        .arg (seconds, 2, 10, QLatin1Char ('0'))
+                        .arg (QString::number (milliseconds).at (0));
+
+        emit elapsedTimeChanged (elapsedTime());
+    }
+
+    QTimer::singleShot (100, Qt::PreciseTimer,
+                        this, SLOT (updateElapsedTime()));
 }
 
 /**

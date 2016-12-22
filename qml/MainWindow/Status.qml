@@ -222,7 +222,7 @@ ColumnLayout {
             leftToRight: true
             text: qsTr ("Joysticks")
             anchors.right: parent.right
-            checked: QJoysticks.count() > 0
+            checked: QJoysticks.nonBlacklistedCount
         }
     }
 

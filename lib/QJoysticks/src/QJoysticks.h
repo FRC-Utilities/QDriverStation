@@ -51,6 +51,16 @@ class VirtualJoystick;
 class QJoysticks : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY (int count
+                READ count
+                NOTIFY countChanged)
+    Q_PROPERTY (int nonBlacklistedCount
+                READ nonBlacklistedCount
+                NOTIFY countChanged)
+    Q_PROPERTY (QStringList deviceNames
+                READ deviceNames
+                NOTIFY countChanged)
+
     friend class Test_QJoysticks;
 
 signals:
@@ -65,8 +75,10 @@ signals:
 public:
     static QJoysticks* getInstance();
 
-    Q_INVOKABLE int count() const;
-    Q_INVOKABLE int nonBlacklistedCount();
+    int count() const;
+    int nonBlacklistedCount();
+    QStringList deviceNames() const;
+
     Q_INVOKABLE int getNumAxes (int index);
     Q_INVOKABLE int getNumPOVs (int index);
     Q_INVOKABLE int getNumButtons (int index);
@@ -74,12 +86,10 @@ public:
     Q_INVOKABLE bool joystickExists (int index);
     Q_INVOKABLE QString getName (int index);
 
-    Q_INVOKABLE QStringList deviceNames() const;
-    QList<QJoystickDevice*> inputDevices() const;
-
     SDL_Joysticks* sdlJoysticks() const;
     VirtualJoystick* virtualJoystick() const;
     QJoystickDevice* getInputDevice (int index);
+    QList<QJoystickDevice*> inputDevices() const;
 
 public slots:
     void updateInterfaces();
@@ -102,6 +112,7 @@ private slots:
 private:
     bool m_sortJoyticks;
 
+    QThread* m_thread;
     QSettings* m_settings;
     SDL_Joysticks* m_sdlJoysticks;
     VirtualJoystick* m_virtualJoystick;

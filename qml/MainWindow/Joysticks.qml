@@ -53,10 +53,7 @@ Item {
     // Updates the joystick list and re-generates the controls
     //
     function updateControls() {
-        listView.model = 0
-        listView.model = QJoysticks.deviceNames()
-
-        if (QJoysticks.count() > 0) {
+        if (QJoysticks.count > 0) {
             joysticks.currentJoystick = 0
             joysticks.regenerateControls()
 
@@ -98,7 +95,7 @@ Item {
             updateControls()
             DriverStation.resetJoysticks()
 
-            for (var i = 0; i < QJoysticks.count(); ++i) {
+            for (var i = 0; i < QJoysticks.count; ++i) {
                 DriverStation.addJoystick (QJoysticks.getNumAxes (i),
                                            QJoysticks.getNumPOVs (i),
                                            QJoysticks.getNumButtons (i))
@@ -157,8 +154,8 @@ Item {
         }
 
         Icon {
-            size: Globals.scale (64)
             name: icons.fa_gamepad
+            size: Globals.scale (64)
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
@@ -222,6 +219,7 @@ Item {
                 id: listView
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                model: QJoysticks.deviceNames
                 Layout.minimumHeight: joysticks.height * 0.8
 
                 delegate: JoystickItem {
@@ -401,14 +399,14 @@ Item {
                         enabled: false
                         minimumValue: 0
                         maximumValue: 360
-                        width: Globals.scale (48)
+                        width: Globals.scale (64)
 
                         Connections {
                             target: QJoysticks
                             onPovChanged: {
-                                if (joysticks.currentJoystick === js
-                                        && pov === index)
-                                    spinbox.value = angle
+                                if (joysticks.currentJoystick === js)
+                                    if (pov === index)
+                                        spinbox.value = angle
                             }
                         }
                     }

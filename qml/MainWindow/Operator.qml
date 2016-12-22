@@ -31,10 +31,23 @@ RowLayout {
     spacing: Globals.spacing
     signal windowModeChanged (var isDocked)
 
+    //
+    // Save team station to settings
+    //
+    Settings {
+        property alias station: stations.currentIndex
+    }
+
+    //
+    // Control mode selector & enable/disable buttons
+    //
     ColumnLayout {
         Layout.fillHeight: true
         Layout.maximumWidth: Globals.scale (160)
 
+        //
+        // Control mode selector
+        //
         ColumnLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -72,10 +85,16 @@ RowLayout {
             }
         }
 
+        //
+        // Vertical spacer
+        //
         Item {
             Layout.fillHeight: true
         }
 
+        //
+        // Enable/Disable buttons
+        //
         RowLayout {
             Layout.fillWidth: true
             spacing: Globals.scale (-1)
@@ -106,12 +125,18 @@ RowLayout {
         }
     }
 
+    //
+    // Small separator
+    //
     Rectangle {
         color: "#000"
         Layout.fillHeight: true
         width: Globals.scale (1)
     }
 
+    //
+    // PC status indicators
+    //
     GridLayout {
         columns: 2
         Layout.fillWidth: true
@@ -119,17 +144,23 @@ RowLayout {
         rowSpacing: Globals.spacing
         columnSpacing: Globals.spacing
 
+        //
+        // Elapsed time label
+        //
         Label {
             Layout.fillWidth: true
             text: qsTr ("Elapsed Time")
             horizontalAlignment: Text.AlignRight
         }
 
+        //
+        // Elapsed time indicator
+        //
         Label {
-            text: "00:00.0"
             font.bold: true
             Layout.fillWidth: true
             size: Globals.scale (18)
+            text: DriverStation.elapsedTime
             Layout.rightMargin: Globals.spacing
             horizontalAlignment: Text.AlignRight
         }
@@ -286,6 +317,7 @@ RowLayout {
         // Team station selector
         //
         Combobox {
+            id: stations
             Layout.fillWidth: true
             model: DriverStation.stations
             onCurrentIndexChanged: DriverStation.station = currentIndex

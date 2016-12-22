@@ -31,14 +31,12 @@ class DSEventLogger : public QObject
 public:
     static DSEventLogger* getInstance();
 
-public slots:
-    void start();
-
 private:
     DSEventLogger();
     ~DSEventLogger();
 
 private slots:
+    void saveData();
     void onCANUsageChanged (int usage);
     void onCPUUsageChanged (int usage);
     void onRAMUsageChanged (int usage);
@@ -58,12 +56,4 @@ private slots:
 
 private:
     void connectSlots();
-
-private:
-    int m_cpuUsage;
-    int m_canUsage;
-    int m_ramUsage;
-    int m_diskUsage;
-
-    bool m_enabled;
 };

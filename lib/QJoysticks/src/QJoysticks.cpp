@@ -21,6 +21,7 @@
  */
 
 #include <QDebug>
+#include <QThread>
 #include <QSettings>
 #include <QJoysticks.h>
 #include <QJoysticks/SDL_Joysticks.h>
@@ -29,8 +30,16 @@
 QJoysticks::QJoysticks()
 {
     /* Initialize input methods */
-    m_sdlJoysticks = new SDL_Joysticks();
-    m_virtualJoystick = new VirtualJoystick();
+    m_sdlJoysticks = new SDL_Joysticks;
+    m_virtualJoystick = new VirtualJoystick;
+
+    /* Move SDL handler to another thread */
+    m_thread = new QThread;
+    m_thread->start (QThread::NormalPriority);
+    m_sdlJoysticks->moveToThread (m_thread);
+
+    /* Destroy the thread when it quits */
+    connect (m_thread, SIGNAL (finished()), m_thread, SLOT (deleteLater()));
 
     /* Configure SDL joysticks */
     connect (sdlJoysticks(),    &SDL_Joysticks::POVEvent,
@@ -71,6 +80,8 @@ QJoysticks::~QJoysticks()
     delete m_settings;
     delete m_sdlJoysticks;
     delete m_virtualJoystick;
+
+    m_thread->exit();
 }
 
 /**
@@ -106,6 +117,22 @@ int QJoysticks::nonBlacklistedCount()
             --cnt;
 
     return cnt;
+}
+
+/**
+ * Returns a list with the names of all registered joystick.
+ *
+ * \note This list also includes the blacklisted joysticks
+ * \note This list also includes the virtual joystick (if its enabled)
+ */
+QStringList QJoysticks::deviceNames() const
+{
+    QStringList names;
+
+    foreach (QJoystickDevice* joystick, inputDevices())
+        names.append (joystick->name);
+
+    return names;
 }
 
 /**
@@ -181,32 +208,6 @@ QString QJoysticks::getName (int index)
 }
 
 /**
- * Returns a list with the names of all registered joystick.
- *
- * \note This list also includes the blacklisted joysticks
- * \note This list also includes the virtual joystick (if its enabled)
- */
-QStringList QJoysticks::deviceNames() const
-{
-    QStringList names;
-
-    foreach (QJoystickDevice* joystick, inputDevices())
-        names.append (joystick->name);
-
-    return names;
-}
-
-/**
- * Returns a pointer to a list containing all registered joysticks.
- * This can be used for advanced hacks or just to get all properties of each
- * joystick.
- */
-QList<QJoystickDevice*> QJoysticks::inputDevices() const
-{
-    return m_devices;
-}
-
-/**
  * Returns a pointer to the SDL joysticks system.
  * This can be used if you need to get more information regarding the joysticks
  * registered and managed with SDL.
@@ -238,6 +239,16 @@ QJoystickDevice* QJoysticks::getInputDevice (int index)
         return inputDevices().at (index);
 
     return Q_NULLPTR;
+}
+
+/**
+ * Returns a pointer to a list containing all registered joysticks.
+ * This can be used for advanced hacks or just to get all properties of each
+ * joystick.
+ */
+QList<QJoystickDevice*> QJoysticks::inputDevices() const
+{
+    return m_devices;
 }
 
 /**

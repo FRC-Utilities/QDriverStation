@@ -106,6 +106,14 @@ Utilities::Utilities()
     connect (&m_connectedToACProcess, SIGNAL (finished                 (int)),
              this,                      SLOT (readConnectedToACProcess (int)));
 
+    /* Kill the probing processes when application quits */
+    connect (qApp,                  SIGNAL (aboutToQuit()),
+             &m_cpuProcess,           SLOT (kill()));
+    connect (qApp,                  SIGNAL (aboutToQuit()),
+             &m_batteryLevelProcess,  SLOT (kill()));
+    connect (qApp,                  SIGNAL (aboutToQuit()),
+             &m_connectedToACProcess, SLOT (kill()));
+
     /* Configure Windows */
 #if defined Q_OS_WIN
     PdhOpenQuery (0, 0, &cpuQuery);

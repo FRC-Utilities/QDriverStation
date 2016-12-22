@@ -23,6 +23,7 @@
 #ifndef _DRIVERSTATION_H
 #define _DRIVERSTATION_H
 
+#include <QTime>
 #include <QObject>
 #include <QStringList>
 #include <DS_Protocol.h>
@@ -127,6 +128,9 @@ class DriverStation : public QObject
                 READ customRobotAddress
                 WRITE setCustomRobotAddress
                 NOTIFY robotAddressChanged)
+    Q_PROPERTY (QString elapsedTime
+                READ elapsedTime
+                NOTIFY elapsedTimeChanged)
     Q_PROPERTY (QStringList stations
                 READ stations
                 CONSTANT)
@@ -192,11 +196,7 @@ public:
     Q_ENUMS (Station)
 
     int teamNumber() const;
-
     int joystickCount() const;
-    int getNumAxes (const int joystick) const;
-    int getNumHats (const int joystick) const;
-    int getNumButtons (const int joystick) const;
 
     int cpuUsage() const;
     int canUsage() const;
@@ -235,6 +235,7 @@ public:
     QString defaultRadioAddress() const;
     QString defaultRobotAddress() const;
 
+    QString elapsedTime();
     QString generalStatus() const;
     QString customFMSAddress() const;
     QString customRadioAddress() const;
@@ -242,6 +243,10 @@ public:
 
     QStringList stations() const;
     QStringList protocols() const;
+
+    Q_INVOKABLE int getNumAxes (const int joystick) const;
+    Q_INVOKABLE int getNumHats (const int joystick) const;
+    Q_INVOKABLE int getNumButtons (const int joystick) const;
 
 public slots:
     void start();
@@ -270,6 +275,8 @@ public slots:
 private slots:
     void quitDS();
     void processEvents();
+    void resetElapsedTime();
+    void updateElapsedTime();
 
 private:
     bool addressIsValid (const QString& address);
@@ -299,6 +306,10 @@ signals:
     void radioCommunicationsChanged (const bool connected);
     void robotCommunicationsChanged (const bool connected);
     void emergencyStoppedChanged (const bool emergencyStopped);
+
+private:
+    QTime m_time;
+    QString m_elapsedTime;
 };
 
 #endif
