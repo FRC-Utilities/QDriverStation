@@ -2,7 +2,6 @@
     <qresource prefix="/qml">
         <file>Globals.js</file>
         <file>main.qml</file>
-        <file>Dialogs/GetTeamNumber.qml</file>
         <file>Dialogs/LogsWindow.qml</file>
         <file>Dialogs/SettingsWindow.qml</file>
         <file>Dialogs/VirtualJoystickWindow.qml</file>

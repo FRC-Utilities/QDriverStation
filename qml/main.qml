@@ -67,13 +67,6 @@ Item {
             mainwindow.updateWindowMode()
         }
 
-        if (getTeamNumber.firstLaunch) {
-            getTeamNumber.visibile = true
-            getTeamNumber.showNormal()
-        }
-
-        DriverStation.start()
-
         Globals.beep (440, 100)
         Globals.beep (220, 100)
     }
@@ -91,6 +84,13 @@ Item {
     }
 
     //
+    // Logs windows
+    //
+    LogsWindow {
+        id: logsWindow
+    }
+
+    //
     // The settings window
     //
     SettingsWindow {
@@ -102,19 +102,5 @@ Item {
     //
     VirtualJoystickWindow {
         id: virtualJoystickWindow
-    }
-
-    //
-    // The logs window
-    //
-    LogsWindow {
-        id: logsWindow
-    }
-
-    //
-    // Asks for team number on first launch
-    //
-    GetTeamNumber {
-        id: getTeamNumber
     }
 }

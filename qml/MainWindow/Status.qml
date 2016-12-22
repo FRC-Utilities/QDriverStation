@@ -30,79 +30,9 @@ ColumnLayout {
     id: status
 
     //
-    // Holds the number of flashes to perform during the error animation
-    //
-    property int flashes: 0
-
-    //
     // Defines the separation between the different components of the widget
     //
     property double spacerHeight: Globals.spacing / 2
-
-    //
-    // These properties are updated when the DS emits the appropriate signals
-    //
-    property bool simulated: false
-    property string robotVoltage: Globals.invalidStr
-    property string robotStatus: qsTr ("Loading") + "..."
-    property string teamNumber: DriverStation.teamNumber()
-
-    //
-    // Used to perfom the error animation when the user tries to enable
-    // the robot when the DS cannot enable the robot
-    //
-    property bool red: false
-    function toggleColors() {
-        var color
-        red = !red
-
-        if (!red)
-            color = Globals.Colors.IndicatorError
-        else
-            color = Globals.Colors.Foreground
-
-        rstatus.color = color
-
-        if (!codeLed.checked)
-            codeLed.textColor = color
-
-        if (!communicationsLed.checked)
-            communicationsLed.textColor = color
-    }
-
-    //
-    // Used for the error animation described above
-    //
-    Timer {
-        id: timer
-        interval: 100
-
-        onTriggered: {
-            flashes -= 1
-
-            if (flashes > 0)
-                toggleColors()
-
-            if (flashes <= 0) {
-                repeat = false
-                rstatus.color = Globals.Colors.Foreground
-                codeLed.textColor = Globals.Colors.Foreground
-                communicationsLed.textColor = Globals.Colors.Foreground
-            }
-        }
-    }
-
-    //
-    // Uses the timer and the color toggle functions to generate the error animation
-    //
-    function flashStatusIndicators() {
-        flashes = 8
-        timer.repeat = true
-        timer.start()
-
-        Globals.morse ("..-", 440, true)
-        Globals.beep (220, 100)
-    }
 
     //
     // Layout/geometry options
@@ -113,46 +43,6 @@ ColumnLayout {
     Layout.rightMargin: Globals.spacing
     Layout.minimumWidth: Globals.scale (144)
     Layout.preferredWidth: Globals.scale (144)
-
-    //
-    // Check if there is already a joystick connected to the computer
-    //
-    Component.onCompleted:joysticksLed.checked = QJoysticks.count() > 0
-
-    //
-    // Update the joystick LED when a joystick is attached or removed
-    //
-    Connections {
-        target: QJoysticks
-        onCountChanged: joysticksLed.checked = QJoysticks.nonBlacklistedCount() > 0
-    }
-
-    //
-    // Update the robot status, communications LED, code LED and voltage indicator
-    // when the DriverStation emits the corresponding signal
-    //
-    Connections {
-        target: DriverStation
-        onStatusChanged: robotStatus = status
-        onTeamNumberChanged: teamNumber = DriverStation.teamNumber()
-
-        onRobotCodeChanged:{
-            codeLed.checked = DriverStation.hasRobotCode()
-        }
-
-        onRobotCommunicationsChanged: {
-            communicationsLed.checked = DriverStation.connectedToRobot()
-        }
-
-        onVoltageChanged: {
-            if (DriverStation.connectedToRobot())
-                robotVoltage = DriverStation.voltageString()
-            else
-                robotVoltage = Globals.invalidStr
-        }
-
-        onProtocolChanged: robotVoltage = Globals.invalidStr
-    }
 
     //
     // Team number indicator
@@ -171,7 +61,7 @@ ColumnLayout {
         Label {
             size: large
             font.bold: true
-            text: status.teamNumber
+            text: DriverStation.teamNumber
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignHCenter
         }
@@ -186,26 +76,9 @@ ColumnLayout {
     }
 
     //
-    // Simulated Robot label
-    //
-    Label {
-        size: large
-        font.bold: true
-        visible: simulated
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-        text: qsTr ("Simulated Robot")
-        verticalAlignment: Text.AlignVCenter
-        horizontalAlignment: Text.AlignHCenter
-        Layout.minimumHeight: Globals.scale (34)
-        color: Globals.Colors.AlternativeHighlight
-    }
-
-    //
     // Voltage indicator & plot
     //
     RowLayout {
-        visible: !simulated
         spacing: Globals.spacing
         Layout.minimumHeight: Globals.scale (42)
 
@@ -219,60 +92,83 @@ ColumnLayout {
             property var diodeHeight: height * 0.20
             property var backgroundColor: Globals.Colors.IconColor
 
+            //
+            // Battery cover
+            //
             Rectangle {
                 id: cover
                 height: Globals.scale (4)
                 color: parent.backgroundColor
 
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.topMargin: parent.diodeHeight
+                anchors {
+                    top: parent.top
+                    left: parent.left
+                    right: parent.right
+                    topMargin: parent.diodeHeight
+                }
             }
 
+            //
+            // Left diode
+            //
             Rectangle {
-                id: leftDiode
                 width: parent.width * 0.2
                 color: parent.backgroundColor
                 height: parent.diodeHeight - Globals.scale (2)
 
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.leftMargin: cover.height
+                anchors {
+                    top: parent.top
+                    left: parent.left
+                    leftMargin: cover.height
+                }
             }
 
+            //
+            // Right diode
+            //
             Rectangle {
-                id: rightDiode
                 width: parent.width * 0.2
                 color: parent.backgroundColor
                 height: parent.diodeHeight - Globals.scale (2)
 
-                anchors.top: parent.top
-                anchors.right: parent.right
-                anchors.rightMargin: cover.height
+                anchors {
+                    top: parent.top
+                    right: parent.right
+                    rightMargin: cover.height
+                }
             }
 
+            //
+            // Base
+            //
             Rectangle {
-                id: base
-                anchors.fill: parent
                 color: parent.backgroundColor
-                anchors.leftMargin: Globals.scale (2)
-                anchors.rightMargin: Globals.scale (2)
-                anchors.topMargin: parent.diodeHeight + (cover.height / 2)
+
+                anchors {
+                    fill: parent
+                    leftMargin: Globals.scale (2)
+                    rightMargin: Globals.scale (2)
+                    topMargin: parent.diodeHeight + (cover.height / 2)
+                }
 
                 VoltageGraph {
-                    anchors.fill: parent
                     border.color: parent.color
-                    anchors.margins: Globals.scale (2)
-                    anchors.topMargin: Globals.scale (0)
+                    Component.onCompleted: setSpeed (24)
                     color: Globals.Colors.WindowBackground
                     noCommsColor: Globals.Colors.WindowBackground
 
-                    Component.onCompleted: setSpeed (24)
+                    anchors {
+                        fill: parent
+                        topMargin: 0
+                        margins: Globals.scale (2)
+                    }
                 }
             }
         }
 
+        //
+        // Horizontal spacer
+        //
         Item {
             Layout.fillWidth: true
         }
@@ -284,9 +180,10 @@ ColumnLayout {
             size: large
             font.bold: true
             id: voltageIndicator
-            text: status.robotVoltage
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
+            text: DriverStation.connectedToRobot ? DriverStation.voltageString :
+                                                   Globals.invalidStr
         }
     }
 
@@ -306,10 +203,11 @@ ColumnLayout {
         spacing: Globals.scale (3)
 
         LED {
+            id: commsLed
             leftToRight: true
-            id: communicationsLed
             anchors.right: parent.right
             text: qsTr ("Communications")
+            checked: DriverStation.connectedToRobot
         }
 
         LED {
@@ -317,13 +215,14 @@ ColumnLayout {
             leftToRight: true
             text: qsTr ("Robot Code")
             anchors.right: parent.right
+            checked: DriverStation.robotCode
         }
 
         LED {
-            id: joysticksLed
             leftToRight: true
             text: qsTr ("Joysticks")
             anchors.right: parent.right
+            checked: QJoysticks.count() > 0
         }
     }
 
@@ -344,7 +243,7 @@ ColumnLayout {
         font.bold: true
         Layout.fillWidth: true
         Layout.fillHeight: true
-        text: status.robotStatus
+        text: DriverStation.status
         verticalAlignment: Qt.AlignVCenter
         horizontalAlignment: Qt.AlignHCenter
         Layout.minimumHeight: Globals.scale (42)

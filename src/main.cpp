@@ -236,8 +236,9 @@ int main (int argc, char* argv[])
     QSimpleUpdater* updater = QSimpleUpdater::getInstance();
     DriverStation* driverstation = DriverStation::getInstance();
 
-    /* Shortcuts gets events before virtual joystick */
+    /* Configure the shortcuts handler and start the DS */
     app.installEventFilter (&shortcuts);
+    driverstation->start();
 
     /* Load the QML interface */
     QQmlApplicationEngine engine;

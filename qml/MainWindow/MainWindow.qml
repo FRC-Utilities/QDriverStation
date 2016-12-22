@@ -124,7 +124,7 @@ Window {
     onHeightChanged: height = getMinimumHeight()
 
     //
-    // Trust me, I am an (aircraft control systems) engineer
+    // Go to hell X11
     //
     flags: Qt.Window |
            Qt.WindowTitleHint |

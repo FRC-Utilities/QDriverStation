@@ -37,14 +37,29 @@ class QSettings;
 class Utilities : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY (int cpuUsage
+                READ cpuUsage
+                NOTIFY cpuUsageChanged)
+    Q_PROPERTY (int batteryLevel
+                READ batteryLevel
+                NOTIFY batteryLevelChanged)
+    Q_PROPERTY (bool connectedToAC
+                READ isConnectedToAC
+                NOTIFY connectedToACChanged)
+    Q_PROPERTY (qreal scaleRatio READ scaleRatio CONSTANT)
+
+signals:
+    void cpuUsageChanged();
+    void batteryLevelChanged();
+    void connectedToACChanged();
 
 public:
     explicit Utilities();
 
-    Q_INVOKABLE int cpuUsage();
-    Q_INVOKABLE int batteryLevel();
-    Q_INVOKABLE qreal scaleRatio();
-    Q_INVOKABLE bool isConnectedToAC();
+    int cpuUsage();
+    int batteryLevel();
+    qreal scaleRatio();
+    bool isConnectedToAC();
 
 public slots:
     void copy (const QVariant& data);

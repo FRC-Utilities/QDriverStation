@@ -30,6 +30,9 @@ RowLayout {
     id: tab
     spacing: Globals.spacing
 
+    //
+    // Notifiers
+    //
     signal flashStatusIndicators
     signal windowModeChanged (var isDocked)
 
@@ -37,7 +40,6 @@ RowLayout {
     // Contains the tab switcher buttons
     //
     Column {
-        Layout.fillWidth: false
         Layout.fillHeight: true
         spacing: Globals.scale (-1)
 
@@ -141,7 +143,6 @@ RowLayout {
             visible: opacity > 0
             anchors.fill: parent
             anchors.margins: Globals.spacing
-            onFlashStatusIndicators: tab.flashStatusIndicators()
             onWindowModeChanged: tab.windowModeChanged (isDocked)
         }
 

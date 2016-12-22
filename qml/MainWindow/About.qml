@@ -39,7 +39,6 @@ ColumnLayout {
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
-
     //
     // A large label displaying the application name
     //

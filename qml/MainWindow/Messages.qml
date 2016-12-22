@@ -42,7 +42,6 @@ ColumnLayout {
     //
     RowLayout {
         Layout.fillWidth: true
-        Layout.fillHeight: false
         spacing: Globals.scale (-1)
 
         Button {

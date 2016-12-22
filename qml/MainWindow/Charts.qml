@@ -55,7 +55,6 @@ Item {
         // Show the refresh speed buttons horizontally
         //
         RowLayout {
-            Layout.fillHeight: false
             spacing: Globals.scale (-1)
 
             //
@@ -153,8 +152,8 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
             barColor: Globals.Colors.PacketLoss
-            onRefreshed: value = Math.max (1, DriverStation.robotPacketLoss())
-            Component.onCompleted: value = Math.max (1, DriverStation.robotPacketLoss())
+            onRefreshed: value = Math.max (1, DriverStation.robotPacketLoss)
+            Component.onCompleted: value = Math.max (1, DriverStation.robotPacketLoss)
         }
 
         //

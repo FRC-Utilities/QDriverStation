@@ -195,6 +195,7 @@ void Utilities::updateCpuUsage()
     PdhCollectQueryData (cpuQuery);
     PdhGetFormattedCounterValue (cpuTotal, PDH_FMT_DOUBLE, 0, &counterVal);
     m_cpuUsage = static_cast<int> (counterVal.doubleValue);
+    emit cpuUsageChanged();
 #elif defined Q_OS_MAC
     m_cpuProcess.terminate();
     m_cpuProcess.start (CPU_CMD, QIODevice::ReadOnly);
@@ -220,6 +221,7 @@ void Utilities::updateBatteryLevel()
 #if defined Q_OS_WIN
     GetSystemPowerStatus (&power);
     m_batteryLevel = static_cast<int> (power.BatteryLifePercent);
+    emit batteryLevelChanged();
 #else
     m_batteryLevelProcess.terminate();
     m_batteryLevelProcess.start (BTY_CMD, QIODevice::ReadOnly);
@@ -238,6 +240,7 @@ void Utilities::updateConnectedToAC()
 #if defined Q_OS_WIN
     GetSystemPowerStatus (&power);
     m_connectedToAC = (power.ACLineStatus != 0);
+    emit connectedToACChanged();
 #else
     m_connectedToACProcess.terminate();
     m_connectedToACProcess.start (PWR_CMD, QIODevice::ReadOnly);
@@ -302,6 +305,7 @@ void Utilities::readCpuUsageProcess (int exit_code)
 
         /* Update information */
         m_cpuUsage = (t * 10) + u;
+        emit cpuUsageChanged();
     }
 #endif
 }
@@ -332,6 +336,7 @@ void Utilities::readBatteryLevelProcess (int exit_code)
 
         /* Update information */
         m_batteryLevel = (h * 100) + (t * 10) + u;
+        emit batteryLevelChanged();
     }
 #endif
 }
@@ -349,8 +354,10 @@ void Utilities::readConnectedToACProcess (int exit_code)
     m_connectedToACProcess.terminate();
     QByteArray data = m_connectedToACProcess.readAll();
 
-    if (!data.isEmpty())
+    if (!data.isEmpty()) {
         m_connectedToAC = !data.contains ("discharging");
+        emit connectedToACChanged();
+    }
 #endif
 }
 

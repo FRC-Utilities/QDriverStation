@@ -78,7 +78,7 @@ var monoFont = "Ubuntu Mono"
 // Returns the adjusted input for the screen size and density
 //
 function scale (input) {
-    return Math.round (input * Utilities.scaleRatio());
+    return Math.round (input * Utilities.scaleRatio);
 }
 
 //

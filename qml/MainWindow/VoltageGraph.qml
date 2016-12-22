@@ -35,9 +35,9 @@ Plot {
     // Gets current voltage and changes plot settings accordingly
     //
     function update() {
-        value = DriverStation.voltage()
+        value = DriverStation.voltage
 
-        if (!DriverStation.connectedToRobot()) {
+        if (!DriverStation.connectedToRobot) {
             barColor = noCommsColor
             value = maximumValue * 0.95
         }
@@ -51,14 +51,6 @@ Plot {
     }
 
     //
-    // Update the maximum values when the protocol is changed
-    //
-    Connections {
-        target: DriverStation
-        onProtocolChanged: maximumValue = DriverStation.maximumBatteryVoltage()
-    }
-
-    //
     // Refresh the graph values from time to time
     //
     onRefreshed: update()
@@ -69,4 +61,5 @@ Plot {
     //
     minimumValue: 0
     Component.onCompleted: update()
+    maximumValue: DriverStation.maximumBatteryVoltage
 }

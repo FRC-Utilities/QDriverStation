@@ -72,6 +72,38 @@ DriverStation* DriverStation::getInstance()
 }
 
 /**
+ * Returns the current CPU usage of the robot
+ */
+int DriverStation::cpuUsage() const
+{
+    return DS_GetRobotCPUUsage();
+}
+
+/**
+ * Returns the current CAN utilization of the robot
+ */
+int DriverStation::canUsage() const
+{
+    return DS_GetRobotCANUtilization();
+}
+
+/**
+ * Returns the current RAM usage of the robot
+ */
+int DriverStation::ramUsage() const
+{
+    return DS_GetRobotRAMUsage();
+}
+
+/**
+ * Returns the current disk usage of the robot
+ */
+int DriverStation::diskUsage() const
+{
+    return DS_GetRobotDiskUsage();
+}
+
+/**
  * Returns the packet loss percentage between the FMS and the client
  */
 int DriverStation::fmsPacketLoss() const
@@ -591,33 +623,6 @@ void DriverStation::restartRobotCode()
 }
 
 /**
- * Disables the robot and switches its control mode to \c kControlTest
- */
-void DriverStation::switchToTestMode()
-{
-    setEnabled (false);
-    setControlMode (kControlTest);
-}
-
-/**
- * Disables the robot and switches its control mode to \c kControlAutonomous
- */
-void DriverStation::switchToAutonomous()
-{
-    setEnabled (false);
-    setControlMode (kControlAutonomous);
-}
-
-/**
- * Disables the robot and switches its control mode to \c kControlTeleoperated
- */
-void DriverStation::switchToTeleoperated()
-{
-    setEnabled (false);
-    setControlMode (kControlTeleoperated);
-}
-
-/**
  * Disables or enables the robot
  */
 void DriverStation::setEnabled (const bool enabled)
@@ -644,7 +649,7 @@ void DriverStation::setTeamNumber (const int number)
  *
  * \param protocol the new communication protocol to use
  */
-void DriverStation::setProtocol (DS_Protocol* protocol)
+void DriverStation::loadProtocol (DS_Protocol* protocol)
 {
     if (protocol) {
         LOG << "Loading protocol" << protocol;
@@ -665,6 +670,9 @@ void DriverStation::setProtocol (DS_Protocol* protocol)
 void DriverStation::setControlMode (const Control mode)
 {
     LOG << "Setting control mode to" << mode;
+
+    if (isEnabled() && mode != controlMode())
+        setEnabled (false);
 
     switch (mode) {
     case kControlTest:
@@ -688,19 +696,19 @@ void DriverStation::setControlMode (const Control mode)
  * \note You can use this function directly with the index values given by the
  *       \c protocols() function
  */
-void DriverStation::setProtocol (const int protocol)
+void DriverStation::setProtocol (const Protocol protocol)
 {
     switch ((Protocol) protocol) {
     case kProtocol2014:
-        setProtocol (DS_GetProtocolFRC_2014());
+        loadProtocol (DS_GetProtocolFRC_2014());
         LOG << "Switched to FRC 2014 Protocol";
         break;
     case kProtocol2015:
-        setProtocol (DS_GetProtocolFRC_2015());
+        loadProtocol (DS_GetProtocolFRC_2015());
         LOG << "Switched to FRC 2015 Protocol";
         break;
     case kProtocol2016:
-        setProtocol (DS_GetProtocolFRC_2016());
+        loadProtocol (DS_GetProtocolFRC_2016());
         LOG << "Switched to FRC 2016 Protocol";
         break;
     default:
@@ -722,7 +730,7 @@ void DriverStation::setProtocol (const int protocol)
  * \note You can use this function directly with the output given by the \c
  *       \c stations() function
  */
-void DriverStation::setTeamStation (const int station)
+void DriverStation::setTeamStation (const Station station)
 {
     switch ((Station) station) {
     case kStationRed1:
@@ -759,7 +767,7 @@ void DriverStation::setTeamStation (const int station)
  *    - \c kAllianceRed (0)
  *    - \c kAllianceBlue (1)
  */
-void DriverStation::setTeamAlliance (const int alliance)
+void DriverStation::setTeamAlliance (const Alliance alliance)
 {
     LOG << "Setting alliance to" << alliance;
 
@@ -779,7 +787,7 @@ void DriverStation::setTeamAlliance (const int alliance)
  *    - \c kPosition2 (1)
  *    - \c kPosition3 (2)
  */
-void DriverStation::setTeamPosition (const int position)
+void DriverStation::setTeamPosition (const Position position)
 {
     LOG << "Setting position to" << position;
 
@@ -822,6 +830,8 @@ void DriverStation::setCustomFMSAddress (const QString& address)
 
             DS_SetCustomFMSAddress ("");
         }
+
+        emit fmsAddressChanged();
     }
 }
 
@@ -842,6 +852,8 @@ void DriverStation::setCustomRadioAddress (const QString& address)
 
             DS_SetCustomRadioAddress ("");
         }
+
+        emit radioAddressChanged();
     }
 }
 
@@ -862,6 +874,8 @@ void DriverStation::setCustomRobotAddress (const QString& address)
 
             DS_SetCustomRobotAddress ("");
         }
+
+        emit robotAddressChanged();
     }
 }
 
@@ -954,9 +968,11 @@ void DriverStation::processEvents()
     while (DS_PollEvent (&event)) {
         switch (event.type) {
         case DS_FMS_COMMS_CHANGED:
+            emit fmsAddressChanged();
             emit fmsCommunicationsChanged (event.fms.connected);
             break;
         case DS_RADIO_COMMS_CHANGED:
+            emit radioAddressChanged();
             emit radioCommunicationsChanged (event.radio.connected);
             break;
         case DS_NETCONSOLE_NEW_MESSAGE:
@@ -969,6 +985,7 @@ void DriverStation::processEvents()
             emit controlModeChanged (controlMode());
             break;
         case DS_ROBOT_COMMS_CHANGED:
+            emit robotAddressChanged();
             emit robotCommunicationsChanged (event.robot.connected);
             break;
         case DS_ROBOT_CODE_CHANGED:
@@ -990,6 +1007,7 @@ void DriverStation::processEvents()
             emit diskUsageChanged (event.robot.disk_usage);
             break;
         case DS_ROBOT_STATION_CHANGED:
+            emit stationChanged();
             emit allianceChanged (teamAlliance());
             emit positionChanged (teamPosition());
             break;

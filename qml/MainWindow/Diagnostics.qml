@@ -30,30 +30,7 @@ RowLayout {
     spacing: Globals.spacing
 
     //
-    // Update widgets according to DS events
-    //
-    Connections {
-        target: DriverStation
-        onRamUsageChanged: ram.text = usage + "%"
-        onCpuUsageChanged: cpu.text = usage + "%"
-        onCanUsageChanged: cpu.text = usage + "%"
-        onDiskUsageChanged: disk.text = usage + "%"
-        
-        onFmsCommunicationsChanged: {
-            fms.checked = DriverStation.connectedToFMS()
-        }
-
-        onRadioCommunicationsChanged: {
-            radio.checked = DriverStation.connectedToRadio()
-        }
-
-        onRobotCommunicationsChanged: {
-            robot.checked = DriverStation.connectedToRobot()
-        }
-    }
-
-    //
-    // Network Diagnostics & reboot/restart buttons
+    // Network diagnostics items
     //
     ColumnLayout {
         Layout.fillHeight: true
@@ -66,25 +43,24 @@ RowLayout {
         }
 
         ColumnLayout {
-            Layout.fillHeight: true
             spacing: Globals.scale (1)
 
             Checkbox {
-                id: fms
                 enabled: false
                 text: qsTr ("FMS")
+                checked: DriverStation.connectedToFMS
             }
 
             Checkbox {
-                id: robot
                 enabled: false
                 text: qsTr ("Robot")
+                checked: DriverStation.connectedToRobot
             }
 
             Checkbox {
-                id: radio
                 enabled: false
                 text: qsTr ("Bridge/Radio")
+                checked: DriverStation.connectedToRadio
             }
         }
 
@@ -109,12 +85,15 @@ RowLayout {
         }
     }
 
+    //
+    // Horizontal spacer
+    //
     Item {
         Layout.fillWidth: true
     }
 
     //
-    // Robot information & system monitor
+    // Robot information items (labels & indicators)
     //
     ColumnLayout {
         Layout.fillHeight: true
@@ -136,8 +115,8 @@ RowLayout {
             }
 
             Label {
-                id: cpu
-                text: Globals.invalidStr
+                text: DriverStation.connectedToRobot ? DriverStation.cpuUsage :
+                                                       Globals.invalidStr
             }
 
             Label {
@@ -145,8 +124,8 @@ RowLayout {
             }
 
             Label {
-                id: ram
-                text: Globals.invalidStr
+                text: DriverStation.connectedToRobot ? DriverStation.ramUsage :
+                                                       Globals.invalidStr
             }
 
             Label {
@@ -154,8 +133,8 @@ RowLayout {
             }
 
             Label {
-                id: disk
-                text: Globals.invalidStr
+                text: DriverStation.connectedToRobot ? DriverStation.diskUsage :
+                                                       Globals.invalidStr
             }
 
             Label {
@@ -163,12 +142,15 @@ RowLayout {
             }
 
             Label {
-                id: can
-                text: Globals.invalidStr
+                text: DriverStation.connectedToRobot ? DriverStation.canUsage :
+                                                       Globals.invalidStr
             }
         }
     }
 
+    //
+    // Another spacer
+    //
     Item {
         Layout.fillWidth: true
     }

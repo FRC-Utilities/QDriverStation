@@ -42,7 +42,7 @@ Item {
         povs.model = 0
         buttons.model = 0
 
-        if (DriverStation.joystickCount() > currentJoystick) {
+        if (DriverStation.joystickCount > currentJoystick) {
             axes.model = DriverStation.getNumAxes (currentJoystick)
             povs.model = DriverStation.getNumHats (currentJoystick)
             buttons.model = DriverStation.getNumButtons (currentJoystick)

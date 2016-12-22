@@ -51,9 +51,9 @@ Window {
     // Changes the placeholder text of each custom IP box
     //
     function updatePlaceholders() {
-        fmsAddress.placeholder = getPlaceholder (DriverStation.defaultFMSAddress())
-        radioAddress.placeholder = getPlaceholder (DriverStation.defaultRadioAddress())
-        robotAddress.placeholder = getPlaceholder (DriverStation.defaultRobotAddress())
+        fmsAddress.placeholder = getPlaceholder (DriverStation.defaultFMSAddress)
+        radioAddress.placeholder = getPlaceholder (DriverStation.defaultRadioAddress)
+        robotAddress.placeholder = getPlaceholder (DriverStation.defaultRobotAddress)
     }
 
     //
@@ -78,9 +78,9 @@ Window {
         updatePlaceholders()
         Beeper.setEnabled (enableSoundEffects.checked)
         Utilities.setAutoScaleEnabled (autoScale.checked)
-        DriverStation.setCustomFMSAddress (fmsAddress.text)
-        DriverStation.setCustomRadioAddress (radioAddress.text)
-        DriverStation.setCustomRobotAddress (robotAddress.text)
+        DriverStation.customFMSAddress = fmsAddress.text
+        DriverStation.customRadioAddress = radioAddress.text
+        DriverStation.customRobotAddress = robotAddress.text
     }
 
     //

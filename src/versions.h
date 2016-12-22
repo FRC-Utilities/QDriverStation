@@ -26,7 +26,7 @@
 #include <QString>
 
 // *INDENT-OFF*
-static const QString APP_VERSION = "16.10";
+static const QString APP_VERSION = "17.01";
 static const QString APP_DSPNAME = "QDriverStation";
 static const QString CONTACT_URL = "alex_spataru@outlook.com";
 static const QString APP_COMPANY = "QDriverStation Developers";

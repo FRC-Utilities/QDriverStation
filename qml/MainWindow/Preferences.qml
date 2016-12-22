@@ -31,7 +31,6 @@ RowLayout {
     spacing: Globals.spacing
 
     Settings {
-        category: "DriverStationOptions"
         property alias delay: delay.value
         property alias teleop: teleop.value
         property alias team: teamNumber.value
@@ -46,17 +45,6 @@ RowLayout {
     // Open the dashboard on application launch
     //
     Component.onCompleted: cDashboard.openDashboard (dashboard.currentIndex)
-
-    //
-    // Update team number indicator/control if DS changes it
-    //
-    Connections {
-        target: DriverStation
-        onTeamNumberChanged: {
-            if (teamNumber.value !== DriverStation.teamNumber())
-                teamNumber.value = DriverStation.teamNumber()
-        }
-    }
 
     //
     // Team number, dashboard & protocol selector
@@ -81,8 +69,8 @@ RowLayout {
             minimumValue: 0
             maximumValue: 9999
             Layout.fillWidth: true
-            value: DriverStation.teamNumber()
-            onValueChanged: DriverStation.setTeamNumber (value)
+            value: DriverStation.teamNumber
+            onValueChanged: DriverStation.teamNumber = value
         }
 
         //
@@ -124,7 +112,7 @@ RowLayout {
         Combobox {
             id: protocol
             Layout.fillWidth: true
-            model: DriverStation.protocols()
+            model: DriverStation.protocols
             onCurrentIndexChanged: DriverStation.setProtocol (currentIndex)
         }
     }
