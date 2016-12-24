@@ -33,5 +33,6 @@
         <file>Widgets/Scrollbar.qml</file>
         <file>Widgets/Spinbox.qml</file>
         <file>Widgets/TextEditor.qml</file>
+        <file>MainWindow/BatteryChart.qml</file>
     </qresource>
 </RCC>

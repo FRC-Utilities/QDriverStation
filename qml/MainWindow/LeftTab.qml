@@ -131,7 +131,7 @@ RowLayout {
         }
 
         Connections {
-            target: DriverStation
+            target: DS
             onJoystickCountChanged: leftTab.updateWidth()
         }
 

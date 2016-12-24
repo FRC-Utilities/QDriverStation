@@ -48,19 +48,19 @@ RowLayout {
             Checkbox {
                 enabled: false
                 text: qsTr ("FMS")
-                checked: DriverStation.connectedToFMS
+                checked: DS.connectedToFMS
             }
 
             Checkbox {
                 enabled: false
                 text: qsTr ("Robot")
-                checked: DriverStation.connectedToRobot
+                checked: DS.connectedToRobot
             }
 
             Checkbox {
                 enabled: false
                 text: qsTr ("Bridge/Radio")
-                checked: DriverStation.connectedToRadio
+                checked: DS.connectedToRadio
             }
         }
 
@@ -74,13 +74,13 @@ RowLayout {
             Button {
                 Layout.fillWidth: true
                 text: qsTr ("Reboot RIO")
-                onClicked: DriverStation.rebootRobot()
+                onClicked: DS.rebootRobot()
             }
 
             Button {
                 Layout.fillWidth: true
                 text: qsTr ("Restart Code")
-                onClicked: DriverStation.restartRobotCode()
+                onClicked: DS.restartRobotCode()
             }
         }
     }
@@ -115,8 +115,7 @@ RowLayout {
             }
 
             Label {
-                text: DriverStation.connectedToRobot ? DriverStation.cpuUsage :
-                                                       Globals.invalidStr
+                text: DS.connectedToRobot ? DS.cpuUsage + " %" : Globals.invalidStr
             }
 
             Label {
@@ -124,8 +123,7 @@ RowLayout {
             }
 
             Label {
-                text: DriverStation.connectedToRobot ? DriverStation.ramUsage :
-                                                       Globals.invalidStr
+                text: DS.connectedToRobot ? DS.ramUsage + " %" : Globals.invalidStr
             }
 
             Label {
@@ -133,8 +131,7 @@ RowLayout {
             }
 
             Label {
-                text: DriverStation.connectedToRobot ? DriverStation.diskUsage :
-                                                       Globals.invalidStr
+                text: DS.connectedToRobot ? DS.diskUsage+ " %" : Globals.invalidStr
             }
 
             Label {
@@ -142,8 +139,7 @@ RowLayout {
             }
 
             Label {
-                text: DriverStation.connectedToRobot ? DriverStation.canUsage :
-                                                       Globals.invalidStr
+                text: DS.connectedToRobot ? DS.canUsage+ " %" : Globals.invalidStr
             }
         }
     }

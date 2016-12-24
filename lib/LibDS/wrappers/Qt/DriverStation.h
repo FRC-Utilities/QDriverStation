@@ -23,6 +23,10 @@
 #ifndef _DRIVERSTATION_H
 #define _DRIVERSTATION_H
 
+#ifdef QT_QML_LIB
+    #include <QtQml>
+#endif
+
 #include <QTime>
 #include <QObject>
 #include <QStringList>
@@ -159,41 +163,48 @@ public:
     static DriverStation* getInstance();
 
     enum Control {
-        kControlTest = 0x00,
-        kControlAutonomous = 0x01,
-        kControlTeleoperated = 0x02,
+        ControlTest = 0x00,
+        ControlAutonomous = 0x01,
+        ControlTeleoperated = 0x02,
     };
     Q_ENUMS (Control)
 
     enum Protocol {
-        kProtocol2016 = 0x00,
-        kProtocol2015 = 0x01,
-        kProtocol2014 = 0x02,
+        Protocol2016 = 0x00,
+        Protocol2015 = 0x01,
+        Protocol2014 = 0x02,
     };
     Q_ENUMS (Protocol)
 
     enum Alliance {
-        kAllianceRed = 0x00,
-        kAllianceBlue = 0x01,
+        AllianceRed = 0x00,
+        AllianceBlue = 0x01,
     };
     Q_ENUMS (Alliance)
 
     enum Position {
-        kPosition1 = 0x00,
-        kPosition2 = 0x01,
-        kPosition3 = 0x02,
+        Position1 = 0x00,
+        Position2 = 0x01,
+        Position3 = 0x02,
     };
     Q_ENUMS (Position)
 
     enum Station {
-        kStationRed1 = 0x00,
-        kStationRed2 = 0x01,
-        kStationRed3 = 0x02,
-        kStationBlue1 = 0x03,
-        kStationBlue2 = 0x04,
-        kStationBlue3 = 0x05,
+        StationRed1 = 0x00,
+        StationRed2 = 0x01,
+        StationRed3 = 0x02,
+        StationBlue1 = 0x03,
+        StationBlue2 = 0x04,
+        StationBlue3 = 0x05,
     };
     Q_ENUMS (Station)
+
+    static void declareQML()
+    {
+#ifdef QT_QML_LIB
+        qmlRegisterType<DriverStation> ("DriverStation", 1, 0, "LibDS");
+#endif
+    }
 
     int teamNumber() const;
     int joystickCount() const;

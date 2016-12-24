@@ -61,7 +61,7 @@ ColumnLayout {
         Label {
             size: large
             font.bold: true
-            text: DriverStation.teamNumber
+            text: DS.teamNumber
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignHCenter
         }
@@ -85,85 +85,9 @@ ColumnLayout {
         //
         // Robot battery graph
         //
-        Item {
+        BatteryChart {
             width: Globals.scale (53)
             height: Globals.scale (32)
-
-            property var diodeHeight: height * 0.20
-            property var backgroundColor: Globals.Colors.IconColor
-
-            //
-            // Battery cover
-            //
-            Rectangle {
-                id: cover
-                height: Globals.scale (4)
-                color: parent.backgroundColor
-
-                anchors {
-                    top: parent.top
-                    left: parent.left
-                    right: parent.right
-                    topMargin: parent.diodeHeight
-                }
-            }
-
-            //
-            // Left diode
-            //
-            Rectangle {
-                width: parent.width * 0.2
-                color: parent.backgroundColor
-                height: parent.diodeHeight - Globals.scale (2)
-
-                anchors {
-                    top: parent.top
-                    left: parent.left
-                    leftMargin: cover.height
-                }
-            }
-
-            //
-            // Right diode
-            //
-            Rectangle {
-                width: parent.width * 0.2
-                color: parent.backgroundColor
-                height: parent.diodeHeight - Globals.scale (2)
-
-                anchors {
-                    top: parent.top
-                    right: parent.right
-                    rightMargin: cover.height
-                }
-            }
-
-            //
-            // Base
-            //
-            Rectangle {
-                color: parent.backgroundColor
-
-                anchors {
-                    fill: parent
-                    leftMargin: Globals.scale (2)
-                    rightMargin: Globals.scale (2)
-                    topMargin: parent.diodeHeight + (cover.height / 2)
-                }
-
-                VoltageGraph {
-                    border.color: parent.color
-                    Component.onCompleted: setSpeed (24)
-                    color: Globals.Colors.WindowBackground
-                    noCommsColor: Globals.Colors.WindowBackground
-
-                    anchors {
-                        fill: parent
-                        topMargin: 0
-                        margins: Globals.scale (2)
-                    }
-                }
-            }
         }
 
         //
@@ -179,11 +103,9 @@ ColumnLayout {
         Label {
             size: large
             font.bold: true
-            id: voltageIndicator
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
-            text: DriverStation.connectedToRobot ? DriverStation.voltageString :
-                                                   Globals.invalidStr
+            text: DS.connectedToRobot ? DS.voltageString : Globals.invalidStr
         }
     }
 
@@ -207,7 +129,7 @@ ColumnLayout {
             leftToRight: true
             anchors.right: parent.right
             text: qsTr ("Communications")
-            checked: DriverStation.connectedToRobot
+            checked: DS.connectedToRobot
         }
 
         LED {
@@ -215,7 +137,7 @@ ColumnLayout {
             leftToRight: true
             text: qsTr ("Robot Code")
             anchors.right: parent.right
-            checked: DriverStation.robotCode
+            checked: DS.robotCode
         }
 
         LED {
@@ -240,9 +162,9 @@ ColumnLayout {
     Label {
         size: large
         font.bold: true
+        text: DS.status
         Layout.fillWidth: true
         Layout.fillHeight: true
-        text: DriverStation.status
         verticalAlignment: Qt.AlignVCenter
         horizontalAlignment: Qt.AlignHCenter
         Layout.minimumHeight: Globals.scale (42)

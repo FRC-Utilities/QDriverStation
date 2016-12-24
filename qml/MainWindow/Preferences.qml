@@ -69,8 +69,8 @@ RowLayout {
             minimumValue: 0
             maximumValue: 9999
             Layout.fillWidth: true
-            value: DriverStation.teamNumber
-            onValueChanged: DriverStation.teamNumber = value
+            value: DS.teamNumber
+            onValueChanged: DS.teamNumber = value
         }
 
         //
@@ -112,8 +112,8 @@ RowLayout {
         Combobox {
             id: protocol
             Layout.fillWidth: true
-            model: DriverStation.protocols
-            onCurrentIndexChanged: DriverStation.setProtocol (currentIndex)
+            model: DS.protocols
+            onCurrentIndexChanged: DS.setProtocol (currentIndex)
         }
     }
 

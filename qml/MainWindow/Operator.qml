@@ -24,6 +24,8 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.0
 import Qt.labs.settings 1.0
 
+import DriverStation 1.0
+
 import "../Widgets"
 import "../Globals.js" as Globals
 
@@ -56,17 +58,17 @@ RowLayout {
             Button {
                 Layout.fillWidth: true
                 text: "  " + qsTr ("Teleoperated")
-                checked: DriverStation.controlMode === 2
-                onClicked: DriverStation.controlMode = 2
                 caption.horizontalAlignment: Text.AlignLeft
+                checked: DS.controlMode === LibDS.ControlTeleoperated
+                onClicked: DS.controlMode = LibDS.ControlTeleoperated
             }
 
             Button {
                 Layout.fillWidth: true
                 text: "  " + qsTr ("Autonomous")
-                checked: DriverStation.controlMode === 1
-                onClicked: DriverStation.controlMode = 1
                 caption.horizontalAlignment: Text.AlignLeft
+                checked: DS.controlMode === LibDS.ControlAutonomous
+                onClicked: DS.controlMode = LibDS.ControlAutonomous
             }
 
             Button {
@@ -79,9 +81,9 @@ RowLayout {
             Button {
                 Layout.fillWidth: true
                 text: "  " + qsTr ("Test")
-                checked: DriverStation.controlMode === 0
-                onClicked: DriverStation.controlMode = 0
                 caption.horizontalAlignment: Text.AlignLeft
+                checked: DS.controlMode === LibDS.ControlTest
+                onClicked: DS.controlMode = LibDS.ControlTest
             }
         }
 
@@ -100,24 +102,24 @@ RowLayout {
             spacing: Globals.scale (-1)
 
             Button {
+                checked: DS.enabled
                 text: qsTr ("Enable")
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 caption.font.bold: true
-                checked: DriverStation.enabled
+                onClicked: DS.enabled = DS.canBeEnabled
                 caption.font.pixelSize: Globals.scale (16)
-                onClicked: DriverStation.enabled = DriverStation.canBeEnabled
                 caption.color: checked ? Globals.Colors.EnableButtonSelected :
                                          Globals.Colors.EnableButtonUnselected
             }
 
             Button {
+                checked: !DS.enabled
                 text: qsTr ("Disable")
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 caption.font.bold: true
-                checked: !DriverStation.enabled
-                onClicked: DriverStation.enabled = false
+                onClicked: DS.enabled = false
                 caption.font.pixelSize: Globals.scale (16)
                 caption.color: checked ? Globals.Colors.DisableButtonSelected :
                                          Globals.Colors.DisableButtonUnselected
@@ -160,7 +162,7 @@ RowLayout {
             font.bold: true
             Layout.fillWidth: true
             size: Globals.scale (18)
-            text: DriverStation.elapsedTime
+            text: DS.elapsedTime
             Layout.rightMargin: Globals.spacing
             horizontalAlignment: Text.AlignRight
         }
@@ -318,9 +320,9 @@ RowLayout {
         //
         Combobox {
             id: stations
+            model: DS.stations
             Layout.fillWidth: true
-            model: DriverStation.stations
-            onCurrentIndexChanged: DriverStation.station = currentIndex
+            onCurrentIndexChanged: DS.station = currentIndex
         }
     }
 }

@@ -168,7 +168,7 @@ bool DriverStation::isEnabled() const
  */
 bool DriverStation::isTestMode() const
 {
-    return (controlMode() == kControlTest);
+    return (controlMode() == ControlTest);
 }
 
 /**
@@ -199,7 +199,7 @@ bool DriverStation::hasRobotCode() const
  */
 bool DriverStation::isAutonomous() const
 {
-    return (controlMode() == kControlAutonomous);
+    return (controlMode() == ControlAutonomous);
 }
 
 /**
@@ -210,7 +210,7 @@ bool DriverStation::isAutonomous() const
  */
 bool DriverStation::isTeleoperated() const
 {
-    return (controlMode() == kControlTeleoperated);
+    return (controlMode() == ControlTeleoperated);
 }
 
 /**
@@ -306,16 +306,16 @@ DriverStation::Control DriverStation::controlMode() const
 {
     switch (DS_GetControlMode()) {
     case DS_CONTROL_TEST:
-        return kControlTest;
+        return ControlTest;
         break;
     case DS_CONTROL_AUTONOMOUS:
-        return kControlAutonomous;
+        return ControlAutonomous;
         break;
     case DS_CONTROL_TELEOPERATED:
-        return kControlTeleoperated;
+        return ControlTeleoperated;
         break;
     default:
-        return kControlTeleoperated;
+        return ControlTeleoperated;
         break;
     }
 }
@@ -336,36 +336,36 @@ DriverStation::Control DriverStation::controlMode() const
  */
 DriverStation::Station DriverStation::teamStation() const
 {
-    if (teamAlliance() == kAllianceRed) {
+    if (teamAlliance() == AllianceRed) {
         switch (teamPosition()) {
-        case kPosition1:
-            return kStationRed1;
+        case Position1:
+            return StationRed1;
             break;
-        case kPosition2:
-            return kStationRed2;
+        case Position2:
+            return StationRed2;
             break;
-        case kPosition3:
-            return kStationRed3;
+        case Position3:
+            return StationRed3;
             break;
         default:
-            return kStationRed1;
+            return StationRed1;
             break;
         }
     }
 
     else {
         switch (teamPosition()) {
-        case kPosition1:
-            return kStationBlue1;
+        case Position1:
+            return StationBlue1;
             break;
-        case kPosition2:
-            return kStationBlue2;
+        case Position2:
+            return StationBlue2;
             break;
-        case kPosition3:
-            return kStationBlue3;
+        case Position3:
+            return StationBlue3;
             break;
         default:
-            return kStationBlue1;
+            return StationBlue1;
             break;
         }
     }
@@ -384,13 +384,13 @@ DriverStation::Alliance DriverStation::teamAlliance() const
 {
     switch (DS_GetAlliance()) {
     case DS_ALLIANCE_RED:
-        return kAllianceRed;
+        return AllianceRed;
         break;
     case DS_ALLIANCE_BLUE:
-        return kAllianceBlue;
+        return AllianceBlue;
         break;
     default:
-        return kAllianceRed;
+        return AllianceRed;
         break;
     }
 }
@@ -409,16 +409,16 @@ DriverStation::Position DriverStation::teamPosition() const
 {
     switch (DS_GetPosition()) {
     case DS_POSITION_1:
-        return kPosition1;
+        return Position1;
         break;
     case DS_POSITION_2:
-        return kPosition2;
+        return Position2;
         break;
     case DS_POSITION_3:
-        return kPosition3;
+        return Position3;
         break;
     default:
-        return kPosition1;
+        return Position1;
         break;
     }
 }
@@ -602,7 +602,7 @@ void DriverStation::start()
         DS_Init();
         processEvents();
         updateElapsedTime();
-        emit statusChanged (sds_to_qstring (DS_GetStatusString()));
+        emit statusChanged (generalStatus());
         connect (qApp, SIGNAL (aboutToQuit()), this, SLOT (quitDS()));
     }
 }
@@ -677,6 +677,10 @@ void DriverStation::loadProtocol (DS_Protocol* protocol)
         emit protocolChanged();
         emit statusChanged (sds_to_qstring (DS_GetStatusString()));
 
+        setCustomFMSAddress (customFMSAddress());
+        setCustomRadioAddress (customRadioAddress());
+        setCustomRobotAddress (customRobotAddress());
+
         LOG << "Protocol" << protocol << "loaded";
     }
 }
@@ -690,15 +694,17 @@ void DriverStation::setControlMode (const Control mode)
 
     if (isEnabled() && mode != controlMode())
         setEnabled (false);
+    if (mode != controlMode())
+        resetElapsedTime();
 
     switch (mode) {
-    case kControlTest:
+    case ControlTest:
         DS_SetControlMode (DS_CONTROL_TEST);
         break;
-    case kControlAutonomous:
+    case ControlAutonomous:
         DS_SetControlMode (DS_CONTROL_AUTONOMOUS);
         break;
-    case kControlTeleoperated:
+    case ControlTeleoperated:
         DS_SetControlMode (DS_CONTROL_TELEOPERATED);
         break;
     default:
@@ -716,15 +722,15 @@ void DriverStation::setControlMode (const Control mode)
 void DriverStation::setProtocol (const Protocol protocol)
 {
     switch ((Protocol) protocol) {
-    case kProtocol2014:
+    case Protocol2014:
         loadProtocol (DS_GetProtocolFRC_2014());
         LOG << "Switched to FRC 2014 Protocol";
         break;
-    case kProtocol2015:
+    case Protocol2015:
         loadProtocol (DS_GetProtocolFRC_2015());
         LOG << "Switched to FRC 2015 Protocol";
         break;
-    case kProtocol2016:
+    case Protocol2016:
         loadProtocol (DS_GetProtocolFRC_2016());
         LOG << "Switched to FRC 2016 Protocol";
         break;
@@ -750,29 +756,29 @@ void DriverStation::setProtocol (const Protocol protocol)
 void DriverStation::setTeamStation (const Station station)
 {
     switch ((Station) station) {
-    case kStationRed1:
-        setTeamPosition (kPosition1);
-        setTeamAlliance (kAllianceRed);
+    case StationRed1:
+        setTeamPosition (Position1);
+        setTeamAlliance (AllianceRed);
         break;
-    case kStationRed2:
-        setTeamPosition (kPosition2);
-        setTeamAlliance (kAllianceRed);
+    case StationRed2:
+        setTeamPosition (Position2);
+        setTeamAlliance (AllianceRed);
         break;
-    case kStationRed3:
-        setTeamPosition (kPosition3);
-        setTeamAlliance (kAllianceRed);
+    case StationRed3:
+        setTeamPosition (Position3);
+        setTeamAlliance (AllianceRed);
         break;
-    case kStationBlue1:
-        setTeamPosition (kPosition1);
-        setTeamAlliance (kAllianceBlue);
+    case StationBlue1:
+        setTeamPosition (Position1);
+        setTeamAlliance (AllianceBlue);
         break;
-    case kStationBlue2:
-        setTeamPosition (kPosition2);
-        setTeamAlliance (kAllianceBlue);
+    case StationBlue2:
+        setTeamPosition (Position2);
+        setTeamAlliance (AllianceBlue);
         break;
-    case kStationBlue3:
-        setTeamPosition (kPosition3);
-        setTeamAlliance (kAllianceBlue);
+    case StationBlue3:
+        setTeamPosition (Position3);
+        setTeamAlliance (AllianceBlue);
         break;
     default:
         break;
@@ -789,10 +795,10 @@ void DriverStation::setTeamAlliance (const Alliance alliance)
     LOG << "Setting alliance to" << alliance;
 
     switch ((Alliance) alliance) {
-    case kAllianceRed:
+    case AllianceRed:
         DS_SetAlliance (DS_ALLIANCE_RED);
         break;
-    case kAllianceBlue:
+    case AllianceBlue:
         DS_SetAlliance (DS_ALLIANCE_BLUE);
         break;
     }
@@ -809,13 +815,13 @@ void DriverStation::setTeamPosition (const Position position)
     LOG << "Setting position to" << position;
 
     switch ((Position) position) {
-    case kPosition1:
+    case Position1:
         DS_SetPosition (DS_POSITION_1);
         break;
-    case kPosition2:
+    case Position2:
         DS_SetPosition (DS_POSITION_2);
         break;
-    case kPosition3:
+    case Position3:
         DS_SetPosition (DS_POSITION_3);
         break;
     }

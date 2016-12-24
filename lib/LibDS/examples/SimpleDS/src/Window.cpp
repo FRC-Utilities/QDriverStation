@@ -96,7 +96,7 @@ Window::Window (QWidget* parent) : QMainWindow (parent)
              ui->Console, SLOT (append (QString)));
 
     /* Initialize the DS with the 2016 protocol */
-    ds->setProtocol (DriverStation::kProtocol2016);
+    ds->setProtocol (DriverStation::Protocol2016);
 }
 
 /**
@@ -160,15 +160,15 @@ void Window::updateControlMode (int unused)
 
     /* Switch to test mode */
     if (ui->Test->isChecked())
-        ds->switchToTestMode();
+        ds->setControlMode (DriverStation::ControlTest);
 
     /* Switch to autonomous */
     else if (ui->Autonomous->isChecked())
-        ds->switchToAutonomous();
+        ds->setControlMode (DriverStation::ControlAutonomous);
 
     /* Switch to teleoperated */
     else if (ui->Teleoperated->isChecked())
-        ds->switchToTeleoperated();
+        ds->setControlMode (DriverStation::ControlTeleoperated);
 }
 
 /**

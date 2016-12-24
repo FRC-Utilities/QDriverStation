@@ -33,7 +33,7 @@ ColumnLayout {
     // Write to the console every time the DS receives a message
     //
     Connections {
-        target: DriverStation
+        target: DS
         onNewMessage: messages.editor.append (message)
     }
 

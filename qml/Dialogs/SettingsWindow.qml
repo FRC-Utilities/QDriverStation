@@ -51,9 +51,9 @@ Window {
     // Changes the placeholder text of each custom IP box
     //
     function updatePlaceholders() {
-        fmsAddress.placeholder = getPlaceholder (DriverStation.defaultFMSAddress)
-        radioAddress.placeholder = getPlaceholder (DriverStation.defaultRadioAddress)
-        robotAddress.placeholder = getPlaceholder (DriverStation.defaultRobotAddress)
+        fmsAddress.placeholder = getPlaceholder (DS.defaultFMSAddress)
+        radioAddress.placeholder = getPlaceholder (DS.defaultRadioAddress)
+        robotAddress.placeholder = getPlaceholder (DS.defaultRobotAddress)
     }
 
     //
@@ -78,9 +78,9 @@ Window {
         updatePlaceholders()
         Beeper.setEnabled (enableSoundEffects.checked)
         Utilities.setAutoScaleEnabled (autoScale.checked)
-        DriverStation.customFMSAddress = fmsAddress.text
-        DriverStation.customRadioAddress = radioAddress.text
-        DriverStation.customRobotAddress = robotAddress.text
+        DS.customFMSAddress = fmsAddress.text
+        DS.customRadioAddress = radioAddress.text
+        DS.customRobotAddress = robotAddress.text
     }
 
     //
@@ -100,7 +100,7 @@ Window {
     // Configure DS on init
     //
     Connections {
-        target: DriverStation
+        target: DS
         onProtocolChanged: apply()
         onTeamNumberChanged: updatePlaceholders()
     }

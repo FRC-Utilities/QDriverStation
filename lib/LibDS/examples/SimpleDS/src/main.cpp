@@ -33,7 +33,6 @@ int main (int argc, char* argv[])
 
     /* Initialize the Driver Station */
     DriverStation::getInstance()->start();
-    DSEventLogger::getInstance()->start();
 
     /* Initialize the main window */
     Window window;

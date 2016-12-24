@@ -42,10 +42,10 @@ Item {
         povs.model = 0
         buttons.model = 0
 
-        if (DriverStation.joystickCount > currentJoystick) {
-            axes.model = DriverStation.getNumAxes (currentJoystick)
-            povs.model = DriverStation.getNumHats (currentJoystick)
-            buttons.model = DriverStation.getNumButtons (currentJoystick)
+        if (DS.joystickCount > currentJoystick) {
+            axes.model = DS.getNumAxes (currentJoystick)
+            povs.model = DS.getNumHats (currentJoystick)
+            buttons.model = DS.getNumButtons (currentJoystick)
         }
     }
 
@@ -93,10 +93,10 @@ Item {
 
         onCountChanged: {
             updateControls()
-            DriverStation.resetJoysticks()
+            DS.resetJoysticks()
 
             for (var i = 0; i < QJoysticks.count; ++i) {
-                DriverStation.addJoystick (QJoysticks.getNumAxes (i),
+                DS.addJoystick (QJoysticks.getNumAxes (i),
                                            QJoysticks.getNumPOVs (i),
                                            QJoysticks.getNumButtons (i))
             }
@@ -104,22 +104,22 @@ Item {
 
         onPovChanged: {
             var val = QJoysticks.isBlacklisted (currentJoystick) ? 0 : angle
-            DriverStation.setJoystickHat (js, pov, val)
+            DS.setJoystickHat (js, pov, val)
         }
 
         onAxisChanged: {
             var val = QJoysticks.isBlacklisted (currentJoystick) ? 0 : value
-            DriverStation.setJoystickAxis (js, axis, val)
+            DS.setJoystickAxis (js, axis, val)
         }
 
         onButtonChanged: {
             var val = QJoysticks.isBlacklisted (currentJoystick) ? false : pressed
-            DriverStation.setJoystickButton (js, button, val)
+            DS.setJoystickButton (js, button, val)
         }
     }
 
     Connections {
-        target: DriverStation
+        target: DS
         onJoystickCountChanged: regenerateControls()
     }
 
