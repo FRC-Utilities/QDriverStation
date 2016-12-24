@@ -489,6 +489,6 @@ void DS_SetCustomRobotAddress (const char* address)
 void DS_SendNetConsoleMessage (const char* message)
 {
     if (DS_CurrentProtocol())
-        DS_SocketSend (&DS_CurrentProtocol()->netconsole_socket,
+        DS_SocketSend (DS_CurrentProtocol()->netconsole_socket,
                        sdsnew (message));
 }
