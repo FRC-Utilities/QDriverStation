@@ -187,27 +187,27 @@ static void* create_socket (void* data)
 /**
  * Returns an empty socket for safe initialization
  */
-DS_Socket DS_SocketEmpty()
+DS_Socket* DS_SocketEmpty()
 {
-    DS_Socket socket;
+    DS_Socket* socket = calloc (1, sizeof (DS_Socket));
 
     /* Fill basic data */
-    socket.in_port = 0;
-    socket.out_port = 0;
-    socket.disabled = 0;
-    socket.broadcast = 0;
-    socket.address = NULL;
-    socket.type = DS_SOCKET_UDP;
+    socket->in_port = 0;
+    socket->out_port = 0;
+    socket->disabled = 0;
+    socket->broadcast = 0;
+    socket->address = NULL;
+    socket->type = DS_SOCKET_UDP;
 
     /* Fill socket info structure */
-    socket.info.sock_in = 0;
-    socket.info.sock_out = 0;
-    socket.info.buffer = NULL;
-    socket.info.server_init = 0;
-    socket.info.client_init = 0;
-    socket.info.socket_thread = 0;
-    socket.info.in_service = NULL;
-    socket.info.out_service = NULL;
+    socket->info.sock_in = 0;
+    socket->info.sock_out = 0;
+    socket->info.buffer = NULL;
+    socket->info.server_init = 0;
+    socket->info.client_init = 0;
+    socket->info.socket_thread = 0;
+    socket->info.in_service = NULL;
+    socket->info.out_service = NULL;
 
     return socket;
 }

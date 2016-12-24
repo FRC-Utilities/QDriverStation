@@ -721,36 +721,30 @@ DS_Protocol* DS_GetProtocolFRC_2015()
     protocol->max_button_count = 10;
 
     /* Define FMS socket properties */
-    DS_Socket fms_socket = DS_SocketEmpty();
-    fms_socket.disabled = 0;
-    fms_socket.in_port = 1120;
-    fms_socket.out_port = 1160;
-    fms_socket.type = DS_SOCKET_UDP;
+    protocol->fms_socket = DS_SocketEmpty();
+    protocol->fms_socket->disabled = 0;
+    protocol->fms_socket->in_port = 1120;
+    protocol->fms_socket->out_port = 1160;
+    protocol->fms_socket->type = DS_SOCKET_UDP;
 
     /* Define radio socket properties */
-    DS_Socket radio_socket = DS_SocketEmpty();
-    radio_socket.disabled = 1;
+    protocol->radio_socket = DS_SocketEmpty();
+    protocol->radio_socket->disabled = 1;
 
     /* Define robot socket properties */
-    DS_Socket robot_socket = DS_SocketEmpty();
-    robot_socket.disabled = 0;
-    robot_socket.in_port = 1150;
-    robot_socket.out_port = 1110;
-    robot_socket.type = DS_SOCKET_UDP;
+    protocol->robot_socket = DS_SocketEmpty();
+    protocol->robot_socket->disabled = 0;
+    protocol->robot_socket->in_port = 1150;
+    protocol->robot_socket->out_port = 1110;
+    protocol->robot_socket->type = DS_SOCKET_UDP;
 
     /* Define netconsole socket properties */
-    DS_Socket netconsole_socket = DS_SocketEmpty();
-    netconsole_socket.disabled = 0;
-    netconsole_socket.broadcast = 1;
-    netconsole_socket.in_port = 6666;
-    netconsole_socket.out_port = 6668;
-    netconsole_socket.type = DS_SOCKET_UDP;
-
-    /* Assign socket objects */
-    protocol->fms_socket = fms_socket;
-    protocol->radio_socket = radio_socket;
-    protocol->robot_socket = robot_socket;
-    protocol->netconsole_socket = netconsole_socket;
+    protocol->netconsole_socket = DS_SocketEmpty();
+    protocol->netconsole_socket->disabled = 0;
+    protocol->netconsole_socket->broadcast = 1;
+    protocol->netconsole_socket->in_port = 6666;
+    protocol->netconsole_socket->out_port = 6668;
+    protocol->netconsole_socket->type = DS_SOCKET_UDP;
 
     /* Return the protocol */
     return protocol;

@@ -106,15 +106,15 @@ void CFG_ReconfigureAddresses (const int flags)
 {
     if (DS_CurrentProtocol()) {
         if (flags & RECONFIGURE_FMS)
-            DS_SocketChangeAddress (&DS_CurrentProtocol()->fms_socket,
+            DS_SocketChangeAddress (DS_CurrentProtocol()->fms_socket,
                                     DS_GetAppliedFMSAddress());
 
         if (flags & RECONFIGURE_RADIO)
-            DS_SocketChangeAddress (&DS_CurrentProtocol()->radio_socket,
+            DS_SocketChangeAddress (DS_CurrentProtocol()->radio_socket,
                                     DS_GetAppliedRadioAddress());
 
         if (flags & RECONFIGURE_ROBOT) {
-            DS_SocketChangeAddress (&DS_CurrentProtocol()->robot_socket,
+            DS_SocketChangeAddress (DS_CurrentProtocol()->robot_socket,
                                     DS_GetAppliedRobotAddress());
         }
     }

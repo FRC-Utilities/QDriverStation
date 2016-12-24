@@ -63,7 +63,7 @@ typedef struct {
 } DS_Socket;
 
 /* For socket initialization */
-extern DS_Socket DS_SocketEmpty();
+extern DS_Socket* DS_SocketEmpty();
 
 /* Module functions */
 extern void Sockets_Init();

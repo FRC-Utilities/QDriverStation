@@ -40,7 +40,7 @@
 /*
  * Holds a pointer to the current protocol in use
  */
-static DS_Protocol* protocol;
+static DS_Protocol* protocol = NULL;
 
 /*
  * Define the sender watchdogs (when one expires, we send a packet)
@@ -99,7 +99,7 @@ static void send_fms_data()
 {
     ++sent_fms_packets;
     sds data = protocol->create_fms_packet();
-    DS_SocketSend (&protocol->fms_socket, data);
+    DS_SocketSend (protocol->fms_socket, data);
     DS_FREESTR (data);
 }
 
@@ -111,7 +111,7 @@ static void send_radio_data()
 {
     ++sent_radio_packets;
     sds data = protocol->create_radio_packet();
-    DS_SocketSend (&protocol->radio_socket, data);
+    DS_SocketSend (protocol->radio_socket, data);
     DS_FREESTR (data);
 }
 
@@ -123,7 +123,7 @@ static void send_robot_data()
 {
     ++sent_robot_packets;
     sds data = protocol->create_robot_packet();
-    DS_SocketSend (&protocol->robot_socket, data);
+    DS_SocketSend (protocol->robot_socket, data);
     DS_FREESTR (data);
 }
 
@@ -181,10 +181,10 @@ static void recv_data()
     clear_recv_data();
 
     /* Read data from sockets */
-    fms_data = DS_SocketRead (&protocol->fms_socket);
-    radio_data = DS_SocketRead (&protocol->radio_socket);
-    robot_data = DS_SocketRead (&protocol->robot_socket);
-    netcs_data = DS_SocketRead (&protocol->netconsole_socket);
+    fms_data = DS_SocketRead (protocol->fms_socket);
+    radio_data = DS_SocketRead (protocol->radio_socket);
+    robot_data = DS_SocketRead (protocol->robot_socket);
+    netcs_data = DS_SocketRead (protocol->netconsole_socket);
 
     /* Read FMS packet */
     if (fms_data) {
@@ -320,10 +320,10 @@ static void close_protocol()
         return;
 
     /* Close the sockets */
-    DS_SocketClose (&protocol->fms_socket);
-    DS_SocketClose (&protocol->radio_socket);
-    DS_SocketClose (&protocol->robot_socket);
-    DS_SocketClose (&protocol->netconsole_socket);
+    DS_SocketClose (protocol->fms_socket);
+    DS_SocketClose (protocol->radio_socket);
+    DS_SocketClose (protocol->robot_socket);
+    DS_SocketClose (protocol->netconsole_socket);
 
     /* Stop sender timers */
     DS_TimerStop (&fms_send_timer);
@@ -334,6 +334,12 @@ static void close_protocol()
     DS_TimerStop (&fms_recv_timer);
     DS_TimerStop (&radio_recv_timer);
     DS_TimerStop (&robot_recv_timer);
+
+    /* Delete sockets */
+    DS_FREE (protocol->fms_socket);
+    DS_FREE (protocol->radio_socket);
+    DS_FREE (protocol->robot_socket);
+    DS_FREE (protocol->netconsole_socket);
 
     /* De-allocate the protocol */
     DS_FREE (protocol);
@@ -367,10 +373,10 @@ void DS_ConfigureProtocol (DS_Protocol* ptr)
     protocol = ptr;
 
     /* Update sockets */
-    DS_SocketOpen (&ptr->fms_socket);
-    DS_SocketOpen (&ptr->radio_socket);
-    DS_SocketOpen (&ptr->robot_socket);
-    DS_SocketOpen (&ptr->netconsole_socket);
+    DS_SocketOpen (ptr->fms_socket);
+    DS_SocketOpen (ptr->radio_socket);
+    DS_SocketOpen (ptr->robot_socket);
+    DS_SocketOpen (ptr->netconsole_socket);
 
     /* Update sender timers */
     fms_send_timer.time = ptr->fms_interval;
