@@ -22,12 +22,19 @@
 
 #include "socky.h"
 
+#include <pthread.h>
+
 #if defined _WIN32
     static WSADATA WSA_DATA;
     #define GET_ERR WSAGetLastError()
 #else
     #define GET_ERR errno
 #endif
+
+typedef struct _close_socket {
+    int sfd;
+    int* error;
+} _close_socket_info;
 
 /**
  * Returns \c 0 if the given socket file descriptor is invalid
@@ -221,6 +228,43 @@ static int create_server (const char* port, const int family,
     /* Server socket setup correctly */
     freeaddrinfo (info);
     return sfd;
+}
+
+/**
+ * Casts the given \a data pointer into a \a CloseSocketData structure
+ * and attempts to shutdown and close the \a sfd specified in the structure.
+ * The error code will be written in the \a error field of the structure
+ */
+static void* close_socket (void* data)
+{
+    /* Invalid pointer */
+    if (!data)
+        return NULL;
+
+    /* Cast generic pointer to data structure */
+    _close_socket_info* info = (_close_socket_info*) data;
+    if (!info->error) {
+        info->error = (int*) malloc (sizeof (int));
+        *info->error = -1;
+    }
+
+    /* The socket descriptor is invalid */
+    if (!valid_sfd (info->sfd))
+        return NULL;
+
+    /* Cannot shutdown the socket */
+    if (shutdown (info->sfd, 2) != 0)
+        return NULL;
+
+    /* Close the socket */
+#if defined _WIN32
+    *info->error = closesocket (info->sfd);
+#else
+    *info->error = close (info->sfd);
+#endif
+
+    /* Exit thread */
+    return NULL;
 }
 
 /**
@@ -454,15 +498,28 @@ int create_server_tcp (const char* port, const int family, const int flags)
  */
 int socket_close (const int sfd)
 {
-    if (valid_sfd (sfd)) {
-#if defined _WIN32
-        return closesocket (sfd);
-#else
-        return close (sfd);
-#endif
-    }
+    _close_socket_info info;
+    info.sfd = sfd;
+    close_socket ((void*) &info);
+    return *info.error;
+}
 
-    return -1;
+/**
+ * Closes the given \a sfd in a different thread and writes the return code in
+ * the given \a error address
+ *
+ * \param sfd the socket file descriptor to close
+ * \param error address to the variable in which to write the return code of
+ *              the close operation
+ */
+void socket_close_threaded (int sfd, int* error)
+{
+    _close_socket_info info;
+    info.sfd = sfd;
+    info.error = error;
+
+    pthread_t thread;
+    pthread_create (&thread, NULL, &close_socket, (void*) &info);
 }
 
 /**

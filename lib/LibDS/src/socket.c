@@ -82,13 +82,6 @@ static void read_socket (DS_Socket* ptr)
  * to copy received data into the socket's buffer only when the
  * operating system detects that the socket received some data.
  *
- * Some people would use a socket timeout in this situation.
- * However, we don't need that since each socket needs to have its
- * own thread (because FRC networking is relatively intensive).
- * Since each socket has its own dedicated thread, we can affort to
- * use a blocking \c select() call, which also reduces the overall
- * CPU usage of the application.
- *
  * \param ptr a pointer to a \c DS_Socket structure
  */
 static void server_loop (DS_Socket* ptr)
@@ -277,8 +270,9 @@ void DS_SocketClose (DS_Socket* ptr)
     ptr->info.client_init = 0;
 
     /* Close sockets */
-    socket_close (ptr->info.sock_in);
-    socket_close (ptr->info.sock_out);
+    int error = 0;
+    socket_close_threaded (ptr->info.sock_in, &error);
+    socket_close_threaded (ptr->info.sock_out, &error);
 
     /* Stop threads */
     DS_StopThread (ptr->info.socket_thread);

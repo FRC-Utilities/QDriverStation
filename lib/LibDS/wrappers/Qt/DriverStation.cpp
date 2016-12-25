@@ -656,8 +656,11 @@ void DriverStation::setEnabled (const bool enabled)
 void DriverStation::setTeamNumber (const int number)
 {
     LOG << "Changing team number to" << number;
-
     DS_SetTeamNumber (number);
+
+    emit fmsAddressChanged();
+    emit radioAddressChanged();
+    emit robotAddressChanged();
     emit teamNumberChanged (number);
 }
 

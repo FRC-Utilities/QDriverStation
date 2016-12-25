@@ -78,6 +78,7 @@ extern int create_server_tcp (const char* port, const int family,
 
 /* Socket closing functions */
 extern int socket_close    (const int sfd);
+extern void socket_close_threaded (int sfd, int* error);
 extern int socket_shutdown (const int sfd, const int method);
 
 /* Special TCP functions */
