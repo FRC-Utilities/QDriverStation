@@ -45,7 +45,6 @@ typedef struct {
     int sock_out;            /**< Client socket file descriptor */
     int client_init;         /**< Set to \c 1 if client socket is initialized */
     int server_init;         /**< Set to \c 1 if server socket is initialized */
-    pthread_t socket_thread; /**< Holds the TID of the socket thread */
 } DS_SocketInfo;
 
 /**

@@ -203,7 +203,6 @@ DS_Socket* DS_SocketEmpty()
     socket->info.buffer = NULL;
     socket->info.server_init = 0;
     socket->info.client_init = 0;
-    socket->info.socket_thread = 0;
     socket->info.in_service = NULL;
     socket->info.out_service = NULL;
 
@@ -255,7 +254,6 @@ void DS_SocketOpen (DS_Socket* ptr)
     /* Initialize the socket in another thread */
     pthread_t thread;
     pthread_create (&thread, NULL, &create_socket, (void*) ptr);
-    ptr->info.socket_thread = thread;
 }
 
 /**
@@ -278,9 +276,6 @@ void DS_SocketClose (DS_Socket* ptr)
     socket_close_threaded (ptr->info.sock_in, NULL);
     socket_close_threaded (ptr->info.sock_out, NULL);
 
-    /* Stop threads */
-    DS_StopThread (ptr->info.socket_thread);
-
     /* Clear data buffers */
     DS_FREESTR (ptr->info.buffer);
     DS_FREESTR (ptr->info.in_service);
@@ -289,7 +284,6 @@ void DS_SocketClose (DS_Socket* ptr)
     /* Reset socket information structure */
     ptr->info.sock_in = -1;
     ptr->info.sock_out = -1;
-    ptr->info.socket_thread = 0;
 }
 
 /**

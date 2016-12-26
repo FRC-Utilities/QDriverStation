@@ -617,10 +617,8 @@ int udp_sendto (const int sfd,
                                               SOCKY_UDP, SOCKY_ANY);
 
     /* Invalid address info */
-    if (info == NULL) {
-        freeaddrinfo (info);
+    if (!info)
         return -1;
-    }
 
     /* Send datagram */
     int bytes = sendto (sfd, buf, buf_len, flags,

@@ -21,6 +21,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+#include "DS_Utils.h"
 #include "DS_Config.h"
 #include "DS_Protocol.h"
 #include "DS_DefaultProtocols.h"
