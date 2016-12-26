@@ -44,9 +44,11 @@ public:
 
 public slots:
     void updateEnabled (int unused);
-    void setVoltage (double voltage);
     void syncButtons (bool enabled);
+    void setProtocol (int protocol);
+    void setTeamStation (int station);
     void updateControlMode (int unused);
+    void setVoltage (const float voltage);
 
 private:
     Ui::Window* ui;

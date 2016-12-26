@@ -28,6 +28,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <bstrlib.h>
 
 static bstring status_string = NULL;
 static bstring custom_fms_address = NULL;
@@ -61,9 +62,9 @@ void Client_Close()
  * This value may be empty, if that's the case, then the Driver Station will
  * use the addresses specified by the currently loaded protocol.
  */
-bstring DS_GetCustomFMSAddress()
+char* DS_GetCustomFMSAddress()
 {
-    return custom_fms_address;
+    return bstr2cstr (custom_fms_address, 0);
 }
 
 /**
@@ -71,9 +72,9 @@ bstring DS_GetCustomFMSAddress()
  * This value may be empty, if that's the case, then the Driver Station will
  * use the addresses specified by the currently loaded protocol.
  */
-bstring DS_GetCustomRadioAddress()
+char* DS_GetCustomRadioAddress()
 {
-    return custom_radio_address;
+    return bstr2cstr (custom_radio_address, 0);
 }
 
 /**
@@ -81,9 +82,9 @@ bstring DS_GetCustomRadioAddress()
  * This value may be empty, if that's the case, then the Driver Station will
  * use the addresses specified by the currently loaded protocol.
  */
-bstring DS_GetCustomRobotAddress()
+char* DS_GetCustomRobotAddress()
 {
-    return custom_robot_address;
+    return bstr2cstr (custom_robot_address, 0);
 }
 
 /**
@@ -91,12 +92,12 @@ bstring DS_GetCustomRobotAddress()
  * number is changed, if your application relies on this value, consider
  * updating in regurarly or using the events system of the LibDS.
  */
-bstring DS_GetDefaultFMSAddress()
+char* DS_GetDefaultFMSAddress()
 {
     if (DS_CurrentProtocol())
-        return DS_CurrentProtocol()->fms_address();
+        return bstr2cstr (DS_CurrentProtocol()->fms_address(), 0);
 
-    return DS_FallBackAddress;
+    return "0.0.0.0";
 }
 
 /**
@@ -104,12 +105,12 @@ bstring DS_GetDefaultFMSAddress()
  * team number is changed, if your application relies on this value, consider
  * updating in regurarly or using the events system of the LibDS.
  */
-bstring DS_GetDefaultRadioAddress()
+char* DS_GetDefaultRadioAddress()
 {
     if (DS_CurrentProtocol())
-        return DS_CurrentProtocol()->radio_address();
+        return bstr2cstr (DS_CurrentProtocol()->radio_address(), 0);
 
-    return DS_FallBackAddress;
+    return "0.0.0.0";
 }
 
 /**
@@ -117,12 +118,12 @@ bstring DS_GetDefaultRadioAddress()
  * team number is changed, if your application relies on this value, consider
  * updating in regurarly or using the events system of the LibDS.
  */
-bstring DS_GetDefaultRobotAddress()
+char* DS_GetDefaultRobotAddress()
 {
     if (DS_CurrentProtocol())
-        return DS_CurrentProtocol()->robot_address();
+        return bstr2cstr (DS_CurrentProtocol()->robot_address(), 0);
 
-    return bfromcstr ("127.0.0.1");
+    return "0.0.0.0";
 }
 
 /**
@@ -131,9 +132,9 @@ bstring DS_GetDefaultRobotAddress()
  * user-set address. Otherwise, this function will return the address
  * specified  by the currently loaded protocol.
  */
-bstring DS_GetAppliedFMSAddress()
+char* DS_GetAppliedFMSAddress()
 {
-    if (DS_StringIsEmpty (DS_GetCustomFMSAddress()))
+    if (DS_StringIsEmpty (custom_fms_address))
         return DS_GetDefaultFMSAddress();
 
     return DS_GetCustomFMSAddress();
@@ -145,9 +146,9 @@ bstring DS_GetAppliedFMSAddress()
  * user-set address. Otherwise, this function will return the address
  * specified  by the currently loaded protocol.
  */
-bstring DS_GetAppliedRadioAddress()
+char* DS_GetAppliedRadioAddress()
 {
-    if (DS_StringIsEmpty (DS_GetCustomRadioAddress()))
+    if (DS_StringIsEmpty (custom_radio_address))
         return DS_GetDefaultRadioAddress();
 
     return DS_GetCustomRadioAddress();
@@ -159,9 +160,9 @@ bstring DS_GetAppliedRadioAddress()
  * user-set address. Otherwise, this function will return the address
  * specified  by the currently loaded protocol.
  */
-bstring DS_GetAppliedRobotAddress()
+char* DS_GetAppliedRobotAddress()
 {
-    if (DS_StringIsEmpty (DS_GetCustomRobotAddress()))
+    if (DS_StringIsEmpty (custom_robot_address))
         return DS_GetDefaultRobotAddress();
 
     return DS_GetCustomRobotAddress();
@@ -180,7 +181,7 @@ bstring DS_GetAppliedRobotAddress()
  *    - Autonomous Enabled/Disabled
  *    - Test Enabled/Disabled
  */
-bstring DS_GetStatusString()
+char* DS_GetStatusString()
 {
     DS_FREESTR (status_string);
 
@@ -210,7 +211,7 @@ bstring DS_GetStatusString()
                                            " Enabled" : " Disabled"));
     }
 
-    return status_string;
+    return bstr2cstr (status_string, 0);
 }
 
 /**

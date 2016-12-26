@@ -33,10 +33,10 @@
 
 #define LOG qDebug() << "DS Client:"
 
-static QString bstr_to_qstring (const bstring string)
+static QString cstr_to_qstring (const char* string)
 {
     if (string)
-        return QString (bstr2cstr (string, 0));
+        return QString::fromUtf8 (string);
 
     return QString ("");
 }
@@ -410,7 +410,7 @@ DriverStation::Position DriverStation::teamPosition() const
  */
 QString DriverStation::appliedFMSAddress() const
 {
-    return bstr_to_qstring (DS_GetAppliedFMSAddress());
+    return cstr_to_qstring (DS_GetAppliedFMSAddress());
 }
 
 /**
@@ -419,7 +419,7 @@ QString DriverStation::appliedFMSAddress() const
  */
 QString DriverStation::appliedRadioAddress() const
 {
-    return bstr_to_qstring (DS_GetAppliedRadioAddress());
+    return cstr_to_qstring (DS_GetAppliedRadioAddress());
 }
 
 /**
@@ -428,7 +428,7 @@ QString DriverStation::appliedRadioAddress() const
  */
 QString DriverStation::appliedRobotAddress() const
 {
-    return bstr_to_qstring (DS_GetAppliedRobotAddress());
+    return cstr_to_qstring (DS_GetAppliedRobotAddress());
 }
 
 /**
@@ -436,7 +436,7 @@ QString DriverStation::appliedRobotAddress() const
  */
 QString DriverStation::defaultFMSAddress() const
 {
-    return bstr_to_qstring (DS_GetDefaultFMSAddress());
+    return cstr_to_qstring (DS_GetDefaultFMSAddress());
 }
 
 /**
@@ -444,7 +444,7 @@ QString DriverStation::defaultFMSAddress() const
  */
 QString DriverStation::defaultRadioAddress() const
 {
-    return bstr_to_qstring (DS_GetDefaultRadioAddress());
+    return cstr_to_qstring (DS_GetDefaultRadioAddress());
 }
 
 /**
@@ -452,7 +452,7 @@ QString DriverStation::defaultRadioAddress() const
  */
 QString DriverStation::defaultRobotAddress() const
 {
-    return bstr_to_qstring (DS_GetDefaultRobotAddress());
+    return cstr_to_qstring (DS_GetDefaultRobotAddress());
 }
 
 /**
@@ -481,7 +481,7 @@ QString DriverStation::elapsedTime()
  */
 QString DriverStation::generalStatus() const
 {
-    return bstr_to_qstring (DS_GetStatusString());
+    return cstr_to_qstring (DS_GetStatusString());
 }
 
 /**
@@ -490,7 +490,7 @@ QString DriverStation::generalStatus() const
  */
 QString DriverStation::customFMSAddress() const
 {
-    return bstr_to_qstring (DS_GetCustomFMSAddress());
+    return cstr_to_qstring (DS_GetCustomFMSAddress());
 }
 
 /**
@@ -499,7 +499,7 @@ QString DriverStation::customFMSAddress() const
  */
 QString DriverStation::customRadioAddress() const
 {
-    return bstr_to_qstring (DS_GetCustomRadioAddress());
+    return cstr_to_qstring (DS_GetCustomRadioAddress());
 }
 
 /**
@@ -508,7 +508,7 @@ QString DriverStation::customRadioAddress() const
  */
 QString DriverStation::customRobotAddress() const
 {
-    return bstr_to_qstring (DS_GetCustomRobotAddress());
+    return cstr_to_qstring (DS_GetCustomRobotAddress());
 }
 
 /**
@@ -659,7 +659,7 @@ void DriverStation::loadProtocol (DS_Protocol* protocol)
         DS_ConfigureProtocol (protocol);
 
         emit protocolChanged();
-        emit statusChanged (bstr_to_qstring (DS_GetStatusString()));
+        emit statusChanged (cstr_to_qstring (DS_GetStatusString()));
 
         setCustomFMSAddress (customFMSAddress());
         setCustomRadioAddress (customRadioAddress());
@@ -739,7 +739,7 @@ void DriverStation::setProtocol (const Protocol protocol)
  */
 void DriverStation::setTeamStation (const Station station)
 {
-    switch ((Station) station) {
+    switch (station) {
     case StationRed1:
         setTeamPosition (Position1);
         setTeamAlliance (AllianceRed);
@@ -949,7 +949,7 @@ void DriverStation::processEvents()
             emit radioCommunicationsChanged (event.radio.connected);
             break;
         case DS_NETCONSOLE_NEW_MESSAGE:
-            emit newMessage (bstr_to_qstring (event.netconsole.message));
+            emit newMessage (cstr_to_qstring (event.netconsole.message));
             break;
         case DS_ROBOT_ENABLED_CHANGED:
             emit enabledChanged (event.robot.enabled);
@@ -988,7 +988,7 @@ void DriverStation::processEvents()
             emit emergencyStoppedChanged (event.robot.estopped);
             break;
         case DS_STATUS_STRING_CHANGED:
-            emit statusChanged (bstr_to_qstring (DS_GetStatusString()));
+            emit statusChanged (cstr_to_qstring (DS_GetStatusString()));
             break;
         default:
             break;

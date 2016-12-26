@@ -65,11 +65,11 @@ Window::Window (QWidget* parent) : QMainWindow (parent)
 
     /* Update team number automatically */
     connect (ui->TeamNumber, SIGNAL (valueChanged (int)),
-             ds,             SLOT   (setTeamNumber (int)));
+             ds,               SLOT (setTeamNumber (int)));
 
     /* Update protocol automatically */
     connect (ui->Protocols, SIGNAL (currentIndexChanged (int)),
-             ds,              SLOT (setProtocol (int)));
+             this,            SLOT (setProtocol (int)));
 
     /* Make sure that enabled buttons are in sync with DS */
     connect (ds,       SIGNAL (enabledChanged (bool)),
@@ -77,15 +77,15 @@ Window::Window (QWidget* parent) : QMainWindow (parent)
 
     /* Update team station automatically */
     connect (ui->TeamStation, SIGNAL (currentIndexChanged (int)),
-             ds,                SLOT (setTeamStation (int)));
+             this,              SLOT (setTeamStation (int)));
 
     /* Update netconsole text automatically */
     connect (ds,        SIGNAL (newMessage (QString)),
              ui->Console, SLOT (append (QString)));
 
     /* Update voltage automatically */
-    connect (ds, SIGNAL (voltageChanged (double)),
-             this, SLOT (setVoltage (double)));
+    connect (ds, SIGNAL (voltageChanged (float)),
+             this, SLOT (setVoltage (float)));
 
     /* Update status text automatically */
     connect (ds,       SIGNAL (statusChanged (QString)),
@@ -150,6 +150,24 @@ void Window::syncButtons (bool enabled)
 }
 
 /**
+ * Called when the user selects a new protocol from the combo box
+ * This method casts the given \a protocol to a \a DriverStation::Protocol enum
+ */
+void Window::setProtocol (int protocol)
+{
+    ds->setProtocol ((DriverStation::Protocol) protocol);
+}
+
+/**
+ * Called when the user selects a new team station from the combo box
+ * This method casts the given \a station to a \a DriverStation::Station enum
+ */
+void Window::setTeamStation (int station)
+{
+    ds->setTeamStation ((DriverStation::Station) station);
+}
+
+/**
  * Called when the user changes the desired operation mode of the robot
  *
  * \param unused unused value (which is needed for the singal/slot connection)
@@ -177,7 +195,7 @@ void Window::updateControlMode (int unused)
  *
  * \param voltage the voltage detected by the Driver Station
  */
-void Window::setVoltage (double voltage)
+void Window::setVoltage (const float voltage)
 {
     if (ds->connectedToRobot())
         ui->Voltage->setText (QString ("%1 V").arg (voltage));

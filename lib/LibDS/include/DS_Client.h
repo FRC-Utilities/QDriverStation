@@ -28,7 +28,6 @@
 extern "C" {
 #endif
 
-#include <bstrlib.h>
 #include "DS_Types.h"
 
 /* Init/Close functions */
@@ -36,22 +35,22 @@ extern void Client_Init();
 extern void Client_Close();
 
 /* User-set addresses */
-extern bstring DS_GetCustomFMSAddress();
-extern bstring DS_GetCustomRadioAddress();
-extern bstring DS_GetCustomRobotAddress();
+extern char* DS_GetCustomFMSAddress();
+extern char* DS_GetCustomRadioAddress();
+extern char* DS_GetCustomRobotAddress();
 
 /* Protocol-set addresses */
-extern bstring DS_GetDefaultFMSAddress();
-extern bstring DS_GetDefaultRadioAddress();
-extern bstring DS_GetDefaultRobotAddress();
+extern char* DS_GetDefaultFMSAddress();
+extern char* DS_GetDefaultRadioAddress();
+extern char* DS_GetDefaultRobotAddress();
 
 /* Used addresses */
-extern bstring DS_GetAppliedFMSAddress();
-extern bstring DS_GetAppliedRadioAddress();
-extern bstring DS_GetAppliedRobotAddress();
+extern char* DS_GetAppliedFMSAddress();
+extern char* DS_GetAppliedRadioAddress();
+extern char* DS_GetAppliedRobotAddress();
 
 /* Status string */
-extern bstring DS_GetStatusString();
+extern char* DS_GetStatusString();
 
 /* Getters */
 extern int DS_GetTeamNumber();

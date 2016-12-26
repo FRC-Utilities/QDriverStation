@@ -75,7 +75,7 @@ extern void DS_SocketClose (DS_Socket* ptr);
 /* I/O functions */
 extern bstring DS_SocketRead (DS_Socket* ptr);
 extern int DS_SocketSend (DS_Socket* ptr, const bstring data);
-extern void DS_SocketChangeAddress (DS_Socket* ptr, const bstring address);
+extern void DS_SocketChangeAddress (DS_Socket* ptr, const char* address);
 
 #ifdef __cplusplus
 }

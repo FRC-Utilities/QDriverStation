@@ -104,7 +104,7 @@ static void process_events()
             set_disk (event.robot.disk_usage);
             break;
         case DS_STATUS_STRING_CHANGED:
-            update_status_label (DS_GetStatusString());
+            update_status_label (bfromcstr (DS_GetStatusString()));
             break;
         case DS_ROBOT_COMMS_CHANGED:
             set_robot_comms (event.robot.connected);

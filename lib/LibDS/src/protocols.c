@@ -211,7 +211,7 @@ static void recv_data()
     if (netcs_data) {
         DS_Event event;
         event.netconsole.type = DS_NETCONSOLE_NEW_MESSAGE;
-        event.netconsole.message = bstrcpy (netcs_data);
+        event.netconsole.message = bstr2cstr (netcs_data, 0);
         DS_AddEvent (&event);
     }
 

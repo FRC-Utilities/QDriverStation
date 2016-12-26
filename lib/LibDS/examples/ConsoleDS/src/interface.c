@@ -50,26 +50,26 @@ static WINDOW* bottom_window = NULL;
 /*
  * Define window elements
  */
-static sds can_str = NULL;
-static sds cpu_str = NULL;
-static sds ram_str = NULL;
-static sds disk_str = NULL;
-static sds rstatus_str = NULL;
-static sds robot_ip = NULL;
-static sds voltage_str = NULL;
-static sds console_str = NULL;
-static sds stick_check_str = NULL;
-static sds rcode_check_str = NULL;
-static sds robot_check_str = NULL;
+static bstring can_str = NULL;
+static bstring cpu_str = NULL;
+static bstring ram_str = NULL;
+static bstring disk_str = NULL;
+static bstring rstatus_str = NULL;
+static bstring robot_ip = NULL;
+static bstring voltage_str = NULL;
+static bstring console_str = NULL;
+static bstring stick_check_str = NULL;
+static bstring rcode_check_str = NULL;
+static bstring robot_check_str = NULL;
 
 /**
  * Changes the \a label to "[*]" if checked is greater than \c 0,
  * otherwise, the function will change the \a label to "[ ]"
  */
-static sds set_checked (sds label, int checked)
+static bstring set_checked (bstring label, int checked)
 {
     DS_FREESTR (label);
-    label = sdsnew (checked > 0 ? "[*]" : "[ ]");
+    label = bfromcstr (checked > 0 ? "[*]" : "[ ]");
     return label;
 }
 
@@ -77,12 +77,12 @@ static sds set_checked (sds label, int checked)
  * Return "--.--" if there are no communications with the robot, otherwise,
  * this function shall return the given \a string
  */
-static sds update_label (sds string)
+static bstring update_label (bstring string)
 {
     if (DS_GetRobotCommunications())
         return string;
 
-    return sdsnew (INVALID);
+    return bfromcstr (INVALID);
 }
 
 /**
@@ -94,14 +94,14 @@ static void init_strings()
     rcode_check_str = set_checked (rcode_check_str, 0);
     stick_check_str = set_checked (stick_check_str, 0);
 
-    can_str = sdsnew (INVALID);
-    cpu_str = sdsnew (INVALID);
-    ram_str = sdsnew (INVALID);
-    disk_str = sdsnew (INVALID);
-    robot_ip = sdsnew (INVALID);
-    voltage_str = sdsnew (INVALID);
-    rstatus_str = sdsnew (DS_GetStatusString());
-    console_str = sdsnew ("[INFO] Welcome to the ConsoleDS!");
+    can_str = bfromcstr (INVALID);
+    cpu_str = bfromcstr (INVALID);
+    ram_str = bfromcstr (INVALID);
+    disk_str = bfromcstr (INVALID);
+    robot_ip = bfromcstr (INVALID);
+    voltage_str = bfromcstr (INVALID);
+    rstatus_str = bfromcstr (DS_GetStatusString());
+    console_str = bfromcstr ("[INFO] Welcome to the ConsoleDS!");
 }
 
 /**
@@ -162,19 +162,19 @@ static void draw_windows()
     wborder (bottom_window, 0, 0, 0, 0, 0, 0, 0, 0);
 
     /* Add top window elements */
-    mvwaddstr (console_win,  1, 2, console_str);
-    mvwaddstr (robotip_win,  1, 2, robot_ip);
-    mvwaddstr (robot_status, 1, 2, rstatus_str);
+    mvwaddstr (console_win,  1, 2, bstr2cstr (console_str, 0));
+    mvwaddstr (robotip_win,  1, 2, bstr2cstr (robot_ip, 0));
+    mvwaddstr (robot_status, 1, 2, bstr2cstr (rstatus_str, 0));
 
     /* Add voltage elements */
     mvwaddstr (voltage_win,  1,  2, "Voltage:");
-    mvwaddstr (voltage_win,  1, 12, voltage_str);
+    mvwaddstr (voltage_win,  1, 12, bstr2cstr (voltage_str, 0));
 
     /* Add status panel elements */
     mvwaddstr (status_info, 1, 2, "STATUS:");
-    mvwaddstr (status_info, 3, 2, robot_check_str);
-    mvwaddstr (status_info, 4, 2, rcode_check_str);
-    mvwaddstr (status_info, 5, 2, stick_check_str);
+    mvwaddstr (status_info, 3, 2, bstr2cstr (robot_check_str, 0));
+    mvwaddstr (status_info, 4, 2, bstr2cstr (rcode_check_str, 0));
+    mvwaddstr (status_info, 5, 2, bstr2cstr (stick_check_str, 0));
     mvwaddstr (status_info, 3, 6, "Robot Comms");
     mvwaddstr (status_info, 4, 6, "Robot Code");
     mvwaddstr (status_info, 5, 6, "Joysticks");
@@ -185,10 +185,10 @@ static void draw_windows()
     mvwaddstr (status_info, 10, 2, "CPU:");
     mvwaddstr (status_info, 11, 2, "RAM:");
     mvwaddstr (status_info, 12, 2, "Disk:");
-    mvwaddstr (status_info,  9, 8, can_str);
-    mvwaddstr (status_info, 10, 8, cpu_str);
-    mvwaddstr (status_info, 11, 8, ram_str);
-    mvwaddstr (status_info, 12, 8, disk_str);
+    mvwaddstr (status_info,  9, 8, bstr2cstr (can_str, 0));
+    mvwaddstr (status_info, 10, 8, bstr2cstr (cpu_str, 0));
+    mvwaddstr (status_info, 11, 8, bstr2cstr (ram_str, 0));
+    mvwaddstr (status_info, 12, 8, bstr2cstr (disk_str, 0));
 
     /* Add bottom bar labels */
     mvwaddstr (bottom_window, 1, 2,  "Quit (q)");
@@ -270,7 +270,7 @@ void update_interface()
 void set_can (const int can)
 {
     DS_FREESTR (can_str);
-    can_str = update_label (sdscatprintf (sdsempty(), "%d %%", can));
+    can_str = update_label (bformat ("%d %%", can));
 }
 
 /**
@@ -279,7 +279,7 @@ void set_can (const int can)
 void set_cpu (const int cpu)
 {
     DS_FREESTR (cpu_str);
-    cpu_str = update_label (sdscatprintf (sdsempty(), "%d %%", cpu));
+    cpu_str = update_label (bformat ("%d %%", cpu));
 }
 
 /**
@@ -288,7 +288,7 @@ void set_cpu (const int cpu)
 void set_ram (const int ram)
 {
     DS_FREESTR (ram_str);
-    ram_str = update_label (sdscatprintf (sdsempty(), "%d %%", ram));
+    ram_str = update_label (bformat ("%d %%", ram));
 }
 
 /**
@@ -297,7 +297,7 @@ void set_ram (const int ram)
 void set_disk (const int disk)
 {
     DS_FREESTR (disk_str);
-    disk_str = update_label (sdscatprintf (sdsempty(), "%d %%", disk));
+    disk_str = update_label (bformat ("%d %%", disk));
 }
 
 /**
@@ -314,7 +314,7 @@ void set_robot_code (const int code)
 void set_robot_comms (const int comms)
 {
     DS_FREESTR (robot_ip);
-    robot_ip = sdsdup (DS_GetAppliedRobotAddress());
+    robot_ip = bstrcpy (DS_GetAppliedRobotAddress());
     robot_check_str = set_checked (robot_check_str, comms);
 }
 
@@ -324,19 +324,8 @@ void set_robot_comms (const int comms)
 void set_voltage (const double voltage)
 {
     DS_FREESTR (voltage_str);
-    voltage_str = update_label (sdscatprintf (sdsempty(), "%.2f", voltage));
+    voltage_str = update_label (bformat ("%.2f", voltage));
 }
-
-/**
- * Updates the status label to display the current state
- * of the robot and the LibDS
- */
-void update_status_label (const sds string)
-{
-    DS_FREESTR (rstatus_str);
-    rstatus_str = sdscpy (sdsempty(), string);
-}
-
 
 /**
  * Updates the state of the joysticks checkbox
@@ -344,4 +333,14 @@ void update_status_label (const sds string)
 void set_has_joysticks (const int joysticks)
 {
     stick_check_str = set_checked (stick_check_str, joysticks);
+}
+
+/**
+ * Updates the status label to display the current state
+ * of the robot and the LibDS
+ */
+void update_status_label (const bstring string)
+{
+    DS_FREESTR (rstatus_str);
+    rstatus_str = bstrcpy (string);
 }
