@@ -33,29 +33,10 @@
 
 #define LOG qDebug() << "DS Client:"
 
-/**
- * Converts the given \c QString into a \c SDS string
- *
- * \param string the \c QString to convert
- *
- * \returns the obtained \c SDS string
- */
-static sds qstring_to_sds (const QString& string)
-{
-    return sdsnew (string.toStdString().c_str());
-}
-
-/**
- * Converts the given \c SDS string into a \c QString
- *
- * \param string the \c SDS string to convert
- *
- * \returns the obtained \c QString
- */
-static QString sds_to_qstring (const sds string)
+static QString bstr_to_qstring (const bstring string)
 {
     if (string)
-        return QString (string);
+        return QString (bstr2cstr (string, 0));
 
     return QString ("");
 }
@@ -429,7 +410,7 @@ DriverStation::Position DriverStation::teamPosition() const
  */
 QString DriverStation::appliedFMSAddress() const
 {
-    return sds_to_qstring (DS_GetAppliedFMSAddress());
+    return bstr_to_qstring (DS_GetAppliedFMSAddress());
 }
 
 /**
@@ -438,7 +419,7 @@ QString DriverStation::appliedFMSAddress() const
  */
 QString DriverStation::appliedRadioAddress() const
 {
-    return sds_to_qstring (DS_GetAppliedRadioAddress());
+    return bstr_to_qstring (DS_GetAppliedRadioAddress());
 }
 
 /**
@@ -447,7 +428,7 @@ QString DriverStation::appliedRadioAddress() const
  */
 QString DriverStation::appliedRobotAddress() const
 {
-    return sds_to_qstring (DS_GetAppliedRobotAddress());
+    return bstr_to_qstring (DS_GetAppliedRobotAddress());
 }
 
 /**
@@ -455,7 +436,7 @@ QString DriverStation::appliedRobotAddress() const
  */
 QString DriverStation::defaultFMSAddress() const
 {
-    return sds_to_qstring (DS_GetDefaultFMSAddress());
+    return bstr_to_qstring (DS_GetDefaultFMSAddress());
 }
 
 /**
@@ -463,7 +444,7 @@ QString DriverStation::defaultFMSAddress() const
  */
 QString DriverStation::defaultRadioAddress() const
 {
-    return sds_to_qstring (DS_GetDefaultRadioAddress());
+    return bstr_to_qstring (DS_GetDefaultRadioAddress());
 }
 
 /**
@@ -471,7 +452,7 @@ QString DriverStation::defaultRadioAddress() const
  */
 QString DriverStation::defaultRobotAddress() const
 {
-    return sds_to_qstring (DS_GetDefaultRobotAddress());
+    return bstr_to_qstring (DS_GetDefaultRobotAddress());
 }
 
 /**
@@ -500,7 +481,7 @@ QString DriverStation::elapsedTime()
  */
 QString DriverStation::generalStatus() const
 {
-    return sds_to_qstring (DS_GetStatusString());
+    return bstr_to_qstring (DS_GetStatusString());
 }
 
 /**
@@ -509,7 +490,7 @@ QString DriverStation::generalStatus() const
  */
 QString DriverStation::customFMSAddress() const
 {
-    return sds_to_qstring (DS_GetCustomFMSAddress());
+    return bstr_to_qstring (DS_GetCustomFMSAddress());
 }
 
 /**
@@ -518,7 +499,7 @@ QString DriverStation::customFMSAddress() const
  */
 QString DriverStation::customRadioAddress() const
 {
-    return sds_to_qstring (DS_GetCustomRadioAddress());
+    return bstr_to_qstring (DS_GetCustomRadioAddress());
 }
 
 /**
@@ -527,7 +508,7 @@ QString DriverStation::customRadioAddress() const
  */
 QString DriverStation::customRobotAddress() const
 {
-    return sds_to_qstring (DS_GetCustomRobotAddress());
+    return bstr_to_qstring (DS_GetCustomRobotAddress());
 }
 
 /**
@@ -678,7 +659,7 @@ void DriverStation::loadProtocol (DS_Protocol* protocol)
         DS_ConfigureProtocol (protocol);
 
         emit protocolChanged();
-        emit statusChanged (sds_to_qstring (DS_GetStatusString()));
+        emit statusChanged (bstr_to_qstring (DS_GetStatusString()));
 
         setCustomFMSAddress (customFMSAddress());
         setCustomRadioAddress (customRadioAddress());
@@ -844,21 +825,10 @@ void DriverStation::setEmergencyStopped (const bool stopped)
  */
 void DriverStation::setCustomFMSAddress (const QString& address)
 {
-    if (addressIsValid (address) || address.isEmpty()) {
-        if (!address.isEmpty()) {
-            LOG << "Using new FMS address" << address;
-            DS_SetCustomFMSAddress (qstring_to_sds (address));
-        }
+    LOG << "Using new FMS address" << getAddress (address);
+    DS_SetCustomFMSAddress (getAddress (address).toStdString().c_str());
 
-        else {
-            LOG << "Using default FMS address"
-                << sds_to_qstring (DS_GetDefaultFMSAddress());
-
-            DS_SetCustomFMSAddress ("");
-        }
-
-        emit fmsAddressChanged();
-    }
+    emit fmsAddressChanged();
 }
 
 /**
@@ -866,21 +836,10 @@ void DriverStation::setCustomFMSAddress (const QString& address)
  */
 void DriverStation::setCustomRadioAddress (const QString& address)
 {
-    if (addressIsValid (address) || address.isEmpty()) {
-        if (!address.isEmpty()) {
-            LOG << "Using new radio address" << address;
-            DS_SetCustomRadioAddress (qstring_to_sds (address));
-        }
+    LOG << "Using new radio address" << getAddress (address);
+    DS_SetCustomRadioAddress (getAddress (address).toStdString().c_str());
 
-        else {
-            LOG << "Using default radio address"
-                << sds_to_qstring (DS_GetDefaultRadioAddress());
-
-            DS_SetCustomRadioAddress ("");
-        }
-
-        emit radioAddressChanged();
-    }
+    emit radioAddressChanged();
 }
 
 /**
@@ -888,21 +847,9 @@ void DriverStation::setCustomRadioAddress (const QString& address)
  */
 void DriverStation::setCustomRobotAddress (const QString& address)
 {
-    if (addressIsValid (address) || address.isEmpty()) {
-        if (!address.isEmpty()) {
-            LOG << "Using new robot address" << address;
-            DS_SetCustomRobotAddress (qstring_to_sds (address));
-        }
-
-        else {
-            LOG << "Using default robot address"
-                << sds_to_qstring (DS_GetDefaultRobotAddress());
-
-            DS_SetCustomRobotAddress ("");
-        }
-
-        emit robotAddressChanged();
-    }
+    LOG << "Using new robot address" << getAddress (address);
+    DS_SetCustomRobotAddress (getAddress (address).toStdString().c_str());
+    emit robotAddressChanged();
 }
 
 /**
@@ -911,7 +858,7 @@ void DriverStation::setCustomRobotAddress (const QString& address)
 void DriverStation::sendNetConsoleMessage (const QString& message)
 {
     if (!message.isEmpty())
-        DS_SendNetConsoleMessage (qstring_to_sds (message));
+        DS_SendNetConsoleMessage (message.toStdString().c_str());
 }
 
 /**
@@ -1002,7 +949,7 @@ void DriverStation::processEvents()
             emit radioCommunicationsChanged (event.radio.connected);
             break;
         case DS_NETCONSOLE_NEW_MESSAGE:
-            emit newMessage (sds_to_qstring (event.netconsole.message));
+            emit newMessage (bstr_to_qstring (event.netconsole.message));
             break;
         case DS_ROBOT_ENABLED_CHANGED:
             emit enabledChanged (event.robot.enabled);
@@ -1041,7 +988,7 @@ void DriverStation::processEvents()
             emit emergencyStoppedChanged (event.robot.estopped);
             break;
         case DS_STATUS_STRING_CHANGED:
-            emit statusChanged (sds_to_qstring (DS_GetStatusString()));
+            emit statusChanged (bstr_to_qstring (DS_GetStatusString()));
             break;
         default:
             break;
@@ -1088,21 +1035,22 @@ void DriverStation::updateElapsedTime()
 }
 
 /**
- * Returns \c true if the given \a address is a valid IP or DNS address
- *
- * \param address the network address to check for validity
+ * Returns a valid network \a address
  */
-bool DriverStation::addressIsValid (const QString& address)
+QString DriverStation::getAddress (const QString& address)
 {
-    /* This is a valid mDNS/DNS address */
-    if (address.endsWith (".local", Qt::CaseInsensitive) ||
-        address.endsWith (".lan",   Qt::CaseInsensitive) ||
-        address.endsWith (".com",   Qt::CaseInsensitive) ||
-        address.endsWith (".net",   Qt::CaseInsensitive) ||
-        address.endsWith (".com",   Qt::CaseInsensitive))
-        return true;
+    if (!address.isEmpty()) {
+        if (address.endsWith (".local", Qt::CaseInsensitive) ||
+            address.endsWith (".lan",   Qt::CaseInsensitive) ||
+            address.endsWith (".com",   Qt::CaseInsensitive) ||
+            address.endsWith (".net",   Qt::CaseInsensitive) ||
+            address.endsWith (".com",   Qt::CaseInsensitive))
+            return address;
 
-    /* Address is valid IPv4/IPv6 */
-    QHostAddress ip (address);
-    return !ip.isNull();
+        QHostAddress ip (address);
+        if (!ip.isNull())
+            return ip.toString();
+    }
+
+    return "";
 }

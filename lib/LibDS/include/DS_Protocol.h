@@ -31,17 +31,17 @@ extern "C" {
 #include "DS_Socket.h"
 
 typedef struct _protocol {
-    sds (*fms_address)();
-    sds (*radio_address)();
-    sds (*robot_address)();
+    bstring (*fms_address)();
+    bstring (*radio_address)();
+    bstring (*robot_address)();
 
-    sds (*create_fms_packet)();
-    sds (*create_radio_packet)();
-    sds (*create_robot_packet)();
+    bstring (*create_fms_packet)();
+    bstring (*create_radio_packet)();
+    bstring (*create_robot_packet)();
 
-    int (*read_fms_packet) (const sds);
-    int (*read_radio_packet) (const sds);
-    int (*read_robot_packet) (const sds);
+    int (*read_fms_packet) (const bstring);
+    int (*read_radio_packet) (const bstring);
+    int (*read_robot_packet) (const bstring);
 
     void (*reset_fms)();
     void (*reset_radio)();

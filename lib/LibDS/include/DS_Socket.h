@@ -28,8 +28,8 @@
 extern "C" {
 #endif
 
-#include <sds.h>
 #include <pthread.h>
+#include <bstrlib.h>
 
 #include "DS_Types.h"
 
@@ -38,9 +38,9 @@ extern "C" {
  * to operate with the data provided by a \c DS_Socket structure
  */
 typedef struct {
-    sds buffer;              /**< Holds received data */
-    sds in_service;          /**< Input port string */
-    sds out_service;         /**< Output port string */
+    bstring buffer;          /**< Holds received data */
+    bstring in_service;      /**< Input port string */
+    bstring out_service;     /**< Output port string */
     int sock_in;             /**< Server socket file descriptor */
     int sock_out;            /**< Client socket file descriptor */
     int client_init;         /**< Set to \c 1 if client socket is initialized */
@@ -53,7 +53,7 @@ typedef struct {
  * both the the networking module and the rest of the application.
  */
 typedef struct {
-    sds address;        /**< Holds the remote address */
+    bstring address;    /**< Holds the remote address */
     int disabled;       /**< Disables/enables the socket */
     int broadcast;      /**< Enables/disables broadcasting */
     int in_port;        /**< Sets the server/sender port */
@@ -74,9 +74,9 @@ extern void DS_SocketOpen (DS_Socket* ptr);
 extern void DS_SocketClose (DS_Socket* ptr);
 
 /* I/O functions */
-extern sds DS_SocketRead (DS_Socket* ptr);
-extern int DS_SocketSend (DS_Socket* ptr, sds data);
-extern void DS_SocketChangeAddress (DS_Socket* ptr, sds address);
+extern bstring DS_SocketRead (DS_Socket* ptr);
+extern int DS_SocketSend (DS_Socket* ptr, const bstring data);
+extern void DS_SocketChangeAddress (DS_Socket* ptr, const bstring address);
 
 #ifdef __cplusplus
 }

@@ -28,30 +28,31 @@
 extern "C" {
 #endif
 
-#include <sds.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <pthread.h>
+#include <bstrlib.h>
+#include <bstraux.h>
 
 /*
  * You may find these useful
  */
 #define DS_Max(a,b) ((a) > (b) ? a : b)
 #define DS_Min(a,b) ((a) < (b) ? a : b)
+#define DS_FallBackAddress bfromcstr ("0.0.0.0");
 
 /*
  * Smarter memory de-allocation functions
  */
 #define DS_FREE(ptr)    if (ptr != NULL) { free    (ptr); ptr = NULL; }
-#define DS_FREESTR(str) if (str != NULL) { sdsfree (str); str = NULL; }
-
-extern uint32_t DS_CRC32 (const void* buf, size_t size);
+#define DS_FREESTR(str) if (str != NULL) { bstrFree (str); str = NULL; }
 
 extern int DS_StopThread (pthread_t thread);
-extern sds DS_Append (sds string, char data);
-extern int DS_StringIsEmpty (const sds string);
 extern uint8_t DS_GetFByte (float val, float max);
-extern sds DS_GetStaticIP (const int net, const int team, const int host);
+extern int DS_StringIsEmpty (const bstring string);
+extern bstring DS_GetEmptyString (const int length);
+extern uint32_t DS_CRC32 (const void* buf, size_t size);
+extern bstring DS_GetStaticIP (const int net, const int team, const int host);
 
 #ifdef __cplusplus
 }

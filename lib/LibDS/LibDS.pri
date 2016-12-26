@@ -40,5 +40,5 @@ SOURCES += \
     $$PWD/src/timer.c \
     $$PWD/src/queue.c
     
-include ($$PWD/lib/SDS/SDS.pri)
 include ($$PWD/lib/Socky/Socky.pri)
+include ($$PWD/lib/bstrlib/bstrlib.pri)

@@ -77,52 +77,6 @@ int DS_StopThread (pthread_t thread)
 }
 
 /**
- * Appends the given \a data to the \a string
- *
- * \param string the original string
- * \param data the byte to append
- *
- * \example data = DS_Append (data, 'a')
- *
- * \warning the original string will be deleted to avoid memory leaks,
- *          just use the value returned by this function afterwards!
- *
- * \returns the pointer to the newly obtained string
- */
-sds DS_Append (sds string, char data)
-{
-    /* Initialize the variables */
-    sds temp;
-    size_t len = sdslen (string);
-
-    /* Duplicate string and append data */
-    temp = sdsnewlen (string, len + 1);
-    temp [len] = data;
-
-    /* Delete original string */
-    DS_FREESTR (string);
-
-    /* Return new string */
-    return temp;
-}
-
-/**
- * Returns \c 1 if the given \a string is empty
- * \note This function will also return \c 1 if the string is \c NULL
- */
-int DS_StringIsEmpty (const sds string)
-{
-    if (string != NULL) {
-        if (sdslen (string) <= 0)
-            return 1;
-        else
-            return 0;
-    }
-
-    return 1;
-}
-
-/**
  * Returns a single byte value that represents the ratio between the
  * given \a value and the maximum number specified.
  */
@@ -134,6 +88,34 @@ uint8_t DS_GetFByte (float value, float max)
     }
 
     return 0;
+}
+
+/**
+ * Returns \c 1 if the given \a string is empty
+ * \note This function will also return \c 1 if the string is \c NULL
+ */
+int DS_StringIsEmpty (const bstring string)
+{
+    if (string != NULL) {
+        if (blength (string) <= 0)
+            return 1;
+        else
+            return 0;
+    }
+
+    return 1;
+}
+
+/**
+ * Returns a zero-filled string with the given \a length
+ */
+bstring DS_GetEmptyString (const int length)
+{
+    bstring string = bfromcstr ("");
+    balloc (string, length);
+    bFill (string, 0, length);
+
+    return string;
 }
 
 /**
@@ -152,9 +134,9 @@ uint8_t DS_GetFByte (float value, float max)
  * \param team the team number, used in second and third octets
  * \param host the host byte (or the last octet) of the IP
  */
-sds DS_GetStaticIP (const int net, const int team, const int host)
+bstring DS_GetStaticIP (const int net, const int team, const int host)
 {
     int te = team / 100;
     int am = team - (te * 100);
-    return sdscatprintf (sdsempty(), "%d.%d.%d.%d", net, te, am, host);
+    return bformat ("%d.%d.%d.%d", net, te, am, host);
 }

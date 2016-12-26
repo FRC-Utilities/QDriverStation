@@ -1,6 +1,5 @@
 QT += gui
 QT += widgets
-QT += network
 
 CONFIG += c++11
 

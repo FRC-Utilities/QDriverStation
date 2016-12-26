@@ -270,9 +270,9 @@ static uint8_t get_joystick_size (const int joystick)
  * The robot may ask for this information in some cases (e.g. when initializing
  * the robot code).
  */
-static sds get_timezone_data()
+static bstring get_timezone_data()
 {
-    sds data = sdsnewlen (NULL, 12);
+    bstring data = DS_GetEmptyString (12);
 
     /* Get current time */
     time_t rt = 0;
@@ -280,29 +280,29 @@ static sds get_timezone_data()
 
     /* Get timezone */
 #if defined _WIN32
-    sds tz = "CST";
+    bstring tz = bfromcstr ("CST");
 #else
-    sds tz = sdsnew (timeinfo->tm_zone);
+    bstring tz = bfromcstr (timeinfo->tm_zone);
 #endif
 
     /* Encode date/time in datagram */
-    data [0] = (uint8_t) 0x0b;
-    data [1] = cTagDate;
-    data [2] = 0;
-    data [3] = 0;
-    data [4] = (uint8_t) timeinfo->tm_sec;
-    data [5] = (uint8_t) timeinfo->tm_min;
-    data [6] = (uint8_t) timeinfo->tm_hour;
-    data [7] = (uint8_t) timeinfo->tm_yday;
-    data [8] = (uint8_t) timeinfo->tm_mon;
-    data [9] = (uint8_t) timeinfo->tm_year;
+    bSetChar (data, 0, (uint8_t) 0x0b);
+    bSetChar (data, 1, (uint8_t) cTagDate);
+    bSetChar (data, 2, (uint8_t) 0);
+    bSetChar (data, 3, (uint8_t) 0);
+    bSetChar (data, 4, (uint8_t) timeinfo->tm_sec);
+    bSetChar (data, 5, (uint8_t) timeinfo->tm_min);
+    bSetChar (data, 6, (uint8_t) timeinfo->tm_hour);
+    bSetChar (data, 7, (uint8_t) timeinfo->tm_yday);
+    bSetChar (data, 8, (uint8_t) timeinfo->tm_mon);
+    bSetChar (data, 9, (uint8_t) timeinfo->tm_year);
 
     /* Add timezone data */
-    data [10] = sdslen (tz);
-    data [11] = cTagTimezone;
+    bSetChar (data, 10, blength (tz));
+    bSetChar (data, 11, cTagTimezone);
 
     /* Add timezone string */
-    data = sdscatsds (data, tz);
+    bconcat (data, tz);
     DS_FREESTR (tz);
 
     /* Return the obtained data */
@@ -314,22 +314,22 @@ static sds get_timezone_data()
  * Unlike the 2014 protocol, the 2015 protocol only generates joystick data
  * for the attached joysticks.
  */
-static sds get_joystick_data()
+static bstring get_joystick_data()
 {
     /* Initialize the variables */
     int i = 0;
     int j = 0;
-    sds data = sdsempty();
+    bstring data = bfromcstr ("");
 
     /* Generate data for each joystick */
     for (i = 0; i < DS_GetJoystickCount(); ++i) {
-        data = DS_Append (data, get_joystick_size (i));
-        data = DS_Append (data, cTagJoystick);
+        bconchar (data, get_joystick_size (i));
+        bconchar (data, cTagJoystick);
 
         /* Add axis data */
-        data = DS_Append (data, DS_GetJoystickNumAxes (i));
+        bconchar (data, DS_GetJoystickNumAxes (i));
         for (j = 0; j < DS_GetJoystickNumAxes (i); ++j)
-            data = DS_Append (data, DS_GetFByte (DS_GetJoystickAxis (i, j), 1));
+            bconchar (data, DS_GetFByte (DS_GetJoystickAxis (i, j), 1));
 
         /* Generate button data */
         uint16_t button_flags = 0;
@@ -337,15 +337,15 @@ static sds get_joystick_data()
             button_flags += DS_GetJoystickButton (i, j) ? (int) pow (2, j) : 0;
 
         /* Add button data */
-        data = DS_Append (data, DS_GetJoystickNumButtons (i));
-        data = DS_Append (data, (button_flags & 0xff00) >> 8);
-        data = DS_Append (data, (button_flags & 0xff));
+        bconchar (data, DS_GetJoystickNumButtons (i));
+        bconchar (data, (button_flags & 0xff00) >> 8);
+        bconchar (data, (button_flags & 0xff));
 
         /* Add hat data */
-        data = DS_Append (data, DS_GetJoystickNumHats (i));
+        bconchar (data, DS_GetJoystickNumHats (i));
         for (j = 0; j < DS_GetJoystickNumHats (i); ++j) {
-            data = DS_Append (data, (DS_GetJoystickHat (i, j) & 0xff00) >> 8);
-            data = DS_Append (data, (DS_GetJoystickHat (i, j) & 0xff));
+            bconchar (data, (DS_GetJoystickHat (i, j) & 0xff00) >> 8);
+            bconchar (data, (DS_GetJoystickHat (i, j) & 0xff));
         }
     }
 
@@ -356,30 +356,30 @@ static sds get_joystick_data()
 /**
  * Obtains the CPU, RAM, Disk and CAN information from the robot packet
  */
-static void read_extended (const sds data, const int offset)
+static void read_extended (const bstring data, const int offset)
 {
     /* Check if data pointer is valid */
     if (!data)
         return;
 
     /* Get header tag */
-    uint8_t tag = data [offset + 1];
+    uint8_t tag = data->data [offset + 1];
 
     /* Get CAN information */
     if (tag == cRTagCANInfo)
-        CFG_SetCANUtilization (data [10]);
+        CFG_SetCANUtilization (data->data [10]);
 
     /* Get CPU usage */
     else if (tag == cRTagCPUInfo)
-        CFG_SetRobotCPUUsage (data [3]);
+        CFG_SetRobotCPUUsage (data->data [3]);
 
     /* Get RAM usage */
     else if (tag == cRTagRAMInfo)
-        CFG_SetRobotRAMUsage (data [4]);
+        CFG_SetRobotRAMUsage (data->data [4]);
 
     /* Get disk usage */
     else if (tag == cRTagDiskInfo)
-        CFG_SetRobotDiskUsage (data [4]);
+        CFG_SetRobotDiskUsage (data->data [4]);
 }
 
 /**
@@ -418,15 +418,15 @@ static DS_Position get_position (const uint8_t byte)
  * The FMS address is not defined, it will be assigned automatically when the
  * DS receives a FMS packet
  */
-static sds fms_address()
+static bstring fms_address()
 {
-    return sdsempty();
+    return DS_FallBackAddress;
 }
 
 /**
  * The 2015 control system assigns the radio IP in 10.te.am.1
  */
-static sds radio_address()
+static bstring radio_address()
 {
     return DS_GetStaticIP (10, CFG_GetTeamNumber(), 1);
 }
@@ -434,9 +434,9 @@ static sds radio_address()
 /**
  * The 2015 control system assigns the robot address at roboRIO-TEAM.local
  */
-static sds robot_address()
+static bstring robot_address()
 {
-    return sdscatprintf (sdsempty(), "roboRIO-%d.local", CFG_GetTeamNumber());
+    return bformat ("roboRIO-%d.local", CFG_GetTeamNumber());
 }
 
 /**
@@ -448,10 +448,10 @@ static sds robot_address()
  *    - Radio and robot ping flags
  *    - The team number
  */
-static sds create_fms_packet()
+static bstring create_fms_packet()
 {
     /* Create an 8-byte long packet */
-    sds data = sdsnewlen (NULL, 8);
+    bstring data = DS_GetEmptyString (8);
 
     /* Get voltage bytes */
     uint8_t integer = 0;
@@ -459,20 +459,20 @@ static sds create_fms_packet()
     encode_voltage (CFG_GetRobotVoltage(), &integer, &decimal);
 
     /* Add FMS packet count */
-    data [0] = (sent_fms_packets & 0xff00) >> 8;
-    data [1] = (sent_fms_packets & 0xff);
+    bSetChar (data, 0, (sent_fms_packets & 0xff00) >> 8);
+    bSetChar (data, 1, (sent_fms_packets & 0xff));
 
     /* Add DS version and FMS control code */
-    data [2] = cFMS_DS_Version;
-    data [3] = fms_control_code();
+    bSetChar (data, 2, cFMS_DS_Version);
+    bSetChar (data, 3, fms_control_code());
 
     /* Add team number */
-    data [4] = (CFG_GetTeamNumber() & 0xff00) >> 8;
-    data [5] = (CFG_GetTeamNumber() & 0xff);
+    bSetChar (data, 4, (CFG_GetTeamNumber() & 0xff00) >> 8);
+    bSetChar (data, 5, (CFG_GetTeamNumber() & 0xff));
 
     /* Add robot voltage */
-    data [6] = integer;
-    data [7] = decimal;
+    bSetChar (data, 6, integer);
+    bSetChar (data, 7, decimal);
 
     /* Increase FMS packet counter */
     ++sent_fms_packets;
@@ -485,9 +485,9 @@ static sds create_fms_packet()
  * to the DS Radio / Bridge. For that reason, the 2015 communication protocol
  * generates empty radio packets.
  */
-static sds create_radio_packet()
+static bstring create_radio_packet()
 {
-    return sdsempty();
+    return bfromcstr ("");
 }
 
 /**
@@ -500,35 +500,29 @@ static sds create_radio_packet()
  *    - Date and time data (if robot requests it)
  *    - Joystick information (if the robot does not want date/time)
  */
-static sds create_robot_packet()
+static bstring create_robot_packet()
 {
-    sds data = sdsnewlen (NULL, 6);
+    bstring data = DS_GetEmptyString (6);
 
     /* Add packet index */
-    data [0] = (sent_robot_packets & 0xff00) >> 8;
-    data [1] = (sent_robot_packets & 0xff);
+    bSetChar (data, 0, (sent_robot_packets & 0xff00) >> 8);
+    bSetChar (data, 1, (sent_robot_packets & 0xff));
 
     /* Add packet header */
-    data [2] = cTagGeneral;
+    bSetChar (data, 2, cTagGeneral);
 
     /* Add control code, request flags and team station */
-    data [3] = get_control_code();
-    data [4] = get_request_code();
-    data [5] = get_station_code();
+    bSetChar (data, 3, get_control_code());
+    bSetChar (data, 4, get_request_code());
+    bSetChar (data, 5, get_station_code());
 
     /* Add timezone data (if robot wants it) */
-    if (send_time_data) {
-        sds timezone_data = get_timezone_data();
-        data = sdscatsds (data, timezone_data);
-        DS_FREESTR (timezone_data);
-    }
+    if (send_time_data)
+        bconcat (data, get_timezone_data());
 
     /* Add joystick data */
-    else if (sent_robot_packets > 5) {
-        sds joystick_data = get_joystick_data();
-        data = sdscatsds (data, joystick_data);
-        DS_FREESTR (joystick_data);
-    }
+    else if (sent_robot_packets > 5)
+        bconcat (data, get_joystick_data());
 
     /* Increase packet counter */
     ++sent_robot_packets;
@@ -544,19 +538,19 @@ static sds create_robot_packet()
  *   - Change team alliance
  *   - Change team position
  */
-static int read_fms_packet (const sds data)
+static int read_fms_packet (const bstring data)
 {
     /* Data pointer is invalid */
     if (!data)
         return 0;
 
     /* Packet is too small */
-    if (sdslen (data) < 22)
+    if (blength (data) < 22)
         return 0;
 
     /* Read FMS packet */
-    uint8_t control = data [3];
-    uint8_t station = data [5];
+    uint8_t control = data->data [3];
+    uint8_t station = data->data [5];
 
     /* Change robot enabled state based on what FMS tells us to do*/
     CFG_SetRobotEnabled (control & cEnabled);
@@ -584,7 +578,7 @@ static int read_fms_packet (const sds data)
  * Since the DS does not interact directly with the radio/bridge, any incoming
  * packets shall be ignored.
  */
-static int read_radio_packet (const sds data)
+static int read_radio_packet (const bstring data)
 {
     (void) data;
     return 0;
@@ -598,20 +592,20 @@ static int read_radio_packet (const sds data)
  *    - The robot voltage
  *    - Extended information (CPU usage, RAM usage, Disk Usage and CAN status)
  */
-static int read_robot_packet (const sds data)
+static int read_robot_packet (const bstring data)
 {
     /* Data pointer is invalid */
     if (!data)
         return 0;
 
     /* Packet is too small */
-    if (sdslen (data) < 7)
+    if (blength (data) < 7)
         return 0;
 
     /* Read robot packet */
-    uint8_t control = data [3];
-    uint8_t rstatus = data [4];
-    uint8_t request = data [7];
+    uint8_t control = data->data [3];
+    uint8_t rstatus = data->data [4];
+    uint8_t request = data->data [7];
 
     /* Update client information */
     CFG_SetRobotCode (rstatus & cRobotHasCode);
@@ -621,12 +615,12 @@ static int read_robot_packet (const sds data)
     send_time_data = (request == cRequestTime);
 
     /* Calculate the voltage */
-    uint8_t upper = data [5];
-    uint8_t lower = data [6];
+    uint8_t upper = data->data [5];
+    uint8_t lower = data->data [6];
     CFG_SetRobotVoltage (decode_voltage (upper, lower));
 
     /* This is an extended packet, read its extra data */
-    if (sdslen (data) > 9)
+    if (blength (data) > 9)
         read_extended (data, 8);
 
     /* Packet read, feed the watchdog some meat */

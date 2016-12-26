@@ -33,9 +33,9 @@
  * the only (DS/Comms) difference is that the robot address is found at
  * roboRIO-TEAM-FRC.local (instead of roboRIO-TEAM.local).
  */
-static sds robot_address()
+static bstring robot_address()
 {
-    return sdscatprintf (sdsempty(), "roboRIO-%d-FRC.local", CFG_GetTeamNumber());
+    return bformat ("roboRIO-%d-FRC.local", CFG_GetTeamNumber());
 }
 
 /**

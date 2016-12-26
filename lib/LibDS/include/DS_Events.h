@@ -28,8 +28,8 @@
 extern "C" {
 #endif
 
-#include <sds.h>
 #include <stdint.h>
+#include <bstrlib.h>
 
 #include "DS_Types.h"
 
@@ -104,7 +104,7 @@ typedef struct {
  */
 typedef struct {
     DS_EventType type;  /**< Event type */
-    sds message;        /**< Holds the received message */
+    bstring message;    /**< Holds the received message */
 } DS_NetConsoleEvent;
 
 /**

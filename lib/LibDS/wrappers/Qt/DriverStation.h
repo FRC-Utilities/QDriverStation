@@ -290,7 +290,7 @@ private slots:
     void updateElapsedTime();
 
 private:
-    bool addressIsValid (const QString& address);
+    QString getAddress (const QString& address);
 
 signals:
     void stationChanged();

@@ -207,18 +207,18 @@ static uint8_t get_digital_inputs()
  * Button states are stored in a similar way as enumerated flags in a C/C++
  * program.
  */
-static sds get_joystick_data()
+static bstring get_joystick_data()
 {
     /* Initialize variables */
     int i = 0;
     int j = 0;
-    sds buf = sdsempty();
+    bstring buf = bfromcstr ("");
 
     /* Add data for every joystick */
     for (i = 0; i < max_joysticks; ++i) {
         /* Add axis data */
         for (j = 0; j < max_axes; ++j)
-            buf = DS_Append (buf, DS_GetFByte (DS_GetJoystickAxis (i, j), 1));
+            bconchar (buf, DS_GetFByte (DS_GetJoystickAxis (i, j), 1));
 
         /* Generate button data */
         uint16_t button_flags = 0;
@@ -226,8 +226,8 @@ static sds get_joystick_data()
             button_flags += DS_GetJoystickButton (i, j) ? pow (2, j) : 0;
 
         /* Add button data */
-        buf = DS_Append (buf, (button_flags & 0xff00) >> 8);
-        buf = DS_Append (buf, (button_flags & 0xff));
+        bconchar (buf, (button_flags & 0xff00) >> 8);
+        bconchar (buf, (button_flags & 0xff));
     }
 
     return buf;
@@ -237,15 +237,15 @@ static sds get_joystick_data()
  * The FMS address is not defined, it will be assigned automatically when the
  * DS receives a FMS packet
  */
-static sds fms_address()
+static bstring fms_address()
 {
-    return sdsempty();
+    return DS_FallBackAddress;
 }
 
 /**
  * The 2014 control systems assigns the radio IP in 10.te.am.1
  */
-static sds radio_address()
+static bstring radio_address()
 {
     return DS_GetStaticIP (10, CFG_GetTeamNumber(), 1);
 }
@@ -253,7 +253,7 @@ static sds radio_address()
 /**
  * The 2014 control systems assigns the radio IP in 10.te.am.2
  */
-static sds robot_address()
+static bstring robot_address()
 {
     return DS_GetStaticIP (10, CFG_GetTeamNumber(), 2);
 }
@@ -263,9 +263,9 @@ static sds robot_address()
  * A spaceship from another world will visit here somehow,
  * and they shall implement this function.
  */
-static sds create_fms_packet()
+static bstring create_fms_packet()
 {
-    return sdsempty();
+    return bfromcstr ("");
 }
 
 /**
@@ -273,9 +273,9 @@ static sds create_fms_packet()
  * to the DS Radio / Bridge. For that reason, the 2014 communication protocol
  * generates empty radio packets.
  */
-static sds create_radio_packet()
+static bstring create_radio_packet()
 {
-    return sdsempty();
+    return bfromcstr ("");
 }
 
 /**
@@ -290,51 +290,49 @@ static sds create_radio_packet()
  *     - The version of the FRC Driver Station
  *     - The CRC32 checksum of the packet
  */
-static sds create_robot_packet()
+static bstring create_robot_packet()
 {
     /* Create initial packet */
-    sds data = sdsnewlen (NULL, 8);
+    bstring data = DS_GetEmptyString (8);
 
     /* Add packet index */
-    data [0] = (sent_robot_packets & 0xff00) >> 8;
-    data [1] = (sent_robot_packets & 0xff);
+    bSetChar (data, 0, (sent_robot_packets & 0xff00) >> 8);
+    bSetChar (data, 1, (sent_robot_packets & 0xff));
 
     /* Add control code and digital inputs */
-    data [2] = get_control_code();
-    data [3] = get_digital_inputs();
+    bSetChar (data, 2, get_control_code());
+    bSetChar (data, 3,  get_digital_inputs());
 
     /* Add team number */
-    data [4] = (CFG_GetTeamNumber() & 0xff00) >> 8;
-    data [5] = (CFG_GetTeamNumber() & 0xff);
+    bSetChar (data, 4, (CFG_GetTeamNumber() & 0xff00) >> 8);
+    bSetChar (data, 5, (CFG_GetTeamNumber() & 0xff));
 
     /* Add alliance and position */
-    data [6] = get_alliance_code();
-    data [7] = get_position_code();
+    bSetChar (data, 6, get_alliance_code());
+    bSetChar (data, 7, get_position_code());
 
     /* Add joystick data */
-    sds joystick_data = get_joystick_data();
-    data = sdscatsds (data, joystick_data);
-    DS_FREESTR (joystick_data);
+    bconcat (data, get_joystick_data());
 
     /* Now resize the datagram to 1024 bytes */
-    data = sdsgrowzero (data, 1024);
+    balloc (data, 1024);
 
     /* Add FRC Driver Station version (same as the one sent by 16.0.1) */
-    data [72] = (uint8_t) 0x30;
-    data [73] = (uint8_t) 0x34;
-    data [74] = (uint8_t) 0x30;
-    data [75] = (uint8_t) 0x31;
-    data [76] = (uint8_t) 0x31;
-    data [77] = (uint8_t) 0x36;
-    data [78] = (uint8_t) 0x30;
-    data [79] = (uint8_t) 0x30;
+    bSetChar (data, 72, (uint8_t) 0x30);
+    bSetChar (data, 73, (uint8_t) 0x34);
+    bSetChar (data, 74, (uint8_t) 0x30);
+    bSetChar (data, 75, (uint8_t) 0x31);
+    bSetChar (data, 76, (uint8_t) 0x31);
+    bSetChar (data, 77, (uint8_t) 0x36);
+    bSetChar (data, 78, (uint8_t) 0x30);
+    bSetChar (data, 79, (uint8_t) 0x30);
 
     /* Add CRC32 checksum */
     uint32_t checksum = DS_CRC32 (data, sizeof (data));
-    data [1020] = (checksum & 0xff000000) >> 24;
-    data [1021] = (checksum & 0xff0000) >> 16;
-    data [1022] = (checksum & 0xff00) >> 8;
-    data [1023] = (checksum & 0xff);
+    bSetChar (data, 1020, (checksum & 0xff000000) >> 24);
+    bSetChar (data, 1021, (checksum & 0xff0000) >> 16);
+    bSetChar (data, 1022, (checksum & 0xff00) >> 8);
+    bSetChar (data, 1023, (checksum & 0xff));
 
     /* Increase sent robot packets */
     ++sent_robot_packets;
@@ -346,20 +344,20 @@ static sds create_robot_packet()
 /**
  * Gets the team station and the robot control mode from the FMS
  */
-static int read_fms_packet (const sds data)
+static int read_fms_packet (const bstring data)
 {
     /* Data pointer is invalid */
     if (!data)
         return 0;
 
     /* Packet is too small */
-    if (sdslen (data) < 5)
+    if (blength (data) < 5)
         return 0;
 
     /* Read FMS packet */
-    uint8_t robotmod = data [2];
-    uint8_t alliance = data [3];
-    uint8_t position = data [4];
+    uint8_t robotmod = data->data [2];
+    uint8_t alliance = data->data [3];
+    uint8_t position = data->data [4];
 
     /* Switch to autonomous */
     if (robotmod & cFMSAutonomous)
@@ -383,7 +381,7 @@ static int read_fms_packet (const sds data)
  * Since the DS does not interact directly with the radio/bridge, any incoming
  * packets shall be ignored.
  */
-static int read_radio_packet (const sds data)
+static int read_radio_packet (const bstring data)
 {
     (void) data;
     return 0;
@@ -393,26 +391,26 @@ static int read_radio_packet (const sds data)
  * Interprets the given robot packet \a data and updates the emergency stop
  * state and the robot voltage values.
  */
-int read_robot_packet (const sds data)
+int read_robot_packet (const bstring data)
 {
     /* Data pointer is invalid */
     if (!data)
         return 0;
 
     /* Packet is too small */
-    if (sdslen (data) < 1024)
+    if (blength (data) < 1024)
         return 0;
 
     /* Calculate voltage using the (old & reliable) rule of three */
-    uint8_t upper = ((uint8_t) data [1] * 12) / 0x12;
-    uint8_t lower = ((uint8_t) data [2] * 12) / 0x12;
+    uint8_t upper = ((uint8_t) data->data [1] * 12) / 0x12;
+    uint8_t lower = ((uint8_t) data->data [2] * 12) / 0x12;
 
     /* Construct the voltage float */
     float voltage = ((float) upper) + ((float) lower / 0xff);
     CFG_SetRobotVoltage (voltage);
 
     /* Check if robot is e-stopped */
-    CFG_SetEmergencyStopped ((uint8_t) data [0] == cEmergencyStopOn);
+    CFG_SetEmergencyStopped ((uint8_t) data->data [0] == cEmergencyStopOn);
 
     /* Assume that robot code is present (issue #31 in QDriverStation) */
     CFG_SetRobotCode (1);

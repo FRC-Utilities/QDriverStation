@@ -22,6 +22,7 @@
 
 #include "socky.h"
 
+#include <stdlib.h>
 #include <pthread.h>
 
 #if defined _WIN32
@@ -34,6 +35,7 @@
 typedef struct _close_socket {
     int sfd;
     int* error;
+    int autoDelete;
 } _close_socket_info;
 
 /**
@@ -243,8 +245,8 @@ static void* close_socket (void* data)
 
     /* Cast generic pointer to data structure */
     _close_socket_info* info = (_close_socket_info*) data;
-    if (!info->error) {
-        info->error = (int*) malloc (sizeof (int));
+    if (info->error == NULL) {
+        info->error = (int*) calloc (1, sizeof (int));
         *info->error = -1;
     }
 
@@ -252,9 +254,8 @@ static void* close_socket (void* data)
     if (!valid_sfd (info->sfd))
         return NULL;
 
-    /* Cannot shutdown the socket */
-    if (shutdown (info->sfd, 2) != 0)
-        return NULL;
+    /* Disable socket IO */
+    socket_shutdown (info->sfd, SOCKY_READ | SOCKY_WRITE);
 
     /* Close the socket */
 #if defined _WIN32
@@ -262,6 +263,10 @@ static void* close_socket (void* data)
 #else
     *info->error = close (info->sfd);
 #endif
+
+    /* De-allocate the pointer */
+    if (info->autoDelete != 0)
+        free (data);
 
     /* Exit thread */
     return NULL;
@@ -498,10 +503,18 @@ int create_server_tcp (const char* port, const int family, const int flags)
  */
 int socket_close (const int sfd)
 {
-    _close_socket_info info;
-    info.sfd = sfd;
-    close_socket ((void*) &info);
-    return *info.error;
+    /* Initialize socket structure and close socket */
+    _close_socket_info* info = calloc (1, sizeof (_close_socket_info));;
+    info->sfd = sfd;
+    info->autoDelete = 0;
+    close_socket ((void*) info);
+
+    /* Get error code and de-allocate structure */
+    int error = *info->error;
+    free (info);
+
+    /* Return error code */
+    return error;
 }
 
 /**
@@ -514,12 +527,13 @@ int socket_close (const int sfd)
  */
 void socket_close_threaded (int sfd, int* error)
 {
-    _close_socket_info info;
-    info.sfd = sfd;
-    info.error = error;
+    _close_socket_info* info = calloc (1, sizeof (_close_socket_info));
+    info->sfd = sfd;
+    info->error = error;
+    info->autoDelete = 1;
 
     pthread_t thread;
-    pthread_create (&thread, NULL, &close_socket, (void*) &info);
+    pthread_create (&thread, NULL, &close_socket, (void*) info);
 }
 
 /**

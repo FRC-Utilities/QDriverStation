@@ -71,10 +71,10 @@ static int robot_read = 0;
 /*
  * Holds the received data
  */
-static sds fms_data = NULL;
-static sds radio_data = NULL;
-static sds robot_data = NULL;
-static sds netcs_data = NULL;
+static bstring fms_data = NULL;
+static bstring radio_data = NULL;
+static bstring robot_data = NULL;
+static bstring netcs_data = NULL;
 
 /*
  * Holds the sent/received packets
@@ -98,7 +98,7 @@ static pthread_t event_thread;
 static void send_fms_data()
 {
     ++sent_fms_packets;
-    sds data = protocol->create_fms_packet();
+    bstring data = protocol->create_fms_packet();
     DS_SocketSend (protocol->fms_socket, data);
     DS_FREESTR (data);
 }
@@ -110,7 +110,7 @@ static void send_fms_data()
 static void send_radio_data()
 {
     ++sent_radio_packets;
-    sds data = protocol->create_radio_packet();
+    bstring data = protocol->create_radio_packet();
     DS_SocketSend (protocol->radio_socket, data);
     DS_FREESTR (data);
 }
@@ -122,7 +122,7 @@ static void send_radio_data()
 static void send_robot_data()
 {
     ++sent_robot_packets;
-    sds data = protocol->create_robot_packet();
+    bstring data = protocol->create_robot_packet();
     DS_SocketSend (protocol->robot_socket, data);
     DS_FREESTR (data);
 }
@@ -211,7 +211,7 @@ static void recv_data()
     if (netcs_data) {
         DS_Event event;
         event.netconsole.type = DS_NETCONSOLE_NEW_MESSAGE;
-        event.netconsole.message = sdsdup (netcs_data);
+        event.netconsole.message = bstrcpy (netcs_data);
         DS_AddEvent (&event);
     }
 
