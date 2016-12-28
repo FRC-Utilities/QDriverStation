@@ -60,8 +60,8 @@ Rectangle {
     //
     // These properties control the colors of the text and the icon
     //
-    property string textColor: Globals.Colors.Foreground
-    property string baseColor: Globals.Colors.WidgetBackground
+    property color textColor: Globals.Colors.Foreground
+    property color baseColor: Globals.Colors.WidgetBackground
 
     //
     // Emitted when the button is clicked, you can control what to
@@ -86,7 +86,7 @@ Rectangle {
     border.color: Globals.Colors.WidgetBorder
 
     //
-    // You may need to re-define this values when dealing with layouts
+    // You may need to re-define these values when dealing with layouts
     //
     height: Globals.scale (24)
     width: Math.max (label.implicitWidth + Globals.scale (12), Globals.scale (120))
@@ -94,7 +94,16 @@ Rectangle {
     //
     // Perform a simple animation when the background color is changed
     //
-    Behavior on color {
+    Behavior on baseColor {
+        ColorAnimation {
+            duration: Globals.slowAnimation
+        }
+    }
+
+    //
+    // Perform a simple animation when the foreground color is changed
+    //
+    Behavior on textColor {
         ColorAnimation {
             duration: Globals.slowAnimation
         }
