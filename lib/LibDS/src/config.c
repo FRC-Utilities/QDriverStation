@@ -106,21 +106,18 @@ void CFG_ReconfigureAddresses (const int flags)
 {
     if (DS_CurrentProtocol()) {
         if (flags & RECONFIGURE_FMS) {
-            char* ip = DS_GetAppliedFMSAddress();
-            DS_SocketChangeAddress (DS_CurrentProtocol()->fms_socket, ip);
-            free (ip);
+            DS_SocketChangeAddress (DS_CurrentProtocol()->fms_socket,
+                                    DS_GetAppliedFMSAddress());
         }
 
         if (flags & RECONFIGURE_RADIO) {
-            char* ip = DS_GetAppliedRadioAddress();
-            DS_SocketChangeAddress (DS_CurrentProtocol()->radio_socket, ip);
-            free (ip);
+            DS_SocketChangeAddress (DS_CurrentProtocol()->radio_socket,
+                                    DS_GetAppliedRadioAddress());
         }
 
         if (flags & RECONFIGURE_ROBOT) {
-            char* ip = DS_GetAppliedRobotAddress();
-            DS_SocketChangeAddress (DS_CurrentProtocol()->robot_socket, ip);
-            free (ip);
+            DS_SocketChangeAddress (DS_CurrentProtocol()->robot_socket,
+                                    DS_GetAppliedRobotAddress());
         }
     }
 }

@@ -353,14 +353,14 @@ int DS_SocketSend (DS_Socket* ptr, const bstring data)
  * \param ptr pointer to a \c DS_Socket structure
  * \param address the new address to apply to the socket
  */
-void DS_SocketChangeAddress (DS_Socket* ptr, const char* address)
+void DS_SocketChangeAddress (DS_Socket* ptr, const bstring address)
 {
     /* Pointers are invalid */
     if (!ptr || !address)
         return;
 
     /* Copy address (and load fallback IP if address is invalid) */
-    bstring ip = bfromcstr (address);
+    bstring ip = bstrcpy (address);
     if (DS_StringIsEmpty (ip)) {
         DS_FREESTR (ip);
         ip = DS_FallBackAddress;

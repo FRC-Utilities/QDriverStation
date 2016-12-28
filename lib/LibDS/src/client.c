@@ -62,9 +62,9 @@ void Client_Close()
  * This value may be empty, if that's the case, then the Driver Station will
  * use the addresses specified by the currently loaded protocol.
  */
-char* DS_GetCustomFMSAddress()
+bstring DS_GetCustomFMSAddress()
 {
-    return bstr2cstr (custom_fms_address, 0);
+    return bstrcpy (custom_fms_address);
 }
 
 /**
@@ -72,9 +72,9 @@ char* DS_GetCustomFMSAddress()
  * This value may be empty, if that's the case, then the Driver Station will
  * use the addresses specified by the currently loaded protocol.
  */
-char* DS_GetCustomRadioAddress()
+bstring DS_GetCustomRadioAddress()
 {
-    return bstr2cstr (custom_radio_address, 0);
+    return bstrcpy (custom_radio_address);
 }
 
 /**
@@ -82,9 +82,9 @@ char* DS_GetCustomRadioAddress()
  * This value may be empty, if that's the case, then the Driver Station will
  * use the addresses specified by the currently loaded protocol.
  */
-char* DS_GetCustomRobotAddress()
+bstring DS_GetCustomRobotAddress()
 {
-    return bstr2cstr (custom_robot_address, 0);
+    return bstrcpy (custom_robot_address);
 }
 
 /**
@@ -92,12 +92,12 @@ char* DS_GetCustomRobotAddress()
  * number is changed, if your application relies on this value, consider
  * updating in regurarly or using the events system of the LibDS.
  */
-char* DS_GetDefaultFMSAddress()
+bstring DS_GetDefaultFMSAddress()
 {
     if (DS_CurrentProtocol())
-        return bstr2cstr (DS_CurrentProtocol()->fms_address(), 0);
+        return bstrcpy (DS_CurrentProtocol()->fms_address());
 
-    return "0.0.0.0";
+    return DS_FallBackAddress;
 }
 
 /**
@@ -105,12 +105,12 @@ char* DS_GetDefaultFMSAddress()
  * team number is changed, if your application relies on this value, consider
  * updating in regurarly or using the events system of the LibDS.
  */
-char* DS_GetDefaultRadioAddress()
+bstring DS_GetDefaultRadioAddress()
 {
     if (DS_CurrentProtocol())
-        return bstr2cstr (DS_CurrentProtocol()->radio_address(), 0);
+        return bstrcpy (DS_CurrentProtocol()->radio_address());
 
-    return "0.0.0.0";
+    return DS_FallBackAddress;
 }
 
 /**
@@ -118,12 +118,12 @@ char* DS_GetDefaultRadioAddress()
  * team number is changed, if your application relies on this value, consider
  * updating in regurarly or using the events system of the LibDS.
  */
-char* DS_GetDefaultRobotAddress()
+bstring DS_GetDefaultRobotAddress()
 {
     if (DS_CurrentProtocol())
-        return bstr2cstr (DS_CurrentProtocol()->robot_address(), 0);
+        return bstrcpy (DS_CurrentProtocol()->robot_address());
 
-    return "0.0.0.0";
+    return DS_FallBackAddress;
 }
 
 /**
@@ -132,7 +132,7 @@ char* DS_GetDefaultRobotAddress()
  * user-set address. Otherwise, this function will return the address
  * specified  by the currently loaded protocol.
  */
-char* DS_GetAppliedFMSAddress()
+bstring DS_GetAppliedFMSAddress()
 {
     if (DS_StringIsEmpty (custom_fms_address))
         return DS_GetDefaultFMSAddress();
@@ -146,7 +146,7 @@ char* DS_GetAppliedFMSAddress()
  * user-set address. Otherwise, this function will return the address
  * specified  by the currently loaded protocol.
  */
-char* DS_GetAppliedRadioAddress()
+bstring DS_GetAppliedRadioAddress()
 {
     if (DS_StringIsEmpty (custom_radio_address))
         return DS_GetDefaultRadioAddress();
@@ -160,7 +160,7 @@ char* DS_GetAppliedRadioAddress()
  * user-set address. Otherwise, this function will return the address
  * specified  by the currently loaded protocol.
  */
-char* DS_GetAppliedRobotAddress()
+bstring DS_GetAppliedRobotAddress()
 {
     if (DS_StringIsEmpty (custom_robot_address))
         return DS_GetDefaultRobotAddress();
@@ -181,7 +181,7 @@ char* DS_GetAppliedRobotAddress()
  *    - Autonomous Enabled/Disabled
  *    - Test Enabled/Disabled
  */
-char* DS_GetStatusString()
+bstring DS_GetStatusString()
 {
     DS_FREESTR (status_string);
 
@@ -211,7 +211,7 @@ char* DS_GetStatusString()
                                            " Enabled" : " Disabled"));
     }
 
-    return bstr2cstr (status_string, 0);
+    return bstrcpy (status_string);
 }
 
 /**

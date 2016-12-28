@@ -104,7 +104,7 @@ typedef struct {
  */
 typedef struct {
     DS_EventType type;  /**< Event type */
-    char* message;      /**< Holds the received message */
+    bstring message;    /**< Holds the received message */
 } DS_NetConsoleEvent;
 
 /**
