@@ -41,7 +41,7 @@ extern void set_robot_code (const int code);
 extern void set_robot_comms (const int comms);
 extern void set_voltage (const double voltage);
 extern void set_has_joysticks (const int joysticks);
-extern void update_status_label (const bstring string);
+extern void update_status_label (char* string);
 
 #ifdef __cplusplus
 }

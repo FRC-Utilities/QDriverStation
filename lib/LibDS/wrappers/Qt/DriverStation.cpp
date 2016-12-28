@@ -33,12 +33,17 @@
 
 #define LOG qDebug() << "DS Client:"
 
-static QString cstr_to_qstring (const char* string)
+static QString cstr_to_qstring (char* string)
 {
-    if (string)
-        return QString::fromUtf8 (string);
+    QString str;
 
-    return QString ("");
+    if (string) {
+        str = QString::fromUtf8 (string);
+        free (string);
+        return str;
+    }
+
+    return str;
 }
 
 /**

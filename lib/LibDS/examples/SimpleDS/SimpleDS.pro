@@ -1,9 +1,6 @@
-
 QT += gui
 QT += widgets
 QT += network
-
-CONFIG += c++11
 
 include ($$PWD/../../wrappers/Qt/LibDS-Qt.pri)
 

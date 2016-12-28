@@ -314,8 +314,10 @@ void set_robot_code (const int code)
 void set_robot_comms (const int comms)
 {
     DS_FREESTR (robot_ip);
-    robot_ip = bstrcpy (DS_GetAppliedRobotAddress());
     robot_check_str = set_checked (robot_check_str, comms);
+    char* ip = DS_GetAppliedRobotAddress();
+    robot_ip = bfromcstr (ip);
+    free (ip);
 }
 
 /**
@@ -339,8 +341,9 @@ void set_has_joysticks (const int joysticks)
  * Updates the status label to display the current state
  * of the robot and the LibDS
  */
-void update_status_label (const bstring string)
+void update_status_label (char* string)
 {
     DS_FREESTR (rstatus_str);
-    rstatus_str = bstrcpy (string);
+    rstatus_str = bfromcstr (string);
+    free (string);
 }
