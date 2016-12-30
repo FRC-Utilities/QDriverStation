@@ -100,7 +100,7 @@ static void init_strings()
     disk_str = bfromcstr (INVALID);
     robot_ip = bfromcstr (INVALID);
     voltage_str = bfromcstr (INVALID);
-    rstatus_str = bfromcstr (DS_GetStatusString());
+    rstatus_str = bfromcstr (INVALID);
     console_str = bfromcstr ("[INFO] Welcome to the ConsoleDS!");
 }
 
@@ -265,6 +265,16 @@ void update_interface()
 }
 
 /**
+ * Updates the status label to display the current state
+ * of the robot and the LibDS
+ */
+void update_status_label()
+{
+    DS_FREESTR (rstatus_str);
+    rstatus_str = DS_GetStatusString();
+}
+
+/**
  * Updates the value displayed in the CAN field
  */
 void set_can (const int can)
@@ -315,9 +325,7 @@ void set_robot_comms (const int comms)
 {
     DS_FREESTR (robot_ip);
     robot_check_str = set_checked (robot_check_str, comms);
-    char* ip = DS_GetAppliedRobotAddress();
-    robot_ip = bfromcstr (ip);
-    free (ip);
+    robot_ip = DS_GetAppliedRobotAddress();
 }
 
 /**
@@ -335,15 +343,4 @@ void set_voltage (const double voltage)
 void set_has_joysticks (const int joysticks)
 {
     stick_check_str = set_checked (stick_check_str, joysticks);
-}
-
-/**
- * Updates the status label to display the current state
- * of the robot and the LibDS
- */
-void update_status_label (char* string)
-{
-    DS_FREESTR (rstatus_str);
-    rstatus_str = bfromcstr (string);
-    free (string);
 }
