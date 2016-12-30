@@ -28,9 +28,7 @@ Until very recently, I did not generate Debian packages. [Dakota Keeler](https:/
 
 ###### Warnings
 
-If you are on Linux, the QDriverStation may detect some devices as a joystick ([more info...](https://gist.github.com/denilsonsa/978f1d842cf5430f57f6#file-51-these-are-not-joysticks-rules)). If that happens, just disable the faulty device by clicking on the power button next to its name:
-
-![Blacklisting Animation](etc/animations/blacklist.gif)
+If you are on Linux, the QDriverStation may detect some devices as a joystick ([more info...](https://gist.github.com/denilsonsa/978f1d842cf5430f57f6#file-51-these-are-not-joysticks-rules)). If that happens, just disable the faulty device by clicking on the power button next to its name.
 
 ### Build instructions
 
