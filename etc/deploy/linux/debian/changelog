@@ -1,4 +1,4 @@
-qdriverstation (16.10) stable; urgency=low
+qdriverstation (17.01) stable; urgency=low
 
   * Switch to the new LibDS-C platform
   * Re-implement the logging system

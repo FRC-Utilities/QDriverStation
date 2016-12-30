@@ -24,8 +24,8 @@
 !define UNIXNAME                     "qdriverstation"
 !define COMPANYNAME                  "FRC Utilities"
 !define DESCRIPTION                  "Open source alternative to the FRC DriverStation"
-!define VERSIONMAJOR                 16
-!define VERSIONMINOR                 10
+!define VERSIONMAJOR                 17
+!define VERSIONMINOR                 01
 !define VERSIONBUILD                 0
 !define ESTIMATED_SIZE               61000
 !define MUI_ABORTWARNING
