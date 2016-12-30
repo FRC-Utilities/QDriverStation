@@ -367,8 +367,10 @@ float DS_GetMaximumBatteryVoltage()
  */
 void DS_RebootRobot()
 {
-    if (DS_CurrentProtocol())
+    if (DS_CurrentProtocol()) {
         DS_CurrentProtocol()->reboot_robot();
+        CFG_AddNetConsoleMessage (bfromcstr ("Rebooting robot..."));
+    }
 }
 
 /**
@@ -376,8 +378,10 @@ void DS_RebootRobot()
  */
 void DS_RestartRobotCode()
 {
-    if (DS_CurrentProtocol())
+    if (DS_CurrentProtocol()) {
         DS_CurrentProtocol()->restart_robot_code();
+        CFG_AddNetConsoleMessage (bfromcstr ("Restarting robot code..."));
+    }
 }
 
 /**

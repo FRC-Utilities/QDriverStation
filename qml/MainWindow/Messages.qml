@@ -88,6 +88,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
         editor.textFormat: Text.RichText
+        editor.wrapMode: TextEdit.WordWrap
         editor.font.family: Globals.monoFont
         editor.font.pixelSize: Globals.scale (13)
         foregroundColor: Globals.Colors.WidgetForeground

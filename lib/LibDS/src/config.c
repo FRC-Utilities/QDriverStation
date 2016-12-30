@@ -98,6 +98,34 @@ static void create_robot_event (const DS_EventType type)
 }
 
 /**
+ * Notifies the user about something through the NetConsole
+ */
+void CFG_AddNotification (bstring msg)
+{
+    if (msg) {
+        bstring notification = bfromcstr ("<font color=#0f0>LibDS: </font>");
+        bconcat (notification, msg);
+        CFG_AddNetConsoleMessage (notification);
+    }
+}
+
+/**
+ * Notifies the application of a new NetConsole message through the
+ * DS events system
+ *
+ * \a msg the message to display
+ */
+void CFG_AddNetConsoleMessage (bstring msg)
+{
+    if (msg) {
+        DS_Event event;
+        event.netconsole.type = DS_NETCONSOLE_NEW_MESSAGE;
+        event.netconsole.message = msg;
+        DS_AddEvent (&event);
+    }
+}
+
+/**
  * Re-applies the network addresses of the FMS, radio and robot.
  * This function is called when the team number is changed or when a watchdog
  * expires (to force the sockets module to perform a lookup)
@@ -473,7 +501,6 @@ void CFG_RobotWatchdogExpired()
     CFG_SetRobotDiskUsage (0);
     CFG_SetEmergencyStopped (0);
     CFG_SetRobotCommunications (0);
-    CFG_SetControlMode (DS_CONTROL_TELEOPERATED);
 
     /* Force the sockets to perform another lookup */
     CFG_ReconfigureAddresses (RECONFIGURE_ROBOT);

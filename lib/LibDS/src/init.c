@@ -22,6 +22,7 @@
  */
 
 #include "LibDS.h"
+#include "DS_Config.h"
 
 static int init = 0;
 

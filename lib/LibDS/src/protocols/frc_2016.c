@@ -47,5 +47,9 @@ extern DS_Protocol* DS_GetProtocolFRC_2016()
     DS_Protocol* protocol = DS_GetProtocolFRC_2015();
     protocol->robot_address = &robot_address;
 
+    /* Set protocol name */
+    DS_FREESTR (protocol->name);
+    protocol->name = bfromcstr ("FRC 2016 Communication Protocol");
+
     return protocol;
 }

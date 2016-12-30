@@ -31,6 +31,7 @@ extern "C" {
 #include "DS_Socket.h"
 
 typedef struct _protocol {
+    bstring name;
     bstring (*fms_address)();
     bstring (*radio_address)();
     bstring (*robot_address)();

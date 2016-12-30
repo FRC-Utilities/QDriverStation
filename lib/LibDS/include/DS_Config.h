@@ -49,6 +49,10 @@ extern "C" {
 /* Misc */
 extern void CFG_ReconfigureAddresses (const int flags);
 
+/* NetConsole ouput */
+extern void CFG_AddNotification (bstring msg);
+extern void CFG_AddNetConsoleMessage (bstring msg);
+
 /* Getters */
 extern int CFG_GetTeamNumber();
 extern int CFG_GetRobotCode();

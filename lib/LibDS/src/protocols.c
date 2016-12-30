@@ -208,12 +208,8 @@ static void recv_data()
     }
 
     /* Add NetConsole message to event system */
-    if (netcs_data) {
-        DS_Event event;
-        event.netconsole.type = DS_NETCONSOLE_NEW_MESSAGE;
-        event.netconsole.message = bstrcpy (netcs_data);
-        DS_AddEvent (&event);
-    }
+    if (netcs_data)
+        CFG_AddNetConsoleMessage (bstrcpy (netcs_data));
 
     /* Reset the data pointers */
     clear_recv_data();
@@ -395,6 +391,11 @@ void DS_ConfigureProtocol (DS_Protocol* ptr)
     DS_TimerStart (&radio_recv_timer);
     DS_TimerStart (&robot_send_timer);
     DS_TimerStart (&robot_recv_timer);
+
+    /* Notify application of protocol change */
+    char* name = bstr2cstr (ptr->name, 0);
+    CFG_AddNotification (bformat ("%s loaded", name));
+    DS_FREE (name);
 }
 
 /**
