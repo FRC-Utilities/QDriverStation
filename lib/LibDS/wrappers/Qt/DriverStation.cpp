@@ -33,12 +33,13 @@
 
 #define LOG qDebug() << "DS Client:"
 
-static QString bstr_to_qstring (const bstring string)
+static QString bstr_to_qstring (bstring string)
 {
     QString str;
 
     if (string) {
         str = QString (bstr2cstr (string, 0));
+        DS_FREESTR (string);
         return str;
     }
 
