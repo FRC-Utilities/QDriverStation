@@ -45,6 +45,8 @@ static bstring robot_address()
 extern DS_Protocol* DS_GetProtocolFRC_2016()
 {
     DS_Protocol* protocol = DS_GetProtocolFRC_2015();
+
+    /* Set robot address function */
     protocol->robot_address = &robot_address;
 
     /* Set protocol name */

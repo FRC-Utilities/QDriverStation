@@ -38,13 +38,13 @@ extern "C" {
  * to operate with the data provided by a \c DS_Socket structure
  */
 typedef struct {
-    bstring buffer;          /**< Holds received data */
-    bstring in_service;      /**< Input port string */
-    bstring out_service;     /**< Output port string */
-    int sock_in;             /**< Server socket file descriptor */
-    int sock_out;            /**< Client socket file descriptor */
-    int client_init;         /**< Set to \c 1 if client socket is initialized */
-    int server_init;         /**< Set to \c 1 if server socket is initialized */
+    int sock_in;
+    int sock_out;
+    bstring buffer;
+    int client_init;
+    int server_init;
+    bstring in_service;
+    bstring out_service;
 } DS_SocketInfo;
 
 /**
@@ -52,13 +52,13 @@ typedef struct {
  * both the the networking module and the rest of the application.
  */
 typedef struct {
-    bstring address;    /**< Holds the remote address */
-    int disabled;       /**< Disables/enables the socket */
-    int broadcast;      /**< Enables/disables broadcasting */
-    int in_port;        /**< Sets the server/sender port */
-    int out_port;       /**< Sets the client/sender port */
-    DS_SocketType type; /**< Socket type (UDP or TCP) */
-    DS_SocketInfo info; /**< Holds private socket information */
+    int in_port;
+    int out_port;
+    int disabled;
+    int broadcast;
+    bstring address;
+    DS_SocketType type;
+    DS_SocketInfo info;
 } DS_Socket;
 
 /* For socket initialization */

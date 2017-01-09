@@ -153,20 +153,20 @@ static void* create_socket (void* data)
     /* Open TCP socket */
     if (ptr->type == DS_SOCKET_TCP) {
         ptr->info.sock_in = create_server_tcp (
-                    bstr2cstr (ptr->info.in_service, 0),
-                    SOCKY_IPv4, 0);
+                                bstr2cstr (ptr->info.in_service, 0),
+                                SOCKY_IPv4, 0);
 
         ptr->info.sock_out = create_client_tcp (
-                    bstr2cstr (ptr->address, 0),
-                    bstr2cstr (ptr->info.out_service, 0),
-                    SOCKY_IPv4, 0);
+                                 bstr2cstr (ptr->address, 0),
+                                 bstr2cstr (ptr->info.out_service, 0),
+                                 SOCKY_IPv4, 0);
     }
 
     /* Open UDP socket */
     else if (ptr->type == DS_SOCKET_UDP) {
         ptr->info.sock_in = create_server_udp (
-                    bstr2cstr (ptr->info.in_service, 0),
-                    SOCKY_IPv4, 0);
+                                bstr2cstr (ptr->info.in_service, 0),
+                                SOCKY_IPv4, 0);
 
         ptr->info.sock_out = create_client_udp (SOCKY_IPv4, 0);
     }
@@ -373,9 +373,8 @@ void DS_SocketChangeAddress (DS_Socket* ptr, const bstring address)
     if (bstricmp (ptr->address, ip) != 0) {
         DS_FREESTR (ptr->address);
         ptr->address = ip;
-    } else {
+    } else
         DS_FREESTR (ip);
-    }
 
     /* Re-open the socket */
     DS_SocketOpen (ptr);

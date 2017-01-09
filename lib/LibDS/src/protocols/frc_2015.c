@@ -32,6 +32,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#if defined _WIN32
+    #include <windows.h>
+#endif
+
 /*
  * Protocol bytes
  */
@@ -272,34 +276,51 @@ static uint8_t get_joystick_size (const int joystick)
  */
 static bstring get_timezone_data()
 {
-    bstring data = DS_GetEmptyString (12);
+    bstring data = DS_GetEmptyString (14);
 
     /* Get current time */
     time_t rt = 0;
+    uint32_t ms = 0;
     struct tm* timeinfo = localtime (&rt);
 
-    /* Get timezone */
 #if defined _WIN32
-    bstring tz = bfromcstr ("CST");
+    /* Get timezone information */
+    TIME_ZONE_INFORMATION info;
+    GetTimeZoneInformation (&info);
+
+    /* Convert the wchar to a standard string */
+    char* str = malloc (wcslen (info.StandardName));
+    wcstombs (str, info.StandardName, wcslen (info.StandardName));
+
+    /* Convert the obtained cstring to a bstring */
+    bstring tz = bfromcstr (str);
+    free (str);
+
+    /* Get milliseconds */
+    GetSystemTime (&info.StandardDate);
+    ms = (uint32_t) info.StandardDate.wMilliseconds;
 #else
+    /* Timezone is stored directly in time_t structure */
     bstring tz = bfromcstr (timeinfo->tm_zone);
 #endif
 
     /* Encode date/time in datagram */
-    bSetChar (data, 0, (uint8_t) 0x0b);
-    bSetChar (data, 1, (uint8_t) cTagDate);
-    bSetChar (data, 2, (uint8_t) 0);
-    bSetChar (data, 3, (uint8_t) 0);
-    bSetChar (data, 4, (uint8_t) timeinfo->tm_sec);
-    bSetChar (data, 5, (uint8_t) timeinfo->tm_min);
-    bSetChar (data, 6, (uint8_t) timeinfo->tm_hour);
-    bSetChar (data, 7, (uint8_t) timeinfo->tm_yday);
-    bSetChar (data, 8, (uint8_t) timeinfo->tm_mon);
-    bSetChar (data, 9, (uint8_t) timeinfo->tm_year);
+    bSetChar (data, 0,  (uint8_t) 0x0b);
+    bSetChar (data, 1,  (uint8_t) cTagDate);
+    bSetChar (data, 2,  (uint8_t) (ms & 0xff000000) >> 24);
+    bSetChar (data, 3,  (uint8_t) (ms & 0xff0000) >> 16);
+    bSetChar (data, 4,  (uint8_t) (ms & 0xff00) >> 8);
+    bSetChar (data, 5,  (uint8_t) (ms & 0xff));
+    bSetChar (data, 6,  (uint8_t) timeinfo->tm_sec);
+    bSetChar (data, 7,  (uint8_t) timeinfo->tm_min);
+    bSetChar (data, 8,  (uint8_t) timeinfo->tm_hour);
+    bSetChar (data, 9,  (uint8_t) timeinfo->tm_yday);
+    bSetChar (data, 10, (uint8_t) timeinfo->tm_mon);
+    bSetChar (data, 11, (uint8_t) timeinfo->tm_year);
 
-    /* Add timezone data */
-    bSetChar (data, 10, blength (tz));
-    bSetChar (data, 11, cTagTimezone);
+    /* Add timezone length and tag */
+    bSetChar (data, 12, blength (tz));
+    bSetChar (data, 13, cTagTimezone);
 
     /* Add timezone string */
     bconcat (data, tz);
@@ -524,7 +545,7 @@ static bstring create_robot_packet()
     else if (sent_robot_packets > 5)
         bconcat (data, get_joystick_data());
 
-    /* Increase packet counter */
+    /* Increase robot packet counter */
     ++sent_robot_packets;
 
     return data;

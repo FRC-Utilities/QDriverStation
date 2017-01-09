@@ -259,9 +259,7 @@ static bstring robot_address()
 }
 
 /**
- * One day in the future... many years from now,
- * A spaceship from another world will visit here somehow,
- * and they shall implement this function.
+ * Generates an empty (ignored) FMS packet.
  */
 static bstring create_fms_packet()
 {
@@ -269,9 +267,7 @@ static bstring create_fms_packet()
 }
 
 /**
- * The 2014 communication protocol does not involve sending specialized packets
- * to the DS Radio / Bridge. For that reason, the 2014 communication protocol
- * generates empty radio packets.
+ * Generates an empty (ignored) radio packet.
  */
 static bstring create_radio_packet()
 {

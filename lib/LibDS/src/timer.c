@@ -164,15 +164,14 @@ int DS_TimerInit (DS_Timer* timer, const int time, const int precision)
 
         /* Configure the thread */
         pthread_t thread;
-        int error = pthread_create (&thread,
-                                    NULL, &update_timer, (void*) timer);
+        int err = pthread_create (&thread, NULL, &update_timer, (void*) timer);
 
         /* Report thread creation errors */
-        if (error)
-            fprintf (stderr, "Cannot create timer thread, error %d\n", error);
+        if (err)
+            fprintf (stderr, "Cannot create timer thread, error %d\n", err);
 
         /* Return 1 if there are no errors */
-        return (error == 0);
+        return (err == 0);
     }
 
     return 0;

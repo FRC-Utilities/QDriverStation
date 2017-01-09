@@ -955,7 +955,6 @@ void DriverStation::processEvents()
             break;
         case DS_NETCONSOLE_NEW_MESSAGE:
             emit newMessage (bstr_to_qstring (event.netconsole.message));
-            DS_FREESTR (event.netconsole.message);
             break;
         case DS_ROBOT_ENABLED_CHANGED:
             emit enabledChanged (event.robot.enabled);

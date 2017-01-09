@@ -62,61 +62,61 @@ typedef enum {
  * \brief FMS event fields
  */
 typedef struct {
-    DS_EventType type;  /**< Event type */
-    int connected;      /**< Set to \c 1 if FMS is connected */
+    DS_EventType type;
+    int connected;
 } DS_FMSEvent;
 
 /**
  * \brief Radio event fields
  */
 typedef struct {
-    DS_EventType type;  /**< Event type */
-    int connected;      /**< Set to \c 1 if radio is connected */
+    DS_EventType type;
+    int connected;
 } DS_RadioEvent;
 
 /**
  * \brief Robot event fields
  */
 typedef struct {
-    DS_EventType type;  /**< Event type */
-    int code;            /**< Set to \c 1 if robot code is loaded */
-    int enabled;         /**< Set to \c 1 if the robot is enabled */
-    int can_util;        /**< Represents the robot's CAN utilization */
-    int cpu_usage;       /**< Represents the CPU usage (from 0 to 100) */
-    int ram_usage;       /**< Represents the RAM usage (from 0 to 100) */
-    int estopped;        /**< Set to \c 1 if robot is emergency stopped */
-    int connected;       /**< Set to \c 1 if robot is connected */
-    int disk_usage;      /**< Represents the disk usage (from 0 to 100) */
-    float voltage;      /**< Holds the current robot voltage */
-    DS_ControlMode mode; /**< Represents the current control mode */
+    DS_EventType type;
+    int code;
+    int enabled;
+    int can_util;
+    int cpu_usage;
+    int ram_usage;
+    int estopped;
+    int connected;
+    int disk_usage;
+    float voltage;
+    DS_ControlMode mode;
 } DS_RobotEvent;
 
 /**
  * \brief Joystick event fields
  */
 typedef struct {
-    DS_EventType type;  /**< Event type */
-    int count;          /**< Holds the new joystick count */
+    DS_EventType type;
+    int count;
 } DS_JoystickEvent;
 
 /**
  * \brief NetConsole event fields
  */
 typedef struct {
-    DS_EventType type;  /**< Event type */
-    bstring message;    /**< Holds the received message */
+    DS_EventType type;
+    bstring message;
 } DS_NetConsoleEvent;
 
 /**
  * \brief General event structure
  */
 typedef union {
-    DS_EventType type;             /**< Event type */
-    DS_FMSEvent fms;               /**< FMS event data */
-    DS_RobotEvent robot;           /**< Robot event data */
-    DS_RadioEvent radio;           /**< Radio event data */
-    DS_JoystickEvent joystick;     /**< Joystick event data */
-    DS_NetConsoleEvent netconsole; /**< NetConsole event data */
+    DS_EventType type;
+    DS_FMSEvent fms;
+    DS_RobotEvent robot;
+    DS_RadioEvent radio;
+    DS_JoystickEvent joystick;
+    DS_NetConsoleEvent netconsole;
 } DS_Event;
 
 extern void Events_Init();

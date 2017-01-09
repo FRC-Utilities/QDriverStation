@@ -79,8 +79,8 @@ extern void DS_QueueFree (DS_Queue* queue)
     queue->rear = -1;
     queue->count = 0;
     queue->front = 0;
-    queue->item_size = 0;
     queue->capacity = 0;
+    queue->item_size = 0;
 }
 
 /**

@@ -1807,7 +1807,7 @@ static int findreplaceengine (bstring b, const_bstring find,
             int* t;
             int sl;
             /* Overflow */
-            if (mlen > (INT_MAX / sizeof (int*)) / 2) {
+            if ((unsigned int) mlen > (INT_MAX / sizeof (int*)) / 2) {
                 ret = BSTR_ERR;
                 goto done;
             }
