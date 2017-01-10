@@ -34,17 +34,11 @@ RowLayout {
     signal windowModeChanged (var isDocked)
 
     //
-    // Save team station to settings
-    //
-    Settings {
-        property alias station: stations.currentIndex
-    }
-
-    //
-    // Control mode selector & enable/disable buttons
+    // Control modes & enable/disable buttons
     //
     ColumnLayout {
         Layout.fillHeight: true
+        Layout.minimumWidth: Globals.scale (160)
         Layout.maximumWidth: Globals.scale (160)
 
         //
@@ -128,7 +122,7 @@ RowLayout {
     }
 
     //
-    // Small separator
+    // Small sepatator between core operator and information indicators
     //
     Rectangle {
         color: "#000"
@@ -137,13 +131,13 @@ RowLayout {
     }
 
     //
-    // PC status indicators
+    // Extra information indicators
     //
     GridLayout {
         columns: 2
         Layout.fillWidth: true
         Layout.fillHeight: true
-        rowSpacing: Globals.spacing
+        rowSpacing: Globals.scale (4)
         columnSpacing: Globals.spacing
 
         //
@@ -171,11 +165,9 @@ RowLayout {
         // Spacer (for both columns)
         //
         Item {
-            Layout.fillWidth: true
             Layout.fillHeight: true
         }
         Item {
-            Layout.fillWidth: true
             Layout.fillHeight: true
         }
 
@@ -241,11 +233,9 @@ RowLayout {
         // Spacer (for both columns)
         //
         Item {
-            Layout.fillWidth: true
             Layout.fillHeight: true
         }
         Item {
-            Layout.fillWidth: true
             Layout.fillHeight: true
         }
 
@@ -298,11 +288,9 @@ RowLayout {
         // Spacer (for both columns)
         //
         Item {
-            Layout.fillWidth: true
             Layout.fillHeight: true
         }
         Item {
-            Layout.fillWidth: true
             Layout.fillHeight: true
         }
 
@@ -326,4 +314,3 @@ RowLayout {
         }
     }
 }
-
