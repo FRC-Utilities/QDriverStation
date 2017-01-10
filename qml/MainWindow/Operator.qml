@@ -125,9 +125,9 @@ RowLayout {
     // Small sepatator between core operator and information indicators
     //
     Rectangle {
-        color: "#000"
         Layout.fillHeight: true
         width: Globals.scale (1)
+        color: Globals.Colors.WidgetBorder
     }
 
     //
