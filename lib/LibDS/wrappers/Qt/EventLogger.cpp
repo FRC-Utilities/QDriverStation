@@ -25,6 +25,7 @@
 #include <QFile>
 #include <QDebug>
 #include <QTimer>
+#include <QDateTime>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -36,7 +37,7 @@
  */
 DSEventLogger::DSEventLogger()
 {
-    saveData();
+    saveDataLoop();
     connectSlots();
 }
 
@@ -45,7 +46,7 @@ DSEventLogger::DSEventLogger()
  */
 DSEventLogger::~DSEventLogger()
 {
-
+    saveData();
 }
 
 /**
@@ -58,12 +59,12 @@ DSEventLogger* DSEventLogger::getInstance()
 }
 
 /**
- * Saves the current log information to a local file using the JSON format
- * \note This function is called every 5 seconds
+ * Saves the log data to the disk and schedules another call in the future
  */
-void DSEventLogger::saveData()
+void DSEventLogger::saveDataLoop()
 {
-    QTimer::singleShot (500, Qt::PreciseTimer, this, SLOT (saveData()));
+    saveData();
+    QTimer::singleShot (500, Qt::PreciseTimer, this, SLOT (saveDataLoop()));
 }
 
 /**
@@ -72,6 +73,7 @@ void DSEventLogger::saveData()
 void DSEventLogger::onCANUsageChanged (int usage)
 {
     Q_UNUSED (usage);
+    m_canUsageLog.append (qMakePair<qint64, int> (currentTime(), usage));
 }
 
 /**
@@ -80,6 +82,7 @@ void DSEventLogger::onCANUsageChanged (int usage)
 void DSEventLogger::onCPUUsageChanged (int usage)
 {
     Q_UNUSED (usage);
+    m_cpuUsageLog.append (qMakePair<qint64, int> (currentTime(), usage));
 }
 
 /**
@@ -88,6 +91,7 @@ void DSEventLogger::onCPUUsageChanged (int usage)
 void DSEventLogger::onRAMUsageChanged (int usage)
 {
     Q_UNUSED (usage);
+    m_ramUsageLog.append (qMakePair<qint64, int> (currentTime(), usage));
 }
 
 /**
@@ -96,6 +100,7 @@ void DSEventLogger::onRAMUsageChanged (int usage)
 void DSEventLogger::onNewMessage (QString message)
 {
     Q_UNUSED (message);
+    m_messagesLog.append (qMakePair<qint64, QString> (currentTime(), message));
 }
 
 /**
@@ -104,6 +109,7 @@ void DSEventLogger::onNewMessage (QString message)
 void DSEventLogger::onDiskUsageChanged (int usage)
 {
     Q_UNUSED (usage);
+    m_diskUsageLog.append (qMakePair<qint64, int> (currentTime(), usage));
 }
 
 /**
@@ -112,6 +118,7 @@ void DSEventLogger::onDiskUsageChanged (int usage)
 void DSEventLogger::onEnabledChanged (bool enabled)
 {
     LOG << "Robot enabled state set to" << enabled;
+    m_enabledLog.append (qMakePair<qint64, bool> (currentTime(), enabled));
 }
 
 /**
@@ -128,6 +135,7 @@ void DSEventLogger::onTeamNumberChanged (int number)
 void DSEventLogger::onVoltageChanged (float voltage)
 {
     Q_UNUSED (voltage);
+    m_voltageLog.append (qMakePair<qint64, float> (currentTime(), voltage));
 }
 
 /**
@@ -136,6 +144,7 @@ void DSEventLogger::onVoltageChanged (float voltage)
 void DSEventLogger::onRobotCodeChanged (bool robotCode)
 {
     LOG << "Robot code status set to" << robotCode;
+    m_robotCodeLog.append (qMakePair<qint64, bool> (currentTime(), robotCode));
 }
 
 /**
@@ -144,6 +153,7 @@ void DSEventLogger::onRobotCodeChanged (bool robotCode)
 void DSEventLogger::onFMSCommunicationsChanged (bool connected)
 {
     LOG << "FMS communications set to" << connected;
+    m_fmsCommsLog.append (qMakePair<qint64, bool> (currentTime(), connected));
 }
 
 /**
@@ -152,6 +162,7 @@ void DSEventLogger::onFMSCommunicationsChanged (bool connected)
 void DSEventLogger::onRadioCommunicationsChanged (bool connected)
 {
     LOG << "Radio communications set to" << connected;
+    m_radioCommsLog.append (qMakePair<qint64, bool> (currentTime(), connected));
 }
 
 /**
@@ -160,6 +171,7 @@ void DSEventLogger::onRadioCommunicationsChanged (bool connected)
 void DSEventLogger::onRobotCommunicationsChanged (bool connected)
 {
     LOG << "Robot communications set to" << connected;
+    m_robotCommsLog.append (qMakePair<qint64, bool> (currentTime(), connected));
 }
 
 /**
@@ -168,6 +180,8 @@ void DSEventLogger::onRobotCommunicationsChanged (bool connected)
 void DSEventLogger::onEmergencyStoppedChanged (bool emergencyStopped)
 {
     LOG << "ESTOP set to" << emergencyStopped;
+    m_emergencyStopLog.append (qMakePair<qint64, bool> (currentTime(),
+                               emergencyStopped));
 }
 
 /**
@@ -176,6 +190,8 @@ void DSEventLogger::onEmergencyStoppedChanged (bool emergencyStopped)
 void DSEventLogger::onControlModeChanged (DriverStation::Control mode)
 {
     LOG << "Robot control mode set to" << mode;
+    m_controlModeLog.append (qMakePair<qint64, int> (currentTime(),
+                                                     (int) mode));
 }
 
 /**
@@ -192,6 +208,13 @@ void DSEventLogger::onAllianceChanged (DriverStation::Alliance alliance)
 void DSEventLogger::onPositionChanged (DriverStation::Position position)
 {
     LOG << "Team position set to" << position;
+}
+
+/**
+ * Saves the current log information to a local file using the JSON format
+ */
+void DSEventLogger::saveData()
+{
 }
 
 /**
@@ -234,4 +257,13 @@ void DSEventLogger::connectSlots()
              this, &DSEventLogger::onAllianceChanged);
     connect (ds,   &DriverStation::positionChanged,
              this, &DSEventLogger::onPositionChanged);
+}
+
+/**
+ * Returns the current time signature
+ */
+qint64 DSEventLogger::currentTime()
+{
+    QDateTime time = QDateTime::currentDateTime();
+    return time.toMSecsSinceEpoch();
 }

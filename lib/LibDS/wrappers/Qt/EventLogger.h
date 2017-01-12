@@ -20,6 +20,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+#include <QList>
 #include <QObject>
 
 #include "DriverStation.h"
@@ -36,7 +37,7 @@ private:
     ~DSEventLogger();
 
 private slots:
-    void saveData();
+    void saveDataLoop();
     void onCANUsageChanged (int usage);
     void onCPUUsageChanged (int usage);
     void onRAMUsageChanged (int usage);
@@ -55,5 +56,22 @@ private slots:
     void onPositionChanged (DriverStation::Position position);
 
 private:
+    void saveData();
     void connectSlots();
+    qint64 currentTime();
+
+private:
+    QList<QPair<qint64, int>> m_canUsageLog;
+    QList<QPair<qint64, int>> m_cpuUsageLog;
+    QList<QPair<qint64, int>> m_ramUsageLog;
+    QList<QPair<qint64, bool>> m_enabledLog;
+    QList<QPair<qint64, int>> m_diskUsageLog;
+    QList<QPair<qint64, float>> m_voltageLog;
+    QList<QPair<qint64, bool>> m_fmsCommsLog;
+    QList<QPair<qint64, bool>> m_robotCodeLog;
+    QList<QPair<qint64, bool>> m_radioCommsLog;
+    QList<QPair<qint64, bool>> m_robotCommsLog;
+    QList<QPair<qint64, int>> m_controlModeLog;
+    QList<QPair<qint64, QString>> m_messagesLog;
+    QList<QPair<qint64, bool>> m_emergencyStopLog;
 };
