@@ -40,22 +40,22 @@ ColumnLayout {
     }
 
     //
-    // A large label displaying the application name
+    // A large label displaying the application name and version
     //
     Label {
         size: large
-        text: appDspName
         font.bold: true
+        text: appDspName + " " + appVersion
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
     //
-    // A medium label displaying the application version
+    // A medium label displaying the LibDS version
     //
     Label {
         size: medium
-        text: qsTr ("Version") + " " + appVersion
         anchors.horizontalCenter: parent.horizontalCenter
+        text: qsTr ("Using LibDS") + " v" + DS.libDSVersion
     }
 
     //
