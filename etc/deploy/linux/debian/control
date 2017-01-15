@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Alex Spataru <alex_spataru@outlook.com>
 Build-Depends: debhelper, libsdl2-dev, qtbase5-dev, qttools5-dev, build-essential, libqt5webkit5-dev, qtmultimedia5-dev, qtdeclarative5-dev, qttools5-dev-tools, qt5-qmake
 Standards-Version: 3.9.6
-Homepage: http://qdriverstation.sf.net/
+Homepage: http://frc-utilities.github.io/
 
 Package: qdriverstation
 Architecture: any
