@@ -22,6 +22,7 @@
 
 #include <QList>
 #include <QObject>
+#include <QElapsedTimer>
 
 #include "DriverStation.h"
 
@@ -32,9 +33,21 @@ class DSEventLogger : public QObject
 public:
     static DSEventLogger* getInstance();
 
+    QString logsPath() const;
+    static void messageHandler (QtMsgType type,
+                                const QMessageLogContext& context,
+                                const QString& data);
+
 private:
     DSEventLogger();
     ~DSEventLogger();
+
+    void handleMessage (const QtMsgType type, const QString& data);
+
+public slots:
+    void init();
+    void openLogsPath();
+    void openCurrentLog();
 
 private slots:
     void saveDataLoop();
@@ -61,6 +74,11 @@ private:
     qint64 currentTime();
 
 private:
+    bool m_init;
+    FILE* m_dump;
+    QString m_currentLog;
+    QElapsedTimer m_timer;
+
     QList<QPair<qint64, int>> m_canUsageLog;
     QList<QPair<qint64, int>> m_cpuUsageLog;
     QList<QPair<qint64, int>> m_ramUsageLog;

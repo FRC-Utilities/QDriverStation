@@ -22,6 +22,7 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
+import QtQuick.Controls 1.4
 
 import "../Widgets"
 import "../Globals.js" as Globals
@@ -38,6 +39,23 @@ ColumnLayout {
     }
 
     //
+    // Logs menu
+    //
+    Menu {
+        id: logsContextMenu
+
+        MenuItem {
+            text: qsTr ("Open Application Logs")
+            onTriggered: DSLogger.openLogsPath()
+        }
+
+        MenuItem {
+            text: qsTr ("Open Current Log")
+            onTriggered: DSLogger.openCurrentLog()
+        }
+    }
+
+    //
     // Draw the action buttons
     //
     RowLayout {
@@ -46,7 +64,7 @@ ColumnLayout {
 
         Button {
             text: qsTr ("Logs") + "..."
-            onClicked: app.showLogsWindow()
+            onClicked: logsContextMenu.popup()
         }
 
         Item {

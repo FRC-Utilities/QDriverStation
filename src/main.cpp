@@ -37,6 +37,7 @@
 //------------------------------------------------------------------------------
 
 #include <stdio.h>
+#include <EventLogger.h>
 #include <DriverStation.h>
 #include <QSimpleUpdater.h>
 
@@ -233,8 +234,12 @@ int main (int argc, char* argv[])
     Shortcuts shortcuts;
     Dashboards dashboards;
     QJoysticks* qjoysticks = QJoysticks::getInstance();
+    DSEventLogger* dslogger = DSEventLogger::getInstance();
     QSimpleUpdater* updater = QSimpleUpdater::getInstance();
     DriverStation* driverstation = DriverStation::getInstance();
+
+    /* Install the LibDS event logger */
+    qInstallMessageHandler (dslogger->messageHandler);
 
     /* Configure the shortcuts handler and start the DS */
     app.installEventFilter (&shortcuts);
@@ -256,6 +261,7 @@ int main (int argc, char* argv[])
     engine.rootContext()->setContextProperty ("appWebsite",    APP_WEBSITE);
     engine.rootContext()->setContextProperty ("appRepBugs",    APP_REPBUGS);
     engine.rootContext()->setContextProperty ("UpdaterUrl",    URL_UPDATER);
+    engine.rootContext()->setContextProperty ("DSLogger",      dslogger);
     engine.rootContext()->setContextProperty ("DS",            driverstation);
     engine.load (QUrl (QStringLiteral ("qrc:/qml/main.qml")));
 
