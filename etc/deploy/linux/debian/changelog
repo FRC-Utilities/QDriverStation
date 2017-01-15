@@ -3,7 +3,7 @@ qdriverstation (17.01) stable; urgency=low
   * Switch to the new LibDS-C platform
   * Re-implement the logging system
 
- -- Alex Spataru <alex_spataru@outlook.com>  Mon, 24 Oct 2016 01:00:00 +0100
+ -- Alex Spataru <alex_spataru@outlook.com>  Sun, 15 Jan 2017 01:00:00 +0100
 
 qdriverstation (16.08) stable; urgency=low
 
