@@ -4,7 +4,7 @@
 
 - Transition to LibDS-C, which does not depend on Qt and is more efficient
 - Re-implement logging system
-- Avoid crashes when inputing invalid network addresses
+- Avoid crashes when inputting invalid network addresses
 - Change settings dialog buttons to be more user friendly
 - Minor QML UI improvements/changes
 
