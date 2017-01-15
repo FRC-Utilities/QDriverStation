@@ -134,18 +134,24 @@ void CFG_ReconfigureAddresses (const int flags)
 {
     if (DS_CurrentProtocol()) {
         if (flags & RECONFIGURE_FMS) {
+            bstring address = DS_GetAppliedFMSAddress();
             DS_SocketChangeAddress (DS_CurrentProtocol()->fms_socket,
-                                    DS_GetAppliedFMSAddress());
+                                    address);
+            DS_FREESTR (address);
         }
 
         if (flags & RECONFIGURE_RADIO) {
+            bstring address = DS_GetAppliedRadioAddress();
             DS_SocketChangeAddress (DS_CurrentProtocol()->radio_socket,
-                                    DS_GetAppliedRadioAddress());
+                                    address);
+            DS_FREESTR (address);
         }
 
         if (flags & RECONFIGURE_ROBOT) {
+            bstring address = DS_GetAppliedRobotAddress();
             DS_SocketChangeAddress (DS_CurrentProtocol()->robot_socket,
-                                    DS_GetAppliedRobotAddress());
+                                    address);
+            DS_FREESTR (address);
         }
     }
 }
