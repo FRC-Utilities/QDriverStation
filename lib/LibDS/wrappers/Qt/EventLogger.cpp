@@ -181,6 +181,7 @@ void DSEventLogger::init()
         /* Get app info */
         QString appN = qApp->applicationName();
         QString appV = qApp->applicationVersion();
+        QString ldsV = DriverStation::libDSVersion();
         QString time = GET_DATE_TIME ("MMM dd yyyy - HH:mm:ss AP");
 
         /* Get dump directoru */
@@ -222,12 +223,14 @@ void DSEventLogger::init()
 
         /* Format app info */
         time.prepend ("Log created on:      ");
+        ldsV.prepend ("LibDS version:       ");
         sysV.prepend ("Operating System:    ");
         appN.prepend ("Application name:    ");
         appV.prepend ("Application version: ");
 
         /* Append app info */
         fprintf (m_dump, "%s\n",   PRINT (time));
+        fprintf (m_dump, "%s\n",   PRINT (ldsV));
         fprintf (m_dump, "%s\n",   PRINT (sysV));
         fprintf (m_dump, "%s\n",   PRINT (appN));
         fprintf (m_dump, "%s\n\n", PRINT (appV));

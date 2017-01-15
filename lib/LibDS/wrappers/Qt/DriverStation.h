@@ -141,6 +141,9 @@ class DriverStation : public QObject
     Q_PROPERTY (QStringList protocols
                 READ protocols
                 CONSTANT)
+    Q_PROPERTY (QString libDSVersion
+                READ libDSVersion
+                CONSTANT)
     Q_PROPERTY (int fmsPacketLoss
                 READ fmsPacketLoss)
     Q_PROPERTY (int radioPacketLoss
@@ -205,6 +208,8 @@ public:
         qmlRegisterType<DriverStation> ("DriverStation", 1, 0, "LibDS");
 #endif
     }
+
+    static QString libDSVersion();
 
     int teamNumber() const;
     int joystickCount() const;

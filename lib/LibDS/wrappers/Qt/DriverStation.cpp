@@ -121,6 +121,14 @@ int DriverStation::robotPacketLoss() const
 }
 
 /**
+ * Returns the version of LibDS as a string
+ */
+QString DriverStation::libDSVersion()
+{
+    return QString (LIB_DS_VERSION);
+}
+
+/**
  * Returns the team number used by the LibDS,
  * use the \c setTeamNumber() function to change it
  */
