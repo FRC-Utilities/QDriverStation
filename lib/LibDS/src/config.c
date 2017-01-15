@@ -103,8 +103,9 @@ static void create_robot_event (const DS_EventType type)
 void CFG_AddNotification (bstring msg)
 {
     if (msg) {
-        bstring notification = bfromcstr ("<font color=#0f0>LibDS: </font>");
-        bconcat (notification, msg);
+        bstring notification = bfromcstr ("<font color=#aaa>** LibDS: ");
+        bconcat (notification, msg),
+                bconcat (notification, bfromcstr ("</font>"));
         CFG_AddNetConsoleMessage (notification);
     }
 }

@@ -5,7 +5,7 @@
 - Transition to LibDS-C, which does not depend on Qt and is more efficient
 - Re-implement logging system
 - Avoid crashes when inputing invalid network addresses
-- Change 'Close' button to 'Apply' in settings dialog
+- Change settings dialog buttons to be more user friendly
 - Minor QML UI improvements/changes
 
 ### QDriverStation 16.08

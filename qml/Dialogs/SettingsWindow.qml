@@ -269,11 +269,16 @@ Window {
             }
 
             Button {
-                text: qsTr ("Apply")
+                text: qsTr ("OK")
                 onClicked: {
                     apply()
                     close()
                 }
+            }
+
+            Button {
+                text: qsTr ("Apply")
+                onClicked: apply()
             }
         }
     }

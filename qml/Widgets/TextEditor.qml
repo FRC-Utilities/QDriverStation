@@ -144,6 +144,7 @@ Item {
             anchors {
                 left: parent.left
                 right: parent.right
+                margins: Globals.scale (5)
             }
         }
     }
