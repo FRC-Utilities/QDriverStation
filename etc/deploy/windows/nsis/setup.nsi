@@ -27,15 +27,15 @@
 !define VERSIONMAJOR                 17
 !define VERSIONMINOR                 01
 !define VERSIONBUILD                 0
-!define ESTIMATED_SIZE               61000
+!define ESTIMATED_SIZE               65000
 !define MUI_ABORTWARNING
 !define INSTALL_DIR                  "$PROGRAMFILES\${APPNAME}"
 !define MUI_FINISHPAGE_RUN
 !define MUI_FINISHPAGE_RUN_TEXT      "Run ${APPNAME}"
 !define MUI_FINISHPAGE_RUN_FUNCTION  "RunApplication"
 !define MUI_FINISHPAGE_LINK          "Visit project website"
-!define MUI_FINISHPAGE_LINK_LOCATION "http://qdriverstation.sourceforge.net"
-!define MUI_FINISHPAGE_SHOWREADME    "${INSTALL_DIR}\Readme-QDS.txt"
+!define MUI_FINISHPAGE_LINK_LOCATION "http://frc-utilities.github.io"
+!define MUI_WELCOMEPAGE_TITLE        "Welcome to the QDriverStation installer!"
 
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "license.txt"
