@@ -44,13 +44,6 @@ Item {
     }
 
     //
-    // Display the logs window (from anywhere in the app)
-    //
-    function showLogsWindow() {
-        logsWindow.show()
-    }
-
-    //
     // Load the fonts used by the application
     //
     FontLoader { source: Qt.resolvedUrl ("qrc:/fonts/UbuntuMono.ttf")     }
@@ -81,13 +74,6 @@ Item {
             if (!visible)
                 Qt.quit()
         }
-    }
-
-    //
-    // Logs windows
-    //
-    LogsWindow {
-        id: logsWindow
     }
 
     //

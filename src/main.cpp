@@ -228,18 +228,18 @@ int main (int argc, char* argv[])
     isUnx = true;
 #endif
 
+    /* Install the LibDS event logger */
+    DSEventLogger* dslogger = DSEventLogger::getInstance();
+    qInstallMessageHandler (dslogger->messageHandler);
+
     /* Initialize application modules */
     Beeper beeper;
     Utilities utilities;
     Shortcuts shortcuts;
     Dashboards dashboards;
     QJoysticks* qjoysticks = QJoysticks::getInstance();
-    DSEventLogger* dslogger = DSEventLogger::getInstance();
     QSimpleUpdater* updater = QSimpleUpdater::getInstance();
     DriverStation* driverstation = DriverStation::getInstance();
-
-    /* Install the LibDS event logger */
-    qInstallMessageHandler (dslogger->messageHandler);
 
     /* Configure the shortcuts handler and start the DS */
     app.installEventFilter (&shortcuts);
