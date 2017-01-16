@@ -2,19 +2,19 @@
    "updates":{
       "windows":{
          "open-url":"http://github.com/frc-utilities/qdriverstation/releases/latest",
-         "latest-version":"16.08",
+         "latest-version":"17.01",
          "download-url":"",
          "changelog":""
       },
       "osx":{
          "open-url":"http://github.com/frc-utilities/qdriverstation/releases/latest",
-         "latest-version":"16.08",
+         "latest-version":"17.01",
          "download-url":"",
          "changelog":""
       },
       "linux":{
          "open-url":"http://github.com/frc-utilities/qdriverstation/releases/latest",
-         "latest-version":"16.08",
+         "latest-version":"17.01",
          "download-url":"",
          "changelog":""
       }
