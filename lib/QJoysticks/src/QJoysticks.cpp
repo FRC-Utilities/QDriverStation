@@ -21,7 +21,6 @@
  */
 
 #include <QDebug>
-#include <QThread>
 #include <QSettings>
 #include <QJoysticks.h>
 #include <QJoysticks/SDL_Joysticks.h>
@@ -32,14 +31,6 @@ QJoysticks::QJoysticks()
     /* Initialize input methods */
     m_sdlJoysticks = new SDL_Joysticks;
     m_virtualJoystick = new VirtualJoystick;
-
-    /* Move SDL handler to another thread */
-    m_thread = new QThread;
-    m_thread->start (QThread::NormalPriority);
-    m_sdlJoysticks->moveToThread (m_thread);
-
-    /* Destroy the thread when it quits */
-    connect (m_thread, SIGNAL (finished()), m_thread, SLOT (deleteLater()));
 
     /* Configure SDL joysticks */
     connect (sdlJoysticks(),    &SDL_Joysticks::POVEvent,
@@ -80,8 +71,6 @@ QJoysticks::~QJoysticks()
     delete m_settings;
     delete m_sdlJoysticks;
     delete m_virtualJoystick;
-
-    m_thread->exit();
 }
 
 /**
