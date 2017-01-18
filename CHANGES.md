@@ -1,5 +1,9 @@
 # Changes
 
+### QDriverStation 17.01.1
+
+- Fix issue in which joystick input was not detected
+
 ### QDriverStation 17.01
 
 - Transition to LibDS-C, which does not depend on Qt and is more efficient
