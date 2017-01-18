@@ -2,7 +2,7 @@ qdriverstation (17.01.1) stable; urgency=low
 
   * Fix issue in which joystick input is not detected
 
- -- Alex Spataru <alex_spataru@outlook.com>  Wen, 18 Jan 2017 01:00:00 +0100
+ -- Alex Spataru <alex_spataru@outlook.com>  Wed, 18 Jan 2017 01:00:00 +0100
  
 qdriverstation (17.01) stable; urgency=low
 
