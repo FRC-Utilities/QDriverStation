@@ -91,7 +91,7 @@ static void server_loop (DS_Socket* ptr)
     int rc, fd;
     fd_set set;
     struct timeval tv;
-    set_socket_block (ptr->info.sock_in, 1);
+    set_socket_block (ptr->info.sock_in, 0);
 
 #if defined _WIN32
     fd = 0;
