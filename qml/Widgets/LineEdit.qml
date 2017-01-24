@@ -98,9 +98,4 @@ Item {
         anchors.margins: Globals.scale (5)
         selectionColor: Globals.Colors.HighlightColor
     }
-
-    //
-    // Beep when the text is changed
-    //
-    onTextChanged: enabled ? Globals.normalBeep() : undefined
 }
