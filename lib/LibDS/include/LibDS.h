@@ -28,7 +28,7 @@
 extern "C" {
 #endif
 
-#define LIB_DS_VERSION "2.0.0"
+#define LIB_DS_VERSION "2.0.1"
 
 #include "DS_Timer.h"
 #include "DS_Types.h"
