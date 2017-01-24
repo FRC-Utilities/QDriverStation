@@ -21,18 +21,11 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "DS_Timer.h"
-#include "DS_Array.h"
 #include "DS_Utils.h"
 #include "DS_Socket.h"
 
 #include <socky.h>
 #include <bstraux.h>
-
-/**
- * Holds the sockets in a dynamic array (for automatic closing)
- */
-static DS_Array sockets;
 
 /**
  * Returns the given \a number as a string
@@ -88,41 +81,32 @@ static void read_socket (DS_Socket* ptr)
  */
 static void server_loop (DS_Socket* ptr)
 {
-    if (ptr) {
-        /* Set a 5-ms timeout on Windows */
-#if defined _WIN32
-        struct timeval tv;
+    if (!ptr)
+        return;
+
+    int rc, fd;
+    fd_set set;
+    struct timeval tv;
+    set_socket_block (ptr->info.sock_in, 0);
+
+    while (ptr->info.server_init == 1 && ptr->info.sock_in > 0) {
         tv.tv_sec = 0;
-        tv.tv_usec = 5000;
-#endif
+        tv.tv_usec = 5000 * 100;
 
-        /* Make the socket non-blocking on Windows */
+        FD_ZERO (&set);
+        FD_SET (ptr->info.sock_in, &set);
+
 #if defined _WIN32
-        set_socket_block (ptr->info.sock_in, 0);
-#endif
-
-        /* Periodicaly check if there is data available on the socket */
-        while (ptr->info.server_init == 1) {
-            int rc;
-
-            /* Set the file descriptor */
-            fd_set set;
-            FD_ZERO (&set);
-            FD_SET (ptr->info.sock_in, &set);
-
-            /* Run select */
-#if defined _WIN32
-            rc = select (0, &set, NULL, NULL, &tv);
+        fd = 0;
 #else
-            rc = select (ptr->info.sock_in + 1, &set, NULL, NULL, NULL);
+        fd = ptr->info.sock_in + 1;
 #endif
 
-            /* Data is available, read it */
-            if (rc > 0) {
-                if (FD_ISSET (ptr->info.sock_in, &set))
-                    read_socket (ptr);
-            }
-        }
+        rc = select (fd, &set, NULL, NULL, &tv);
+        if (rc > 0 && FD_ISSET (ptr->info.sock_in, &set))
+            read_socket (ptr);
+
+        fsync (ptr->info.sock_in);
     }
 }
 
@@ -215,7 +199,6 @@ DS_Socket* DS_SocketEmpty()
 void Sockets_Init()
 {
     sockets_init (1);
-    DS_ArrayInit (&sockets, sizeof (DS_Socket) * 5);
 }
 
 /**
@@ -223,15 +206,6 @@ void Sockets_Init()
  */
 void Sockets_Close()
 {
-    /* Close all sockets */
-    int i = 0;
-    for (i = 0; i < (int) sockets.used; ++i)
-        DS_SocketClose ((DS_Socket*) sockets.data [i]);
-
-    /* Free socket array */
-    DS_ArrayFree (&sockets);
-
-    /* Close the sockets API */
     sockets_exit();
 }
 
