@@ -80,35 +80,49 @@ static void read_socket (DS_Socket* ptr)
 }
 
 /**
- * Continuously queries the OS to check if data has been written on the
- * given socket \a ptr
+ * Runs the server socket loop, which uses the \c select() function
+ * to copy received data into the socket's buffer only when the
+ * operating system detects that the socket received some data.
+ *
+ * \param ptr a pointer to a \c DS_Socket structure
  */
 static void server_loop (DS_Socket* ptr)
 {
-    if (!ptr)
-        return;
-
-    int rc, fd;
-    fd_set set;
-    struct timeval tv;
-    set_socket_block (ptr->info.sock_in, 0);
-
+    if (ptr) {
+        /* Set a 5-ms timeout on Windows */
 #if defined _WIN32
-    fd = 0;
-#else
-    fd = ptr->info.sock_in + 1;
+        struct timeval tv;
+        tv.tv_sec = 0;
+        tv.tv_usec = 5000;
 #endif
 
-    while (ptr->info.server_init) {
-        tv.tv_sec = 0;
-        tv.tv_usec = 5000 * 100;
+        /* Make the socket non-blocking on Windows */
+#if defined _WIN32
+        set_socket_block (ptr->info.sock_in, 0);
+#endif
 
-        FD_ZERO (&set);
-        FD_SET (ptr->info.sock_in, &set);
+        /* Periodicaly check if there is data available on the socket */
+        while (ptr->info.server_init == 1) {
+            int rc;
 
-        rc = select (fd, &set, NULL, NULL, &tv);
-        if (rc > 0 && FD_ISSET (ptr->info.sock_in, &set))
-            read_socket (ptr);
+            /* Set the file descriptor */
+            fd_set set;
+            FD_ZERO (&set);
+            FD_SET (ptr->info.sock_in, &set);
+
+            /* Run select */
+#if defined _WIN32
+            rc = select (0, &set, NULL, NULL, &tv);
+#else
+            rc = select (ptr->info.sock_in + 1, &set, NULL, NULL, NULL);
+#endif
+
+            /* Data is available, read it */
+            if (rc > 0) {
+                if (FD_ISSET (ptr->info.sock_in, &set))
+                    read_socket (ptr);
+            }
+        }
     }
 }
 
@@ -162,8 +176,7 @@ static void* create_socket (void* data)
     ptr->info.client_init = (ptr->info.sock_out > 0);
 
     /* Start server loop */
-    if (ptr->info.server_init && ptr->info.client_init)
-        server_loop (ptr);
+    server_loop (ptr);
 
     /* Exit */
     return NULL;
@@ -259,14 +272,14 @@ void DS_SocketClose (DS_Socket* ptr)
     ptr->info.server_init = 0;
     ptr->info.client_init = 0;
 
+    /* Close sockets */
+    socket_close_threaded (ptr->info.sock_in, NULL);
+    socket_close_threaded (ptr->info.sock_out, NULL);
+
     /* Clear data buffers */
     DS_FREESTR (ptr->info.buffer);
     DS_FREESTR (ptr->info.in_service);
     DS_FREESTR (ptr->info.out_service);
-
-    /* Close sockets */
-    socket_close (ptr->info.sock_in);
-    socket_close (ptr->info.sock_out);
 
     /* Reset socket information structure */
     ptr->info.sock_in = -1;
@@ -346,12 +359,22 @@ void DS_SocketChangeAddress (DS_Socket* ptr, const bstring address)
     if (!ptr || !address)
         return;
 
+    /* Copy address (and load fallback IP if address is invalid) */
+    bstring ip = bstrcpy (address);
+    if (DS_StringIsEmpty (ip)) {
+        DS_FREESTR (ip);
+        ip = DS_FallBackAddress;
+    }
+
     /* Close the socket */
     DS_SocketClose (ptr);
 
     /* Change the address */
-    DS_FREESTR (ptr->address);
-    ptr->address = bstrcpy (address);
+    if (bstricmp (ptr->address, ip) != 0) {
+        DS_FREESTR (ptr->address);
+        ptr->address = ip;
+    } else
+        DS_FREESTR (ip);
 
     /* Re-open the socket */
     DS_SocketOpen (ptr);
