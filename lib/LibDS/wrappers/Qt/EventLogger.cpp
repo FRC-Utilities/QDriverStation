@@ -24,6 +24,7 @@
 
 #include <stdio.h>
 
+#include <QDir>
 #include <QFile>
 #include <QDebug>
 #include <QTimer>
@@ -31,6 +32,7 @@
 #include <QDateTime>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QApplication>
 #include <QJsonDocument>
 #include <QDesktopServices>
 

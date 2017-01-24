@@ -32,12 +32,6 @@
     #define GET_ERR errno
 #endif
 
-typedef struct _close_socket {
-    int sfd;
-    int* error;
-    int autoDelete;
-} _close_socket_info;
-
 /**
  * Returns \c 0 if the given socket file descriptor is invalid
  *
@@ -230,46 +224,6 @@ static int create_server (const char* port, const int family,
     /* Server socket setup correctly */
     freeaddrinfo (info);
     return sfd;
-}
-
-/**
- * Casts the given \a data pointer into a \a CloseSocketData structure
- * and attempts to shutdown and close the \a sfd specified in the structure.
- * The error code will be written in the \a error field of the structure
- */
-static void* close_socket (void* data)
-{
-    /* Invalid pointer */
-    if (!data)
-        return NULL;
-
-    /* Cast generic pointer to data structure */
-    _close_socket_info* info = (_close_socket_info*) data;
-    if (info->error == NULL) {
-        info->error = (int*) calloc (1, sizeof (int));
-        *info->error = -1;
-    }
-
-    /* The socket descriptor is invalid */
-    if (!valid_sfd (info->sfd))
-        return NULL;
-
-    /* Disable socket IO */
-    socket_shutdown (info->sfd, SOCKY_READ | SOCKY_WRITE);
-
-    /* Close the socket */
-#if defined _WIN32
-    *info->error = closesocket (info->sfd);
-#else
-    *info->error = close (info->sfd);
-#endif
-
-    /* De-allocate the pointer */
-    if (info->autoDelete != 0)
-        free (data);
-
-    /* Exit thread */
-    return NULL;
 }
 
 /**
@@ -503,37 +457,10 @@ int create_server_tcp (const char* port, const int family, const int flags)
  */
 int socket_close (const int sfd)
 {
-    /* Initialize socket structure and close socket */
-    _close_socket_info* info = calloc (1, sizeof (_close_socket_info));;
-    info->sfd = sfd;
-    info->autoDelete = 0;
-    close_socket ((void*) info);
+    if (!valid_sfd (sfd))
+        return -1;
 
-    /* Get error code and de-allocate structure */
-    int error = *info->error;
-    free (info);
-
-    /* Return error code */
-    return error;
-}
-
-/**
- * Closes the given \a sfd in a different thread and writes the return code in
- * the given \a error address
- *
- * \param sfd the socket file descriptor to close
- * \param error address to the variable in which to write the return code of
- *              the close operation
- */
-void socket_close_threaded (int sfd, int* error)
-{
-    _close_socket_info* info = calloc (1, sizeof (_close_socket_info));
-    info->sfd = sfd;
-    info->error = error;
-    info->autoDelete = 1;
-
-    pthread_t thread;
-    pthread_create (&thread, NULL, &close_socket, (void*) info);
+    return socket_shutdown (sfd, SOCKY_READ | SOCKY_WRITE);
 }
 
 /**
