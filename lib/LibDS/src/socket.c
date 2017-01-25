@@ -340,16 +340,23 @@ void DS_SocketChangeAddress (DS_Socket* ptr, const bstring address)
         ip = DS_FallBackAddress;
     }
 
-    /* Close the socket */
-    DS_SocketClose (ptr);
+    /* Re-assign the address only if its different from input IP */
+    if (ptr->address) {
+        if (bstrcmp (ptr->address, ip) != 0) {
+            DS_SocketClose (ptr);
+            DS_FREESTR (ptr->address);
+            ptr->address = ip;
+            DS_SocketOpen (ptr);
+        }
 
-    /* Change the address */
-    if (bstricmp (ptr->address, ip) != 0) {
-        DS_FREESTR (ptr->address);
+        else
+            DS_FREESTR (ip);
+    }
+
+    /* Socket address is empty, remplaze it directly */
+    else {
+        DS_SocketClose (ptr);
         ptr->address = ip;
-    } else
-        DS_FREESTR (ip);
-
-    /* Re-open the socket */
-    DS_SocketOpen (ptr);
+        DS_SocketOpen (ptr);
+    }
 }
