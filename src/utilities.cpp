@@ -273,7 +273,7 @@ void Utilities::calculateScaleRatio()
     m_ratio = (qreal) GetDeviceCaps (screen, LOGPIXELSX) / 96;
     ReleaseDC (Q_NULLPTR, screen);
 #elif defined Q_OS_LINUX
-    m_ratio = qApp->primaryScreen()->physicalDotsPerInch() / 100;
+    m_ratio = qApp->primaryScreen()->physicalDotsPerInch() / 120;
 #endif
 
     /* Ensure that values between x.40 and x.65 round down to x.40 */
