@@ -2,7 +2,7 @@
 
 # Variables
 license=mit
-project="qdriverstation-17.01.1"
+project="qdriverstation-17.02"
 authorEmail="alex_spataru@outlook.com"
 
 # Remove old build (if found)
@@ -20,7 +20,7 @@ cd $project
 # Compile the QDriverStation
 mkdir build
 cd build
-qmake -qt5 ../../../../../../QDriverStation.pro
+qmake ../../../../../../QDriverStation.pro
 make -j4
 
 # Move QDriverStation binary and remove build files

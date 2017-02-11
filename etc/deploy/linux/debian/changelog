@@ -1,3 +1,9 @@
+qdriverstation (17.02) stable; urgency=low
+
+  * Fix communication issues with GNU/Linux
+
+ -- Alex Spataru <alex_spataru@outlook.com>  Wed, 18 Jan 2017 01:00:00 +0100
+ 
 qdriverstation (17.01.1) stable; urgency=low
 
   * Fix issue in which joystick input is not detected
