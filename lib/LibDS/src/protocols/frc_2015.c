@@ -325,7 +325,8 @@ static bstring get_timezone_data()
     /* Add timezone string */
     bconcat (data, tz);
     DS_FREESTR (tz);
-    DS_FREE (timeinfo);
+
+    /* DO NOT free timeinfo! */
 
     /* Return the obtained data */
     return data;

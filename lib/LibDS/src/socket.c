@@ -346,20 +346,19 @@ void DS_SocketChangeAddress (DS_Socket* ptr, const bstring address)
     /* Re-assign the address only if its different from input IP */
     if (ptr->address) {
         if (bstrcmp (ptr->address, ip) != 0) {
-            DS_SocketClose (ptr);
             DS_FREESTR (ptr->address);
             ptr->address = ip;
-            DS_SocketOpen (ptr);
         }
 
         else
             DS_FREESTR (ip);
     }
 
-    /* Socket address is empty, remplazc it directly */
-    else {
-        DS_SocketClose (ptr);
+    /* Socket address is empty, remplace it directly */
+    else
         ptr->address = ip;
-        DS_SocketOpen (ptr);
-    }
+
+    /* Re-open the socket */
+    DS_SocketClose (ptr);
+    DS_SocketOpen (ptr);
 }
