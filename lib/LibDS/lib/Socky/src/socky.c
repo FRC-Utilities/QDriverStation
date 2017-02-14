@@ -25,6 +25,8 @@
 #include <stdlib.h>
 #include <pthread.h>
 
+#define VERBOSE
+
 #if defined _WIN32
     static WSADATA WSA_DATA;
     #define GET_ERR WSAGetLastError()
@@ -503,18 +505,11 @@ int create_server_tcp (const char* port, const int family, const int flags)
  */
 int socket_close (const int sfd)
 {
-    /* Initialize socket structure and close socket */
-    _close_socket_info* info = calloc (1, sizeof (_close_socket_info));;
-    info->sfd = sfd;
-    info->autoDelete = 0;
-    close_socket ((void*) info);
-
-    /* Get error code and de-allocate structure */
-    int error = *info->error;
-    free (info);
-
-    /* Return error code */
-    return error;
+#if defined _WIN32
+    return closesocket (sfd);
+#else
+    return close (sfd);
+#endif
 }
 
 /**
