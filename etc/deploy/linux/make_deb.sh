@@ -20,7 +20,7 @@ cd $project
 # Compile the QDriverStation
 mkdir build
 cd build
-qmake ../../../../../../QDriverStation.pro
+qmake -qt5 ../../../../../../QDriverStation.pro
 make -j4
 
 # Move QDriverStation binary and remove build files
