@@ -2,13 +2,13 @@ Source: qdriverstation
 Section: utils
 Priority: optional
 Maintainer: Alex Spataru <alex_spataru@outlook.com>
-Build-Depends: debhelper, libsdl2-dev, qtbase5-dev, qttools5-dev, build-essential, libqt5webkit5-dev, qtmultimedia5-dev, qtdeclarative5-dev, qttools5-dev-tools, qt5-qmake
+Build-Depends: debhelper, libsdl2-dev, qtbase5-dev, qttools5-dev, build-essential, libqt5webkit5-dev, qtmultimedia5-dev, qtdeclarative5-dev, qttools5-dev-tools, qt5-default
 Standards-Version: 3.9.6
 Homepage: http://frc-utilities.github.io/
 
 Package: qdriverstation
 Architecture: any
-Depends: libsdl2-2.0-0 (>= 2.0), libqt5gui5 (>= 5.0), libqt5qml5 (>= 5.0), libqt5quick5 (>= 5.0), libqt5widgets5 (>= 5.0), libqt5network5 (>= 5.0), libqt5multimedia5 (>= 5.0), qml-module-qtquick2 (>= 5.0), qml-module-qtquick-window2 (>= 5.0), qml-module-qtquick-layouts (>= 5.0), qml-module-qtquick-controls (>= 5.0), qml-module-qt-labs-settings (>= 5.0), ${misc:Depends}, ${shlibs:Depends}
+Depends: libsdl2-2.0-0 (>= 2.0.0), libqt5gui5 (>= 5.0), libqt5qml5 (>= 5.0.0), libqt5quick5 (>= 5.0), libqt5widgets5 (>= 5.0.0), libqt5network5 (>= 5.0.0), libqt5multimedia5 (>= 5.0), libqt5declarative5 (>= 5.0), qml-module-qtquick2 (>= 5.0), qml-module-qtquick-window2 (>= 5.0), qml-module-qtquick-layouts (>= 5.0), qml-module-qtquick-controls (>= 5.0), qml-module-qt-labs-settings (>= 5.0), libqt5core5a (>= 5.0.0), libqt5gui5 (>= 5.0.0) | libqt5gui5-gles (>= 5.0.0)
 Description: Free and open-source clone of the FRC Driver Station
   The QDriverStation is a cross-platform and open-source alternative to the FRC Driver Station. It supports the FRC 2009-2014 communication protocol and the FRC 2015-2016 protocol. Joystick input is handled via SDL, however, you can also operate your robot with a keyboard-based joystick.
 
