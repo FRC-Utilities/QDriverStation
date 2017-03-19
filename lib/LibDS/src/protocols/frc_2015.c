@@ -97,8 +97,8 @@ static float decode_voltage (uint8_t upper, uint8_t lower)
 static void encode_voltage (float voltage, uint8_t* upper, uint8_t* lower)
 {
     if (upper && lower) {
-        upper[0] = (uint8_t) (voltage);
-        lower[0] = (uint8_t) (voltage - (int) voltage) * 100;
+        *upper = (uint8_t) (voltage);
+        *lower = (uint8_t) (voltage - (int) voltage) * 100;
     }
 }
 
