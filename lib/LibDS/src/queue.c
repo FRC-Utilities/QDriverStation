@@ -64,8 +64,10 @@ extern int DS_QueuePop (DS_Queue* queue)
 extern void DS_QueueFree (DS_Queue* queue)
 {
     /* Queue is NULL, abort */
-    if (!queue)
+    if (!queue) {
+        fprintf (stderr, "DS_QueueFree: received NULL parameter\n");
         return;
+    }
 
     /* Free all the items in the queue */
     int element;
@@ -114,8 +116,10 @@ void* DS_QueueGetFirst (DS_Queue* queue)
 void DS_QueuePush (DS_Queue* queue, void* item)
 {
     /* You can thank me later */
-    if (!queue)
+    if (!queue) {
+        fprintf (stderr, "DS_QueuePush: received NULL parameter\n");
         return;
+    }
 
     /* Queue is full, expand it */
     if (queue->count >= queue->capacity) {

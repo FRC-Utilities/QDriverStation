@@ -220,7 +220,7 @@ void DS_JoysticksAdd (const int axes, const int hats, const int buttons)
 {
     /* Joystick is empty */
     if (axes <= 0 && hats <= 0 && buttons <= 0) {
-        fprintf (stderr, "Cannot register empty joystick!\n");
+        fprintf (stderr, "DS_JoystickAdd: Cannot register empty joystick!\n");
         return;
     }
 

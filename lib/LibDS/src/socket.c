@@ -32,8 +32,10 @@
  */
 static void read_socket (DS_Socket* ptr)
 {
-    if (!ptr)
+    if (!ptr) {
+        fprintf (stderr, "read_socket: received NULL parameter\n");
         return;
+    }
 
     /* Initialize temporary buffer */
     int read = -1;
@@ -76,8 +78,10 @@ static void read_socket (DS_Socket* ptr)
  */
 static void server_loop (DS_Socket* ptr)
 {
-    if (!ptr)
+    if (!ptr) {
+        fprintf (stderr, "server_loop: received NULL parameter\n");
         return;
+    }
 
     int rc, fd;
     fd_set set;
@@ -218,12 +222,16 @@ void Sockets_Close (void)
 void DS_SocketOpen (DS_Socket* ptr)
 {
     /* Pointer is NULL */
-    if (!ptr)
+    if (!ptr) {
+        fprintf (stderr, "DS_SocketOpen: received NULL parameter\n");
         return;
+    }
 
     /* Socket is disabled */
-    if (ptr->disabled)
+    if (ptr->disabled) {
+        fprintf (stderr, "DS_SocketOpen: Socket %p is disabled, aborting\n", ptr);
         return;
+    }
 
     /* Stop the current thread (if any) */
     if (ptr->info.thread)
@@ -243,8 +251,10 @@ void DS_SocketOpen (DS_Socket* ptr)
 void DS_SocketClose (DS_Socket* ptr)
 {
     /* Check for NULL pointer */
-    if (!ptr)
+    if (!ptr) {
+        fprintf (stderr, "DS_SocketClose: received NULL parameter\n");
         return;
+    }
 
     /* Reset socket properties */
     ptr->info.server_init = 0;
@@ -362,8 +372,10 @@ int DS_SocketSend (DS_Socket* ptr, const bstring data)
 void DS_SocketChangeAddress (DS_Socket* ptr, const bstring address)
 {
     /* Pointers are invalid */
-    if (!ptr || !address)
+    if (!ptr || !address) {
+        fprintf (stderr, "DS_SocketChangeAddress: received NULL parameter(s)\n");
         return;
+    }
 
     /* Re-assign the address */
     DS_FREESTR (ptr->address);

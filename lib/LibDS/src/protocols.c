@@ -358,8 +358,10 @@ void Protocols_Close()
 void DS_ConfigureProtocol (DS_Protocol* ptr)
 {
     /* Pointer is NULL, abort */
-    if (!ptr)
+    if (!ptr) {
+        fprintf (stderr, "DS_ConfigureProtocol: received NULL parameter\n");
         return;
+    }
 
     /* Close previous protocol */
     close_protocol();

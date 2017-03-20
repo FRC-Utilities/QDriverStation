@@ -33,8 +33,10 @@
 void DS_ArrayFree (DS_Array* array)
 {
     /* Array pointer is NULL */
-    if (!array)
+    if (!array) {
+        fprintf (stderr, "DS_ArrayFree: received NULL parameter\n");
         return;
+    }
 
     /* De-allocate array data */
     if (array->size > 0)
@@ -56,12 +58,16 @@ void DS_ArrayFree (DS_Array* array)
 void DS_ArrayInsert (DS_Array* array, void* element)
 {
     /* Array pointer is NULL */
-    if (!array || !element)
+    if (!array || !element) {
+        fprintf (stderr, "DS_ArrayInsert: received NULL parameter\n");
         return;
+    }
 
     /* Array buffer is invalid */
-    if (!array->data)
+    if (!array->data) {
+        fprintf (stderr, "DS_ArrayInsert: data buffer of %p is NULL\n", array);
         return;
+    }
 
     /* Resize array if required */
     if (array->used == array->size) {
@@ -84,8 +90,10 @@ void DS_ArrayInsert (DS_Array* array, void* element)
 void DS_ArrayInit (DS_Array* array, size_t initial_size)
 {
     /* Array pointer is NULL */
-    if (!array)
+    if (!array) {
+        fprintf (stderr, "DS_ArrayInit: received NULL parameter\n");
         return;
+    }
 
     /* Allocate array data */
     array->data = realloc (array->data, initial_size);
