@@ -242,8 +242,10 @@ static int create_server (const char* port, const int family,
 static void* close_socket (void* data)
 {
     /* Invalid pointer */
-    if (!data)
+    if (!data) {
+        pthread_exit (NULL);
         return NULL;
+    }
 
     /* Cast generic pointer to data structure */
     _close_socket_info* info = (_close_socket_info*) data;
@@ -253,8 +255,10 @@ static void* close_socket (void* data)
     }
 
     /* The socket descriptor is invalid */
-    if (!valid_sfd (info->sfd))
+    if (!valid_sfd (info->sfd)) {
+        pthread_exit (NULL);
         return NULL;
+    }
 
     /* Disable socket IO */
     socket_shutdown (info->sfd, SOCKY_READ | SOCKY_WRITE);
@@ -271,7 +275,7 @@ static void* close_socket (void* data)
         free (data);
 
     /* Exit thread */
-    return NULL;
+    pthread_exit (NULL);
 }
 
 /**

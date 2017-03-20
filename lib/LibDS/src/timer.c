@@ -45,8 +45,10 @@ static int running = 0;
  */
 static void* update_timer (void* ptr)
 {
-    if (!ptr)
+    if (!ptr) {
+        pthread_exit (NULL);
         return NULL;
+    }
 
     DS_Timer* timer = (DS_Timer*) ptr;
 
@@ -61,7 +63,7 @@ static void* update_timer (void* ptr)
         DS_Sleep (timer->precision);
     }
 
-    return NULL;
+    pthread_exit (NULL);
 }
 
 /**

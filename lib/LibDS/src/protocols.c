@@ -266,8 +266,7 @@ static void* run_event_loop()
         DS_Sleep (5);
     }
 
-    pthread_exit (0);
-    return NULL;
+    pthread_exit (NULL);
 }
 
 /**

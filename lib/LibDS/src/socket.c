@@ -116,8 +116,10 @@ static void server_loop (DS_Socket* ptr)
 static void* create_socket (void* data)
 {
     /* Data pointer is NULL */
-    if (!data)
+    if (!data) {
+        pthread_exit (NULL);
         return NULL;
+    }
 
     /* Cast raw pointer to socket */
     DS_Socket* ptr = (DS_Socket*) data;
@@ -161,7 +163,7 @@ static void* create_socket (void* data)
     server_loop (ptr);
 
     /* Exit */
-    return NULL;
+    pthread_exit (NULL);
 }
 
 /**
@@ -336,27 +338,9 @@ void DS_SocketChangeAddress (DS_Socket* ptr, const bstring address)
     if (!ptr || !address)
         return;
 
-    /* Copy address (and load fallback IP if address is invalid) */
-    bstring ip = bstrcpy (address);
-    if (DS_StringIsEmpty (ip)) {
-        DS_FREESTR (ip);
-        ip = DS_FallBackAddress;
-    }
-
-    /* Re-assign the address only if its different from input IP */
-    if (ptr->address) {
-        if (bstrcmp (ptr->address, ip) != 0) {
-            DS_FREESTR (ptr->address);
-            ptr->address = ip;
-        }
-
-        else
-            DS_FREESTR (ip);
-    }
-
-    /* Socket address is empty, remplace it directly */
-    else
-        ptr->address = ip;
+    /* Re-assign the address */
+    DS_FREESTR (ptr->address);
+    ptr->address = bstrcpy (address);
 
     /* Re-open the socket */
     DS_SocketClose (ptr);
