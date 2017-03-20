@@ -369,7 +369,7 @@ void DS_RebootRobot (void)
 {
     if (DS_CurrentProtocol()) {
         DS_CurrentProtocol()->reboot_robot();
-        CFG_AddNetConsoleMessage (bfromcstr ("Rebooting robot..."));
+        CFG_AddNetConsoleMessage ("** LibDS: Rebooting robot...");
     }
 }
 
@@ -380,7 +380,7 @@ void DS_RestartRobotCode (void)
 {
     if (DS_CurrentProtocol()) {
         DS_CurrentProtocol()->restart_robot_code();
-        CFG_AddNetConsoleMessage (bfromcstr ("Restarting robot code..."));
+        CFG_AddNetConsoleMessage ("** LibDS: Restarting robot code...");
     }
 }
 
@@ -493,6 +493,5 @@ void DS_SetCustomRobotAddress (const char* address)
 void DS_SendNetConsoleMessage (const char* message)
 {
     if (DS_CurrentProtocol())
-        DS_SocketSend (DS_CurrentProtocol()->netconsole_socket,
-                       bfromcstr (message));
+        DS_SocketSend (&DS_CurrentProtocol()->netconsole_socket, bfromcstr (message));
 }

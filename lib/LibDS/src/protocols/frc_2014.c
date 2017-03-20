@@ -508,26 +508,26 @@ DS_Protocol* DS_GetProtocolFRC_2014 (void)
     protocol->max_button_count = max_buttons;
 
     /* Define FMS socket properties */
-    protocol->fms_socket = DS_SocketEmpty();
-    protocol->fms_socket->disabled = 0;
-    protocol->fms_socket->in_port = 1120;
-    protocol->fms_socket->out_port = 1160;
-    protocol->fms_socket->type = DS_SOCKET_UDP;
+    protocol->fms_socket = *DS_SocketEmpty();
+    protocol->fms_socket.disabled = 0;
+    protocol->fms_socket.in_port = 1120;
+    protocol->fms_socket.out_port = 1160;
+    protocol->fms_socket.type = DS_SOCKET_UDP;
 
     /* Define radio socket properties */
-    protocol->radio_socket = DS_SocketEmpty();
-    protocol->radio_socket->disabled = 1;
+    protocol->radio_socket = *DS_SocketEmpty();
+    protocol->radio_socket.disabled = 1;
 
     /* Define robot socket properties */
-    protocol->robot_socket = DS_SocketEmpty();
-    protocol->robot_socket->disabled = 0;
-    protocol->robot_socket->in_port = 1150;
-    protocol->robot_socket->out_port = 1110;
-    protocol->robot_socket->type = DS_SOCKET_UDP;
+    protocol->robot_socket = *DS_SocketEmpty();
+    protocol->robot_socket.disabled = 0;
+    protocol->robot_socket.in_port = 1150;
+    protocol->robot_socket.out_port = 1110;
+    protocol->robot_socket.type = DS_SOCKET_UDP;
 
     /* Define netconsole socket properties */
-    protocol->netconsole_socket = DS_SocketEmpty();
-    protocol->netconsole_socket->disabled = 1;
+    protocol->netconsole_socket = *DS_SocketEmpty();
+    protocol->netconsole_socket.disabled = 1;
 
     /* Return the pointer */
     return protocol;

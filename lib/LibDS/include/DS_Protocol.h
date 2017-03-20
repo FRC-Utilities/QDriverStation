@@ -61,10 +61,10 @@ typedef struct _protocol {
     int max_button_count;
     float max_battery_voltage;
 
-    DS_Socket* fms_socket;
-    DS_Socket* radio_socket;
-    DS_Socket* robot_socket;
-    DS_Socket* netconsole_socket;
+    DS_Socket fms_socket;
+    DS_Socket radio_socket;
+    DS_Socket robot_socket;
+    DS_Socket netconsole_socket;
 } DS_Protocol;
 
 extern void Protocols_Init();

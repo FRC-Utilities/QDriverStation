@@ -37,7 +37,7 @@ static void read_socket (DS_Socket* ptr)
 
     /* Initialize temporary buffer */
     int read = -1;
-    bstring data = DS_GetEmptyString (1024);
+    bstring data = DS_GetEmptyString (4096);
 
     /* Read TCP socket */
     if (ptr->type == DS_SOCKET_TCP)
@@ -56,6 +56,7 @@ static void read_socket (DS_Socket* ptr)
     /* We received some data, copy it to socket's buffer */
     if (read > 0) {
         ptr->info.buffer_size = read;
+        memset (ptr->info.buffer, 0, ptr->info.buffer_size);
 
         int i;
         for (i = 0; i < read; ++i)
@@ -225,7 +226,8 @@ void DS_SocketOpen (DS_Socket* ptr)
         return;
 
     /* Stop the current thread (if any) */
-    DS_StopThread (&ptr->info.thread);
+    if (ptr->info.thread)
+        DS_StopThread (&ptr->info.thread);
 
     /* Initialize the socket in another thread */
     ptr->info.thread = 0;
@@ -249,7 +251,7 @@ void DS_SocketClose (DS_Socket* ptr)
     ptr->info.client_init = 0;
 
     /* Close sockets */
-#ifdef __ANDROID
+#ifndef __ANDROID
     socket_close_threaded (ptr->info.sock_in, NULL);
     socket_close_threaded (ptr->info.sock_out, NULL);
 #else
@@ -324,7 +326,7 @@ int DS_SocketSend (DS_Socket* ptr, const bstring data)
         return -1;
 
     /* Socket is disabled or uninitialized */
-    if ((ptr->info.client_init == 0) || (ptr->disabled == 1))
+    if ((ptr->info.client_init == 0) || ptr->disabled)
         return -1;
 
     /* Get raw data */

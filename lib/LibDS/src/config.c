@@ -104,9 +104,9 @@ void CFG_AddNotification (bstring msg)
 {
     if (msg) {
         bstring notification = bfromcstr ("<font color=#aaa>** LibDS: ");
-        bconcat (notification, msg),
-                bconcat (notification, bfromcstr ("</font>"));
-        CFG_AddNetConsoleMessage (notification);
+        bconcat (notification, msg), bconcat (notification, bfromcstr ("</font>"));
+        CFG_AddNetConsoleMessage (bstr2cstr (notification, 0));
+        DS_FREESTR (notification);
     }
 }
 
@@ -116,12 +116,12 @@ void CFG_AddNotification (bstring msg)
  *
  * \a msg the message to display
  */
-void CFG_AddNetConsoleMessage (bstring msg)
+void CFG_AddNetConsoleMessage (const char* msg)
 {
     if (msg) {
         DS_Event event;
         event.netconsole.type = DS_NETCONSOLE_NEW_MESSAGE;
-        event.netconsole.message = msg;
+        event.netconsole.message = bfromcstr (msg);
         DS_AddEvent (&event);
     }
 }
@@ -138,19 +138,19 @@ void CFG_ReconfigureAddresses (const int flags)
 
     if (flags & RECONFIGURE_FMS) {
         bstring address = DS_GetAppliedFMSAddress();
-        DS_SocketChangeAddress (DS_CurrentProtocol()->fms_socket, address);
+        DS_SocketChangeAddress (&DS_CurrentProtocol()->fms_socket, address);
         DS_FREESTR (address);
     }
 
     if (flags & RECONFIGURE_RADIO) {
         bstring address = DS_GetAppliedRadioAddress();
-        DS_SocketChangeAddress (DS_CurrentProtocol()->radio_socket, address);
+        DS_SocketChangeAddress (&DS_CurrentProtocol()->radio_socket, address);
         DS_FREESTR (address);
     }
 
     if (flags & RECONFIGURE_ROBOT) {
         bstring address = DS_GetAppliedRobotAddress();
-        DS_SocketChangeAddress (DS_CurrentProtocol()->robot_socket, address);
+        DS_SocketChangeAddress (&DS_CurrentProtocol()->robot_socket, address);
         DS_FREESTR (address);
     }
 }

@@ -249,7 +249,7 @@ static void* close_socket (void* data)
 
     /* Cast generic pointer to data structure */
     _close_socket_info* info = (_close_socket_info*) data;
-    if (info->error == NULL) {
+    if (!info->error) {
         info->error = (int*) calloc (1, sizeof (int));
         *info->error = -1;
     }
@@ -271,7 +271,7 @@ static void* close_socket (void* data)
 #endif
 
     /* De-allocate the pointer */
-    if (info->autoDelete != 0)
+    if (info->autoDelete)
         free (data);
 
     /* Exit thread */
@@ -527,6 +527,7 @@ int socket_close (const int sfd)
 void socket_close_threaded (int sfd, int* error)
 {
     _close_socket_info* info = calloc (1, sizeof (_close_socket_info));
+
     info->sfd = sfd;
     info->error = error;
     info->autoDelete = 1;
