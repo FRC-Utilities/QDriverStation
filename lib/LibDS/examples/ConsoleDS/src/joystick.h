@@ -27,9 +27,9 @@
 extern "C" {
 #endif
 
-extern void init_joysticks();
-extern void close_joysticks();
-extern void update_joysticks();
+extern void init_joysticks (void);
+extern void close_joysticks (void);
+extern void update_joysticks (void);
 
 #ifdef __cplusplus
 }

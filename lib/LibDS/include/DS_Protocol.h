@@ -32,24 +32,24 @@ extern "C" {
 
 typedef struct _protocol {
     bstring name;
-    bstring (*fms_address)();
-    bstring (*radio_address)();
-    bstring (*robot_address)();
+    bstring (*fms_address) (void);
+    bstring (*radio_address) (void);
+    bstring (*robot_address) (void);
 
-    bstring (*create_fms_packet)();
-    bstring (*create_radio_packet)();
-    bstring (*create_robot_packet)();
+    bstring (*create_fms_packet) (void);
+    bstring (*create_radio_packet) (void);
+    bstring (*create_robot_packet) (void);
 
     int (*read_fms_packet) (const bstring);
     int (*read_radio_packet) (const bstring);
     int (*read_robot_packet) (const bstring);
 
-    void (*reset_fms)();
-    void (*reset_radio)();
-    void (*reset_robot)();
+    void (*reset_fms) (void);
+    void (*reset_radio) (void);
+    void (*reset_robot) (void);
 
-    void (*reboot_robot)();
-    void (*restart_robot_code)();
+    void (*reboot_robot) (void);
+    void (*restart_robot_code) (void);
 
     int fms_interval;
     int radio_interval;

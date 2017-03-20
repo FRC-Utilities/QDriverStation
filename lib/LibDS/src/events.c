@@ -31,7 +31,7 @@ static DS_Queue events;
 /**
  * Initializes the event queue with an initial support for 50 events
  */
-void Events_Init()
+void Events_Init (void)
 {
     DS_QueueInit (&events, 50, sizeof (DS_Event));
 }
@@ -39,7 +39,7 @@ void Events_Init()
 /**
  * De-allocates the event queue (that's all)
  */
-void Events_Close()
+void Events_Close (void)
 {
     DS_QueueFree (&events);
 }

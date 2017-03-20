@@ -44,10 +44,10 @@ extern "C" {
 /*
  * Smarter memory de-allocation functions
  */
-#define DS_FREE(ptr)    if (ptr != NULL) { free    (ptr); ptr = NULL; }
-#define DS_FREESTR(str) if (str != NULL) { bstrFree (str); str = NULL; }
+#define DS_FREE(ptr)    if (ptr) { free     (ptr); ptr = NULL; }
+#define DS_FREESTR(str) if (str) { bstrFree (str); DS_FREE (str); }
 
-extern int DS_StopThread (pthread_t thread);
+extern int DS_StopThread (pthread_t* thread);
 extern uint8_t DS_GetFByte (float val, float max);
 extern int DS_StringIsEmpty (const bstring string);
 extern bstring DS_GetEmptyString (const int length);

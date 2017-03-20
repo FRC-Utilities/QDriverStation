@@ -82,7 +82,7 @@ static int joystick_exists (int joystick)
 /**
  * Initializes the joystick array, with an initial support for 6 joysticks
  */
-void Joysticks_Init()
+void Joysticks_Init (void)
 {
     DS_ArrayInit (&array, 6);
 }
@@ -90,7 +90,7 @@ void Joysticks_Init()
 /**
  * De-allocates the joystick array data
  */
-void Joysticks_Close()
+void Joysticks_Close (void)
 {
     DS_ArrayFree (&array);
     register_event();
@@ -99,7 +99,7 @@ void Joysticks_Close()
 /**
  * Returns the number of joysticks registered with the LibDS
  */
-int DS_GetJoystickCount()
+int DS_GetJoystickCount (void)
 {
     return array.used;
 }
@@ -203,7 +203,7 @@ int DS_GetJoystickButton (int joystick, int button)
 /**
  * Removes all the registered joysticks from the LibDS
  */
-void DS_JoysticksReset()
+void DS_JoysticksReset (void)
 {
     DS_ArrayFree (&array);
     DS_ArrayInit (&array, 6);

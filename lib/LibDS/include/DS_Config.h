@@ -54,21 +54,21 @@ extern void CFG_AddNotification (bstring msg);
 extern void CFG_AddNetConsoleMessage (bstring msg);
 
 /* Getters */
-extern int CFG_GetTeamNumber();
-extern int CFG_GetRobotCode();
-extern int CFG_GetRobotEnabled();
-extern int CFG_GetRobotCPUUsage();
-extern int CFG_GetRobotRAMUsage();
-extern int CFG_GetCANUtilization();
-extern int CFG_GetRobotDiskUsage();
-extern float CFG_GetRobotVoltage();
-extern DS_Alliance CFG_GetAlliance();
-extern DS_Position CFG_GetPosition();
-extern int CFG_GetEmergencyStopped();
-extern int CFG_GetFMSCommunications();
-extern int CFG_GetRadioCommunications();
-extern int CFG_GetRobotCommunications();
-extern DS_ControlMode CFG_GetControlMode();
+extern int CFG_GetTeamNumber (void);
+extern int CFG_GetRobotCode (void);
+extern int CFG_GetRobotEnabled (void);
+extern int CFG_GetRobotCPUUsage (void);
+extern int CFG_GetRobotRAMUsage (void);
+extern int CFG_GetCANUtilization (void);
+extern int CFG_GetRobotDiskUsage (void);
+extern float CFG_GetRobotVoltage (void);
+extern DS_Alliance CFG_GetAlliance (void);
+extern DS_Position CFG_GetPosition (void);
+extern int CFG_GetEmergencyStopped (void);
+extern int CFG_GetFMSCommunications (void);
+extern int CFG_GetRadioCommunications (void);
+extern int CFG_GetRobotCommunications (void);
+extern DS_ControlMode CFG_GetControlMode (void);
 
 /* Setters */
 extern void CFG_SetRobotCode (const int code);
@@ -88,9 +88,9 @@ extern void CFG_SetRadioCommunications (const int communications);
 extern void CFG_SetRobotCommunications (const int communications);
 
 /* Watchdog functions */
-extern void CFG_FMSWatchdogExpired();
-extern void CFG_RadioWatchdogExpired();
-extern void CFG_RobotWatchdogExpired();
+extern void CFG_FMSWatchdogExpired (void);
+extern void CFG_RadioWatchdogExpired (void);
+extern void CFG_RobotWatchdogExpired (void);
 
 #ifdef __cplusplus
 }

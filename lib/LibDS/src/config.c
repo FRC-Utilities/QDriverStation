@@ -133,27 +133,25 @@ void CFG_AddNetConsoleMessage (bstring msg)
  */
 void CFG_ReconfigureAddresses (const int flags)
 {
-    if (DS_CurrentProtocol()) {
-        if (flags & RECONFIGURE_FMS) {
-            bstring address = DS_GetAppliedFMSAddress();
-            DS_SocketChangeAddress (DS_CurrentProtocol()->fms_socket,
-                                    address);
-            DS_FREESTR (address);
-        }
+    if (!DS_CurrentProtocol())
+        return;
 
-        if (flags & RECONFIGURE_RADIO) {
-            bstring address = DS_GetAppliedRadioAddress();
-            DS_SocketChangeAddress (DS_CurrentProtocol()->radio_socket,
-                                    address);
-            DS_FREESTR (address);
-        }
+    if (flags & RECONFIGURE_FMS) {
+        bstring address = DS_GetAppliedFMSAddress();
+        DS_SocketChangeAddress (DS_CurrentProtocol()->fms_socket, address);
+        DS_FREESTR (address);
+    }
 
-        if (flags & RECONFIGURE_ROBOT) {
-            bstring address = DS_GetAppliedRobotAddress();
-            DS_SocketChangeAddress (DS_CurrentProtocol()->robot_socket,
-                                    address);
-            DS_FREESTR (address);
-        }
+    if (flags & RECONFIGURE_RADIO) {
+        bstring address = DS_GetAppliedRadioAddress();
+        DS_SocketChangeAddress (DS_CurrentProtocol()->radio_socket, address);
+        DS_FREESTR (address);
+    }
+
+    if (flags & RECONFIGURE_ROBOT) {
+        bstring address = DS_GetAppliedRobotAddress();
+        DS_SocketChangeAddress (DS_CurrentProtocol()->robot_socket, address);
+        DS_FREESTR (address);
     }
 }
 
@@ -161,7 +159,7 @@ void CFG_ReconfigureAddresses (const int flags)
  * Returns the current team number, which may be used by the protocols to
  * specifiy the default addresses and generate specialized packets
  */
-int CFG_GetTeamNumber()
+int CFG_GetTeamNumber (void)
 {
     return DS_Max (team, 0);
 }
@@ -169,7 +167,7 @@ int CFG_GetTeamNumber()
 /**
  * Returns \c 0 if there is no robot code running, otherwise, it returns \c 1
  */
-int CFG_GetRobotCode()
+int CFG_GetRobotCode (void)
 {
     return robot_code == 1;
 }
@@ -177,7 +175,7 @@ int CFG_GetRobotCode()
 /**
  * Returns \c 1 if the robot is enabled, otherwise, it returns \c 0
  */
-int CFG_GetRobotEnabled()
+int CFG_GetRobotEnabled (void)
 {
     return robot_enabled == 1;
 }
@@ -185,7 +183,7 @@ int CFG_GetRobotEnabled()
 /**
  * Returns the current CPU usage of the robot
  */
-int CFG_GetRobotCPUUsage()
+int CFG_GetRobotCPUUsage (void)
 {
     return DS_Max (cpu_usage, 0);
 }
@@ -193,7 +191,7 @@ int CFG_GetRobotCPUUsage()
 /**
  * Returns the current RAM usage of the robot
  */
-int CFG_GetRobotRAMUsage()
+int CFG_GetRobotRAMUsage (void)
 {
     return DS_Max (ram_usage, 0);
 }
@@ -201,7 +199,7 @@ int CFG_GetRobotRAMUsage()
 /**
  * Returns the current utilization of the robot's CAN-BUS
  */
-int CFG_GetCANUtilization()
+int CFG_GetCANUtilization (void)
 {
     return DS_Max (can_utilization, 0);
 }
@@ -209,7 +207,7 @@ int CFG_GetCANUtilization()
 /**
  * Returns the current disk usage of the robot
  */
-int CFG_GetRobotDiskUsage()
+int CFG_GetRobotDiskUsage (void)
 {
     return DS_Max (disk_usage, 0);
 }
@@ -217,7 +215,7 @@ int CFG_GetRobotDiskUsage()
 /**
  * Returns the current voltage of the robot
  */
-float CFG_GetRobotVoltage()
+float CFG_GetRobotVoltage (void)
 {
     return DS_Max (robot_voltage, 0);
 }
@@ -227,7 +225,7 @@ float CFG_GetRobotVoltage()
  *    - \c DS_ALLIANCE_RED
  *    - \c DS_ALLIANCE_BLUE
  */
-DS_Alliance CFG_GetAlliance()
+DS_Alliance CFG_GetAlliance (void)
 {
     return robot_alliance;
 }
@@ -238,7 +236,7 @@ DS_Alliance CFG_GetAlliance()
  *    - \c DS_POSITION_2
  *    - \c DS_POSITION_3
  */
-DS_Position CFG_GetPosition()
+DS_Position CFG_GetPosition (void)
 {
     return robot_position;
 }
@@ -246,7 +244,7 @@ DS_Position CFG_GetPosition()
 /**
  * Returns \c 1 if the robot is emergency stopped, otherwise, it returns \c 0
  */
-int CFG_GetEmergencyStopped()
+int CFG_GetEmergencyStopped (void)
 {
     return emergency_stopped == 1;
 }
@@ -255,7 +253,7 @@ int CFG_GetEmergencyStopped()
  * Returns \c 1 if the client has communications with the FMS, otherwise,
  * it returns \c 0
  */
-int CFG_GetFMSCommunications()
+int CFG_GetFMSCommunications (void)
 {
     return fms_communications == 1;
 }
@@ -264,7 +262,7 @@ int CFG_GetFMSCommunications()
  * Returns \c 1 if the client has communications with the radio, otherwise,
  * it returns \c 0
  */
-int CFG_GetRadioCommunications()
+int CFG_GetRadioCommunications (void)
 {
     return radio_communications == 1;
 }
@@ -273,7 +271,7 @@ int CFG_GetRadioCommunications()
  * Returns \c 1 if the client has communications with the robot, otherwise,
  * it returns \c 0
  */
-int CFG_GetRobotCommunications()
+int CFG_GetRobotCommunications (void)
 {
     return robot_communications == 1;
 }
@@ -284,7 +282,7 @@ int CFG_GetRobotCommunications()
  *    - \c DS_CONTROL_AUTONOMOUS
  *    - \c DS_CONTROL_TELEOPERATED
  */
-DS_ControlMode CFG_GetControlMode()
+DS_ControlMode CFG_GetControlMode (void)
 {
     return control_mode;
 }
@@ -479,7 +477,7 @@ void CFG_SetRobotCommunications (const int communications)
 /**
  * Called when the FMS watchdog expires
  */
-void CFG_FMSWatchdogExpired()
+void CFG_FMSWatchdogExpired (void)
 {
     CFG_SetFMSCommunications (0);
     CFG_ReconfigureAddresses (RECONFIGURE_FMS);
@@ -488,7 +486,7 @@ void CFG_FMSWatchdogExpired()
 /**
  * Called when the radio watchdog expires
  */
-void CFG_RadioWatchdogExpired()
+void CFG_RadioWatchdogExpired (void)
 {
     CFG_SetRadioCommunications (0);
     CFG_ReconfigureAddresses (RECONFIGURE_RADIO);
@@ -497,7 +495,7 @@ void CFG_RadioWatchdogExpired()
 /**
  * Called when the robot watchdog expires
  */
-void CFG_RobotWatchdogExpired()
+void CFG_RobotWatchdogExpired (void)
 {
     /* Reset everything to safe state */
     CFG_SetRobotCode (0);

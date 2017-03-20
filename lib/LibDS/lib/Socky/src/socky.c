@@ -284,7 +284,7 @@ static void* close_socket (void* data)
  *
  * \returns 0 on success
  */
-int sockets_exit()
+int sockets_exit (void)
 {
 #if defined _WIN32
     return WSACleanup();

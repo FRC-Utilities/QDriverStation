@@ -40,11 +40,13 @@ extern "C" {
 typedef struct {
     int sock_in;
     int sock_out;
-    bstring buffer;
     int client_init;
     int server_init;
-    bstring in_service;
-    bstring out_service;
+    int buffer_size;
+    pthread_t thread;
+    char buffer [2048];
+    char in_service [8];
+    char out_service [8];
 } DS_SocketInfo;
 
 /**
@@ -62,11 +64,11 @@ typedef struct {
 } DS_Socket;
 
 /* For socket initialization */
-extern DS_Socket* DS_SocketEmpty();
+extern DS_Socket* DS_SocketEmpty (void);
 
 /* Module functions */
-extern void Sockets_Init();
-extern void Sockets_Close();
+extern void Sockets_Init (void);
+extern void Sockets_Close (void);
 
 /* Socket initializer and destructor functions */
 extern void DS_SocketOpen (DS_Socket* ptr);

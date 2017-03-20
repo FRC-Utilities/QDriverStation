@@ -29,10 +29,11 @@ extern "C" {
 
 #include <bstrlib.h>
 
-extern void init_interface();
-extern void close_interface();
-extern void update_interface();
-extern void update_status_label();
+extern void init_interface (void);
+extern void close_interface (void);
+extern void update_interface (void);
+extern void update_status_label (void);
+
 extern void set_can (const int can);
 extern void set_cpu (const int cpu);
 extern void set_ram (const int ram);

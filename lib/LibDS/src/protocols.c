@@ -347,7 +347,7 @@ void Protocols_Close()
 {
     running = 0;
     close_protocol();
-    DS_StopThread (event_thread);
+    DS_StopThread (&event_thread);
 }
 
 /**

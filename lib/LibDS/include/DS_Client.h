@@ -32,49 +32,49 @@ extern "C" {
 #include "DS_Types.h"
 
 /* Init/Close functions */
-extern void Client_Init();
-extern void Client_Close();
+extern void Client_Init (void);
+extern void Client_Close (void);
 
 /* User-set addresses */
-extern bstring DS_GetCustomFMSAddress();
-extern bstring DS_GetCustomRadioAddress();
-extern bstring DS_GetCustomRobotAddress();
+extern bstring DS_GetCustomFMSAddress (void);
+extern bstring DS_GetCustomRadioAddress (void);
+extern bstring DS_GetCustomRobotAddress (void);
 
 /* Protocol-set addresses */
-extern bstring DS_GetDefaultFMSAddress();
-extern bstring DS_GetDefaultRadioAddress();
-extern bstring DS_GetDefaultRobotAddress();
+extern bstring DS_GetDefaultFMSAddress (void);
+extern bstring DS_GetDefaultRadioAddress (void);
+extern bstring DS_GetDefaultRobotAddress (void);
 
 /* Used addresses */
-extern bstring DS_GetAppliedFMSAddress();
-extern bstring DS_GetAppliedRadioAddress();
-extern bstring DS_GetAppliedRobotAddress();
+extern bstring DS_GetAppliedFMSAddress (void);
+extern bstring DS_GetAppliedRadioAddress (void);
+extern bstring DS_GetAppliedRobotAddress (void);
 
 /* Status string */
-extern bstring DS_GetStatusString();
+extern bstring DS_GetStatusString (void);
 
 /* Getters */
-extern int DS_GetTeamNumber();
-extern int DS_GetRobotCode();
-extern int DS_GetCanBeEnabled();
-extern int DS_GetRobotEnabled();
-extern int DS_GetRobotCPUUsage();
-extern int DS_GetRobotRAMUsage();
-extern int DS_GetRobotDiskUsage();
-extern float DS_GetRobotVoltage();
-extern DS_Alliance DS_GetAlliance();
-extern DS_Position DS_GetPosition();
-extern int DS_GetEmergencyStopped();
-extern int DS_GetFMSCommunications();
-extern int DS_GetRadioCommunications();
-extern int DS_GetRobotCommunications();
-extern int DS_GetRobotCANUtilization();
-extern DS_ControlMode DS_GetControlMode();
-extern float DS_GetMaximumBatteryVoltage();
+extern int DS_GetTeamNumber (void);
+extern int DS_GetRobotCode (void);
+extern int DS_GetCanBeEnabled (void);
+extern int DS_GetRobotEnabled (void);
+extern int DS_GetRobotCPUUsage (void);
+extern int DS_GetRobotRAMUsage (void);
+extern int DS_GetRobotDiskUsage (void);
+extern float DS_GetRobotVoltage (void);
+extern DS_Alliance DS_GetAlliance (void);
+extern DS_Position DS_GetPosition (void);
+extern int DS_GetEmergencyStopped (void);
+extern int DS_GetFMSCommunications (void);
+extern int DS_GetRadioCommunications (void);
+extern int DS_GetRobotCommunications (void);
+extern int DS_GetRobotCANUtilization (void);
+extern DS_ControlMode DS_GetControlMode (void);
+extern float DS_GetMaximumBatteryVoltage (void);
 
 /* Setters */
-extern void DS_RebootRobot();
-extern void DS_RestartRobotCode();
+extern void DS_RebootRobot (void);
+extern void DS_RestartRobotCode (void);
 extern void DS_SetTeamNumber (const int team);
 extern void DS_SetRobotEnabled (const int enabled);
 extern void DS_SetEmergencyStopped (const int stop);

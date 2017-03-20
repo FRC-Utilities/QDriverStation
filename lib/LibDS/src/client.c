@@ -38,7 +38,7 @@ static bstring custom_robot_address = NULL;
 /**
  * Allocates memory for the members of the client module
  */
-void Client_Init()
+void Client_Init (void)
 {
     status_string = bfromcstr ("");
     custom_fms_address = bfromcstr ("");
@@ -49,7 +49,7 @@ void Client_Init()
 /**
  * Frees up the memory used by the members of the client module
  */
-void Client_Close()
+void Client_Close (void)
 {
     DS_FREESTR (status_string);
     DS_FREESTR (custom_fms_address);
@@ -62,7 +62,7 @@ void Client_Close()
  * This value may be empty, if that's the case, then the Driver Station will
  * use the addresses specified by the currently loaded protocol.
  */
-bstring DS_GetCustomFMSAddress()
+bstring DS_GetCustomFMSAddress (void)
 {
     return bstrcpy (custom_fms_address);
 }
@@ -72,7 +72,7 @@ bstring DS_GetCustomFMSAddress()
  * This value may be empty, if that's the case, then the Driver Station will
  * use the addresses specified by the currently loaded protocol.
  */
-bstring DS_GetCustomRadioAddress()
+bstring DS_GetCustomRadioAddress (void)
 {
     return bstrcpy (custom_radio_address);
 }
@@ -82,7 +82,7 @@ bstring DS_GetCustomRadioAddress()
  * This value may be empty, if that's the case, then the Driver Station will
  * use the addresses specified by the currently loaded protocol.
  */
-bstring DS_GetCustomRobotAddress()
+bstring DS_GetCustomRobotAddress (void)
 {
     return bstrcpy (custom_robot_address);
 }
@@ -92,12 +92,12 @@ bstring DS_GetCustomRobotAddress()
  * number is changed, if your application relies on this value, consider
  * updating in regurarly or using the events system of the LibDS.
  */
-bstring DS_GetDefaultFMSAddress()
+bstring DS_GetDefaultFMSAddress (void)
 {
     if (DS_CurrentProtocol())
         return bstrcpy (DS_CurrentProtocol()->fms_address());
-
-    return DS_FallBackAddress;
+    else
+        return DS_FallBackAddress;
 }
 
 /**
@@ -105,12 +105,12 @@ bstring DS_GetDefaultFMSAddress()
  * team number is changed, if your application relies on this value, consider
  * updating in regurarly or using the events system of the LibDS.
  */
-bstring DS_GetDefaultRadioAddress()
+bstring DS_GetDefaultRadioAddress (void)
 {
     if (DS_CurrentProtocol())
         return bstrcpy (DS_CurrentProtocol()->radio_address());
-
-    return DS_FallBackAddress;
+    else
+        return DS_FallBackAddress;
 }
 
 /**
@@ -118,12 +118,12 @@ bstring DS_GetDefaultRadioAddress()
  * team number is changed, if your application relies on this value, consider
  * updating in regurarly or using the events system of the LibDS.
  */
-bstring DS_GetDefaultRobotAddress()
+bstring DS_GetDefaultRobotAddress (void)
 {
     if (DS_CurrentProtocol())
         return bstrcpy (DS_CurrentProtocol()->robot_address());
-
-    return DS_FallBackAddress;
+    else
+        return DS_FallBackAddress;
 }
 
 /**
@@ -132,12 +132,12 @@ bstring DS_GetDefaultRobotAddress()
  * user-set address. Otherwise, this function will return the address
  * specified  by the currently loaded protocol.
  */
-bstring DS_GetAppliedFMSAddress()
+bstring DS_GetAppliedFMSAddress (void)
 {
     if (DS_StringIsEmpty (custom_fms_address))
         return DS_GetDefaultFMSAddress();
-
-    return DS_GetCustomFMSAddress();
+    else
+        return DS_GetCustomFMSAddress();
 }
 
 /**
@@ -146,12 +146,12 @@ bstring DS_GetAppliedFMSAddress()
  * user-set address. Otherwise, this function will return the address
  * specified  by the currently loaded protocol.
  */
-bstring DS_GetAppliedRadioAddress()
+bstring DS_GetAppliedRadioAddress (void)
 {
     if (DS_StringIsEmpty (custom_radio_address))
         return DS_GetDefaultRadioAddress();
-
-    return DS_GetCustomRadioAddress();
+    else
+        return DS_GetCustomRadioAddress();
 }
 
 /**
@@ -160,12 +160,12 @@ bstring DS_GetAppliedRadioAddress()
  * user-set address. Otherwise, this function will return the address
  * specified  by the currently loaded protocol.
  */
-bstring DS_GetAppliedRobotAddress()
+bstring DS_GetAppliedRobotAddress (void)
 {
     if (DS_StringIsEmpty (custom_robot_address))
         return DS_GetDefaultRobotAddress();
-
-    return DS_GetCustomRobotAddress();
+    else
+        return DS_GetCustomRobotAddress();
 }
 
 /**
@@ -181,7 +181,7 @@ bstring DS_GetAppliedRobotAddress()
  *    - Autonomous Enabled/Disabled
  *    - Test Enabled/Disabled
  */
-bstring DS_GetStatusString()
+bstring DS_GetStatusString (void)
 {
     DS_FREESTR (status_string);
 
@@ -217,7 +217,7 @@ bstring DS_GetStatusString()
 /**
  * Returns the current team number
  */
-int DS_GetTeamNumber()
+int DS_GetTeamNumber (void)
 {
     return CFG_GetTeamNumber();
 }
@@ -225,7 +225,7 @@ int DS_GetTeamNumber()
 /**
  * Returns \c 1 if the robot code is running
  */
-int DS_GetRobotCode()
+int DS_GetRobotCode (void)
 {
     return CFG_GetRobotCode();
 }
@@ -237,7 +237,7 @@ int DS_GetRobotCode()
  *    - The robot is **not** emergency stopped
  *    - The protocol reports that the robot code is running
  */
-int DS_GetCanBeEnabled()
+int DS_GetCanBeEnabled (void)
 {
     return DS_GetRobotCode()
            && !DS_GetEmergencyStopped()
@@ -248,7 +248,7 @@ int DS_GetCanBeEnabled()
  * Returns \c 1 if the robot can be enabled, otherwise, this function will
  * return \c 0.
  */
-int DS_GetRobotEnabled()
+int DS_GetRobotEnabled (void)
 {
     return CFG_GetRobotEnabled();
 }
@@ -256,7 +256,7 @@ int DS_GetRobotEnabled()
 /**
  * Returns the current CPU usage of the robot
  */
-int DS_GetRobotCPUUsage()
+int DS_GetRobotCPUUsage (void)
 {
     return CFG_GetRobotCPUUsage();
 }
@@ -264,7 +264,7 @@ int DS_GetRobotCPUUsage()
 /**
  * Returns the current RAM usage of the robot
  */
-int DS_GetRobotRAMUsage()
+int DS_GetRobotRAMUsage (void)
 {
     return CFG_GetRobotRAMUsage();
 }
@@ -272,7 +272,7 @@ int DS_GetRobotRAMUsage()
 /**
  * Returns the current disk usage of the robot
  */
-int DS_GetRobotDiskUsage()
+int DS_GetRobotDiskUsage (void)
 {
     return CFG_GetRobotDiskUsage();
 }
@@ -280,7 +280,7 @@ int DS_GetRobotDiskUsage()
 /**
  * Returns the current voltage of the robot
  */
-float DS_GetRobotVoltage()
+float DS_GetRobotVoltage (void)
 {
     return CFG_GetRobotVoltage();
 }
@@ -289,7 +289,7 @@ float DS_GetRobotVoltage()
  * Returns the current alliance of the robot.
  * This value can be changed by the user or the FMS.
  */
-DS_Alliance DS_GetAlliance()
+DS_Alliance DS_GetAlliance (void)
 {
     return CFG_GetAlliance();
 }
@@ -298,7 +298,7 @@ DS_Alliance DS_GetAlliance()
  * Returns the current position of the robot.
  * This value can be changed by the user or the FMS.
  */
-DS_Position DS_GetPosition()
+DS_Position DS_GetPosition (void)
 {
     return CFG_GetPosition();
 }
@@ -306,7 +306,7 @@ DS_Position DS_GetPosition()
 /**
  * Returns \c 1 if the robot is emergency stopped
  */
-int DS_GetEmergencyStopped()
+int DS_GetEmergencyStopped (void)
 {
     return CFG_GetEmergencyStopped();
 }
@@ -314,7 +314,7 @@ int DS_GetEmergencyStopped()
 /**
  * Returns \c 1 if the LibDS has communications with the FMS
  */
-int DS_GetFMSCommunications()
+int DS_GetFMSCommunications (void)
 {
     return CFG_GetFMSCommunications();
 }
@@ -322,7 +322,7 @@ int DS_GetFMSCommunications()
 /**
  * Returns \c 1 if the LibDS has communications with the radio
  */
-int DS_GetRadioCommunications()
+int DS_GetRadioCommunications (void)
 {
     return CFG_GetRadioCommunications();
 }
@@ -330,7 +330,7 @@ int DS_GetRadioCommunications()
 /**
  * Returns \c 1 if the LibDS has communications with the robot
  */
-int DS_GetRobotCommunications()
+int DS_GetRobotCommunications (void)
 {
     return CFG_GetRobotCommunications();
 }
@@ -338,7 +338,7 @@ int DS_GetRobotCommunications()
 /**
  * Returns the current CAN utilization of the robot
  */
-int DS_GetRobotCANUtilization()
+int DS_GetRobotCANUtilization (void)
 {
     return CFG_GetCANUtilization();
 }
@@ -346,7 +346,7 @@ int DS_GetRobotCANUtilization()
 /**
  * Returns the current control mode of the robot
  */
-DS_ControlMode DS_GetControlMode()
+DS_ControlMode DS_GetControlMode (void)
 {
     return CFG_GetControlMode();
 }
@@ -354,7 +354,7 @@ DS_ControlMode DS_GetControlMode()
 /**
  * Returns the maximum battery voltage specified by the current protocol
  */
-float DS_GetMaximumBatteryVoltage()
+float DS_GetMaximumBatteryVoltage (void)
 {
     if (DS_CurrentProtocol())
         return DS_CurrentProtocol()->max_battery_voltage;
@@ -365,7 +365,7 @@ float DS_GetMaximumBatteryVoltage()
 /**
  * Instructs the current protocol to reboot the robot
  */
-void DS_RebootRobot()
+void DS_RebootRobot (void)
 {
     if (DS_CurrentProtocol()) {
         DS_CurrentProtocol()->reboot_robot();
@@ -376,7 +376,7 @@ void DS_RebootRobot()
 /**
  * Instructs the current protocol to restart the robot code
  */
-void DS_RestartRobotCode()
+void DS_RestartRobotCode (void)
 {
     if (DS_CurrentProtocol()) {
         DS_CurrentProtocol()->restart_robot_code();

@@ -31,7 +31,7 @@ static int init = 0;
  * function before your application begins interacting with the different
  * modules of the LibDS.
  */
-void DS_Init()
+void DS_Init (void)
 {
     if (!DS_Initialized()) {
         init = 1;
@@ -51,7 +51,7 @@ void DS_Init()
  * problems (regardless if you are using the offical DS or not), memory
  * problems and increased CPU usage (due to threads managed by the LibDS)
  */
-void DS_Close()
+void DS_Close (void)
 {
     if (DS_Initialized()) {
         init = 0;
@@ -69,7 +69,7 @@ void DS_Close()
 /**
  * Returns \c 1 if the DS is initialized, \c 0 if not
  */
-int DS_Initialized()
+int DS_Initialized (void)
 {
     return init;
 }

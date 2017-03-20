@@ -71,7 +71,7 @@ static void* update_timer (void* ptr)
  * used by the library. We need to do this so that we can terminate each timer
  * thread once the module is closed.
  */
-void Timers_Init()
+void Timers_Init (void)
 {
     running = 1;
     DS_ArrayInit (&timers, 10);
@@ -80,7 +80,7 @@ void Timers_Init()
 /**
  * Breaks all the timer loops and stops every thread used by this module
  */
-void Timers_Close()
+void Timers_Close (void)
 {
     running = 0;
     DS_ArrayFree (&timers);

@@ -114,7 +114,7 @@ static void encode_voltage (float voltage, uint8_t* upper, uint8_t* lower)
  *    - Robot radio connected?
  *    - The operation state (e-stop, normal)
  */
-static uint8_t fms_control_code()
+static uint8_t fms_control_code (void)
 {
     uint8_t code = 0;
 
@@ -159,7 +159,7 @@ static uint8_t fms_control_code()
  *    - The FMS attached keyword
  *    - The operation state (e-stop, normal)
  */
-static uint8_t get_control_code()
+static uint8_t get_control_code (void)
 {
     uint8_t code = 0;
 
@@ -199,7 +199,7 @@ static uint8_t get_control_code()
  *    - Reboot the roboRIO
  *    - Restart the robot code process
  */
-static uint8_t get_request_code()
+static uint8_t get_request_code (void)
 {
     uint8_t code = cRequestNormal;
 
@@ -223,7 +223,7 @@ static uint8_t get_request_code()
  * This value may be used by the robot program to use specialized autonomous
  * modes or adjust sensor input.
  */
-static uint8_t get_station_code()
+static uint8_t get_station_code (void)
 {
     /* Current config is set to position 1 */
     if (CFG_GetPosition() == DS_POSITION_1) {
@@ -274,7 +274,7 @@ static uint8_t get_joystick_size (const int joystick)
  * The robot may ask for this information in some cases (e.g. when initializing
  * the robot code).
  */
-static bstring get_timezone_data()
+static bstring get_timezone_data (void)
 {
     bstring data = DS_GetEmptyString (14);
 
@@ -337,7 +337,7 @@ static bstring get_timezone_data()
  * Unlike the 2014 protocol, the 2015 protocol only generates joystick data
  * for the attached joysticks.
  */
-static bstring get_joystick_data()
+static bstring get_joystick_data (void)
 {
     /* Initialize the variables */
     int i = 0;
@@ -441,7 +441,7 @@ static DS_Position get_position (const uint8_t byte)
  * The FMS address is not defined, it will be assigned automatically when the
  * DS receives a FMS packet
  */
-static bstring fms_address()
+static bstring fms_address (void)
 {
     return DS_FallBackAddress;
 }
@@ -449,7 +449,7 @@ static bstring fms_address()
 /**
  * The 2015 control system assigns the radio IP in 10.te.am.1
  */
-static bstring radio_address()
+static bstring radio_address (void)
 {
     return DS_GetStaticIP (10, CFG_GetTeamNumber(), 1);
 }
@@ -457,7 +457,7 @@ static bstring radio_address()
 /**
  * The 2015 control system assigns the robot address at roboRIO-TEAM.local
  */
-static bstring robot_address()
+static bstring robot_address (void)
 {
     return bformat ("roboRIO-%d.local", CFG_GetTeamNumber());
 }
@@ -471,7 +471,7 @@ static bstring robot_address()
  *    - Radio and robot ping flags
  *    - The team number
  */
-static bstring create_fms_packet()
+static bstring create_fms_packet (void)
 {
     /* Create an 8-byte long packet */
     bstring data = DS_GetEmptyString (8);
@@ -508,7 +508,7 @@ static bstring create_fms_packet()
  * to the DS Radio / Bridge. For that reason, the 2015 communication protocol
  * generates empty radio packets.
  */
-static bstring create_radio_packet()
+static bstring create_radio_packet (void)
 {
     return bfromcstr ("");
 }
@@ -523,7 +523,7 @@ static bstring create_radio_packet()
  *    - Date and time data (if robot requests it)
  *    - Joystick information (if the robot does not want date/time)
  */
-static bstring create_robot_packet()
+static bstring create_robot_packet (void)
 {
     bstring data = DS_GetEmptyString (6);
 
@@ -653,7 +653,7 @@ static int read_robot_packet (const bstring data)
 /**
  * Called when the FMS watchdog expires, does nothing...
  */
-static void reset_fms()
+static void reset_fms (void)
 {
     /* Nothing to do */
 }
@@ -661,7 +661,7 @@ static void reset_fms()
 /**
  * Called when the radio watchdog expires, does nothing...
  */
-static void reset_radio()
+static void reset_radio (void)
 {
     /* Nothing to do */
 }
@@ -669,7 +669,7 @@ static void reset_radio()
 /**
  * Called when the robot watchdog expires, resets the control code flags
  */
-static void reset_robot()
+static void reset_robot (void)
 {
     reboot = 0;
     restart_code = 0;
@@ -679,7 +679,7 @@ static void reset_robot()
 /**
  * Updates the control code flags to instruct the roboRIO to reboot itself
  */
-static void reboot_robot()
+static void reboot_robot (void)
 {
     reboot = 1;
 }
@@ -688,7 +688,7 @@ static void reboot_robot()
  * Updates the control code flags to instruct the robot to restart the
  * robot code process
  */
-static void restart_robot_code()
+static void restart_robot_code (void)
 {
     restart_code = 1;
 }
@@ -696,7 +696,7 @@ static void restart_robot_code()
 /**
  * Initializes the 2015 FRC Communication Protocol
  */
-DS_Protocol* DS_GetProtocolFRC_2015()
+DS_Protocol* DS_GetProtocolFRC_2015 (void)
 {
     /* Initialize pointers */
     DS_Protocol* protocol = (DS_Protocol*) malloc (sizeof (DS_Protocol));

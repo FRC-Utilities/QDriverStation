@@ -30,19 +30,19 @@
 /**
  * Kills the given \a thread and reports possible errors
  */
-int DS_StopThread (pthread_t thread)
+int DS_StopThread (pthread_t* thread)
 {
     int error = 0;
 
     /* Thread is invalid */
-    if (thread <= 0)
+    if (*thread <= 0)
         return 1;
 
     /* Stop the thread */
 #if defined __ANDROID__
-    error = pthread_kill (thread, 0);
+    error = pthread_kill (*thread, 0);
 #else
-    error = pthread_cancel (thread);
+    error = pthread_cancel (*thread);
 #endif
 
     /* Something went wrong while stopping the thread */
@@ -52,13 +52,13 @@ int DS_StopThread (pthread_t thread)
                  "\t Message: Cannot stop thread\n"
                  "\t Error Code: %d\n"
                  "\t Error Desc: %s\n",
-                 (int) thread, error, strerror (error));
+                 (int) *thread, error, strerror (error));
 
         return error;
     }
 
     /* Join child thread to main thread */
-    error = pthread_join (thread, NULL);
+    error = pthread_join (*thread, NULL);
 
     /* Something went wrong while joining the thread */
     if (error != 0) {
@@ -67,7 +67,7 @@ int DS_StopThread (pthread_t thread)
                  "\t Message: Cannot join thread to main\n"
                  "\t Error Code: %d\n"
                  "\t Error Desc: %s\n",
-                 (int) thread, error, strerror (error));
+                 (int) *thread, error, strerror (error));
 
         return error;
     }
@@ -96,12 +96,8 @@ uint8_t DS_GetFByte (float value, float max)
  */
 int DS_StringIsEmpty (const bstring string)
 {
-    if (string != NULL) {
-        if (blength (string) <= 0)
-            return 1;
-        else
-            return 0;
-    }
+    if (string)
+        return blength (string) <= 0;
 
     return 1;
 }

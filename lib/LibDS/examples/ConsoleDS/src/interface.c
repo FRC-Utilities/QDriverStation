@@ -88,7 +88,7 @@ static bstring update_label (bstring string)
 /**
  * Sets the default label texts
  */
-static void init_strings()
+static void init_strings (void)
 {
     robot_check_str = set_checked (robot_check_str, 0);
     rcode_check_str = set_checked (rcode_check_str, 0);
@@ -107,7 +107,7 @@ static void init_strings()
 /**
  * De-allocates the memory used by the strings
  */
-static void close_strings()
+static void close_strings (void)
 {
     DS_FREESTR (can_str);
     DS_FREESTR (cpu_str);
@@ -125,7 +125,7 @@ static void close_strings()
 /**
  * Creates the base windows of the application
  */
-static void draw_windows()
+static void draw_windows (void)
 {
     /* Delete the windows */
     delwin (robotip_win);
@@ -200,7 +200,7 @@ static void draw_windows()
 /**
  * Refreshes the contents of each window
  */
-static void refresh_windows()
+static void refresh_windows (void)
 {
     wnoutrefresh (window);
     wnoutrefresh (robotip_win);
@@ -214,12 +214,12 @@ static void refresh_windows()
 /**
  * Creates the main window and sets the default label values
  */
-void init_interface()
+void init_interface (void)
 {
 #if defined __WIN32
-    system ("CLS");
+    (void) system ("CLS");
 #else
-    system ("clear");
+    (void) system ("clear");
 #endif
 
     init_strings();
@@ -240,7 +240,7 @@ void init_interface()
 /**
  * Removes the main window and deletes the allocated label memory
  */
-void close_interface()
+void close_interface (void)
 {
     delwin (window);
     endwin();
@@ -257,7 +257,7 @@ void close_interface()
 /**
  * Re-draws the user interface
  */
-void update_interface()
+void update_interface (void)
 {
     refresh();
     draw_windows();
@@ -268,7 +268,7 @@ void update_interface()
  * Updates the status label to display the current state
  * of the robot and the LibDS
  */
-void update_status_label()
+void update_status_label (void)
 {
     DS_FREESTR (rstatus_str);
     rstatus_str = DS_GetStatusString();

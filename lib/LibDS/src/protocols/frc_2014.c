@@ -110,7 +110,7 @@ static DS_Position get_position (const uint8_t byte)
  *     - The FMS communication state (the robot wants it)
  *     - Extra commands to the robot (e.g. reboot & resync)
  */
-static uint8_t get_control_code()
+static uint8_t get_control_code (void)
 {
     uint8_t code = cEmergencyStopOff;
     uint8_t enabled = CFG_GetRobotEnabled() ? cEnabled : 0x00;
@@ -155,7 +155,7 @@ static uint8_t get_control_code()
  * The robot application can use this information to adjust its programming for
  * the current alliance.
  */
-static uint8_t get_alliance_code()
+static uint8_t get_alliance_code (void)
 {
     if (CFG_GetAlliance() == DS_ALLIANCE_RED)
         return cAllianceRed;
@@ -166,7 +166,7 @@ static uint8_t get_alliance_code()
 /**
  * Returns the alliance position code sent to the robot.
  */
-static uint8_t get_position_code()
+static uint8_t get_position_code (void)
 {
     uint8_t code = cPosition1;
 
@@ -188,7 +188,7 @@ static uint8_t get_position_code()
 /**
  * Returns the (number?) of digital inputs connected to the computer.
  */
-static uint8_t get_digital_inputs()
+static uint8_t get_digital_inputs (void)
 {
     return 0x00;
 }
@@ -207,7 +207,7 @@ static uint8_t get_digital_inputs()
  * Button states are stored in a similar way as enumerated flags in a C/C++
  * program.
  */
-static bstring get_joystick_data()
+static bstring get_joystick_data (void)
 {
     /* Initialize variables */
     int i = 0;
@@ -237,7 +237,7 @@ static bstring get_joystick_data()
  * The FMS address is not defined, it will be assigned automatically when the
  * DS receives a FMS packet
  */
-static bstring fms_address()
+static bstring fms_address (void)
 {
     return DS_FallBackAddress;
 }
@@ -245,7 +245,7 @@ static bstring fms_address()
 /**
  * The 2014 control systems assigns the radio IP in 10.te.am.1
  */
-static bstring radio_address()
+static bstring radio_address (void)
 {
     return DS_GetStaticIP (10, CFG_GetTeamNumber(), 1);
 }
@@ -253,7 +253,7 @@ static bstring radio_address()
 /**
  * The 2014 control systems assigns the radio IP in 10.te.am.2
  */
-static bstring robot_address()
+static bstring robot_address (void)
 {
     return DS_GetStaticIP (10, CFG_GetTeamNumber(), 2);
 }
@@ -261,7 +261,7 @@ static bstring robot_address()
 /**
  * Generates an empty (ignored) FMS packet.
  */
-static bstring create_fms_packet()
+static bstring create_fms_packet (void)
 {
     return bfromcstr ("");
 }
@@ -269,7 +269,7 @@ static bstring create_fms_packet()
 /**
  * Generates an empty (ignored) radio packet.
  */
-static bstring create_radio_packet()
+static bstring create_radio_packet (void)
 {
     return bfromcstr ("");
 }
@@ -286,7 +286,7 @@ static bstring create_radio_packet()
  *     - The version of the FRC Driver Station
  *     - The CRC32 checksum of the packet
  */
-static bstring create_robot_packet()
+static bstring create_robot_packet (void)
 {
     /* Create initial packet */
     bstring data = DS_GetEmptyString (8);
@@ -418,7 +418,7 @@ int read_robot_packet (const bstring data)
 /**
  * Called when the FMS watchdog expires, does nothing...
  */
-static void reset_fms()
+static void reset_fms (void)
 {
     /* Nothing to do */
 }
@@ -426,7 +426,7 @@ static void reset_fms()
 /**
  * Called when the radio watchdog expires, does nothing...
  */
-static void reset_radio()
+static void reset_radio (void)
 {
     /* Nothing to do */
 }
@@ -435,7 +435,7 @@ static void reset_radio()
  * Called when the robot watchdog expires. This function resets the control
  * flags sent to the robot.
  */
-static void reset_robot()
+static void reset_robot (void)
 {
     resync = 1;
     reboot = 0;
@@ -446,7 +446,7 @@ static void reset_robot()
  * Updates the flags used to create the control mode byte to instruct the
  * cRIO to reboot itself
  */
-static void reboot_robot()
+static void reboot_robot (void)
 {
     reboot = 1;
 }
@@ -455,7 +455,7 @@ static void reboot_robot()
  * Updates the flags used to create the control mode byte to instruct the
  * cRIO to restart the robot code process
  */
-void restart_robot_code()
+void restart_robot_code (void)
 {
     restart_code = 1;
 }
@@ -463,7 +463,7 @@ void restart_robot_code()
 /**
  * Initializes and configures the FRC 2014 communication protocol
  */
-DS_Protocol* DS_GetProtocolFRC_2014()
+DS_Protocol* DS_GetProtocolFRC_2014 (void)
 {
     /* Initialize pointers */
     DS_Protocol* protocol = (DS_Protocol*) malloc (sizeof (DS_Protocol));

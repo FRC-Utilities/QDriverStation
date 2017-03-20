@@ -119,8 +119,8 @@ typedef union {
     DS_NetConsoleEvent netconsole;
 } DS_Event;
 
-extern void Events_Init();
-extern void Events_Close();
+extern void Events_Init (void);
+extern void Events_Close (void);
 extern void DS_AddEvent (DS_Event* event);
 extern int DS_PollEvent (DS_Event* event);
 

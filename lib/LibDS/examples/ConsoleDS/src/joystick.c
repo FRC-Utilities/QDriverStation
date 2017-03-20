@@ -60,7 +60,7 @@ static int get_id (const int id)
 /**
  * Registers all the detected SDL joysticks with the Driver Station
  */
-static void register_joysticks()
+static void register_joysticks (void)
 {
     DS_JoysticksReset();
 
@@ -160,7 +160,7 @@ static void process_button_event (SDL_Event* event)
 /**
  * Initializes SDL in another thread (to avoid slowing down the startup time)
  */
-void init_joysticks()
+void init_joysticks (void)
 {
     if (SDL_Init (SDL_INIT_JOYSTICK) == 0) {
         initialized = 1;
@@ -176,7 +176,7 @@ void init_joysticks()
 /**
  * Instructs the SDL library to begin closing down
  */
-void close_joysticks()
+void close_joysticks (void)
 {
     int i;
     for (i = 0; i < SDL_NumJoysticks(); ++i)
@@ -189,7 +189,7 @@ void close_joysticks()
  * Queries for new SDL joystick events and updates the
  * Driver Station with the new joystick information.
  */
-void update_joysticks()
+void update_joysticks (void)
 {
     if (!initialized)
         return;
