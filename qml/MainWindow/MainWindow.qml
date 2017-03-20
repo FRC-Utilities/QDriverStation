@@ -124,13 +124,13 @@ Window {
     onHeightChanged: height = getMinimumHeight()
 
     //
-    // Go to hell X11
+    // To hell with you X11
     //
     flags: Qt.Window |
            Qt.WindowTitleHint |
            Qt.WindowSystemMenuHint |
            Qt.WindowCloseButtonHint |
-           Qt.WindowMinMaxButtonsHint
+           Qt.WindowMinimizeButtonHint
 
     //
     // Misc. properties
