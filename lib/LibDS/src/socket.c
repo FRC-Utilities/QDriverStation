@@ -1,6 +1,6 @@
 /*
  * The Driver Station Library (LibDS)
- * Copyright (C) 2015-2016 Alex Spataru <alex_spataru@outlook>
+ * Copyright (c) 2015-2017 Alex Spataru <alex_spataru@outlook>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the "Software"),
@@ -25,34 +25,28 @@
 #include "DS_Socket.h"
 
 #include <socky.h>
-#include <bstraux.h>
+#include <assert.h>
 
 /**
  * Copies the received data from the socket in its data buffer
  */
 static void read_socket (DS_Socket* ptr)
 {
-    if (!ptr) {
-        fprintf (stderr, "read_socket: received NULL parameter\n");
-        return;
-    }
+    /* Check arguments */
+    assert (ptr);
 
     /* Initialize temporary buffer */
     int read = -1;
-    bstring data = DS_GetEmptyString (4096);
+    char data [4096] = {0};
 
     /* Read TCP socket */
     if (ptr->type == DS_SOCKET_TCP)
-        read = recv (ptr->info.sock_in, (char*) data->data, blength (data), 0);
+        read = recv (ptr->info.sock_in, data, sizeof (data), 0);
 
     /* Read UDP socket */
     if (ptr->type == DS_SOCKET_UDP) {
-        char* addr = bstr2cstr (ptr->address, 0);
-
-        read = udp_recvfrom (ptr->info.sock_in, (char*) data->data, blength (data),
-                             addr, ptr->info.in_service, 0);
-
-        DS_FREE (addr);
+        read = udp_recvfrom (ptr->info.sock_in, data, sizeof (data),
+                             ptr->address, ptr->info.in_service, 0);
     }
 
     /* We received some data, copy it to socket's buffer */
@@ -62,11 +56,8 @@ static void read_socket (DS_Socket* ptr)
 
         int i;
         for (i = 0; i < read; ++i)
-            ptr->info.buffer [i] = data->data [i];
+            ptr->info.buffer [i] = data [i];
     }
-
-    /* De-allocate temporary data */
-    DS_FREESTR (data);
 }
 
 /**
@@ -78,17 +69,19 @@ static void read_socket (DS_Socket* ptr)
  */
 static void server_loop (DS_Socket* ptr)
 {
-    if (!ptr) {
-        fprintf (stderr, "server_loop: received NULL parameter\n");
-        return;
-    }
+    /* Check arguments */
+    assert (ptr);
 
+    /* Initialize variables for select */
     int rc, fd;
     fd_set set;
     struct timeval tv;
+
+    /* Disable socket blocking */
     set_socket_block (ptr->info.sock_in, 0);
 
-    while (ptr->info.server_init == 1 && ptr->info.sock_in > 0) {
+    /* Run the server while the socket is valid */
+    while (ptr && ptr->info.server_init == 1 && ptr->info.sock_in > 0) {
         tv.tv_sec = 0;
         tv.tv_usec = 5000 * 100;
 
@@ -114,25 +107,18 @@ static void server_loop (DS_Socket* ptr)
  */
 static void* create_socket (void* data)
 {
-    /* Data pointer is NULL */
-    if (!data) {
-        pthread_exit (NULL);
-        return NULL;
-    }
-
-    /* Cast raw pointer to socket */
+    /* Check arguments */
+    assert (data);
     DS_Socket* ptr = (DS_Socket*) data;
-
-    /* Load fallback address if input address is invalid */
-    if (DS_StringIsEmpty (ptr->address) || ptr->broadcast == 1) {
-        DS_FREESTR (ptr->address);
-        ptr->address = DS_FallBackAddress;
-    }
 
     /* Ensure that buffer and service strings are set to 0 */
     memset (ptr->info.buffer, 0, sizeof (ptr->info.buffer));
     memset (ptr->info.in_service, 0, sizeof (ptr->info.in_service));
     memset (ptr->info.out_service, 0, sizeof (ptr->info.out_service));
+
+    /* Assign fallback address if socket address is empty */
+    if (strlen (ptr->address) <= 0)
+        strcpy (ptr->address, DS_FallBackAddress);
 
     /* Set service strings */
     sprintf (ptr->info.in_service, "%d", ptr->in_port);
@@ -140,12 +126,8 @@ static void* create_socket (void* data)
 
     /* Open TCP socket */
     if (ptr->type == DS_SOCKET_TCP) {
-        char* addr = bstr2cstr (ptr->address, 0);
-
         ptr->info.sock_in = create_server_tcp (ptr->info.in_service, SOCKY_IPv4, 0);
-        ptr->info.sock_out = create_client_tcp (addr, ptr->info.out_service, SOCKY_IPv4, 0);
-
-        DS_FREE (addr);
+        ptr->info.sock_out = create_client_tcp (ptr->address, ptr->info.out_service, SOCKY_IPv4, 0);
     }
 
     /* Open UDP socket */
@@ -170,14 +152,14 @@ static void* create_socket (void* data)
  */
 DS_Socket* DS_SocketEmpty (void)
 {
-    DS_Socket* socket = calloc (1, sizeof (DS_Socket));
+    /* Initialize a new socket */
+    DS_Socket* socket = (DS_Socket*) calloc (1, sizeof (DS_Socket));
 
     /* Fill basic data */
     socket->in_port = 0;
     socket->out_port = 0;
     socket->disabled = 0;
     socket->broadcast = 0;
-    socket->address = NULL;
     socket->type = DS_SOCKET_UDP;
 
     /* Fill socket info structure */
@@ -189,6 +171,7 @@ DS_Socket* DS_SocketEmpty (void)
     socket->info.client_init = 0;
 
     /* Fill strings with 0 */
+    memset (socket->address, 0, sizeof (socket->address));
     memset (socket->info.buffer, 0, sizeof (socket->info.buffer));
     memset (socket->info.in_service, 0, sizeof (socket->info.in_service));
     memset (socket->info.out_service, 0, sizeof (socket->info.out_service));
@@ -221,17 +204,12 @@ void Sockets_Close (void)
  */
 void DS_SocketOpen (DS_Socket* ptr)
 {
-    /* Pointer is NULL */
-    if (!ptr) {
-        fprintf (stderr, "DS_SocketOpen: received NULL parameter\n");
-        return;
-    }
+    /* Check arguments */
+    assert (ptr);
 
     /* Socket is disabled */
-    if (ptr->disabled) {
-        fprintf (stderr, "DS_SocketOpen: Socket %p is disabled, aborting\n", ptr);
+    if (ptr->disabled)
         return;
-    }
 
     /* Stop the current thread (if any) */
     if (ptr->info.thread)
@@ -250,20 +228,17 @@ void DS_SocketOpen (DS_Socket* ptr)
  */
 void DS_SocketClose (DS_Socket* ptr)
 {
-    /* Check for NULL pointer */
-    if (!ptr) {
-        fprintf (stderr, "DS_SocketClose: received NULL parameter\n");
-        return;
-    }
+    /* Check arguments */
+    assert (ptr);
 
     /* Reset socket properties */
     ptr->info.server_init = 0;
     ptr->info.client_init = 0;
 
     /* Close sockets */
-#ifndef __ANDROID
-    socket_close_threaded (ptr->info.sock_in, NULL);
-    socket_close_threaded (ptr->info.sock_out, NULL);
+#ifdef __ANDROID__
+    socket_close_threaded (ptr->info.sock_in);
+    socket_close_threaded (ptr->info.sock_out);
 #else
     socket_close (ptr->info.sock_in);
     socket_close (ptr->info.sock_out);
@@ -289,35 +264,33 @@ void DS_SocketClose (DS_Socket* ptr)
  *
  * \param ptr pointer to a \c DS_Socket structure
  */
-bstring DS_SocketRead (DS_Socket* ptr)
+DS_String DS_SocketRead (DS_Socket* ptr)
 {
-    /* Invalid pointer */
-    if (!ptr)
-        return NULL;
+    /* Check arguments */
+    assert (ptr);
 
     /* Socket is disabled or uninitialized */
     if ((ptr->info.server_init == 0) || (ptr->disabled == 1))
-        return NULL;
+        return DS_StrNewLen (0);
 
     /* Copy the current buffer and clear it */
     if (ptr->info.buffer_size > 0) {
-        bstring buffer = DS_GetEmptyString (ptr->info.buffer_size);
+        DS_String buffer = DS_StrNewLen (ptr->info.buffer_size);
 
         /* Copy buffer to string */
         int i;
-        for (i = 0; i < ptr->info.buffer_size; ++i) {
-            buffer->data [i] = ptr->info.buffer [i];
-            ptr->info.buffer [i] = 0;
-        }
+        for (i = 0; i < (int) ptr->info.buffer_size; ++i)
+            DS_StrSetChar (&buffer, i, ptr->info.buffer [i]);
 
         /* Clear buffer info */
+        memset (ptr->info.buffer, 0, ptr->info.buffer_size);
         ptr->info.buffer_size = 0;
 
         /* Return copied buffer */
         return buffer;
     }
 
-    return NULL;
+    return DS_StrNewLen (0);
 }
 
 
@@ -329,38 +302,40 @@ bstring DS_SocketRead (DS_Socket* ptr)
  *
  * \returns number of bytes written on success, -1 on failure
  */
-int DS_SocketSend (DS_Socket* ptr, const bstring data)
+int DS_SocketSend (const DS_Socket* ptr, const DS_String* data)
 {
-    /* Invalid pointer and/or empty data buffer */
-    if (!ptr || DS_StringIsEmpty (data))
-        return -1;
+    /* Check arguments */
+    assert (ptr);
+    assert (data);
 
     /* Socket is disabled or uninitialized */
     if ((ptr->info.client_init == 0) || ptr->disabled)
         return -1;
 
+    /* Data is empty */
+    if (DS_StrEmpty (data))
+        return -1;
+
     /* Get raw data */
-    int error = 0;
-    int len = blength (data);
-    char* bytes = bstr2cstr (data, 0);
+    int bytes_written = 0;
+    int len = DS_StrLen (data);
+    char* bytes = DS_StrToChar (data);
 
     /* Send data using TCP */
     if (ptr->type == DS_SOCKET_TCP)
-        error = send (ptr->info.sock_out, bytes, len, 0);
+        bytes_written = send (ptr->info.sock_out, bytes, len, 0);
 
     /* Send data using UDP */
     else if (ptr->type == DS_SOCKET_UDP) {
-        char* addr = bstr2cstr (ptr->address, 0);
-        error = udp_sendto (ptr->info.sock_out, bytes, len,
-                            addr, ptr->info.out_service, 0);
-        DS_FREE (addr);
+        bytes_written = udp_sendto (ptr->info.sock_out, bytes, len,
+                                    ptr->address, ptr->info.out_service, 0);
     }
 
     /* Free temp. buffer */
-    DS_FREE (bytes);
+    DS_SmartFree ((void**) &bytes);
 
     /* Return error code */
-    return error;
+    return bytes_written;
 }
 
 /**
@@ -369,17 +344,15 @@ int DS_SocketSend (DS_Socket* ptr, const bstring data)
  * \param ptr pointer to a \c DS_Socket structure
  * \param address the new address to apply to the socket
  */
-void DS_SocketChangeAddress (DS_Socket* ptr, const bstring address)
+void DS_SocketChangeAddress (DS_Socket* ptr, const char* address)
 {
-    /* Pointers are invalid */
-    if (!ptr || !address) {
-        fprintf (stderr, "DS_SocketChangeAddress: received NULL parameter(s)\n");
-        return;
-    }
+    /* Check arguments */
+    assert (ptr);
+    assert (address);
 
     /* Re-assign the address */
-    DS_FREESTR (ptr->address);
-    ptr->address = bstrcpy (address);
+    memset (ptr->address, 0, sizeof (ptr->address));
+    memcpy (ptr->address, address, strlen (address));
 
     /* Re-open the socket */
     DS_SocketClose (ptr);

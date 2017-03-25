@@ -1,6 +1,6 @@
 /*
  * The Driver Station Library (LibDS)
- * Copyright (C) 2015-2016 Alex Spataru <alex_spataru@outlook>
+ * Copyright (c) 2015-2017 Alex Spataru <alex_spataru@outlook>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the "Software"),
@@ -28,6 +28,7 @@
 #include "DS_Protocol.h"
 
 #include <math.h>
+#include <string.h>
 
 /*
  * These variables hold the state(s) of the LibDS and its modules
@@ -100,14 +101,18 @@ static void create_robot_event (const DS_EventType type)
 /**
  * Notifies the user about something through the NetConsole
  */
-void CFG_AddNotification (bstring msg)
+void CFG_AddNotification (const char* msg)
 {
-    if (msg) {
-        bstring notification = bfromcstr ("<font color=#aaa>** LibDS: ");
-        bconcat (notification, msg), bconcat (notification, bfromcstr ("</font>"));
-        CFG_AddNetConsoleMessage (bstr2cstr (notification, 0));
-        DS_FREESTR (notification);
-    }
+    /* Message is invalid */
+    if (!msg)
+        return;
+
+    /* Create notification string */
+    char notification [strlen (msg) + 40];
+    sprintf (notification, "<font color=#888>** LibDS: %s</font> ", msg);
+
+    /* Send notification */
+    CFG_AddNetConsoleMessage (notification);
 }
 
 /**
@@ -121,7 +126,12 @@ void CFG_AddNetConsoleMessage (const char* msg)
     if (msg) {
         DS_Event event;
         event.netconsole.type = DS_NETCONSOLE_NEW_MESSAGE;
-        event.netconsole.message = bfromcstr (msg);
+
+        int i;
+        event.netconsole.message = (char*) malloc (strlen (msg) * sizeof (char));
+        for (i = 0; i < (int) strlen (msg); ++i)
+            event.netconsole.message [i] = msg [i];
+
         DS_AddEvent (&event);
     }
 }
@@ -137,21 +147,21 @@ void CFG_ReconfigureAddresses (const int flags)
         return;
 
     if (flags & RECONFIGURE_FMS) {
-        bstring address = DS_GetAppliedFMSAddress();
+        char* address = DS_GetAppliedFMSAddress();
         DS_SocketChangeAddress (&DS_CurrentProtocol()->fms_socket, address);
-        DS_FREESTR (address);
+        DS_SmartFree ((void**) &address);
     }
 
     if (flags & RECONFIGURE_RADIO) {
-        bstring address = DS_GetAppliedRadioAddress();
+        char* address = DS_GetAppliedRadioAddress();
         DS_SocketChangeAddress (&DS_CurrentProtocol()->radio_socket, address);
-        DS_FREESTR (address);
+        DS_SmartFree ((void**) &address);
     }
 
     if (flags & RECONFIGURE_ROBOT) {
-        bstring address = DS_GetAppliedRobotAddress();
+        char* address = DS_GetAppliedRobotAddress();
         DS_SocketChangeAddress (&DS_CurrentProtocol()->robot_socket, address);
-        DS_FREESTR (address);
+        DS_SmartFree ((void**) &address);
     }
 }
 

@@ -21,29 +21,59 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef _LIB_DS_ARRAY_H
-#define _LIB_DS_ARRAY_H
+#ifndef _LIB_DS_STRING_H
+#define _LIB_DS_STRING_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include <stdint.h>
+#define DS_STR_FAILURE 0
+#define DS_STR_SUCCESS 1
+
 #include <stdlib.h>
+#include <stdint.h>
 
-typedef struct _array {
-    size_t used;
-    size_t size;
-    void** data;
-} DS_Array;
+/**
+ * Represents a string and its length
+ */
+typedef struct {
+    char* buf;  /**< String data buffer */
+    size_t len; /**< Length of the string */
+} DS_String;
 
-extern void DS_ArrayFree (DS_Array* array);
-extern void DS_ArrayInsert (DS_Array* array, void* element);
-extern void DS_ArrayInit (DS_Array* array, size_t initial_size);
+/*
+ * Information functions
+ */
+extern int DS_StrLen (const DS_String* string);
+extern int DS_StrEmpty (const DS_String* string);
+extern int DS_StrCompare (const DS_String* a, const DS_String* b);
+
+/*
+ * String operations functions
+ */
+extern int DS_StrRmBuf (DS_String* string);
+extern int DS_StrResize (DS_String* string, size_t size);
+extern int DS_StrAppend (DS_String* string, const uint8_t byte);
+extern int DS_StrJoin (DS_String* first, const DS_String* second);
+extern int DS_StrSetChar (DS_String* string, const int pos, const char byte);
+
+/*
+ * DS_String to native string functions
+ */
+extern char* DS_StrToChar (const DS_String* string);
+extern char DS_StrCharAt (const DS_String* string, const int pos);
+
+/*
+ * String creation functions
+ */
+extern DS_String DS_StrNew (const char* string);
+extern DS_String DS_StrNewLen (const int length);
+extern DS_String DS_StrDup (const DS_String* source);
+extern DS_String DS_StrFormat (const char* format, ...);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif
-

@@ -1,6 +1,6 @@
 /*
  * The Driver Station Library (LibDS)
- * Copyright (C) 2015-2016 Alex Spataru <alex_spataru@outlook>
+ * Copyright (c) 2015-2017 Alex Spataru <alex_spataru@outlook>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the "Software"),
@@ -50,7 +50,7 @@ extern "C" {
 extern void CFG_ReconfigureAddresses (const int flags);
 
 /* NetConsole ouput */
-extern void CFG_AddNotification (bstring msg);
+extern void CFG_AddNotification (const char* msg);
 extern void CFG_AddNetConsoleMessage (const char* msg);
 
 /* Getters */

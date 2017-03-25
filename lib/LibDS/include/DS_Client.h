@@ -1,6 +1,6 @@
 /*
  * The Driver Station Library (LibDS)
- * Copyright (C) 2015-2016 Alex Spataru <alex_spataru@outlook>
+ * Copyright (c) 2015-2017 Alex Spataru <alex_spataru@outlook>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the "Software"),
@@ -28,7 +28,6 @@
 extern "C" {
 #endif
 
-#include <bstrlib.h>
 #include "DS_Types.h"
 
 /* Init/Close functions */
@@ -36,22 +35,22 @@ extern void Client_Init (void);
 extern void Client_Close (void);
 
 /* User-set addresses */
-extern bstring DS_GetCustomFMSAddress (void);
-extern bstring DS_GetCustomRadioAddress (void);
-extern bstring DS_GetCustomRobotAddress (void);
+extern char* DS_GetCustomFMSAddress (void);
+extern char* DS_GetCustomRadioAddress (void);
+extern char* DS_GetCustomRobotAddress (void);
 
 /* Protocol-set addresses */
-extern bstring DS_GetDefaultFMSAddress (void);
-extern bstring DS_GetDefaultRadioAddress (void);
-extern bstring DS_GetDefaultRobotAddress (void);
+extern char* DS_GetDefaultFMSAddress (void);
+extern char* DS_GetDefaultRadioAddress (void);
+extern char* DS_GetDefaultRobotAddress (void);
 
 /* Used addresses */
-extern bstring DS_GetAppliedFMSAddress (void);
-extern bstring DS_GetAppliedRadioAddress (void);
-extern bstring DS_GetAppliedRobotAddress (void);
+extern char* DS_GetAppliedFMSAddress (void);
+extern char* DS_GetAppliedRadioAddress (void);
+extern char* DS_GetAppliedRobotAddress (void);
 
 /* Status string */
-extern bstring DS_GetStatusString (void);
+extern char* DS_GetStatusString (void);
 
 /* Getters */
 extern int DS_GetTeamNumber (void);

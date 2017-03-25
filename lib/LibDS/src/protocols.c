@@ -1,6 +1,6 @@
 /*
  * The Driver Station Library (LibDS)
- * Copyright (C) 2015-2016 Alex Spataru <alex_spataru@outlook>
+ * Copyright (c) 2015-2017 Alex Spataru <alex_spataru@outlook>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the "Software"),
@@ -30,6 +30,7 @@
 #include "DS_Protocol.h"
 
 #include <stdio.h>
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
@@ -71,10 +72,10 @@ static int robot_read = 0;
 /*
  * Holds the received data
  */
-static bstring fms_data = NULL;
-static bstring radio_data = NULL;
-static bstring robot_data = NULL;
-static bstring netcs_data = NULL;
+static DS_String fms_data;
+static DS_String radio_data;
+static DS_String robot_data;
+static DS_String netcs_data;
 
 /*
  * Holds the sent/received packets
@@ -98,9 +99,9 @@ static pthread_t event_thread;
 static void send_fms_data()
 {
     ++sent_fms_packets;
-    bstring data = protocol->create_fms_packet();
-    DS_SocketSend (&protocol->fms_socket, data);
-    DS_FREESTR (data);
+    DS_String data = protocol->create_fms_packet();
+    DS_SocketSend (&protocol->fms_socket, &data);
+    DS_StrRmBuf (&data);
 }
 
 /**
@@ -110,9 +111,9 @@ static void send_fms_data()
 static void send_radio_data()
 {
     ++sent_radio_packets;
-    bstring data = protocol->create_radio_packet();
-    DS_SocketSend (&protocol->radio_socket, data);
-    DS_FREESTR (data);
+    DS_String data = protocol->create_radio_packet();
+    DS_SocketSend (&protocol->radio_socket, &data);
+    DS_StrRmBuf (&data);
 }
 
 /**
@@ -122,9 +123,9 @@ static void send_radio_data()
 static void send_robot_data()
 {
     ++sent_robot_packets;
-    bstring data = protocol->create_robot_packet();
-    DS_SocketSend (&protocol->robot_socket, data);
-    DS_FREESTR (data);
+    DS_String data = protocol->create_robot_packet();
+    DS_SocketSend (&protocol->robot_socket, &data);
+    DS_StrRmBuf (&data);
 }
 
 /**
@@ -161,10 +162,10 @@ static void send_data()
  */
 static void clear_recv_data()
 {
-    DS_FREESTR (fms_data);
-    DS_FREESTR (radio_data);
-    DS_FREESTR (robot_data);
-    DS_FREESTR (netcs_data);
+    DS_StrRmBuf (&fms_data);
+    DS_StrRmBuf (&radio_data);
+    DS_StrRmBuf (&robot_data);
+    DS_StrRmBuf (&netcs_data);
 }
 
 /**
@@ -177,7 +178,7 @@ static void recv_data()
     if (!protocol)
         return;
 
-    /* Reset the data pointers */
+    /* Clear buffers (just to be sure) */
     clear_recv_data();
 
     /* Read data from sockets */
@@ -187,29 +188,29 @@ static void recv_data()
     netcs_data = DS_SocketRead (&protocol->netconsole_socket);
 
     /* Read FMS packet */
-    if (fms_data) {
+    if (DS_StrLen (&fms_data) > 0) {
         ++received_fms_packets;
-        fms_read = protocol->read_fms_packet (fms_data);
+        fms_read = protocol->read_fms_packet (&fms_data);
         CFG_SetFMSCommunications (fms_read);
     }
 
     /* Read radio packet */
-    if (radio_data) {
+    if (DS_StrLen (&radio_data) > 0) {
         ++received_radio_packets;
-        radio_read = protocol->read_radio_packet (radio_data);
+        radio_read = protocol->read_radio_packet (&radio_data);
         CFG_SetRadioCommunications (radio_read);
     }
 
     /* Read robot packet */
-    if (robot_data) {
+    if (DS_StrLen (&robot_data) > 0) {
         ++received_robot_packets;
-        robot_read = protocol->read_robot_packet (robot_data);
+        robot_read = protocol->read_robot_packet (&robot_data);
         CFG_SetRobotCommunications (robot_read);
     }
 
     /* Add NetConsole message to event system */
-    if (netcs_data)
-        CFG_AddNetConsoleMessage (bstr2cstr (netcs_data, 0));
+    if (netcs_data.len > 0)
+        CFG_AddNetConsoleMessage (DS_StrToChar (&netcs_data));
 
     /* Reset the data pointers */
     clear_recv_data();
@@ -330,14 +331,17 @@ static void close_protocol()
     DS_SocketClose (&protocol->robot_socket);
     DS_SocketClose (&protocol->netconsole_socket);
 
-    /* Delete address strings */
-    DS_FREESTR (protocol->fms_socket.address);
-    DS_FREESTR (protocol->radio_socket.address);
-    DS_FREESTR (protocol->robot_socket.address);
-    DS_FREESTR (protocol->netconsole_socket.address);
+    /* Create notification string */
+    char notification [protocol->name.len + 7];
+    char* name = DS_StrToChar (&protocol->name);
+    sprintf (notification, "Closed %s", name);
+
+    /* Send notification string */
+    CFG_AddNotification (notification);
 
     /* De-allocate the protocol */
-    DS_FREE (protocol);
+    DS_SmartFree ((void**) &name);
+    DS_SmartFree ((void**) &protocol);
 }
 
 /**
@@ -347,6 +351,7 @@ void Protocols_Close()
 {
     running = 0;
     close_protocol();
+    clear_recv_data();
     DS_StopThread (&event_thread);
 }
 
@@ -358,10 +363,7 @@ void Protocols_Close()
 void DS_ConfigureProtocol (DS_Protocol* ptr)
 {
     /* Pointer is NULL, abort */
-    if (!ptr) {
-        fprintf (stderr, "DS_ConfigureProtocol: received NULL parameter\n");
-        return;
-    }
+    assert (ptr);
 
     /* Close previous protocol */
     close_protocol();
@@ -393,10 +395,14 @@ void DS_ConfigureProtocol (DS_Protocol* ptr)
     DS_TimerStart (&robot_send_timer);
     DS_TimerStart (&robot_recv_timer);
 
-    /* Notify application of protocol change */
-    bstring notification = bformat ("%s loaded", ptr->name->data);
+    /* Create notification string */
+    char notification [512];
+    char* name = DS_StrToChar (&ptr->name);
+    sprintf (notification, "Configured %s", name);
+
+    /* Send notification string */
+    DS_SmartFree ((void**) &name);
     CFG_AddNotification (notification);
-    DS_FREESTR (notification);
 }
 
 /**

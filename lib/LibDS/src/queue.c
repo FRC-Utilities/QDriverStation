@@ -1,6 +1,6 @@
 /*
  * The Driver Station Library (LibDS)
- * Copyright (C) 2015-2016 Alex Spataru <alex_spataru@outlook>
+ * Copyright (c) 2015-2017 Alex Spataru <alex_spataru@outlook>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the "Software"),
@@ -25,6 +25,7 @@
 #include "DS_Queue.h"
 
 #include <stdio.h>
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -36,9 +37,8 @@
  */
 extern int DS_QueuePop (DS_Queue* queue)
 {
-    /* Queue is NULL */
-    if (!queue)
-        return 0;
+    /* Check arguments */
+    assert (queue);
 
     /* There are no items on the queue */
     if (queue->count <= 0)
@@ -63,19 +63,16 @@ extern int DS_QueuePop (DS_Queue* queue)
  */
 extern void DS_QueueFree (DS_Queue* queue)
 {
-    /* Queue is NULL, abort */
-    if (!queue) {
-        fprintf (stderr, "DS_QueueFree: received NULL parameter\n");
-        return;
-    }
+    /* Check arguments */
+    assert (queue);
 
     /* Free all the items in the queue */
     int element;
     for (element = 0; element < queue->capacity; ++element)
-        DS_FREE (queue->buffer [element]);
+        DS_SmartFree ((void**)&queue->buffer [element]);
 
     /* Delete the buffer */
-    DS_FREE (queue->buffer);
+    DS_SmartFree ((void**)&queue->buffer);
 
     /* Reset queue properties */
     queue->rear = -1;
@@ -94,9 +91,8 @@ extern void DS_QueueFree (DS_Queue* queue)
  */
 void* DS_QueueGetFirst (DS_Queue* queue)
 {
-    /* We won't crash, unless the programmer does not check return value */
-    if (!queue)
-        return NULL;
+    /* Check arguments */
+    assert (queue);
 
     /* There are no items on the queue */
     if (queue->count <= 0)
@@ -115,11 +111,8 @@ void* DS_QueueGetFirst (DS_Queue* queue)
  */
 void DS_QueuePush (DS_Queue* queue, void* item)
 {
-    /* You can thank me later */
-    if (!queue) {
-        fprintf (stderr, "DS_QueuePush: received NULL parameter\n");
-        return;
-    }
+    /* Check arguments */
+    assert (queue);
 
     /* Queue is full, expand it */
     if (queue->count >= queue->capacity) {

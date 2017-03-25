@@ -1,6 +1,6 @@
 /*
  * The Driver Station Library (LibDS)
- * Copyright (C) 2015-2016 Alex Spataru <alex_spataru@outlook>
+ * Copyright (c) 2015-2017 Alex Spataru <alex_spataru@outlook>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the "Software"),
@@ -29,8 +29,6 @@ extern "C" {
 #endif
 
 #include <stdint.h>
-#include <bstrlib.h>
-
 #include "DS_Types.h"
 
 /**
@@ -104,7 +102,7 @@ typedef struct {
  */
 typedef struct {
     DS_EventType type;
-    bstring message;
+    char* message;
 } DS_NetConsoleEvent;
 
 /**

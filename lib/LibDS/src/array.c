@@ -1,6 +1,6 @@
 /*
  * The Driver Station Library (LibDS)
- * Copyright (C) 2015-2016 Alex Spataru <alex_spataru@outlook>
+ * Copyright (c) 2015-2017 Alex Spataru <alex_spataru@outlook>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the "Software"),
@@ -24,6 +24,8 @@
 #include "DS_Array.h"
 #include "DS_Utils.h"
 
+#include <assert.h>
+
 /**
  * Deallocates the memory used to store the \a array data and resets the
  * properties of the given \a array
@@ -32,15 +34,12 @@
  */
 void DS_ArrayFree (DS_Array* array)
 {
-    /* Array pointer is NULL */
-    if (!array) {
-        fprintf (stderr, "DS_ArrayFree: received NULL parameter\n");
-        return;
-    }
+    /* Check arguments */
+    assert (array);
 
     /* De-allocate array data */
     if (array->size > 0)
-        DS_FREE (array->data);
+        DS_SmartFree ((void**) &array->data);
 
     /* Update array properties */
     array->used = 0;
@@ -57,11 +56,8 @@ void DS_ArrayFree (DS_Array* array)
  */
 void DS_ArrayInsert (DS_Array* array, void* element)
 {
-    /* Array pointer is NULL */
-    if (!array || !element) {
-        fprintf (stderr, "DS_ArrayInsert: received NULL parameter\n");
-        return;
-    }
+    /* Check arguments */
+    assert (array);
 
     /* Array buffer is invalid */
     if (!array->data) {
@@ -89,11 +85,8 @@ void DS_ArrayInsert (DS_Array* array, void* element)
  */
 void DS_ArrayInit (DS_Array* array, size_t initial_size)
 {
-    /* Array pointer is NULL */
-    if (!array) {
-        fprintf (stderr, "DS_ArrayInit: received NULL parameter\n");
-        return;
-    }
+    /* Check arguments */
+    assert (array);
 
     /* Allocate array data */
     array->data = realloc (array->data, initial_size);

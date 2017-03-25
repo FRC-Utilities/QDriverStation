@@ -1,6 +1,6 @@
 /*
  * The Driver Station Library (LibDS)
- * Copyright (C) 2015-2016 Alex Spataru <alex_spataru@outlook>
+ * Copyright (c) 2015-2017 Alex Spataru <alex_spataru@outlook>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the 'Software'),
@@ -24,17 +24,32 @@
 #include "DS_Utils.h"
 
 #include <stdio.h>
-#include <string.h>
+#include <assert.h>
 #include <stdlib.h>
+#include <string.h>
+
+/**
+ * De-allocates the given \a data and re-assings the pointer value
+ * to avoid errors in the future
+ */
+void DS_SmartFree (void** data)
+{
+    if (data != NULL) {
+        free (*data);
+        *data = NULL;
+    }
+}
 
 /**
  * Kills the given \a thread and reports possible errors
  */
 int DS_StopThread (pthread_t* thread)
 {
-    int error = 0;
+    /* Check if pointer is valid */
+    assert (thread);
 
     /* Thread is invalid */
+    int error = 0;
     if (*thread <= 0)
         return 1;
 
@@ -80,7 +95,7 @@ int DS_StopThread (pthread_t* thread)
  * Returns a single byte value that represents the ratio between the
  * given \a value and the maximum number specified.
  */
-uint8_t DS_GetFByte (float value, float max)
+uint8_t DS_FloatToByte (float value, float max)
 {
     if (value != 0 && max != 0 && value <= max) {
         int percent = (value / max) * (0xFF / 2);
@@ -88,30 +103,6 @@ uint8_t DS_GetFByte (float value, float max)
     }
 
     return 0;
-}
-
-/**
- * Returns \c 1 if the given \a string is empty
- * \note This function will also return \c 1 if the string is \c NULL
- */
-int DS_StringIsEmpty (const bstring string)
-{
-    if (string)
-        return blength (string) <= 0;
-
-    return 1;
-}
-
-/**
- * Returns a zero-filled string with the given \a length
- */
-bstring DS_GetEmptyString (const int length)
-{
-    bstring string = bfromcstr ("");
-    balloc (string, length);
-    bFill (string, 0, length);
-
-    return string;
 }
 
 /**
@@ -124,15 +115,15 @@ bstring DS_GetEmptyString (const int length)
  * different communication protocols.
  *
  * If you call this function outside the scope of the \c LibDS, remember to
- * call \c DS_FREESTR() to avoid memory leaks.
+ * call \c DS_SmartFree ((void**) &STR() to avoid memory leaks.
  *
  * \param net the desired first octet of the IP
  * \param team the team number, used in second and third octets
  * \param host the host byte (or the last octet) of the IP
  */
-bstring DS_GetStaticIP (const int net, const int team, const int host)
+DS_String DS_GetStaticIP (const int net, const int team, const int host)
 {
     int te = team / 100;
     int am = team - (te * 100);
-    return bformat ("%d.%d.%d.%d", net, te, am, host);
+    return DS_StrFormat ("%d.%d.%d.%d", net, te, am, host);
 }

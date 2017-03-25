@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Alex Spataru <alex_spataru@outlook>
+ * Copyright (c) 2015-2017 Alex Spataru <alex_spataru@outlook>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the "Software"),
@@ -78,7 +78,7 @@ extern int create_server_tcp (const char* port, const int family,
 
 /* Socket closing functions */
 extern int socket_close    (const int sfd);
-extern void socket_close_threaded (int sfd, int* error);
+extern void socket_close_threaded (int sfd);
 extern int socket_shutdown (const int sfd, const int method);
 
 /* Special TCP functions */

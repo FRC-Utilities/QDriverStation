@@ -27,8 +27,6 @@
 extern "C" {
 #endif
 
-#include <bstrlib.h>
-
 extern void init_interface (void);
 extern void close_interface (void);
 extern void update_interface (void);

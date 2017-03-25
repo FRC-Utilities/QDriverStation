@@ -1,6 +1,6 @@
 /*
  * The Driver Station Library (LibDS)
- * Copyright (C) 2015-2016 Alex Spataru <alex_spataru@outlook>
+ * Copyright (c) 2015-2017 Alex Spataru <alex_spataru@outlook>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the "Software"),
@@ -29,20 +29,21 @@ extern "C" {
 #endif
 
 #include "DS_Socket.h"
+#include "DS_String.h"
 
 typedef struct _protocol {
-    bstring name;
-    bstring (*fms_address) (void);
-    bstring (*radio_address) (void);
-    bstring (*robot_address) (void);
+    DS_String name;
+    DS_String (*fms_address) (void);
+    DS_String (*radio_address) (void);
+    DS_String (*robot_address) (void);
 
-    bstring (*create_fms_packet) (void);
-    bstring (*create_radio_packet) (void);
-    bstring (*create_robot_packet) (void);
+    DS_String (*create_fms_packet) (void);
+    DS_String (*create_radio_packet) (void);
+    DS_String (*create_robot_packet) (void);
 
-    int (*read_fms_packet) (const bstring);
-    int (*read_radio_packet) (const bstring);
-    int (*read_robot_packet) (const bstring);
+    int (*read_fms_packet) (const DS_String*);
+    int (*read_radio_packet) (const DS_String*);
+    int (*read_robot_packet) (const DS_String*);
 
     void (*reset_fms) (void);
     void (*reset_radio) (void);

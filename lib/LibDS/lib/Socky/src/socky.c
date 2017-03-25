@@ -22,6 +22,7 @@
 
 #include "socky.h"
 
+#include <assert.h>
 #include <stdlib.h>
 #include <pthread.h>
 
@@ -33,12 +34,6 @@
 #else
     #define GET_ERR errno
 #endif
-
-typedef struct _close_socket {
-    int sfd;
-    int* error;
-    int autoDelete;
-} _close_socket_info;
 
 /**
  * Returns \c 0 if the given socket file descriptor is invalid
@@ -97,7 +92,7 @@ static int get_family (int flag)
         return AF_UNSPEC;
         break;
     default:
-        return AF_UNSPEC;
+        return -1;
         break;
     }
 }
@@ -120,7 +115,7 @@ static int get_socktype (int flag)
         return SOCK_DGRAM;
         break;
     default:
-        return SOCK_DGRAM;
+        return -1;
         break;
     }
 }
@@ -131,31 +126,30 @@ static int get_socktype (int flag)
 static int set_socket_options (int sfd)
 {
     if (valid_sfd (sfd)) {
-#if defined _WIN32
-        char val = 1;
-
-        /* Set the SO_REUSEADDR option */
-        int err = setsockopt (sfd,
-                              SOL_SOCKET,
-                              SO_REUSEADDR,
-                              &val, sizeof (val));
-#elif defined __ANDROID__
+        /* Initialize variables */
+        int err = 1;
         int val = 1;
 
-        /* Set the SO_REUSEADDR option */
-        int err = setsockopt (sfd,
+        /* Set options according to each platform */
+        {
+#if defined _WIN32
+            err = setsockopt (sfd,
                               SOL_SOCKET,
                               SO_REUSEADDR,
                               &val, sizeof (val));
 #else
-        int val = 1;
-
-        /* Set the SO_REUSEPORT option */
-        int err = setsockopt (sfd,
-                              SOL_SOCKET,
-                              SO_REUSEPORT,
-                              &val, sizeof (val));
+#ifndef __ANDROID__
+            err *= setsockopt (sfd,
+                               SOL_SOCKET,
+                               SO_REUSEPORT,
+                               &val, sizeof (val));
 #endif
+            err *= setsockopt (sfd,
+                               SOL_SOCKET,
+                               SO_REUSEADDR,
+                               &val, sizeof (val));
+#endif
+        }
 
         /* Setting the options failed */
         if (err != 0) {
@@ -225,7 +219,6 @@ static int create_server (const char* port, const int family,
     if (info == NULL) {
         error (sfd, "cannot bind to any address!", GET_ERR);
         socket_close (sfd);
-        freeaddrinfo (info);
         return -1;
     }
 
@@ -241,38 +234,21 @@ static int create_server (const char* port, const int family,
  */
 static void* close_socket (void* data)
 {
-    /* Invalid pointer */
-    if (!data) {
-        pthread_exit (NULL);
-        return NULL;
-    }
+    /* Check if pointer is valid */
+    if (data) {
+        /* Get socket file descriptor */
+        int sfd = * ((int*) data);
 
-    /* Cast generic pointer to data structure */
-    _close_socket_info* info = (_close_socket_info*) data;
-    if (!info->error) {
-        info->error = (int*) calloc (1, sizeof (int));
-        *info->error = -1;
-    }
+        /* Disable socket IO */
+        socket_shutdown (sfd, SOCKY_READ | SOCKY_WRITE);
 
-    /* The socket descriptor is invalid */
-    if (!valid_sfd (info->sfd)) {
-        pthread_exit (NULL);
-        return NULL;
-    }
-
-    /* Disable socket IO */
-    socket_shutdown (info->sfd, SOCKY_READ | SOCKY_WRITE);
-
-    /* Close the socket */
+        /* Close the socket */
 #if defined _WIN32
-    *info->error = closesocket (info->sfd);
+        closesocket (sfd);
 #else
-    *info->error = close (info->sfd);
+        close (sfd);
 #endif
-
-    /* De-allocate the pointer */
-    if (info->autoDelete)
-        free (data);
+    }
 
     /* Exit thread */
     pthread_exit (NULL);
@@ -363,7 +339,7 @@ struct addrinfo* get_address_info (const char* host,
     int error = getaddrinfo (host, service, &hints, &info);
 
     /* Check if there was an error with the address */
-    if (error != 0) {
+    if (error) {
 #if defined VERBOSE
         int code = GET_ERR;
         fprintf (stderr,
@@ -509,6 +485,14 @@ int create_server_tcp (const char* port, const int family, const int flags)
  */
 int socket_close (const int sfd)
 {
+    /* The socket FD is not valid */
+    if (!valid_sfd (sfd))
+        return -1;
+
+    /* Disable IO operations */
+    shutdown (sfd, SOCKY_READ | SOCKY_WRITE);
+
+    /* Close the socket */
 #if defined _WIN32
     return closesocket (sfd);
 #else
@@ -517,23 +501,12 @@ int socket_close (const int sfd)
 }
 
 /**
- * Closes the given \a sfd in a different thread and writes the return code in
- * the given \a error address
- *
- * \param sfd the socket file descriptor to close
- * \param error address to the variable in which to write the return code of
- *              the close operation
+ * Closes the given \a sfd in a different thread
  */
-void socket_close_threaded (int sfd, int* error)
+void socket_close_threaded (int sfd)
 {
-    _close_socket_info* info = calloc (1, sizeof (_close_socket_info));
-
-    info->sfd = sfd;
-    info->error = error;
-    info->autoDelete = 1;
-
     pthread_t thread;
-    pthread_create (&thread, NULL, &close_socket, (void*) info);
+    pthread_create (&thread, NULL, &close_socket, (void*) &sfd);
 }
 
 /**
@@ -644,7 +617,6 @@ int udp_sendto (const int sfd,
 int udp_recvfrom (const int sfd, char* buf, const int buf_len,
                   const char* host, const char* service, const int flags)
 {
-
     /* Check if socket and buffer length are valid */
     if (!valid_sfd (sfd) || buf_len <= 0)
         return -1;

@@ -1,6 +1,6 @@
 /*
  * The Driver Station Library (LibDS)
- * Copyright (C) 2015-2016 Alex Spataru <alex_spataru@outlook>
+ * Copyright (c) 2015-2017 Alex Spataru <alex_spataru@outlook>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the "Software"),
@@ -26,6 +26,7 @@
 #include "DS_Timer.h"
 
 #include <stdio.h>
+#include <assert.h>
 
 #if defined _WIN32
     #include <windows.h>
@@ -45,11 +46,7 @@ static int running = 0;
  */
 static void* update_timer (void* ptr)
 {
-    if (!ptr) {
-        pthread_exit (NULL);
-        return NULL;
-    }
-
+    assert (ptr);
     DS_Timer* timer = (DS_Timer*) ptr;
 
     while (running == 1) {
@@ -106,11 +103,11 @@ void DS_Sleep (const int millisecs)
  */
 void DS_TimerStop (DS_Timer* timer)
 {
-    if (timer) {
-        timer->enabled = 0;
-        timer->expired = 0;
-        timer->elapsed = 0;
-    }
+    assert (timer);
+
+    timer->enabled = 0;
+    timer->expired = 0;
+    timer->elapsed = 0;
 }
 
 /**
@@ -118,11 +115,11 @@ void DS_TimerStop (DS_Timer* timer)
  */
 void DS_TimerStart (DS_Timer* timer)
 {
-    if (timer) {
-        timer->enabled = 1;
-        timer->expired = 0;
-        timer->elapsed = 0;
-    }
+    assert (timer);
+
+    timer->enabled = 1;
+    timer->expired = 0;
+    timer->elapsed = 0;
 }
 
 /**
@@ -130,10 +127,10 @@ void DS_TimerStart (DS_Timer* timer)
  */
 void DS_TimerReset (DS_Timer* timer)
 {
-    if (timer) {
-        timer->expired = 0;
-        timer->elapsed = 0;
-    }
+    assert (timer);
+
+    timer->expired = 0;
+    timer->elapsed = 0;
 }
 
 /**
@@ -151,30 +148,29 @@ void DS_TimerReset (DS_Timer* timer)
  */
 int DS_TimerInit (DS_Timer* timer, const int time, const int precision)
 {
-    if (timer) {
-        /* Timer has already been initialized, fuck off */
-        if (timer->initialized)
-            return 0;
+    /* Check if timer pointer is valid */
+    assert (timer);
 
-        /* Configure the timer */
-        timer->enabled = 0;
-        timer->expired = 0;
-        timer->elapsed = 0;
-        timer->time = time;
-        timer->initialized = 1;
-        timer->precision = precision;
+    /* Timer has already been initialized, fuck off */
+    if (timer->initialized)
+        return 0;
 
-        /* Configure the thread */
-        pthread_t thread;
-        int err = pthread_create (&thread, NULL, &update_timer, (void*) timer);
+    /* Configure the timer */
+    timer->enabled = 0;
+    timer->expired = 0;
+    timer->elapsed = 0;
+    timer->time = time;
+    timer->initialized = 1;
+    timer->precision = precision;
 
-        /* Report thread creation errors */
-        if (err)
-            fprintf (stderr, "Cannot create timer thread, error %d\n", err);
+    /* Configure the thread */
+    pthread_t thread;
+    int err = pthread_create (&thread, NULL, &update_timer, (void*) timer);
 
-        /* Return 1 if there are no errors */
-        return (err == 0);
-    }
+    /* Report thread creation errors */
+    if (err)
+        fprintf (stderr, "Cannot create timer thread, error %d\n", err);
 
-    return 0;
+    /* Return 1 if there are no errors */
+    return (err == 0);
 }

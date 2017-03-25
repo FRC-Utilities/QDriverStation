@@ -21,7 +21,8 @@ HEADERS += \
     $$PWD/include/DS_Protocol.h \
     $$PWD/include/DS_DefaultProtocols.h \
     $$PWD/include/DS_Timer.h \
-    $$PWD/include/DS_Queue.h
+    $$PWD/include/DS_Queue.h \
+    $$PWD/include/DS_String.h
 
 SOURCES += \
     $$PWD/src/protocols/frc_2014.c \
@@ -38,7 +39,7 @@ SOURCES += \
     $$PWD/src/crc32.c \
     $$PWD/src/array.c \
     $$PWD/src/timer.c \
-    $$PWD/src/queue.c
+    $$PWD/src/queue.c \
+    $$PWD/src/string.c
     
 include ($$PWD/lib/Socky/Socky.pri)
-include ($$PWD/lib/bstrlib/bstrlib.pri)
