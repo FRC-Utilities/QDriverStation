@@ -29,8 +29,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAGIC_SIZE 21
-
 /**
  * Returns the length of the given \a string
  * \warning The program will quit if \a string is \c NULL
