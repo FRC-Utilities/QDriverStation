@@ -26,8 +26,6 @@
 #include <stdlib.h>
 #include <pthread.h>
 
-#define VERBOSE
-
 #if defined _WIN32
     static WSADATA WSA_DATA;
     #define GET_ERR WSAGetLastError()

@@ -101,18 +101,15 @@ static void create_robot_event (const DS_EventType type)
 /**
  * Notifies the user about something through the NetConsole
  */
-void CFG_AddNotification (const char* msg)
+void CFG_AddNotification (const DS_String* msg)
 {
     /* Message is invalid */
     if (!msg)
         return;
 
-    /* Create notification string */
-    char notification [strlen (msg) + 40];
-    sprintf (notification, "<font color=#888>** LibDS: %s</font> ", msg);
-
-    /* Send notification */
-    CFG_AddNetConsoleMessage (notification);
+    /* Create and display notification string */
+    DS_String str = DS_StrFormat ("<font color=#888>** LibDS: %s</font> ", msg->buf);
+    CFG_AddNetConsoleMessage (&str);
 }
 
 /**
@@ -121,17 +118,12 @@ void CFG_AddNotification (const char* msg)
  *
  * \a msg the message to display
  */
-void CFG_AddNetConsoleMessage (const char* msg)
+void CFG_AddNetConsoleMessage (const DS_String* msg)
 {
     if (msg) {
         DS_Event event;
         event.netconsole.type = DS_NETCONSOLE_NEW_MESSAGE;
-
-        int i;
-        event.netconsole.message = (char*) malloc (strlen (msg) * sizeof (char));
-        for (i = 0; i < (int) strlen (msg); ++i)
-            event.netconsole.message [i] = msg [i];
-
+        event.netconsole.message = DS_StrToChar (msg);
         DS_AddEvent (&event);
     }
 }

@@ -50,8 +50,8 @@ extern "C" {
 extern void CFG_ReconfigureAddresses (const int flags);
 
 /* NetConsole ouput */
-extern void CFG_AddNotification (const char* msg);
-extern void CFG_AddNetConsoleMessage (const char* msg);
+extern void CFG_AddNotification (const DS_String* msg);
+extern void CFG_AddNetConsoleMessage (const DS_String* msg);
 
 /* Getters */
 extern int CFG_GetTeamNumber (void);

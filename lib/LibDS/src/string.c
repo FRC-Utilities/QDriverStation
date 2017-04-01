@@ -131,11 +131,11 @@ int DS_StrResize (DS_String* string, size_t size)
 
     /* Re-initialize the buffer */
     free (string->buf);
-    string->buf = calloc (abs (size), sizeof (char));
+    string->buf = calloc (size, sizeof (char));
 
     /* Copy old buffer into start of new buffer */
     if (string->buf) {
-        string->len = abs (size);
+        string->len = size;
         for (i = 0; i < oldSize; ++i)
             string->buf [i] = copy [i];
 

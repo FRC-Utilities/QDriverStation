@@ -210,7 +210,7 @@ static void recv_data()
 
     /* Add NetConsole message to event system */
     if (netcs_data.len > 0)
-        CFG_AddNetConsoleMessage (DS_StrToChar (&netcs_data));
+        CFG_AddNetConsoleMessage (&netcs_data);
 
     /* Reset the data pointers */
     clear_recv_data();
@@ -332,15 +332,10 @@ static void close_protocol()
     DS_SocketClose (&protocol->netconsole_socket);
 
     /* Create notification string */
-    char notification [protocol->name.len + 7];
-    char* name = DS_StrToChar (&protocol->name);
-    sprintf (notification, "Closed %s", name);
-
-    /* Send notification string */
-    CFG_AddNotification (notification);
+    DS_String str = DS_StrFormat ("Closed %s", protocol->name.buf);
+    CFG_AddNotification (&str);
 
     /* De-allocate the protocol */
-    DS_SmartFree ((void**) &name);
     DS_SmartFree ((void**) &protocol);
 }
 
@@ -396,13 +391,8 @@ void DS_ConfigureProtocol (DS_Protocol* ptr)
     DS_TimerStart (&robot_recv_timer);
 
     /* Create notification string */
-    char notification [512];
-    char* name = DS_StrToChar (&ptr->name);
-    sprintf (notification, "Configured %s", name);
-
-    /* Send notification string */
-    DS_SmartFree ((void**) &name);
-    CFG_AddNotification (notification);
+    DS_String str = DS_StrFormat ("Loaded %s", ptr->name.buf);
+    CFG_AddNotification (&str);
 }
 
 /**

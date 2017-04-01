@@ -470,7 +470,7 @@ DS_Protocol* DS_GetProtocolFRC_2014 (void)
     DS_Protocol* protocol = (DS_Protocol*) malloc (sizeof (DS_Protocol));
 
     /* Set protocol name */
-    protocol->name = DS_StrNew ("FRC 2014 Communication Protocol");
+    protocol->name = DS_StrNew ("FRC 2014 Comm. Protocol");
 
     /* Set address functions */
     protocol->fms_address = &fms_address;
