@@ -334,6 +334,7 @@ static void close_protocol()
     /* Create notification string */
     DS_String str = DS_StrFormat ("Closed %s", protocol->name.buf);
     CFG_AddNotification (&str);
+    DS_StrRmBuf (&str);
 
     /* De-allocate the protocol */
     DS_SmartFree ((void**) &protocol);
@@ -393,6 +394,7 @@ void DS_ConfigureProtocol (DS_Protocol* ptr)
     /* Create notification string */
     DS_String str = DS_StrFormat ("Loaded %s", ptr->name.buf);
     CFG_AddNotification (&str);
+    DS_StrRmBuf (&str);
 }
 
 /**

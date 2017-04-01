@@ -373,7 +373,9 @@ void DS_RebootRobot (void)
 {
     if (DS_CurrentProtocol()) {
         DS_CurrentProtocol()->reboot_robot();
-        CFG_AddNotification ("Rebooting robot...");
+        DS_String str = DS_StrNew ("Rebooting robot...");
+        CFG_AddNotification (&str);
+        DS_StrRmBuf (&str);
     }
 }
 
@@ -384,7 +386,10 @@ void DS_RestartRobotCode (void)
 {
     if (DS_CurrentProtocol()) {
         DS_CurrentProtocol()->restart_robot_code();
-        CFG_AddNotification ("Restarting robot code...");
+
+        DS_String str = DS_StrNew ("Restarting robot code...");
+        CFG_AddNotification (&str);
+        DS_StrRmBuf (&str);
     }
 }
 
