@@ -29,6 +29,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 /*
  * Set the strings
@@ -447,6 +448,8 @@ void DS_SetControlMode (const DS_ControlMode mode)
  */
 void DS_SetCustomFMSAddress (const char* address)
 {
+    assert (address);
+
     if (strlen (address) > 0) {
         DS_StrRmBuf (&custom_fms_address);
         custom_fms_address = DS_StrNew (address);
@@ -465,6 +468,8 @@ void DS_SetCustomFMSAddress (const char* address)
  */
 void DS_SetCustomRadioAddress (const char* address)
 {
+    assert (address);
+
     if (strlen (address) > 0) {
         DS_StrRmBuf (&custom_radio_address);
         custom_radio_address = DS_StrNew (address);
@@ -483,6 +488,8 @@ void DS_SetCustomRadioAddress (const char* address)
  */
 void DS_SetCustomRobotAddress (const char* address)
 {
+    assert (address);
+
     if (strlen (address) > 0) {
         DS_StrRmBuf (&custom_robot_address);
         custom_robot_address = DS_StrNew (address);
@@ -501,6 +508,8 @@ void DS_SetCustomRobotAddress (const char* address)
  */
 void DS_SendNetConsoleMessage (const char* message)
 {
+    assert (message);
+
     if (DS_CurrentProtocol()) {
         DS_String data = DS_StrNew (message);
         DS_SocketSend (&DS_CurrentProtocol()->netconsole_socket, &data);

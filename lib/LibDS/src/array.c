@@ -36,6 +36,7 @@ void DS_ArrayFree (DS_Array* array)
 {
     /* Check arguments */
     assert (array);
+    assert (array->data);
 
     /* De-allocate array data */
     if (array->size > 0)
@@ -58,12 +59,7 @@ void DS_ArrayInsert (DS_Array* array, void* element)
 {
     /* Check arguments */
     assert (array);
-
-    /* Array buffer is invalid */
-    if (!array->data) {
-        fprintf (stderr, "DS_ArrayInsert: data buffer of %p is NULL\n", array);
-        return;
-    }
+    assert (array->data);
 
     /* Resize array if required */
     if (array->used == array->size) {

@@ -274,6 +274,7 @@ char DS_StrCharAt (const DS_String* string, const int pos)
 {
     /* Check arguments */
     assert (string);
+    assert (string->buf);
 
     /* Get the character at the given position */
     if ((int) string->len > abs (pos))
@@ -329,6 +330,7 @@ DS_String DS_StrDup (const DS_String* source)
 {
     /* Check arguments */
     assert (source);
+    assert (source->buf);
 
     /* Create new empty string */
     DS_String string = DS_StrNewLen (source->len);

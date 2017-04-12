@@ -22,7 +22,6 @@
 
 #include "socky.h"
 
-#include <assert.h>
 #include <stdlib.h>
 #include <pthread.h>
 

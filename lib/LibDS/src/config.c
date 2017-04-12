@@ -29,6 +29,7 @@
 
 #include <math.h>
 #include <string.h>
+#include <assert.h>
 
 /*
  * These variables hold the state(s) of the LibDS and its modules
@@ -103,9 +104,8 @@ static void create_robot_event (const DS_EventType type)
  */
 void CFG_AddNotification (const DS_String* msg)
 {
-    /* Message is invalid */
-    if (!msg)
-        return;
+    /* Check arguments */
+    assert (msg);
 
     /* Create and display notification string */
     DS_String str = DS_StrFormat ("<font color=#888>** LibDS: %s</font> ", msg->buf);
@@ -120,12 +120,14 @@ void CFG_AddNotification (const DS_String* msg)
  */
 void CFG_AddNetConsoleMessage (const DS_String* msg)
 {
-    if (msg) {
-        DS_Event event;
-        event.netconsole.type = DS_NETCONSOLE_NEW_MESSAGE;
-        event.netconsole.message = DS_StrToChar (msg);
-        DS_AddEvent (&event);
-    }
+    /* Check arguments */
+    assert (msg);
+
+    /* Register new NetConsole event */
+    DS_Event event;
+    event.netconsole.type = DS_NETCONSOLE_NEW_MESSAGE;
+    event.netconsole.message = DS_StrToChar (msg);
+    DS_AddEvent (&event);
 }
 
 /**

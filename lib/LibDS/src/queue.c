@@ -99,6 +99,7 @@ void* DS_QueueGetFirst (DS_Queue* queue)
         return NULL;
 
     /* Get the first item in the list */
+    assert (queue->buffer);
     return (void*) queue->buffer [queue->front];
 }
 
@@ -134,6 +135,7 @@ void DS_QueuePush (DS_Queue* queue, void* item)
         queue->rear = 0;
 
     /* Since we don't want to depend on potential idiots, copy the data */
+    assert (queue->buffer);
     memcpy (queue->buffer [queue->rear], item, queue->item_size);
 }
 
