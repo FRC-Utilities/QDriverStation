@@ -293,7 +293,7 @@ static DS_String get_timezone_data (void)
     wcstombs (str, info.StandardName, wcslen (info.StandardName));
 
     /* Convert the obtained cstring to a bstring */
-    DS_String tz = DS_StringFromCString (str);
+    DS_String tz = DS_StrNew (str);
     free (str);
 
     /* Get milliseconds */
