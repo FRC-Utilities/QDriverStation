@@ -133,7 +133,7 @@ static int set_socket_options (int sfd)
             err = setsockopt (sfd,
                               SOL_SOCKET,
                               SO_REUSEADDR,
-                              &val, sizeof (val));
+                              (const char*) &val, sizeof (val));
 #else
 #ifndef __ANDROID__
             err *= setsockopt (sfd,

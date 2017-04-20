@@ -325,7 +325,7 @@ static DS_String create_robot_packet (void)
     DS_StrSetChar (&data, 79, (uint8_t) 0x30);
 
     /* Add CRC32 checksum */
-    uint32_t checksum = DS_CRC32 (data.buf, sizeof (data));
+    uint32_t checksum = DS_CRC32 (data.buf, DS_StrLen (&data));
     DS_StrSetChar (&data, 1020, (checksum & 0xff000000) >> 24);
     DS_StrSetChar (&data, 1021, (checksum & 0xff0000) >> 16);
     DS_StrSetChar (&data, 1022, (checksum & 0xff00) >> 8);
