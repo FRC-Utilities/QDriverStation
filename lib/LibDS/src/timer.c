@@ -61,6 +61,7 @@ static void* update_timer (void* ptr)
     }
 
     pthread_exit (NULL);
+    return NULL;
 }
 
 /**

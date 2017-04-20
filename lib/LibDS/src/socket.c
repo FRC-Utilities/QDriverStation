@@ -145,6 +145,7 @@ static void* create_socket (void* data)
 
     /* Exit */
     pthread_exit (NULL);
+    return NULL;
 }
 
 /**

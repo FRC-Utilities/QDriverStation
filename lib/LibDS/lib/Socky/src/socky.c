@@ -249,6 +249,7 @@ static void* close_socket (void* data)
 
     /* Exit thread */
     pthread_exit (NULL);
+    return NULL;
 }
 
 /**

@@ -268,6 +268,7 @@ static void* run_event_loop()
     }
 
     pthread_exit (NULL);
+    return NULL;
 }
 
 /**
