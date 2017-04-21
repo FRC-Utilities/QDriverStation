@@ -73,7 +73,7 @@ SDL_Joysticks::SDL_Joysticks (QObject* parent) : QObject (parent)
         genericMappings.close();
     }
 
-    QTimer::singleShot (100, Qt::PreciseTimer, this, &SDL_Joysticks::update);
+    QTimer::singleShot (100, Qt::PreciseTimer, this, SLOT (update()));
 #endif
 }
 
