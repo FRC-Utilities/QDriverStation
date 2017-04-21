@@ -78,22 +78,18 @@ Window {
         updatePlaceholders()
         Beeper.setEnabled (enableSoundEffects.checked)
         Utilities.setAutoScaleEnabled (autoScale.checked)
+		
         DS.customFMSAddress = fmsAddress.text
         DS.customRadioAddress = radioAddress.text
         DS.customRobotAddress = robotAddress.text
     }
 
     //
-    // Check for updates (if we are allowed) & allow/disallow sounds
+    // Apply settings on launch
     //
     Component.onCompleted: {
         apply()
         Beeper.setEnabled (enableSoundEffects.checked)
-
-        if (checkForUpdates.checked) {
-            Updater.setDownloaderEnabled (UpdaterUrl, true)
-            Updater.checkForUpdates (UpdaterUrl)
-        }
     }
 
     //
@@ -114,7 +110,6 @@ Window {
         property alias y: window.y
         property alias address: robotAddress.text
         property alias autoScale: autoScale.checked
-        property alias checkForUpdates: checkForUpdates.checked
         property alias enableSoundEffects: enableSoundEffects.checked
     }
 
@@ -231,12 +226,6 @@ Window {
                     //
                     ColumnLayout {
                         spacing: Globals.spacing
-
-                        Checkbox {
-                            checked: true
-                            id: checkForUpdates
-                            text: qsTr ("Check for updates automatically")
-                        }
 
                         Checkbox {
                             checked: true

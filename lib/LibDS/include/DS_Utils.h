@@ -41,11 +41,11 @@ extern "C" {
 #define DS_Max(a,b) ((a) > (b) ? a : b)
 #define DS_Min(a,b) ((a) < (b) ? a : b)
 #define DS_FallBackAddress "0.0.0.0"
+#define DS_FREE(p) if (p) { free (p); p = NULL; }
 
 /*
  * Misc functions
  */
-extern void DS_SmartFree (void** data);
 extern int DS_StopThread (pthread_t* thread);
 extern uint8_t DS_FloatToByte (float val, float max);
 extern uint32_t DS_CRC32 (const void* buf, size_t size);

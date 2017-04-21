@@ -144,6 +144,12 @@ class DriverStation : public QObject
     Q_PROPERTY (QString libDSVersion
                 READ libDSVersion
                 CONSTANT)
+    Q_PROPERTY (QString buildDate
+                READ buildDate
+                CONSTANT)
+    Q_PROPERTY (QString buildTime
+                READ buildTime
+                CONSTANT)
     Q_PROPERTY (int fmsPacketLoss
                 READ fmsPacketLoss)
     Q_PROPERTY (int radioPacketLoss
@@ -209,6 +215,8 @@ public:
 #endif
     }
 
+    static QString buildDate();
+    static QString buildTime();
     static QString libDSVersion();
 
     int teamNumber() const;

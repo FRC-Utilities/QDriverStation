@@ -81,7 +81,7 @@ static void server_loop (DS_Socket* ptr)
     set_socket_block (ptr->info.sock_in, 0);
 
     /* Run the server while the socket is valid */
-    while (ptr && ptr->info.server_init == 1 && ptr->info.sock_in > 0) {
+    while (ptr->info.server_init && ptr->info.sock_in > 0) {
         tv.tv_sec = 0;
         tv.tv_usec = 5000 * 100;
 
@@ -144,7 +144,6 @@ static void* create_socket (void* data)
     server_loop (ptr);
 
     /* Exit */
-    pthread_exit (NULL);
     return NULL;
 }
 
@@ -218,7 +217,11 @@ void DS_SocketOpen (DS_Socket* ptr)
 
     /* Initialize the socket in another thread */
     ptr->info.thread = 0;
-    pthread_create (&ptr->info.thread, NULL, &create_socket, (void*) ptr);
+    int error = pthread_create (&ptr->info.thread, NULL,
+                                &create_socket, (void*) ptr);
+
+    /* Quit on error */
+    assert (!error);
 }
 
 /**
@@ -237,7 +240,7 @@ void DS_SocketClose (DS_Socket* ptr)
     ptr->info.client_init = 0;
 
     /* Close sockets */
-#ifdef __ANDROID__
+#if defined (__ANDROID__)
     socket_close_threaded (ptr->info.sock_in);
     socket_close_threaded (ptr->info.sock_out);
 #else
@@ -257,7 +260,6 @@ void DS_SocketClose (DS_Socket* ptr)
 
     /* Stop the socket thread (if any) */
     DS_StopThread (&ptr->info.thread);
-    ptr->info.thread = 0;
 }
 
 /**
@@ -333,7 +335,7 @@ int DS_SocketSend (const DS_Socket* ptr, const DS_String* data)
     }
 
     /* Free temp. buffer */
-    DS_SmartFree ((void**) &bytes);
+    DS_FREE (bytes);
 
     /* Return error code */
     return bytes_written;

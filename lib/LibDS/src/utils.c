@@ -29,18 +29,6 @@
 #include <string.h>
 
 /**
- * De-allocates the given \a data and re-assings the pointer value
- * to avoid errors in the future
- */
-void DS_SmartFree (void** data)
-{
-    if (data != NULL) {
-        free (*data);
-        *data = NULL;
-    }
-}
-
-/**
  * Kills the given \a thread and reports possible errors
  */
 int DS_StopThread (pthread_t* thread)
@@ -60,6 +48,9 @@ int DS_StopThread (pthread_t* thread)
     error = pthread_cancel (*thread);
 #endif
 
+    /* Change thread ID */
+    *thread = 0;
+
     /* Something went wrong while stopping the thread */
     if (error != 0) {
         fprintf (stderr,
@@ -68,26 +59,10 @@ int DS_StopThread (pthread_t* thread)
                  "\t Error Code: %d\n"
                  "\t Error Desc: %s\n",
                  (int) *thread, error, strerror (error));
-
         return error;
     }
 
-    /* Join child thread to main thread */
-    error = pthread_join (*thread, NULL);
-
-    /* Something went wrong while joining the thread */
-    if (error != 0) {
-        fprintf (stderr,
-                 "Thread %d:\n"
-                 "\t Message: Cannot join thread to main\n"
-                 "\t Error Code: %d\n"
-                 "\t Error Desc: %s\n",
-                 (int) *thread, error, strerror (error));
-
-        return error;
-    }
-
-    /* Return error code (should be 0) */
+    /* Return exit code */
     return error;
 }
 
@@ -115,7 +90,7 @@ uint8_t DS_FloatToByte (float value, float max)
  * different communication protocols.
  *
  * If you call this function outside the scope of the \c LibDS, remember to
- * call \c DS_SmartFree ((void**) &STR() to avoid memory leaks.
+ * call \c DS_FREE (STR() to avoid memory leaks.
  *
  * \param net the desired first octet of the IP
  * \param team the team number, used in second and third octets

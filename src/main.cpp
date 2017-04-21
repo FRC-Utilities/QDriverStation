@@ -39,7 +39,6 @@
 #include <stdio.h>
 #include <EventLogger.h>
 #include <DriverStation.h>
-#include <QSimpleUpdater.h>
 
 //------------------------------------------------------------------------------
 // Application includes
@@ -238,13 +237,11 @@ int main (int argc, char* argv[])
     Shortcuts shortcuts;
     Dashboards dashboards;
     QJoysticks* qjoysticks = QJoysticks::getInstance();
-    QSimpleUpdater* updater = QSimpleUpdater::getInstance();
     DriverStation* driverstation = DriverStation::getInstance();
 
     /* Configure the shortcuts handler and start the DS */
     app.installEventFilter (&shortcuts);
     driverstation->declareQML();
-    driverstation->start();
 
     /* Load the QML interface */
     QQmlApplicationEngine engine;
@@ -252,7 +249,6 @@ int main (int argc, char* argv[])
     engine.rootContext()->setContextProperty ("cIsUnix",       isUnx);
     engine.rootContext()->setContextProperty ("cIsWindows",    isWin);
     engine.rootContext()->setContextProperty ("Beeper",        &beeper);
-    engine.rootContext()->setContextProperty ("Updater",       updater);
     engine.rootContext()->setContextProperty ("QJoysticks",    qjoysticks);
     engine.rootContext()->setContextProperty ("Utilities",     &utilities);
     engine.rootContext()->setContextProperty ("cDashboard",    &dashboards);
@@ -260,7 +256,6 @@ int main (int argc, char* argv[])
     engine.rootContext()->setContextProperty ("appVersion",    APP_VERSION);
     engine.rootContext()->setContextProperty ("appWebsite",    APP_WEBSITE);
     engine.rootContext()->setContextProperty ("appRepBugs",    APP_REPBUGS);
-    engine.rootContext()->setContextProperty ("UpdaterUrl",    URL_UPDATER);
     engine.rootContext()->setContextProperty ("DSLogger",      dslogger);
     engine.rootContext()->setContextProperty ("DS",            driverstation);
     engine.load (QUrl (QStringLiteral ("qrc:/qml/main.qml")));

@@ -51,7 +51,7 @@ extern DS_Protocol* DS_GetProtocolFRC_2016 (void)
 
     /* Set protocol name */
     DS_StrRmBuf (&protocol->name);
-    protocol->name = DS_StrNew ("FRC 2016 Protocol");
+    protocol->name = DS_StrNew ("FRC 2016");
 
     return protocol;
 }

@@ -108,11 +108,27 @@ int DriverStation::robotPacketLoss() const
 }
 
 /**
+ * Returns the date when the LibDS binary was build
+ */
+QString DriverStation::buildDate()
+{
+    return QString (DS_GetBuildDate());
+}
+
+/**
+ * Returns the time when the LibDS binary was build
+ */
+QString DriverStation::buildTime()
+{
+    return QString (DS_GetBuildTime());
+}
+
+/**
  * Returns the version of LibDS as a string
  */
 QString DriverStation::libDSVersion()
 {
-    return QString (LIB_DS_VERSION);
+    return QString (DS_GetVersion());
 }
 
 /**
@@ -1043,8 +1059,7 @@ QString DriverStation::getAddress (const QString& address)
         if (address.endsWith (".local", Qt::CaseInsensitive) ||
             address.endsWith (".lan",   Qt::CaseInsensitive) ||
             address.endsWith (".com",   Qt::CaseInsensitive) ||
-            address.endsWith (".net",   Qt::CaseInsensitive) ||
-            address.endsWith (".com",   Qt::CaseInsensitive))
+            address.endsWith (".net",   Qt::CaseInsensitive))
             return address;
 
         QHostAddress ip (address);

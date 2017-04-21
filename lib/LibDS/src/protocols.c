@@ -267,7 +267,6 @@ static void* run_event_loop()
         DS_Sleep (5);
     }
 
-    pthread_exit (NULL);
     return NULL;
 }
 
@@ -298,13 +297,11 @@ void Protocols_Init()
     running = 1;
 
     /* Configure the event thread */
-    int error = pthread_create (&event_thread, NULL, &run_event_loop, NULL);
+    int error = pthread_create (&event_thread, NULL,
+                                &run_event_loop, NULL);
 
     /* Quit if the thread fails to start */
-    if (error) {
-        fprintf (stderr, "Cannot initialize event thread");
-        exit (EXIT_FAILURE);
-    }
+    assert (!error);
 }
 
 /**
@@ -333,12 +330,14 @@ static void close_protocol()
     DS_SocketClose (&protocol->netconsole_socket);
 
     /* Create notification string */
-    DS_String str = DS_StrFormat ("Closed %s", protocol->name.buf);
+    char* name = DS_StrToChar (&protocol->name);
+    DS_String str = DS_StrFormat ("Closed %s protocol", name);
     CFG_AddNotification (&str);
     DS_StrRmBuf (&str);
+    DS_FREE (name);
 
     /* De-allocate the protocol */
-    DS_SmartFree ((void**) &protocol);
+    DS_FREE (protocol);
 }
 
 /**
@@ -393,9 +392,11 @@ void DS_ConfigureProtocol (DS_Protocol* ptr)
     DS_TimerStart (&robot_recv_timer);
 
     /* Create notification string */
-    DS_String str = DS_StrFormat ("Loaded %s", ptr->name.buf);
+    char* name = DS_StrToChar (&ptr->name);
+    DS_String str = DS_StrFormat ("Loaded %s protocol", name);
     CFG_AddNotification (&str);
     DS_StrRmBuf (&str);
+    DS_FREE (name);
 }
 
 /**

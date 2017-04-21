@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2016 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -43,6 +43,7 @@ extern "C" {
  *  \brief  The structure that defines a point
  *
  *  \sa SDL_EnclosePoints
+ *  \sa SDL_PointInRect
  */
 typedef struct SDL_Point {
     int x;
@@ -65,6 +66,16 @@ typedef struct SDL_Rect {
 } SDL_Rect;
 
 /**
+ *  \brief Returns true if point resides inside a rectangle.
+ */
+SDL_FORCE_INLINE SDL_bool SDL_PointInRect (const SDL_Point* p,
+                                           const SDL_Rect* r)
+{
+    return ( (p->x >= r->x) && (p->x < (r->x + r->w)) &&
+             (p->y >= r->y) && (p->y < (r->y + r->h)) ) ? SDL_TRUE : SDL_FALSE;
+}
+
+/**
  *  \brief Returns true if the rectangle has no area.
  */
 SDL_FORCE_INLINE SDL_bool SDL_RectEmpty (const SDL_Rect* r)
@@ -75,8 +86,7 @@ SDL_FORCE_INLINE SDL_bool SDL_RectEmpty (const SDL_Rect* r)
 /**
  *  \brief Returns true if the two rectangles are equal.
  */
-SDL_FORCE_INLINE SDL_bool SDL_RectEquals (const SDL_Rect* a,
-                                          const SDL_Rect* b)
+SDL_FORCE_INLINE SDL_bool SDL_RectEquals (const SDL_Rect* a, const SDL_Rect* b)
 {
     return (a && b && (a->x == b->x) && (a->y == b->y) &&
             (a->w == b->w) && (a->h == b->h)) ? SDL_TRUE : SDL_FALSE;

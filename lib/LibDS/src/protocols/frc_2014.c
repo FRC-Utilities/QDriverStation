@@ -65,7 +65,7 @@ static int max_joysticks = 4;
 /*
  * Control code flags
  */
-static int resync = 0;
+static int resync = 1;
 static int reboot = 0;
 static int restart_code = 0;
 
@@ -470,7 +470,7 @@ DS_Protocol* DS_GetProtocolFRC_2014 (void)
     DS_Protocol* protocol = (DS_Protocol*) malloc (sizeof (DS_Protocol));
 
     /* Set protocol name */
-    protocol->name = DS_StrNew ("FRC 2014 Protocol");
+    protocol->name = DS_StrNew ("FRC 2014");
 
     /* Set address functions */
     protocol->fms_address = &fms_address;

@@ -73,3 +73,30 @@ int DS_Initialized (void)
 {
     return init;
 }
+
+/**
+ * Returns the current version of LibDS
+ * This is defined in the source to avoid reporting wrong versions when
+ * importing LibDS as a library (e.g. a DLL) and using non-corresponding
+ * header files
+ */
+char* DS_GetVersion (void)
+{
+    return "2.1.0";
+}
+
+/**
+ * Returns the date when the library was compiled
+ */
+char* DS_GetBuildDate (void)
+{
+    return __DATE__;
+}
+
+/**
+ * Returns the time when the library was compiled
+ */
+char* DS_GetBuildTime (void)
+{
+    return __TIME__;
+}

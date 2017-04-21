@@ -1,5 +1,9 @@
 INCLUDEPATH += $$PWD/include
 
+!android {
+    DEFINES += SDL_SUPPORTED
+}
+
 win32* {
     DEFINES += SDL_WIN
     DEFINES += SDL_MAIN_HANDLED

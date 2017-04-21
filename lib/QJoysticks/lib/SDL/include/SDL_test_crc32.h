@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2016 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -70,45 +70,47 @@ typedef struct {
 /* ---------- Function Prototypes ------------- */
 
 /**
- * /brief Initialize the CRC context
+ * \brief Initialize the CRC context
  *
  * Note: The function initializes the crc table required for all crc calculations.
  *
- * /param crcContext        pointer to context variable
+ * \param crcContext        pointer to context variable
  *
- * /returns 0 for OK, -1 on error
+ * \returns 0 for OK, -1 on error
  *
  */
 int SDLTest_Crc32Init (SDLTest_Crc32Context* crcContext);
 
 
 /**
- * /brief calculate a crc32 from a data block
+ * \brief calculate a crc32 from a data block
  *
- * /param crcContext         pointer to context variable
- * /param inBuf              input buffer to checksum
- * /param inLen              length of input buffer
- * /param crc32              pointer to Uint32 to store the final CRC into
+ * \param crcContext         pointer to context variable
+ * \param inBuf              input buffer to checksum
+ * \param inLen              length of input buffer
+ * \param crc32              pointer to Uint32 to store the final CRC into
  *
- * /returns 0 for OK, -1 on error
+ * \returns 0 for OK, -1 on error
  *
  */
 int SDLTest_crc32Calc (SDLTest_Crc32Context* crcContext, CrcUint8* inBuf,
-                       CrcUint32 inLen, CrcUint32* crc32);
+                       CrcUint32 inLen,
+                       CrcUint32* crc32);
 
 /* Same routine broken down into three steps */
 int SDLTest_Crc32CalcStart (SDLTest_Crc32Context* crcContext, CrcUint32* crc32);
 int SDLTest_Crc32CalcEnd (SDLTest_Crc32Context* crcContext, CrcUint32* crc32);
 int SDLTest_Crc32CalcBuffer (SDLTest_Crc32Context* crcContext, CrcUint8* inBuf,
-                             CrcUint32 inLen, CrcUint32* crc32);
+                             CrcUint32 inLen,
+                             CrcUint32* crc32);
 
 
 /**
- * /brief clean up CRC context
+ * \brief clean up CRC context
  *
- * /param crcContext        pointer to context variable
+ * \param crcContext        pointer to context variable
  *
- * /returns 0 for OK, -1 on error
+ * \returns 0 for OK, -1 on error
  *
 */
 

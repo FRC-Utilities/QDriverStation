@@ -48,7 +48,7 @@ extern void DS_Sleep (const int millisecs);
 extern void DS_TimerStop (DS_Timer* timer);
 extern void DS_TimerStart (DS_Timer* timer);
 extern void DS_TimerReset (DS_Timer* timer);
-extern int DS_TimerInit (DS_Timer* timer, const int time, const int precision);
+extern void DS_TimerInit (DS_Timer* timer, const int time, const int precision);
 
 #ifdef __cplusplus
 }

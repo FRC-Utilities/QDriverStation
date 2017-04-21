@@ -40,7 +40,7 @@ void DS_ArrayFree (DS_Array* array)
 
     /* De-allocate array data */
     if (array->size > 0)
-        DS_SmartFree ((void**) &array->data);
+        DS_FREE (array->data);
 
     /* Update array properties */
     array->used = 0;

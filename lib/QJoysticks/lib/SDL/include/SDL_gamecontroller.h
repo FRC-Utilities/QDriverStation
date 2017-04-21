@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2016 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -43,7 +43,7 @@ extern "C" {
  *  \file SDL_gamecontroller.h
  *
  *  In order to use these functions, SDL_Init() must have been called
- *  with the ::SDL_INIT_JOYSTICK flag.  This causes SDL to scan the system
+ *  with the ::SDL_INIT_GAMECONTROLLER flag.  This causes SDL to scan the system
  *  for game controllers, and load appropriate drivers.
  *
  *  If you would like to receive controller updates while the application
@@ -90,7 +90,7 @@ typedef struct SDL_GameControllerButtonBind {
  *      }
  *  }
  *
- *  Using the SDL_HINT_GAMECONTROLLERCONFIG hint or the SDL_GameControllerAddMapping you can add support for controllers SDL is unaware of or cause an existing controller to have a different binding. The format is:
+ *  Using the SDL_HINT_GAMECONTROLLERCONFIG hint or the SDL_GameControllerAddMapping() you can add support for controllers SDL is unaware of or cause an existing controller to have a different binding. The format is:
  *  guid,name,mappings
  *
  *  Where GUID is the string value from SDL_JoystickGetGUIDString(), name is the human readable string for the device and mappings are controller mappings to joystick ones.
@@ -135,7 +135,7 @@ extern DECLSPEC int SDLCALL SDL_GameControllerAddMapping (
 /**
  *  Get a mapping string for a GUID
  *
- *  \return the mapping string.  Must be freed with SDL_free.  Returns NULL if no mapping is available
+ *  \return the mapping string.  Must be freed with SDL_free().  Returns NULL if no mapping is available
  */
 extern DECLSPEC char* SDLCALL SDL_GameControllerMappingForGUID (
     SDL_JoystickGUID guid );
@@ -143,7 +143,7 @@ extern DECLSPEC char* SDLCALL SDL_GameControllerMappingForGUID (
 /**
  *  Get a mapping string for an open GameController
  *
- *  \return the mapping string.  Must be freed with SDL_free.  Returns NULL if no mapping is available
+ *  \return the mapping string.  Must be freed with SDL_free().  Returns NULL if no mapping is available
  */
 extern DECLSPEC char* SDLCALL SDL_GameControllerMapping (
     SDL_GameController* gamecontroller );
@@ -165,13 +165,20 @@ extern DECLSPEC const char* SDLCALL SDL_GameControllerNameForIndex (
 /**
  *  Open a game controller for use.
  *  The index passed as an argument refers to the N'th game controller on the system.
- *  This index is the value which will identify this controller in future controller
- *  events.
+ *  This index is not the value which will identify this controller in future
+ *  controller events.  The joystick's instance id (::SDL_JoystickID) will be
+ *  used there instead.
  *
  *  \return A controller identifier, or NULL if an error occurred.
  */
 extern DECLSPEC SDL_GameController* SDLCALL SDL_GameControllerOpen (
     int joystick_index);
+
+/**
+ * Return the SDL_GameController associated with an instance id.
+ */
+extern DECLSPEC SDL_GameController* SDLCALL SDL_GameControllerFromInstanceID (
+    SDL_JoystickID joyid);
 
 /**
  *  Return the name for this currently opened controller
@@ -190,7 +197,8 @@ extern DECLSPEC SDL_bool SDLCALL SDL_GameControllerGetAttached (
  *  Get the underlying joystick object used by a controller
  */
 extern DECLSPEC SDL_Joystick* SDLCALL SDL_GameControllerGetJoystick (
-    SDL_GameController* gamecontroller);
+    SDL_GameController*
+    gamecontroller);
 
 /**
  *  Enable/disable controller event polling.
@@ -230,7 +238,8 @@ typedef enum {
  *  turn this string into a axis mapping
  */
 extern DECLSPEC SDL_GameControllerAxis SDLCALL
-SDL_GameControllerGetAxisFromString (const char* pchString);
+SDL_GameControllerGetAxisFromString (
+    const char* pchString);
 
 /**
  *  turn this axis enum into a string mapping
@@ -248,7 +257,8 @@ SDL_GameControllerGetBindForAxis (SDL_GameController* gamecontroller,
 /**
  *  Get the current state of an axis control on a game controller.
  *
- *  The state is a value ranging from -32768 to 32767.
+ *  The state is a value ranging from -32768 to 32767 (except for the triggers,
+ *  which range from 0 to 32767).
  *
  *  The axis indices start at index 0.
  */
@@ -283,7 +293,8 @@ typedef enum {
  *  turn this string into a button mapping
  */
 extern DECLSPEC SDL_GameControllerButton SDLCALL
-SDL_GameControllerGetButtonFromString (const char* pchString);
+SDL_GameControllerGetButtonFromString (
+    const char* pchString);
 
 /**
  *  turn this button enum into a string mapping

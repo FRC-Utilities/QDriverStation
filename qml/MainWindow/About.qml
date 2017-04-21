@@ -55,7 +55,13 @@ ColumnLayout {
     Label {
         size: medium
         anchors.horizontalCenter: parent.horizontalCenter
-        text: qsTr ("Using LibDS") + " v" + DS.libDSVersion
+        text: "LibDS "
+              + DS.libDSVersion
+              + " (built on "
+              + DS.buildDate
+              + " at "
+              + DS.buildTime
+              + ")"
     }
 
     //

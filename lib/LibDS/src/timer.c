@@ -60,7 +60,6 @@ static void* update_timer (void* ptr)
         DS_Sleep (timer->precision);
     }
 
-    pthread_exit (NULL);
     return NULL;
 }
 
@@ -144,17 +143,15 @@ void DS_TimerReset (DS_Timer* timer)
  * A word of advice, using a higher \a precision (lower value in msecs) will
  * result in increased CPU usage, this thing does not have morals and will eat
  * the whole cake if you allow it.
- *
- * This function will return \c 0 if the timer thread fails to start.
  */
-int DS_TimerInit (DS_Timer* timer, const int time, const int precision)
+void DS_TimerInit (DS_Timer* timer, const int time, const int precision)
 {
     /* Check if timer pointer is valid */
     assert (timer);
 
     /* Timer has already been initialized, fuck off */
     if (timer->initialized)
-        return 0;
+        return;
 
     /* Configure the timer */
     timer->enabled = 0;
@@ -166,12 +163,9 @@ int DS_TimerInit (DS_Timer* timer, const int time, const int precision)
 
     /* Configure the thread */
     pthread_t thread;
-    int err = pthread_create (&thread, NULL, &update_timer, (void*) timer);
+    int error = pthread_create (&thread, NULL,
+                                &update_timer, (void*) timer);
 
-    /* Report thread creation errors */
-    if (err)
-        fprintf (stderr, "Cannot create timer thread, error %d\n", err);
-
-    /* Return 1 if there are no errors */
-    return (err == 0);
+    /* Check if thread was started */
+    assert (!error);
 }

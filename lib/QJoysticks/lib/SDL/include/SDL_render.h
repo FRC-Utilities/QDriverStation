@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2016 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -79,8 +79,8 @@ typedef struct SDL_RendererInfo {
     Uint32 flags;               /**< Supported ::SDL_RendererFlags */
     Uint32 num_texture_formats; /**< The number of available texture formats */
     Uint32 texture_formats[16]; /**< The available texture formats */
-    int max_texture_width;      /**< The maximimum texture width */
-    int max_texture_height;     /**< The maximimum texture height */
+    int max_texture_width;      /**< The maximum texture width */
+    int max_texture_height;     /**< The maximum texture height */
 } SDL_RendererInfo;
 
 /**
@@ -211,7 +211,7 @@ extern DECLSPEC int SDLCALL SDL_GetRendererInfo (SDL_Renderer* renderer,
                                                  SDL_RendererInfo* info);
 
 /**
- *  \brief Get the output size of a rendering context.
+ *  \brief Get the output size in pixels of a rendering context.
  */
 extern DECLSPEC int SDLCALL SDL_GetRendererOutputSize (SDL_Renderer* renderer,
         int* w, int* h);
@@ -225,7 +225,7 @@ extern DECLSPEC int SDLCALL SDL_GetRendererOutputSize (SDL_Renderer* renderer,
  *  \param w      The width of the texture in pixels.
  *  \param h      The height of the texture in pixels.
  *
- *  \return The created texture is returned, or 0 if no rendering context was
+ *  \return The created texture is returned, or NULL if no rendering context was
  *          active,  the format was unsupported, or the width or height were out
  *          of range.
  *
@@ -244,7 +244,7 @@ extern DECLSPEC SDL_Texture* SDLCALL SDL_CreateTexture (SDL_Renderer* renderer,
  *  \param renderer The renderer.
  *  \param surface The surface containing pixel data used to fill the texture.
  *
- *  \return The created texture is returned, or 0 on error.
+ *  \return The created texture is returned, or NULL on error.
  *
  *  \note The surface is not modified or freed by this function.
  *
@@ -252,7 +252,8 @@ extern DECLSPEC SDL_Texture* SDLCALL SDL_CreateTexture (SDL_Renderer* renderer,
  *  \sa SDL_DestroyTexture()
  */
 extern DECLSPEC SDL_Texture* SDLCALL SDL_CreateTextureFromSurface (
-    SDL_Renderer* renderer, SDL_Surface* surface);
+    SDL_Renderer* renderer,
+    SDL_Surface* surface);
 
 /**
  *  \brief Query the attributes of a texture
@@ -368,7 +369,7 @@ extern DECLSPEC int SDLCALL SDL_GetTextureBlendMode (SDL_Texture* texture,
  *  \param rect      A pointer to the rectangle of pixels to update, or NULL to
  *                   update the entire texture.
  *  \param pixels    The raw pixel data.
- *  \param pitch     The number of bytes between rows of pixel data.
+ *  \param pitch     The number of bytes in a row of pixel data, including padding between lines.
  *
  *  \return 0 on success, or -1 if the texture is not valid.
  *
@@ -501,6 +502,31 @@ extern DECLSPEC void SDLCALL SDL_RenderGetLogicalSize (SDL_Renderer* renderer,
         int* w, int* h);
 
 /**
+ *  \brief Set whether to force integer scales for resolution-independent rendering
+ *
+ *  \param renderer The renderer for which integer scaling should be set.
+ *  \param enable   Enable or disable integer scaling
+ *
+ *  This function restricts the logical viewport to integer values - that is, when
+ *  a resolution is between two multiples of a logical size, the viewport size is
+ *  rounded down to the lower multiple.
+ *
+ *  \sa SDL_RenderSetLogicalSize()
+ */
+extern DECLSPEC int SDLCALL SDL_RenderSetIntegerScale (SDL_Renderer* renderer,
+        SDL_bool enable);
+
+/**
+ *  \brief Get whether integer scales are forced for resolution-independent rendering
+ *
+ *  \param renderer The renderer from which integer scaling should be queried.
+ *
+ *  \sa SDL_RenderSetIntegerScale()
+ */
+extern DECLSPEC SDL_bool SDLCALL SDL_RenderGetIntegerScale (
+    SDL_Renderer* renderer);
+
+/**
  *  \brief Set the drawing area for rendering on the current target.
  *
  *  \param renderer The renderer for which the drawing area should be set.
@@ -551,6 +577,17 @@ extern DECLSPEC int SDLCALL SDL_RenderSetClipRect (SDL_Renderer* renderer,
  */
 extern DECLSPEC void SDLCALL SDL_RenderGetClipRect (SDL_Renderer* renderer,
         SDL_Rect* rect);
+
+/**
+ *  \brief Get whether clipping is enabled on the given renderer.
+ *
+ *  \param renderer The renderer from which clip state should be queried.
+ *
+ *  \sa SDL_RenderGetClipRect()
+ */
+extern DECLSPEC SDL_bool SDLCALL SDL_RenderIsClipEnabled (
+    SDL_Renderer* renderer);
+
 
 /**
  *  \brief Set the drawing scale for rendering on the current target.
@@ -649,7 +686,8 @@ extern DECLSPEC int SDLCALL SDL_GetRenderDrawBlendMode (SDL_Renderer* renderer,
 /**
  *  \brief Clear the current rendering target with the drawing color
  *
- *  This function clears the entire rendering target, ignoring the viewport.
+ *  This function clears the entire rendering target, ignoring the viewport and
+ *  the clip rectangle.
  *
  *  \return 0 on success, or -1 on error
  */
@@ -783,7 +821,7 @@ extern DECLSPEC int SDLCALL SDL_RenderCopy (SDL_Renderer* renderer,
  *  \param dstrect   A pointer to the destination rectangle, or NULL for the
  *                   entire rendering target.
  *  \param angle    An angle in degrees that indicates the rotation that will be applied to dstrect
- *  \param center   A pointer to a point indicating the point around which dstrect will be rotated (if NULL, rotation will be done aroud dstrect.w/2, dstrect.h/2)
+ *  \param center   A pointer to a point indicating the point around which dstrect will be rotated (if NULL, rotation will be done around dstrect.w/2, dstrect.h/2).
  *  \param flip     An SDL_RendererFlip value stating which flipping actions should be performed on the texture
  *
  *  \return 0 on success, or -1 on error

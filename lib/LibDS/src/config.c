@@ -108,8 +108,13 @@ void CFG_AddNotification (const DS_String* msg)
     assert (msg);
 
     /* Create and display notification string */
-    DS_String str = DS_StrFormat ("<font color=#888>** LibDS: %s</font> ", msg->buf);
+    char* cstr = DS_StrToChar (msg);
+    DS_String str = DS_StrFormat ("<font color=#888>** LibDS: %s</font>", cstr);
     CFG_AddNetConsoleMessage (&str);
+
+    /* Delete the string buffer */
+    DS_StrRmBuf (&str);
+    DS_FREE (cstr);
 }
 
 /**
@@ -143,19 +148,19 @@ void CFG_ReconfigureAddresses (const int flags)
     if (flags & RECONFIGURE_FMS) {
         char* address = DS_GetAppliedFMSAddress();
         DS_SocketChangeAddress (&DS_CurrentProtocol()->fms_socket, address);
-        DS_SmartFree ((void**) &address);
+        DS_FREE (address);
     }
 
     if (flags & RECONFIGURE_RADIO) {
         char* address = DS_GetAppliedRadioAddress();
         DS_SocketChangeAddress (&DS_CurrentProtocol()->radio_socket, address);
-        DS_SmartFree ((void**) &address);
+        DS_FREE (address);
     }
 
     if (flags & RECONFIGURE_ROBOT) {
         char* address = DS_GetAppliedRobotAddress();
         DS_SocketChangeAddress (&DS_CurrentProtocol()->robot_socket, address);
-        DS_SmartFree ((void**) &address);
+        DS_FREE (address);
     }
 }
 

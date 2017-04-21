@@ -69,10 +69,10 @@ extern void DS_QueueFree (DS_Queue* queue)
     /* Free all the items in the queue */
     int element;
     for (element = 0; element < queue->capacity; ++element)
-        DS_SmartFree ((void**)&queue->buffer [element]);
+        DS_FREE (queue->buffer [element]);
 
     /* Delete the buffer */
-    DS_SmartFree ((void**)&queue->buffer);
+    DS_FREE (queue->buffer);
 
     /* Reset queue properties */
     queue->rear = -1;

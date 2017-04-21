@@ -25,6 +25,8 @@
 #include "DS_Events.h"
 
 #include <string.h>
+#include <assert.h>
+#include <stdlib.h>
 
 static DS_Queue events;
 
@@ -51,6 +53,7 @@ void Events_Close (void)
  */
 void DS_AddEvent (DS_Event* event)
 {
+    assert (event);
     DS_QueuePush (&events, (void*) event);
 }
 

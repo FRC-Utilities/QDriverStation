@@ -43,21 +43,6 @@ ApplicationWindow {
     title: qsTr ("QJoysticks Example")
 
     //
-    // React to QJoysticks signals
-    //
-    Connections {
-        target: QJoysticks
-        onCountChanged: refreshJoysticks()
-    }
-
-    //
-    // Updates the joystick names displayed by the combo box
-    //
-    function refreshJoysticks() {
-        joysticks.model = QJoysticks.deviceNames()
-    }
-
-    //
     // Generates the axes, button and POV indicators when the user selects
     // another joystick from the combobox
     //
@@ -83,11 +68,6 @@ ApplicationWindow {
     }
 
     //
-    // Check if there are already some joysticks connected
-    //
-    Component.onCompleted: refreshJoysticks()
-
-    //
     // Display all the widgets in a vertical layout
     //
     ColumnLayout {
@@ -101,6 +81,7 @@ ApplicationWindow {
         ComboBox {
             id: joysticks
             Layout.fillWidth: true
+            model: QJoysticks.deviceNames
             onCurrentIndexChanged: generateJoystickWidgets (currentIndex)
         }
 
@@ -114,8 +95,8 @@ ApplicationWindow {
 
             ColumnLayout {
                 spacing: 5
-                anchors.margins: 10
-                anchors.fill: parent
+                Layout.fillWidth: true
+                Layout.fillHeight: true
 
                 //
                 // Generate a progressbar for each joystick axis
@@ -124,18 +105,18 @@ ApplicationWindow {
                     id: axes
                     delegate: ProgressBar {
                         id: progressbar
-                        minimumValue: 0
-                        maximumValue: 200
+                        minimumValue: -100
+                        maximumValue: 100
                         Layout.fillWidth: true
 
-                        value: 100
+                        value: 0
                         Behavior on value {NumberAnimation{}}
 
                         Connections {
                             target: QJoysticks
                             onAxisChanged: {
                                 if (currentJoystick === js && index === axis)
-                                    progressbar.value = (value + 1) * 100
+                                    progressbar.value = QJoysticks.getAxis (js, index) * 100
                             }
                         }
                     }
@@ -155,8 +136,8 @@ ApplicationWindow {
                 rows: 6
                 rowSpacing: 5
                 columnSpacing: 5
-                anchors.margins: 10
-                anchors.fill: parent
+                Layout.fillWidth: true
+                Layout.fillHeight: true
                 flow: GridLayout.TopToBottom
 
                 //
@@ -176,7 +157,7 @@ ApplicationWindow {
                             target: QJoysticks
                             onButtonChanged: {
                                 if (currentJoystick === js && button === index)
-                                    checked = pressed
+                                    checked = QJoysticks.getButton (js, index)
                             }
                         }
                     }
@@ -194,8 +175,8 @@ ApplicationWindow {
 
             ColumnLayout {
                 spacing: 5
-                anchors.margins: 10
-                anchors.fill: parent
+                Layout.fillWidth: true
+                Layout.fillHeight: true
 
                 //
                 // Generate a spinbox for each joystick POV
@@ -215,7 +196,7 @@ ApplicationWindow {
                             target: QJoysticks
                             onPovChanged: {
                                 if (currentJoystick === js && pov === index)
-                                    value = angle
+                                    value = QJoysticks.getPOV (js, index)
                             }
                         }
                     }

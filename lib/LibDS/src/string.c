@@ -207,6 +207,28 @@ int DS_StrJoin (DS_String* first, const DS_String* second)
 }
 
 /**
+ * Appends the given \a cstring to the \a string
+ *
+ * \returns 0 on failure, 1 on success
+ */
+int DS_StrJoinCStr (DS_String* string, const char* cstring)
+{
+    /* Check arguments */
+    assert (string);
+    assert (cstring);
+
+    /* Append each character to the string */
+    int i;
+    int len = (int) strlen (cstring);
+    for (i = 0; i < len; ++i)
+        if (!DS_StrAppend (string, cstring [i]))
+            return DS_STR_FAILURE;
+
+    /* Tell everyone how smart this function is */
+    return DS_STR_SUCCESS;
+}
+
+/**
  * Changes the character of the \a string at the given \a pos to \a byte
  *
  * \param string the string structure

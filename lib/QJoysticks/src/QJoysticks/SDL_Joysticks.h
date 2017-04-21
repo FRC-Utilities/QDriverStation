@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 Alex Spataru <alex_spataru@outlook.com>
+ * Copyright (c) 2015-2017 Alex Spataru <alex_spataru@outlook.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -50,7 +50,9 @@ signals:
     void buttonEvent (const QJoystickButtonEvent& event);
 
 public:
-    explicit SDL_Joysticks();
+    SDL_Joysticks (QObject* parent = Q_NULLPTR);
+    ~SDL_Joysticks();
+
     QList<QJoystickDevice*> joysticks();
 
 public slots:

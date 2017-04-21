@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2016 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -30,8 +30,8 @@
 
 /* Reset structure packing at previous byte alignment */
 #if defined(_MSC_VER) || defined(__MWERKS__) || defined(__WATCOMC__)  || defined(__BORLANDC__)
-#ifdef __BORLANDC__
-    #pragma nopackwarning
-#endif
-#pragma pack(pop)
+    #ifdef __BORLANDC__
+        #pragma nopackwarning
+    #endif
+    #pragma pack(pop)
 #endif /* Compiler needs structure packing set */

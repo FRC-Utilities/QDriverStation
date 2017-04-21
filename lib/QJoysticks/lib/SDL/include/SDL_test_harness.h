@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2016 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -110,8 +110,8 @@ typedef struct SDLTest_TestSuiteReference {
  * \returns Test run result; 0 when all tests passed, 1 if any tests failed.
  */
 int SDLTest_RunSuites (SDLTest_TestSuiteReference* testSuites[],
-                       const char* userRunSeed, Uint64 userExecKey, const char* filter,
-                       int testIterations);
+                       const char* userRunSeed,
+                       Uint64 userExecKey, const char* filter, int testIterations);
 
 
 /* Ends C function definitions when using C++ */

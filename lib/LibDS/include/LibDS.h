@@ -28,8 +28,6 @@
 extern "C" {
 #endif
 
-#define LIB_DS_VERSION "2.0.2"
-
 #include "DS_Timer.h"
 #include "DS_Types.h"
 #include "DS_Utils.h"
@@ -43,6 +41,10 @@ extern "C" {
 extern void DS_Init (void);
 extern void DS_Close (void);
 extern int DS_Initialized (void);
+
+extern char* DS_GetVersion (void);
+extern char* DS_GetBuildDate (void);
+extern char* DS_GetBuildTime (void);
 
 #ifdef __cplusplus
 }
