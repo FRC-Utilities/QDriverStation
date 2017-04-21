@@ -150,7 +150,7 @@ void SDL_Joysticks::update()
         }
     }
 
-    QTimer::singleShot (10, Qt::PreciseTimer, this, &SDL_Joysticks::update);
+    QTimer::singleShot (10, Qt::PreciseTimer, SLOT (update()));
 #endif
 }
 
