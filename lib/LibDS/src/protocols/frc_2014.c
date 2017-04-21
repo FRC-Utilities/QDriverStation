@@ -314,13 +314,13 @@ static DS_String create_robot_packet (void)
     /* Now resize the datagram to 1024 bytes */
     DS_StrResize (&data, 1024);
 
-    /* Add FRC Driver Station version (same as the one sent by 16.0.1) */
-    DS_StrSetChar (&data, 72, (uint8_t) 0x30);
+    /* Add FRC Driver Station version (same as FRC DS 17.01) */
+    DS_StrSetChar (&data, 72, (uint8_t) 0x31);
     DS_StrSetChar (&data, 73, (uint8_t) 0x34);
     DS_StrSetChar (&data, 74, (uint8_t) 0x30);
-    DS_StrSetChar (&data, 75, (uint8_t) 0x31);
+    DS_StrSetChar (&data, 75, (uint8_t) 0x32);
     DS_StrSetChar (&data, 76, (uint8_t) 0x31);
-    DS_StrSetChar (&data, 77, (uint8_t) 0x36);
+    DS_StrSetChar (&data, 77, (uint8_t) 0x37);
     DS_StrSetChar (&data, 78, (uint8_t) 0x30);
     DS_StrSetChar (&data, 79, (uint8_t) 0x30);
 
