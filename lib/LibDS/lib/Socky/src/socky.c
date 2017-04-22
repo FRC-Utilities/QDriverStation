@@ -472,6 +472,9 @@ int socket_close (const int sfd)
     if (!valid_sfd (sfd))
         return -1;
 
+    /* Disable I/O operations on the socket */
+    shutdown (sfd, SOCKY_READ | SOCKY_WRITE);
+
     /* Close the socket */
     int error = 0;
 #if defined _WIN32
@@ -479,12 +482,6 @@ int socket_close (const int sfd)
 #else
     error = close (sfd);
 #endif
-
-    /* Error closing socket, just shutdown */
-    if (error) {
-        print_error (sfd, "error while closing socket", GET_ERR);
-        shutdown (sfd, SOCKY_READ | SOCKY_WRITE);
-    }
 
     /* Return result */
     return error;

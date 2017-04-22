@@ -213,11 +213,8 @@ void DS_SocketOpen (DS_Socket* ptr)
 
     /* Initialize the socket in another thread */
     ptr->info.thread = 0;
-    int error = pthread_create (&ptr->info.thread, NULL,
-                                &create_socket, (void*) ptr);
-
-    /* Quit on error */
-    assert (!error);
+    pthread_create (&ptr->info.thread, NULL,
+                    &create_socket, (void*) ptr);
 }
 
 /**
@@ -230,6 +227,9 @@ void DS_SocketClose (DS_Socket* ptr)
 {
     /* Check arguments */
     assert (ptr);
+
+    /* Stop the socket thread (if any) */
+    DS_StopThread (&ptr->info.thread);
 
     /* Reset socket properties */
     ptr->info.server_init = 0;
@@ -253,9 +253,6 @@ void DS_SocketClose (DS_Socket* ptr)
     memset (ptr->info.buffer, 0, sizeof (ptr->info.buffer));
     memset (ptr->info.in_service, 0, sizeof (ptr->info.in_service));
     memset (ptr->info.out_service, 0, sizeof (ptr->info.out_service));
-
-    /* Stop the socket thread (if any) */
-    DS_StopThread (&ptr->info.thread);
 }
 
 /**

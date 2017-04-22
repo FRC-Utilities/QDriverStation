@@ -52,7 +52,7 @@ int DS_StopThread (pthread_t* thread)
     *thread = 0;
 
     /* Something went wrong while stopping the thread */
-    if (error != 0) {
+    if (error) {
         fprintf (stderr,
                  "Thread %d:\n"
                  "\t Message: Cannot stop thread\n"
