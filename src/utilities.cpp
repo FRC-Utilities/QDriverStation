@@ -214,6 +214,7 @@ void Utilities::updateCpuUsage()
                  (cpuJiffies.second - m_pastCpuJiffies.second);
 
     m_pastCpuJiffies = cpuJiffies;
+    emit cpuUsageChanged();
 #endif
 
     QTimer::singleShot (1000,
