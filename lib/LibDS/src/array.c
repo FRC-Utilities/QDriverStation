@@ -39,8 +39,13 @@ void DS_ArrayFree (DS_Array* array)
     assert (array->data);
 
     /* De-allocate array data */
-    if (array->size > 0)
+    if (array->size > 0) {
+        int i;
+        for (i = 0; i < (int) array->size; ++i)
+            DS_FREE (array->data [i]);
+
         DS_FREE (array->data);
+    }
 
     /* Update array properties */
     array->used = 0;
@@ -85,7 +90,7 @@ void DS_ArrayInit (DS_Array* array, size_t initial_size)
     assert (array);
 
     /* Allocate array data */
-    array->data = realloc (array->data, initial_size);
+    array->data = calloc (initial_size, sizeof (void*));
 
     /* Update array data */
     array->used = 0;
