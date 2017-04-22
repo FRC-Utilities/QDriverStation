@@ -44,12 +44,24 @@ extern "C" {
 #define DS_FREE(p) if (p) { free (p); p = NULL; }
 
 /*
+ * Icon types for message boxes
+ */
+typedef enum {
+    DS_ICON_INFORMATION,
+    DS_ICON_WARNING,
+    DS_ICON_ERROR,
+} DS_IconType;
+
+/*
  * Misc functions
  */
 extern int DS_StopThread (pthread_t* thread);
 extern uint8_t DS_FloatToByte (float val, float max);
 extern uint32_t DS_CRC32 (const void* buf, size_t size);
 extern DS_String DS_GetStaticIP (const int net, const int team, const int host);
+extern void DS_ShowMessageBox (const DS_String* caption,
+                               const DS_String* message,
+                               const DS_IconType icon);
 
 #ifdef __cplusplus
 }

@@ -78,7 +78,9 @@ static void server_loop (DS_Socket* ptr)
     struct timeval tv;
 
     /* Disable socket blocking */
+#ifndef _WIN32
     set_socket_block (ptr->info.sock_in, 0);
+#endif
 
     /* Run the server while the socket is valid */
     while (ptr->info.server_init && ptr->info.sock_in > 0) {
@@ -213,8 +215,20 @@ void DS_SocketOpen (DS_Socket* ptr)
 
     /* Initialize the socket in another thread */
     ptr->info.thread = 0;
-    pthread_create (&ptr->info.thread, NULL,
-                    &create_socket, (void*) ptr);
+    int error = pthread_create (&ptr->info.thread, NULL,
+                                &create_socket, (void*) ptr);
+
+    /* Warn the user when the socket cannot start */
+    if (error) {
+        DS_String caption = DS_StrNew ("LibDS");
+        DS_String message = DS_StrNew ("Cannot start socket thread!");
+        DS_ShowMessageBox (&caption, &message, DS_ICON_ERROR);
+        DS_StrRmBuf (&caption);
+        DS_StrRmBuf (&message);
+    }
+
+    /* Quit if socket cannot start */
+    assert (!error);
 }
 
 /**

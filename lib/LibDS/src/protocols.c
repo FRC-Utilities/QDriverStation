@@ -300,6 +300,15 @@ void Protocols_Init()
     int error = pthread_create (&event_thread, NULL,
                                 &run_event_loop, NULL);
 
+    /* Display error message if we cannot star the event loop */
+    if (error) {
+        DS_String caption = DS_StrNew ("LibDS");
+        DS_String message = DS_StrNew ("Cannot start protocol event loop!");
+        DS_ShowMessageBox (&caption, &message, DS_ICON_ERROR);
+        DS_StrRmBuf (&caption);
+        DS_StrRmBuf (&message);
+    }
+
     /* Quit if the thread fails to start */
     assert (!error);
 }

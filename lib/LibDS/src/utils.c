@@ -28,6 +28,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef _WIN32
+    #include <windows.h>
+#endif
+
 /**
  * Kills the given \a thread and reports possible errors
  */
@@ -101,4 +105,90 @@ DS_String DS_GetStaticIP (const int net, const int team, const int host)
     int te = team / 100;
     int am = team - (te * 100);
     return DS_StrFormat ("%d.%d.%d.%d", net, te, am, host);
+}
+
+/**
+ * Shows a GUI message box if GUI options are enabled
+ * during the compilation time.
+ *
+ * Otherwise, this function shall print to \a stderr
+ */
+void DS_ShowMessageBox (const DS_String* caption,
+                        const DS_String* message,
+                        const DS_IconType icon)
+{
+    assert (caption);
+    assert (message);
+
+    /* Get native strings */
+    char* ccap = DS_StrToChar (caption);
+    char* cmsg = DS_StrToChar (message);
+
+    /*
+     * GUI implementation
+     */
+#ifdef LIBDS_ENABLE_MESSAGE_BOX
+
+    /*
+     * Windows implementation
+     */
+#ifdef _WIN32
+    /* Convert strings to wstrings */
+    wchar_t wcap [caption->len + 1];
+    wchar_t wmsg [message->len + 1];
+    mbstowcs (wcap, ccap, caption->len + 1);
+    mbstowcs (wmsg, cmsg, message->len + 1);
+
+    /* Get icon type */
+    UINT ico;
+    switch (icon) {
+    case DS_ICON_ERROR:
+        ico = MB_ICONERROR;
+        break;
+    case DS_ICON_INFORMATION:
+        ico = MB_ICONINFORMATION;
+        break;
+    case DS_ICON_WARNING:
+        ico = MB_ICONWARNING;
+        break;
+    default:
+        ico = MB_ICONINFORMATION;
+        break;
+    }
+
+    /* Display message box */
+    MessageBox (NULL, wmsg, wcap, ico | MB_OK);
+#endif
+
+    /*
+     * Console implementation
+     */
+#else
+    /* Get icon text */
+    char* cico;
+    switch (icon) {
+    case DS_ICON_ERROR:
+        cico = "ERROR";
+        break;
+    case DS_ICON_INFORMATION:
+        cico = "INFORMATION";
+        break;
+    case DS_ICON_WARNING:
+        cico = "WARNING";
+        break;
+    default:
+        cico = "INFORMATION";
+        break;
+    }
+
+    /* Log message to stderr */
+    fprintf (stderr, "%s: %s\n", cico, cmsg);
+
+    /* Free icon text memory */
+    DS_FREE (cico);
+#endif
+
+    /* Free resources */
+    DS_FREE (ccap);
+    DS_FREE (cmsg);
 }
