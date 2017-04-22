@@ -225,7 +225,7 @@ void DS_JoysticksAdd (const int axes, const int hats, const int buttons)
     }
 
     /* Allocate memory for a new joystick */
-    DS_Joystick* joystick = (DS_Joystick*) malloc (sizeof (DS_Joystick));
+    DS_Joystick* joystick = (DS_Joystick*) calloc (1, sizeof (DS_Joystick));
 
     /* Set joystick properties */
     joystick->num_axes = axes;

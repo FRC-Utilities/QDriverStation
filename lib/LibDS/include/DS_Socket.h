@@ -38,15 +38,15 @@ extern "C" {
  * to operate with the data provided by a \c DS_Socket structure
  */
 typedef struct {
-    int sock_in;          /**< Input socket file descriptor */
-    int sock_out;         /**< Output socket file descriptor */
-    int client_init;      /**< 1 if client is working, 0 if not */
-    int server_init;      /**< 1 if server is working, 0 if not */
-    pthread_t thread;     /**< Holds the thread ID of the socket */
-    size_t buffer_size;   /**< Holds the number of received bytes */
-    char buffer [4096];   /**< Holds the received data buffer */
-    char in_service [8];  /**< Holds the input port number as a string */
-    char out_service [8]; /**< Holds the output port number as a string */
+    int sock_in;           /**< Input socket file descriptor */
+    int sock_out;          /**< Output socket file descriptor */
+    int client_init;       /**< 1 if client is working, 0 if not */
+    int server_init;       /**< 1 if server is working, 0 if not */
+    pthread_t thread;      /**< Holds the thread ID of the socket */
+    size_t buffer_size;    /**< Holds the number of received bytes */
+    char buffer [4096];    /**< Holds the received data buffer */
+    char in_service [12];  /**< Holds the input port number as a string */
+    char out_service [12]; /**< Holds the output port number as a string */
 } DS_SocketInfo;
 
 /**
@@ -54,13 +54,13 @@ typedef struct {
  * both the the networking module and the rest of the application.
  */
 typedef struct {
-    int in_port;          /**< Input port number */
-    int out_port;         /**< Output port number */
-    int disabled;         /**< 1 if socket shall not send or receive data */
-    int broadcast;        /**< 1 if socket shall send or receive broadcasts */
-    char address[255];    /**< Address of remote host */
-    DS_SocketType type;   /**< Type of socket (UDP/TCP) */
-    DS_SocketInfo info;   /**< Ugly data about the socekt */
+    int in_port;           /**< Input port number */
+    int out_port;          /**< Output port number */
+    int disabled;          /**< 1 if socket shall not send or receive data */
+    int broadcast;         /**< 1 if socket shall send or receive broadcasts */
+    char address [512];    /**< Address of remote host */
+    DS_SocketType type;    /**< Type of socket (UDP/TCP) */
+    DS_SocketInfo info;    /**< Ugly data about the socket */
 } DS_Socket;
 
 /* For socket initialization */

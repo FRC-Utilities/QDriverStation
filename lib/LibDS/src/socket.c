@@ -116,10 +116,6 @@ static void* create_socket (void* data)
     memset (ptr->info.in_service, 0, sizeof (ptr->info.in_service));
     memset (ptr->info.out_service, 0, sizeof (ptr->info.out_service));
 
-    /* Assign fallback address if socket address is empty */
-    if (strlen (ptr->address) <= 0)
-        strcpy (ptr->address, DS_FallBackAddress);
-
     /* Set service strings */
     sprintf (ptr->info.in_service, "%d", ptr->in_port);
     sprintf (ptr->info.out_service, "%d", ptr->out_port);
@@ -319,7 +315,7 @@ int DS_SocketSend (const DS_Socket* ptr, const DS_String* data)
     if (DS_StrEmpty (data))
         return -1;
 
-    /* Get raw data */
+    /* Initialize variables*/
     int bytes_written = 0;
     int len = DS_StrLen (data);
     char* bytes = DS_StrToChar (data);
@@ -334,7 +330,7 @@ int DS_SocketSend (const DS_Socket* ptr, const DS_String* data)
                                     ptr->address, ptr->info.out_service, 0);
     }
 
-    /* Free temp. buffer */
+    /* Delete temp. buffer */
     DS_FREE (bytes);
 
     /* Return error code */

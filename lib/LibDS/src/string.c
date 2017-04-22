@@ -266,16 +266,17 @@ char* DS_StrToChar (const DS_String* string)
     assert (string);
     assert (string->buf);
 
-    /* Initialize the c-string */
-    char* cstr = (char*) calloc (string->len + 1, sizeof (char));
+    /* Initialize the c-string with one extra byte (for null terminator) */
+    size_t len = string->len + 1;
+    char* cstr = (char*) calloc (len, sizeof (char));
 
     /* Copy buffer data into c-string */
     int i;
     for (i = 0; i < (int) string->len; ++i)
         cstr [i] = string->buf [i];
 
-    /* Add null terminator */
-    cstr [string->len] = '\0';
+    /* Add NULL-terminator */
+    cstr [string->len] = 0;
 
     /* Return obtained string */
     return cstr;
@@ -409,6 +410,7 @@ DS_String DS_StrFormat (const char* format, ...)
             /* Handle number values */
             if (next == 'u' || next == 'd' || next == 'f') {
                 char str [sizeof (double) * 2];
+                memset (str, 0, sizeof (str));
 
                 /* Get the representation of the number */
                 if (next == 'u')
@@ -459,4 +461,3 @@ DS_String DS_StrFormat (const char* format, ...)
     /* Return string structure */
     return string;
 }
-

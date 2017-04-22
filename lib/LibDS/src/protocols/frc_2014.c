@@ -467,7 +467,7 @@ void restart_robot_code (void)
 DS_Protocol* DS_GetProtocolFRC_2014 (void)
 {
     /* Initialize pointers */
-    DS_Protocol* protocol = (DS_Protocol*) malloc (sizeof (DS_Protocol));
+    DS_Protocol* protocol = (DS_Protocol*) calloc (1, sizeof (DS_Protocol));
 
     /* Set protocol name */
     protocol->name = DS_StrNew ("FRC 2014");
