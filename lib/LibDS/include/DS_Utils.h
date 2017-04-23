@@ -31,16 +31,15 @@ extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <pthread.h>
 
 #include "DS_String.h"
 
 /*
  * You may find these useful
  */
+#define DS_FallBackAddress "0.0.0.0"
 #define DS_Max(a,b) ((a) > (b) ? a : b)
 #define DS_Min(a,b) ((a) < (b) ? a : b)
-#define DS_FallBackAddress "0.0.0.0"
 #define DS_FREE(p) if (p) { free (p); p = NULL; }
 
 /*
@@ -55,7 +54,6 @@ typedef enum {
 /*
  * Misc functions
  */
-extern int DS_StopThread (pthread_t* thread);
 extern uint8_t DS_FloatToByte (float val, float max);
 extern uint32_t DS_CRC32 (const void* buf, size_t size);
 extern DS_String DS_GetStaticIP (const int net, const int team, const int host);

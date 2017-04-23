@@ -336,10 +336,10 @@ DS_String DS_StrNew (const char* string)
 /**
  * Returns a 0-filled string with the given \a length
  */
-DS_String DS_StrNewLen (const int length)
+DS_String DS_StrNewLen (const size_t length)
 {
     DS_String string;
-    string.len = abs (length);
+    string.len = length;
     string.buf = (char*) calloc (string.len, sizeof (char));
     return string;
 }

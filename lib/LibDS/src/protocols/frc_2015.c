@@ -281,7 +281,8 @@ static DS_String get_timezone_data (void)
     /* Get current time */
     time_t rt = 0;
     uint32_t ms = 0;
-    struct tm* timeinfo = localtime (&rt);
+    struct tm timeinfo;
+    localtime_s (&timeinfo, &rt);
 
 #if defined _WIN32
     /* Get timezone information */
@@ -289,8 +290,9 @@ static DS_String get_timezone_data (void)
     GetTimeZoneInformation (&info);
 
     /* Convert the wchar to a standard string */
-    char* str = malloc (wcslen (info.StandardName));
-    wcstombs (str, info.StandardName, wcslen (info.StandardName));
+    size_t len = wcslen (info.StandardName) + 1;
+    char* str = calloc (len, sizeof (char));
+    wcstombs_s (NULL, str, len, info.StandardName, wcslen (info.StandardName));
 
     /* Convert the obtained cstring to a bstring */
     DS_String tz = DS_StrNew (str);
@@ -301,22 +303,22 @@ static DS_String get_timezone_data (void)
     ms = (uint32_t) info.StandardDate.wMilliseconds;
 #else
     /* Timezone is stored directly in time_t structure */
-    DS_String tz = DS_StrNew (timeinfo->tm_zone);
+    DS_String tz = DS_StrNew (timeinfo.tm_zone);
 #endif
 
     /* Encode date/time in datagram */
     DS_StrSetChar (&data, 0,  (uint8_t) 0x0b);
     DS_StrSetChar (&data, 1,  (uint8_t) cTagDate);
-    DS_StrSetChar (&data, 2,  (uint8_t) (ms & 0xff000000) >> 24);
-    DS_StrSetChar (&data, 3,  (uint8_t) (ms & 0xff0000) >> 16);
-    DS_StrSetChar (&data, 4,  (uint8_t) (ms & 0xff00) >> 8);
-    DS_StrSetChar (&data, 5,  (uint8_t) (ms & 0xff));
-    DS_StrSetChar (&data, 6,  (uint8_t) timeinfo->tm_sec);
-    DS_StrSetChar (&data, 7,  (uint8_t) timeinfo->tm_min);
-    DS_StrSetChar (&data, 8,  (uint8_t) timeinfo->tm_hour);
-    DS_StrSetChar (&data, 9,  (uint8_t) timeinfo->tm_yday);
-    DS_StrSetChar (&data, 10, (uint8_t) timeinfo->tm_mon);
-    DS_StrSetChar (&data, 11, (uint8_t) timeinfo->tm_year);
+    DS_StrSetChar (&data, 2,  (uint8_t) (ms >> 24));
+    DS_StrSetChar (&data, 3,  (uint8_t) (ms >> 16));
+    DS_StrSetChar (&data, 4,  (uint8_t) (ms >> 8));
+    DS_StrSetChar (&data, 5,  (uint8_t) (ms));
+    DS_StrSetChar (&data, 6,  (uint8_t) timeinfo.tm_sec);
+    DS_StrSetChar (&data, 7,  (uint8_t) timeinfo.tm_min);
+    DS_StrSetChar (&data, 8,  (uint8_t) timeinfo.tm_hour);
+    DS_StrSetChar (&data, 9,  (uint8_t) timeinfo.tm_yday);
+    DS_StrSetChar (&data, 10, (uint8_t) timeinfo.tm_mon);
+    DS_StrSetChar (&data, 11, (uint8_t) timeinfo.tm_year);
 
     /* Add timezone length and tag */
     DS_StrSetChar (&data, 12, DS_StrLen (&tz));
@@ -358,14 +360,14 @@ static DS_String get_joystick_data (void)
 
         /* Add button data */
         DS_StrAppend (&data, DS_GetJoystickNumButtons (i));
-        DS_StrAppend (&data, (button_flags & 0xff00) >> 8);
-        DS_StrAppend (&data, (button_flags & 0xff));
+        DS_StrAppend (&data, (uint8_t) (button_flags >> 8));
+        DS_StrAppend (&data, (uint8_t) (button_flags));
 
         /* Add hat data */
         DS_StrAppend (&data, DS_GetJoystickNumHats (i));
         for (j = 0; j < DS_GetJoystickNumHats (i); ++j) {
-            DS_StrAppend (&data, (DS_GetJoystickHat (i, j) & 0xff00) >> 8);
-            DS_StrAppend (&data, (DS_GetJoystickHat (i, j) & 0xff));
+            DS_StrAppend (&data, (uint8_t) (DS_GetJoystickHat (i, j) >> 8));
+            DS_StrAppend (&data, (uint8_t) (DS_GetJoystickHat (i, j)));
         }
     }
 
@@ -479,16 +481,16 @@ static DS_String create_fms_packet (void)
     encode_voltage (CFG_GetRobotVoltage(), &integer, &decimal);
 
     /* Add FMS packet count */
-    DS_StrSetChar (&data, 0, (sent_fms_packets & 0xff00) >> 8);
-    DS_StrSetChar (&data, 1, (sent_fms_packets & 0xff));
+    DS_StrSetChar (&data, 0, (sent_fms_packets >> 8));
+    DS_StrSetChar (&data, 1, (sent_fms_packets));
 
     /* Add DS version and FMS control code */
     DS_StrSetChar (&data, 2, cFMS_DS_Version);
     DS_StrSetChar (&data, 3, fms_control_code());
 
     /* Add team number */
-    DS_StrSetChar (&data, 4, (CFG_GetTeamNumber() & 0xff00) >> 8);
-    DS_StrSetChar (&data, 5, (CFG_GetTeamNumber() & 0xff));
+    DS_StrSetChar (&data, 4, (CFG_GetTeamNumber() >> 8));
+    DS_StrSetChar (&data, 5, (CFG_GetTeamNumber()));
 
     /* Add robot voltage */
     DS_StrSetChar (&data, 6, integer);
@@ -525,8 +527,8 @@ static DS_String create_robot_packet (void)
     DS_String data = DS_StrNewLen (6);
 
     /* Add packet index */
-    DS_StrSetChar (&data, 0, (sent_robot_packets & 0xff00) >> 8);
-    DS_StrSetChar (&data, 1, (sent_robot_packets & 0xff));
+    DS_StrSetChar (&data, 0, (sent_robot_packets >> 8));
+    DS_StrSetChar (&data, 1, (sent_robot_packets));
 
     /* Add packet header */
     DS_StrSetChar (&data, 2, cTagGeneral);

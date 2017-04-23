@@ -30,45 +30,10 @@
 
 #ifdef _WIN32
     #include <windows.h>
+    #ifndef __MINGW32__
+        #pragma comment (lib, "user32.lib")
+    #endif
 #endif
-
-/**
- * Kills the given \a thread and reports possible errors
- */
-int DS_StopThread (pthread_t* thread)
-{
-    /* Check if pointer is valid */
-    assert (thread);
-
-    /* Thread is invalid */
-    int error = 0;
-    if (*thread <= 0)
-        return 1;
-
-    /* Stop the thread */
-#if defined __ANDROID__
-    error = pthread_kill (*thread, 0);
-#else
-    error = pthread_cancel (*thread);
-#endif
-
-    /* Change thread ID */
-    *thread = 0;
-
-    /* Something went wrong while stopping the thread */
-    if (error) {
-        fprintf (stderr,
-                 "Thread %d:\n"
-                 "\t Message: Cannot stop thread\n"
-                 "\t Error Code: %d\n"
-                 "\t Error Desc: %s\n",
-                 (int) *thread, error, strerror (error));
-        return error;
-    }
-
-    /* Return exit code */
-    return error;
-}
 
 /**
  * Returns a single byte value that represents the ratio between the
@@ -134,10 +99,10 @@ void DS_ShowMessageBox (const DS_String* caption,
      */
 #ifdef _WIN32
     /* Convert strings to wstrings */
-    wchar_t wcap [caption->len + 1];
-    wchar_t wmsg [message->len + 1];
-    mbstowcs (wcap, ccap, caption->len + 1);
-    mbstowcs (wmsg, cmsg, message->len + 1);
+    wchar_t* wcap = calloc (caption->len + 1, sizeof (wchar_t));
+    wchar_t* wmsg = calloc (message->len + 1, sizeof (wchar_t));
+    mbstowcs_s (NULL, wcap, caption->len + 1, ccap, caption->len);
+    mbstowcs_s (NULL, wmsg, message->len + 1, cmsg, message->len);
 
     /* Get icon type */
     UINT ico;
@@ -158,6 +123,10 @@ void DS_ShowMessageBox (const DS_String* caption,
 
     /* Display message box */
     MessageBox (NULL, wmsg, wcap, ico | MB_OK);
+
+    /* Free buffers */
+    DS_FREE (wcap);
+    DS_FREE (wmsg);
 #endif
 
     /*

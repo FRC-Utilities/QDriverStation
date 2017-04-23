@@ -588,7 +588,7 @@ int udp_sendto (const int sfd,
 
     /* Send datagram */
     int bytes = sendto (sfd, buf, buf_len, flags,
-                        info->ai_addr, info->ai_addrlen);
+                        info->ai_addr, (int) info->ai_addrlen);
 
     /* Free address information */
     freeaddrinfo (info);

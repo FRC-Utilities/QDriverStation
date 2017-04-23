@@ -42,7 +42,6 @@ typedef struct {
     int sock_out;          /**< Output socket file descriptor */
     int client_init;       /**< 1 if client is working, 0 if not */
     int server_init;       /**< 1 if server is working, 0 if not */
-    pthread_t thread;      /**< Holds the thread ID of the socket */
     size_t buffer_size;    /**< Holds the number of received bytes */
     char buffer [4096];    /**< Holds the received data buffer */
     char in_service [12];  /**< Holds the input port number as a string */

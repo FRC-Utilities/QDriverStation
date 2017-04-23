@@ -69,7 +69,7 @@ extern char DS_StrCharAt (const DS_String* string, const int pos);
  * String creation functions
  */
 extern DS_String DS_StrNew (const char* string);
-extern DS_String DS_StrNewLen (const int length);
+extern DS_String DS_StrNewLen (const size_t length);
 extern DS_String DS_StrDup (const DS_String* source);
 extern DS_String DS_StrFormat (const char* format, ...);
 

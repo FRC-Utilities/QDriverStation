@@ -43,3 +43,8 @@ SOURCES += \
     $$PWD/src/string.c
     
 include ($$PWD/lib/Socky/Socky.pri)
+
+win32-msvc* {
+    #LIBS += -l
+    include ($$PWD/lib/pthread-win32/pthread-win32.pri)
+}

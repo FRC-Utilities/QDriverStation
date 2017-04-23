@@ -101,7 +101,7 @@ void Joysticks_Close (void)
  */
 int DS_GetJoystickCount (void)
 {
-    return array.used;
+    return (int) array.used;
 }
 
 /**

@@ -223,7 +223,7 @@ static DS_String get_joystick_data (void)
         /* Generate button data */
         uint16_t button_flags = 0;
         for (j = 0; j < max_buttons; ++j)
-            button_flags += DS_GetJoystickButton (i, j) ? pow (2, j) : 0;
+            button_flags += (uint16_t) DS_GetJoystickButton (i, j) ? j * j : 0;
 
         /* Add button data */
         DS_StrAppend (&buf, (button_flags & 0xff00) >> 8);

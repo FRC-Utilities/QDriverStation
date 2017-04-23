@@ -257,13 +257,12 @@ static void update_watchdogs()
  *    - Feed/reset the watchdogs
  *    - Check if any of the watchdogs has expired
  */
-static void* run_event_loop()
+static void* run_event_loop (void)
 {
     while (running) {
         send_data();
         recv_data();
         update_watchdogs();
-
         DS_Sleep (5);
     }
 
@@ -357,7 +356,6 @@ void Protocols_Close()
     running = 0;
     close_protocol();
     clear_recv_data();
-    DS_StopThread (&event_thread);
 }
 
 /**
