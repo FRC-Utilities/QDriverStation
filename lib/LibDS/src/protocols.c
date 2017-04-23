@@ -257,7 +257,7 @@ static void update_watchdogs()
  *    - Feed/reset the watchdogs
  *    - Check if any of the watchdogs has expired
  */
-static void* run_event_loop (void)
+static void* run_event_loop()
 {
     while (running) {
         send_data();
