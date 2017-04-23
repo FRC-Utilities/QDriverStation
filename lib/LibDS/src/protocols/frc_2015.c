@@ -282,7 +282,12 @@ static DS_String get_timezone_data (void)
     time_t rt = 0;
     uint32_t ms = 0;
     struct tm timeinfo;
+	
+#if defined _WIN32
     localtime_s (&timeinfo, &rt);
+#else
+	localtime_r (&rt, &timeinfo);
+#endif
 
 #if defined _WIN32
     /* Get timezone information */
