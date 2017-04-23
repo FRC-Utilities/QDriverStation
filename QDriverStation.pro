@@ -78,8 +78,6 @@ OBJECTS_DIR = obj
 include ($$PWD/lib/QJoysticks/QJoysticks.pri)
 include ($$PWD/lib/LibDS/wrappers/Qt/LibDS-Qt.pri)
 
-DEFINES += LIBDS_ENABLE_MESSAGE_BOX
-
 #-------------------------------------------------------------------------------
 # Import source code and QML
 #-------------------------------------------------------------------------------

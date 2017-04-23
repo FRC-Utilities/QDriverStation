@@ -89,14 +89,6 @@ void DS_ShowMessageBox (const DS_String* caption,
     char* ccap = DS_StrToChar (caption);
     char* cmsg = DS_StrToChar (message);
 
-    /*
-     * GUI implementation
-     */
-#ifdef LIBDS_ENABLE_MESSAGE_BOX
-
-    /*
-     * Windows implementation
-     */
 #ifdef _WIN32
     /* Convert strings to wstrings */
     wchar_t* wcap = calloc (caption->len + 1, sizeof (wchar_t));
@@ -127,11 +119,6 @@ void DS_ShowMessageBox (const DS_String* caption,
     /* Free buffers */
     DS_FREE (wcap);
     DS_FREE (wmsg);
-#endif
-
-    /*
-     * Console implementation
-     */
 #else
     /* Get icon text */
     char* cico;
