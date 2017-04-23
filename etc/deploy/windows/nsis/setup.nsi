@@ -25,11 +25,11 @@
 !define COMPANYNAME                  "FRC Utilities"
 !define DESCRIPTION                  "Open source alternative to the FRC DriverStation"
 !define VERSIONMAJOR                 17
-!define VERSIONMINOR                 01
-!define VERSIONBUILD                 1
-!define ESTIMATED_SIZE               65000
+!define VERSIONMINOR                 00
+!define VERSIONBUILD                 5
+!define ESTIMATED_SIZE               60000
 !define MUI_ABORTWARNING
-!define INSTALL_DIR                  "$PROGRAMFILES\${APPNAME}"
+!define INSTALL_DIR                  "$PROGRAMFILES64\${APPNAME}"
 !define MUI_FINISHPAGE_RUN
 !define MUI_FINISHPAGE_RUN_TEXT      "Run ${APPNAME}"
 !define MUI_FINISHPAGE_RUN_FUNCTION  "RunApplication"

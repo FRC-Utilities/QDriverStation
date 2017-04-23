@@ -27,6 +27,14 @@
 #include <socky.h>
 #include <assert.h>
 
+#define SPRINTF_S snprintf
+#ifdef _WIN32
+    #ifndef __MINGW32__
+        #undef  SPRINTF_S
+        #define SPRINTF_S sprintf_s
+    #endif
+#endif
+
 /**
  * Copies the received data from the socket in its data buffer
  */
@@ -120,8 +128,8 @@ static void* create_socket (void* data)
 
     /* Set service strings */
     int len = sizeof (ptr->info.in_service);
-    sprintf_s (ptr->info.in_service, len, "%d", ptr->in_port);
-    sprintf_s (ptr->info.out_service, len, "%d", ptr->out_port);
+    SPRINTF_S (ptr->info.in_service, len, "%d", ptr->in_port);
+    SPRINTF_S (ptr->info.out_service, len, "%d", ptr->out_port);
 
     /* Open TCP socket */
     if (ptr->type == DS_SOCKET_TCP) {

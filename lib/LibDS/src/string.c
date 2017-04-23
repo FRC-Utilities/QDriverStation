@@ -29,6 +29,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define SPRINTF_S snprintf
+#ifdef _WIN32
+    #ifndef __MINGW32__
+        #undef  SPRINTF_S
+        #define SPRINTF_S sprintf_s
+    #endif
+#endif
+
 /**
  * Returns the length of the given \a string
  * \warning The program will quit if \a string is \c NULL
@@ -414,11 +422,11 @@ DS_String DS_StrFormat (const char* format, ...)
 
                 /* Get the representation of the number */
                 if (next == 'u')
-                    sprintf_s (str, sizeof (str), "%u", (unsigned int) va_arg (args, unsigned int));
+                    SPRINTF_S (str, sizeof (str), "%u", (unsigned int) va_arg (args, unsigned int));
                 else if (next == 'd')
-                    sprintf_s (str, sizeof (str), "%d", (int) va_arg (args, int));
+                    SPRINTF_S (str, sizeof (str), "%d", (int) va_arg (args, int));
                 else if (next == 'f')
-                    sprintf_s (str, sizeof (str), "%.2f", (double) va_arg (args, double));
+                    SPRINTF_S (str, sizeof (str), "%.2f", (double) va_arg (args, double));
 
                 /* Append every character to the string */
                 int i = 0;
