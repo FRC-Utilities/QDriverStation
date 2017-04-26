@@ -129,8 +129,10 @@ QStringList QJoysticks::deviceNames() const
  */
 int QJoysticks::getPOV (const int index, const int pov)
 {
-    Q_ASSERT (joystickExists (index));
-    return getInputDevice (index)->povs.at (pov);
+    if (joystickExists (index))
+        return getInputDevice (index)->povs.at (pov);
+
+    return -1;
 }
 
 /**
@@ -138,8 +140,10 @@ int QJoysticks::getPOV (const int index, const int pov)
  */
 double QJoysticks::getAxis (const int index, const int axis)
 {
-    Q_ASSERT (joystickExists (index));
-    return getInputDevice (index)->axes.at (axis);
+    if (joystickExists (index))
+        return getInputDevice (index)->axes.at (axis);
+
+    return 0;
 }
 
 /**
@@ -147,8 +151,10 @@ double QJoysticks::getAxis (const int index, const int axis)
  */
 bool QJoysticks::getButton (const int index, const int button)
 {
-    Q_ASSERT (joystickExists (index));
-    return getInputDevice (index)->buttons.at (button);
+    if (joystickExists (index))
+        return getInputDevice (index)->buttons.at (button);
+
+    return false;
 }
 
 /**
@@ -156,8 +162,10 @@ bool QJoysticks::getButton (const int index, const int button)
  */
 int QJoysticks::getNumAxes (const int index)
 {
-    Q_ASSERT (joystickExists (index));
-    return getInputDevice (index)->axes.count();
+    if (joystickExists (index))
+        return getInputDevice (index)->axes.count();
+
+    return -1;
 }
 
 /**
@@ -165,8 +173,10 @@ int QJoysticks::getNumAxes (const int index)
  */
 int QJoysticks::getNumPOVs (const int index)
 {
-    Q_ASSERT (joystickExists (index));
-    return getInputDevice (index)->povs.count();
+    if (joystickExists (index))
+        return getInputDevice (index)->povs.count();
+
+    return -1;
 }
 
 /**
@@ -174,8 +184,10 @@ int QJoysticks::getNumPOVs (const int index)
  */
 int QJoysticks::getNumButtons (const int index)
 {
-    Q_ASSERT (joystickExists (index));
-    return getInputDevice (index)->buttons.count();
+    if (joystickExists (index))
+        return getInputDevice (index)->buttons.count();
+
+    return -1;
 }
 
 /**
@@ -183,8 +195,10 @@ int QJoysticks::getNumButtons (const int index)
  */
 bool QJoysticks::isBlacklisted (const int index)
 {
-    Q_ASSERT (joystickExists (index));
-    return inputDevices().at (index)->blacklisted;
+    if (joystickExists (index))
+        return inputDevices().at (index)->blacklisted;
+
+    return true;
 }
 
 /**
@@ -201,8 +215,10 @@ bool QJoysticks::joystickExists (const int index)
  */
 QString QJoysticks::getName (const int index)
 {
-    Q_ASSERT (joystickExists (index));
-    return m_devices.at (index)->name;
+    if (joystickExists (index))
+        return m_devices.at (index)->name;
+
+    return "Invalid Joystick";
 }
 
 /**
