@@ -39,10 +39,10 @@
  * Returns a single byte value that represents the ratio between the
  * given \a value and the maximum number specified.
  */
-uint8_t DS_FloatToByte (float value, float max)
+uint8_t DS_FloatToByte (const float value, const float max)
 {
     if (value != 0 && max != 0 && value <= max) {
-        int percent = (value / max) * (0xFF / 2);
+        int percent = (int) (value / max) * (0xFF / 2);
         return (uint8_t) (percent & 0xFF);
     }
 

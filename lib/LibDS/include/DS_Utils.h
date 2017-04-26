@@ -54,8 +54,8 @@ typedef enum {
 /*
  * Misc functions
  */
-extern uint8_t DS_FloatToByte (float val, float max);
 extern uint32_t DS_CRC32 (const void* buf, size_t size);
+extern uint8_t DS_FloatToByte (const float val, const float max);
 extern DS_String DS_GetStaticIP (const int net, const int team, const int host);
 extern void DS_ShowMessageBox (const DS_String* caption,
                                const DS_String* message,
