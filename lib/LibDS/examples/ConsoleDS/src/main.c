@@ -55,7 +55,8 @@ int main()
     pthread_create (&user_input_thread, NULL, &get_user_input, NULL);
 
     /* Load the FRC 2016 communication protocol */
-    DS_ConfigureProtocol (DS_GetProtocolFRC_2016());
+    DS_Protocol frc2016 = DS_GetProtocolFRC_2016();
+    DS_ConfigureProtocol (&frc2016);
 
     /* Run the application's event loop (unrelated to DS) */
     while (running) {

@@ -53,8 +53,10 @@ int DS_StrLen (const DS_String* string)
  */
 int DS_StrEmpty (const DS_String* string)
 {
-    assert (string);
-    return DS_StrLen (string) == 0;
+    if (string)
+        return DS_StrLen (string) == 0;
+
+    return 1;
 }
 
 /**

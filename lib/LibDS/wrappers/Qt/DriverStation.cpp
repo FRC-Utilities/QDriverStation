@@ -666,23 +666,16 @@ void DriverStation::setTeamNumber (const int number)
  *
  * \param protocol the new communication protocol to use
  */
-void DriverStation::loadProtocol (DS_Protocol* protocol)
+void DriverStation::loadProtocol (const DS_Protocol& protocol)
 {
-    if (protocol) {
-        LOG << "Loading protocol" << protocol;
+    DS_ConfigureProtocol (&protocol);
 
-        start();
-        DS_ConfigureProtocol (protocol);
+    setCustomFMSAddress (customFMSAddress());
+    setCustomRadioAddress (customRadioAddress());
+    setCustomRobotAddress (customRobotAddress());
 
-        emit protocolChanged();
-        emit statusChanged (QString::fromUtf8 (DS_GetStatusString()));
-
-        setCustomFMSAddress (customFMSAddress());
-        setCustomRadioAddress (customRadioAddress());
-        setCustomRobotAddress (customRobotAddress());
-
-        LOG << "Protocol" << protocol << "loaded";
-    }
+    emit protocolChanged();
+    emit statusChanged (QString::fromUtf8 (DS_GetStatusString()));
 }
 
 /**

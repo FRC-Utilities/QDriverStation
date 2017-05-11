@@ -79,6 +79,10 @@ static void print_error (int sfd, const char* message, int error)
  */
 static int get_family (int flag)
 {
+    assert (flag == SOCKY_IPv4 ||
+            flag == SOCKY_IPv6 ||
+            flag == SOCKY_ANY);
+
     switch (flag) {
     case SOCKY_IPv4:
         return AF_INET;
@@ -96,7 +100,7 @@ static int get_family (int flag)
 }
 
 /**
- * Returns a valid sockety type. Input values can be:
+ * Returns a valid socket type. Input values can be:
  *    - \c SOCKY_TCP
  *    - \c SOCKY_UDP
  *
@@ -105,6 +109,9 @@ static int get_family (int flag)
  */
 static int get_socktype (int flag)
 {
+    assert (flag == SOCKY_TCP ||
+            flag == SOCKY_UDP);
+
     switch (flag) {
     case SOCKY_TCP:
         return SOCK_STREAM;

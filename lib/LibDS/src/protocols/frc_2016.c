@@ -42,16 +42,16 @@ static DS_String robot_address (void)
 /**
  * Initializes and configures the FRC 2016 Communication Protocol
  */
-extern DS_Protocol* DS_GetProtocolFRC_2016 (void)
+DS_Protocol DS_GetProtocolFRC_2016 (void)
 {
-    DS_Protocol* protocol = DS_GetProtocolFRC_2015();
+    DS_Protocol protocol = DS_GetProtocolFRC_2015();
 
     /* Set robot address function */
-    protocol->robot_address = &robot_address;
+    protocol.robot_address = &robot_address;
 
     /* Set protocol name */
-    DS_StrRmBuf (&protocol->name);
-    protocol->name = DS_StrNew ("FRC 2016");
+    DS_StrRmBuf (&protocol.name);
+    protocol.name = DS_StrNew ("FRC 2016");
 
     return protocol;
 }

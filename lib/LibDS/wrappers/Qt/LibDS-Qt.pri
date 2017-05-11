@@ -1,6 +1,10 @@
 QT += gui
 QT += widgets
 
+android {
+  QT += network
+}
+
 CONFIG += c++11
 
 INCLUDEPATH += $$PWD

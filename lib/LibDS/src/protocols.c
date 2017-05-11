@@ -39,9 +39,15 @@
 #define RECV_PRECISION 50 /* Update the watchdogs every 50 milliseconds */
 
 /*
- * Holds a pointer to the current protocol in use
+ * Used to re-assing to 'empty' structure
  */
-static DS_Protocol* protocol = NULL;
+static const DS_Protocol EmptyProtocol;
+
+/*
+ * Protocol data
+ */
+static DS_Protocol protocol;
+static int enable_operations = 0;
 
 /*
  * Define the sender watchdogs (when one expires, we send a packet)
@@ -98,10 +104,12 @@ static pthread_t event_thread;
  */
 static void send_fms_data()
 {
-    ++sent_fms_packets;
-    DS_String data = protocol->create_fms_packet();
-    DS_SocketSend (&protocol->fms_socket, &data);
-    DS_StrRmBuf (&data);
+    if (enable_operations) {
+        ++sent_fms_packets;
+        DS_String data = protocol.create_fms_packet();
+        DS_SocketSend (&protocol.fms_socket, &data);
+        DS_StrRmBuf (&data);
+    }
 }
 
 /**
@@ -110,10 +118,12 @@ static void send_fms_data()
  */
 static void send_radio_data()
 {
-    ++sent_radio_packets;
-    DS_String data = protocol->create_radio_packet();
-    DS_SocketSend (&protocol->radio_socket, &data);
-    DS_StrRmBuf (&data);
+    if (enable_operations) {
+        ++sent_radio_packets;
+        DS_String data = protocol.create_radio_packet();
+        DS_SocketSend (&protocol.radio_socket, &data);
+        DS_StrRmBuf (&data);
+    }
 }
 
 /**
@@ -122,10 +132,12 @@ static void send_radio_data()
  */
 static void send_robot_data()
 {
-    ++sent_robot_packets;
-    DS_String data = protocol->create_robot_packet();
-    DS_SocketSend (&protocol->robot_socket, &data);
-    DS_StrRmBuf (&data);
+    if (enable_operations) {
+        ++sent_robot_packets;
+        DS_String data = protocol.create_robot_packet();
+        DS_SocketSend (&protocol.robot_socket, &data);
+        DS_StrRmBuf (&data);
+    }
 }
 
 /**
@@ -135,7 +147,7 @@ static void send_robot_data()
 static void send_data()
 {
     /* Protocol is NULL, abort */
-    if (!protocol)
+    if (!enable_operations)
         return;
 
     /* Send FMS packet */
@@ -175,36 +187,36 @@ static void clear_recv_data()
 static void recv_data()
 {
     /* Protocol is NULL, abort */
-    if (!protocol)
+    if (!enable_operations)
         return;
 
     /* Clear buffers (just to be sure) */
     clear_recv_data();
 
     /* Read data from sockets */
-    fms_data = DS_SocketRead (&protocol->fms_socket);
-    radio_data = DS_SocketRead (&protocol->radio_socket);
-    robot_data = DS_SocketRead (&protocol->robot_socket);
-    netcs_data = DS_SocketRead (&protocol->netconsole_socket);
+    fms_data = DS_SocketRead (&protocol.fms_socket);
+    radio_data = DS_SocketRead (&protocol.radio_socket);
+    robot_data = DS_SocketRead (&protocol.robot_socket);
+    netcs_data = DS_SocketRead (&protocol.netconsole_socket);
 
     /* Read FMS packet */
     if (DS_StrLen (&fms_data) > 0) {
         ++received_fms_packets;
-        fms_read = protocol->read_fms_packet (&fms_data);
+        fms_read = protocol.read_fms_packet (&fms_data);
         CFG_SetFMSCommunications (fms_read);
     }
 
     /* Read radio packet */
     if (DS_StrLen (&radio_data) > 0) {
         ++received_radio_packets;
-        radio_read = protocol->read_radio_packet (&radio_data);
+        radio_read = protocol.read_radio_packet (&radio_data);
         CFG_SetRadioCommunications (radio_read);
     }
 
     /* Read robot packet */
     if (DS_StrLen (&robot_data) > 0) {
         ++received_robot_packets;
-        robot_read = protocol->read_robot_packet (&robot_data);
+        robot_read = protocol.read_robot_packet (&robot_data);
         CFG_SetRobotCommunications (robot_read);
     }
 
@@ -274,7 +286,10 @@ static void* run_event_loop()
  */
 DS_Protocol* DS_CurrentProtocol()
 {
-    return protocol;
+    if (enable_operations)
+        return &protocol;
+
+    return NULL;
 }
 
 /**
@@ -294,6 +309,7 @@ void Protocols_Init()
 
     /* Allow the event loop to run */
     running = 1;
+    enable_operations = 0;
 
     /* Configure the event thread */
     int error = pthread_create (&event_thread, NULL,
@@ -317,9 +333,12 @@ void Protocols_Init()
  */
 static void close_protocol()
 {
-    /* Protocol is NULL, abort */
-    if (!protocol)
+    /* Protocol is empty, abort */
+    if (!enable_operations)
         return;
+
+    /* Disable protocol operations */
+    enable_operations = 0;
 
     /* Stop sender timers */
     DS_TimerStop (&fms_send_timer);
@@ -332,20 +351,17 @@ static void close_protocol()
     DS_TimerStop (&robot_recv_timer);
 
     /* Close the sockets */
-    DS_SocketClose (&protocol->fms_socket);
-    DS_SocketClose (&protocol->radio_socket);
-    DS_SocketClose (&protocol->robot_socket);
-    DS_SocketClose (&protocol->netconsole_socket);
+    DS_SocketClose (&protocol.fms_socket);
+    DS_SocketClose (&protocol.radio_socket);
+    DS_SocketClose (&protocol.robot_socket);
+    DS_SocketClose (&protocol.netconsole_socket);
 
     /* Create notification string */
-    char* name = DS_StrToChar (&protocol->name);
+    char* name = DS_StrToChar (&protocol.name);
     DS_String str = DS_StrFormat ("Closed %s protocol", name);
     CFG_AddNotification (&str);
     DS_StrRmBuf (&str);
     DS_FREE (name);
-
-    /* De-allocate the protocol */
-    DS_FREE (protocol);
 }
 
 /**
@@ -361,34 +377,37 @@ void Protocols_Close()
 /**
  * De-allocates the current protocol and loads the given protocol
  *
+ * Note the given \a ptr is not used directly, you should free it
+ * after using it...
+ *
  * \param ptr pointer to the new protocol implementation to load
  */
-void DS_ConfigureProtocol (DS_Protocol* ptr)
+void DS_ConfigureProtocol (const DS_Protocol* ptr)
 {
     /* Pointer is NULL, abort */
-    assert (ptr);
+    assert (ptr != NULL);
 
     /* Close previous protocol */
     close_protocol();
 
     /* Re-assign the protocol */
-    protocol = ptr;
+    protocol = *ptr;
 
     /* Update sockets */
-    DS_SocketOpen (&ptr->fms_socket);
-    DS_SocketOpen (&ptr->radio_socket);
-    DS_SocketOpen (&ptr->robot_socket);
-    DS_SocketOpen (&ptr->netconsole_socket);
+    DS_SocketOpen (&protocol.fms_socket);
+    DS_SocketOpen (&protocol.radio_socket);
+    DS_SocketOpen (&protocol.robot_socket);
+    DS_SocketOpen (&protocol.netconsole_socket);
 
     /* Update sender timers */
-    fms_send_timer.time = ptr->fms_interval;
-    radio_send_timer.time = ptr->radio_interval;
-    robot_send_timer.time = ptr->robot_interval;
+    fms_send_timer.time = protocol.fms_interval;
+    radio_send_timer.time = protocol.radio_interval;
+    robot_send_timer.time = protocol.robot_interval;
 
     /* Update watchdogs */
-    fms_recv_timer.time = DS_Min (ptr->fms_interval * 50, 1000);
-    radio_recv_timer.time = DS_Min (ptr->radio_interval * 50, 1000);
-    robot_recv_timer.time = DS_Min (ptr->robot_interval * 50, 1000);
+    fms_recv_timer.time = DS_Min (protocol.fms_interval * 50, 1000);
+    radio_recv_timer.time = DS_Min (protocol.radio_interval * 50, 1000);
+    robot_recv_timer.time = DS_Min (protocol.robot_interval * 50, 1000);
 
     /* Start the timers */
     DS_TimerStart (&fms_send_timer);
@@ -399,11 +418,14 @@ void DS_ConfigureProtocol (DS_Protocol* ptr)
     DS_TimerStart (&robot_recv_timer);
 
     /* Create notification string */
-    char* name = DS_StrToChar (&ptr->name);
+    char* name = DS_StrToChar (&protocol.name);
     DS_String str = DS_StrFormat ("Loaded %s protocol", name);
     CFG_AddNotification (&str);
     DS_StrRmBuf (&str);
     DS_FREE (name);
+
+    /* Restore protocol operations */
+    enable_operations = 1;
 }
 
 /**

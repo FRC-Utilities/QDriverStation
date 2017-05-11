@@ -359,7 +359,10 @@ void DS_SocketChangeAddress (DS_Socket* ptr, const char* address)
 {
     /* Check arguments */
     assert (ptr);
-    assert (address);
+
+    /* Abort if address is NULL */
+    if (!address)
+        return;
 
     /* Re-assign the address */
     memset (ptr->address, 0, sizeof (ptr->address));

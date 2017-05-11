@@ -464,71 +464,71 @@ void restart_robot_code (void)
 /**
  * Initializes and configures the FRC 2014 communication protocol
  */
-DS_Protocol* DS_GetProtocolFRC_2014 (void)
+DS_Protocol DS_GetProtocolFRC_2014 (void)
 {
     /* Initialize pointers */
-    DS_Protocol* protocol = (DS_Protocol*) calloc (1, sizeof (DS_Protocol));
+    DS_Protocol protocol;
 
     /* Set protocol name */
-    protocol->name = DS_StrNew ("FRC 2014");
+    protocol.name = DS_StrNew ("FRC 2014");
 
     /* Set address functions */
-    protocol->fms_address = &fms_address;
-    protocol->radio_address = &radio_address;
-    protocol->robot_address = &robot_address;
+    protocol.fms_address = &fms_address;
+    protocol.radio_address = &radio_address;
+    protocol.robot_address = &robot_address;
 
     /* Set packet generator functions */
-    protocol->create_fms_packet = &create_fms_packet;
-    protocol->create_radio_packet = &create_radio_packet;
-    protocol->create_robot_packet = &create_robot_packet;
+    protocol.create_fms_packet = &create_fms_packet;
+    protocol.create_radio_packet = &create_radio_packet;
+    protocol.create_robot_packet = &create_robot_packet;
 
     /* Set packet interpretation functions */
-    protocol->read_fms_packet = &read_fms_packet;
-    protocol->read_radio_packet = &read_radio_packet;
-    protocol->read_robot_packet = &read_robot_packet;
+    protocol.read_fms_packet = &read_fms_packet;
+    protocol.read_radio_packet = &read_radio_packet;
+    protocol.read_robot_packet = &read_robot_packet;
 
     /* Set reset functions */
-    protocol->reset_fms = &reset_fms;
-    protocol->reset_radio = &reset_radio;
-    protocol->reset_robot = &reset_robot;
+    protocol.reset_fms = &reset_fms;
+    protocol.reset_radio = &reset_radio;
+    protocol.reset_robot = &reset_robot;
 
     /* Set misc. functions */
-    protocol->max_battery_voltage = 13;
-    protocol->reboot_robot = &reboot_robot;
-    protocol->restart_robot_code = &restart_robot_code;
+    protocol.max_battery_voltage = 13;
+    protocol.reboot_robot = &reboot_robot;
+    protocol.restart_robot_code = &restart_robot_code;
 
     /* Set packet intervals */
-    protocol->fms_interval = 500;
-    protocol->radio_interval = 0;
-    protocol->robot_interval = 20;
+    protocol.fms_interval = 500;
+    protocol.radio_interval = 0;
+    protocol.robot_interval = 20;
 
     /* Set joystick properties */
-    protocol->max_hat_count = max_hats;
-    protocol->max_axis_count = max_axes;
-    protocol->max_joysticks = max_joysticks;
-    protocol->max_button_count = max_buttons;
+    protocol.max_hat_count = max_hats;
+    protocol.max_axis_count = max_axes;
+    protocol.max_joysticks = max_joysticks;
+    protocol.max_button_count = max_buttons;
 
     /* Define FMS socket properties */
-    protocol->fms_socket = *DS_SocketEmpty();
-    protocol->fms_socket.disabled = 0;
-    protocol->fms_socket.in_port = 1120;
-    protocol->fms_socket.out_port = 1160;
-    protocol->fms_socket.type = DS_SOCKET_UDP;
+    protocol.fms_socket = *DS_SocketEmpty();
+    protocol.fms_socket.disabled = 0;
+    protocol.fms_socket.in_port = 1120;
+    protocol.fms_socket.out_port = 1160;
+    protocol.fms_socket.type = DS_SOCKET_UDP;
 
     /* Define radio socket properties */
-    protocol->radio_socket = *DS_SocketEmpty();
-    protocol->radio_socket.disabled = 1;
+    protocol.radio_socket = *DS_SocketEmpty();
+    protocol.radio_socket.disabled = 1;
 
     /* Define robot socket properties */
-    protocol->robot_socket = *DS_SocketEmpty();
-    protocol->robot_socket.disabled = 0;
-    protocol->robot_socket.in_port = 1150;
-    protocol->robot_socket.out_port = 1110;
-    protocol->robot_socket.type = DS_SOCKET_UDP;
+    protocol.robot_socket = *DS_SocketEmpty();
+    protocol.robot_socket.disabled = 0;
+    protocol.robot_socket.in_port = 1150;
+    protocol.robot_socket.out_port = 1110;
+    protocol.robot_socket.type = DS_SOCKET_UDP;
 
     /* Define netconsole socket properties */
-    protocol->netconsole_socket = *DS_SocketEmpty();
-    protocol->netconsole_socket.disabled = 1;
+    protocol.netconsole_socket = *DS_SocketEmpty();
+    protocol.netconsole_socket.disabled = 1;
 
     /* Return the pointer */
     return protocol;

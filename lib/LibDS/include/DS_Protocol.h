@@ -70,7 +70,7 @@ typedef struct _protocol {
 
 extern void Protocols_Init();
 extern void Protocols_Close();
-extern void DS_ConfigureProtocol (DS_Protocol* ptr);
+extern void DS_ConfigureProtocol (const DS_Protocol* ptr);
 
 extern int DS_SentFMSPackets();
 extern int DS_SentRadioPackets();

@@ -279,7 +279,7 @@ public slots:
     void restartRobotCode();
     void setEnabled (const bool enabled);
     void setTeamNumber (const int number);
-    void loadProtocol (DS_Protocol* protocol);
+    void loadProtocol (const DS_Protocol& protocol);
     void setControlMode (const Control mode);
     void setProtocol (const Protocol protocol);
     void setTeamStation (const Station station);
