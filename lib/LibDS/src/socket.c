@@ -325,7 +325,7 @@ int DS_SocketSend (const DS_Socket* ptr, const DS_String* data)
 
     /* Data is empty */
     if (DS_StrEmpty (data))
-        return -1;
+        return 0;
 
     /* Initialize variables*/
     int bytes_written = 0;

@@ -72,6 +72,14 @@ extern void Protocols_Init();
 extern void Protocols_Close();
 extern void DS_ConfigureProtocol (const DS_Protocol* ptr);
 
+extern unsigned long DS_SentFMSBytes();
+extern unsigned long DS_SentRadioBytes();
+extern unsigned long DS_SentRobotBytes();
+
+extern unsigned long DS_ReceivedFMSBytes();
+extern unsigned long DS_ReceivedRadioBytes();
+extern unsigned long DS_ReceivedRobotBytes();
+
 extern int DS_SentFMSPackets();
 extern int DS_SentRadioPackets();
 extern int DS_SentRobotPackets();

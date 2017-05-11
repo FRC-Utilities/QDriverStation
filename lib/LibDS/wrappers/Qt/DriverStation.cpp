@@ -82,7 +82,13 @@ int DriverStation::diskUsage() const
  */
 int DriverStation::fmsPacketLoss() const
 {
-    return (qreal) (DS_ReceivedFMSPackets() / DS_SentFMSPackets()) * 100;
+    qreal sent = (qreal) DS_SentFMSPackets();
+    qreal recv = (qreal) DS_ReceivedFMSPackets();
+
+    if (sent > 0)
+        return (1 - (recv / sent)) * 100;
+
+    return 100;
 }
 
 /**
@@ -90,7 +96,13 @@ int DriverStation::fmsPacketLoss() const
  */
 int DriverStation::radioPacketLoss() const
 {
-    return (qreal) (DS_ReceivedRadioPackets() / DS_SentRadioPackets()) * 100;
+    qreal sent = (qreal) DS_SentRadioPackets();
+    qreal recv = (qreal) DS_ReceivedRadioPackets();
+
+    if (sent > 0)
+        return (1 - (recv / sent)) * 100;
+
+    return 100;
 }
 
 /**
@@ -560,6 +572,54 @@ QStringList DriverStation::protocols() const
     list.append (tr ("FRC 2014"));
 
     return list;
+}
+
+/**
+ * Returns the number of sent FMS bytes since the current
+ * protocol was loaded
+ */
+unsigned long DriverStation::sentFMSBytes() const {
+    return DS_SentFMSBytes();
+}
+
+/**
+ * Returns the number of sent radio bytes since the current
+ * protocol was loaded
+ */
+unsigned long DriverStation::sentRadioBytes() const {
+    return DS_SentRadioBytes();
+}
+
+/**
+ * Returns the number of sent robot bytes since the current
+ * protocol was loaded
+ */
+unsigned long DriverStation::sentRobotBytes() const {
+ return DS_SentRobotBytes();
+}
+
+/**
+ * Returns the number of received FMS bytes since the current
+ * protocol was loaded
+ */
+unsigned long DriverStation::receivedFMSBytes() const {
+    return DS_ReceivedFMSBytes();
+}
+
+/**
+ * Returns the number of received radio bytes since the current
+ * protocol was loaded
+ */
+unsigned long DriverStation::receivedRadioBytes() const {
+    return DS_ReceivedRadioBytes();
+}
+
+/**
+ * Returns the number of received robot bytes since the current
+ * protocol was loaded
+ */
+unsigned long DriverStation::receivedRobotBytes() const {
+    return DS_ReceivedRobotBytes();
 }
 
 /**

@@ -268,6 +268,13 @@ public:
     QStringList stations() const;
     QStringList protocols() const;
 
+    Q_INVOKABLE unsigned long sentFMSBytes() const;
+    Q_INVOKABLE unsigned long sentRadioBytes() const;
+    Q_INVOKABLE unsigned long sentRobotBytes() const;
+    Q_INVOKABLE unsigned long receivedFMSBytes() const;
+    Q_INVOKABLE unsigned long receivedRadioBytes() const;
+    Q_INVOKABLE unsigned long receivedRobotBytes() const;
+
     Q_INVOKABLE int getNumAxes (const int joystick) const;
     Q_INVOKABLE int getNumHats (const int joystick) const;
     Q_INVOKABLE int getNumButtons (const int joystick) const;

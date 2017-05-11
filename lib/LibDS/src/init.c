@@ -82,7 +82,7 @@ int DS_Initialized (void)
  */
 char* DS_GetVersion (void)
 {
-    return "2.1.1";
+    return "2.2";
 }
 
 /**
