@@ -44,7 +44,10 @@ RowLayout {
     //
     // Open the dashboard on application launch
     //
-    Component.onCompleted: cDashboard.openDashboard (dashboard.currentIndex)
+    Component.onCompleted: {
+        DS.setProtocol (protocol.currentIndex)
+        cDashboard.openDashboard (dashboard.currentIndex)
+    }
 
     //
     // Team number, dashboard & protocol selector
@@ -111,8 +114,8 @@ RowLayout {
         //
         Combobox {
             id: protocol
-            Layout.fillWidth: true
             model: DS.protocols
+            Layout.fillWidth: true
             onCurrentIndexChanged: DS.setProtocol (currentIndex)
         }
     }

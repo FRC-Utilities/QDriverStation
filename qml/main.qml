@@ -28,6 +28,7 @@ import "Globals.js" as Globals
 
 Item {
     id: app
+    visible: false
 
     //
     // Display the virtual joystick window (from anywhere in the app)
