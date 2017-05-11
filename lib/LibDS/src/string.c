@@ -274,7 +274,6 @@ char* DS_StrToChar (const DS_String* string)
 {
     /* Check arguments */
     assert (string);
-    assert (string->buf);
 
     /* Initialize the c-string with one extra byte (for null terminator) */
     size_t len = string->len + 1;
