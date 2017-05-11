@@ -578,7 +578,8 @@ QStringList DriverStation::protocols() const
  * Returns the number of sent FMS bytes since the current
  * protocol was loaded
  */
-unsigned long DriverStation::sentFMSBytes() const {
+unsigned long DriverStation::sentFMSBytes() const
+{
     return DS_SentFMSBytes();
 }
 
@@ -586,7 +587,8 @@ unsigned long DriverStation::sentFMSBytes() const {
  * Returns the number of sent radio bytes since the current
  * protocol was loaded
  */
-unsigned long DriverStation::sentRadioBytes() const {
+unsigned long DriverStation::sentRadioBytes() const
+{
     return DS_SentRadioBytes();
 }
 
@@ -594,15 +596,17 @@ unsigned long DriverStation::sentRadioBytes() const {
  * Returns the number of sent robot bytes since the current
  * protocol was loaded
  */
-unsigned long DriverStation::sentRobotBytes() const {
- return DS_SentRobotBytes();
+unsigned long DriverStation::sentRobotBytes() const
+{
+    return DS_SentRobotBytes();
 }
 
 /**
  * Returns the number of received FMS bytes since the current
  * protocol was loaded
  */
-unsigned long DriverStation::receivedFMSBytes() const {
+unsigned long DriverStation::receivedFMSBytes() const
+{
     return DS_ReceivedFMSBytes();
 }
 
@@ -610,7 +614,8 @@ unsigned long DriverStation::receivedFMSBytes() const {
  * Returns the number of received radio bytes since the current
  * protocol was loaded
  */
-unsigned long DriverStation::receivedRadioBytes() const {
+unsigned long DriverStation::receivedRadioBytes() const
+{
     return DS_ReceivedRadioBytes();
 }
 
@@ -618,7 +623,8 @@ unsigned long DriverStation::receivedRadioBytes() const {
  * Returns the number of received robot bytes since the current
  * protocol was loaded
  */
-unsigned long DriverStation::receivedRobotBytes() const {
+unsigned long DriverStation::receivedRobotBytes() const
+{
     return DS_ReceivedRobotBytes();
 }
 

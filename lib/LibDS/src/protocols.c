@@ -463,7 +463,8 @@ void DS_ConfigureProtocol (const DS_Protocol* ptr)
  * This value is only reset to 0 when the current protocol
  * is closed (e.g while loading another protocol).
  */
-unsigned long DS_SentFMSBytes() {
+unsigned long DS_SentFMSBytes()
+{
     return sent_fms_bytes;
 }
 
@@ -474,7 +475,8 @@ unsigned long DS_SentFMSBytes() {
  * This value is only reset to 0 when the current protocol
  * is closed (e.g while loading another protocol).
  */
-unsigned long DS_SentRadioBytes() {
+unsigned long DS_SentRadioBytes()
+{
     return sent_radio_bytes;
 }
 
@@ -485,7 +487,8 @@ unsigned long DS_SentRadioBytes() {
  * This value is only reset to 0 when the current protocol
  * is closed (e.g while loading another protocol).
  */
-unsigned long DS_SentRobotBytes() {
+unsigned long DS_SentRobotBytes()
+{
     return sent_robot_bytes;
 }
 
@@ -496,7 +499,8 @@ unsigned long DS_SentRobotBytes() {
  * This value is only reset to 0 when the current protocol
  * is closed (e.g while loading another protocol).
  */
-unsigned long DS_ReceivedFMSBytes() {
+unsigned long DS_ReceivedFMSBytes()
+{
     return recv_fms_bytes;
 }
 
@@ -507,7 +511,8 @@ unsigned long DS_ReceivedFMSBytes() {
  * This value is only reset to 0 when the current protocol
  * is closed (e.g while loading another protocol).
  */
-unsigned long DS_ReceivedRadioBytes() {
+unsigned long DS_ReceivedRadioBytes()
+{
     return recv_radio_bytes;
 }
 
@@ -518,7 +523,8 @@ unsigned long DS_ReceivedRadioBytes() {
  * This value is only reset to 0 when the current protocol
  * is closed (e.g while loading another protocol).
  */
-unsigned long DS_ReceivedRobotBytes() {
+unsigned long DS_ReceivedRobotBytes()
+{
     return recv_robot_bytes;
 }
 
