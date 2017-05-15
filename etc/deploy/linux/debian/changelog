@@ -1,3 +1,12 @@
+qdriverstation (17.05) stable; urgency=low
+
+  * Minor UI changes
+  * Remove QSimpleUpdater module
+  * Fix CPU usage code on GNU/Linux
+  * Improve memory usage of LibDS
+
+ -- Alex Spataru <alex_spataru@outlook.com> Sun, 14 May 2017 01:00:00 +0100
+
 qdriverstation (17.02) stable; urgency=low
 
   * Fix communication issues with GNU/Linux

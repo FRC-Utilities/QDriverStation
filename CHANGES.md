@@ -1,5 +1,12 @@
 # Changes
 
+### QDriverStation 17.05
+
+- Minor UI changes
+- Remove QSimpleUpdater module
+- Fix CPU usage code on GNU/Linux
+- Improve memory usage of LibDS
+
 ### QDriverStation 17.01.1
 
 - Fix issue in which joystick input was not detected
