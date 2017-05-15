@@ -1,3 +1,15 @@
+#
+# Travis build configuration
+# --------------------------
+# 
+# Do not use these package names if you want to compile the QDriverStation
+# by yourself. Travis uses Ubuntu 14.04 (and/or 12.04), and some of the
+# package names have changed.
+#
+# For a more up-to-date dependency listing, see etc/deploy/linux/snapcraft
+# to get the build and deploy dependencies
+#
+
 language: cpp
 compiler: gcc
 
@@ -15,8 +27,7 @@ install:
     - sudo apt install -y --force-yes libopenal-dev libogg-dev libvorbis-dev libaudiofile-dev libpng12-dev libfreetype6-dev -y
     - sudo apt install -y --force-yes libsdl2-dev libusb-dev libdbus-1-dev zlib1g-dev libdirectfb-dev -y
     - sudo apt install -y --force-yes qtbase5-dev qtdeclarative5-dev libqt5webkit5-dev libqt5gui5 qttools5-dev-tools qttools5-dev qtmultimedia5-dev
-    - sudo apt install -y --force-yes qml-module-qtquick-controls qml-module-qtquick-layouts qml-module-qtquick-window2 qml-module-qt-labs-settings 
-
+    
 script:
     - qmake -qt=qt5 QDriverStation.pro
     - make -j4
