@@ -29,7 +29,7 @@
 !define VERSIONBUILD                 5
 !define ESTIMATED_SIZE               60000
 !define MUI_ABORTWARNING
-!define INSTALL_DIR                  "$PROGRAMFILES64\${APPNAME}"
+!define INSTALL_DIR                  "$PROGRAMFILES\${APPNAME}"
 !define MUI_FINISHPAGE_RUN
 !define MUI_FINISHPAGE_RUN_TEXT      "Run ${APPNAME}"
 !define MUI_FINISHPAGE_RUN_FUNCTION  "RunApplication"
