@@ -56,8 +56,6 @@ Item {
     // Initialize the DS engine when the application starts
     //
     Component.onCompleted: {
-        DS.start()
-
         if (!mainwindow.visible) {
             mainwindow.visible = true
             mainwindow.updateWindowMode()

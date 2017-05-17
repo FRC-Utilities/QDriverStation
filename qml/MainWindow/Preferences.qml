@@ -45,7 +45,6 @@ RowLayout {
     // Open the dashboard on application launch
     //
     Component.onCompleted: {
-        DS.setProtocol (protocol.currentIndex)
         cDashboard.openDashboard (dashboard.currentIndex)
     }
 

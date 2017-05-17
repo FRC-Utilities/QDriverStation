@@ -242,6 +242,7 @@ int main (int argc, char* argv[])
     /* Configure the shortcuts handler and start the DS */
     app.installEventFilter (&shortcuts);
     driverstation->declareQML();
+    driverstation->start();
 
     /* Load the QML interface */
     QQmlApplicationEngine engine;
