@@ -39,11 +39,6 @@
 #define RECV_PRECISION 50 /* Update the watchdogs every 50 milliseconds */
 
 /*
- * Used to re-assing to 'empty' structure
- */
-static const DS_Protocol EmptyProtocol;
-
-/*
  * Protocol data
  */
 static DS_Protocol protocol;
