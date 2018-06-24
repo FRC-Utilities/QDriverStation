@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/pixmaps">
-        <file>frc-logo.png</file>
-        <file>joystick.png</file>
-    </qresource>
-</RCC>
