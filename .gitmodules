@@ -1,0 +1,3 @@
+[submodule "lib/LibDS"]
+	path = lib/LibDS
+	url = https://github.com/FRC-Utilities/LibDS.git
