@@ -15,7 +15,7 @@ Unfortunately, I do not participate in any FRC/FIRST team anymore, so I cannot t
 
 The project has not received any significant updates since 2017, thus the QDriverStation does not work with 2018 robots. However, due to the design of the LibDS, it should be possible to support newer communication protocols without too much effort.
 
-If you are interested in continuing development of this project, please contact me so I can add you to the "FRC Utilities" organization, be sure to have a copy of [Wireshark](https://www.wireshark.org/) installed and a pencil and notebook and to reverse-engineer the FRC Comm. Protocols :wink:
+If you are interested in continuing development of this project, please contact me so I can add you to the "FRC Utilities" organization, be sure to have a copy of [Wireshark](https://www.wireshark.org/) installed and a pencil and notebook to reverse-engineer the FRC Comm. Protocols :wink:
 
 ### Install notes
 
