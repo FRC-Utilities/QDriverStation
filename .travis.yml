@@ -10,7 +10,9 @@ before_install:
   - sudo apt-get update -qq
 
 install:
-  - sudo apt-get install -qq qt510-meta-full cmake mesa-common-dev libegl1-mesa-dev libsdl2-dev
+  - sudo apt-get install -qq mesa-common-dev libegl1-mesa-dev libsdl2-dev
+  - sudo apt-get install -qq qt510base qt510declarative qt510imageformats 
+qt510quickcontrols qt510quickcontrols2 qt510svg qt510tools
   - source /opt/qt510/bin/qt510-env.sh
 
 script:
