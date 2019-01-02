@@ -32,8 +32,8 @@ For convenience, Linux releases are now handled with AppImages, which are genera
 To run the AppImage, simply download the latest release, make it executable and run it. Terminal commands below:
 
     cd Downloads
-    chmod +x qdriverstation*.AppImage
-    ./qdriverstation*.AppImage
+    chmod +x QDriverStation*.AppImage
+    ./QDriverStation*.AppImage
 
 More info can be found here: [https://appimage.org/](https://appimage.org/).
 
