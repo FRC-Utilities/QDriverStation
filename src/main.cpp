@@ -163,13 +163,11 @@ static void showVersion()
 
 int main (int argc, char* argv[])
 {
-    /* Fix scalling issues */
-#if QT_VERSION >= QT_VERSION_CHECK (5, 6, 0)
-#if defined Q_OS_MAC
+    /* Fix scalling issues on Windows */
+#ifndef Q_OS_WIN
     QApplication::setAttribute (Qt::AA_EnableHighDpiScaling);
 #else
     QApplication::setAttribute (Qt::AA_DisableHighDpiScaling);
-#endif
 #endif
 
     /* Set application info */

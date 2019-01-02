@@ -26,10 +26,10 @@
 #include <QString>
 
 // *INDENT-OFF*
-static const QString APP_VERSION = "18.01";
+static const QString APP_VERSION = "19.01";
 static const QString APP_COMPANY = "FRC Utilities";
 static const QString APP_DSPNAME = "QDriverStation";
-static const QString CONTACT_URL = "alex_spataru@outlook.com";
+static const QString CONTACT_URL = "https://github.com/alex-spataru";
 static const QString APP_WEBSITE = "http://frc-utilities.github.io/";
 static const QString APP_REPBUGS = "http://github.com/FRC-Utilities/QDriverStation/issues";
 // *INDENT-ON*
