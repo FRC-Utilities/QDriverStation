@@ -36,7 +36,7 @@ ColumnLayout {
         color: "#fff"
         name: icons.fa_cogs
         size: Globals.scale (64)
-        anchors.horizontalCenter: parent.horizontalCenter
+        Layout.alignment: Qt.AlignHCenter
     }
 
     //
@@ -45,8 +45,8 @@ ColumnLayout {
     Label {
         size: large
         font.bold: true
+        Layout.alignment: Qt.AlignHCenter
         text: appDspName + " " + appVersion
-        anchors.horizontalCenter: parent.horizontalCenter
     }
 
     //
@@ -54,7 +54,7 @@ ColumnLayout {
     //
     Label {
         size: medium
-        anchors.horizontalCenter: parent.horizontalCenter
+        Layout.alignment: Qt.AlignHCenter
         text: "LibDS "
               + DS.libDSVersion
               + " (built on "
@@ -70,7 +70,7 @@ ColumnLayout {
     RowLayout {
         Layout.fillWidth: true
         spacing: Globals.scale (-1)
-        anchors.horizontalCenter: parent.horizontalCenter
+        Layout.alignment: Qt.AlignHCenter
 
         Button {
             text: qsTr ("Visit Website")

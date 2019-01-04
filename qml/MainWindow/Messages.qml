@@ -23,12 +23,20 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.4
+import Qt.labs.settings 1.0
 
 import "../Widgets"
 import "../Globals.js" as Globals
 
 ColumnLayout {
     spacing: Globals.spacing
+
+    //
+    // Save protocol value between runs
+    //
+    Settings {
+        property alias protocolVersion: protocol.currentIndex
+    }
 
     //
     // Write to the console every time the DS receives a message
@@ -94,6 +102,19 @@ ColumnLayout {
             height: Globals.scale (24)
             iconSize: Globals.scale (12)
             onClicked: messages.text = ""
+        }
+
+        Item {
+            Layout.fillWidth: true
+        }
+
+        Combobox {
+            width: 92
+            id: protocol
+            alignRight: true
+            model: DS.protocols
+            Layout.fillHeight: true
+            onCurrentIndexChanged: DS.setProtocol (currentIndex)
         }
     }
 

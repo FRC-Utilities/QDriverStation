@@ -35,9 +35,9 @@ RowLayout {
         property alias teleop: teleop.value
         property alias team: teamNumber.value
         property alias endGame: endGame.value
+        property alias gameDataStr: gameData.text
         property alias countdown: countdown.value
         property alias autonomous: autonomous.value
-        property alias protocol: protocol.currentIndex
         property alias dashbaord: dashboard.currentIndex
     }
 
@@ -49,7 +49,7 @@ RowLayout {
     }
 
     //
-    // Team number, dashboard & protocol selector
+    // Team number, dashboard & game data
     //
     ColumnLayout {
         spacing: Globals.scale (5)
@@ -94,28 +94,28 @@ RowLayout {
         }
 
         //
-        // Vertical Spacer
-        //
-        Item {
-            Layout.fillHeight: true
-        }
-
-        //
-        // Protocol label
+        // Game data label
         //
         Label {
             font.bold: true
-            text: qsTr ("Protocol") + ":"
+            text: qsTr ("Game Data") + ":"
         }
 
         //
-        // Protocol selector
+        // Game data field
         //
-        Combobox {
-            id: protocol
-            model: DS.protocols
+        LineEdit {
+            id: gameData
+            text: DS.gameData
             Layout.fillWidth: true
-            onCurrentIndexChanged: DS.setProtocol (currentIndex)
+            onTextChanged: DS.setGameData(text)
+        }
+
+        //
+        // Vertical spacer
+        //
+        Item {
+            Layout.fillHeight: true
         }
     }
 

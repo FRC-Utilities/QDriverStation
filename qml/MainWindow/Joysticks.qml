@@ -156,27 +156,27 @@ Item {
         Icon {
             name: icons.fa_gamepad
             size: Globals.scale (64)
-            anchors.horizontalCenter: parent.horizontalCenter
+            Layout.alignment: Qt.AlignHCenter
         }
 
         Label {
             size: large
             font.bold: true
+            Layout.alignment: Qt.AlignHCenter
             text: qsTr ("No Joysticks? No Problem!")
-            anchors.horizontalCenter: parent.horizontalCenter
         }
 
         Label {
             size: medium
-            anchors.horizontalCenter: parent.horizontalCenter
+            Layout.alignment: Qt.AlignHCenter
             text: qsTr ("You can also use the virtual joystick")
         }
 
         Button {
             width: Globals.scale (156)
+            Layout.alignment: Qt.AlignHCenter
             text: qsTr ("More information") + "..."
             onClicked: app.showVirtualJoystickWindow()
-            anchors.horizontalCenter: parent.horizontalCenter
         }
     }
 
