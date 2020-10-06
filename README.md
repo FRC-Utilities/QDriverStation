@@ -1,7 +1,7 @@
 ![Header](etc/header/small.png)
 
-[![Build Status](https://img.shields.io/travis/FRC-Utilities/QDriverStation.svg?style=flat-square)](https://travis-ci.org/FRC-Utilities/QDriverStation) 
-[![Github All Releases](https://img.shields.io/github/downloads/frc-utilities/qdriverstation/total.svg?style=flat-square)](http://github.com/frc-utilities/qdriverstation/releases/latest)
+[![Build Status](https://img.shields.io/travis/FRC-Utilities/QDriverStation.svg)](https://travis-ci.org/FRC-Utilities/QDriverStation) 
+[![Github All Releases](https://img.shields.io/github/downloads/frc-utilities/qdriverstation/total.svg)](http://github.com/frc-utilities/qdriverstation/releases/latest)
 
 The QDriverStation is a cross-platform and open-source alternative to the FRC Driver Station. It allows you to operate FRC robots with the major operating systems (Windows, Mac OSX and GNU/Linux). The QDriverStation is able to operate both 2009-2014 robots and 2015-2017 robots.
 
@@ -49,7 +49,7 @@ To clone the project, fire up a Terminal and run the following command:
 
 `git clone https://github.com/FRC-Utilities/QDriverStation`
 
-Since this project makes use of [git submodules](), you need to run the following command to download the latest LibDS version:
+Since this project makes use of [git submodules](https://www.atlassian.com/git/tutorials/git-submodule), you need to run the following command to download the latest LibDS version:
 
 `cd QDriverStation`
 `git submodule update --init --recursive`
