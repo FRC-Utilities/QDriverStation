@@ -6,6 +6,8 @@ sudo: required
 compiler: gcc
 
 before_install:
+  - mkdir build
+  - cd build
   - wget -q -O qt5.zip https://github.com/francescmm/ci-utils/releases/download/qt/qt5.zip;
   - unzip -qq qt5.zip;
   - export QTDIR=$PWD/qt5
@@ -16,8 +18,6 @@ install:
   - sudo apt-get install -qq mesa-common-dev libegl1-mesa-dev libsdl2-dev
 
 script:
-  - mkdir build
-  - cd build
   - $QTDIR/bin/qmake CONFIG+=release PREFIX=/usr ../QDriverStation.pro
   - make -j$(nproc)
   - mkdir -p appdir/usr/bin ; strip qdriverstation ; cp qdriverstation ./appdir/usr/bin/
@@ -27,7 +27,7 @@ script:
   - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
   - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
   - export VERSION=$(git rev-parse --short HEAD)
-  - ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs -qmldir=$PWD/qt5//qml
+  - ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs -qmldir=$PWD/qt5/qml
   - ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage -qmldir=$PWD/qt5/qml
 
 after_success:
