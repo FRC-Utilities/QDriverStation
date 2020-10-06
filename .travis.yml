@@ -13,6 +13,7 @@ before_install:
   - export QTDIR=$PWD/qt5
   - export PATH=$QTDIR/bin:$PATH;
   - export QT_PLUGIN_PATH=$PWD/qt5/plugins;
+  - sudo apt-get update -qq
   
 install:
   - sudo apt-get install -qq mesa-common-dev libegl1-mesa-dev libsdl2-dev libxcb-iccm4
