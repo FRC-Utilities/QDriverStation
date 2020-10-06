@@ -15,7 +15,7 @@ before_install:
   - export QT_PLUGIN_PATH=$PWD/qt5/plugins;
   
 install:
-  - sudo apt-get install -qq mesa-common-dev libegl1-mesa-dev libsdl2-dev
+  - sudo apt-get install -qq mesa-common-dev libegl1-mesa-dev libsdl2-dev libxcb-iccm4
 
 script:
   - $QTDIR/bin/qmake CONFIG+=release PREFIX=/usr ../QDriverStation.pro
