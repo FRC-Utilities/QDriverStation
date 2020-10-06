@@ -13,11 +13,9 @@ before_install:
   - export QT_PLUGIN_PATH=$PWD/qt5/plugins;
   - mkdir build
   - cd build
-  - g++ --version
-  - qmake --version
 
 script:
-  - $QTDIR/bin/qmake CONFIG+=release PREFIX=/usr
+  - $QTDIR/bin/qmake CONFIG+=release PREFIX=/usr ../QDriverStation.pro
   - make -j$(nproc)
   - mkdir -p appdir/usr/bin ; strip qdriverstation ; cp qdriverstation ./appdir/usr/bin/
   - mkdir -p appdir/usr/share/applications ; cp etc/deploy/linux/qdriverstation.desktop ./appdir/usr/share/applications/
