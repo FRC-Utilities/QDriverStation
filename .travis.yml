@@ -11,10 +11,13 @@ before_install:
   - export QTDIR=$PWD/qt5
   - export PATH=$QTDIR/bin:$PATH;
   - export QT_PLUGIN_PATH=$PWD/qt5/plugins;
-  - mkdir build
-  - cd build
+  
+install:
+  - sudo apt-get install -qq mesa-common-dev libegl1-mesa-dev libsdl2-dev
 
 script:
+  - mkdir build
+  - cd build
   - $QTDIR/bin/qmake CONFIG+=release PREFIX=/usr ../QDriverStation.pro
   - make -j$(nproc)
   - mkdir -p appdir/usr/bin ; strip qdriverstation ; cp qdriverstation ./appdir/usr/bin/
