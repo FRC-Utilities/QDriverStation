@@ -52,6 +52,7 @@ To clone the project, fire up a Terminal and run the following command:
 Since this project makes use of [git submodules](https://www.atlassian.com/git/tutorials/git-submodule), you need to run the following command to download the latest LibDS version:
 
 `cd QDriverStation`
+
 `git submodule update --init --recursive`
 
 ###### Requirements
