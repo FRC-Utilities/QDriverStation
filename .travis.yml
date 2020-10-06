@@ -6,16 +6,18 @@ sudo: required
 compiler: gcc
 
 before_install:
-  - sudo add-apt-repository ppa:beineri/opt-qt-5.10.1-trusty -y
-  - sudo apt-get update -qq
-
-install:
-  - sudo apt-get install -qq mesa-common-dev libegl1-mesa-dev libsdl2-dev
-  - sudo apt-get install -qq qt510base qt510declarative qt510imageformats qt510quickcontrols qt510quickcontrols2 qt510svg qt510tools
-  - source /opt/qt510/bin/qt510-env.sh
+  - wget -q -O qt5.zip https://github.com/francescmm/ci-utils/releases/download/qt/qt5.zip;
+  - unzip -qq qt5.zip;
+  - export QTDIR=$PWD/qt5
+  - export PATH=$QTDIR/bin:$PATH;
+  - export QT_PLUGIN_PATH=$PWD/qt5/plugins;
+  - mkdir build
+  - cd build
+  - g++ --version
+  - qmake --version
 
 script:
-  - qmake CONFIG+=release PREFIX=/usr
+  - $QTDIR/bin/qmake CONFIG+=release PREFIX=/usr
   - make -j$(nproc)
   - mkdir -p appdir/usr/bin ; strip qdriverstation ; cp qdriverstation ./appdir/usr/bin/
   - mkdir -p appdir/usr/share/applications ; cp etc/deploy/linux/qdriverstation.desktop ./appdir/usr/share/applications/

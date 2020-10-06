@@ -43,6 +43,17 @@ If you are on Linux, the QDriverStation may detect some devices as a joystick ([
 
 ### Build instructions
 
+###### Cloning the repository
+
+To clone the project, fire up a Terminal and run the following command:
+
+`git clone https://github.com/FRC-Utilities/QDriverStation`
+
+Since this project makes use of [git submodules](), you need to run the following command to download the latest LibDS version:
+
+`cd QDriverStation`
+`git submodule update --init --recursive`
+
 ###### Requirements
 
 The only requirement to compile the application is to have [Qt](http://www.qt.io/download-open-source/) installed in your system. The desktop application will compile with Qt 5.2 or greater.

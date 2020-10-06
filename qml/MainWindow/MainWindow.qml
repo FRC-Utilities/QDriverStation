@@ -67,7 +67,7 @@ Window {
     // Calculates the minimum height of the window
     //
     function getMinimumHeight() {
-        return layout.implicitHeight + (2 * layout.y)
+        return Math.max(205, layout.implicitHeight + (2 * layout.y))
     }
 
     //
