@@ -21,8 +21,8 @@ script:
   - $QTDIR/bin/qmake CONFIG+=release PREFIX=/usr ../QDriverStation.pro
   - make -j$(nproc)
   - mkdir -p appdir/usr/bin ; strip qdriverstation ; cp qdriverstation ./appdir/usr/bin/
-  - mkdir -p appdir/usr/share/applications ; cp etc/deploy/linux/qdriverstation.desktop ./appdir/usr/share/applications/
-  - mkdir -p appdir/usr/share/pixmaps ; cp etc/deploy/linux/qdriverstation.png ./appdir/usr/share/pixmaps
+  - mkdir -p appdir/usr/share/applications ; cp ../etc/deploy/linux/qdriverstation.desktop ./appdir/usr/share/applications/
+  - mkdir -p appdir/usr/share/pixmaps ; cp ../etc/deploy/linux/qdriverstation.png ./appdir/usr/share/pixmaps
   - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
   - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
   - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
