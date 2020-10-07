@@ -12,7 +12,7 @@ Hopefully, the 2020 comm. protocol will be supported using [ds-rs](https://githu
 
 ### Install notes
 
-You can download the QDriverStation from [GitHub](http://github.com/FRC-Utilities/QDriverStation/releases).
+You can download the QDriverStation from [GitHub](http://github.com/FRC-Utilities/QDriverStation-Legacy/releases).
 
 Once you finish installing the software, you can launch it and begin driving your robot. Just be sure to input your team number and to verify that the joysticks are working correctly.
 
@@ -38,7 +38,7 @@ If you are on Linux, the QDriverStation may detect some devices as a joystick ([
 
 ###### Requirements
 
-The only requirement to compile the application is to have [Qt](http://www.qt.io/download-open-source/) installed in your system. The desktop application will compile with Qt 5.2 or greater.
+The only requirement to compile the application is to have [Qt](http://www.qt.io/download-open-source/) installed in your system. The desktop application will compile with Qt 5.15 or greater.
 
 - If you are using Linux, make sure that you have installed the following packages:
     - libsdl2-dev
