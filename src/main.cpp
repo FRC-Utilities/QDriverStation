@@ -26,9 +26,8 @@
 
 #include <QTime>
 #include <QtQml>
-#include <iostream>
+#include <QMessageBox>
 #include <QApplication>
-#include <QJoysticks.h>
 #include <QDesktopServices>
 #include <QQmlApplicationEngine>
 
@@ -37,6 +36,9 @@
 //------------------------------------------------------------------------------
 
 #include <stdio.h>
+#include <iostream>
+
+#include <QJoysticks.h>
 #include <EventLogger.h>
 #include <DriverStation.h>
 
@@ -50,16 +52,6 @@
 #include "utilities.h"
 #include "dashboards.h"
 
-//------------------------------------------------------------------------------
-// Mac-specific initialization code
-//------------------------------------------------------------------------------
-
-#ifdef Q_OS_MAC
-#include <QObject>
-#include <QSettings>
-#include <QMessageBox>
-#include <QDesktopServices>
-#endif
 
 //------------------------------------------------------------------------------
 // CLI messages
