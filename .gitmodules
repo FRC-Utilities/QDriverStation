@@ -1,3 +1,0 @@
-[submodule "lib/LibDS"]
-	path = lib/LibDS-Legacy
-	url = https://github.com/FRC-Utilities/LibDS-Legacy.git
