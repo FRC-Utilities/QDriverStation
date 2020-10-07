@@ -76,7 +76,7 @@ OBJECTS_DIR = obj
 #-------------------------------------------------------------------------------
 
 include ($$PWD/lib/QJoysticks/QJoysticks.pri)
-include ($$PWD/lib/LibDS/wrappers/Qt/LibDS-Qt.pri)
+include ($$PWD/lib/LibDS-Legacy/wrappers/Qt/LibDS-Qt.pri)
 
 #-------------------------------------------------------------------------------
 # Import source code and QML
