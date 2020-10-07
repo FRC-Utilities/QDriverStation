@@ -42,10 +42,10 @@ Item {
         povs.model = 0
         buttons.model = 0
 
-        if (DS.joystickCount > currentJoystick) {
-            axes.model = DS.getNumAxes (currentJoystick)
-            povs.model = DS.getNumHats (currentJoystick)
-            buttons.model = DS.getNumButtons (currentJoystick)
+        if (CppDS.joystickCount > currentJoystick) {
+            axes.model = CppDS.getNumAxes (currentJoystick)
+            povs.model = CppDS.getNumHats (currentJoystick)
+            buttons.model = CppDS.getNumButtons (currentJoystick)
         }
     }
 
@@ -91,36 +91,38 @@ Item {
     Connections {
         target: QJoysticks
 
-        onCountChanged: {
+        function onCountChanged() {
             updateControls()
-            DS.resetJoysticks()
+            CppDS.resetJoysticks()
 
             for (var i = 0; i < QJoysticks.count; ++i) {
-                DS.addJoystick (QJoysticks.getNumAxes (i),
-                                           QJoysticks.getNumPOVs (i),
-                                           QJoysticks.getNumButtons (i))
+                CppDS.addJoystick (QJoysticks.getNumAxes (i),
+                                   QJoysticks.getNumPOVs (i),
+                                   QJoysticks.getNumButtons (i))
             }
         }
 
-        onPovChanged: {
+        function onPovChanged() {
             var val = QJoysticks.isBlacklisted (currentJoystick) ? 0 : angle
-            DS.setJoystickHat (js, pov, val)
+            CppDS.setJoystickHat (js, pov, val)
         }
 
-        onAxisChanged: {
+        function onAxisChanged() {
             var val = QJoysticks.isBlacklisted (currentJoystick) ? 0 : value
-            DS.setJoystickAxis (js, axis, val)
+            CppDS.setJoystickAxis (js, axis, val)
         }
 
-        onButtonChanged: {
+        function onButtonChanged() {
             var val = QJoysticks.isBlacklisted (currentJoystick) ? false : pressed
-            DS.setJoystickButton (js, button, val)
+            CppDS.setJoystickButton (js, button, val)
         }
     }
 
     Connections {
-        target: DS
-        onJoystickCountChanged: regenerateControls()
+        target: CppDS
+        function onJoystickCountChanged() {
+            regenerateControls()
+        }
     }
 
     //

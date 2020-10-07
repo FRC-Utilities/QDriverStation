@@ -45,7 +45,7 @@ RowLayout {
     // Open the dashboard on application launch
     //
     Component.onCompleted: {
-        cDashboard.openDashboard (dashboard.currentIndex)
+        CppDashboard.openDashboard (dashboard.currentIndex)
     }
 
     //
@@ -71,8 +71,8 @@ RowLayout {
             minimumValue: 0
             maximumValue: 9999
             Layout.fillWidth: true
-            value: DS.teamNumber
-            onValueChanged: DS.teamNumber = value
+            value: CppDS.teamNumber
+            onValueChanged: CppDS.teamNumber = value
         }
 
         //
@@ -89,8 +89,8 @@ RowLayout {
         Combobox {
             id: dashboard
             Layout.fillWidth: true
-            model: cDashboard.dashboardList()
-            onCurrentIndexChanged: cDashboard.openDashboard (dashboard.currentIndex)
+            model: CppDashboard.dashboardList()
+            onCurrentIndexChanged: CppDashboard.openDashboard (dashboard.currentIndex)
         }
 
         //
@@ -106,9 +106,9 @@ RowLayout {
         //
         LineEdit {
             id: gameData
-            text: DS.gameData
+            text: CppDS.gameData
             Layout.fillWidth: true
-            onTextChanged: DS.setGameData(text)
+            onTextChanged: CppDS.setGameData(text)
         }
 
         //

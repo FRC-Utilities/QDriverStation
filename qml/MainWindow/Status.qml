@@ -61,7 +61,7 @@ ColumnLayout {
         Label {
             size: large
             font.bold: true
-            text: DS.teamNumber
+            text: CppDS.teamNumber
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignHCenter
         }
@@ -105,7 +105,7 @@ ColumnLayout {
             font.bold: true
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
-            text: DS.connectedToRobot ? DS.voltageString : Globals.invalidStr
+            text: CppDS.connectedToRobot ? CppDS.voltageString : Globals.invalidStr
         }
     }
 
@@ -129,7 +129,7 @@ ColumnLayout {
             leftToRight: true
             anchors.right: parent.right
             text: qsTr ("Communications")
-            checked: DS.connectedToRobot
+            checked: CppDS.connectedToRobot
         }
 
         LED {
@@ -137,7 +137,7 @@ ColumnLayout {
             leftToRight: true
             text: qsTr ("Robot Code")
             anchors.right: parent.right
-            checked: DS.robotCode
+            checked: CppDS.robotCode
         }
 
         LED {
@@ -162,7 +162,7 @@ ColumnLayout {
     Label {
         size: large
         font.bold: true
-        text: DS.status
+        text: CppDS.status
         Layout.fillWidth: true
         Layout.fillHeight: true
         verticalAlignment: Qt.AlignVCenter

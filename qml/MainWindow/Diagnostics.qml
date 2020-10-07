@@ -48,19 +48,19 @@ RowLayout {
             Checkbox {
                 enabled: false
                 text: qsTr ("FMS")
-                checked: DS.connectedToFMS
+                checked: CppDS.connectedToFMS
             }
 
             Checkbox {
                 enabled: false
                 text: qsTr ("Robot")
-                checked: DS.connectedToRobot
+                checked: CppDS.connectedToRobot
             }
 
             Checkbox {
                 enabled: false
                 text: qsTr ("Bridge/Radio")
-                checked: DS.connectedToRadio
+                checked: CppDS.connectedToRadio
             }
         }
 
@@ -74,13 +74,13 @@ RowLayout {
             Button {
                 Layout.fillWidth: true
                 text: qsTr ("Reboot RIO")
-                onClicked: DS.rebootRobot()
+                onClicked: CppDS.rebootRobot()
             }
 
             Button {
                 Layout.fillWidth: true
                 text: qsTr ("Restart Code")
-                onClicked: DS.restartRobotCode()
+                onClicked: CppDS.restartRobotCode()
             }
         }
     }
@@ -115,7 +115,7 @@ RowLayout {
             }
 
             Label {
-                text: DS.connectedToRobot ? DS.cpuUsage + " %" : Globals.invalidStr
+                text: CppDS.connectedToRobot ? CppDS.cpuUsage + " %" : Globals.invalidStr
             }
 
             Label {
@@ -123,7 +123,7 @@ RowLayout {
             }
 
             Label {
-                text: DS.connectedToRobot ? DS.ramUsage + " %" : Globals.invalidStr
+                text: CppDS.connectedToRobot ? CppDS.ramUsage + " %" : Globals.invalidStr
             }
 
             Label {
@@ -131,7 +131,7 @@ RowLayout {
             }
 
             Label {
-                text: DS.connectedToRobot ? DS.diskUsage+ " %" : Globals.invalidStr
+                text: CppDS.connectedToRobot ? CppDS.diskUsage+ " %" : Globals.invalidStr
             }
 
             Label {
@@ -139,7 +139,7 @@ RowLayout {
             }
 
             Label {
-                text: DS.connectedToRobot ? DS.canUsage+ " %" : Globals.invalidStr
+                text: CppDS.connectedToRobot ? CppDS.canUsage+ " %" : Globals.invalidStr
             }
         }
     }

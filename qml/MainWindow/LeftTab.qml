@@ -131,8 +131,10 @@ RowLayout {
         }
 
         Connections {
-            target: DS
-            onJoystickCountChanged: leftTab.updateWidth()
+            target: CppDS
+            function onJoystickCountChanged() {
+                leftTab.updateWidth()
+            }
         }
 
         Component.onCompleted: showOperator()

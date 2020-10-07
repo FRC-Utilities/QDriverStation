@@ -53,16 +53,16 @@ RowLayout {
                 Layout.fillWidth: true
                 text: "  " + qsTr ("Teleoperated")
                 caption.horizontalAlignment: Text.AlignLeft
-                checked: DS.controlMode === LibDS.ControlTeleoperated
-                onClicked: DS.controlMode = LibDS.ControlTeleoperated
+                checked: CppDS.controlMode === LibDS.ControlTeleoperated
+                onClicked: CppDS.controlMode = LibDS.ControlTeleoperated
             }
 
             Button {
                 Layout.fillWidth: true
                 text: "  " + qsTr ("Autonomous")
                 caption.horizontalAlignment: Text.AlignLeft
-                checked: DS.controlMode === LibDS.ControlAutonomous
-                onClicked: DS.controlMode = LibDS.ControlAutonomous
+                checked: CppDS.controlMode === LibDS.ControlAutonomous
+                onClicked: CppDS.controlMode = LibDS.ControlAutonomous
             }
 
             Button {
@@ -76,8 +76,8 @@ RowLayout {
                 Layout.fillWidth: true
                 text: "  " + qsTr ("Test")
                 caption.horizontalAlignment: Text.AlignLeft
-                checked: DS.controlMode === LibDS.ControlTest
-                onClicked: DS.controlMode = LibDS.ControlTest
+                checked: CppDS.controlMode === LibDS.ControlTest
+                onClicked: CppDS.controlMode = LibDS.ControlTest
             }
         }
 
@@ -96,24 +96,24 @@ RowLayout {
             spacing: Globals.scale (-1)
 
             Button {
-                checked: DS.enabled
+                checked: CppDS.enabled
                 text: qsTr ("Enable")
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 caption.font.bold: true
-                onClicked: DS.enabled = DS.canBeEnabled
+                onClicked: CppDS.enabled = CppDS.canBeEnabled
                 caption.font.pixelSize: Globals.scale (16)
                 caption.color: checked ? Globals.Colors.EnableButtonSelected :
                                          Globals.Colors.EnableButtonUnselected
             }
 
             Button {
-                checked: !DS.enabled
+                checked: !CppDS.enabled
                 text: qsTr ("Disable")
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 caption.font.bold: true
-                onClicked: DS.enabled = false
+                onClicked: CppDS.enabled = false
                 caption.font.pixelSize: Globals.scale (16)
                 caption.color: checked ? Globals.Colors.DisableButtonSelected :
                                          Globals.Colors.DisableButtonUnselected
@@ -156,7 +156,7 @@ RowLayout {
             font.bold: true
             Layout.fillWidth: true
             size: Globals.scale (18)
-            text: DS.elapsedTime
+            text: CppDS.elapsedTime
             Layout.rightMargin: Globals.spacing
             horizontalAlignment: Text.AlignRight
         }
@@ -182,7 +182,7 @@ RowLayout {
                 Layout.fillWidth: true
                 size: Globals.scale (10)
                 horizontalAlignment: Text.AlignRight
-                opacity: Utilities.connectedToAC ? 1 : 0
+                opacity: CppUtilities.connectedToAC ? 1 : 0
                 Behavior on opacity { NumberAnimation{} }
             }
 
@@ -198,7 +198,7 @@ RowLayout {
         Progressbar {
             text: ""
             Layout.fillWidth: true
-            value: Utilities.batteryLevel
+            value: CppUtilities.batteryLevel
             barColor: {
                 if (value > 60)
                     return Globals.Colors.HighlightColor
@@ -225,7 +225,7 @@ RowLayout {
         Progressbar {
             text: ""
             Layout.fillWidth: true
-            value: Utilities.cpuUsage
+            value: CppUtilities.cpuUsage
             barColor: Globals.Colors.CPUProgress
         }
 
@@ -308,9 +308,9 @@ RowLayout {
         //
         Combobox {
             id: stations
-            model: DS.stations
+            model: CppDS.stations
             Layout.fillWidth: true
-            onCurrentIndexChanged: DS.station = currentIndex
+            onCurrentIndexChanged: CppDS.station = currentIndex
         }
     }
 }

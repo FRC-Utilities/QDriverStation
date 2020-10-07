@@ -78,7 +78,7 @@ Window {
             return
 
         if (docked) {
-            if (cIsUnix) {
+            if (CppIsUnix) {
                 x = 0
                 width = Screen.desktopAvailableWidth
                 minimumWidth = Screen.desktopAvailableWidth
@@ -137,7 +137,7 @@ Window {
     //
     visible: false
     color: Globals.Colors.WindowBackground
-    title: appDspName + " - " + qsTr ("Version") + " " + appVersion
+    title: CppAppDspName + " - " + qsTr ("Version") + " " + CppAppVersion
 
     //
     // Save window geometry

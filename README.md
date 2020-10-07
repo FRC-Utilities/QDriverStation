@@ -9,13 +9,9 @@ The actual code that operates a FRC robot is found in a [separate repository](ht
 
 You can find the online documentation of the QDriverStation and its sub-projects [here](http://frc-utilities.github.io/documentation/).
 
-### Project Status [2019]
+### <span style="color:red"><u>NOTE:</u> This is the legacy version</span>
 
-Unfortunately, I do not participate in any FRC/FIRST team anymore, so I cannot test any changes of the QDriverStation/LibDS with FRC hardware.
-
-The project has not received any significant updates since 2017, thus the QDriverStation does not work with 2018 robots. However, due to the design of the LibDS, it should be possible to support newer communication protocols without too much effort.
-
-If you are interested in continuing development of this project, please contact me so I can add you to the "FRC Utilities" organization, be sure to have a copy of [Wireshark](https://www.wireshark.org/) installed and a pencil and notebook to reverse-engineer the FRC Comm. Protocols :wink:
+Hopefully, the 2020 comm. protocol will be supported using [ds-rs](https://github.com/first-rust-competition/ds-rs). Work is underway, but I cannot guarantee anything.
 
 ### Install notes
 

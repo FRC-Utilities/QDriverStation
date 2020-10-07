@@ -26,7 +26,7 @@
 CONFIG += app
 CONFIG += qtquickcompiler
 
-TARGET = QDriverStation
+TARGET = QDriverStation-Legacy
 
 QT_SELECT = qt5 qmake
 
@@ -48,10 +48,10 @@ linux:!android {
     target.path = /usr/bin
     icon.path = /usr/share/pixmaps
     desktop.path = /usr/share/applications
-    icon.files += $$PWD/etc/deploy/linux/common/qdriverstation.png
-    desktop.files += $$PWD/etc/deploy/linux/common/qdriverstation.desktop
+    icon.files += $$PWD/etc/deploy/linux/common/qdriverstation-legacy.png
+    desktop.files += $$PWD/etc/deploy/linux/common/qdriverstation-legacy.desktop
 
-    TARGET = qdriverstation
+    TARGET = qdriverstation-legacy
     INSTALLS += target desktop icon
 }
 

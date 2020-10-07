@@ -1,5 +1,12 @@
 # Changes
 
+### QDriverStation 20.10
+
+- Rename project to QDriverStation Legacy
+- Remove 2018 protocol from menu
+- Add warning for first-time users
+- Minor fixes for Qt 5.15
+
 ### QDriverStation 17.05
 
 - Minor UI changes

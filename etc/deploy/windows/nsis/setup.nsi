@@ -20,13 +20,13 @@
 !include "MUI2.nsh"
 !include "LogicLib.nsh"
 
-!define APPNAME                      "QDriverStation"
-!define UNIXNAME                     "qdriverstation"
+!define APPNAME                      "QDriverStation Legacy"
+!define UNIXNAME                     "qdriverstation-legacy"
 !define COMPANYNAME                  "FRC Utilities"
 !define DESCRIPTION                  "Open source alternative to the FRC DriverStation"
-!define VERSIONMAJOR                 17
-!define VERSIONMINOR                 00
-!define VERSIONBUILD                 5
+!define VERSIONMAJOR                 20
+!define VERSIONMINOR                 10
+!define VERSIONBUILD                 0
 !define ESTIMATED_SIZE               60000
 !define MUI_ABORTWARNING
 !define INSTALL_DIR                  "$PROGRAMFILES\${APPNAME}"

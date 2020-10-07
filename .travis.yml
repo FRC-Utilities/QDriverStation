@@ -19,7 +19,7 @@ install:
   - sudo apt-get install -qq mesa-common-dev libegl1-mesa-dev libsdl2-dev
 
 script:
-  - $QTDIR/bin/qmake CONFIG+=release PREFIX=/usr ../QDriverStation.pro
+  - $QTDIR/bin/qmake CONFIG+=release PREFIX=/usr ../QDriverStation-Legacy.pro
   - make -j$(nproc)
 
 notifications:

@@ -67,7 +67,7 @@ Item {
         html = html.replace(/<[^>]+>/ig, '');
 
         /* Copy result to system clipboard */
-        Utilities.copy (html)
+        CppUtilities.copy (html)
     }
 
     //

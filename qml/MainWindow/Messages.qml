@@ -42,8 +42,10 @@ ColumnLayout {
     // Write to the console every time the DS receives a message
     //
     Connections {
-        target: DS
-        onNewMessage: messages.editor.append (message)
+        target: CppDS
+        function onNewMessage(message) {
+            messages.editor.append (message)
+        }
     }
 
     //
@@ -54,12 +56,12 @@ ColumnLayout {
 
         MenuItem {
             text: qsTr ("Open Application Logs")
-            onTriggered: DSLogger.openLogsPath()
+            onTriggered: CppDSLogger.openLogsPath()
         }
 
         MenuItem {
             text: qsTr ("Open Current Log")
-            onTriggered: DSLogger.openCurrentLog()
+            onTriggered: CppDSLogger.openCurrentLog()
         }
     }
 
@@ -112,9 +114,9 @@ ColumnLayout {
             width: 92
             id: protocol
             alignRight: true
-            model: DS.protocols
+            model: CppDS.protocols
             Layout.fillHeight: true
-            onCurrentIndexChanged: DS.setProtocol (currentIndex)
+            onCurrentIndexChanged: CppDS.setProtocol (currentIndex)
         }
     }
 

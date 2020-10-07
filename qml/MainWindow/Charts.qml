@@ -152,8 +152,8 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
             barColor: Globals.Colors.PacketLoss
-            onRefreshed: value = Math.max (1, DS.robotPacketLoss)
-            Component.onCompleted: value = Math.max (1, DS.robotPacketLoss)
+            onRefreshed: value = Math.max (1, CppDS.robotPacketLoss)
+            Component.onCompleted: value = Math.max (1, CppDS.robotPacketLoss)
         }
 
         //

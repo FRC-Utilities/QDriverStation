@@ -28,7 +28,7 @@
 // *INDENT-OFF*
 static const QString APP_VERSION = "20.10";
 static const QString APP_COMPANY = "FRC Utilities";
-static const QString APP_DSPNAME = "QDriverStation";
+static const QString APP_DSPNAME = "QDriverStation Legacy";
 static const QString CONTACT_URL = "https://github.com/alex-spataru";
 static const QString APP_WEBSITE = "http://frc-utilities.github.io/";
 static const QString APP_REPBUGS = "http://github.com/FRC-Utilities/QDriverStation/issues";

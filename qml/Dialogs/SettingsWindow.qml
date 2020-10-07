@@ -51,9 +51,9 @@ Window {
     // Changes the placeholder text of each custom IP box
     //
     function updatePlaceholders() {
-        fmsAddress.placeholder = getPlaceholder (DS.defaultFMSAddress)
-        radioAddress.placeholder = getPlaceholder (DS.defaultRadioAddress)
-        robotAddress.placeholder = getPlaceholder (DS.defaultRobotAddress)
+        fmsAddress.placeholder = getPlaceholder (CppDS.defaultFMSAddress)
+        radioAddress.placeholder = getPlaceholder (CppDS.defaultRadioAddress)
+        robotAddress.placeholder = getPlaceholder (CppDS.defaultRobotAddress)
     }
 
     //
@@ -76,12 +76,12 @@ Window {
     //
     function apply() {
         updatePlaceholders()
-        Beeper.setEnabled (enableSoundEffects.checked)
-        Utilities.setAutoScaleEnabled (autoScale.checked)
+        CppBeeper.setEnabled (enableSoundEffects.checked)
+        CppUtilities.setAutoScaleEnabled (autoScale.checked)
 		
-        DS.customFMSAddress = fmsAddress.text
-        DS.customRadioAddress = radioAddress.text
-        DS.customRobotAddress = robotAddress.text
+        CppDS.customFMSAddress = fmsAddress.text
+        CppDS.customRadioAddress = radioAddress.text
+        CppDS.customRobotAddress = robotAddress.text
     }
 
     //
@@ -89,16 +89,21 @@ Window {
     //
     Component.onCompleted: {
         apply()
-        Beeper.setEnabled (enableSoundEffects.checked)
+        CppBeeper.setEnabled (enableSoundEffects.checked)
     }
 
     //
     // Configure DS on init
     //
     Connections {
-        target: DS
-        onProtocolChanged: apply()
-        onTeamNumberChanged: updatePlaceholders()
+        target: CppDS
+        function onProtocolChanged() {
+            apply()
+        }
+
+        function onTeamNumberChanged() {
+            updatePlaceholders()
+        }
     }
 
     //

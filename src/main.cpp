@@ -55,10 +55,10 @@
 //------------------------------------------------------------------------------
 
 #ifdef Q_OS_MAC
-    #include <QObject>
-    #include <QSettings>
-    #include <QMessageBox>
-    #include <QDesktopServices>
+#include <QObject>
+#include <QSettings>
+#include <QMessageBox>
+#include <QDesktopServices>
 #endif
 
 //------------------------------------------------------------------------------
@@ -83,35 +83,45 @@ const QString HELP = "Usage: qdriverstation [ options ... ]                 \n"
 // Download joystick drivers if needed
 //------------------------------------------------------------------------------
 
-static void DownloadXboxDrivers()
+static void WelcomeMessages()
 {
-#ifdef Q_OS_MAC
     QSettings settings (APP_COMPANY, APP_DSPNAME);
-
     if (settings.value ("FirstLaunch", true).toBool()) {
+        // Warn user that he/she is using the legacy version
         QMessageBox box;
-        box.setIcon (QMessageBox::Question);
-        box.setStandardButtons (QMessageBox::Yes | QMessageBox::No);
-        box.setDefaultButton (QMessageBox::Yes);
+        box.setIcon (QMessageBox::Information);
+        box.setStandardButtons (QMessageBox::Ok);
+        box.setWindowTitle (QObject::tr ("Legacy Version"));
+        box.setText (QObject::tr ("You are using the legacy version of "
+                                  "QDriverStation"));
+        box.setInformativeText (QObject::tr ("This version only supports FRC "
+                                             "2014-2016 robots and is no longer "
+                                             "actively maintained!"));
+        box.exec();
 
-        box.setWindowTitle (QObject::tr ("Download Joystick Drivers"));
+        // Download Xbox drivers on Mac
+#ifdef Q_OS_MAC
+        QMessageBox xboxDrivers;
+        xboxDrivers.setIcon (QMessageBox::Question);
+        xboxDrivers.setStandardButtons (QMessageBox::Yes | QMessageBox::No);
+        xboxDrivers.setDefaultButton (QMessageBox::Yes);
+        xboxDrivers.setWindowTitle (QObject::tr ("Download Joystick Drivers"));
+        xboxDrivers.setText (QObject::tr (
+                                 "Do you want to install a driver "
+                                 "for Xbox joysticks?"));
 
-        box.setText (QObject::tr (
-                         "Do you want to install a driver "
-                         "for Xbox joysticks?"));
+        xboxDrivers.setInformativeText (QObject::tr (
+                                            "Clicking \"Yes\" will open a web "
+                                            "browser to download the drivers"));
 
-        box.setInformativeText (QObject::tr (
-                                    "Clicking \"Yes\" will open a web "
-                                    "browser to download the drivers"));
-
-        settings.setValue ("FirstLaunch", false);
-
-        if (box.exec() == QMessageBox::Yes)
+        if (xboxDrivers.exec() == QMessageBox::Yes)
             QDesktopServices::openUrl (QUrl (
                                            "https://github.com/360Controller/"
                                            "360Controller/releases/latest"));
-    }
 #endif
+
+        settings.setValue ("FirstLaunch", false);
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -208,7 +218,7 @@ int main (int argc, char* argv[])
     }
 
     /* Start the initialization time clock */
-    QTime timer;
+    QElapsedTimer timer;
     timer.start();
 
     /* Initialize OS variables */
@@ -226,8 +236,8 @@ int main (int argc, char* argv[])
 #endif
 
     /* Install the LibDS event logger */
-    DSEventLogger* dslogger = DSEventLogger::getInstance();
-    qInstallMessageHandler (dslogger->messageHandler);
+    DSEventLogger* CppDSLogger = DSEventLogger::getInstance();
+    qInstallMessageHandler (CppDSLogger->messageHandler);
 
     /* Initialize application modules */
     Beeper beeper;
@@ -244,19 +254,19 @@ int main (int argc, char* argv[])
 
     /* Load the QML interface */
     QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty ("cIsMac",        isMac);
-    engine.rootContext()->setContextProperty ("cIsUnix",       isUnx);
-    engine.rootContext()->setContextProperty ("cIsWindows",    isWin);
-    engine.rootContext()->setContextProperty ("Beeper",        &beeper);
-    engine.rootContext()->setContextProperty ("QJoysticks",    qjoysticks);
-    engine.rootContext()->setContextProperty ("Utilities",     &utilities);
-    engine.rootContext()->setContextProperty ("cDashboard",    &dashboards);
-    engine.rootContext()->setContextProperty ("appDspName",    APP_DSPNAME);
-    engine.rootContext()->setContextProperty ("appVersion",    APP_VERSION);
-    engine.rootContext()->setContextProperty ("appWebsite",    APP_WEBSITE);
-    engine.rootContext()->setContextProperty ("appRepBugs",    APP_REPBUGS);
-    engine.rootContext()->setContextProperty ("DSLogger",      dslogger);
-    engine.rootContext()->setContextProperty ("DS",            driverstation);
+    engine.rootContext()->setContextProperty ("CppIsMac",       isMac);
+    engine.rootContext()->setContextProperty ("CppIsUnix",      isUnx);
+    engine.rootContext()->setContextProperty ("CppIsWindows",   isWin);
+    engine.rootContext()->setContextProperty ("CppBeeper",      &beeper);
+    engine.rootContext()->setContextProperty ("QJoysticks",     qjoysticks);
+    engine.rootContext()->setContextProperty ("CppUtilities",   &utilities);
+    engine.rootContext()->setContextProperty ("CppDashboard",   &dashboards);
+    engine.rootContext()->setContextProperty ("CppAppDspName",  APP_DSPNAME);
+    engine.rootContext()->setContextProperty ("CppAppVersion",  APP_VERSION);
+    engine.rootContext()->setContextProperty ("CppAppWebsite",  APP_WEBSITE);
+    engine.rootContext()->setContextProperty ("CppAppRepBugs",  APP_REPBUGS);
+    engine.rootContext()->setContextProperty ("CppDSLogger",    CppDSLogger);
+    engine.rootContext()->setContextProperty ("CppDS",          driverstation);
     engine.load (QUrl (QStringLiteral ("qrc:/qml/main.qml")));
 
     /* QML loading failed, exit the application */
@@ -266,8 +276,9 @@ int main (int argc, char* argv[])
     /* Tell user how much time was needed to initialize the app */
     qDebug() << "Initialized in " << timer.elapsed() << "milliseconds";
 
-    /* Ask first-timers to download the xbox drivers */
-    DownloadXboxDrivers();
+    /* Warn first-timers that they are running the legacy version and
+     * to download the xbox drivers on macOS */
+    WelcomeMessages();
 
     /* Run normally */
     return app.exec();

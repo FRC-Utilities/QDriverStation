@@ -46,7 +46,7 @@ ColumnLayout {
         size: large
         font.bold: true
         Layout.alignment: Qt.AlignHCenter
-        text: appDspName + " " + appVersion
+        text: CppAppDspName + " " + CppAppVersion
     }
 
     //
@@ -56,11 +56,11 @@ ColumnLayout {
         size: medium
         Layout.alignment: Qt.AlignHCenter
         text: "LibDS "
-              + DS.libDSVersion
+              + CppDS.libDSVersion
               + " (built on "
-              + DS.buildDate
+              + CppDS.buildDate
               + " at "
-              + DS.buildTime
+              + CppDS.buildTime
               + ")"
     }
 
@@ -74,12 +74,12 @@ ColumnLayout {
 
         Button {
             text: qsTr ("Visit Website")
-            onClicked: Qt.openUrlExternally (appWebsite)
+            onClicked: Qt.openUrlExternally (CppAppWebsite)
         }
 
         Button {
             text: qsTr ("Report Bug")
-            onClicked: Qt.openUrlExternally (appRepBugs)
+            onClicked: Qt.openUrlExternally (CppAppRepBugs)
         }
     }
 }

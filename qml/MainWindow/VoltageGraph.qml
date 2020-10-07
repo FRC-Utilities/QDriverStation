@@ -35,9 +35,9 @@ Plot {
     // Gets current voltage and changes plot settings accordingly
     //
     function update() {
-        value = DS.voltage
+        value = CppDS.voltage
 
-        if (!DS.connectedToRobot) {
+        if (!CppDS.connectedToRobot) {
             barColor = noCommsColor
             value = maximumValue * 0.95
         }
@@ -61,5 +61,5 @@ Plot {
     //
     minimumValue: 0
     Component.onCompleted: update()
-    maximumValue: DS.maximumBatteryVoltage
+    maximumValue: CppDS.maximumBatteryVoltage
 }
