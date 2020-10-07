@@ -1,4 +1,4 @@
-![Header](doc/header.png)
+![Header](doc/logo.png)
 
 The QDriverStation is a cross-platform and open-source alternative to the FRC Driver Station. It allows you to operate FRC robots with the major operating systems (Windows, Mac OSX and GNU/Linux). The QDriverStation is able to operate both 2009-2014 robots and 2015-2017 robots.
 
