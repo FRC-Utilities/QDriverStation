@@ -39,9 +39,30 @@ win32* {
 }
 
 macx* {
-    ICON = $$PWD/etc/deploy/mac-osx/icon.icns
-    RC_FILE = $$PWD/etc/deploy/mac-osx/icon.icns
-    QMAKE_INFO_PLIST = $$PWD/etc/deploy/mac-osx/info.plist
+    ICON = $$PWD/etc/deploy/macOS/icon.icns
+    RC_FILE = $$PWD/etc/deploy/macOS/icon.icns
+    QMAKE_INFO_PLIST = $$PWD/etc/deploy/macOS/info.plist
+
+    # DMG generation constants
+    BUNDLE_FILENAME = $${TARGET}.app
+    DMG_FILENAME = "$${TARGET}.dmg"
+   
+    # Target for pretty DMG generation
+    dmg.commands += echo "Generate DMG";
+    dmg.commands += macdeployqt $$BUNDLE_FILENAME -qmldir=$$PWD/qml &&
+    dmg.commands += create-dmg \
+          --volname $${TARGET} \
+          --background $${PWD}/etc/deploy/macOS/dmg_bg.png \
+          --icon $${BUNDLE_FILENAME} 150 218 \
+          --window-pos 200 120 \
+          --window-size 600 450 \
+          --icon-size 100 \
+          --hdiutil-quiet \
+          --app-drop-link 450 218 \
+          $${DMG_FILENAME} \
+          $${BUNDLE_FILENAME}
+
+    QMAKE_EXTRA_TARGETS += dmg
 }
 
 linux:!android {
