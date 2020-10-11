@@ -225,6 +225,9 @@ int main(int argc, char *argv[])
    QJoysticks *qjoysticks = QJoysticks::getInstance();
    DriverStation *driverstation = DriverStation::getInstance();
 
+   /* Set virtual joystick axis range */
+   qjoysticks->setVirtualJoystickAxisSensibility(0);
+
    /* Configure the shortcuts handler and start the DS */
    app.installEventFilter(&shortcuts);
    driverstation->declareQML();
