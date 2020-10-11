@@ -102,17 +102,17 @@ Item {
             }
         }
 
-        function onPovChanged() {
+        function onPovChanged(js, pov, angle) {
             var val = QJoysticks.isBlacklisted (currentJoystick) ? 0 : angle
             CppDS.setJoystickHat (js, pov, val)
         }
 
-        function onAxisChanged() {
+        function onAxisChanged(js, axis, value) {
             var val = QJoysticks.isBlacklisted (currentJoystick) ? 0 : value
             CppDS.setJoystickAxis (js, axis, val)
         }
 
-        function onButtonChanged() {
+        function onButtonChanged(js, button, pressed) {
             var val = QJoysticks.isBlacklisted (currentJoystick) ? false : pressed
             CppDS.setJoystickButton (js, button, val)
         }
@@ -289,9 +289,8 @@ Item {
 
                         Connections {
                             target: QJoysticks
-                            onAxisChanged: {
-                                if (joysticks.currentJoystick === js
-                                        && index === axis)
+                            function onAxisChanged(js, axis, value) {
+                                if (joysticks.currentJoystick === js && index === axis)
                                     progressbar.value = (value + 1) * 100
                             }
                         }
@@ -355,9 +354,8 @@ Item {
 
                         Connections {
                             target: QJoysticks
-                            onButtonChanged: {
-                                if (joysticks.currentJoystick === js
-                                        && button === index)
+                            function onButtonChanged(js, button, pressed) {
+                                if (joysticks.currentJoystick === js && button === index)
                                     value = pressed ? 1 : 0
                             }
                         }
@@ -405,9 +403,8 @@ Item {
 
                         Connections {
                             target: QJoysticks
-                            onPovChanged: {
-                                if (joysticks.currentJoystick === js)
-                                    if (pov === index)
+                            function onPovChanged(js, pov, angle) {
+                                if (joysticks.currentJoystick === js && pov === index)
                                         spinbox.value = angle
                             }
                         }
