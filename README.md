@@ -43,7 +43,7 @@ If you are on Linux, the QDriverStation may detect some devices as a joystick ([
 The only requirement to compile the application is to have [Qt](http://www.qt.io/download-open-source/) installed in your system. The desktop application will compile with Qt 5.15 or greater.
 
 - If you are using Linux, make sure that you have installed the following packages:
-    - libsdl2-dev
+    - `libsdl2-dev`
 
 The project already contains the compiled SDL libraries for Windows and Mac.
 
