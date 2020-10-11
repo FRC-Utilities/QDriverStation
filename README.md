@@ -12,6 +12,8 @@ The actual code that operates a FRC robot is found in a [separate repository](ht
 
 You can find the online documentation of the QDriverStation and its sub-projects [here](http://frc-utilities.github.io/documentation/).
 
+![macOS Screenshot](doc/QDriverStation-macOS.png)
+
 ### Install notes
 
 You can download the QDriverStation from [GitHub](http://github.com/FRC-Utilities/QDriverStation-Legacy/releases).
