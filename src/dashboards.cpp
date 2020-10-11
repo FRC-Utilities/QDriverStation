@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 Alex Spataru <alex_spataru@outlook.com>
+ * Copyright (c) 2015-2020 Alex Spataru <alex_spataru@outlook.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,13 +28,13 @@
 
 // *INDENT-OFF*
 #if defined Q_OS_WIN
-#include <windows.h>
-#define IS_64_BIT true
-#if _WIN32
-#undef  IS_64_BIT
-#define IS_64_BIT GetProcAddress (GetModuleHandle (TEXT ("kernel32")), "IsWow64Process")
-#endif
-#define PROGRAM_FILES IS_64_BIT ? "C:/Program Files (x86)" : "C:/Program Files"
+#   include <windows.h>
+#   define IS_64_BIT true
+#   if _WIN32
+#      undef IS_64_BIT
+#      define IS_64_BIT GetProcAddress(GetModuleHandle(TEXT("kernel32")), "IsWow64Process")
+#   endif
+#   define PROGRAM_FILES IS_64_BIT ? "C:/Program Files (x86)" : "C:/Program Files"
 #endif
 // *INDENT-ON*
 
@@ -48,7 +48,7 @@ const QString SBD_COMMAND = "java -jar \"%1/wpilib/tools/SmartDashboard.jar\"";
  */
 Dashboards::Dashboards()
 {
-    connect (qApp, SIGNAL (aboutToQuit()), &m_process, SLOT (kill()));
+   connect(qApp, SIGNAL(aboutToQuit()), &m_process, SLOT(kill()));
 }
 
 /**
@@ -57,42 +57,44 @@ Dashboards::Dashboards()
  */
 QStringList Dashboards::dashboardList()
 {
-    QStringList list;
-    list.append (tr ("None"));
-    list.append (tr ("SFX Dashboard"));
-    list.append (tr ("SmartDashboard"));
+   QStringList list;
+   list.append(tr("None"));
+   list.append(tr("SFX Dashboard"));
+   list.append(tr("SmartDashboard"));
 
 #if defined Q_OS_WIN
-    list.append (tr ("LabVIEW Dashboard"));
+   list.append(tr("LabVIEW Dashboard"));
 #endif
 
-    return list;
+   return list;
 }
 
 /**
  * Opens the given \a dashboard process
  */
-void Dashboards::openDashboard (int dashboard)
+void Dashboards::openDashboard(int dashboard)
 {
-    m_process.kill();
-    QString command = "";
+   m_process.kill();
+   QString command = "";
 
-    switch (dashboard) {
-    case kSFXDashboard:
-        command = SFX_COMMAND.arg (QDir::homePath());
-        break;
-    case kSmartDashboard:
-        command = SBD_COMMAND.arg (QDir::homePath());
-        break;
+   switch (dashboard)
+   {
+      case kSFXDashboard:
+         command = SFX_COMMAND.arg(QDir::homePath());
+         break;
+      case kSmartDashboard:
+         command = SBD_COMMAND.arg(QDir::homePath());
+         break;
 #if defined Q_OS_WIN
-    case kLabVIEWDashboard:
-        command = LVD_COMMAND.arg (PROGRAM_FILES);
-        break;
+      case kLabVIEWDashboard:
+         command = LVD_COMMAND.arg(PROGRAM_FILES);
+         break;
 #endif
-    }
+   }
 
-    if (!command.isEmpty()) {
-        m_process.start (command, QIODevice::ReadOnly);
-        qDebug() << "Dashboard command set to:" << command.toStdString().c_str();
-    }
+   if (!command.isEmpty())
+   {
+      m_process.start(command, QIODevice::ReadOnly);
+      qDebug() << "Dashboard command set to:" << command.toStdString().c_str();
+   }
 }

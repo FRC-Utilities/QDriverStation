@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 Alex Spataru <alex_spataru@outlook.com>
+ * Copyright (c) 2015-2020 Alex Spataru <alex_spataru@outlook.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
 #include <QProcess>
 
 #if defined Q_OS_LINUX
-    #include <QPair>
+#   include <QPair>
 #endif
 
 class QSettings;
@@ -36,59 +36,53 @@ class QSettings;
  */
 class Utilities : public QObject
 {
-    Q_OBJECT
-    Q_PROPERTY (int cpuUsage
-                READ cpuUsage
-                NOTIFY cpuUsageChanged)
-    Q_PROPERTY (int batteryLevel
-                READ batteryLevel
-                NOTIFY batteryLevelChanged)
-    Q_PROPERTY (bool connectedToAC
-                READ isConnectedToAC
-                NOTIFY connectedToACChanged)
-    Q_PROPERTY (qreal scaleRatio READ scaleRatio CONSTANT)
+   Q_OBJECT
+   Q_PROPERTY(int cpuUsage READ cpuUsage NOTIFY cpuUsageChanged)
+   Q_PROPERTY(int batteryLevel READ batteryLevel NOTIFY batteryLevelChanged)
+   Q_PROPERTY(bool connectedToAC READ isConnectedToAC NOTIFY connectedToACChanged)
+   Q_PROPERTY(qreal scaleRatio READ scaleRatio CONSTANT)
 
 signals:
-    void cpuUsageChanged();
-    void batteryLevelChanged();
-    void connectedToACChanged();
+   void cpuUsageChanged();
+   void batteryLevelChanged();
+   void connectedToACChanged();
 
 public:
-    explicit Utilities();
+   explicit Utilities();
 
-    int cpuUsage();
-    int batteryLevel();
-    qreal scaleRatio();
-    bool isConnectedToAC();
+   int cpuUsage();
+   int batteryLevel();
+   qreal scaleRatio();
+   bool isConnectedToAC();
 
 public slots:
-    void copy (const QVariant& data);
-    void setAutoScaleEnabled (const bool enabled);
+   void copy(const QVariant &data);
+   void setAutoScaleEnabled(const bool enabled);
 
 private slots:
-    void updateCpuUsage();
-    void updateBatteryLevel();
-    void updateConnectedToAC();
-    void calculateScaleRatio();
-    void readCpuUsageProcess (int exit_code = 0);
-    void readBatteryLevelProcess (int exit_code = 0);
-    void readConnectedToACProcess (int exit_code = 0);
+   void updateCpuUsage();
+   void updateBatteryLevel();
+   void updateConnectedToAC();
+   void calculateScaleRatio();
+   void readCpuUsageProcess(int exit_code = 0);
+   void readBatteryLevelProcess(int exit_code = 0);
+   void readConnectedToACProcess(int exit_code = 0);
 
 private:
-#if defined (Q_OS_LINUX)
-    QPair<quint64, quint64> getCpuJiffies();
-    QPair<quint64, quint64> m_pastCpuJiffies {0, 0};
+#if defined(Q_OS_LINUX)
+   QPair<quint64, quint64> getCpuJiffies();
+   QPair<quint64, quint64> m_pastCpuJiffies { 0, 0 };
 #endif
 
-    qreal m_ratio;
-    int m_cpuUsage;
-    int m_batteryLevel;
-    bool m_connectedToAC;
+   qreal m_ratio;
+   int m_cpuUsage;
+   int m_batteryLevel;
+   bool m_connectedToAC;
 
-    QSettings* m_settings;
-    QProcess m_cpuProcess;
-    QProcess m_batteryLevelProcess;
-    QProcess m_connectedToACProcess;
+   QSettings *m_settings;
+   QProcess m_cpuProcess;
+   QProcess m_batteryLevelProcess;
+   QProcess m_connectedToACProcess;
 };
 
 #endif

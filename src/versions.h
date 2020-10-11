@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 Alex Spataru <alex_spataru@outlook.com>
+ * Copyright (c) 2015-2020 Alex Spataru <alex_spataru@outlook.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@
 // *INDENT-OFF*
 static const QString APP_VERSION = "20.10";
 static const QString APP_COMPANY = "FRC Utilities";
-static const QString APP_DSPNAME = "QDriverStation Legacy";
+static const QString APP_DSPNAME = "QDriverStation";
 static const QString CONTACT_URL = "https://github.com/alex-spataru";
 static const QString APP_WEBSITE = "http://frc-utilities.github.io/";
 static const QString APP_REPBUGS = "http://github.com/FRC-Utilities/QDriverStation/issues";

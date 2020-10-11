@@ -5,17 +5,17 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>QDriverStation-Legacy</string>
+	<string>QDriverStation</string>
 	<key>CFBundleGetInfoString</key>
 	<string>Copyright © 2015-2020 Alex Spataru</string>
 	<key>CFBundleIconFile</key>
 	<string>icon</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.frc-utilities.qdriverstation-legacy</string>
+        <string>org.frc-utilities.qdriverstation</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>QDriverStation Legacy</string>
+        <string>QDriverStation</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

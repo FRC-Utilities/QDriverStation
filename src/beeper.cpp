@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 Alex Spataru <alex_spataru@outlook.com>
+ * Copyright (c) 2015-2020 Alex Spataru <alex_spataru@outlook.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,9 +33,10 @@
 /**
  * \brief Holds information regarding a beep/wave sound
  */
-struct BeepObject {
-    qreal frequency;
-    int samplesLeft;
+struct BeepObject
+{
+   qreal frequency;
+   int samplesLeft;
 };
 
 /* Think of this as the 'volume' of the sound wave */
@@ -50,10 +51,10 @@ QQueue<BeepObject> BEEPS;
 /**
  * Calls the beeper when and generates the audio
  */
-void AUDIO_CALLBACK (void* beeper, quint8* stream, int length)
+void AUDIO_CALLBACK(void *beeper, quint8 *stream, int length)
 {
-    Beeper* object = static_cast<Beeper*> (beeper);
-    object->generateSamples ((qint16*) stream, length / 2);
+   Beeper *object = static_cast<Beeper *>(beeper);
+   object->generateSamples((qint16 *)stream, length / 2);
 }
 
 /**
@@ -61,26 +62,26 @@ void AUDIO_CALLBACK (void* beeper, quint8* stream, int length)
  */
 Beeper::Beeper()
 {
-    m_angle = 0;
-    m_enabled = false;
+   m_angle = 0;
+   m_enabled = false;
 
-    SDL_LockAudio();
+   SDL_LockAudio();
 
-    /* Generate the audio configuration */
-    SDL_AudioSpec desiredSpec;
-    desiredSpec.channels = 1;
-    desiredSpec.samples = 1024;
-    desiredSpec.userdata = this;
-    desiredSpec.freq = SAMPLING_FREQ;
-    desiredSpec.format = AUDIO_S16SYS;
-    desiredSpec.callback = AUDIO_CALLBACK;
+   /* Generate the audio configuration */
+   SDL_AudioSpec desiredSpec;
+   desiredSpec.channels = 1;
+   desiredSpec.samples = 1024;
+   desiredSpec.userdata = this;
+   desiredSpec.freq = SAMPLING_FREQ;
+   desiredSpec.format = AUDIO_S16SYS;
+   desiredSpec.callback = AUDIO_CALLBACK;
 
-    /* Open the audio device */
-    SDL_AudioSpec obtainedSpec;
-    SDL_OpenAudio (&desiredSpec, &obtainedSpec);
+   /* Open the audio device */
+   SDL_AudioSpec obtainedSpec;
+   SDL_OpenAudio(&desiredSpec, &obtainedSpec);
 
-    /* Forces to initialize the data for the callback function */
-    SDL_PauseAudio (0);
+   /* Forces to initialize the data for the callback function */
+   SDL_PauseAudio(0);
 }
 
 /**
@@ -88,60 +89,63 @@ Beeper::Beeper()
  */
 Beeper::~Beeper()
 {
-    SDL_CloseAudio();
-    SDL_UnlockAudio();
+   SDL_CloseAudio();
+   SDL_UnlockAudio();
 }
 
-void Beeper::generateSamples (qint16* stream, int length)
+void Beeper::generateSamples(qint16 *stream, int length)
 {
-    int i = 0;
-    while (i < length) {
+   int i = 0;
+   while (i < length)
+   {
 
-        /* Beeps object is empty, ensure that stream has neutral values */
-        if (BEEPS.empty()) {
-            for (; i < length; ++i)
-                stream [i] = 0;
+      /* Beeps object is empty, ensure that stream has neutral values */
+      if (BEEPS.empty())
+      {
+         for (; i < length; ++i)
+            stream[i] = 0;
 
-            return;
-        }
+         return;
+      }
 
-        /* Get the beep object */
-        BeepObject& beep = BEEPS.front();
-        int samplesToDo = qMin (i + beep.samplesLeft, length);
-        beep.samplesLeft -= samplesToDo - i;
+      /* Get the beep object */
+      BeepObject &beep = BEEPS.front();
+      int samplesToDo = qMin(i + beep.samplesLeft, length);
+      beep.samplesLeft -= samplesToDo - i;
 
-        /* Generate the sound */
-        for (; i < samplesToDo; ++i) {
-            m_angle += beep.frequency;
-            stream [i] = AMPLITUDE * qSin ((m_angle * 2 * M_PI) / SAMPLING_FREQ);
-        }
+      /* Generate the sound */
+      for (; i < samplesToDo; ++i)
+      {
+         m_angle += beep.frequency;
+         stream[i] = AMPLITUDE * qSin((m_angle * 2 * M_PI) / SAMPLING_FREQ);
+      }
 
-        /* Go to next beep object */
-        if (beep.samplesLeft == 0)
-            BEEPS.pop_front();
-
-    }
+      /* Go to next beep object */
+      if (beep.samplesLeft == 0)
+         BEEPS.pop_front();
+   }
 }
 
 /**
  * Enables or disables the sound output
  */
-void Beeper::setEnabled (bool enabled)
+void Beeper::setEnabled(bool enabled)
 {
-    m_enabled = enabled;
+   m_enabled = enabled;
 }
 
 /**
  * Generates a beep of the given \a frequency & \a duration (in milliseconds).
  * \note The request will be ignored if the beeper is disabled
  */
-void Beeper::beep (qreal frequency, int duration)
+void Beeper::beep(qreal frequency, int duration)
 {
-    if (m_enabled) {
-        BeepObject beep_object;
-        beep_object.frequency = frequency;
-        beep_object.samplesLeft = duration * SAMPLING_FREQ / 1000;
+   if (m_enabled)
+   {
+      BeepObject beep_object;
+      beep_object.frequency = frequency;
+      beep_object.samplesLeft = duration * SAMPLING_FREQ / 1000;
 
-        BEEPS.append (beep_object);
-    }
+      BEEPS.append(beep_object);
+   }
 }

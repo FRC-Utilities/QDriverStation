@@ -2,9 +2,9 @@
 
 ### QDriverStation 20.10
 
-- Rename project to QDriverStation Legacy
-- Remove 2018 protocol from menu
-- Add warning for first-time users
+- Add QJoysticks & LibDS as submodules
+- Change code-formating scripts to `clang-format`
+- Add support for 2020 protocol (WIP)
 - Minor fixes for Qt 5.15
 
 ### QDriverStation 17.05

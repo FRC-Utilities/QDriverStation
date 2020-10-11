@@ -13,21 +13,21 @@
  */
 class Beeper : public QObject
 {
-    Q_OBJECT
+   Q_OBJECT
 
 public:
-    explicit Beeper();
-    ~Beeper();
+   explicit Beeper();
+   ~Beeper();
 
-    void generateSamples (qint16* stream, int length);
+   void generateSamples(qint16 *stream, int length);
 
 public slots:
-    void setEnabled (bool enabled);
-    void beep (qreal frequency, int duration);
+   void setEnabled(bool enabled);
+   void beep(qreal frequency, int duration);
 
 private:
-    bool m_enabled;
-    double m_angle;
+   bool m_enabled;
+   double m_angle;
 };
 
 #endif

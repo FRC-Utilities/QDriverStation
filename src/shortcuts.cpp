@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 Alex Spataru <alex_spataru@outlook.com>
+ * Copyright (c) 2015-2020 Alex Spataru <alex_spataru@outlook.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,23 +24,25 @@
 #include <QJoysticks.h>
 #include <DriverStation.h>
 
-bool Shortcuts::eventFilter (QObject* object, QEvent* event)
+bool Shortcuts::eventFilter(QObject *object, QEvent *event)
 {
-    Q_UNUSED (object);
+   Q_UNUSED(object);
 
-    if (event->type() == QEvent::KeyPress) {
-        switch (static_cast <QKeyEvent*> (event)->key()) {
-        case Qt::Key_Space:
-            DriverStation::getInstance()->setEmergencyStopped (true);
+   if (event->type() == QEvent::KeyPress)
+   {
+      switch (static_cast<QKeyEvent *>(event)->key())
+      {
+         case Qt::Key_Space:
+            DriverStation::getInstance()->setEmergencyStopped(true);
             break;
-        case Qt::Key_Enter:
-            DriverStation::getInstance()->setEnabled (true);
+         case Qt::Key_Enter:
+            DriverStation::getInstance()->setEnabled(true);
             break;
-        case Qt::Key_F1:
+         case Qt::Key_F1:
             QJoysticks::getInstance()->updateInterfaces();
             break;
-        }
-    }
+      }
+   }
 
-    return false;
+   return false;
 }

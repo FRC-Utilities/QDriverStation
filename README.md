@@ -1,4 +1,8 @@
-![Header](doc/logo.png)
+<a href="#">
+    <img width="192px" height="192px" src="doc/icon.png" align="right" />
+</a>
+
+# QDriverStation
 
 The QDriverStation is a cross-platform and open-source alternative to the FRC Driver Station. It allows you to operate FRC robots with the major operating systems (Windows, Mac OSX and GNU/Linux). The QDriverStation is able to operate both 2009-2014 robots and 2015-2017 robots, support for 2020 robots is on the way.
 
@@ -41,6 +45,21 @@ The only requirement to compile the application is to have [Qt](http://www.qt.io
 
 The project already contains the compiled SDL libraries for Windows and Mac.
 
+### Cloning this repository
+
+This repository makes use of [`git submodule`](https://git-scm.com/docs/git-submodule). In order to clone it, you have two options:
+
+One-liner:
+
+    git clone --recursive https://github.com/FRC-Utilities/QDriverStation/
+
+Normal procedure:
+
+    git clone https://github.com/FRC-Utilities/QDriverStation/
+    cd QDriverStation
+    git submodule init
+    git submodule update
+    
 ###### Compiling the application
 
 Once you have Qt installed, open *QDriverStation.pro* in Qt Creator and click the "Run" button.
@@ -57,3 +76,7 @@ You can check this [tutorial by Dakota Keeler](https://www.youtube.com/watch?v=G
 This application was created by [Alex Spataru](http://github.com/alex-spataru).
 
 Of course, many people contributed in different ways to this project, you can find more details in the [contributors list](CONTRIBUTORS.md). Finally, we want to thank you for trying this little project, we sincerely hope that you enjoy our application and we would love some of your feedback.
+
+### License
+
+This project is released under the MIT License. For more information, [click here](LICENSE.md).

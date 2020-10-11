@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2015-2016 Alex Spataru <alex_spataru@outlook.com>
+# Copyright (c) 2015-2020 Alex Spataru <alex_spataru@outlook.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
 CONFIG += app
 CONFIG += qtquickcompiler
 
-TARGET = QDriverStation-Legacy
+TARGET = QDriverStation
 
 QT_SELECT = qt5 qmake
 
@@ -48,10 +48,10 @@ linux:!android {
     target.path = /usr/bin
     icon.path = /usr/share/pixmaps
     desktop.path = /usr/share/applications
-    icon.files += $$PWD/etc/deploy/linux/common/qdriverstation-legacy.png
-    desktop.files += $$PWD/etc/deploy/linux/common/qdriverstation-legacy.desktop
+    icon.files += $$PWD/etc/deploy/linux/common/qdriverstation.png
+    desktop.files += $$PWD/etc/deploy/linux/common/qdriverstation.desktop
 
-    TARGET = qdriverstation-legacy
+    TARGET = QDriverStation
     INSTALLS += target desktop icon
 }
 
@@ -76,7 +76,7 @@ OBJECTS_DIR = obj
 #-------------------------------------------------------------------------------
 
 include ($$PWD/lib/QJoysticks/QJoysticks.pri)
-include ($$PWD/lib/LibDS-Legacy/wrappers/Qt/LibDS-Qt.pri)
+include ($$PWD/lib/LibDS/wrappers/Qt/LibDS-Qt.pri)
 
 #-------------------------------------------------------------------------------
 # Import source code and QML

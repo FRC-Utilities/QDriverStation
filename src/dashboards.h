@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2015-2016 Alex Spataru <alex_spataru@outlook.com>
+ * Copyright (c) 2015-2020 Alex Spataru <alex_spataru@outlook.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,26 +30,27 @@
  */
 class Dashboards : public QObject
 {
-    Q_OBJECT
-    Q_ENUMS (DashboardTypes)
+   Q_OBJECT
+   Q_ENUMS(DashboardTypes)
 
 public:
-    explicit Dashboards();
+   explicit Dashboards();
 
-    enum DashboardTypes {
-        kNone = 0,
-        kSFXDashboard = 1,
-        kSmartDashboard = 2,
-        kLabVIEWDashboard = 3,
-    };
+   enum DashboardTypes
+   {
+      kNone = 0,
+      kSFXDashboard = 1,
+      kSmartDashboard = 2,
+      kLabVIEWDashboard = 3,
+   };
 
-    Q_INVOKABLE QStringList dashboardList();
+   Q_INVOKABLE QStringList dashboardList();
 
 public slots:
-    void openDashboard (int dashboard);
+   void openDashboard(int dashboard);
 
 private:
-    QProcess m_process;
+   QProcess m_process;
 };
 
 #endif

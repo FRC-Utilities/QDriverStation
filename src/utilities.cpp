@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 Alex Spataru <alex_spataru@outlook.com>
+ * Copyright (c) 2015-2020 Alex Spataru <alex_spataru@outlook.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,14 +34,14 @@
 //------------------------------------------------------------------------------
 
 #if defined Q_OS_WIN
-    #include <pdh.h>
-    #include <tchar.h>
-    #include <windows.h>
-    #include <windowsx.h>
+#   include <pdh.h>
+#   include <tchar.h>
+#   include <windows.h>
+#   include <windowsx.h>
 
-    static PDH_HQUERY cpuQuery;
-    static PDH_HCOUNTER cpuTotal;
-    static SYSTEM_POWER_STATUS power;
+static PDH_HQUERY cpuQuery;
+static PDH_HCOUNTER cpuTotal;
+static SYSTEM_POWER_STATUS power;
 #endif
 
 //------------------------------------------------------------------------------
@@ -49,10 +49,10 @@
 //------------------------------------------------------------------------------
 
 #if defined Q_OS_MAC
-    static const QString CPU_CMD = "bash -c \"ps -A -o %cpu | "
-    "awk '{s+=$1} END {print s}'\"";
-    static const QString BTY_CMD = "pmset -g batt";
-    static const QString PWR_CMD = "pmset -g batt";
+static const QString CPU_CMD = "bash -c \"ps -A -o %cpu | "
+                               "awk '{s+=$1} END {print s}'\"";
+static const QString BTY_CMD = "pmset -g batt";
+static const QString PWR_CMD = "pmset -g batt";
 #endif
 
 //------------------------------------------------------------------------------
@@ -60,15 +60,15 @@
 //------------------------------------------------------------------------------
 
 #if defined Q_OS_LINUX
-    #include <QFile>
-    #include <QRegExp>
+#   include <QFile>
+#   include <QRegExp>
 
-    static const QString BTY_CMD = "bash -c \"upower -i "
-    "$(upower -e | grep 'BAT') | "
-    "grep -E 'state|to\\ full|percentage'\"";
-    static const QString PWR_CMD = "bash -c \"upower -i "
-    "$(upower -e | grep 'BAT') | "
-    "grep -E 'state|to\\ full|percentage'\"";
+static const QString BTY_CMD = "bash -c \"upower -i "
+                               "$(upower -e | grep 'BAT') | "
+                               "grep -E 'state|to\\ full|percentage'\"";
+static const QString PWR_CMD = "bash -c \"upower -i "
+                               "$(upower -e | grep 'BAT') | "
+                               "grep -E 'state|to\\ full|percentage'\"";
 #endif
 
 //------------------------------------------------------------------------------
@@ -76,9 +76,9 @@
 //------------------------------------------------------------------------------
 
 #if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined Q_OS_LINUX
-    static const QString CPU_CMD = "";
-    static const QString BTY_CMD = "";
-    static const QString PWR_CMD = "";
+static const QString CPU_CMD = "";
+static const QString BTY_CMD = "";
+static const QString PWR_CMD = "";
 #endif
 
 //------------------------------------------------------------------------------
@@ -90,44 +90,34 @@
  */
 Utilities::Utilities()
 {
-    m_ratio = 0;
-    m_cpuUsage = 0;
-    m_batteryLevel = 0;
-    m_connectedToAC = 0;
+   m_ratio = 0;
+   m_cpuUsage = 0;
+   m_batteryLevel = 0;
+   m_connectedToAC = 0;
 
-    m_settings = new QSettings (qApp->organizationName(),
-                                qApp->applicationName());
+   m_settings = new QSettings(qApp->organizationName(), qApp->applicationName());
 
-    /* Read process data when they finish */
-    connect (&m_cpuProcess,           SIGNAL (finished                 (int)),
-             this,                      SLOT (readCpuUsageProcess      (int)));
-    connect (&m_batteryLevelProcess,  SIGNAL (finished                 (int)),
-             this,                      SLOT (readBatteryLevelProcess  (int)));
-    connect (&m_connectedToACProcess, SIGNAL (finished                 (int)),
-             this,                      SLOT (readConnectedToACProcess (int)));
+   /* Read process data when they finish */
+   connect(&m_cpuProcess, SIGNAL(finished(int)), this, SLOT(readCpuUsageProcess(int)));
+   connect(&m_batteryLevelProcess, SIGNAL(finished(int)), this, SLOT(readBatteryLevelProcess(int)));
+   connect(&m_connectedToACProcess, SIGNAL(finished(int)), this, SLOT(readConnectedToACProcess(int)));
 
-    /* Kill the probing processes when application quits */
-    connect (qApp,                  SIGNAL (aboutToQuit()),
-             &m_cpuProcess,           SLOT (kill()));
-    connect (qApp,                  SIGNAL (aboutToQuit()),
-             &m_batteryLevelProcess,  SLOT (kill()));
-    connect (qApp,                  SIGNAL (aboutToQuit()),
-             &m_connectedToACProcess, SLOT (kill()));
+   /* Kill the probing processes when application quits */
+   connect(qApp, SIGNAL(aboutToQuit()), &m_cpuProcess, SLOT(kill()));
+   connect(qApp, SIGNAL(aboutToQuit()), &m_batteryLevelProcess, SLOT(kill()));
+   connect(qApp, SIGNAL(aboutToQuit()), &m_connectedToACProcess, SLOT(kill()));
 
-    /* Configure Windows */
+   /* Configure Windows */
 #if defined Q_OS_WIN
-    PdhOpenQuery (0, 0, &cpuQuery);
-    PdhAddCounter (cpuQuery,
-                   L"\\Processor(_Total)\\% Processor Time",
-                   0,
-                   &cpuTotal);
-    PdhCollectQueryData (cpuQuery);
+   PdhOpenQuery(0, 0, &cpuQuery);
+   PdhAddCounter(cpuQuery, L"\\Processor(_Total)\\% Processor Time", 0, &cpuTotal);
+   PdhCollectQueryData(cpuQuery);
 #endif
 
-    /* Start loop */
-    updateCpuUsage();
-    updateBatteryLevel();
-    updateConnectedToAC();
+   /* Start loop */
+   updateCpuUsage();
+   updateBatteryLevel();
+   updateConnectedToAC();
 }
 
 /**
@@ -135,10 +125,10 @@ Utilities::Utilities()
  */
 qreal Utilities::scaleRatio()
 {
-    if (m_ratio < 1)
-        calculateScaleRatio();
+   if (m_ratio < 1)
+      calculateScaleRatio();
 
-    return m_ratio;
+   return m_ratio;
 }
 
 /**
@@ -146,12 +136,12 @@ qreal Utilities::scaleRatio()
  */
 int Utilities::cpuUsage()
 {
-    m_cpuUsage = abs (m_cpuUsage);
+   m_cpuUsage = abs(m_cpuUsage);
 
-    if (m_cpuUsage <= 100)
-        return m_cpuUsage;
+   if (m_cpuUsage <= 100)
+      return m_cpuUsage;
 
-    return 0;
+   return 0;
 }
 
 /**
@@ -159,12 +149,12 @@ int Utilities::cpuUsage()
  */
 int Utilities::batteryLevel()
 {
-    m_batteryLevel = abs (m_batteryLevel);
+   m_batteryLevel = abs(m_batteryLevel);
 
-    if (m_batteryLevel <= 100)
-        return m_batteryLevel;
+   if (m_batteryLevel <= 100)
+      return m_batteryLevel;
 
-    return 0;
+   return 0;
 }
 
 /**
@@ -173,24 +163,24 @@ int Utilities::batteryLevel()
  */
 bool Utilities::isConnectedToAC()
 {
-    return m_connectedToAC;
+   return m_connectedToAC;
 }
 
 /**
  * Copies the given \a data to the system clipboard
  */
-void Utilities::copy (const QVariant& data)
+void Utilities::copy(const QVariant &data)
 {
-    qApp->clipboard()->setText (data.toString(), QClipboard::Clipboard);
+   qApp->clipboard()->setText(data.toString(), QClipboard::Clipboard);
 }
 
 /**
  * Enables or disables the autoscale feature.
  * \note The application must be restarted for changes to take effect
  */
-void Utilities::setAutoScaleEnabled (const bool enabled)
+void Utilities::setAutoScaleEnabled(const bool enabled)
 {
-    m_settings->setValue ("AutoScale", enabled);
+   m_settings->setValue("AutoScale", enabled);
 }
 
 /**
@@ -199,27 +189,24 @@ void Utilities::setAutoScaleEnabled (const bool enabled)
 void Utilities::updateCpuUsage()
 {
 #if defined Q_OS_WIN
-    PDH_FMT_COUNTERVALUE counterVal;
-    PdhCollectQueryData (cpuQuery);
-    PdhGetFormattedCounterValue (cpuTotal, PDH_FMT_DOUBLE, 0, &counterVal);
-    m_cpuUsage = static_cast<int> (counterVal.doubleValue);
-    emit cpuUsageChanged();
+   PDH_FMT_COUNTERVALUE counterVal;
+   PdhCollectQueryData(cpuQuery);
+   PdhGetFormattedCounterValue(cpuTotal, PDH_FMT_DOUBLE, 0, &counterVal);
+   m_cpuUsage = static_cast<int>(counterVal.doubleValue);
+   emit cpuUsageChanged();
 #elif defined Q_OS_MAC
-    m_cpuProcess.terminate();
-    m_cpuProcess.start (CPU_CMD, QIODevice::ReadOnly);
+   m_cpuProcess.terminate();
+   m_cpuProcess.start(CPU_CMD, QIODevice::ReadOnly);
 #elif defined Q_OS_LINUX
-    auto cpuJiffies = getCpuJiffies();
+   auto cpuJiffies = getCpuJiffies();
 
-    m_cpuUsage = (cpuJiffies.first - m_pastCpuJiffies.first) * 100 /
-                 (cpuJiffies.second - m_pastCpuJiffies.second);
+   m_cpuUsage = (cpuJiffies.first - m_pastCpuJiffies.first) * 100 / (cpuJiffies.second - m_pastCpuJiffies.second);
 
-    m_pastCpuJiffies = cpuJiffies;
-    emit cpuUsageChanged();
+   m_pastCpuJiffies = cpuJiffies;
+   emit cpuUsageChanged();
 #endif
 
-    QTimer::singleShot (1000,
-                        Qt::PreciseTimer,
-                        this, SLOT (updateCpuUsage()));
+   QTimer::singleShot(1000, Qt::PreciseTimer, this, SLOT(updateCpuUsage()));
 }
 
 /**
@@ -228,17 +215,15 @@ void Utilities::updateCpuUsage()
 void Utilities::updateBatteryLevel()
 {
 #if defined Q_OS_WIN
-    GetSystemPowerStatus (&power);
-    m_batteryLevel = static_cast<int> (power.BatteryLifePercent);
-    emit batteryLevelChanged();
+   GetSystemPowerStatus(&power);
+   m_batteryLevel = static_cast<int>(power.BatteryLifePercent);
+   emit batteryLevelChanged();
 #else
-    m_batteryLevelProcess.terminate();
-    m_batteryLevelProcess.start (BTY_CMD, QIODevice::ReadOnly);
+   m_batteryLevelProcess.terminate();
+   m_batteryLevelProcess.start(BTY_CMD, QIODevice::ReadOnly);
 #endif
 
-    QTimer::singleShot (1000,
-                        Qt::PreciseTimer,
-                        this, SLOT (updateBatteryLevel()));
+   QTimer::singleShot(1000, Qt::PreciseTimer, this, SLOT(updateBatteryLevel()));
 }
 
 /**
@@ -247,17 +232,15 @@ void Utilities::updateBatteryLevel()
 void Utilities::updateConnectedToAC()
 {
 #if defined Q_OS_WIN
-    GetSystemPowerStatus (&power);
-    m_connectedToAC = (power.ACLineStatus != 0);
-    emit connectedToACChanged();
+   GetSystemPowerStatus(&power);
+   m_connectedToAC = (power.ACLineStatus != 0);
+   emit connectedToACChanged();
 #else
-    m_connectedToACProcess.terminate();
-    m_connectedToACProcess.start (PWR_CMD, QIODevice::ReadOnly);
+   m_connectedToACProcess.terminate();
+   m_connectedToACProcess.start(PWR_CMD, QIODevice::ReadOnly);
 #endif
 
-    QTimer::singleShot (1000,
-                        Qt::PreciseTimer,
-                        this, SLOT (updateConnectedToAC()));
+   QTimer::singleShot(1000, Qt::PreciseTimer, this, SLOT(updateConnectedToAC()));
 }
 
 /**
@@ -266,107 +249,115 @@ void Utilities::updateConnectedToAC()
  */
 void Utilities::calculateScaleRatio()
 {
-    bool enabled = m_settings->value ("AutoScale", true).toBool();
+   bool enabled = m_settings->value("AutoScale", true).toBool();
 
-    /* Get scale factor using OS-specific code */
+   /* Get scale factor using OS-specific code */
 #if defined Q_OS_WIN
-    HDC screen = GetDC (Q_NULLPTR);
-    m_ratio = (qreal) GetDeviceCaps (screen, LOGPIXELSX) / 96;
-    ReleaseDC (Q_NULLPTR, screen);
+   HDC screen = GetDC(Q_NULLPTR);
+   m_ratio = (qreal)GetDeviceCaps(screen, LOGPIXELSX) / 96;
+   ReleaseDC(Q_NULLPTR, screen);
 #elif defined Q_OS_LINUX
-    m_ratio = qApp->primaryScreen()->physicalDotsPerInch() / 120;
+   m_ratio = qApp->primaryScreen()->physicalDotsPerInch() / 120;
 #endif
 
-    /* Ensure that values between x.40 and x.65 round down to x.40 */
-    qreal decimals = m_ratio - (int) m_ratio;
-    if (decimals >= 0.40 && decimals <= 0.65)
-        m_ratio -= (decimals - 0.40);
+   /* Ensure that values between x.40 and x.65 round down to x.40 */
+   qreal decimals = m_ratio - (int)m_ratio;
+   if (decimals >= 0.40 && decimals <= 0.65)
+      m_ratio -= (decimals - 0.40);
 
-    /* Ratio is too small to be useful to us */
-    if (!enabled || m_ratio < 1.2)
-        m_ratio = 1;
+   /* Ratio is too small to be useful to us */
+   if (!enabled || m_ratio < 1.2)
+      m_ratio = 1;
 
-    /* Brag about the obtained result */
-    qDebug() << "Scale factor set to:" << m_ratio;
+   /* Brag about the obtained result */
+   qDebug() << "Scale factor set to:" << m_ratio;
 }
 
 /**
  * Reads the output of the process launched to get the CPU usage
  */
-void Utilities::readCpuUsageProcess (int exit_code)
+void Utilities::readCpuUsageProcess(int exit_code)
 {
-    if (exit_code == EXIT_FAILURE)
-        return;
+   if (exit_code == EXIT_FAILURE)
+      return;
 
 #if defined Q_OS_MAC
-    m_cpuUsage = 0;
-    m_cpuProcess.terminate();
-    QByteArray data = m_cpuProcess.readAll();
+   m_cpuUsage = 0;
+   m_cpuProcess.terminate();
+   QByteArray data = m_cpuProcess.readAll();
 
-    if (!data.isEmpty() && data.length() >= 2) {
-        /* Parse the digits of the percentage */
-        int t = data.at (0) - '0'; // Tens
-        int u = data.at (1) - '0'; // Units
+   if (!data.isEmpty() && data.length() >= 2)
+   {
+      /* Parse the digits of the percentage */
+      int t = data.at(0) - '0'; // Tens
+      int u = data.at(1) - '0'; // Units
 
-        /* Check if process data is invalid */
-        if (t < 0) t = 0;
-        if (u < 0) u = 0;
+      /* Check if process data is invalid */
+      if (t < 0)
+         t = 0;
+      if (u < 0)
+         u = 0;
 
-        /* Update information */
-        m_cpuUsage = (t * 10) + u;
-        emit cpuUsageChanged();
-    }
+      /* Update information */
+      m_cpuUsage = (t * 10) + u;
+      emit cpuUsageChanged();
+   }
 #endif
 }
 
 /**
  * Reads the output of the process launched to get the battery level
  */
-void Utilities::readBatteryLevelProcess (int exit_code)
+void Utilities::readBatteryLevelProcess(int exit_code)
 {
-    if (exit_code == EXIT_FAILURE)
-        return;
+   if (exit_code == EXIT_FAILURE)
+      return;
 
 #if defined Q_OS_MAC || defined Q_OS_LINUX
-    m_batteryLevel = 0;
-    m_batteryLevelProcess.terminate();
-    QByteArray data = m_batteryLevelProcess.readAll();
+   m_batteryLevel = 0;
+   m_batteryLevelProcess.terminate();
+   QByteArray data = m_batteryLevelProcess.readAll();
 
-    if (!data.isEmpty()) {
-        /* Parse the digits of the percentage */
-        int h = data.at (data.indexOf ("%") - 3) - '0'; // Hundreds
-        int t = data.at (data.indexOf ("%") - 2) - '0'; // Tens
-        int u = data.at (data.indexOf ("%") - 1) - '0'; // Units
+   if (!data.isEmpty())
+   {
+      /* Parse the digits of the percentage */
+      int h = data.at(data.indexOf("%") - 3) - '0'; // Hundreds
+      int t = data.at(data.indexOf("%") - 2) - '0'; // Tens
+      int u = data.at(data.indexOf("%") - 1) - '0'; // Units
 
-        /* Check if process data is invalid */
-        if (h < 0) h = 0;
-        if (t < 0) t = 0;
-        if (u < 0) u = 0;
+      /* Check if process data is invalid */
+      if (h < 0)
+         h = 0;
+      if (t < 0)
+         t = 0;
+      if (u < 0)
+         u = 0;
 
-        /* Update information */
-        m_batteryLevel = (h * 100) + (t * 10) + u;
-        emit batteryLevelChanged();
-    }
+      /* Update information */
+      m_batteryLevel = (h * 100) + (t * 10) + u;
+      emit batteryLevelChanged();
+   }
 #endif
 }
 
 /**
  * Reads the output of the process launched to get the AC power source status
  */
-void Utilities::readConnectedToACProcess (int exit_code)
+void Utilities::readConnectedToACProcess(int exit_code)
 {
-    if (exit_code == EXIT_FAILURE)
-        return;
+   if (exit_code == EXIT_FAILURE)
+      return;
 
 #if defined Q_OS_MAC || defined Q_OS_LINUX
-    m_connectedToAC = false;
-    m_connectedToACProcess.terminate();
-    QByteArray data = m_connectedToACProcess.readAll();
+   m_connectedToAC = false;
+   m_connectedToACProcess.terminate();
+   QByteArray data = m_connectedToACProcess.readAll();
 
-    if (!data.isEmpty()) {
-        m_connectedToAC = !data.contains ("discharging");
-        emit connectedToACChanged();
-    }
+   if (!data.isEmpty())
+   {
+      m_connectedToAC = !data.contains("discharging");
+      emit connectedToACChanged();
+   }
 #endif
 }
 
@@ -377,22 +368,24 @@ void Utilities::readConnectedToACProcess (int exit_code)
  */
 QPair<quint64, quint64> Utilities::getCpuJiffies()
 {
-    quint64 totalJiffies = 0;
-    quint64 nonIdleJiffies = 0;
+   quint64 totalJiffies = 0;
+   quint64 nonIdleJiffies = 0;
 
-    QFile file ("/proc/stat");
-    if (file.open (QFile::ReadOnly)) {
-        QString line = file.readLine();
-        QStringList jiffies = line.replace ("cpu  ", "").split (" ");
+   QFile file("/proc/stat");
+   if (file.open(QFile::ReadOnly))
+   {
+      QString line = file.readLine();
+      QStringList jiffies = line.replace("cpu  ", "").split(" ");
 
-        if (jiffies.count() > 3) {
-            nonIdleJiffies = jiffies.at (0).toInt() + jiffies.at (2).toInt();
-            totalJiffies = nonIdleJiffies + jiffies.at (3).toInt();
-        }
+      if (jiffies.count() > 3)
+      {
+         nonIdleJiffies = jiffies.at(0).toInt() + jiffies.at(2).toInt();
+         totalJiffies = nonIdleJiffies + jiffies.at(3).toInt();
+      }
 
-        file.close();
-    }
+      file.close();
+   }
 
-    return qMakePair (nonIdleJiffies, totalJiffies);
+   return qMakePair(nonIdleJiffies, totalJiffies);
 }
 #endif

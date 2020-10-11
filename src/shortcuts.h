@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 Alex Spataru <alex_spataru@outlook.com>
+ * Copyright (c) 2015-2020 Alex Spataru <alex_spataru@outlook.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,10 +35,10 @@
  */
 class Shortcuts : public QObject
 {
-    Q_OBJECT
+   Q_OBJECT
 
 private:
-    bool eventFilter (QObject* object, QEvent* event);
+   bool eventFilter(QObject *object, QEvent *event);
 };
 
 #endif
