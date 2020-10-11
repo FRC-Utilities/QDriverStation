@@ -1,0 +1,3 @@
+[submodule "lib/QJoysticks"]
+	path = lib/QJoysticks
+	url = https://github.com/alex-spataru/QJoysticks
