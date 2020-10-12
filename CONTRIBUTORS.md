@@ -1,6 +1,6 @@
 # Contributors
 
-While [this guy](https://github.com/alex-spataru) does most of the development of this project, the QDriverStation has received contributions and help from many people. If you have contributed to this project and you are not in this list, please [e-mail me](mailto:alex_spataru@outlook.com) so that I can add you to this list (or make a pull request).
+While [Alex](https://github.com/alex-spataru) does most of the development of this project, the QDriverStation has received contributions and help from many people. If you have contributed to this project and you are not in this list, please [e-mail me](mailto:alex_spataru@outlook.com) so that I can add you to this list (or make a pull request).
 
 - [Jessica Creighton](https://github.com/jcreigh), for providing [excelent information](https://github.com/jcreigh/FRCDriverStation/wiki) regarding the 2015 protocol and thus solving numerous issues in the 2015 protocol implementation.
 - [Thomas Clark](https://github.com/ThomasJClark), for providing the pseudo-code needed to detect user code on the roboRIO and providing information about the "extra" data structures in the roboRIO->DS packets.
