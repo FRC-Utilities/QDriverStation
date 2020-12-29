@@ -32,6 +32,7 @@ QT_SELECT = qt5 qmake
 
 QT += qml
 QT += quick
+QT += widgets
 
 win32* {
     LIBS += -lPdh -lgdi32
