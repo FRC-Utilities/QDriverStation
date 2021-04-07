@@ -126,9 +126,7 @@ Window {
     //
     // To hell with you X11
     //
-    flags: Qt.Dialog |
-           Qt.WindowCloseButtonHint |
-           Qt.WindowMinimizeButtonHint
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
     //
     // Misc. properties
