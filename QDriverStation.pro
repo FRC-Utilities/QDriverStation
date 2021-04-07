@@ -56,10 +56,9 @@ linux:!android {
     target.path = /usr/bin
     icon.path = /usr/share/pixmaps
     desktop.path = /usr/share/applications
-    icon.files += $$PWD/etc/deploy/linux/common/qdriverstation.png
-    desktop.files += $$PWD/etc/deploy/linux/common/qdriverstation.desktop
-
-    TARGET = QDriverStation
+    icon.files += $$PWD/etc/deploy/linux/common/*.png
+    desktop.files += $$PWD/etc/deploy/linux/common/*.desktop
+    
     INSTALLS += target desktop icon
 }
 
