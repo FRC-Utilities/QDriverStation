@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=QDriverStation
+Comment=Cross-platform clone of the FRC Driver Station
+Exec=qdriverstation
+Terminal=false
+Type=Application
+StartupNotify=true
+Categories=Development;Education;Qt;Robotics;Utility;
+Icon=qdriverstation

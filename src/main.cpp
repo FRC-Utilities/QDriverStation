@@ -31,6 +31,10 @@
 #include <QDesktopServices>
 #include <QQmlApplicationEngine>
 
+#ifdef Q_OS_WIN
+#    include <windows.h>
+#endif
+
 //------------------------------------------------------------------------------
 // Library includes
 //------------------------------------------------------------------------------
@@ -150,12 +154,22 @@ static void showVersion()
 
 int main(int argc, char *argv[])
 {
-   /* Fix scalling issues on Windows */
-#ifndef Q_OS_WIN
-   QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-#else
-   QApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
+    // Fix console output on Windows (https://stackoverflow.com/a/41701133)
+    // This code will only execute if the application is started from the comamnd prompt
+#ifdef _WIN32
+    if (AttachConsole(ATTACH_PARENT_PROCESS))
+    {
+        // Open the console's active buffer
+        (void)freopen("CONOUT$", "w", stdout);
+        (void)freopen("CONOUT$", "w", stderr);
+
+        // Force print new-line (to avoid printing text over user commands)
+        printf("\n");
+    }
 #endif
+
+   /* Set application attributes */
+   QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
    /* Set application info */
    QApplication::setApplicationName(APP_DSPNAME);

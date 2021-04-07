@@ -7,19 +7,19 @@
 	<key>CFBundleExecutable</key>
 	<string>QDriverStation</string>
 	<key>CFBundleGetInfoString</key>
-	<string>Copyright © 2015-2020 Alex Spataru</string>
+	<string>Copyright © 2015-2021 Alex Spataru</string>
 	<key>CFBundleIconFile</key>
 	<string>icon</string>
 	<key>CFBundleIdentifier</key>
-        <string>org.frc-utilities.qdriverstation</string>
+	<string>org.frc-utilities.qdriverstation</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-        <string>QDriverStation</string>
+	<string>QDriverStation</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>20.10</string>
+	<string>21.04</string>
 	<key>LSHasLocalizedDisplayName</key>
 	<true/>
 	<key>NSPrincipalClass</key>

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2015-2020 Alex Spataru <alex_spataru@outlook.com>
+# Copyright (c) 2015-2021 Alex Spataru <alex_spataru@outlook.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,23 @@
 # Deploy configuration
 #-------------------------------------------------------------------------------
 
-CONFIG += app
+TEMPLATE = app
+TARGET = QDriverStation
+CONFIG += resources_big
 CONFIG += qtquickcompiler
 
-TARGET = QDriverStation
+QTPLUGIN += qsvg
 
-QT_SELECT = qt5 qmake
-
-QT += qml
+QT += xml
+QT += sql
+QT += svg
+QT += core
 QT += quick
 QT += widgets
+
+#-------------------------------------------------------------------------------
+# Deploy configuration
+#-------------------------------------------------------------------------------
 
 win32* {
     LIBS += -lPdh -lgdi32
@@ -43,27 +50,6 @@ macx* {
     ICON = $$PWD/etc/deploy/macOS/icon.icns
     RC_FILE = $$PWD/etc/deploy/macOS/icon.icns
     QMAKE_INFO_PLIST = $$PWD/etc/deploy/macOS/info.plist
-
-    # DMG generation constants
-    BUNDLE_FILENAME = $${TARGET}.app
-    DMG_FILENAME = "$${TARGET}.dmg"
-   
-    # Target for pretty DMG generation
-    dmg.commands += echo "Generate DMG";
-    dmg.commands += macdeployqt $$BUNDLE_FILENAME -qmldir=$$PWD/qml &&
-    dmg.commands += create-dmg \
-          --volname $${TARGET} \
-          --background $${PWD}/etc/deploy/macOS/dmg_bg.png \
-          --icon $${BUNDLE_FILENAME} 150 218 \
-          --window-pos 200 120 \
-          --window-size 600 450 \
-          --icon-size 100 \
-          --hdiutil-quiet \
-          --app-drop-link 450 218 \
-          $${DMG_FILENAME} \
-          $${BUNDLE_FILENAME}
-
-    QMAKE_EXTRA_TARGETS += dmg
 }
 
 linux:!android {
@@ -87,11 +73,18 @@ RCC_DIR = qrc
 OBJECTS_DIR = obj
 
 #-------------------------------------------------------------------------------
-# Compiler flags
+# Compiler options
 #-------------------------------------------------------------------------------
 
-# Uncomment to break the build and play around with ASM code :)
-# QMAKE_CXXFLAGS *= -S
+*g++*: {
+    QMAKE_CXXFLAGS_RELEASE -= -O
+    QMAKE_CXXFLAGS_RELEASE *= -O3
+}
+
+*msvc*: {
+    QMAKE_CXXFLAGS_RELEASE -= /O
+    QMAKE_CXXFLAGS_RELEASE *= /O2
+}
 
 #-------------------------------------------------------------------------------
 # Include other libraries
@@ -122,8 +115,19 @@ RESOURCES += \
   $$PWD/qml/qml.qrc \
   $$PWD/etc/resources/resources.qrc
              
-OTHER_FILES += $$PWD/qml/*.qml
-OTHER_FILES += $$PWD/qml/*.js
-OTHER_FILES += $$PWD/qml/Dialogs/*.qml
-OTHER_FILES += $$PWD/qml/Widgets/*.qml
-OTHER_FILES += $$PWD/qml/MainWindow/*.qml
+OTHER_FILES += \
+  $$PWD/qml/*.qml \
+  $$PWD/qml/*.js \
+  $$PWD/qml/Dialogs/*.qml \
+  $$PWD/qml/Widgets/*.qml \
+  $$PWD/qml/MainWindow/*.qml
+
+#-------------------------------------------------------------------------------
+# Deploy files
+#-------------------------------------------------------------------------------
+
+OTHER_FILES += \
+    deploy/linux/* \
+    deploy/macOS/* \
+    deploy/windows/nsis/* \
+    deploy/windows/resources/*

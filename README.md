@@ -4,7 +4,7 @@
 
 # QDriverStation
 
-[![Build Status](https://travis-ci.org/FRC-Utilities/QDriverStation.svg?branch=master)](https://travis-ci.org/FRC-Utilities/QDriverStation)
+[![Build Status](https://github.com/FRC-Utilities/QDriverStation/workflows/Build/badge.svg)](https://github.com/FRC-Utilities/QDriverStation/actions)
 
 The QDriverStation is a cross-platform and open-source alternative to the FRC Driver Station. It allows you to operate FRC robots with the major operating systems (Windows, Mac OSX and GNU/Linux). The QDriverStation is able to operate both 2009-2014 robots and 2015-2017 robots, support for 2020 robots is on the way.
 
@@ -16,7 +16,7 @@ You can find the online documentation of the QDriverStation and its sub-projects
 
 ### Install notes
 
-You can download the QDriverStation from [GitHub](http://github.com/FRC-Utilities/QDriverStation-Legacy/releases).
+You can download the QDriverStation from [GitHub](http://github.com/FRC-Utilities/QDriverStation/releases).
 
 Once you finish installing the software, you can launch it and begin driving your robot. Just be sure to input your team number and to verify that the joysticks are working correctly.
 

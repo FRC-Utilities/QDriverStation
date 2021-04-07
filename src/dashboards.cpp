@@ -94,7 +94,7 @@ void Dashboards::openDashboard(int dashboard)
 
    if (!command.isEmpty())
    {
-      m_process.start(command, QIODevice::ReadOnly);
+      m_process.start(command, QStringList(), QIODevice::ReadOnly);
       qDebug() << "Dashboard command set to:" << command.toStdString().c_str();
    }
 }

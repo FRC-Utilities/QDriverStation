@@ -1,5 +1,5 @@
 ;
-;  Copyright (c) 2015 Alex Spataru <alex_spataru@outlook.com>
+;  Copyright (c) 2021 Alex Spataru <alex-spataru.com>
 ;
 ;  This program is free software; you can redistribute it and/or modify
 ;  it under the terms of the GNU General Public License as published by
@@ -17,28 +17,29 @@
 ;  USA
 ;
 
+Unicode True
+
 !include "MUI2.nsh"
+!include "FileFunc.nsh"
 !include "LogicLib.nsh"
 
-!define APPNAME                      "QDriverStation Legacy"
-!define UNIXNAME                     "qdriverstation-legacy"
-!define COMPANYNAME                  "FRC Utilities"
-!define DESCRIPTION                  "Open source alternative to the FRC DriverStation"
-!define VERSIONMAJOR                 20
-!define VERSIONMINOR                 10
+!define APPNAME                      "QDriverStation"
+!define EXECNAME                     "QDriverStation"
+!define COMPANYNAME                  "Alex Spataru"
+!define DESCRIPTION                  "Cross-platform clone of the FRC Driver Station
+!define VERSIONMAJOR                 21
+!define VERSIONMINOR                 04
 !define VERSIONBUILD                 0
-!define ESTIMATED_SIZE               60000
 !define MUI_ABORTWARNING
-!define INSTALL_DIR                  "$PROGRAMFILES\${APPNAME}"
+!define INSTALL_DIR                  "$PROGRAMFILES64\${APPNAME}"
 !define MUI_FINISHPAGE_RUN
 !define MUI_FINISHPAGE_RUN_TEXT      "Run ${APPNAME}"
 !define MUI_FINISHPAGE_RUN_FUNCTION  "RunApplication"
 !define MUI_FINISHPAGE_LINK          "Visit project website"
-!define MUI_FINISHPAGE_LINK_LOCATION "http://frc-utilities.github.io"
-!define MUI_WELCOMEPAGE_TITLE        "Welcome to the QDriverStation installer!"
+!define MUI_FINISHPAGE_LINK_LOCATION "http://frc-utilities.github.io/"
+!define MUI_WELCOMEPAGE_TITLE        "Welcome to the ${APPNAME} installer!"
 
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE "license.txt"
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
@@ -61,8 +62,8 @@ Name "${APPNAME}"
 ManifestDPIAware true
 InstallDir "${INSTALL_DIR}"
 RequestExecutionLevel admin
-OutFile "${UNIXNAME}-${VERSIONMAJOR}.${VERSIONMINOR}${VERSIONBUILD}-setup.exe"
-
+OutFile "${EXECNAME}-${VERSIONMAJOR}.${VERSIONMINOR}.${VERSIONBUILD}-Windows.exe"
+	
 Function .onInit
 	setShellVarContext all
 	!insertmacro VerifyUserIsAdmin
@@ -72,30 +73,38 @@ Section "${APPNAME} (required)" SecDummy
   SectionIn RO
   SetOutPath "${INSTALL_DIR}"
   File /r "${APPNAME}\*"
+  
+  ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
+  IntFmt $0 "0x%08X" $0
+  
   DeleteRegKey HKCU "Software\${COMPANYNAME}\${APPNAME}"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}"
 
   WriteUninstaller "${INSTALL_DIR}\uninstall.exe"
-  WriteRegStr   HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "DisplayName"     "${APPNAME}"
-  WriteRegStr   HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "UninstallString" "${INSTALL_DIR}\uninstall.exe"
-  WriteRegStr   HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "InstallLocation" "${INSTALL_DIR}"
-  WriteRegStr   HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "Publisher"       "${COMPANYNAME}"
-  WriteRegStr   HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "DisplayIcon"     "${INSTALL_DIR}\bin\${APPNAME}.exe"
+  WriteRegStr   HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "DisplayName"      "${APPNAME}"
+  WriteRegStr   HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "UninstallString"  "${INSTALL_DIR}\uninstall.exe"
+  WriteRegStr   HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "InstallLocation"  "${INSTALL_DIR}"
+  WriteRegStr   HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "Publisher"        "${COMPANYNAME}"
+  WriteRegStr   HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "DisplayIcon"      "${INSTALL_DIR}\icon.ico"
   WriteRegStr   HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "DisplayVersion"   ${VERSIONMAJOR}.${VERSIONMINOR}${VERSIONBUILD}
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "VersionMajor"     ${VERSIONMAJOR}
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "VersionMinor"     ${VERSIONMINOR}
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "NoModify"         1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "NoRepair"         1
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "EstimatedSize"    ${ESTIMATED_SIZE}
-
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "EstimatedSize"    "$0"
 SectionEnd
 
 Section "Start Menu Shortcuts"
-  CreateShortCut  "$SMPROGRAMS\${APPNAME}.lnk" "${INSTALL_DIR}\bin\${APPNAME}.exe" "" "${INSTALL_DIR}\bin\${APPNAME}.exe" 0
+  CreateShortCut  "$SMPROGRAMS\${APPNAME}.lnk" "${INSTALL_DIR}\bin\${EXECNAME}.exe" "" "${INSTALL_DIR}\bin\${EXECNAME}.exe" 0
+SectionEnd
+
+Section "Install Visual C++ Redistributable"
+  ExecWait "${INSTALL_DIR}\bin\vc_redist.x64.exe /quiet /norestart"
+  Delete "${INSTALL_DIR}\bin\vc_redist.x64.exe"
 SectionEnd
 
 Function RunApplication
-  ExecShell "" "${INSTALL_DIR}\bin\${APPNAME}.exe"
+  ExecShell "" "${INSTALL_DIR}\bin\${EXECNAME}.exe"
 FunctionEnd
 
 Function un.onInit

@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=QDriverStation Legacy
-Comment=Open-source alternative to the FRC Driver Station (Legacy version)
-Exec=qdriverstation-legacy
-Terminal=false
-Type=Application
-StartupNotify=true
-Categories=Development;Education;Qt;Robotics;Utility;
-Icon=qdriverstation-legacy
