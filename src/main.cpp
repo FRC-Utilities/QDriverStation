@@ -168,8 +168,12 @@ int main(int argc, char *argv[])
     }
 #endif
 
-   /* Set application attributes */
+   /* Fix scalling issues on Windows */
+ #ifndef Q_OS_WIN
    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+ #else
+   QApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
+ #endif
 
    /* Set application info */
    QApplication::setApplicationName(APP_DSPNAME);
