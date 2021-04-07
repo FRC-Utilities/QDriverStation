@@ -20,7 +20,7 @@ on:
 
 env:
   VERSION: "21.04"
-  EXECUTABLE: "qdriverstation"
+  EXECUTABLE: "QDriverStation"
   APPLICATION: "QDriverStation"
   QMAKE_PROJECT: "QDriverStation.pro"
   QML_DIR_NIX: "qml"
