@@ -26,7 +26,7 @@ Unicode True
 !define APPNAME                      "QDriverStation"
 !define EXECNAME                     "QDriverStation"
 !define COMPANYNAME                  "Alex Spataru"
-!define DESCRIPTION                  "Cross-platform clone of the FRC Driver Station
+!define DESCRIPTION                  "Cross-platform clone of the FRC Driver Station"
 !define VERSIONMAJOR                 21
 !define VERSIONMINOR                 04
 !define VERSIONBUILD                 0
