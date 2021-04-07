@@ -73,8 +73,6 @@ Alternatively, you can also use the following commands:
 - make
 - **Optional:** sudo make install
 
-You can check this [tutorial by Dakota Keeler](https://www.youtube.com/watch?v=G9DywTB9_cY) to compile the QDriverStation.
-
 ### Credits
 
 This application was created by [Alex Spataru](http://github.com/alex-spataru).
