@@ -37,6 +37,8 @@ QT += core
 QT += quick
 QT += widgets
 
+CONFIG += c++11
+
 #-------------------------------------------------------------------------------
 # Deploy configuration
 #-------------------------------------------------------------------------------
@@ -58,10 +60,9 @@ macx* {
     CONFIG += sdk_no_version_check                           # Avoid warnings with Big Sur
 }
 
-target.path = $$PREFIX/bin
-
 linux:!android {
     TARGET = qdriverstation
+    target.path = $$PREFIX/bin
     icon.path = $$PREFIX/share/pixmaps                       # icon instalation path
     desktop.path = $$PREFIX/share/applications               # *.desktop instalation path
     icon.files += etc/deploy/linux/*.png                     # Add application icon
