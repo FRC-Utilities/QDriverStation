@@ -179,7 +179,8 @@ jobs:
         windeployqt bin/${{env.EXECUTABLE}}.exe -qmldir="${{env.QML_DIR_WIN}}" --compiler-runtime
         mkdir "${{env.EXECUTABLE}}"
         move bin "${{env.EXECUTABLE}}"
-        xcopy etc\deploy\windows\resources\icon.ico "${{env.APPLICATION}}"
+        xcopy etc\deploy\windows\resources\icon.ico "${{env.EXECUTABLE}}"
+        xcopy etc\deploy\windows\depends\*.dll "${{env.EXECUTABLE}}\bin"
 
     - name: '📦 Make NSIS installer'
       run: |
