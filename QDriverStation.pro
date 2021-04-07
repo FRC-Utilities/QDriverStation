@@ -19,6 +19,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+#-----------------------------------------------------------------------------------------
+# Make options
+#-----------------------------------------------------------------------------------------
+
+UI_DIR = uic
+MOC_DIR = moc
+RCC_DIR = qrc
+OBJECTS_DIR = obj
+
+CONFIG += c++11
+
+isEmpty(PREFIX) {
+    PREFIX = /usr
+}
+
 #-------------------------------------------------------------------------------
 # Deploy configuration
 #-------------------------------------------------------------------------------
@@ -37,15 +52,23 @@ QT += core
 QT += quick
 QT += widgets
 
-CONFIG += c++11
+#-------------------------------------------------------------------------------
+# Compiler options
+#-------------------------------------------------------------------------------
+
+*g++*: {
+    QMAKE_CXXFLAGS_RELEASE -= -O
+    QMAKE_CXXFLAGS_RELEASE *= -O3
+}
+
+*msvc*: {
+    QMAKE_CXXFLAGS_RELEASE -= /O
+    QMAKE_CXXFLAGS_RELEASE *= /O2
+}
 
 #-------------------------------------------------------------------------------
 # Deploy configuration
 #-------------------------------------------------------------------------------
-
-isEmpty(PREFIX) {
-    PREFIX = /usr
-}
 
 win32* {
     LIBS += -lPdh -lgdi32                                    # pthread + gdi
@@ -68,29 +91,6 @@ linux:!android {
     icon.files += etc/deploy/linux/*.png                     # Add application icon
     desktop.files += etc/deploy/linux/*.desktop              # Add *.desktop file
     INSTALLS += target desktop icon                          # make install targets
-}
-
-#-------------------------------------------------------------------------------
-# Make options
-#-------------------------------------------------------------------------------
-
-UI_DIR = uic
-MOC_DIR = moc
-RCC_DIR = qrc
-OBJECTS_DIR = obj
-
-#-------------------------------------------------------------------------------
-# Compiler options
-#-------------------------------------------------------------------------------
-
-*g++*: {
-    QMAKE_CXXFLAGS_RELEASE -= -O
-    QMAKE_CXXFLAGS_RELEASE *= -O3
-}
-
-*msvc*: {
-    QMAKE_CXXFLAGS_RELEASE -= /O
-    QMAKE_CXXFLAGS_RELEASE *= /O2
 }
 
 #-------------------------------------------------------------------------------
