@@ -1,13 +1,3 @@
-# Do not take into accout HTML and config. from Doxygen
-doc/* linguist-documentation
-lib/*/doc/* linguist-documentation
-
-# Do not take into account deployment code and library dependencies
 etc/* linguist-vendored
-lib/*/etc/* linguist-vendored
-lib/*/lib/* linguist-vendored
-lib/*/examples/* linguist-vendored
-
-# Normalize line endings
-*text eol=lf
-
+doc/* linguist-vendored
+lib/* linguist-vendored
