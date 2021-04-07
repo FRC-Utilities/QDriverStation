@@ -61,6 +61,7 @@ macx* {
 target.path = $$PREFIX/bin
 
 linux:!android {
+    TARGET = qdriverstation
     icon.path = $$PREFIX/share/pixmaps                       # icon instalation path
     desktop.path = $$PREFIX/share/applications               # *.desktop instalation path
     icon.files += etc/deploy/linux/*.png                     # Add application icon
