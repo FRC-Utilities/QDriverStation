@@ -21,7 +21,6 @@ on:
 env:
   VERSION: "21.04"
   EXECUTABLE: "QDriverStation"
-  APPLICATION: "QDriverStation"
   QMAKE_PROJECT: "QDriverStation.pro"
   QML_DIR_NIX: "qml"
   QML_DIR_WIN: "qml"
@@ -62,7 +61,7 @@ jobs:
     - name: '⚙️ Install dependencies'
       run: |
         sudo apt-get update
-        sudo apt-get install libgl1-mesa-dev libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libzstd-dev
+        sudo apt-get install libgl1-mesa-dev libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libzstd-dev libsdl2-dev
 
     - name: '🚧 Compile application'
       run: |
@@ -119,11 +118,10 @@ jobs:
     - name: '📦 Package application (macdeployqt and zipfile)'
       run: |
         macdeployqt ${{env.EXECUTABLE}}.app -qmldir="${{env.QML_DIR_NIX}}"
-        mv "${{env.EXECUTABLE}}.app" "${{env.APPLICATION}}.app"
 
         # ZIP application "%AppName%-%Version%-macOS.zip"
         # We use ditto instead of zip to use the same commands as Finder
-        ditto -c -k --sequesterRsrc --keepParent "${{env.APPLICATION}}.app" ${{env.EXECUTABLE}}-${{env.VERSION}}-macOS.zip
+        ditto -c -k --sequesterRsrc --keepParent "${{env.EXECUTABLE}}.app" ${{env.EXECUTABLE}}-${{env.VERSION}}-macOS.zip
 
     - name: '📤 Upload artifact: ZIP'
       uses: actions/upload-artifact@v2
@@ -179,13 +177,13 @@ jobs:
         mkdir bin
         move release/${{env.EXECUTABLE}}.exe bin
         windeployqt bin/${{env.EXECUTABLE}}.exe -qmldir="${{env.QML_DIR_WIN}}" --compiler-runtime
-        mkdir "${{env.APPLICATION}}"
-        move bin "${{env.APPLICATION}}"
+        mkdir "${{env.EXECUTABLE}}"
+        move bin "${{env.EXECUTABLE}}"
         xcopy etc\deploy\windows\resources\icon.ico "${{env.APPLICATION}}"
 
     - name: '📦 Make NSIS installer'
       run: |
-        move "${{env.APPLICATION}}" etc\deploy\windows\nsis\
+        move "${{env.EXECUTABLE}}" etc\deploy\windows\nsis\
         cd etc\deploy\windows\nsis
         makensis /X"SetCompressor /FINAL lzma" setup.nsi
         ren *.exe ${{env.EXECUTABLE}}-${{env.VERSION}}-Windows.exe
