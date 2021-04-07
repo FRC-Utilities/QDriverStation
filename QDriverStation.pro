@@ -41,25 +41,31 @@ QT += widgets
 # Deploy configuration
 #-------------------------------------------------------------------------------
 
+isEmpty(PREFIX) {
+    PREFIX = /usr
+}
+
 win32* {
-    LIBS += -lPdh -lgdi32
-    RC_FILE = $$PWD/etc/deploy/windows/resources/info.rc
+    LIBS += -lPdh -lgdi32                                    # pthread + gdi
+    RC_FILE = etc/deploy/windows/resources/info.rc           # Set applicaiton icon
+    OTHER_FILES += etc/deploy/windows/nsis/setup.nsi         # Setup script
 }
 
 macx* {
-    ICON = $$PWD/etc/deploy/macOS/icon.icns
-    RC_FILE = $$PWD/etc/deploy/macOS/icon.icns
-    QMAKE_INFO_PLIST = $$PWD/etc/deploy/macOS/info.plist
+    ICON = etc/deploy/macOS/icon.icns                        # icon file
+    RC_FILE = etc/deploy/macOS/icon.icns                     # icon file
+    QMAKE_INFO_PLIST = etc/deploy/macOS/info.plist           # Add info.plist file
+    CONFIG += sdk_no_version_check                           # Avoid warnings with Big Sur
 }
 
+target.path = $$PREFIX/bin
+
 linux:!android {
-    target.path = /usr/bin
-    icon.path = /usr/share/pixmaps
-    desktop.path = /usr/share/applications
-    icon.files += $$PWD/etc/deploy/linux/common/*.png
-    desktop.files += $$PWD/etc/deploy/linux/common/*.desktop
-    
-    INSTALLS += target desktop icon
+    icon.path = $$PREFIX/share/pixmaps                       # icon instalation path
+    desktop.path = $$PREFIX/share/applications               # *.desktop instalation path
+    icon.files += etc/deploy/linux/*.png                     # Add application icon
+    desktop.files += etc/deploy/linux/*.desktop              # Add *.desktop file
+    INSTALLS += target desktop icon                          # make install targets
 }
 
 #-------------------------------------------------------------------------------
