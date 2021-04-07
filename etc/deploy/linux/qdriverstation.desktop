@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=QDriverStation
 Comment=Cross-platform clone of the FRC Driver Station
-Exec=/usr/local/lib/qdriverstation
+Exec=qdriverstation
 Terminal=false
 Type=Application
 StartupNotify=true
