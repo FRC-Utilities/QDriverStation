@@ -42,6 +42,7 @@
 const QString LVD_COMMAND = "\"%1/FRC Dashboard/Dashboard.exe\"";
 const QString SFX_COMMAND = "java -jar \"%1/wpilib/tools/sfx.jar\"";
 const QString SBD_COMMAND = "java -jar \"%1/wpilib/tools/SmartDashboard.jar\"";
+const QString SHB_COMMAND = "java -jar \"%1/wpilib/tools/shuffleboard.jar\"";
 
 /**
  * Configures the application to close the dashboard when it quits
@@ -61,6 +62,7 @@ QStringList Dashboards::dashboardList()
    list.append(tr("None"));
    list.append(tr("SFX Dashboard"));
    list.append(tr("SmartDashboard"));
+   list.append(tr("Shuffleboard"));
 
 #if defined Q_OS_WIN
    list.append(tr("LabVIEW Dashboard"));
@@ -84,6 +86,9 @@ void Dashboards::openDashboard(int dashboard)
          break;
       case kSmartDashboard:
          command = SBD_COMMAND.arg(QDir::homePath());
+         break;
+      case kShuffleboard:
+         command = SHB_COMMAND.arg(QDir::homePath());
          break;
 #if defined Q_OS_WIN
       case kLabVIEWDashboard:

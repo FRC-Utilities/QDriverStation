@@ -41,7 +41,8 @@ public:
       kNone = 0,
       kSFXDashboard = 1,
       kSmartDashboard = 2,
-      kLabVIEWDashboard = 3,
+      kShuffleboard = 3,
+      kLabVIEWDashboard = 4,
    };
 
    Q_INVOKABLE QStringList dashboardList();
