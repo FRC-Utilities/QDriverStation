@@ -1,8 +1,8 @@
+# QDriverStation
+
 <a href="#">
     <img width="192px" height="192px" src="doc/project.png" align="right" />
 </a>
-
-# QDriverStation
 
 [![Build Status](https://github.com/FRC-Utilities/QDriverStation/workflows/Build/badge.svg)](https://github.com/FRC-Utilities/QDriverStation/actions)
 [![Github All Releases](https://img.shields.io/github/downloads/FRC-Utilities/QDriverStation/total.svg)](https://github.com/FRC-Utilities/QDriverStation/releases/)
