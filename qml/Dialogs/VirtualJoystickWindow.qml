@@ -149,8 +149,8 @@ Window {
         Spinbox {
             id: spin
             value: 100
-            minimumValue: 0
-            maximumValue: 100
+            from: 0
+            to: 100
             Layout.fillWidth: true
             onValueChanged: QJoysticks.setVirtualJoystickRange (value / 100)
         }

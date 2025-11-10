@@ -32,8 +32,8 @@ Rectangle {
     //
     // The values hold the 'range' of the progressbar
     //
-    property int minimumValue: 0
-    property int maximumValue: 100
+    property int from: 0
+    property int to: 100
 
     //
     // Default caption will display current relative value of progressbar
@@ -78,7 +78,7 @@ Rectangle {
         height: parent.height
         border.width: parent.border.width
         border.color: parent.border.color
-        width: parent.width * ((minimumValue + value) / maximumValue)
+        width: parent.width * ((from + value) / to)
     }
 
     //

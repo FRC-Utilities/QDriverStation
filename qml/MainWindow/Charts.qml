@@ -147,8 +147,8 @@ Item {
         Plot {
             id: loss
             value: 0
-            minimumValue: 0
-            maximumValue: 100
+            from: 0
+            to: 100
             Layout.fillWidth: true
             Layout.fillHeight: true
             barColor: Globals.Colors.PacketLoss

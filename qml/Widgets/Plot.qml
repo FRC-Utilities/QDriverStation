@@ -50,8 +50,8 @@ Rectangle {
     // Display options
     //
     property double value: 0
-    property double minimumValue: 0
-    property double maximumValue: 100
+    property double from: 0
+    property double to: 100
 
     //
     // Emitted when the timer expires and a canvas repaint is done
@@ -62,7 +62,7 @@ Rectangle {
     // Calculates the ratio between the current value and the maxinum value
     //
     function getLevel() {
-        return Math.max (value / maximumValue, minimumValue / maximumValue)
+        return Math.max (value / to, from / to)
     }
 
     //

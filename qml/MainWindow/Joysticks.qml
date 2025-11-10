@@ -276,8 +276,8 @@ Item {
                     id: axes
                     delegate: Progressbar {
                         id: progressbar
-                        minimumValue: 0
-                        maximumValue: 200
+                        from: 0
+                        to: 200
                         width: Globals.scale (54)
                         text: qsTr ("Axis") + " " + index
                         height: getWidgetHeight (axes.model)
@@ -345,8 +345,8 @@ Item {
                     //
                     delegate: Progressbar {
                         id: button
-                        minimumValue: 0
-                        maximumValue: 1
+                        from: 0
+                        to: 1
 
                         text: index
                         width: Globals.scale (28)
@@ -397,8 +397,8 @@ Item {
                     delegate: Spinbox {
                         id: spinbox
                         enabled: false
-                        minimumValue: 0
-                        maximumValue: 360
+                        from: 0
+                        to: 360
                         width: Globals.scale (64)
 
                         Connections {

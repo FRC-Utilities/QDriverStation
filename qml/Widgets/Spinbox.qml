@@ -21,35 +21,30 @@
  */
 
 import QtQuick 2.0
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.15
 
 import "../Globals.js" as Globals
 
 SpinBox {
-    width: Globals.scale (64)
-    height: Globals.scale (24)
+    editable: true
+    implicitWidth: Globals.scale (64)
+    implicitHeight: Globals.scale (24)
 
-    //
-    // Assign a custom style to the control
-    //
-    style: SpinBoxStyle {
-        background: Rectangle {
-            implicitWidth: parent.width
-            implicitHeight: parent.height
-            border.width: Globals.scale (1)
-            opacity: control.enabled ? 1 : 0.5
-            color: Globals.Colors.TextAreaBackground
-            border.color: Globals.Colors.WidgetBorder
+    // Qt 6 SpinBox doesn't support custom styling in the same way
+    // Basic styling through properties
 
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: Globals.slowAnimation
-                }
+    background: Rectangle {
+        implicitWidth: parent.width
+        implicitHeight: parent.height
+        border.width: Globals.scale (1)
+        opacity: parent.enabled ? 1 : 0.5
+        color: Globals.Colors.TextAreaBackground
+        border.color: Globals.Colors.WidgetBorder
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: Globals.slowAnimation
             }
         }
-
-        textColor: Globals.Colors.TextAreaForeground
-        selectionColor: Globals.Colors.HighlightColor
     }
 }

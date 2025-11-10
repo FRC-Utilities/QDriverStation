@@ -39,7 +39,7 @@ Plot {
 
         if (!CppDS.connectedToRobot) {
             barColor = noCommsColor
-            value = maximumValue * 0.95
+            value = to * 0.95
         }
 
         else if (getLevel() > 0.80)
@@ -59,7 +59,7 @@ Plot {
     //
     // Start graphing from origin, not from the middle or some other place
     //
-    minimumValue: 0
+    from: 0
     Component.onCompleted: update()
-    maximumValue: CppDS.maximumBatteryVoltage
+    to: CppDS.maximumBatteryVoltage
 }
