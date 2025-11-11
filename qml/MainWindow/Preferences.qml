@@ -68,8 +68,8 @@ RowLayout {
         //
         Spinbox {
             id: teamNumber
-            minimumValue: 0
-            maximumValue: 9999
+            from: 0
+            to: 9999
             Layout.fillWidth: true
             value: CppDS.teamNumber
             onValueChanged: CppDS.teamNumber = value
@@ -161,8 +161,8 @@ RowLayout {
             Spinbox {
                 value: 5
                 id: countdown
-                minimumValue: 0
-                maximumValue: 150
+                from: 0
+                to: 150
                 Layout.minimumWidth: Globals.scale (36)
             }
 
@@ -177,8 +177,8 @@ RowLayout {
             Spinbox {
                 value: 15
                 id: autonomous
-                minimumValue: 0
-                maximumValue: 150
+                from: 0
+                to: 150
                 Layout.minimumWidth: Globals.scale (36)
             }
 
@@ -193,8 +193,8 @@ RowLayout {
             Spinbox {
                 value: 1
                 id: delay
-                minimumValue: 0
-                maximumValue: 150
+                from: 0
+                to: 150
                 Layout.minimumWidth: Globals.scale (36)
             }
 
@@ -209,8 +209,8 @@ RowLayout {
             Spinbox {
                 value: 100
                 id: teleop
-                minimumValue: 0
-                maximumValue: 150
+                from: 0
+                to: 150
                 Layout.minimumWidth: Globals.scale (36)
             }
 
@@ -225,8 +225,8 @@ RowLayout {
             Spinbox {
                 value: 20
                 id: endGame
-                minimumValue: 0
-                maximumValue: 150
+                from: 0
+                to: 150
                 Layout.minimumWidth: Globals.scale (36)
             }
         }

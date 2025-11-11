@@ -196,7 +196,7 @@ void Utilities::updateCpuUsage()
    emit cpuUsageChanged();
 #elif defined Q_OS_MAC
    m_cpuProcess.terminate();
-   m_cpuProcess.start(CPU_CMD, QIODevice::ReadOnly);
+   m_cpuProcess.startCommand(CPU_CMD, QIODevice::ReadOnly);
 #elif defined Q_OS_LINUX
    auto cpuJiffies = getCpuJiffies();
 
@@ -220,7 +220,7 @@ void Utilities::updateBatteryLevel()
    emit batteryLevelChanged();
 #else
    m_batteryLevelProcess.terminate();
-   m_batteryLevelProcess.start(BTY_CMD, QIODevice::ReadOnly);
+   m_batteryLevelProcess.startCommand(BTY_CMD, QIODevice::ReadOnly);
 #endif
 
    QTimer::singleShot(1000, Qt::PreciseTimer, this, SLOT(updateBatteryLevel()));
@@ -237,7 +237,7 @@ void Utilities::updateConnectedToAC()
    emit connectedToACChanged();
 #else
    m_connectedToACProcess.terminate();
-   m_connectedToACProcess.start(PWR_CMD, QIODevice::ReadOnly);
+   m_connectedToACProcess.startCommand(PWR_CMD, QIODevice::ReadOnly);
 #endif
 
    QTimer::singleShot(1000, Qt::PreciseTimer, this, SLOT(updateConnectedToAC()));
@@ -386,6 +386,6 @@ QPair<quint64, quint64> Utilities::getCpuJiffies()
       file.close();
    }
 
-   return qMakePair(nonIdleJiffies, totalJiffies);
+   return QPair<quint64, quint64>(nonIdleJiffies, totalJiffies);
 }
 #endif
