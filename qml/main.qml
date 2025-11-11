@@ -47,10 +47,10 @@ Item {
     //
     // Load the fonts used by the application
     //
-    FontLoader { source: Qt.resolvedUrl ("qrc:/fonts/UbuntuMono.ttf")     }
+    FontLoader { source: Qt.resolvedUrl ("fonts/UbuntuMono.ttf")     }
     FontLoader { source: Qt.resolvedUrl ("qrc:/fonts/FontAwesome.ttf")    }
-    FontLoader { source: Qt.resolvedUrl ("qrc:/fonts/Ubuntu-Bold.ttf")    }
-    FontLoader { source: Qt.resolvedUrl ("qrc:/fonts/Ubuntu-Regular.ttf") }
+    FontLoader { source: Qt.resolvedUrl ("fonts/Ubuntu-Bold.ttf")    }
+    FontLoader { source: Qt.resolvedUrl ("fonts/Ubuntu-Regular.ttf") }
 
     //
     // Initialize the DS engine when the application starts
