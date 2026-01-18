@@ -220,7 +220,7 @@ void Utilities::updateBatteryLevel()
    emit batteryLevelChanged();
 #else
    m_batteryLevelProcess.terminate();
-   m_batteryLevelProcess.startCommand(BTY_CMD, QIODevice::ReadOnly);
+   m_batteryLevelProcess.start(BTY_CMD, QIODevice::ReadOnly);
 #endif
 
    QTimer::singleShot(1000, Qt::PreciseTimer, this, SLOT(updateBatteryLevel()));
@@ -237,7 +237,7 @@ void Utilities::updateConnectedToAC()
    emit connectedToACChanged();
 #else
    m_connectedToACProcess.terminate();
-   m_connectedToACProcess.startCommand(PWR_CMD, QIODevice::ReadOnly);
+   m_connectedToACProcess.start(PWR_CMD, QIODevice::ReadOnly);
 #endif
 
    QTimer::singleShot(1000, Qt::PreciseTimer, this, SLOT(updateConnectedToAC()));
@@ -389,3 +389,4 @@ QPair<quint64, quint64> Utilities::getCpuJiffies()
    return QPair<quint64, quint64>(nonIdleJiffies, totalJiffies);
 }
 #endif
+
